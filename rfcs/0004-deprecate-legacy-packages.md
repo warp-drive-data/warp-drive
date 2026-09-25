@@ -1,6 +1,6 @@
 ---
 title: Deprecating the Legacy ember-data Packages and @warp-drive/core-types
-description: Proposes deprecating the ember-data package, every @ember-data/* package, and @warp-drive/core-types at 6.0 in favor of their already-shipping @warp-drive/* successors, with removal targeted for 7.0.
+description: Proposes deprecating the ember-data package, every @ember-data/* package, and @warp-drive/core-types now, in favor of their already-shipping @warp-drive/* successors, with removal from publishing targeted for 6.0.
 warp-drive-rfc: 4
 emberjs-rfc:
 emberjs-pr:
@@ -25,14 +25,15 @@ suite:
 
 The `ember-data` package, every `@ember-data/*` package (`active-record`, `adapter`, `debug`,
 `graph`, `json-api`, `legacy-compat`, `model`, `request`, `request-utils`, `rest`, `serializer`,
-`store`, `tracking`), and `@warp-drive/core-types` are deprecated starting at 6.0, with removal
-from npm publishing targeted for 7.0. Every one of these packages is already, today, a thin
+`store`, `tracking`), and `@warp-drive/core-types` are deprecated starting in the next 5.x minor,
+with removal from npm publishing at 6.0. Every one of these packages is already, today, a thin
 re-export shim over a `@warp-drive/*` package introduced by the package-unification effort
 ([emberjs/rfcs#1075](https://rfcs.emberjs.com/id/1075-warp-drive-package-unification/)) —
 `@warp-drive/core`, `@warp-drive/legacy`, `@warp-drive/utilities`, `@warp-drive/json-api`, and
 `@warp-drive/ember`. This RFC does not move any logic; it formalizes the deprecation of the old
-import paths that RFC 1075 already implied, with concrete deprecation flags/ids, a codemod, a
-timeline, and documentation updates, all landing in 6.0.
+import paths that RFC 1075 already implied, with concrete deprecation flags/ids, a codemod, and
+documentation updates, landing now, on the same `since <5.x>` / `until 6.0` timeline every other
+active deprecation in `deprecations.ts` already uses.
 
 ## Motivation
 
@@ -70,10 +71,11 @@ paths to the same code indefinitely means:
   no migration guide — tells a consumer that importing from `@ember-data/model` instead of
   `@warp-drive/legacy/model` is a choice with an expiration date.
 
-The expected outcome: by 6.0, every consumer importing from a legacy package sees a clear,
-actionable deprecation pointing at the exact `@warp-drive/*` replacement import, with a codemod
-that performs the rewrite mechanically; by 7.0, WarpDrive stops publishing new versions of the
-legacy packages, and the legacy setup guide is replaced entirely by the unified one.
+The expected outcome: starting in the next 5.x minor, every consumer importing from a legacy
+package sees a clear, actionable deprecation pointing at the exact `@warp-drive/*` replacement
+import, with a codemod that performs the rewrite mechanically; at 6.0, WarpDrive stops
+publishing new versions of the legacy packages, and the legacy setup guide is replaced entirely
+by the unified one.
 
 ## Detailed design
 
@@ -81,7 +83,7 @@ legacy packages, and the legacy setup guide is replaced entirely by the unified 
 
 Every legacy package's current re-export target, confirmed by reading its `src/index.ts`:
 
-| Legacy package | Deprecated at 6.0 | Replacement |
+| Legacy package | Deprecated now, removed at 6.0 | Replacement |
 | --- | --- | --- |
 | `ember-data` | Yes | `@warp-drive/core` (+ `@warp-drive/ember` for Ember apps, `@warp-drive/legacy` for Model/Adapter/Serializer) |
 | `@warp-drive/core-types` | Yes | `@warp-drive/core/types` |
@@ -97,8 +99,8 @@ Every legacy package's current re-export target, confirmed by reading its `src/i
 | `@ember-data/rest` | Yes | `@warp-drive/utilities/rest` + `@warp-drive/legacy` (`/adapter/rest`, `/serializer/rest`) |
 | `@ember-data/active-record` | Yes | `@warp-drive/utilities/active-record` |
 | `@ember-data/tracking` | Already deprecated (`DEPRECATE_TRACKING_PACKAGE`, since 5.5, until 6.0) | `@warp-drive/ember/install` |
-| `@ember-data/debug` | Blocked — see "Packages without a home" | none yet |
-| `@ember-data/codemods` | Not deprecated by this RFC — see "Packages without a home" | n/a (becomes the delivery vehicle for the codemod below) |
+| `@ember-data/debug` | No — see "Packages without a home" (keeps publishing past 6.0) | none yet |
+| `@ember-data/codemods` | No — see "Packages without a home" (keeps publishing past 6.0) | n/a (becomes the delivery vehicle for the codemod below) |
 
 `@ember-data/tracking` already has a resolved deprecation story under `DISABLE_7X_DEPRECATIONS`'s
 sibling flags and is unaffected by this RFC beyond being folded into the same messaging pass.
@@ -116,8 +118,8 @@ existing shape (`DEPRECATE_TRACKING_PACKAGE`, `DEPRECATE_EMBER_INFLECTOR`, etc.)
  * of `@warp-drive/core/types` since its unification. Import types directly
  * from `@warp-drive/core/types` instead.
  *
- * @since 6.0
- * @until 7.0
+ * @since 5.11
+ * @until 6.0
  * @public
  */
 export const DEPRECATE_CORE_TYPES_PACKAGE: boolean = true;
@@ -131,8 +133,8 @@ export const DEPRECATE_CORE_TYPES_PACKAGE: boolean = true;
  * Each is a re-export shim over a `@warp-drive/*` package; import from the
  * `@warp-drive/*` package directly instead.
  *
- * @since 6.0
- * @until 7.0
+ * @since 5.11
+ * @until 6.0
  * @public
  */
 export const DEPRECATE_EMBER_DATA_PACKAGES: boolean = true;
@@ -159,9 +161,9 @@ if (DEPRECATE_EMBER_DATA_PACKAGES) {
     false,
     {
       id: 'warp-drive.deprecate-ember-data-packages',
-      until: '7.0.0',
+      until: '6.0.0',
       for: 'warp-drive',
-      since: { enabled: '6.0.0', available: '6.0.0' },
+      since: { enabled: '5.11.0', available: '5.11.0' },
       url: 'https://deprecations.emberjs.com/id/warp-drive.deprecate-ember-data-packages',
     }
   );
@@ -171,17 +173,19 @@ if (DEPRECATE_EMBER_DATA_PACKAGES) {
 `@warp-drive/core-types`'s shim gets the equivalent call under `DEPRECATE_CORE_TYPES_PACKAGE`
 with `id: 'warp-drive.deprecate-core-types-package'`. Because both flags default to `true` (the
 deprecated behavior is active) exactly like every other flag in `deprecations.ts`, opting out
-early — silencing the warning before 6.0 ships — is not offered; unlike a behavior deprecation,
-there's no "not yet migrated" code path to keep alive here, only an import path to change.
+early — silencing the warning as soon as it ships — is not offered; unlike a behavior
+deprecation, there's no "not yet migrated" code path to keep alive here, only an import path to
+change.
 
 ### npm-level deprecation
 
 Every legacy package's `package.json` `description` is updated to lead with `(Legacy)` (already
 true for `@warp-drive/core-types`; not yet true for the `@ember-data/*` family or `ember-data`
-itself), and at the 6.0 publish, each package's npm registry entry gets an `npm deprecate`
-message pointing at the migration guide (see "How we teach this"). This is metadata only —
-`npm install` continues to work unchanged for every version published through 7.0; the notice
-surfaces in `npm install` output and on the npmjs.com package page.
+itself), and at the same 5.x minor that ships the flags above, each package's npm registry entry
+gets an `npm deprecate` message pointing at the migration guide (see "How we teach this"). This
+is metadata only — `npm install` continues to work unchanged for every version published through
+the last 5.x release; the notice surfaces immediately in `npm install` output and on the
+npmjs.com package page, well ahead of the 6.0 removal.
 
 ### The codemod
 
@@ -190,47 +194,57 @@ new codemod, `legacy-imports`, that rewrites the import specifiers in the left c
 table above to the ones in the right column, verbatim — this is a pure module-path rename for
 every export; no export is renamed or restructured as part of this RFC. The `rest` and
 `active-record` split (a single legacy package's exports now come from two `@warp-drive/*`
-packages) is the one case the codemod must special-case per-export rather than per-module.
+packages) is the one case the codemod must special-case per-export rather than per-module. The
+codemod ships in the same 5.x minor as the deprecation warning, not held back until 6.0 — with
+removal itself only one major away, the codemod is the primary way most apps will actually
+migrate in time.
 
 ### Packages without a home
 
 Two `@ember-data/*` packages have no existing `@warp-drive/*` re-export target, and this RFC does
-not deprecate them:
+not deprecate or stop publishing them at 6.0:
 
 - **`@ember-data/debug`** provides the Ember Inspector data adapter. Deprecating it without a
   replacement would leave Inspector support with nowhere to go, so this RFC treats giving it a
   home in `@warp-drive/ember` (the package every Ember app already installs) as a prerequisite
-  for `@ember-data/debug`'s own deprecation, tracked as follow-up work rather than folded into
-  this RFC's 6.0 timeline. Until that lands, `@ember-data/debug` remains fully supported.
+  for `@ember-data/debug`'s own deprecation, tracked as follow-up work with its own timeline
+  rather than folded into this RFC. Until that lands, `@ember-data/debug` remains fully
+  supported and keeps publishing past 6.0.
 - **`@ember-data/codemods`** is dev-tooling invoked once during migration, not a runtime
   dependency an app ships — and this RFC makes it the delivery vehicle for the `legacy-imports`
   codemod above, so deprecating it now would work against the RFC's own migration path. Its
-  disposition is deferred to whenever the migration window this RFC opens eventually closes.
+  disposition is deferred to whenever the migration window this RFC opens eventually closes, and
+  it also keeps publishing past 6.0.
 
 ### Timeline
 
-1. **6.0:** both flags ship (default `true`); the runtime warning, npm deprecation metadata, and
-   `legacy-imports` codemod all ship together. `ember-data`, every `@ember-data/*` package
-   (except `debug`), and `@warp-drive/core-types` show a deprecation on install and on first
-   import.
-2. **6.x betas/minors:** the warning and codemod are the primary support surface; no further
-   behavior change.
-3. **7.0:** WarpDrive stops publishing new versions of the deprecated packages. Versions already
-   published through 6.x remain installable indefinitely (npm does not support retracting
-   published versions), so apps that never migrate are not broken outright — they simply stop
-   receiving fixes, security patches, and compatibility updates for those packages past 6.x.
+1. **Next 5.x minor:** both flags ship (default `true`); the runtime warning, npm deprecation
+   metadata, and `legacy-imports` codemod all ship together. `ember-data`, every `@ember-data/*`
+   package (except `debug` and `codemods`), and `@warp-drive/core-types` show a deprecation on
+   install and on first import.
+2. **Remaining 5.x betas/minors:** the warning and codemod are the primary support surface; no
+   further behavior change. This is the entire migration window — it ends at the next major.
+3. **6.0:** WarpDrive stops publishing new versions of the deprecated packages. Versions already
+   published through the last 5.x release remain installable indefinitely (npm does not support
+   retracting published versions), so apps that never migrate are not broken outright — they
+   simply stop receiving fixes, security patches, and compatibility updates for those packages
+   from 6.0 onward.
 
-This is a publishing cutoff, not a code-deletion step: unlike a behavior flag such as
-`DEPRECATE_TRACKING_PACKAGE`, there is no source inside a still-shipping package to delete at
-7.0 — the "removal" is that the legacy packages' own release stops.
+This mirrors the `since <5.x>` / `until 6.0` shape already used by every other active flag in
+`deprecations.ts` (`DEPRECATE_TRACKING_PACKAGE`, `DEPRECATE_EMBER_INFLECTOR`, and the rest) — this
+RFC's flags resolve on the same release boundary, rather than opening a new post-6.0 deprecation
+window the way a behavior flag typically would. The difference from a behavior flag is *what*
+"resolving" means: there's no source inside a still-shipping package to delete at 6.0, because the
+deprecated thing is the package's own continued publication, not code inside a package that
+keeps shipping. The "removal" is that the legacy packages' own releases stop.
 
 ## How we teach this
 
 - `guides/configuration/legacy-package-setup/index.md` gets a deprecation banner at the top
   (the page already carries a "Boilerplate Sucks" callout pointing at RFC 1075; this RFC extends
-  that callout to state the 6.0 deprecation / 7.0 end-of-publishing dates plainly) and its
-  package-list code blocks get inline notes next to each deprecated package naming its
-  replacement.
+  that callout to state the deprecation is immediate and end-of-publishing lands at 6.0, plainly
+  and with a date once one is set) and its package-list code blocks get inline notes next to
+  each deprecated package naming its replacement.
 - A new `upgrading/v6/` page (alongside the existing `upgrading/v5/`) documents the full mapping
   table from "Detailed design" as the canonical migration reference, plus the codemod command.
 - The runtime deprecation message itself (see "Runtime warning") is the primary channel most
@@ -242,6 +256,13 @@ This is a publishing cutoff, not a code-deletion step: unlike a behavior flag su
 
 ## Drawbacks
 
+- **The migration window is short.** Deprecating now with removal at the very next major gives
+  apps only the remainder of the current 5.x line to migrate, rather than a full major's worth of
+  beta/minor cycles. Every other flag in `deprecations.ts` gets that same window in principle
+  (`since 5.x` / `until 6.0`), but most of them were introduced earlier in the 5.x line than this
+  RFC lands — apps adopting this deprecation late in 5.x genuinely have less time than apps that
+  picked up, say, `DEPRECATE_TRACKING_PACKAGE` at 5.5. The codemod is not optional polish here; it
+  is load-bearing for apps to make this window.
 - **Two coarse flags instead of fourteen fine-grained ones** means an app can't resolve the
   deprecation for, say, just `@ember-data/model` while keeping the warning active for
   `@ember-data/rest` — it resolves the whole `ember-data` family at once. This trades precision
@@ -251,11 +272,12 @@ This is a publishing cutoff, not a code-deletion step: unlike a behavior flag su
   the bar for a "just try it" first install, unless the unified `@warp-drive/core` install path
   is brought to at least the same one-command simplicity before 6.0 ships (tracked by the
   existing `@warp-drive/core` setup docs, not by this RFC).
-- **Sequencing with the build-plugin deprecation** ([RFC 0002](./0002-warp-drive-build-plugin.md)):
-  both RFCs put a deprecation notice in front of apps at 6.0. Landing both in the same release
-  means an app on the old babel-based, multi-package setup can see two unrelated deprecation
-  warnings at once; the migration guide for each should cross-reference the other so an app
-  doing one migration isn't confused into thinking it must also do the other in the same pass.
+- **6.0 is a lifecycle boundary for two unrelated deprecations at once.** This RFC's packages
+  finish their deprecation and stop publishing at 6.0; [RFC 0002](./0002-warp-drive-build-plugin.md)'s
+  babel build path only *begins* its formal deprecation at 6.0 (removed later, at 7.0). An app
+  reading both at the 6.0 boundary needs to understand it's losing the legacy packages outright
+  while merely being warned about the babel path — the two migration guides should say this
+  explicitly rather than let the shared version number imply a shared timeline.
 - **`@ember-data/debug` and `@ember-data/codemods` staying out of scope** means this RFC doesn't
   fully retire the `@ember-data/*` namespace at 6.0 — a reader could reasonably expect "deprecate
   the ember-data packages" to be complete, and it explicitly isn't for these two.
@@ -265,10 +287,16 @@ This is a publishing cutoff, not a code-deletion step: unlike a behavior flag su
 - **Do nothing; keep the legacy packages fully supported indefinitely.** Rejected: it commits
   WarpDrive to documenting, testing, and versioning shim code that does nothing but re-export,
   forever, with no path to ever simplifying the package graph RFC 1075 was meant to simplify.
-- **Remove the legacy packages outright at 6.0 instead of deprecating them.** Rejected: skips the
-  standard deprecate-then-remove cycle this codebase already uses for every other breaking
-  change (see every other flag in `deprecations.ts`), and would break any app that hasn't
-  migrated with no warning period.
+- **Remove the legacy packages outright, immediately, with no deprecation period.** Rejected:
+  skips the standard deprecate-then-remove cycle this codebase already uses for every other
+  breaking change (see every other flag in `deprecations.ts`), and would break any app that
+  hasn't migrated with no warning at all.
+- **Deprecate at 6.0 and remove at 7.0**, mirroring the timeline this RFC originally proposed and
+  the one [RFC 0002](./0002-warp-drive-build-plugin.md) uses for the babel build path. Superseded
+  in this revision: it opens a new post-6.0 deprecation window instead of resolving on the same
+  `since 5.x` / `until 6.0` boundary every other flag in `deprecations.ts` already uses, and
+  delays finishing RFC 1075's package unification by a full extra major for packages that have
+  had a working replacement for some time.
 - **Deprecate only `@warp-drive/core-types`, leave the `@ember-data/*` family alone.** Rejected:
   every `@ember-data/*` package is the same re-export-shim situation as `core-types`; singling
   out `core-types` leaves the larger and more visible part of the problem (the `ember-data`
@@ -280,9 +308,12 @@ This is a publishing cutoff, not a code-deletion step: unlike a behavior flag su
 ## Unresolved questions
 
 - What `@ember-data/debug`'s new home inside `@warp-drive/ember` should look like concretely
-  (auto-registered vs. opt-in import), and whether that needs its own RFC before this one's
-  6.0 timeline can include it.
-- Whether `npm deprecate` notices should be applied to already-published pre-6.0 versions
-  retroactively, or only to versions published at/after 6.0.
+  (auto-registered vs. opt-in import), and whether that needs its own RFC before it can be
+  folded into this one's timeline on a later major.
+- Whether the remaining 5.x window before 6.0 is long enough for apps to migrate given the
+  codemod, or whether this RFC's landing should be gated on 6.0 being at least a certain number
+  of 5.x minors away at the time it merges.
+- Whether `npm deprecate` notices should be applied to already-published pre-deprecation
+  versions retroactively, or only to versions published at/after the flags ship.
 - Final wording and placement of the `upgrading/v6/` migration page relative to the existing
   `upgrading/v5/` content.
