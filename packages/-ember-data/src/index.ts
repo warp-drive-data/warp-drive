@@ -11,7 +11,7 @@
 
 <p align="center">
   <br>
-  <a href="https://warp-drive.io">EmberData</a> is a lightweight data library for web apps &mdash;
+  <a href="https://warp-drive.io">EmberData</a> is a lightweight data library for web apps —
   <br>
   universal, typed, reactive, and ready to scale.
   <br/><br/>
@@ -31,7 +31,7 @@
 </blockquote>
 
 EmberData provides features that make it easy to build scalable, fast, feature
-rich application &mdash; letting you ship better experiences more quickly without re-architecting your app or API. EmberData is:
+rich application — letting you ship better experiences more quickly without re-architecting your app or API. EmberData is:
 
 - ⚡️ Committed to Best-In-Class Performance
 - 💚 Typed

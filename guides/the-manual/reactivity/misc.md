@@ -1,4 +1,5 @@
 ---
+description: Learn how WarpDrive exposes cached documents, resources, and fields reactively through PolarisMode or LegacyMode records, with pluggable signals so Ember or React can integrate.
 draft: true
 ---
 

@@ -1,3 +1,7 @@
+---
+description: Define an embedded ObjectSchema with a null identity, reference it from a resource via a `schema-object` field, and register it with `registerResource` so nested data is reactive.
+---
+
 # ObjectSchemas
 
 An ObjectSchema lets you model nested or embedded data structures inside a ResourceSchema. This is ideal when a piece of data belongs to a resource but does not have its own identity (no `@id`) and should not be a top-level resource.

@@ -41,10 +41,10 @@ export interface AliasOptions {
 }
 
 /**
- * Marks a property as an alias &mdash; compiling to a
+ * Marks a property as an alias — compiling to a
  * {@link LegacyAliasField}, {@link PolarisAliasField}, or
  * {@link ObjectAliasField} depending on the schema it's declared on
- * &mdash; that points to another field already present in the schema.
+ * — that points to another field already present in the schema.
  *
  * Unlike {@link derived}, an alias may write back to its source field when
  * the record is in an editable mode.

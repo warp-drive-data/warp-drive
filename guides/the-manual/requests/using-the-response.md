@@ -1,3 +1,7 @@
+---
+description: Read the Future a request returns, use its lid, getStream, and abort, handle FetchError rejections, and know when content is a ReactiveDocument.
+---
+
 # Using The Response
 
 [Requests](/api/@warp-drive/core/classes/Store#request) return a subclass of [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) we call a [Future](/api/@warp-drive/core/request/types/Future).

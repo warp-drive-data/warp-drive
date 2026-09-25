@@ -1,5 +1,6 @@
 ---
 title: Advanced Builders
+description: Structure builders around API patterns or domain logic, compose them, and use builder and type utilities, including with tRPC or GraphQL; this page is a draft outline.
 draft: true
 ---
 

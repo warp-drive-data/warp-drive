@@ -75,7 +75,7 @@ export interface SchemaObjectOptions {
 }
 
 /**
- * Marks a property as a {@link SchemaObjectField} &mdash; an embedded
+ * Marks a property as a {@link SchemaObjectField} — an embedded
  * object whose shape is described by an {@link ObjectSchema}.
  *
  * This is not a relationship. `@belongsTo` / `ResourceField` point at

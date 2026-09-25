@@ -1,3 +1,7 @@
+---
+description: Write a Handler middleware that calls next and normalizes a REST response into a JSON:API document with dasherize and singularize so the cache can consume it.
+---
+
 # Handlers
 
 Handlers are middleware that enable enhancing, modifying, or responding to requests. They are best used for handling concerns shared by a large number of requests - whereas builders are better suited for customizing the details of a specific request.

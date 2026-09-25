@@ -1,3 +1,7 @@
+---
+description: Run a second WarpDrive store built from the -mirror packages beside your existing 4.x store so parts of an app can adopt 5.x incrementally, with the tradeoffs to expect.
+---
+
 # Migrating Between Versions Using The Two Store Approach
 
 <SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
