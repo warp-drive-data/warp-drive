@@ -1,5 +1,6 @@
 ---
 title: Advanced Handlers
+description: Write Handler objects that use RequestContext, setStream, setResponse, and next to retry errors, handle aborts, and curry streams down the chain; draft page.
 draft: true
 ---
 

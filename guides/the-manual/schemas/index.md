@@ -1,5 +1,6 @@
 ---
 title: Overview
+description: Start here for the schemas section to see how a ResourceSchema maps raw cached fields to camelCase reactive properties and relationships, then pick LegacyMode or PolarisMode.
 ---
 
 :::warning **🚧 Pardon Our Stardust!**

@@ -1,5 +1,6 @@
 ---
 title: Writing API Docs
+description: How to write the TSDoc comments that become the API reference, including which tags to use, the @summary each API page needs, usage examples, and what stays out of the published docs.
 ---
 
 # Writing API Docs
@@ -74,6 +75,49 @@ export function add(a: number, b: number): number {}
   [Mark public exports with `@public`](#mark-public-exports-with-public).
 
 ## Content Standards
+
+### Give Each API Page a `@summary`
+
+`llms.txt`, the index coding agents read to decide which page to fetch, has one entry per API
+page (see [Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
+The docs site takes that entry's description from a `@summary` tag, exactly as written; a page
+without one is listed by name only, and nothing is guessed from the comment's prose. So add a
+`@summary`, one sentence saying what the symbol does or is for, to the comment that owns a page:
+
+- an exported class, function, interface, type alias, variable, or enum, each of which gets its
+  own page
+- a `@module` comment, which owns that module's page
+
+Members don't need one. A method, property, or accessor renders on its parent's page, so its
+`@summary` is never read.
+
+````ts
+/**
+ * ## Import
+ *
+ * ```js
+ * import { RequestManager } from '@warp-drive/core';
+ * ```
+ *
+ * For complete usage guide see the [RequestManager Documentation](/guides/).
+ *
+ * @summary Runs each request through a chain of handlers that can fulfill, modify, or pass it along, and returns a `Future` for the response.
+ * @public
+ */
+````
+
+- Write it for a reader who sees nothing else: name the symbol's purpose rather than restating
+  its name, and don't lean on the prose around it.
+- Keep it to one sentence, under about 200 characters. A multi-line `@summary` is joined into
+  one line.
+- Inline code and `{@link}` are fine; `{@link Store}` contributes its link text. Avoid other
+  markdown and HTML entities, which reach `llms.txt` as literal characters.
+- `@summary` is not rendered on the page, so it doesn't repeat the prose readers see. It is a
+  TypeDoc tag, not a TSDoc one; TSDoc treats everything before `@remarks` as the summary and has
+  no `@summary`.
+- For an overloaded function, put it on the implementation's comment or the first overload's.
+- A package landing page built from `src/index.md` has no doc comment, so it can't carry one
+  and is listed by name only.
 
 ### Every Public API Should Have a Usage Example
 

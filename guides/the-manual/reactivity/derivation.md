@@ -1,5 +1,6 @@
 ---
 title: Async as Reactive State
+description: Replace tracked loading, error, and value properties with getPromiseState and the Await component so a component stores a promise and derives pending, error, and success state.
 ---
 
 # Async as Reactive State

@@ -1,3 +1,7 @@
+---
+description: Add the unstable-preview-types entries to tsconfig.json so your app consumes WarpDrive's alpha-stage native types from either the runtime packages or the -types packages.
+---
+
 # Configuration
 
 There are currently two ways to gain access to WarpDrives's native types.

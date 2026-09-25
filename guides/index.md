@@ -1,5 +1,6 @@
 ---
 title: Introduction
+description: Learn what WarpDrive offers as a framework-agnostic data layer, from fine-grained reactivity and Fetch-style requests to schemas, the relational cache, mutations, and handlers.
 ---
 
 # Introduction
