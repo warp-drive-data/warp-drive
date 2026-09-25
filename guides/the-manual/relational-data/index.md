@@ -31,7 +31,7 @@ The exact rules every relationship kind follows are collected in the
 - [Collection Relationships](./features/collection-relationships.md)
 - [Links vs Identifiers](./features/links-vs-identifiers.md)
 - [Sync vs Async](./features/sync-vs-async.md)
-- [Inverses](./features/inverses.md)
+- [Inverses and Directionality](./features/inverses.md)
 - [Polymorphism](./features/polymorphism.md)
 - [LinksMode](../misc/links-mode.md) (for `belongsTo` and `hasMany`)
 - [Pagination](../experiments/pagination.md) (experimental): load a large collection page by page as its own
@@ -57,7 +57,6 @@ The exact rules every relationship kind follows are collected in the
 - [Understanding "the Graph"](./advanced/the-graph.md)
 - [Pagination](./advanced/pagination.md)
 - [Large Collections](./advanced/large-collections.md)
-- [Directionality](./advanced/directionality.md)
 
 # Misc
 
