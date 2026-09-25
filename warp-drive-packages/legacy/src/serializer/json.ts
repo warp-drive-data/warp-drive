@@ -98,6 +98,8 @@ const PRIMARY_ATTRIBUTE_KEY = 'base';
         - `normalize` delegates to these methods to
           turn the record payload into the JSON API format.
 
+  @summary Legacy serializer for plain JSON payloads that don't follow the JSON:API spec, normalizing them into
+  JSON:API documents for the store.
   @class JSONSerializer
   @public
 */

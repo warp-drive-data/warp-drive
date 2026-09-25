@@ -711,6 +711,8 @@ interface InternalTrait {
 /**
  * A SchemaService designed to work with dynamically registered schemas.
  *
+ * @summary The default schema service, which stores resource and object schemas, traits, derivations,
+ * transformations, hash functions and extensions registered at runtime.
  * @public
  */
 export class SchemaService implements SchemaServiceInterface {

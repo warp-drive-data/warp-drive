@@ -15,11 +15,17 @@ import { defineSignal, memoized } from './reactivity/signal.ts';
  *
  * - `'paged'` — single-page view, see {@link PagedPaginationState}.
  * - `'infinite'` — accumulated view, see {@link InfinitePaginationState}.
+ *
+ * @summary Experimental: the `@mode` value of `<Paginate />`, either `'paged'` for a single-page view or
+ * `'infinite'` for an accumulated view, which selects the yielded pagination API.
  */
 export type PaginateMode = 'paged' | 'infinite';
 
 /**
  * The part of a {@link PaginationState} available to both navigation surfaces.
+ *
+ * @summary Experimental: the pagination state members available in both paged and infinite mode, namely
+ * `totalPages` and `adoptPage`.
  */
 export interface SharedPaginationState<RT = unknown, E = unknown> {
   /** See {@link PaginationState.totalPages}. */
@@ -39,6 +45,9 @@ export interface SharedPaginationState<RT = unknown, E = unknown> {
  * {@link PaginationState.activePageRequest | activePageRequest}, navigate with
  * {@link PaginationState.loadPage | loadPage}. This is what the `<Paginate />`
  * component yields in `'paged'` mode (the default).
+ *
+ * @summary Experimental: the pagination state `<Paginate />` yields in paged mode, exposing the active page, its
+ * request, and `loadPage` for navigating to a page by URL.
  */
 export interface PagedPaginationState<RT = unknown, E = unknown> extends SharedPaginationState<RT, E> {
   /** See {@link PaginationState.activePage}. */
@@ -54,6 +63,9 @@ export interface PagedPaginationState<RT = unknown, E = unknown> extends SharedP
  * {@link PaginationState.data | data}, grow it with
  * {@link PaginationState.loadNext | loadNext}/{@link PaginationState.loadPrev | loadPrev}.
  * This is what the `<Paginate />` component yields in `'infinite'` mode.
+ *
+ * @summary Experimental: the pagination state `<Paginate />` yields in infinite mode, exposing the accumulated
+ * items and pages plus `loadNext` and `loadPrev` to extend them.
  */
 export interface InfinitePaginationState<RT = unknown, E = unknown> extends SharedPaginationState<RT, E> {
   /** See {@link PaginationState.data}. */
@@ -77,6 +89,9 @@ export interface InfinitePaginationState<RT = unknown, E = unknown> extends Shar
 /**
  * Resolves a {@link PaginateMode} to the surface it exposes, so a component
  * generic over the mode can yield only that surface.
+ *
+ * @summary Experimental: resolves a pagination mode to its state type, the infinite-mode state for `'infinite'`
+ * and the paged-mode state otherwise.
  */
 export type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode = 'paged'> = M extends 'infinite'
   ? InfinitePaginationState<RT, E>
@@ -104,6 +119,8 @@ export type PaginationStateFor<RT = unknown, E = unknown, M extends PaginateMode
  * Instances are created via {@link getPaginationState} (or by the `<Paginate />`
  * component on your behalf), never constructed directly.
  *
+ * @summary Experimental: one component's pagination state over a shared collection, tracking the active page and
+ * the loaded run and providing paged and infinite navigation.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -635,6 +652,8 @@ const PaginationStateCache = new WeakMap<Future<unknown>, PaginationState>();
  * await pages.loadNext();
  * ```
  *
+ * @summary Experimental: returns the pagination state for a request, creating it on first call and returning the
+ * same instance for the same request thereafter.
  * @since 5.9.0
  * @public
  */

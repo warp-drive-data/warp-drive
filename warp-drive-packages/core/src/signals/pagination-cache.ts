@@ -23,6 +23,8 @@ const PaginationCacheMap = new Map<string, PaginationCache>();
  * collection must provide the same function reference — define it once at module
  * scope and import it everywhere.
  *
+ * @summary Experimental: a function you pass to `<Paginate />` that reads `currentPage` and `totalPages` from a
+ * loaded document when they are not in the default `meta` locations.
  * @since 5.9.0
  * @public
  */
@@ -35,6 +37,8 @@ export interface PageHints {
  * document `meta`, matching the behavior used before `pageHints` was configurable.
  * Used whenever the consumer does not provide a `pageHints` function.
  *
+ * @summary Experimental: the fallback page-hints function, reading `meta.page` or `meta.currentPage` and
+ * `meta.totalPages` from a document, with `0` meaning unknown.
  * @since 5.9.0
  * @public
  */
@@ -54,6 +58,8 @@ export const defaultPageHints: PageHints = (document) => {
  * interact with — the cache itself is plumbing shared between the pagination
  * classes.
  *
+ * @summary Experimental: the shared, app-wide store of loaded pages, page order, and `totalPages` for one paginated
+ * collection, keyed by its `first` or `self` link.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -240,6 +246,8 @@ export class PaginationCache<RT = unknown, E = unknown> {
  * `first` or `self` link). Returns the same instance for the same key for the
  * lifetime of the module.
  *
+ * @summary Experimental: returns the shared pagination cache for a collection's `first` or `self` link, creating it
+ * on first use.
  * @since 5.9.0
  * @public
  */
@@ -259,6 +267,7 @@ export function getPaginationCache<RT, E>(key: string): PaginationCache<RT, E> {
  * Primarily intended for test isolation, since the cache is keyed by url and
  * otherwise persists for the lifetime of the module.
  *
+ * @summary Experimental: discards every shared pagination cache, mainly so tests start from a clean state.
  * @since 5.9.0
  * @public
  */

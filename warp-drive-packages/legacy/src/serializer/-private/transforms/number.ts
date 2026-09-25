@@ -32,6 +32,8 @@ export interface NumberTransform {
   }
   ```
 
+  @summary Legacy transform for `attr('number')` that converts payload values to numbers, or `null` when empty or not
+  a valid number.
   @public
  */
 export class NumberTransform {

@@ -119,6 +119,7 @@ export interface PrivateReactiveResource extends ReactiveResource {
  * configure the store's `instantiateRecord` and `teardownRecord` hooks
  * with the matching hooks provided by this package.
  *
+ * @summary The rich, reactive record object that presents a resource's cached data through its `ResourceSchema`.
  * @hideconstructor
  * @public
  */

@@ -8,6 +8,8 @@
  * `@warp-drive/ember/experiments`; the request-subscription types are published from
  * `@warp-drive/core/reactive`.
  *
+ * @summary Private signal and pagination primitives that core shares with sibling `@warp-drive/*` packages; not
+ * public API for apps.
  * @module
  */
 export {

@@ -496,6 +496,8 @@ interface Model {
  * the class to use as the reactive object for data of resource
  * of that type.
  *
+ * @summary Legacy base class whose subclasses both define a resource type's schema with `attr`, `belongsTo` and
+ * `hasMany` and serve as its reactive record.
  * @public
  * @noInheritDoc
  * @hideconstructor

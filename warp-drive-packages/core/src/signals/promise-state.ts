@@ -10,6 +10,8 @@ const PromiseCache = new WeakMap<Awaitable, PromiseState>();
  * The state of a promise in the "pending"
  * state. This is the default initial state.
  *
+ * @summary The `getPromiseState` state for a promise that has not yet settled, with `isPending` true and
+ * no value or reason.
  */
 export interface PendingPromise {
   /**
@@ -81,6 +83,8 @@ export interface PendingPromise {
  * This is the state of a promise that has resolved
  * successfully.
  *
+ * @summary The `getPromiseState` state for a promise that resolved, with `isSuccess` true and the
+ * resolved `value`.
  */
 export interface ResolvedPromise<T> {
   /**
@@ -152,6 +156,8 @@ export interface ResolvedPromise<T> {
  * This is the state of a promise that has rejected
  * with an error.
  *
+ * @summary The `getPromiseState` state for a promise that rejected, with `isError` true and the
+ * rejection `reason`.
  */
 export interface RejectedPromise<E> {
   /**
@@ -228,6 +234,8 @@ export interface RejectedPromise<E> {
  * - {@link ResolvedPromise}
  * - {@link RejectedPromise}
  *
+ * @summary The reactive pending, fulfilled, or rejected state of a promise, as returned by
+ * `getPromiseState`.
  */
 export type PromiseState<T = unknown, E = unknown> = PendingPromise | ResolvedPromise<T> | RejectedPromise<E>;
 
@@ -354,6 +362,9 @@ function getPromise<T, E>(promise: Promise<T> | Awaitable<T, E> | LegacyAwaitabl
  * If looking to use in a template, consider also the `<Await />` component.
  *
  * See also {@link PromiseState}
+ *
+ * @summary Returns a cached, reactive state object tracking whether a promise is pending, fulfilled, or
+ * rejected, for use in JS or templates.
  */
 export function getPromiseState<T = unknown, E = unknown>(
   promise: Promise<T> | Awaitable<T, E>

@@ -22,6 +22,8 @@ const PaginationLinksCache = new WeakMap<PagedPaginationState, PaginationLinks>(
  * </EachLink>
  * ```
  *
+ * @summary Experimental: a numbered page link with its page number, whether it is current, its distance from the
+ * active page, and `setActive` to load and show that page.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -77,6 +79,8 @@ export class RealPaginationLink {
  * </EachLink>
  * ```
  *
+ * @summary Experimental: a non-navigable gap marker in numbered pagination links, standing in for a range of
+ * not-yet-loaded pages, usually shown as an ellipsis.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -136,6 +140,8 @@ export class PlaceholderPaginationLink {
  * </EachLink>
  * ```
  *
+ * @summary Experimental: a `first`, `prev`, `next`, or `last` link relative to the active page, with `setActive`
+ * to load it, and the only kind of link cursor-based pagination has.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -198,6 +204,9 @@ export class RelationalPaginationLink {
  *   }
  * }
  * ```
+ *
+ * @summary Experimental: an entry in the numbered pagination links list, either a navigable numbered link or a
+ * placeholder for a gap, told apart by `isReal`.
  */
 export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
 
@@ -229,6 +238,8 @@ export type PaginationLink = RealPaginationLink | PlaceholderPaginationLink;
  * - {@link PlaceholderPaginationLink}
  * - {@link RelationalPaginationLink}
  *
+ * @summary Experimental: the reactive navigation links for a pagination state, with numbered links and gap
+ * placeholders plus `first`, `prev`, `next`, and `last` links for the active page.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -366,6 +377,8 @@ export class PaginationLinks<RT = unknown, E = unknown> {
  * }
  * ```
  *
+ * @summary Experimental: returns the navigation links for a paged pagination state, creating them on first call and
+ * returning the same instance for the same state.
  * @since 5.9.0
  * @public
  */

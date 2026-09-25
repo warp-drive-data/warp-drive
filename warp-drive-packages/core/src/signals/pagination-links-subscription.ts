@@ -31,6 +31,8 @@ export interface PaginationLinksSubscriptionArgs<RT, E> {
  * `<Paginate />` component, so they stay in sync as pages load and the active
  * page changes.
  *
+ * @summary Experimental: the framework-agnostic lifecycle core of a pagination links component such as
+ * `<EachLink />`, exposing the navigation links for a paged pagination state.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -75,6 +77,8 @@ export class PaginationLinksSubscription<RT, E> {
  * subscription[DISPOSE](); // tear down when the owning component unmounts
  * ```
  *
+ * @summary Experimental: creates the subscription a pagination links component such as `<EachLink />` uses to
+ * derive navigation links from a paged pagination state.
  * @since 5.9.0
  * @public
  */

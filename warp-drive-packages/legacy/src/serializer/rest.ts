@@ -70,6 +70,8 @@ function makeArray(value: unknown): unknown[] {
   relationship (`hasMany` or `belongsTo`) as the second parameter, and
   the method (`serialize` or `deserialize`) as the third parameter.
 
+  @summary Legacy serializer for REST payloads that key records by model type name at the root, with hooks for
+  normalizing keys and payloads.
   @class RESTSerializer
   @public
 */

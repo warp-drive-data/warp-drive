@@ -227,6 +227,8 @@ export function serializerFor(this: Store, modelName: string): MinimumSerializer
   });
   ```
 
+  @summary Legacy store method that converts a raw payload into the normalized document `store.push` expects, using
+  the serializer for the given model type.
   @legacy
   @public
   @param modelName The name of the model type for this payload
@@ -305,6 +307,8 @@ export function normalize(this: Store, modelName: string, payload: ObjectValue):
     store.pushPayload('post', pushData); // Will use the post serializer
     ```
 
+    @summary Legacy store method that pushes a raw payload into the store after the application serializer, or the
+    given model type's serializer, normalizes it.
     @public
     @param modelName Optionally, a model type used to determine which serializer will be used
     @param inputPayload
@@ -331,6 +335,8 @@ export function pushPayload(this: Store, modelName: string, inputPayload: Object
 /**
  * Serializes a record using the store's legacy network layer, as with
  * {@link LegacyStoreCompat.serializeRecord | store.serializeRecord}.
+ *
+ * @summary Legacy store method that serializes a record into a payload using its model type's serializer.
  */
 // TODO @runspired @deprecate records should implement their own serialization if desired
 export function serializeRecord(this: Store, record: unknown, options?: SerializerOptions): unknown {

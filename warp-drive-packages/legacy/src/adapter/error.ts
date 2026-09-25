@@ -265,6 +265,8 @@ export type InvalidError = AdapterRequestError<'InvalidError'>;
  * model. As a result, it is safe for the `InvalidError` to wrap the error
  * payload unaltered.
  *
+ * @summary Legacy adapter error signaling that the API rejected a request as semantically invalid, typically failed
+ * server-side validation, putting the record in the `invalid` state.
  * @public
  */
 export const InvalidError: AdapterRequestErrorConstructor<InvalidError> = getOrSetGlobal(

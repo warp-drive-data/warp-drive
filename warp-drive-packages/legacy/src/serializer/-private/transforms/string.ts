@@ -27,6 +27,7 @@ export interface StringTransform {
   }
   ```
 
+  @summary Legacy transform for `attr('string')` that converts payload values to and from strings.
   @public
  */
 export class StringTransform {

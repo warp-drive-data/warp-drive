@@ -24,6 +24,9 @@ function isNeverString(val: never): string {
 /**
  * The individual autorefresh strategies a {@link RequestSubscription}
  * may combine, see {@link AutorefreshBehaviorCombos}.
+ *
+ * @summary One autorefresh trigger for a request subscription: on reconnecting (`online`), on a timer
+ * (`interval`), or on store invalidation (`invalid`).
  */
 export type AutorefreshBehaviorType = 'online' | 'interval' | 'invalid';
 
@@ -31,6 +34,9 @@ export type AutorefreshBehaviorType = 'online' | 'interval' | 'invalid';
  * The value accepted by {@link SubscriptionArgs.autorefresh}: either a
  * boolean, a single {@link AutorefreshBehaviorType}, or a comma-separated
  * combination of up to three of them.
+ *
+ * @summary The accepted values for a request subscription's `autorefresh` option: a boolean or a
+ * comma-separated mix of `online`, `interval`, and `invalid`.
  */
 export type AutorefreshBehaviorCombos =
   | boolean
@@ -40,6 +46,9 @@ export type AutorefreshBehaviorCombos =
 
 /**
  * Utilities to assist in recovering from the error.
+ *
+ * @summary The online and visibility state plus a `retry` function that a request subscription exposes
+ * for recovering from a failed request.
  */
 export interface RecoveryFeatures {
   /**
@@ -61,6 +70,9 @@ export type ErrorFeatures = RecoveryFeatures;
 
 /**
  * Utilities for keeping the request fresh
+ *
+ * @summary The online, visibility, and refreshing state plus `refresh`, `reload`, and `abort` functions a
+ * request subscription exposes alongside successful content.
  */
 export interface ContentFeatures<RT> {
   /**
@@ -95,6 +107,9 @@ export interface ContentFeatures<RT> {
 
 /**
  * The args accepted by the `<Request />` component.
+ *
+ * @summary The arguments of the `<Request />` component: the request or query to run, autorefresh
+ * options, and an optional store or subscription.
  */
 export interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
   /**
@@ -115,6 +130,8 @@ export interface RequestArgs<RT, E> extends SubscriptionArgs<RT, E> {
 
 /**
  * The args accepted by a {@link RequestSubscription}.
+ *
+ * @summary Options for a request subscription: the request or query to monitor and its autorefresh settings.
  */
 // oxlint-disable-next-line no-unused-vars
 export interface SubscriptionArgs<RT, E> {
@@ -199,6 +216,8 @@ export interface RequestSubscription<RT, E> {
 /**
  * A reactive class
  *
+ * @summary Reactive subscription that monitors a request or query, tracking online, visibility and refresh state and
+ * handling autorefresh, reload and retry.
  * @hideconstructor
  */
 export class RequestSubscription<RT, E> {
@@ -822,6 +841,9 @@ function isStore(store: Store | RequestManager): store is Store {
 /**
  * Creates a {@link RequestSubscription}, the reactive class powering the
  * `<Request />` component's autorefresh, retry, and refresh behaviors.
+ *
+ * @summary Creates a reactive subscription to a request or query that tracks its state and handles
+ * autorefresh, retry, and refresh.
  */
 export function createRequestSubscription<RT, E>(
   store: Store | RequestManager,

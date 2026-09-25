@@ -322,6 +322,8 @@ interface RequestSignature<RT, E> {
  * from multiple `<Request />` components, even if the request is not referentially the
  * same, only one actual request will be made.
  *
+ * @summary Component that monitors a request and renders a block for its idle, loading, error, cancelled or content
+ * state, with controls to retry, refresh or reload it.
  * @category Components
  * @public
  */

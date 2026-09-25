@@ -65,6 +65,8 @@ export type SignalRef = unknown;
  * scenarios you may also be interested in integrating with the {@link NotificationManager}
  * more directly.
  *
+ * @summary The create, consume, notify, and memo hooks a framework or TC39 signals implementation
+ * supplies to `setupSignals` to make WarpDrive data reactive.
  * @public
  */
 export interface SignalHooks<T = SignalRef> {
@@ -128,6 +130,8 @@ export interface SignalHooks<T = SignalRef> {
  * }
  * ```
  *
+ * @summary The options passed to the `setupSignals` callback, including the well-known key WarpDrive
+ * uses for an array's contents signal.
  * @public
  */
 export interface HooksOptions {
@@ -158,6 +162,8 @@ export interface HooksOptions {
  * See {@link SignalHooks} for the implementation the callback function should
  * return.
  *
+ * @summary Registers the signal hooks WarpDrive uses for reactivity, built by a callback that receives
+ * `HooksOptions`.
  * @public
  * @param buildConfig - a function that takes options and returns a configuration object
  */
