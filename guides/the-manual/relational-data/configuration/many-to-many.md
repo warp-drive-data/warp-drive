@@ -85,8 +85,8 @@ The one-way [many-to-none](./many-to-none.md) variation of this would be:
 }
 ```
 
-::: warning Keep the "many" side small
-A `collection` field always holds the complete list. If the list could grow large, or users would page, sort or filter it, load it with a top-level request instead; see [Large Collections](../advanced/large-collections.md).
+::: tip Loading a large "many" side
+A `collection` field holds the complete list and never pages it. If the list could be large, don't load it with `doc.fetch()`; [Large Collections](../advanced/large-collections.md) shows how to load it with a top-level request instead.
 :::
 
 ---
