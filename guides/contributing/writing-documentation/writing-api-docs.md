@@ -78,13 +78,45 @@ export function add(a: number, b: number): number {}
 
 ### The First Sentence Stands Alone
 
-The docs site lifts the first sentence of a symbol's doc comment out of the page and uses it as
-the symbol's one-line entry in `llms.txt`, the index coding agents read to decide which page to
-fetch (see [Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
-Open every comment with one plain sentence that says what the symbol does or is for, naming the
-symbol's purpose rather than restating its name, and that makes sense with nothing after it. Put
-caveats, history, and links in the sentences that follow. A comment that opens with a heading,
-a code block, or a callout gives the index nothing to show.
+The docs site lifts one sentence out of each symbol's doc comment and uses it as the symbol's
+entry in `llms.txt`, the index coding agents read to decide which page to fetch (see
+[Frontmatter and Agent-Only Content](./writing-guides.md#frontmatter-and-agent-only-content)).
+That sentence is the first sentence of the comment's first prose paragraph. Code blocks, `:::`
+callouts, `> [!CAUTION]` alerts, headings, and component lines such as `<Badge />` are skipped
+over to find it, so an `## Import` example or a legacy warning at the top is fine.
+
+Make that paragraph open with one plain sentence that says what the symbol does or is for,
+naming its purpose rather than restating its name, and that makes sense with nothing after it.
+Put caveats, history, and links in the sentences that follow. "For the full guide, see the
+Requests documentation." and "This package used to provide the RequestManager." are what the
+index shows today for symbols that skip this.
+
+#### Overriding it with `@summary`
+
+When the first prose sentence can't stand alone, because it has to lead into an example or is
+a pointer to a guide, write the index entry yourself with TypeDoc's `@summary` tag. It is used as
+written, is not trimmed to one sentence, and is not rendered on the page, so it doesn't repeat
+the prose readers see.
+
+````ts
+/**
+ * ## Import
+ *
+ * ```js
+ * import { RequestManager } from '@warp-drive/core';
+ * ```
+ *
+ * For complete usage guide see the [RequestManager Documentation](/guides/).
+ *
+ * @summary Runs each request through a chain of handlers that can fulfill, modify, or pass it along, and returns a `Future` for the response.
+ * @public
+ */
+````
+
+Keep it to one line and one sentence, under about 200 characters. `@summary` works on any doc
+comment TypeDoc renders as its own page. A package landing page has no doc comment; its entry
+is the first prose paragraph of the package's `src/index.md` (see
+[README vs `src/index.md`](#readme-vs-src-index-md)), so put the sentence first there instead.
 
 ### Every Public API Should Have a Usage Example
 
