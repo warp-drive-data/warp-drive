@@ -9,20 +9,20 @@ warp-drive-rfc: 1
 emberjs-rfc: 1236
 emberjs-pr: https://github.com/emberjs/rfcs/pull/1236
 emberjs-branch: rfc-1-transactional-notification-delivery-and-reactive-request-state
-sync-hash: 9706cb059783fb311434fb26799945023141c92b4894c0c3a5b772a973f9bab1
+sync-hash: 8e5007406def96bacfb5b39a2ee31416418e4e6c9a21626d2a8681933f402b0a
 stage: proposed
 start-date: 2026-09-02T00:00:00.000Z
-release-date:
-release-versions:
+release-date: 
+release-versions: 
 teams:
   - data
 prs:
-  accepted:
+  accepted: https://github.com/emberjs/rfcs/pull/1236
 project-link:
 suite:
 ---
 
-# Transactional Notification Delivery and Reactive Request State
+# WarpDrive: Transactional Notification Delivery and Reactive Request State
 
 ## Summary
 
