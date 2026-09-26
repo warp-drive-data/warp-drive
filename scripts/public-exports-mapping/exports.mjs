@@ -9,6 +9,7 @@ import ts from 'typescript';
 
 /**
  * @typedef {object} ModuleExports
+ * @property {string} file  absolute path of the parsed source
  * @property {Map<string, ExportSource>} named  every exported name, `default` included
  * @property {{ module: string, typeOnly: boolean }[]} stars  each `export * from`, in source order
  */
@@ -86,5 +87,5 @@ export function parseModule(file) {
     }
   }
 
-  return { named, stars };
+  return { file, named, stars };
 }

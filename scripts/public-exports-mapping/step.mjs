@@ -1,6 +1,5 @@
 import path from 'node:path';
 
-import { parseModule } from './exports.mjs';
 import { compareTokens, keyOf, sameToken, token } from './token.mjs';
 
 const MAX_DEPTH = 8;
@@ -157,18 +156,7 @@ export function manual(source, to, note) {
  */
 function createResolver(to) {
   const legacy = new Set(to.legacyModules);
-  const tokensByModule = new Map();
-  for (const t of to.tokens) {
-    if (!tokensByModule.has(t.module)) tokensByModule.set(t.module, new Map());
-    tokensByModule.get(t.module).set(t.export, t);
-  }
-  const moduleByFile = new Map([...to.fileOf].map(([module, file]) => [file, module]));
-  const shims = new Map();
-
-  function shimOf(filePath) {
-    if (!shims.has(filePath)) shims.set(filePath, parseModule(filePath));
-    return shims.get(filePath);
-  }
+  const moduleByFile = new Map([...to.modules].map(([module, { file }]) => [file, module]));
 
   function moduleOf(specifier, fromFile) {
     if (!specifier) return null;
@@ -182,38 +170,34 @@ function createResolver(to) {
 
   function resolve(module, name, depth = 0) {
     if (depth > MAX_DEPTH) return null;
-    const exports = tokensByModule.get(module);
-    if (!exports) return null;
+    const parsed = to.modules.get(module);
+    if (!parsed) return null;
+    const { file, named, stars } = parsed;
+    const own = named.get(name);
 
     if (!legacy.has(module)) {
       if (name === '*') return token(module, '*', false);
-      const found = exports.get(name);
-      return found ? token(found.module, found.export, found.typeOnly) : null;
+      return own ? token(module, name, own.typeOnly) : null;
     }
-
-    const filePath = to.fileOf.get(module);
-    const { named, stars } = shimOf(filePath);
 
     if (name === '*') {
       if (stars.length !== 1) return null;
-      const next = moduleOf(stars[0].module, filePath);
+      const next = moduleOf(stars[0].module, file);
       return next ? resolve(next, '*', depth + 1) : null;
     }
 
-    const source = named.get(name);
-    if (source?.kind === 'reexport') {
-      const next = moduleOf(source.module, filePath);
-      const found = next && resolve(next, source.name, depth + 1);
+    if (own?.kind === 'reexport') {
+      const next = moduleOf(own.module, file);
+      const found = next && resolve(next, own.name, depth + 1);
       if (found) return found;
-    } else if (!source) {
+    } else if (!own) {
       for (const star of stars) {
-        const next = moduleOf(star.module, filePath);
+        const next = moduleOf(star.module, file);
         const found = next && resolve(next, name, depth + 1);
         if (found) return found;
       }
     }
-    const own = exports.get(name);
-    return own ? token(own.module, own.export, own.typeOnly) : null;
+    return own ? token(module, name, own.typeOnly) : null;
   }
 
   return resolve;
