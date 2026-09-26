@@ -221,6 +221,78 @@ function sharedReloadTemplate({ requestA, requestB, store }: SharedReloadProps) 
   </template>;
 }
 
+function sharedInfiniteTemplate({ requestA, requestB, store }: SharedReloadProps) {
+  return <template>
+    <div data-test-paginate="a">
+      <Paginate @request={{requestA}} @store={{store}} @mode="infinite">
+        <:loading>
+          <span data-test-pending>Pending</span>
+        </:loading>
+        <:content as |pages features|>
+          {{#if pages.hasPrevious}}
+            <Request @request={{pages.previousRequest}} @store={{store}}>
+              <:idle>
+                <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+              </:idle>
+              <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+            </Request>
+          {{/if}}
+
+          {{#each pages.data as |user|}}
+            <span data-test-user-name>{{user.attributes.name}}</span>
+          {{/each}}
+
+          {{#if pages.hasNext}}
+            <Request @request={{pages.nextRequest}} @store={{store}}>
+              <:idle>
+                <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+              </:idle>
+              <:loading><span data-test-loading-next>Loading next</span></:loading>
+            </Request>
+          {{/if}}
+        </:content>
+        <:error as |error|>
+          <span data-test-error>{{error.message}}</span>
+        </:error>
+      </Paginate>
+    </div>
+
+    <div data-test-paginate="b">
+      <Paginate @request={{requestB}} @store={{store}} @mode="infinite">
+        <:loading>
+          <span data-test-pending>Pending</span>
+        </:loading>
+        <:content as |pages features|>
+          {{#if pages.hasPrevious}}
+            <Request @request={{pages.previousRequest}} @store={{store}}>
+              <:idle>
+                <button data-test-load-prev {{on "click" features.loadPrev}}>Load previous</button>
+              </:idle>
+              <:loading><span data-test-loading-prev>Loading previous</span></:loading>
+            </Request>
+          {{/if}}
+
+          {{#each pages.data as |user|}}
+            <span data-test-user-name>{{user.attributes.name}}</span>
+          {{/each}}
+
+          {{#if pages.hasNext}}
+            <Request @request={{pages.nextRequest}} @store={{store}}>
+              <:idle>
+                <button data-test-load-next {{on "click" features.loadNext}}>Load next</button>
+              </:idle>
+              <:loading><span data-test-loading-next>Loading next</span></:loading>
+            </Request>
+          {{/if}}
+        </:content>
+        <:error as |error|>
+          <span data-test-error>{{error.message}}</span>
+        </:error>
+      </Paginate>
+    </div>
+  </template>;
+}
+
 function secondPaginationTemplate({ requestA, source, store }: SecondPaginationProps) {
   return <template>
     <div data-test-paginate="a">
@@ -1118,6 +1190,10 @@ PaginateSpec.use(useEmber(), function (b) {
     .test(
       'reloading a page whose next cursor now skips a page drops the skipped page from the run',
       infiniteReloadTemplate
+    )
+    .test(
+      'a reload that relinks a page in an infinite run to one another component loaded ends the run there',
+      sharedInfiniteTemplate
     )
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.

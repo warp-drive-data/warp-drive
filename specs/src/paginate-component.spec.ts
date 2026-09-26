@@ -605,6 +605,14 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
       request: CollectionRequest;
     }
   >;
+  'a reload that relinks a page in an infinite run to one another component loaded ends the run there': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      requestA: CollectionRequest;
+      requestB: CollectionRequest;
+    }
+  >;
 }
 
 export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature> = spec<LocalTestContext>(
@@ -4176,6 +4184,137 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     );
     assert.equal(Array.from(paginationState.pages).length, 2, 'the run holds 2 pages');
     assert.false(paginationState.hasNext, 'the run still ends at the last page');
+  })
+
+  .for('a reload that relinks a page in an infinite run to one another component loaded ends the run there')
+  .use<{ store: RequestManager; requestA: CollectionRequest; requestB: CollectionRequest }>(async function (assert) {
+    const start = buildBaseURL({ resourcePath: 'users/1' });
+    const cursorA = buildBaseURL({ resourcePath: 'users/cursor-a' });
+    const cursorB = buildBaseURL({ resourcePath: 'users/cursor-b' });
+    const cursorC = buildBaseURL({ resourcePath: 'users/cursor-c' });
+
+    // one entry document per component
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: cursorA },
+    }));
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: cursorA },
+    }));
+    await GET(this, 'users/cursor-a', () => ({
+      data: [users[1]],
+      links: { prev: start, self: cursorA, next: cursorB },
+    }));
+    await GET(this, 'users/cursor-b', () => ({
+      data: [users[2]],
+      links: { prev: cursorA, self: cursorB, next: cursorC },
+    }));
+    await GET(this, 'users/cursor-c', () => ({
+      data: [users[3]],
+      links: { prev: cursorB, self: cursorC },
+    }));
+    // the items of the second page were deleted: the first page now continues
+    // straight at the cursor we knew as the third page
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: cursorB },
+    }));
+
+    const requestA = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: start,
+      method: 'GET',
+    });
+    const requestB = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: start,
+      method: 'GET',
+    });
+    const stateA = getPaginationState(requestA);
+    const stateB = getPaginationState(requestB);
+
+    await this.render({ store: this.manager, requestA, requestB });
+    await requestA;
+    await requestB;
+    await this.h.rerender();
+
+    const componentA = this.element.querySelector('[data-test-paginate="a"]')!;
+    const componentB = this.element.querySelector('[data-test-paginate="b"]')!;
+
+    // component A scrolls one page in
+    await this.h.click('[data-test-paginate="a"] [data-test-load-next]');
+    await stateA.nextRequest;
+    await this.h.rerender();
+
+    // component B scrolls to the end. Its first next page is already loaded
+    // (component A fetched it), so nothing is in flight for it: the sentinel
+    // stays idle and loadNext joins the page without a request of its own
+    assert.true(stateB.hasNext, 'component B has a next page');
+    assert.equal(stateB.nextRequest, null, 'the page component A loaded is not in flight for component B');
+    assert.dom('[data-test-paginate="b"] [data-test-load-next]').exists('component B renders the idle next sentinel');
+    await stateB.loadNext();
+    await this.h.rerender();
+    await this.h.click('[data-test-paginate="b"] [data-test-load-next]');
+    await stateB.nextRequest;
+    await this.h.rerender();
+    await this.h.click('[data-test-paginate="b"] [data-test-load-next]');
+    await stateB.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(renderedNames(componentA), ['Chris Thoburn', 'Leo Euclides'], 'component A holds 2 pages');
+    assert.deepEqual(
+      renderedNames(componentB),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari', 'Benedikt Deicke'],
+      'component B holds all 4 pages'
+    );
+    assert.true(stateA.hasNext, 'component A still has a next page');
+    assert.equal(stateA.nextRequest, null, 'the page component B loaded is not in flight for component A');
+    assert.false(stateB.hasNext, 'component B is at the end');
+
+    // component A re-requests the first page, which now continues at the
+    // third cursor — a page component B loaded, but component A never did
+    const refreshed = reloadRequest(this.manager, start);
+    await stateA.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(stateA.activePage?.nextLink, cursorB, 'the next link follows the re-requested document');
+    assert.deepEqual(
+      renderedNames(componentA),
+      ['Chris Thoburn'],
+      'component A drops the skipped page and stops before the page it never loaded'
+    );
+    assert.equal(Array.from(stateA.pages).length, 1, 'component A holds 1 page');
+    assert.true(stateA.hasNext, 'component A can load the page it now links to');
+    assert.equal(stateA.nextRequest, null, 'that page is not in flight for component A');
+    assert.dom('[data-test-paginate="a"] [data-test-load-next]').exists('component A renders the idle next sentinel');
+    assert.deepEqual(
+      renderedNames(componentB),
+      ['Chris Thoburn', 'Mehul Chaudhari', 'Benedikt Deicke'],
+      'component B drops the skipped page and keeps the pages it loaded after it'
+    );
+    assert.equal(Array.from(stateB.pages).length, 3, 'component B holds 3 pages');
+
+    // component A joins the pages component B loaded, one at a time
+    await stateA.loadNext();
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(componentA),
+      ['Chris Thoburn', 'Mehul Chaudhari'],
+      'component A joins the next page'
+    );
+    assert.equal(Array.from(stateA.pages).length, 2, 'component A holds 2 pages');
+    assert.true(stateA.hasNext, 'component A has one more page to join');
+
+    await stateA.loadNext();
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(componentA),
+      ['Chris Thoburn', 'Mehul Chaudhari', 'Benedikt Deicke'],
+      'component A joins the last page'
+    );
+    assert.equal(Array.from(stateA.pages).length, 3, 'component A holds 3 pages');
+    assert.false(stateA.hasNext, 'component A is at the end');
   })
 
   .build();

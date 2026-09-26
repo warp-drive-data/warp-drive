@@ -146,11 +146,26 @@ export class PaginationState<RT = unknown, E = unknown>
    * them backward/forward. Both seed to {@link initialPage}; a purely paged
    * consumer never extends them, so they stay put and are effectively unused.
    *
+   * Only ever written through {@link extendRun} and {@link restartRun}, which
+   * keep {@link runMembers} in step.
+   *
    * @internal
    */
   declare private frontierStart: Readonly<PageCache<RT, E>> | null;
   /** @internal */
   declare private frontierEnd: Readonly<PageCache<RT, E>> | null;
+
+  /**
+   * Every page this component has loaded into its run — what the frontier
+   * spanned each time it moved. Bounds the walk in {@link pages}: the shared
+   * graph may relink a page in the run to one that another component sharing
+   * the collection loaded, and that page is not part of this run until it is
+   * loaded through here. Untracked bookkeeping — it only changes together with
+   * the frontier signals, which carry the notification.
+   *
+   * @internal
+   */
+  declare private runMembers: Set<Readonly<PageCache<RT, E>>>;
 
   /**
    * The request of the latest {@link adoptPage} call — only that call may
@@ -167,6 +182,7 @@ export class PaginationState<RT = unknown, E = unknown>
     this.request = request;
     this.pageHints = pageHints;
     this._adoptTarget = null;
+    this.runMembers = new Set();
 
     void this.setup();
   }
@@ -221,7 +237,10 @@ export class PaginationState<RT = unknown, E = unknown>
    *
    * The run is walked through the shared graph, so it ends early when a page
    * that was in it no longer follows the page before it — a reload that showed
-   * the collection now ends sooner, or that its next cursor moved.
+   * the collection now ends sooner, or that its next cursor moved. It also ends
+   * before a page this component never loaded: a reload may relink a page in
+   * the run to one another component sharing the collection scrolled to, and
+   * that page joins this run only through {@link loadNext}.
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
@@ -237,7 +256,7 @@ export class PaginationState<RT = unknown, E = unknown>
         break;
       }
       const next = page.after;
-      if (!next?.isSuccess) {
+      if (!next?.isSuccess || !this.runMembers.has(next)) {
         break;
       }
       page = next;
@@ -247,7 +266,8 @@ export class PaginationState<RT = unknown, E = unknown>
 
   /**
    * The last page of the run {@link pages} walks — the forward frontier, or
-   * the page before the first one that no longer follows in the graph.
+   * the page before the first one that no longer follows in the graph or that
+   * this component never loaded.
    *
    * @internal
    */
@@ -321,7 +341,10 @@ export class PaginationState<RT = unknown, E = unknown>
    * The request for the page just after the forward frontier, for the infinite
    * surface. `null` until {@link loadNext} fires it (so a `<Request>` wrapping it
    * renders its idle block), the in-flight `Future` while that page loads, then
-   * `null` again once the frontier advances onto it. Also `null` at end-of-list.
+   * `null` again once the frontier advances onto it. Also `null` at end-of-list,
+   * and while the page sits loaded in the shared cache (another component
+   * scrolled to it) but outside this run — {@link loadNext} then joins it
+   * without a request of its own.
    *
    * ```gts
    * {{#if pages.hasNext}}
@@ -338,7 +361,7 @@ export class PaginationState<RT = unknown, E = unknown>
     if (!url) {
       return null;
     }
-    return this.paginationCache?.getPageCache(url).request ?? null;
+    return this.pendingRequest(url);
   }
 
   /**
@@ -351,7 +374,22 @@ export class PaginationState<RT = unknown, E = unknown>
     if (!url) {
       return null;
     }
-    return this.paginationCache?.getPageCache(url).request ?? null;
+    return this.pendingRequest(url);
+  }
+
+  /**
+   * The request of the page at `url` unless it already succeeded, in which
+   * case there is nothing pending: the page either sits in this run, or joins
+   * it on the next {@link loadNext}/{@link loadPrev} without a new request.
+   *
+   * @internal
+   */
+  private pendingRequest(url: string): Future<RT> | null {
+    const page = this.paginationCache?.getPageCache(url);
+    if (!page || page.isSuccess) {
+      return null;
+    }
+    return page.request ?? null;
   }
 
   /** @internal */
@@ -374,9 +412,36 @@ export class PaginationState<RT = unknown, E = unknown>
     const cache = getPaginationCache<RT, E>(cacheKey);
     cache.installPageHints(this.pageHints);
     this.paginationCache = cache;
-    this.activePage = this.initialPage = cache.getPageCache(selfLink);
-    this.frontierStart = this.frontierEnd = this.initialPage;
+    const page = cache.getPageCache(selfLink);
+    this.activePage = this.initialPage = page;
+    this.restartRun(page);
     await cache.loadPage(selfLink, this.request);
+  }
+
+  /**
+   * Moves the frontier onto a page adjacent to the run, recording it as a
+   * member.
+   *
+   * @internal
+   */
+  private extendRun(dir: 'prev' | 'next', page: Readonly<PageCache<RT, E>>): void {
+    this.runMembers.add(page);
+    if (dir === 'next') {
+      this.frontierEnd = page;
+    } else {
+      this.frontierStart = page;
+    }
+  }
+
+  /**
+   * Restarts the run at a single page, forgetting every earlier member.
+   *
+   * @internal
+   */
+  private restartRun(page: Readonly<PageCache<RT, E>>): void {
+    this.runMembers.clear();
+    this.runMembers.add(page);
+    this.frontierStart = this.frontierEnd = page;
   }
 
   /**
@@ -401,11 +466,11 @@ export class PaginationState<RT = unknown, E = unknown>
     }
 
     if (this.runEnd?.nextLink === url) {
-      this.frontierEnd = page;
+      this.extendRun('next', page);
     } else if (this.frontierStart?.prevLink === url) {
-      this.frontierStart = page;
+      this.extendRun('prev', page);
     } else {
-      this.frontierStart = this.frontierEnd = page;
+      this.restartRun(page);
     }
   }
 
@@ -568,11 +633,7 @@ export class PaginationState<RT = unknown, E = unknown>
     // Advance the frontier only after the load resolves. While loading, the
     // frontier still points at the previous page, so `nextRequest`/`prevRequest`
     // resolves to this in-flight page and a wrapping `<Request>` shows loading.
-    if (dir === 'next') {
-      this.frontierEnd = page;
-    } else {
-      this.frontierStart = page;
-    }
+    this.extendRun(dir, page);
 
     return page.value;
   };
