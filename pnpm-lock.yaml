@@ -241,6 +241,9 @@ catalogs:
     '@html-next/vertical-collection':
       specifier: ^5.0.5
       version: 5.0.5
+    '@jridgewell/trace-mapping':
+      specifier: ^0.3.31
+      version: 0.3.31
     '@mdit/plugin-footnote':
       specifier: ^1.1.1
       version: 1.1.1
@@ -697,12 +700,21 @@ importers:
 
   docs-viewer:
     dependencies:
+      '@jridgewell/trace-mapping':
+        specifier: 'catalog:'
+        version: 0.3.31
       '@mdit/plugin-footnote':
         specifier: 'catalog:'
         version: 1.1.1
       '@pnpm/find-workspace-dir':
         specifier: 'catalog:'
         version: 1000.1.5
+      '@pnpm/find-workspace-packages':
+        specifier: 'catalog:'
+        version: 6.0.9(@pnpm/logger@1100.0.0)
+      '@pnpm/logger':
+        specifier: 'catalog:'
+        version: 1100.0.0
       '@types/bun':
         specifier: 1.4.2
         version: 1.4.2
@@ -17159,8 +17171,11 @@ snapshots:
 
   '@warp-drive/internal-docs-viewer@file:docs-viewer':
     dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
       '@mdit/plugin-footnote': 1.1.1
       '@pnpm/find-workspace-dir': 1000.1.5
+      '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
+      '@pnpm/logger': 1100.0.0
       '@types/bun': 1.4.2
       '@types/debug': 4.1.13
       '@vite-pwa/vitepress': 1.1.0(vite-plugin-pwa@1.3.0(vite@8.3.0))
