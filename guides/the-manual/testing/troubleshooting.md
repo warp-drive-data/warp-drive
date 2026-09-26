@@ -193,6 +193,22 @@ does not exist. Check that `dist-test/index.html` is there, and run the suite th
 that builds first, which at this repository's root is `pnpm test`. The wait is
 `browserStartTimeout` in the launch config, 90 seconds by default.
 
+## The holodeck server is not running
+
+```
+Promise rejected during "…": Failed to fetch
+```
+
+Every mock fails this way when nothing is listening on the host passed to `setConfig`. Safari words
+it as `Load failed`. Each test also fails from `afterEach` with a report that its mocks were never
+requested, which follows from the first error.
+
+Check that whatever serves the suite also launched holodeck, and that its banner printed the port
+`setConfig` names. A suite opened from an app's dev server rather than from its test runner
+usually has no holodeck behind it. See
+[Holodeck in dev mode](/guides/the-manual/cookbook/holodeck-in-dev-mode.md) for one way to start
+it there.
+
 ## The port was taken
 
 Holodeck binds the port it is given and never picks another, because the browser works out the mock
