@@ -15,4 +15,4 @@ const WatcherContext: Context<
 | null>;
 ```
 
-Defined in: [-private/reactive-context.tsx:156](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/react/src/-private/reactive-context.tsx#L156)
+Defined in: [-private/reactive-context.tsx:156](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/react/src/-private/reactive-context.tsx#L156)

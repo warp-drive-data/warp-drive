@@ -5,6 +5,12 @@ description: >-
   deprecations at build time, by `compatWith` version or by individual flag.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # Deprecations
 
 This guide is intended to help you understand both how to address an active

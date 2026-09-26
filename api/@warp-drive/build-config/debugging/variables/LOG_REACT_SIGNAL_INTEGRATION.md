@@ -6,12 +6,18 @@ description: >-
   notifies React of updates, for debugging React reactivity issues.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;LOG\_REACT\_SIGNAL\_INTEGRATION
 
 ```ts
 const LOG_REACT_SIGNAL_INTEGRATION: boolean = false;
 ```
 
-Defined in: [debugging.ts:160](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/build-config/src/debugging.ts#L160)
+Defined in: [debugging.ts:160](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/build-config/src/debugging.ts#L160)
 
 Helps when debugging React specific reactivity issues.

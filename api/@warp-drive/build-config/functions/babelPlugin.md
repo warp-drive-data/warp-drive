@@ -6,6 +6,12 @@ description: >-
   not already using `@embroider/macros`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;babelPlugin()
 
 ```ts
@@ -15,7 +21,7 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/build-config/src/index.ts#L31)
+Defined in: [index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/build-config/src/index.ts#L31)
 
 Create the Babel plugin for WarpDrive
 

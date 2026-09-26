@@ -6,10 +6,10 @@ description: >-
   `@warp-drive/json-api` instead.
 ---
 
-:::warning ⚠️ Legacy Package
-**This package only exists for backwards compatibility.**
+&#x20;
 
-**For new projects:** Use [@warp-drive/json-api](../../@warp-drive/json-api/index.md) for the cache and [@warp-drive/utilities](../../@warp-drive/utilities/index.md) for the request builders.
+:::warning Legacy package
+`@ember-data/json-api` is a legacy package. New code should use [`@warp-drive/json-api`](/api/@warp-drive/json-api/) for the cache and [`@warp-drive/utilities`](/api/@warp-drive/utilities/) for the request builders instead.
 :::
 
 ## Overview

@@ -6,13 +6,19 @@ description: >-
   to strings; set it to `false` once resolved to strip that support.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_NON\_STRICT\_ID&#x20;
 
 ```ts
 const DEPRECATE_NON_STRICT_ID: boolean = true;
 ```
 
-Defined in: [deprecations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/build-config/src/deprecations.ts#L193)
+Defined in: [deprecations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/build-config/src/deprecations.ts#L193)
 
 Currently, WarpDrive expects that the `id` property associated with
 a resource is a string.

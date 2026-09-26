@@ -6,6 +6,12 @@ description: >-
   `@warp-drive/utilities/string`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@ember-data/request-utils` is a legacy package. New code should use [`@warp-drive/utilities`](/api/@warp-drive/utilities/) instead.
+:::
+
 String utilties for transforming and inflecting strings useful for
 when the format provided by the server is not the format you want to use
 in your application.

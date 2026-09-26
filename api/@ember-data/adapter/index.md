@@ -6,10 +6,10 @@ description: >-
   handlers for the `RequestManager` instead.
 ---
 
-:::warning ⚠️ Legacy Package
-**Adapters are a LEGACY feature** that is no longer encouraged for new applications.
+&#x20;
 
-**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the [RequestManager](../../@warp-drive/core/classes/RequestManager.md) instead.
+:::warning Legacy package
+`@ember-data/adapter` is a legacy package. Adapters are no longer encouraged; new code should use [Handlers](/api/@warp-drive/core/request/types/Handler) with the `RequestManager` from [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy Adapter Interface when using the older packages.

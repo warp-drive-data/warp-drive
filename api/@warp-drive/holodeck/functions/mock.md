@@ -17,7 +17,7 @@ function mock(
 ): Promise<void>;
 ```
 
-Defined in: [index.ts:467](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/packages/holodeck/src/index.ts#L467)
+Defined in: [index.ts:467](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/packages/holodeck/src/index.ts#L467)
 
 Mock a request by sending the scaffold to the mock server.
 
