@@ -1,6 +1,6 @@
 ---
 title: 3. Request builders
-description: Write builders for the all, active and completed lists, use them in the routes and the footer, then move the JSON:API headers into a handler.
+description: Write each request once, as a builder, and give every request the JSON:API headers with a handler.
 ---
 
 # Request builders
@@ -9,12 +9,13 @@ Chapter 1 wrote the todo request three times, spelling out the URL and the
 response type each time, and the footer needs three more. Let's write it once,
 as a builder. By the end of this chapter the whole footer works.
 
-A builder is a plain function that returns a request. It sends nothing. You pass
-its result to `store.request`, or to `<Request>`.
+A request is just an object, so a **builder** is a plain function that returns
+one. It sends nothing. You pass its result to `store.request`, or to
+`<Request>`.
 
 ## Write the builders
 
-Create `app/data/builders/query.ts`:
+Create a new file, `app/data/builders/query.ts`:
 
 ```ts
 import { withReactiveResponse } from '@warp-drive/core/request';
@@ -55,18 +56,19 @@ export function getCompletedTodos(): RequestInfo<TodosDocument> {
 }
 ```
 
-`RequestInfo<TodosDocument>` is the type of a request whose response is a
-`TodosDocument`. `buildBaseURL` and `buildQueryParams`, from
-`@warp-drive/utilities`, build its URL.
+Each builder returns a `RequestInfo<TodosDocument>`: a request that will get a
+`TodosDocument` back. Two helpers from `@warp-drive/utilities` build the URL:
+`buildBaseURL` makes the `/api/todo` path, and `buildQueryParams` adds the
+filter.
 
-Two lines to notice:
+Two lines do more than build a URL:
 
 - `withReactiveResponse<Todo[]>` records the response type on the request, so
   callers don't have to. Chapter 1 wrote `store.request<TodosDocument>` for that.
 - `op: 'query'` with `cacheOptions: { types: ['todo'] }` registers the request
   as a list of todos. When a todo is created, the store **invalidates** every
   such request: it marks the cached response out of date, so `<Request>` fetches
-  it again. That's chapter 4.
+  it again.
 
 ## Use them in the routes
 
@@ -88,9 +90,11 @@ Do the same in `app/routes/active.ts` and `app/routes/completed.ts`, with
 Three parts of the footer need todos. Each passes a builder to `<Request>` as
 `@query`, and `<Request>` calls `store.request` for you.
 
-TodoMVC hides the footer when there are no todos. In
-`app/components/todo-app/footer.gts`, wrap the footer in a request for all of
-them:
+TodoMVC hides the footer when there are no todos. The footer can't use the
+page's list to decide: on the Active page that list is filtered, and it can be
+empty while completed todos still exist. So the footer asks the store for all
+the todos itself, and shows only if there are any. In
+`app/components/todo-app/footer.gts`, wrap the footer in that request:
 
 ```handlebars
 <Request @query={{(getAllTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
@@ -140,6 +144,10 @@ to the button:
 Import each builder at the top of its file. `(getAllTodos)` calls the builder
 from the template.
 
+The footer asks for the same list as the `index` route, and the Network panel
+shows one `GET /api/todo`, not two. The store recognizes the same request and
+answers both from one response.
+
 ## Check it
 
 Reload. The footer says "2 items left" and shows "Clear completed", because one
@@ -149,8 +157,11 @@ of the three todos is done.
 
 ## Move the headers into a handler
 
-Every request from here on needs the JSON:API headers. Rather than repeat them
-in every builder, let's add them once, in a handler. Create `app/data/handlers/json-api.ts`:
+Every request from here on needs the JSON:API headers. You could repeat them in
+every builder, but then each new builder has to remember them, and one that
+forgets breaks against a strict JSON:API server. Instead, let's add them once,
+on the path every request takes: a handler. Create a new file,
+`app/data/handlers/json-api.ts`:
 
 ```ts
 import type { Future, Handler, NextFn } from '@warp-drive/core/request';
@@ -172,7 +183,13 @@ export const JsonApiHandler: Handler = {
 A handler gets the request as `context.request` and passes it on with `next`.
 This one passes on a copy with the two headers set.
 
-Register it in `app/data/store.ts` at the `TODO (chapter 3)` comment:
+The store runs every request through the handlers you list, in order, and then
+`Fetch` sends it. To act on only some requests, a handler checks
+`context.request` itself. For example, a handler that adds an auth token only
+to your own API's requests checks `context.request.url`, and passes every other
+request straight to `next`.
+
+Add it to the store's `handlers` in `app/data/store.ts`:
 
 ```ts
 import { JsonApiHandler } from './handlers/json-api.ts';
