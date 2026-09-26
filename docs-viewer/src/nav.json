@@ -13,7 +13,8 @@
           "name": "@warp-drive/utilities"
         },
         {
-          "name": "@warp-drive/legacy"
+          "name": "@warp-drive/legacy",
+          "legacyDocs": true
         },
         {
           "name": "@warp-drive/experiments"

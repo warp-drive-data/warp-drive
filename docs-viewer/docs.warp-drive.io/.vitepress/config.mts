@@ -11,16 +11,21 @@ import {
   getRfcsStructure,
   getSkillsStructure,
   getUpgradingStructure,
-  legacyPackageNames,
+  legacyDocsPackageNames,
   postProcessApiDocs,
 } from '../../src/site-utils.ts';
 
-// Legacy packages' API pages stay out of llms.txt and llms-full.txt: they mostly re-export modern
-// packages, so listing them doubles the index for no new information. src/emit-legacy-llms.ts lists
-// them in llms-legacy.txt instead, and each page keeps its `.md` twin.
+// Legacy API pages stay out of llms.txt and llms-full.txt so an agent working on a modern app isn't
+// steered toward Models, Adapters, or packages that only re-export modern ones.
+// src/emit-legacy-llms.ts lists them in llms-legacy.txt and llms-legacy-full.txt instead, and each
+// page keeps its `.md` twin.
 // The plugin matches the path it publishes a page to, and it publishes a package's `index.md`
 // landing page as `api/<name>.md`, so that form is listed alongside the pages under it.
-const LEGACY_API_PAGES = legacyPackageNames().flatMap((name) => [`api/${name}.md`, `api/${name}/**`]);
+const LEGACY_API_PAGES = legacyDocsPackageNames().flatMap((name) => [`api/${name}.md`, `api/${name}/**`]);
+const LEGACY_PACKAGE_LIST = legacyDocsPackageNames()
+  .map((name) => `\`${name}\``)
+  .join(', ');
+const SITE_ORIGIN = (process.env.HOSTNAME || 'https://canary.warp-drive.io').replace(/\/$/, '');
 
 const TypeDocSidebar = await postProcessApiDocs();
 
@@ -191,7 +196,14 @@ export default withPwa(
             // are root-relative (`/guides/installation.md`), which an agent that fetched the
             // file has no origin to resolve against. Same env var and fallback the sitemap uses,
             // so canary, PR previews, and production each get their own absolute URLs.
-            domain: process.env.HOSTNAME || 'https://canary.warp-drive.io',
+            domain: SITE_ORIGIN,
+            // Shown under the title of llms.txt (the plugin defaults it to the home page tagline).
+            // The legacy API pages left out of this index are only reachable from here.
+            details: [
+              'Comprehensive Documentation for Engineers Aiming for the Stars 💫',
+              '',
+              `API reference for ${LEGACY_PACKAGE_LIST} is indexed separately in ${SITE_ORIGIN}/llms-legacy.txt, with full text in ${SITE_ORIGIN}/llms-legacy-full.txt.`,
+            ].join('\n'),
             // The plugin's default ignores `blog/*` and `blog.md`. That is the plugin author's
             // preference, not ours: the writing guides say LLMs land on these pages too, and the
             // posts under blog/<version>/ already get through because the pattern is one level deep.

@@ -99,7 +99,12 @@ if (build) {
   const copied = emitIndexMarkdown(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'));
   console.log(`emitted ${copied} index.md twins for directory-index pages`);
   const legacy = emitLegacyLlms(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'), apiDocsPath);
-  console.log(`emitted llms-legacy.txt with ${legacy} legacy API pages`);
+  console.log(`emitted llms-legacy.txt and llms-legacy-full.txt with ${legacy.pages} legacy API pages`);
+  if (legacy.missingTwins.length) {
+    throw new Error(
+      `llms-legacy-full.txt is missing pages with no .md twin in dist: ${legacy.missingTwins.join(', ')}`
+    );
+  }
 } else {
   await $`vitepress dev docs.warp-drive.io`;
 }
