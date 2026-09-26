@@ -4031,8 +4031,8 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     // pages 1 and 2 without first/last links, so the graph is built from
     // prev/next only and the collection is keyed by the entry page
     const bare = (index: number) => {
-      const { first: _first, last: _last, ...links } = numberedPage(urls, index, 3).links;
-      return { ...numberedPage(urls, index, 3), links };
+      const { links, ...page } = numberedPage(urls, index, 3);
+      return { ...page, links: { prev: links.prev, self: links.self, next: links.next } };
     };
     await GET(this, 'users/2', bare.bind(null, 1));
     await GET(this, 'users/1', bare.bind(null, 0));

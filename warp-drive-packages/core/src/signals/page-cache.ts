@@ -450,6 +450,7 @@ export class PageCache<RT = unknown, E = unknown> {
    * @internal
    */
   linkFirst(firstPage: PageCache<RT, E>): void {
+    // oxlint-disable-next-line typescript/no-this-alias
     let head: PageCache<RT, E> = this;
     while (
       head.before &&
@@ -468,6 +469,7 @@ export class PageCache<RT = unknown, E = unknown> {
    * @internal
    */
   linkLast(lastPage: PageCache<RT, E>): void {
+    // oxlint-disable-next-line typescript/no-this-alias
     let tail: PageCache<RT, E> = this;
     while (
       tail.after &&
