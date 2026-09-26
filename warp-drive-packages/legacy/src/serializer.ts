@@ -18,6 +18,34 @@
   by WarpDrive), while data sent to an API is **serialized**
   into the format the API expects.
 
+  ### Why It's Legacy
+
+  The Serializer pattern was designed to transform data between your API's format and the
+  {json:api} format the legacy store works with:
+
+  - `store.serializerFor` resolves a serializer by resource type at runtime, looking up
+    `serializer:<type>` and then `serializer:application` through Ember's owner, though an
+    API's format more often varies per API version than per resource type (see Serializer
+    Resolution below).
+  - Every response is converted into {json:api} before it reaches the cache, whatever format
+    the API actually uses.
+  - The provided serializer classes extend `EmberObject`, which, together with the owner
+    lookup, ties the pattern to Ember.
+
+  ### Modern Alternative
+
+  Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link RequestManager}.
+  Modern ***Warp*Drive**:
+
+  - normalizes a payload inside a handler when it needs transforming, using plain functions
+    and helpers such as `dasherize` and `singularize` from `@warp-drive/utilities/string`
+  - lets you pick a cache that understands your API's format natively, such as `JSONAPICache`
+    from `@warp-drive/json-api` for {json:api}, or write your own that implements the Cache
+    interface
+
+  For an alternative modern pattern to Serializers, see the
+  [Request Handlers Guide](/guides/the-manual/requests/handlers).
+
   ### Implementing a Serializer
 
   There are only two required serializer methods, one for
