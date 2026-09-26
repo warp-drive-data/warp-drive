@@ -94,6 +94,8 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
       - name: Check public exports mapping
         run: pnpm lint:public-exports
+      - name: Test legacy import rule and mapping reader
+        run: pnpm --filter eslint-plugin-warp-drive test:legacy-imports
       - name: Check Uncompiled Packages for TypeScript Compilation Errors
         run: pnpm check:types
         env:
