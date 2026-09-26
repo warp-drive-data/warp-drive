@@ -17,7 +17,7 @@ type LocalRelationshipOperation =
   | SortRelatedRecords;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:232](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/graph.ts#L232)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:232](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L232)
 
 The Graph operations that apply to a relationship's local
 (uncommitted/dirty) state.

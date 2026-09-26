@@ -17,7 +17,7 @@ interface LocalField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:449](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/fields.ts#L449)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:449](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L449)
 
 Represents a field whose value is a local
 value that is not stored in the cache, nor
@@ -53,7 +53,7 @@ Don't make us regret this decision.
 kind: "@local";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:455](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/fields.ts#L455)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:455](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L455)
 
 The kind of field this is.
 
@@ -65,7 +65,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:462](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/fields.ts#L462)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:462](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L462)
 
 The name of the field.
 
@@ -79,7 +79,7 @@ optional options?: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:476](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/fields.ts#L476)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:476](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L476)
 
 Options for the field.
 
@@ -100,7 +100,7 @@ has yet been set.
 optional type?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:469](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/fields.ts#L469)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:469](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L469)
 
 Not currently utilized, we are considering
 allowing transforms to operate on local fields

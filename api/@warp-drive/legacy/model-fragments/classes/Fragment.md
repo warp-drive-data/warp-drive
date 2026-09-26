@@ -11,7 +11,7 @@ description: >-
 
 # &#x20;Fragment
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:17](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L17)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:17](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L17)
 
 The features added to an object resource by [FragmentExtension](../variables/FragmentExtension.md), providing
 a subset of the legacy `ModelFragments` fragment API for migrated resources.
@@ -36,7 +36,7 @@ new Fragment(): Fragment;
 rollbackAttributes(this: PrivateReactiveResource): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:62](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L62)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:62](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L62)
 
 Reverts this fragment's attribute back to its last known remote value.
 
@@ -58,7 +58,7 @@ Reverts this fragment's attribute back to its last known remote value.
 isDestroyed: boolean = false;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:26](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L26)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:26](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L26)
 
 Whether this fragment has been destroyed.
 
@@ -70,7 +70,7 @@ Whether this fragment has been destroyed.
 isDestroying: boolean = false;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:22](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L22)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:22](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L22)
 
 Whether this fragment is in the process of being destroyed.
 
@@ -82,7 +82,7 @@ Whether this fragment is in the process of being destroyed.
 get $type(): string | null | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:54](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L54)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:54](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L54)
 
 The resource type of this fragment, if known.
 
@@ -100,7 +100,7 @@ The resource type of this fragment, if known.
 get hasDirtyAttributes(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:32](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L32)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:32](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L32)
 
 Whether this fragment (or the attribute it is rooted at) has uncommitted changes.
 
@@ -118,7 +118,7 @@ Whether this fragment (or the attribute it is rooted at) has uncommitted changes
 get isFragment(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:47](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L47)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts:47](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#L47)
 
 Always `true`. Used to distinguish fragments from other resources.
 

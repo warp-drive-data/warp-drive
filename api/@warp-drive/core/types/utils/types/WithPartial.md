@@ -10,7 +10,7 @@ description: Utility type that makes only the named properties of an object type
 type WithPartial<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/utils.ts:17](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/utils.ts#L17)
+Defined in: [warp-drive-packages/core/src/types/utils.ts:17](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/utils.ts#L17)
 
 Makes the properties named in `K` optional on `T`, leaving the rest as-is.
 

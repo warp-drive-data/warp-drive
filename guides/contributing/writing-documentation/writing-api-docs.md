@@ -356,7 +356,7 @@ object is actively being removed, not merely out of favor (that is
 
 * Whenever possible, link the replacement, and tag that replacement
   [`@recommended`](#the-recommended-tag).
-* If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
+* If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/core/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
   and a corresponding `DEPRECATE_*` flag), link the guide and name the
   deprecation id so readers can find its entry there.

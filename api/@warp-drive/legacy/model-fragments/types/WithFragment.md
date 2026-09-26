@@ -14,7 +14,7 @@ description: >-
 type WithFragment<T> = T & WithEmberObject<T> & Fragment;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/index.ts:12](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/model-fragments/index.ts#L12)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/index.ts:12](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/model-fragments/index.ts#L12)
 
 Adds the classic `EmberObject` API (via [WithEmberObject](../../compat/extensions/types/WithEmberObject.md)) and the
 [Fragment](../classes/Fragment.md) API to the type of a migrated single-fragment resource.

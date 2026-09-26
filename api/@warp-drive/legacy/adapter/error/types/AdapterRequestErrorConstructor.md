@@ -17,7 +17,7 @@ interface AdapterRequestErrorConstructor<Instance extends AdapterRequestError = 
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:70](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/adapter/error.ts#L70)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:70](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/adapter/error.ts#L70)
 
 The static interface shared by [AdapterError](../variables/AdapterError.md) and its subclasses,
 allowing further subclassing via [extend](#extend).
@@ -36,7 +36,7 @@ allowing further subclassing via [extend](#extend).
 new AdapterRequestErrorConstructor(errors?: unknown[], message?: string): Instance;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:71](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/adapter/error.ts#L71)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:71](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/adapter/error.ts#L71)
 
 #### Parameters
 
@@ -62,7 +62,7 @@ extend(options: {
 }): AdapterRequestErrorConstructor;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:75](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/adapter/error.ts#L75)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:75](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/adapter/error.ts#L75)
 
 Creates a new AdapterRequestErrorConstructor that inherits from this one.
 

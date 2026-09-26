@@ -14,7 +14,7 @@ interface HooksOptions {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:137](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/signals/reactivity/configure.ts#L137)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:137](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/signals/reactivity/configure.ts#L137)
 
 Contains information a [SignalHooks](SignalHooks.md) implementation may want
 to use, such as the specialized key used for the signal
@@ -38,7 +38,7 @@ wellknown: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:143](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/signals/reactivity/configure.ts#L143)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:143](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/signals/reactivity/configure.ts#L143)
 
 A list of specialized symbols/strings
 used by WarpDrive to encapsulate key

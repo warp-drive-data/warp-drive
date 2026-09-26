@@ -21,7 +21,7 @@ function expectId(id: null): never;
 function expectId(id: string | number): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:186](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/compat/utils.ts#L186)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:186](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/compat/utils.ts#L186)
 
 Like [formattedId](formattedId.md), but asserts that `id` is not `null` rather
 than allowing and passing through `null`.
@@ -42,7 +42,7 @@ than allowing and passing through `null`.
 function expectId(id: null): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:192](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/compat/utils.ts#L192)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:192](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/compat/utils.ts#L192)
 
 Throws, since `id` is `null`.
 

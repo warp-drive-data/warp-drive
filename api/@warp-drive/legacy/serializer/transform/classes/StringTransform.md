@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;StringTransform
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:6](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L6)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:6](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L6)
 
 The `StringTransform` class is used to serialize and deserialize
 string attributes on Ember Data record objects. This transform is
@@ -49,7 +49,7 @@ new StringTransform(): StringTransform;
 deserialize(serialized: unknown, _options?: Record<string, unknown>): string | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:38](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L38)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:38](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L38)
 
 Converts a serialized (raw payload) value into a `string`, or `null`
 if the value is falsy (and not an empty string).
@@ -76,7 +76,7 @@ if the value is falsy (and not an empty string).
 serialize(deserialized: unknown, _options?: Record<string, unknown>): string | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:44](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L44)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:44](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L44)
 
 Converts a `string` attribute value into its serialized (raw payload) form.
 
@@ -102,7 +102,7 @@ Converts a `string` attribute value into its serialized (raw payload) form.
 static create(): StringTransform;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:51](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L51)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:51](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L51)
 
 Creates a new instance of this transform.
 
@@ -118,6 +118,6 @@ Creates a new instance of this transform.
 ___(unique) Symbol($type): "string";
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:10](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L10)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts:10](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts#L10)
 
 see [TransformName](../../../../core/types/symbols/variables/TransformName.md)

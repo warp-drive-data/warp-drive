@@ -16,7 +16,7 @@ type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredEr
 | CancelledRequest<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:642](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/signals/request-state.ts#L642)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:642](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/signals/request-state.ts#L642)
 
 RequestState extends the concept of [PromiseState](PromiseState.md) to provide a reactive
 wrapper for a request [Future](../../request/types/Future.md) which allows you write declarative code
