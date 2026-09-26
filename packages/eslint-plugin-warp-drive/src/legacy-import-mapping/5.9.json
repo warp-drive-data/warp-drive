@@ -1,0 +1,1291 @@
+{
+  "schema": 1,
+  "kind": "merged-delta",
+  "from": "5.9",
+  "base": "5.8",
+  "via": [],
+  "to": "5.10",
+  "remove": [],
+  "set": [
+    {
+      "module": "@ember-data/codemods/cli/index",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@ember-data/codemods/cli/index",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@ember-data/codemods/cli/index",
+      "export": "SharedCodemodOptions",
+      "typeOnly": true,
+      "to": {
+        "module": "@ember-data/codemods/cli/index",
+        "export": "SharedCodemodOptions",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@ember-data/model/-private",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@ember-data/model/migration-support",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/model/migration-support",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core",
+      "export": "NotificationChannel",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core",
+        "export": "NotificationChannel",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core",
+      "export": "NotifyKeys",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core",
+        "export": "NotifyKeys",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive/-private",
+      "export": "ExtensibleField",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/reactive/-private",
+        "export": "ExtensibleField",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive/-private",
+      "export": "ManagedArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/reactive/-private",
+        "export": "ManagedArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "InfinitePaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "InfinitePaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "InfinitePaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "InfinitePaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PageCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PageCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PageHints",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PageHints",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PagedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PagedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PagedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PagedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginateArgs",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginateArgs",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginateMode",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginateMode",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationContentFeaturesFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationContentFeaturesFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationLinks",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationLinks",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationLinksSubscription",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationLinksSubscription",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationStateFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationStateFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PaginationSubscription",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PaginationSubscription",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "PlaceholderPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "PlaceholderPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "RealPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "RealPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "RelationalPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "RelationalPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "SharedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "SharedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "SharedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "SharedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "SignalStore",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "SignalStore",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "clearPaginationCache",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "clearPaginationCache",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "createPaginationLinksSubscription",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "createPaginationLinksSubscription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "createPaginationSubscription",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "createPaginationSubscription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "defaultPageHints",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "defaultPageHints",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "getOrCreateInternalSignal",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "getOrCreateInternalSignal",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "getPaginationCache",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "getPaginationCache",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "getPaginationLinks",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "getPaginationLinks",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "getPaginationState",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "getPaginationState",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/signals/-leaked",
+      "export": "makeInitializer",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/signals/-leaked",
+        "export": "makeInitializer",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "PrivateRequestStateService",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "PrivateRequestStateService",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/runtime",
+      "export": "setIsMaybeMirage",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/types/runtime",
+        "export": "setIsMaybeMirage",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "EachLink",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "EachLink",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "InfinitePaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "InfinitePaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "InfinitePaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "InfinitePaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PageCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PageCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PageHints",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PageHints",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PagedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PagedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PagedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PagedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "Paginate",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "Paginate",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginateMode",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginateMode",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationContentFeaturesFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationContentFeaturesFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationLinks",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationLinks",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PaginationStateFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PaginationStateFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "PlaceholderPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "PlaceholderPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "RealPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "RealPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "RelationalPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "RelationalPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "SharedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "SharedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember/experiments",
+      "export": "SharedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember/experiments",
+        "export": "SharedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "InfinitePaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "InfinitePaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "InfinitePaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "InfinitePaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PageCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PageCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PageHints",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PageHints",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PagedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PagedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PagedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PagedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginateArgs",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginateArgs",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginateMode",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginateMode",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationCache",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationCache",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationContentFeaturesFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationContentFeaturesFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationLinks",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationLinks",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationLinksSubscription",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationLinksSubscription",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationStateFor",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationStateFor",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PaginationSubscription",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PaginationSubscription",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "PlaceholderPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "PlaceholderPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "RealPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "RealPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "RelationalPaginationLink",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "RelationalPaginationLink",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "SharedPaginationContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "SharedPaginationContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "SharedPaginationState",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "SharedPaginationState",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "clearPaginationCache",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "clearPaginationCache",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "createPaginationLinksSubscription",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "createPaginationLinksSubscription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "createPaginationSubscription",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "createPaginationSubscription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "defaultPageHints",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "defaultPageHints",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "getPaginationCache",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "getPaginationCache",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "getPaginationLinks",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "getPaginationLinks",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/pagination",
+      "export": "getPaginationState",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/pagination",
+        "export": "getPaginationState",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/storage",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/storage",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/storage",
+      "export": "_getParamCompanion",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/storage",
+        "export": "_getParamCompanion",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/experiments/storage",
+      "export": "_initMeta",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/experiments/storage",
+        "export": "_initMeta",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/holodeck/mock",
+      "export": "HEAD",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/holodeck/mock",
+        "export": "HEAD",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/adapter",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/adapter",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/adapter",
+      "export": "AdapterOptions",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/adapter",
+        "export": "AdapterOptions",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/adapter",
+      "export": "generateAdapterSource",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/adapter",
+        "export": "generateAdapterSource",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/model",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/model",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/model",
+      "export": "generateModelSource",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/model",
+        "export": "generateModelSource",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/paths",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/paths",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/paths",
+      "export": "DESTINATIONS",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/paths",
+        "export": "DESTINATIONS",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/paths",
+      "export": "GENERATOR_TYPES",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/paths",
+        "export": "GENERATOR_TYPES",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/paths",
+      "export": "GeneratorType",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/paths",
+        "export": "GeneratorType",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/serializer",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/serializer",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/serializer",
+      "export": "SerializerOptions",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/serializer",
+        "export": "SerializerOptions",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/serializer",
+      "export": "generateSerializerSource",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/serializer",
+        "export": "generateSerializerSource",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/shared",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/shared",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/shared",
+      "export": "BaseClassResult",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/shared",
+        "export": "BaseClassResult",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/shared",
+      "export": "EntityKind",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/shared",
+        "export": "EntityKind",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/shared",
+      "export": "extendFromApplicationEntity",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/shared",
+        "export": "extendFromApplicationEntity",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/shared",
+      "export": "isAddonProject",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/shared",
+        "export": "isAddonProject",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "camelize",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "camelize",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "capitalize",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "capitalize",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "classify",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "classify",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "dasherize",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "dasherize",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "decamelize",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "decamelize",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "friendlyTestDescription",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "friendlyTestDescription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/strings",
+      "export": "getRelativePath",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/strings",
+        "export": "getRelativePath",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/tests",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/tests",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/tests",
+      "export": "TestKind",
+      "typeOnly": true,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/tests",
+        "export": "TestKind",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/tests",
+      "export": "generateUnitTestSource",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/tests",
+        "export": "generateUnitTestSource",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/transform",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/transform",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "warp-drive/-private/warp-drive/generators/transform",
+      "export": "generateTransformSource",
+      "typeOnly": false,
+      "to": {
+        "module": "warp-drive/-private/warp-drive/generators/transform",
+        "export": "generateTransformSource",
+        "typeOnly": false
+      }
+    }
+  ]
+}
