@@ -1,6 +1,6 @@
 ---
 title: A $state Field for PolarisMode ReactiveResources
-description: Proposes adding a reactive, read-only $state field to the PolarisMode defaults that reports a resource's lifecycle state (new, deleted, dirty, saving, invalid, errored), replacing the LegacyMode state flags that still apply and dropping the ones that don't.
+description: Proposes adding a reactive, read-only $state field to the PolarisMode defaults that reports a resource's lifecycle state (new, empty, deleted, dirty) and its per-field local changes, replacing the LegacyMode state flags that still apply and dropping the ones that don't.
 warp-drive-rfc: 6
 emberjs-rfc:
 emberjs-pr:
@@ -26,56 +26,48 @@ suite:
 
 `withDefaults` from `@warp-drive/core/reactive` adds a new derived field, `$state`, to every
 PolarisMode resource schema it builds, and `registerDerivations` registers the `@state`
-derivation that backs it. `$state` is a stable, read-only, deeply reactive object describing the
-resource's lifecycle:
+derivation that backs it. `$state` is a stable, read-only, reactive object describing the
+resource's lifecycle in the cache, and which of its fields have local changes:
 
 ```ts
 interface ReactiveResourceState {
   readonly isNew: boolean;
+  readonly isEmpty: boolean;
   readonly isDeleted: boolean;
   readonly isDeletionCommitted: boolean;
   readonly isDirty: boolean;
-  readonly isSaving: boolean;
-  readonly isValid: boolean;
-  readonly errors: ApiError[];
-  readonly isError: boolean;
-  readonly error: unknown;
+  readonly changes: Readonly<Record<string, ResourceFieldChange | undefined>>;
 }
 ```
 
 It is the PolarisMode counterpart to the state flags LegacyMode puts directly on a record
-(`isNew`, `isDeleted`, `hasDirtyAttributes`, `isSaving`, `isValid`, `errors`, `isError`,
-`adapterError`, ...), keeping the ones that still mean something for a PolarisMode resource,
-cleaning up their names and return types, and dropping the ones that don't.
+(`isNew`, `isEmpty`, `isDeleted`, `hasDirtyAttributes`, `changedAttributes()`, ...), keeping the
+ones that describe the resource itself, cleaning up their names and return types, and dropping
+the ones that describe a request or an EmberObject lifecycle instead.
 
 ## Motivation
 
 A PolarisMode resource built with `withDefaults` today exposes its identity (`id`, `$key`,
 `$type`) and its data, but nothing about its lifecycle. To answer "is this record new?", "does it
-have unsaved changes?", "is it saving?" or "did the save fail validation?" an app has to reach
-past the resource into the cache and the request state service:
+have unsaved changes?" or "which fields did the user change?" an app has to reach past the
+resource into the cache:
 
 ```ts
 const key = recordIdentifierFor(user);
 const isNew = store.cache.isNew(key);
 const isDirty = store.cache.hasChangedAttrs(key) || store.cache.hasChangedRelationships(key);
-const errors = store.cache.getErrors(key);
-const isSaving = store
-  .getRequestStateService()
-  .getPendingRequestsForRecord(key)
-  .some((req) => req.type === 'mutation');
+const nameChange = store.cache.changedAttrs(key).name;
 ```
 
 None of those reads are reactive: the cache is not a signal-backed structure, so a template or
 component that reads them will not update when the value changes. Getting reactivity means
-subscribing to the `NotificationManager` and the `RequestStateService` by hand and managing that
-subscription's lifetime, which is exactly the machinery `RecordState` already implements for
-LegacyMode.
+subscribing to the `NotificationManager` by hand and managing that subscription's lifetime,
+which is exactly the machinery `RecordState` already implements for LegacyMode.
 
 This gap shows up as soon as an app migrates from `Model` (or LegacyMode schemas) to PolarisMode.
-Every edit form needs "has unsaved changes", "saving..." and field-level validation
-errors, and every one of them is currently re-implementing it, usually without reactivity or
-without cleaning up its subscriptions.
+Every edit form needs "has unsaved changes" and usually "this field was changed" indicators, and
+every one of them is currently re-implementing it, usually without reactivity or without
+cleaning up its subscriptions.
 
 The goal is for the canonical PolarisMode resource to answer those questions itself, reactively,
 without adding a second, parallel copy of LegacyMode's flag soup to it.
@@ -110,20 +102,25 @@ resource rather than data from it, and the prefix keeps it from colliding with a
   debugging.
 - **Only on resources.** `withDefaults` only builds resource schemas; embedded objects
   (`schema-object`, `schema-array` members) have no lifecycle of their own and don't get `$state`.
+- **Only about the cache.** Every property is derived from the cache's state for the resource.
+  `$state` has no knowledge of requests; see [Request state](#request-state).
 
 ### Properties
 
-| Property | Source | Reactive to |
+| Property | Source | Invalidated by |
 | --- | --- | --- |
 | `isNew` | `cache.isNew(key)` | `'state'` notifications |
+| `isEmpty` | `!cache.isNew(key) && cache.isEmpty(key)` | `'state'`, `'attributes'` notifications, and record teardown |
 | `isDeleted` | `cache.isDeleted(key)` | `'state'` notifications |
 | `isDeletionCommitted` | `cache.isDeletionCommitted(key)` | `'state'` notifications |
 | `isDirty` | see below | `'state'`, `'attributes'`, `'relationships'` notifications, both channels |
-| `isSaving` | a mutation for this resource is pending in the `RequestStateService` | request state subscriptions |
-| `errors` | `cache.getErrors(key)` | `'errors'` notifications |
-| `isValid` | `errors.length === 0` | `errors` |
-| `error` | what the most recent rejected mutation for this resource rejected with, unless it was a validation failure | request state subscriptions |
-| `isError` | `error !== null` | `error` |
+| `changes` | `cache.changedAttrs(key)` / `cache.changedRelationships(key)`, per field | see [Per-field changes](#per-field-changes) |
+
+Every read is computed fresh from the cache; the notifications only invalidate reactive
+consumers so that they re-read. Store notifications are delivered in batches, so caching a value
+until its notification arrives would make a read immediately after an edit
+(`editable.name = 'x'; editable.$state.isDirty`) return the stale value. Computing on read avoids
+that, and every property is a cheap cache lookup.
 
 `isDirty` is the LegacyMode `isDirty` computation, extended to relationships:
 
@@ -135,71 +132,173 @@ return isDeleted || isNew || cache.hasChangedAttrs(key) || cache.hasChangedRelat
 A new resource deleted before it was ever saved, and a resource whose deletion has been
 committed, have nothing left to persist, so they are not dirty.
 
-`isDirty` listens to both the `'local'` and `'remote'` notification channels. A local edit changes
-the local projection, but a remote update whose value matches a pending local edit resolves that
-edit while changing only the remote projection; listening to one channel would miss one of the
-two.
+`isDirty` and `changes` listen to both the `'local'` and `'remote'` notification channels. A local
+edit changes the local projection, but a remote update whose value matches a pending local edit
+resolves that edit while changing only the remote projection; listening to one channel would miss
+one of the two.
 
-#### Validation failures versus request errors
+#### `isEmpty`
 
-LegacyMode distinguishes a save that the API rejected as invalid (`isValid: false`, populated
-`errors`) from a save that failed for any other reason (`isError: true`, `adapterError`). `$state`
-keeps that split:
+`isEmpty` is `true` when the cache holds no field values for the resource. A new resource is
+never empty, matching LegacyMode. There are two ways a PolarisMode instance gets there:
 
-- A mutation rejected with a JSON:API error document (`error.content.errors`), which the cache
-  handler hands to `cache.commitWasRejected`, is a validation failure. It is reported through
-  `errors` / `isValid` and clears `error`.
-- Any other rejection sets `error` to the rejection reason and `isError` to `true`.
-- A successful mutation clears `error`.
+- **It was loaded without values.** A resource can be materialized from a payload that carries
+  no attributes or relationships, which is becoming more common now that partial fields (sparse
+  fieldsets) are supported.
+- **It was removed from the store while still referenced.** `store.unloadRecord` tears the record
+  instance down *before* the cache releases the resource's data, so by the time the data is gone
+  nothing is subscribed to hear about it. To cover that, tearing down a record invalidates
+  `isEmpty`, so a template still rendering the unloaded record re-reads it and sees `true`.
 
-The check looks at the rejection itself rather than at `cache.getErrors`, because the cache keeps
-validation errors from an earlier rejection until they are resolved, and a later network failure
-should still be reported as an error.
+`isEmpty` delegates to `cache.isEmpty`, so what counts as "no values" is the cache's call. See
+Unresolved questions for how the JSON:API cache answers that for a resource loaded with an empty
+payload.
+
+#### Per-field changes
+
+`changes` is an object keyed by field name. A field with local changes has an entry; a field
+without them does not:
+
+```ts
+editable.name = 'Christopher';
+
+user.$state.changes.name;
+// => { kind: 'field', remoteState: 'Chris', localState: 'Christopher' }
+
+user.$state.changes.age;
+// => undefined
+
+Object.keys(user.$state.changes);
+// => ['name']
+```
+
+An entry is a `ResourceFieldChange`:
+
+```ts
+type ResourceFieldChange = FieldChange | RelationshipDiff;
+
+interface FieldChange {
+  kind: 'field';
+  remoteState: Value | undefined;
+  localState: Value;
+}
+```
+
+- A **non-relationship field** (`field`, `array`, `object`, `schema-object`, `schema-array`)
+  produces a `FieldChange`, built from the cache's `changedAttrs` entry for that field. Its
+  `remoteState`/`localState` naming matches `RelationshipDiff`, so the two read the same way.
+  Values are in the form the cache stores them, before any `Transformation` is applied.
+- A **relationship** (`belongsTo`, `hasMany`, `resource`, `collection`) produces the cache's
+  existing `RelationshipDiff` for that field: `kind: 'resource'` for to-one, with
+  `remoteState`/`localState` keys, and `kind: 'collection'` for to-many, with `additions`,
+  `removals` and `reordered` as well.
+- Identity, `derived`, `alias` and `@local` fields hold no cache data of their own and never
+  have an entry.
+
+Entries are keyed by the field's name, not its `sourceKey`, and nested changes (inside an
+`object` or `schema-object` field) are reported on the top-level field that contains them.
+
+Each entry is reactive **on its own**. Reading `changes.name` consumes a signal for `name` only,
+which is invalidated by an `'attributes'` notification for `name`'s cache key (or a path starting
+with it), so a component rendering the `name` input's "changed" indicator does not re-render when
+`age` changes. Reading the set of keys (`Object.keys`, `in` on an unchanged field, iterating)
+consumes a signal invalidated by a change to any field. A `'state'` notification (commit,
+rollback) and a keyless notification invalidate every entry.
 
 #### Both projections share one state
 
 A PolarisMode resource has two projections: the immutable instance and its editable checkout.
 `$state` describes the *resource in the cache*, not a projection, so both report the same values:
-after `editable.name = 'Christopher'`, `user.$state.isDirty` is `true` on the immutable instance
-too. This is deliberate. The question "does this resource have unsaved changes" has one answer,
-and the immutable instance is usually what the rest of the UI (a list row, a nav badge) is
-rendering when it wants to show that answer. The immutable instance still does not *show* the
-edits themselves, only that they exist.
+after `editable.name = 'Christopher'`, `user.$state.isDirty` is `true` and `user.$state.changes.name`
+is populated on the immutable instance too. This is deliberate. The question "does this resource
+have unsaved changes" has one answer, and the immutable instance is usually what the rest of the
+UI (a list row, a nav badge) is rendering when it wants to show that answer. The immutable
+instance still does not *show* the edited values in its fields, only that changes exist.
+
+### Request state
+
+`$state` deliberately has no request-derived properties: no `isSaving`, `isError`, `error`,
+`errors` or `isValid`. Those describe a request, not the resource, and PolarisMode already makes
+requests reactive: `getRequestState(future)` and the `<Request>` component report whether a save
+is pending, whether it failed and with what error. Keeping them out of `$state`:
+
+- keeps `$state` a pure projection of the cache, with no dependency on the `RequestStateService`,
+  whose record tracking only registers the first entry of `request.records` for a mutation;
+- avoids a resource-level summary of requests that is ambiguous when several requests touch the
+  same resource at once;
+- leaves validation errors, which arrive as the rejection of a save request, with that request.
+  The cache still stores them per resource and `cache.getErrors(key)` still returns them; see
+  Unresolved questions for surfacing them per field.
 
 ### Lifetime
 
-The state object subscribes to the `NotificationManager` and the `RequestStateService` for its
-resource the first time `$state` is read, and unsubscribes when the record is torn down (the same
-point at which the record's own notification subscription is released, including the editable
-checkout when its immutable instance is torn down). A record whose `$state` is never read pays
-nothing for it.
-
-`RequestStateService` gains an internal `_unsubscribeForRecord(key, callback)` to make that
-possible; today `subscribeForRecord` has no way to unsubscribe, so every LegacyMode `RecordState`
-leaks its callback for the lifetime of the store. Switching `RecordState` to it is out of scope
-here but is a natural follow-up.
+The state object subscribes to the `NotificationManager` for its resource the first time `$state`
+is read, and unsubscribes when the record is torn down: the same point at which the record's own
+notification subscription is released, including the editable checkout when its immutable
+instance is torn down. A record whose `$state` is never read pays nothing for it.
 
 ### What is not carried over, and why
 
 | LegacyMode | In `$state` | Why |
 | --- | --- | --- |
 | `isNew` | `isNew` | unchanged |
+| `isEmpty` | `isEmpty` | unchanged; also becomes `true` when a still-referenced record is unloaded |
 | `isDeleted` | `isDeleted` | unchanged |
 | `currentState.isDeletionCommitted` / `isSaved` for deletes | `isDeletionCommitted` | the only part of `isSaved` that isn't already `!isDirty` |
 | `hasDirtyAttributes`, `currentState.isDirty` | `isDirty` | one name instead of two, and it includes relationship changes |
-| `isSaving` | `isSaving` | unchanged |
-| `isValid` | `isValid` | unchanged |
-| `errors` (an `Errors` `ArrayProxy`) | `errors` (`ApiError[]`) | the cache's JSON:API errors, no dependency on `@ember/array` or `EmberObject`; `source.pointer` identifies the field |
-| `isError`, `adapterError` | `isError`, `error` | "adapter" no longer describes where errors come from |
-| `isLoading`, `isLoaded`, `isEmpty`, `isReloading`, `isPreloaded` | — | a PolarisMode resource only exists once its data is in the cache; loading is a property of a *request*, and is already reactive via `getRequestState` / `<Request>` |
+| `changedAttributes()` | `changes` | reactive, per field, and includes relationships |
+| `isSaving`, `isError`, `adapterError` | — | request state; use `getRequestState` / `<Request>` for the save request |
+| `errors`, `isValid` | — | validation errors arrive with the rejected request; `cache.getErrors(key)` remains |
+| `isLoading`, `isLoaded`, `isReloading`, `isPreloaded` | — | a PolarisMode resource is materialized from cache data; loading is a property of a *request* |
 | `dirtyType`, `currentState.stateName` | — | string-encoded restatements of the booleans above; `stateName` exposes the long-gone state machine |
 | `currentState` | — | `$state` *is* the state; there's no separate state machine object to reach into |
-| `isDestroying`, `isDestroyed` | — | EmberObject lifecycle; a torn-down PolarisMode record is simply no longer returned by the store |
+| `isDestroying`, `isDestroyed` | — (under discussion) | see [Removal from the store](#removal-from-the-store) |
+
+### Removal from the store
+
+LegacyMode records expose `isDestroying` and `isDestroyed` from their EmberObject lifecycle, and
+apps use them to tell that a record they still hold has been unloaded. This RFC does not carry
+them over, and this section records why, since it is the part of the design most worth a second
+look.
+
+What actually happens when a PolarisMode record leaves the store:
+
+1. `store.unloadRecord` (or `unloadAll`, or deleting a new record) calls the store's
+   `teardownRecord` hook, which destroys the record instance synchronously and releases its
+   notification subscriptions, including `$state`'s.
+2. The cache then releases the resource's data.
+3. The store stops returning that instance. If the same resource is loaded again, it gets a
+   *new* instance; the old one stays disconnected.
+
+So:
+
+- **`isDestroying` has nothing to report.** Teardown is a single synchronous step; there is no
+  observable window between "destroying" and "destroyed".
+- **`isDestroyed` would coincide with `isEmpty`** for every path we know of: teardown is always
+  followed by the cache dropping the data, and `isEmpty` is invalidated at teardown for exactly
+  this case. They only diverge if an app keeps the old instance around and the same resource is
+  then re-loaded into a new instance, where `isEmpty` on the old one could read `false` again
+  once re-read.
+- **A committed deletion is not a removal.** A successful delete does not by itself unload the
+  resource; the instance stays materialized with `isDeletionCommitted: true`, which is the flag
+  for "this is gone on the server".
+
+The options are:
+
+1. **No destroy flag (this draft).** `isEmpty` covers "removed from the store while referenced",
+   and `isDeletionCommitted` covers "deleted on the server". Smallest surface, but it overloads
+   `isEmpty` with two meanings (never had values, and was removed).
+2. **Add `isDestroyed` only.** A flag set at teardown, independent of cache state, meaning "this
+   instance is disconnected; don't read from it". It stays `true` even if the resource is
+   re-loaded into a new instance, and gives `isEmpty` back its single meaning.
+3. **Carry over both `isDestroying` and `isDestroyed`.** Maximum familiarity for migrating apps,
+   at the cost of a flag (`isDestroying`) that is never observably different from `isDestroyed`.
 
 ### TypeScript
 
-`ReactiveResourceState` is exported as a type from `@warp-drive/core/reactive`. Apps that type
-their resources by hand add it the same way they add `$type`:
+`ReactiveResourceState`, `ResourceFieldChange` and `FieldChange` are exported as types from
+`@warp-drive/core/reactive`. Apps that type their resources by hand add `$state` the same way they
+add `$type`:
 
 ```ts
 import type { ReactiveResourceState } from '@warp-drive/core/reactive';
@@ -213,7 +312,8 @@ interface User {
 ```
 
 Apps that generate types from their schemas (e.g. via the schema DSL) should get it from the same
-generator that emits `$type`.
+generator that emits `$type`. A generator could also narrow `changes` to the resource's own field
+names; see Unresolved questions.
 
 ### Compatibility
 
@@ -224,9 +324,10 @@ collide with the added one; see Unresolved questions.
 
 LegacyMode schemas (built with `withDefaults` from `@warp-drive/legacy/model/migration-support`)
 are unchanged and keep their flat flags. `$state` is not added to them, so a resource migrating
-from LegacyMode to PolarisMode moves from `record.isSaving` to `record.$state.isSaving` in the
-same change that moves its schema. The table above is mechanical enough for the migration
-codemods to rewrite those reads.
+from LegacyMode to PolarisMode moves from `record.isNew` to `record.$state.isNew` in the same
+change that moves its schema. The table above is mechanical enough for the migration codemods to
+rewrite those reads, except for the request-state rows, which need the save request's state
+instead.
 
 ### Ecosystem
 
@@ -234,7 +335,7 @@ codemods to rewrite those reads.
   `record.hasDirtyAttributes`) on PolarisMode resources would be a useful follow-up to the
   migration codemods.
 - **DevTools / Inspector:** `$state.toJSON()` gives devtools a cheap, serializable summary of a
-  resource's lifecycle to show alongside its data.
+  resource's lifecycle, including the names of its changed fields, to show alongside its data.
 - **SSR:** no impact; `$state` holds no data that isn't already in the cache, so nothing extra
   needs to be serialized or rehydrated.
 
@@ -243,19 +344,20 @@ codemods to rewrite those reads.
 `$state` is taught as part of `withDefaults`: the `@warp-drive/core/reactive` module docs'
 "Utilities" section already describes what `withDefaults` adds (identity and `$type`), and
 `$state` joins it with a short example and a link to the `ReactiveResourceState` API page, which
-documents each flag.
+documents each property.
 
-The guides on editing and saving resources are where it becomes useful: an edit form that disables its
-submit button while `$state.isSaving`, shows a "you have unsaved changes" prompt from
-`$state.isDirty`, and renders field errors from `$state.errors` by `source.pointer`.
+The guides on editing resources are where it becomes useful: an edit form that shows a "you have
+unsaved changes" prompt from `$state.isDirty`, marks each changed input from
+`$state.changes[field]` without re-rendering the whole form, and takes its saving and error state
+from the save request.
 
 For users migrating from `Model`, the upgrade guide gains the "What is not carried over" table
-from this RFC, framed as "if you used X, use Y", with the loading-state rows pointing to
-`getRequestState` and the `<Request>` component.
+from this RFC, framed as "if you used X, use Y", with the request-state and loading-state rows
+pointing to `getRequestState` and the `<Request>` component.
 
 The terminology deliberately matches LegacyMode wherever the meaning is unchanged, so an existing
-user's vocabulary carries over; the only renames (`hasDirtyAttributes` → `isDirty`,
-`adapterError` → `error`) are ones where the old name described an implementation detail.
+user's vocabulary carries over; the only rename (`hasDirtyAttributes` → `isDirty`) is one where
+the old name was both redundant and incomplete.
 
 ## Drawbacks
 
@@ -265,17 +367,18 @@ user's vocabulary carries over; the only renames (`hasDirtyAttributes` → `isDi
 - **`$state` reports the resource, not the projection.** An app that expected the immutable
   instance to be "clean" while its checkout is being edited will be surprised. We think the shared
   answer is the more useful one, but it is a choice.
-- **`isSaving` is only as precise as the `RequestStateService`.** Today the cache handler enqueues a
-  mutation under the first entry of `request.records` only, so for a request that mutates several
-  resources at once only the first one reports `isSaving`. This is a pre-existing limitation of
-  `RequestStateService`, not something `$state` introduces, but `$state` makes it more visible.
+- **Saving and error state moves to the request.** Apps that relied on reading `isSaving` or
+  `errors` off the record from anywhere in the UI now need the save request's state, which is
+  only available where the request was issued or passed.
+- **`changes` reports cache values, not field values.** A field with a `Transformation` reports the
+  serialized form (`'2026-09-25'`, not a `Date`), because that is what the cache stores and diffs.
 - **A second vocabulary during migration.** Apps midway through moving from LegacyMode will read
   `record.isNew` on some resources and `record.$state.isNew` on others.
 
 ## Alternatives
 
 - **Flat flags, as LegacyMode does.** Putting `isNew`, `isDirty`, ... directly on the resource
-  would make migration a no-op for reads, but it spends nine names in the resource's own
+  would make migration a no-op for reads, but it spends many names in the resource's own
   namespace, collides with real attributes of the same names, and conflicts with PolarisMode's
   `$`-prefixed convention for metadata.
 - **A standalone function, e.g. `getResourceState(record)`.** This mirrors `getRequestState` and
@@ -283,20 +386,35 @@ user's vocabulary carries over; the only renames (`hasDirtyAttributes` → `isDi
   less discoverable, doesn't show up in the resource's type, and still needs somewhere to keep the
   per-record state and subscription alive. It remains a reasonable addition *on top of* `$state`
   (backed by the same object), if schemas that opt out of `withDefaults` need it.
+- **`changes` as a list of changed field names, or a boolean per field.** Simpler to type, but an
+  edit form usually wants the original value too ("was: Chris"), and the cache already computes it.
+- **`changes` with hydrated (transformed) values.** Friendlier for fields with transformations, but
+  it would run every transformation's `hydrate` on every read and diverge from what the cache
+  reports through `changedAttrs`.
 - **Reuse `RecordState` from `@warp-drive/legacy`.** It would bring the `Errors` `ArrayProxy`,
-  `stateName`, and the loading flags along with it, and would make `@warp-drive/core` depend on
-  `@warp-drive/legacy`.
+  `stateName`, and the request and loading flags along with it, and would make `@warp-drive/core`
+  depend on `@warp-drive/legacy`.
 - **Do nothing.** Apps keep re-deriving these flags from the cache, usually without reactivity and
   without releasing their subscriptions.
 
 ## Unresolved questions
 
+- **Removal from the store:** no destroy flag, `isDestroyed` only, or both `isDestroying` and
+  `isDestroyed`? See [Removal from the store](#removal-from-the-store).
+- **What `isEmpty` means for a resource loaded with an empty payload.** The JSON:API cache's
+  `isEmpty` is `true` only when the resource has never received field data; a payload of just
+  `{ type, id }` stores an empty set of attributes, so `isEmpty` reports `false` for it. If `$state`
+  should report such a resource as empty, the cache's `isEmpty` would need to change, and that is
+  also what the store's `peekRecord` uses to decide whether a resource is loaded.
+- **Per-field validation errors.** Should the cache's per-resource errors be surfaced per field,
+  alongside `changes` (e.g. `$state.errors[field]`), now that request-level `errors` / `isValid`
+  are out of `$state`?
+- **`changes` for `alias` fields.** An `alias` reads another field's cache data; should
+  `changes[alias]` mirror the entry for the field it aliases?
+- **Typing `changes`.** Should `ReactiveResourceState` take the resource type as a parameter, so
+  `changes` is keyed by the resource's own field names and each entry narrows to `FieldChange` or
+  `RelationshipDiff` by field kind?
 - Should `withDefaults` assert in development when a schema already declares a field named
   `$state` (or `$type`, `$key`), rather than silently overriding it?
-- Should `isSaving` cover every resource in a multi-record mutation? That requires the cache
-  handler to enqueue one `RequestStateService` entry per entry in `request.records`, which also
-  changes what LegacyMode's `isSaving` reports for those records.
-- Should `$state` expose which fields are dirty (`changedFields`), or is that better served by
-  `cache.changedAttrs` / `cache.changedRelationships` directly?
 - Should `$state` be added to LegacyMode schemas as well, so that migrating code can switch to
   `$state` before the schema itself moves to PolarisMode?
