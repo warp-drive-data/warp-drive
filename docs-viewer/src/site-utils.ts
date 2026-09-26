@@ -506,6 +506,11 @@ interface ApiNavGroupPackage {
   name: string;
   /** A short description of the package, shown alongside its nav entry. */
   description: string;
+  /**
+   * Legacy packages only: the module new code should use instead, e.g. `@warp-drive/core` for
+   * `@ember-data/store`. Every API page of the legacy package links to it.
+   */
+  replacement?: string;
 }
 
 interface ApiNavGroup {
@@ -1142,6 +1147,27 @@ function fixIndexSignatureIndent(content: string): string {
   return lines.join('\n');
 }
 
+/**
+ * Marks every API page of a legacy package (the "Legacy Packages" group in nav.json) with a
+ * "Legacy Package" badge and a callout pointing to its `replacement`, so a reader who lands on
+ * `@ember-data/store`'s `Store` from a search knows to use `@warp-drive/core` instead. A package's
+ * landing page gets the badge only: every legacy package's `src/index.md` already opens with its
+ * own warning saying what replaced it.
+ */
+function markLegacyPackagePage(content: string, file: string): string {
+  const pkg = findApiNavGroup('Legacy Packages').packages.find((p) => file.startsWith(`${p.name}/`));
+  if (!pkg) return content;
+
+  const marked = content.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="danger" text="Legacy Package" />`);
+  const { replacement } = pkg;
+  if (!replacement || file === `${pkg.name}/index.md`) return marked;
+
+  const callout = `:::warning Legacy package\n\`${pkg.name}\` is a legacy package. New code should use [\`${replacement}\`](/api/${replacement}/) instead.\n:::`;
+  // under the page's H1 when it has one (symbol pages), otherwise under the badge line (module pages)
+  if (/^# [^\n]*$/m.test(marked)) return marked.replace(/^(# [^\n]*)$/m, `$1\n\n${callout}`);
+  return marked.replace(/^(<ModuleBadge [^\n]+\/>[^\n]*)$/m, `$1\n\n${callout}`);
+}
+
 export async function postProcessApiDocs() {
   const dir = path.join(__dirname, '../tmp/api');
   const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
@@ -1253,6 +1279,8 @@ export async function postProcessApiDocs() {
     if (file.includes('@warp-drive/legacy')) {
       newContent = newContent.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="danger" text="@legacy" />`);
     }
+
+    newContent = markLegacyPackagePage(newContent, file);
 
     // if the file is in @warp-drive/experiments add the experimental badge
     if (file.includes('@warp-drive/experiments')) {
