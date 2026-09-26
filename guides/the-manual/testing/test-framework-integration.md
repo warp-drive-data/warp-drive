@@ -75,9 +75,9 @@ setConfig({ host: MockHost });
 request that records a fixture. Setting the second without the first records fixtures that no
 request ever reads, and the tests fail as though the mocks were never declared.
 
-The `+ 1` mirrors the port given to the server in [server setup](./server-setup.md). If you proxy
-the mock onto the test suite's own port instead, set `MockHost` to that address rather than
-computing an offset.
+The `+ 1` mirrors the port given to the server in [server setup](./server-setup.md). To serve the
+mock from the test page's own origin instead, set `MockHost` to `''` and forward its requests as
+[Common setups](./common-setups/index.md) shows.
 
 ## Related
 

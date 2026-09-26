@@ -139,22 +139,9 @@ module.exports = async function () {
 };
 ```
 
-To serve the mock on the same port as the test suite, put testem's
-[API proxy](https://github.com/testem/testem/tree/master?tab=readme-ov-file#api-proxy) in front of
-it. The proxy is transparent, so `/api/v1` routes to `https://localhost:7373/api/v1`.
-
-```js
-  return {
-    proxies: {
-      '/api': {
-        // holodeck always runs on https
-        target: 'https://localhost:7373',
-        // if the test suite is on http, set this to false
-        // secure: false,
-      },
-    },
-  };
-```
+To serve the mock from the test suite's own origin, see [Common setups](./common-setups/index.md).
+Testem's `proxies` option cannot do it: holodeck accepts only HTTP/2, and `proxies` speaks
+HTTP/1.1 to its target.
 
 ***Warp*Drive**'s own test apps use Diagnostic, so that is the path with test coverage behind it.
 

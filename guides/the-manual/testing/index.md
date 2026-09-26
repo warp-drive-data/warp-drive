@@ -107,6 +107,8 @@ the one command that reproduces CI's behavior before you push.
 - [Server setup](./server-setup.md) installs the package, the certificate, and the server.
 - [Client setup](./client-setup.md) puts the handler in your request chain.
 - [Test framework integration](./test-framework-integration.md) wires the test id and the host.
+- [Common setups](./common-setups/index.md) puts the mock server on the test page's own origin,
+  from Vite, from testem, or behind Caddy.
 - [Writing mocks](./writing-mocks.md) covers the mock helpers and the rules for matching a request.
 - [Recording and replaying](./record-and-replay.md) covers the modes, the fixtures, and CI.
 - [Troubleshooting](./troubleshooting.md) is indexed by the error text you see.
