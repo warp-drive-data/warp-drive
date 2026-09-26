@@ -1,4 +1,7 @@
 ---
+title: Incremental Adoption Guide
+legacy: true
+legacyAdvice: "New code should set up its store as shown in [Setup](/guides/configuration/index.md) and make requests as shown in [Making Requests](/guides/the-manual/requests/index.md)."
 description: Move an existing 4.12 EmberData app still on adapters and serializers onto RequestManager, LegacyNetworkHandler, and request builders one step at a time.
 ---
 

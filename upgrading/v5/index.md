@@ -3,6 +3,8 @@ title: Migrating 4.x to 5.x
 description: Migrate an EmberData 4.6 or 4.12 app to WarpDrive 5.x step by step, using native types, mirror packages, useLegacyStore, and schemas in place of Models.
 outline:
   level: 2,3
+legacy: true
+legacyAdvice: "New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead."
 ---
 
 # Migrating 4.x to 5.x
