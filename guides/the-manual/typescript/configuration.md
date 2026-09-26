@@ -1,4 +1,7 @@
 ---
+title: Configuration
+legacy: true
+legacyAdvice: "`@warp-drive/core` and the other current packages ship their own types, so new apps can skip this page and follow [Installation](/guides/installation/index.md) instead."
 description: Add the unstable-preview-types entries to tsconfig.json so your app consumes WarpDrive's alpha-stage native types from either the runtime packages or the -types packages.
 ---
 
