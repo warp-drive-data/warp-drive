@@ -24,88 +24,101 @@ const { applyDelta } = createRequire(import.meta.url)(path.join(layout.shipped, 
 
 /**
  * @param {{ check: boolean }} opts
- * @returns {Promise<import('./artifacts.mjs').CheckResult[]>}
+ * @returns {import('./artifacts.mjs').CheckResult[]}
  */
-export async function update(opts) {
-  const released = releasedVersions();
-  const latest = released[released.length - 1];
+export function update(opts) {
   const tree = workingTree();
-  if (compareMinors(tree.version, latest) <= 0) {
-    throw new Error(
-      `root package.json is ${tree.version} but snapshots/${latest}.json exists; bump the version, or run \`cli.mjs release ${tree.version}\` if the tag is out`
-    );
-  }
-  refuseStrayOverrides(new Set([...consecutive(released), [latest, tree.version]].map(([a, b]) => `${a}-${b}`)));
-
-  const head = surfaceOf(tree, loadSnapshot(BASELINE));
-  const live = deriveStep(loadSnapshot(latest), head, loadOverrides(latest, tree.version));
-  const chain = consecutive(released).map(([a, b]) => loadStep(a, b));
-
-  const desired = new Map([[pathOf.step(latest, tree.version), canonical(live)]]);
-  const full = released.map((_, i) => mergeSteps([...chain.slice(i), live]));
-  full.forEach((map, i) => {
-    desired.set(pathOf.shipped(map.from), canonical(i === 0 ? map : provenDelta(full[i - 1], map)));
-  });
-  desired.set(pathOf.versions(), canonical(released));
-  return sync(desired, { check: opts.check, managed: [layout.shipped] });
+  const pairs = stepPairs(releasedVersions(), tree.version);
+  return sync(planHead(new Map(), pairs, tree), { check: opts.check, managed: [layout.steps, layout.shipped] });
 }
 
 /**
  * @param {{ check: boolean }} opts
- * @returns {Promise<import('./artifacts.mjs').CheckResult[]>}
+ * @returns {import('./artifacts.mjs').CheckResult[]}
  */
-export async function archive(opts) {
+export function archive(opts) {
   const released = releasedVersions();
-  const baseline = loadSnapshot(BASELINE);
   const tree = workingTree();
-  refuseStrayOverrides(
-    new Set([...consecutive(released), [released[released.length - 1], tree.version]].map(([a, b]) => `${a}-${b}`))
-  );
-
-  /** @type {Map<string, import('./surface.mjs').Surface>} */
-  const surfaces = new Map();
-  for (const version of released) {
-    using tagged = taggedTree(version);
-    surfaces.set(version, surfaceOf(tagged, version === BASELINE ? null : baseline));
-  }
-  surfaces.set(tree.version, surfaceOf(tree, baseline));
-
-  const desired = new Map();
-  for (const version of released) desired.set(pathOf.snapshot(version), canonical(snapshotOf(surfaces.get(version))));
-  for (const [a, b] of [...consecutive(released), [released[released.length - 1], tree.version]]) {
-    const step = deriveStep(snapshotOf(surfaces.get(a)), surfaces.get(b), loadOverrides(a, b));
-    desired.set(pathOf.step(a, b), canonical(step));
-  }
-  return sync(desired, { check: opts.check, managed: [layout.snapshots, layout.steps] });
+  const pairs = stepPairs(released, tree.version);
+  const tagged = planTagged(released);
+  return sync(new Map([...tagged, ...planHead(tagged, pairs, tree)]), {
+    check: opts.check,
+    managed: [layout.snapshots, layout.steps, layout.shipped],
+  });
 }
 
 /**
+ * Re-running for the latest released minor re-derives its snapshot and step from the tags.
  * @param {import('./token.mjs').Minor} minor
  * @param {{ check: boolean }} opts
- * @returns {Promise<import('./artifacts.mjs').CheckResult[]>}
+ * @returns {import('./artifacts.mjs').CheckResult[]}
  */
-export async function release(minor, opts) {
+export function release(minor, opts) {
   const released = releasedVersions();
   const latest = released[released.length - 1];
-  const prev = latest === minor ? released[released.length - 2] : latest;
-  if (latest !== minor && compareMinors(minor, latest) <= 0) {
+  if (minor !== latest && compareMinors(minor, latest) <= 0) {
     throw new Error(`${minor} is not newer than the latest released minor ${latest}`);
   }
+  const versions = minor === latest ? released : [...released, minor];
   const tree = workingTree();
-  if (compareMinors(tree.version, minor) <= 0) {
-    throw new Error(`root package.json is still ${tree.version}; bump it past ${minor} before releasing`);
+  const pairs = stepPairs(versions, tree.version);
+  const tagged = planTagged(versions.slice(-2));
+  // Only the two newest snapshots are planned, so snapshots/ is archive's to police.
+  return sync(new Map([...tagged, ...planHead(tagged, pairs, tree)]), {
+    check: opts.check,
+    managed: [layout.steps, layout.shipped],
+  });
+}
+
+/**
+ * Snapshots of tagged releases and the steps between them.
+ * @param {import('./token.mjs').Minor[]} versions  consecutive, oldest first
+ * @returns {import('./artifacts.mjs').Plan}
+ */
+function planTagged(versions) {
+  /** @type {import('./artifacts.mjs').Plan} */
+  const plan = new Map();
+  // A run that includes the baseline derives it first and hands this copy, not the committed one
+  // it may be about to rewrite, to every later tree. One run then reaches the fixed point.
+  let baseline = versions[0] === BASELINE ? null : loadSnapshot(BASELINE);
+  let prev = null;
+  for (const version of versions) {
+    using tree = taggedTree(version);
+    const surface = surfaceOf(tree, baseline);
+    const snapshot = snapshotOf(surface);
+    baseline ??= snapshot;
+    if (prev)
+      plan.set(pathOf.step(prev.version, version), deriveStep(prev, surface, loadOverrides(prev.version, version)));
+    plan.set(pathOf.snapshot(version), snapshot);
+    prev = snapshot;
   }
-  using tagged = taggedTree(minor);
-  const surface = surfaceOf(tagged, loadSnapshot(BASELINE));
-  const step = deriveStep(loadSnapshot(prev), surface, loadOverrides(prev, minor));
-  const results = sync(
-    new Map([
-      [pathOf.snapshot(minor), canonical(snapshotOf(surface))],
-      [pathOf.step(prev, minor), canonical(step)],
-    ]),
-    { check: opts.check, managed: [] }
+  return plan;
+}
+
+/**
+ * The live step, every step folded into the shipped maps, the maps, and `versions.json`. Snapshots
+ * and steps come from `tagged` when this run derived them and from disk otherwise, so
+ * `release --check` folds the snapshot it would write.
+ * @param {import('./artifacts.mjs').Plan} tagged
+ * @param {[import('./token.mjs').Minor, import('./token.mjs').Minor][]} pairs  from `stepPairs`
+ * @param {import('./surface.mjs').Tree} tree
+ * @returns {import('./artifacts.mjs').Plan}
+ */
+function planHead(tagged, pairs, tree) {
+  const snapshot = (v) => tagged.get(pathOf.snapshot(v)) ?? loadSnapshot(v);
+  const [latest] = pairs[pairs.length - 1];
+  const live = deriveStep(snapshot(latest), surfaceOf(tree, snapshot(BASELINE)), loadOverrides(latest, tree.version));
+  const chain = [...pairs.slice(0, -1).map(([a, b]) => tagged.get(pathOf.step(a, b)) ?? loadStep(a, b)), live];
+
+  /** @type {import('./artifacts.mjs').Plan} */
+  const plan = new Map(chain.map((step) => [pathOf.step(step.from, step.to), step]));
+  const full = chain.map((_, i) => mergeSteps(chain.slice(i)));
+  full.forEach((map, i) => plan.set(pathOf.shipped(map.from), i === 0 ? map : provenDelta(full[i - 1], map)));
+  plan.set(
+    pathOf.versions(),
+    pairs.map(([from]) => from)
   );
-  return [...results, ...(await update(opts))];
+  return plan;
 }
 
 /**
@@ -124,21 +137,33 @@ function provenDelta(base, current) {
 }
 
 /**
- * @param {import('./token.mjs').Minor[]} versions  sorted
+ * Every step, released pairs oldest first and the live pair last. Each step goes to the next minor,
+ * so a working tree that skips one names the release that has to be promoted first.
+ * @param {import('./token.mjs').Minor[]} released  sorted
+ * @param {import('./token.mjs').Minor} head  the working tree's minor
  * @returns {[import('./token.mjs').Minor, import('./token.mjs').Minor][]}
  */
-function consecutive(versions) {
-  return versions.slice(1).map((v, i) => [versions[i], v]);
-}
-
-/** @param {Set<string>} stepNames */
-function refuseStrayOverrides(stepNames) {
-  const stray = overridePairs().filter(({ from, to }) => !stepNames.has(`${from}-${to}`));
+function stepPairs(released, head) {
+  /** @type {[import('./token.mjs').Minor, import('./token.mjs').Minor][]} */
+  const pairs = [...released.slice(1).map((v, i) => [released[i], v]), [released[released.length - 1], head]];
+  for (const [a, b] of pairs) {
+    const [major, minor] = a.split('.').map(Number);
+    const next = `${major}.${minor + 1}`;
+    if (b === next || b === `${major + 1}.0`) continue;
+    throw new Error(
+      compareMinors(b, a) <= 0
+        ? `root package.json is ${b}, not past ${a}; bump the version`
+        : `step ${a}-${b} skips ${next}; run \`cli.mjs release ${next}\` once v${next}.0 is tagged`
+    );
+  }
+  const names = new Set(pairs.map(([a, b]) => `${a}-${b}`));
+  const stray = overridePairs().filter(({ from, to }) => !names.has(`${from}-${to}`));
   if (stray.length) {
     throw new Error(
       `overrides name pairs that are not steps: ${stray.map(({ from, to }) => `${from}-${to}`).join(', ')}`
     );
   }
+  return pairs;
 }
 
 async function main() {
@@ -157,7 +182,7 @@ async function main() {
   };
   if (!commands[command]) throw new Error('usage: cli.mjs <update|archive|release <minor>> [--check]');
 
-  const results = await commands[command]();
+  const results = commands[command]();
   const drifted = results.filter((r) => r.status !== 'clean');
   for (const result of drifted) {
     const label = values.check ? result.status : result.status === 'extra' ? 'removed' : 'wrote';

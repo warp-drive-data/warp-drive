@@ -33,16 +33,24 @@ of the release before it in `versions.json`. The reader rebuilds each full map f
 
 ## Commands
 
-Everything goes through one script. Each command takes `--check`, which regenerates the same
-files in memory, prints a unified diff for every file that would change, and exits 1.
+Everything goes through one script. Each command plans every file it owns in memory and then
+writes the plan once. With `--check` it writes nothing. It prints a unified diff for every file
+that would change and exits 1.
 
 ```sh
 node scripts/public-exports-mapping/cli.mjs update            # live step and shipped maps
-node scripts/public-exports-mapping/cli.mjs archive           # every released snapshot and step, from tags
+node scripts/public-exports-mapping/cli.mjs archive           # released snapshots and steps from tags, then what update writes
 node scripts/public-exports-mapping/cli.mjs release 5.10      # promote a newly tagged minor
 ```
 
-Each command prints one summary line, for example `update: 7 artifacts, 0 written`.
+A command also polices directories. A file there that its plan does not name is reported as
+`extra`, and removed without `--check`. `update` and `release` police `steps/` and the shipped
+maps. `archive` also polices `snapshots/`.
+
+Every step goes to the next minor, or to the next major's `.0`. When the root `package.json`
+is further ahead than that, every command refuses and names the `release` to run first.
+
+Each command prints one summary line, for example `update: 11 artifacts, 0 written`.
 
 ### After changing a legacy package's exports
 
@@ -110,20 +118,26 @@ git add scripts/public-exports-mapping packages/eslint-plugin-warp-drive/src/leg
 
 This writes `snapshots/5.10.json`, freezes `steps/5.9-5.10.json` from the two tags, starts
 `steps/5.10-5.11.json` as the new live step, and rewrites every shipped map, now including
-`5.10.json`.
+`5.10.json`. It re-derives `snapshots/5.9.json` from its tag as well, because the new frozen step
+starts there. `release 5.10 --check` reports exactly these files.
 
-Between the version bump and this command, `update --check` fails on main: the working tree
-says 5.11 while the newest snapshot says 5.9, so the live step it wants to write is
-`5.9-5.11`, which skips a release. The failure message names the `release` command. That is
-deliberate: the release step cannot be forgotten.
+Between the version bump and this command, `update --check` fails on main. The working tree
+says 5.11 while the newest snapshot says 5.9, so the live step would be `5.9-5.11`, which skips a
+release. The failure names `cli.mjs release 5.10`. That is deliberate. The release step cannot
+be forgotten.
+
+`release` also accepts the latest released minor. It then re-derives that minor's snapshot and
+step from the tags.
 
 ### Archival check
 
-`archive --check` rebuilds every released snapshot and step from tags and diffs them. The
-`Public Exports Archive` workflow runs it on every change under `scripts/public-exports-mapping/`
-and once a week, with the full history and tags fetched. Each tag is extracted into a temporary
-directory that holds only package manifests, build configs and `src/`, and the directory is
-removed as soon as that tag is scanned. It fails only when the discovery, the
+`archive --check` rebuilds every released snapshot and step from tags, folds them with the live
+step into the shipped maps, and diffs all of it. The `Public Exports Archive` workflow runs it
+with the full history and tags fetched. It runs on every change under
+`scripts/public-exports-mapping/` or to `pnpm-lock.yaml`, and once a week. Each tag is extracted
+into a temporary directory that holds only package manifests, build configs and `src/`, and the
+directory is removed as soon as that tag is scanned. The 5.5 snapshot is derived first, and every
+later tag reads that copy, so one run always converges. It fails only when the discovery, the
 export parser or the shim resolution changed, and then the diff is the review.
 
 ## Reading a shipped map
