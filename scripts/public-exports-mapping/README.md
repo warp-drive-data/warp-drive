@@ -205,9 +205,8 @@ The later files hold deltas. `5.7.json` lists the `module::export` keys the 5.6 
 ```
 scripts/public-exports-mapping/
   cli.mjs          update | archive | release, each with --check
-  generate.mjs     the scanner; scan() reads build configs and lists entry files
   exports.mjs      parseModule(): what one source file exports, read from its AST
-  surface.mjs      what a version exports; tags, working tree, legacy modules, snapshots
+  surface.mjs      what a version exports; entry files from build configs, tags, legacy modules
   step.mjs         where a token goes next; shim resolution, the "*" rule, overrides
   merge.mjs        the fold, the residual-chain check, and the delta encoding
   artifacts.mjs    paths, byte-stable serialization, check mode

@@ -1,16 +1,18 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdtempSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, globSync, mkdtempSync, readFileSync, readdirSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import url from 'node:url';
+import ts from 'typescript';
 
-import { scan } from './generate.mjs';
+import { parseModule } from './exports.mjs';
 import { compareTokens, packageOf, token } from './token.mjs';
 
 export const BASELINE = /** @type {import('./token.mjs').Minor} */ ('5.5');
 
 const REPO_ROOT = path.resolve(path.dirname(url.fileURLToPath(import.meta.url)), '..', '..');
 const SOURCE_DIRS = ['packages', 'warp-drive-packages'];
+const BUILD_CONFIGS = ['tsdown.config.mjs', 'vite.config.mjs'];
 
 /**
  * @typedef {object} Tree
@@ -28,7 +30,7 @@ const SOURCE_DIRS = ['packages', 'warp-drive-packages'];
  */
 
 /**
- * @typedef {Snapshot & { fileOf: Map<string, string> }} Surface
+ * @typedef {Snapshot & { modules: Map<string, import('./exports.mjs').ModuleExports> }} Surface
  */
 
 /**
@@ -61,38 +63,43 @@ export async function taggedTree(version, repoRoot = REPO_ROOT) {
 
 /**
  * @param {Tree} tree
- * @param {Snapshot | null} baseline
- * @returns {Promise<Surface>}
+ * @param {Snapshot | null} baseline  null only for the baseline itself, whose public packages define legacy
+ * @returns {Surface}
  */
-export async function surfaceOf(tree, baseline) {
+export function surfaceOf(tree, baseline) {
   const legacyPackages = baseline ? new Set(baseline.legacyModules.map(packageOf)) : null;
-  /** @type {Map<string, import('./token.mjs').Token>} */
-  const tokens = new Map();
-  const fileOf = new Map();
-  const legacyModules = new Set();
+  /** @type {Surface['modules']} */
+  const modules = new Map();
+  const legacyModules = [];
+  const tokens = [];
 
-  for (const dir of SOURCE_DIRS) {
-    const packagesDir = path.join(tree.root, dir);
-    if (!existsSync(packagesDir)) continue;
-    const configName = hasConfig(packagesDir, 'tsdown.config.mjs') ? 'tsdown.config.mjs' : 'vite.config.mjs';
-    for (const record of await scan({ root: tree.root, packagesDir, configName })) {
-      const key = `${record.module}::${record.export}`;
-      const typeOnly = (tokens.get(key)?.typeOnly ?? true) && record.typeOnly;
-      tokens.set(key, token(record.module, record.export, typeOnly));
-      fileOf.set(record.module, path.join(tree.root, record.filePath));
-      if (dir === 'packages' && (legacyPackages === null || legacyPackages.has(packageOf(record.module)))) {
-        legacyModules.add(record.module);
-      }
+  for (const { dir, module, file } of entryModules(tree.root)) {
+    if (modules.has(module)) {
+      throw new Error(`${module} is built from both ${modules.get(module).file} and ${file}`);
     }
+    const parsed = parseModule(file);
+    // A side-effect-only module has no token to map.
+    if (!parsed.named.size && !parsed.stars.length) continue;
+    modules.set(module, parsed);
+    for (const [name, { typeOnly }] of parsed.named) tokens.push(token(module, name, typeOnly));
+    if (parsed.stars.length)
+      tokens.push(
+        token(
+          module,
+          '*',
+          parsed.stars.every((star) => star.typeOnly)
+        )
+      );
+    if (dir === 'packages' && (legacyPackages?.has(packageOf(module)) ?? true)) legacyModules.push(module);
   }
 
   return {
     schema: 1,
     kind: 'snapshot',
     version: tree.version,
-    legacyModules: [...legacyModules].sort(),
-    tokens: [...tokens.values()].sort(compareTokens),
-    fileOf,
+    legacyModules: legacyModules.sort(),
+    tokens: tokens.sort(compareTokens),
+    modules,
   };
 }
 
@@ -104,11 +111,52 @@ export function snapshotOf({ schema, kind, version, legacyModules, tokens }) {
   return { schema, kind, version, legacyModules, tokens };
 }
 
-function hasConfig(dir, configName) {
-  for (const entry of readdirSync(dir, { withFileTypes: true })) {
-    if (entry.name === 'node_modules') continue;
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory() ? hasConfig(full, configName) : entry.name === configName) return true;
+/**
+ * Every entry file of every public package one level under each source directory.
+ * @param {string} root
+ * @returns {Generator<{ dir: string, module: string, file: string }>}
+ */
+function* entryModules(root) {
+  for (const dir of SOURCE_DIRS) {
+    if (!existsSync(path.join(root, dir))) continue;
+    for (const entry of readdirSync(path.join(root, dir), { withFileTypes: true })) {
+      const pkgRoot = path.join(root, dir, entry.name);
+      const manifest = path.join(pkgRoot, 'package.json');
+      if (!entry.isDirectory() || !existsSync(manifest)) continue;
+      const { name, private: isPrivate } = JSON.parse(readFileSync(manifest, 'utf8'));
+      const config = BUILD_CONFIGS.map((c) => path.join(pkgRoot, c)).find((c) => existsSync(c));
+      if (!name || isPrivate || !config) continue;
+
+      const patterns = entryPointsOf(config);
+      if (!patterns.length) throw new Error(`${config} declares no entry points`);
+      for (const rel of new Set(patterns.flatMap((p) => globSync(p.replace(/^\.\//, ''), { cwd: pkgRoot })))) {
+        if (!/^src\/.+\.(mjs|cjs|js|ts)$/.test(rel) || rel.includes('/test-support/')) continue;
+        const sub = rel.slice('src/'.length).replace(/\.[^.]+$/, '');
+        yield { dir, module: sub === 'index' ? name : `${name}/${sub}`, file: path.join(pkgRoot, rel) };
+      }
+    }
   }
-  return false;
+}
+
+/**
+ * The string entries of `export const entryPoints = [...]`, or of tsdown's own `entry: { ... }`.
+ * @param {string} config
+ * @returns {string[]}
+ */
+function entryPointsOf(config) {
+  const source = ts.createSourceFile(config, readFileSync(config, 'utf8'), ts.ScriptTarget.Latest, true);
+  const found = [];
+  const visit = (node) => {
+    if (ts.isVariableDeclaration(node) && node.name.getText() === 'entryPoints') {
+      if (node.initializer && ts.isArrayLiteralExpression(node.initializer)) found.push(...node.initializer.elements);
+    } else if (ts.isPropertyAssignment(node) && node.name.getText() === 'entry') {
+      if (ts.isObjectLiteralExpression(node.initializer)) {
+        found.push(...node.initializer.properties.filter(ts.isPropertyAssignment).map((p) => p.initializer));
+      }
+    } else {
+      ts.forEachChild(node, visit);
+    }
+  };
+  visit(source);
+  return found.filter(ts.isStringLiteralLike).map((literal) => literal.text);
 }

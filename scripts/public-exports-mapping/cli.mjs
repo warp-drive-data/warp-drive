@@ -37,7 +37,7 @@ export async function update(opts) {
   }
   refuseStrayOverrides(new Set([...consecutive(released), [latest, tree.version]].map(([a, b]) => `${a}-${b}`)));
 
-  const head = await surfaceOf(tree, loadSnapshot(BASELINE));
+  const head = surfaceOf(tree, loadSnapshot(BASELINE));
   const live = deriveStep(loadSnapshot(latest), head, loadOverrides(latest, tree.version));
   const chain = consecutive(released).map(([a, b]) => loadStep(a, b));
 
@@ -65,9 +65,9 @@ export async function archive(opts) {
   /** @type {Map<string, import('./surface.mjs').Surface>} */
   const surfaces = new Map();
   for (const version of released) {
-    surfaces.set(version, await surfaceOf(await taggedTree(version), version === BASELINE ? null : baseline));
+    surfaces.set(version, surfaceOf(await taggedTree(version), version === BASELINE ? null : baseline));
   }
-  surfaces.set(tree.version, await surfaceOf(tree, baseline));
+  surfaces.set(tree.version, surfaceOf(tree, baseline));
 
   const desired = new Map();
   for (const version of released) desired.set(pathOf.snapshot(version), canonical(snapshotOf(surfaces.get(version))));
@@ -94,7 +94,7 @@ export async function release(minor, opts) {
   if (compareMinors(tree.version, minor) <= 0) {
     throw new Error(`root package.json is still ${tree.version}; bump it past ${minor} before releasing`);
   }
-  const surface = await surfaceOf(await taggedTree(minor), loadSnapshot(BASELINE));
+  const surface = surfaceOf(await taggedTree(minor), loadSnapshot(BASELINE));
   const step = deriveStep(loadSnapshot(prev), surface, loadOverrides(prev, minor));
   const results = sync(
     new Map([
