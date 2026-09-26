@@ -3,7 +3,7 @@ description: Learn the four data representations (API, wire, cache, presentation
 draft: true
 ---
 
-## Data
+# Data
 
 In every application data can take on many different representations:
 
