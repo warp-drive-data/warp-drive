@@ -14,7 +14,7 @@ description: >-
 UnauthorizedError: AdapterRequestErrorConstructor<UnauthorizedError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:378](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/adapter/error.ts#L378)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:378](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/adapter/error.ts#L378)
 
 A `UnauthorizedError` equates to an HTTP `401 Unauthorized` response
 status. It is used by an adapter to signal that a request to the external

@@ -16,7 +16,7 @@ interface NewResourceKey<T extends string = string> extends ResourceKeyBase<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:135](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/identifier.ts#L135)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:135](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/identifier.ts#L135)
 
 Used when a ResourceKey was created locally
 (by a call to store.createRecord).
@@ -44,7 +44,7 @@ prior to the record having been fully loaded.
 id: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:142](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/identifier.ts#L142)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:142](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/identifier.ts#L142)
 
 the PrimaryKey for the resource this ResourceKey represents. `null`
 if not yet assigned a PrimaryKey value.
@@ -57,7 +57,7 @@ if not yet assigned a PrimaryKey value.
 lid: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:81](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/identifier.ts#L81)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:81](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/identifier.ts#L81)
 
 A string representing a unique identity.
 
@@ -75,7 +75,7 @@ ResourceKeyBase.lid
 type: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:88](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/identifier.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:88](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/identifier.ts#L88)
 
 the primary `ResourceType` or "model name" this ResourceKey belongs to.
 

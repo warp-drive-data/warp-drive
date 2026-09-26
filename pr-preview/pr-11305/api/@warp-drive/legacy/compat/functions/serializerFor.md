@@ -16,7 +16,7 @@ function serializerFor(this: Store$1, modelName: string):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:209](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L209)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:209](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L209)
 
 Returns an instance of the serializer for a given type. For
 example, `serializerFor('person')` will return an instance of

@@ -12,7 +12,7 @@ description: >-
 type StringSatisfiesIncludes<T extends string, SET extends string> = _StringSatisfiesIncludes<T, SET, T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/record.ts#L227)
+Defined in: [warp-drive-packages/core/src/types/record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/record.ts#L227)
 
 Validates that the comma-separated-string `T` (e.g. `'company,company.ceo,friends'`)
 only contains paths present in the union `SET` (typically [Includes](Includes.md)).

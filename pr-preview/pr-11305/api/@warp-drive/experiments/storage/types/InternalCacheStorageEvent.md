@@ -16,7 +16,7 @@ interface InternalCacheStorageEvent {
 }
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:8](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/experiments/src/storage/cache.ts#L8)
+Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:8](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/experiments/src/storage/cache.ts#L8)
 
 ## Properties
 
@@ -26,7 +26,7 @@ Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:8](https://git
 key: string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:10](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/experiments/src/storage/cache.ts#L10)
+Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:10](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/experiments/src/storage/cache.ts#L10)
 
 ***
 
@@ -36,7 +36,7 @@ Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:10](https://gi
 newValue: string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:12](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/experiments/src/storage/cache.ts#L12)
+Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:12](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/experiments/src/storage/cache.ts#L12)
 
 ***
 
@@ -46,7 +46,7 @@ Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:12](https://gi
 oldValue: string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:11](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/experiments/src/storage/cache.ts#L11)
+Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:11](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/experiments/src/storage/cache.ts#L11)
 
 ***
 
@@ -56,4 +56,4 @@ Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:11](https://gi
 storageArea: string;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:9](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/experiments/src/storage/cache.ts#L9)
+Defined in: [warp-drive-packages/experiments/src/storage/cache.ts:9](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/experiments/src/storage/cache.ts#L9)

@@ -14,7 +14,7 @@ description: >-
 function withRestoredDeprecatedModelRequestBehaviors(schema: WithPartial<LegacyResourceSchema, "identity" | "legacy">): LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:403](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/model/migration-support.ts#L403)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:403](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/model/migration-support.ts#L403)
 
 Adds the necessasary fields to the schema for supporting
 the deprecated request methods on LegacyMode schemas.

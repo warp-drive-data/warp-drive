@@ -14,7 +14,7 @@ function getPromiseState<T = unknown, E = unknown>(promise:
 | Awaitable<T, E>): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:369](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/signals/promise-state.ts#L369)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:369](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/signals/promise-state.ts#L369)
 
 Returns a reactive state-machine for the provided promise or awaitable.
 

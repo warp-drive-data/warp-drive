@@ -23,7 +23,7 @@ interface LegacyStoreCompat extends Store$1 {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:73](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L73)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:73](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L73)
 
 **`No Inherit Doc`** **`Legacy`**
 
@@ -59,7 +59,7 @@ adapterFor(
 adapterFor(this: Store$1, modelName: string): MinimumAdapterInterface;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:83](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L83)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:83](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L83)
 
 Returns the adapter instance for the given model type, instantiating
 it (and caching the instance) if necessary. See [adapterFor](../functions/adapterFor.md).
@@ -88,7 +88,7 @@ adapterFor(
 ): MinimumAdapterInterface | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:89](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L89)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:89](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L89)
 
 Same as the single-argument overload, but returns `undefined` instead
 of throwing/asserting when `_allowMissing` is `true` and no adapter
@@ -120,7 +120,7 @@ is found.
 normalize(modelName: string, payload: ObjectValue): ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:101](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L101)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:101](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L101)
 
 Normalizes a payload for the given model type using its serializer.
 See [normalize](../functions/normalize.md).
@@ -147,7 +147,7 @@ See [normalize](../functions/normalize.md).
 pushPayload(modelName: string, payload: ObjectValue): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:107](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L107)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:107](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L107)
 
 Pushes a payload into the store using the appropriate serializer to
 normalize it first. See [pushPayload](../functions/pushPayload.md).
@@ -174,7 +174,7 @@ normalize it first. See [pushPayload](../functions/pushPayload.md).
 serializeRecord(record: unknown, options?: SerializerOptions): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:112](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L112)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:112](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L112)
 
 Serializes a record using its serializer. See [serializeRecord](../functions/serializeRecord.md).
 
@@ -200,7 +200,7 @@ Serializes a record using its serializer. See [serializeRecord](../functions/ser
 serializerFor<K extends string>(modelName: K, _allowMissing?: boolean): MinimumSerializerInterface | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:95](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/legacy/src/compat.ts#L95)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:95](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/legacy/src/compat.ts#L95)
 
 Returns the serializer instance for the given model type, instantiating
 it (and caching the instance) if necessary. See [serializerFor](../functions/serializerFor.md).

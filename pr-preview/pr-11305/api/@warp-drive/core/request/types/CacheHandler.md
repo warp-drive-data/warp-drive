@@ -19,7 +19,7 @@ interface CacheHandler {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:282](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/request/-private/types.ts#L282)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:282](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/request/-private/types.ts#L282)
 
 The CacheHandler is identical to other handlers except that it
 is allowed to return a value synchronously. This is useful for
@@ -41,7 +41,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:290](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/request/-private/types.ts#L290)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:290](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/request/-private/types.ts#L290)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to

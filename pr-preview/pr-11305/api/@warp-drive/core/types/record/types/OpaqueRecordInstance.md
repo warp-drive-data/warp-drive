@@ -12,7 +12,7 @@ description: >-
 type OpaqueRecordInstance = unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:195](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/record.ts#L195)
+Defined in: [warp-drive-packages/core/src/types/record.ts:195](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/record.ts#L195)
 
 A type-erased placeholder for a record instance, used where the
 specific record type is not known or not relevant.

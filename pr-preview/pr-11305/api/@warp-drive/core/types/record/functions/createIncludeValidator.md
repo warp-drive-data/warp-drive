@@ -12,7 +12,7 @@ description: >-
 function createIncludeValidator<T extends TypedRecordInstance>(): <U>(includes: _StringSatisfiesIncludes<U, Exclude<_ExtractUnion<3, T, true, NONE, NONE, 1>, NONE>>) => U;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:245](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/record.ts#L245)
+Defined in: [warp-drive-packages/core/src/types/record.ts:245](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/record.ts#L245)
 
 Creates a runtime validator function for comma-separated `include` strings,
 ensuring at compile time that only valid paths for `T` (per [Includes](../types/Includes.md))

@@ -12,7 +12,7 @@ description: >-
 function buildQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): string;
 ```
 
-Defined in: [index.ts:769](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/utilities/src/index.ts#L769)
+Defined in: [index.ts:769](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/utilities/src/index.ts#L769)
 
 Sorts query params by both key and value, returning a query params string
 

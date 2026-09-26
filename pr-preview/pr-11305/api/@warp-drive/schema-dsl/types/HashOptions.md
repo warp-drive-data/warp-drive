@@ -14,7 +14,7 @@ interface HashOptions {
 }
 ```
 
-Defined in: [fields/hash.ts:13](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/schema-dsl/src/fields/hash.ts#L13)
+Defined in: [fields/hash.ts:13](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/schema-dsl/src/fields/hash.ts#L13)
 
 Options accepted by the [hash](../functions/hash.md) decorator.
 
@@ -26,7 +26,7 @@ Options accepted by the [hash](../functions/hash.md) decorator.
 type: string;
 ```
 
-Defined in: [fields/hash.ts:20](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/schema-dsl/src/fields/hash.ts#L20)
+Defined in: [fields/hash.ts:20](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/schema-dsl/src/fields/hash.ts#L20)
 
 The name of a [HashFn](../../core/types/schema/concepts/types/HashFn.md) registered with the schema service, used
 to compute this field's value from the object's cache data.

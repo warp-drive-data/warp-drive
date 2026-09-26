@@ -17,7 +17,7 @@ interface NotificationManager {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:294](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L294)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:294](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L294)
 
 **`Hideconstructor`**
 
@@ -51,7 +51,7 @@ subscribe(
 ): object;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:360](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L360)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:360](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L360)
 
 Subscribe to changes for a given ResourceKey, RequestKey, or addition/removal of any resource
 or document.
@@ -113,7 +113,7 @@ an opaque token to be used with unsubscribe
 subscribe(cacheKey: "resource", callback: ResourceOperationCallback): object;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:361](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L361)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:361](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L361)
 
 Subscribe to changes for a given ResourceKey, RequestKey, or addition/removal of any resource
 or document.
@@ -171,7 +171,7 @@ an opaque token to be used with unsubscribe
 subscribe(cacheKey: "document" | RequestKey, callback: DocumentOperationCallback): object;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:362](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L362)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:362](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L362)
 
 Subscribe to changes for a given ResourceKey, RequestKey, or addition/removal of any resource
 or document.
@@ -231,7 +231,7 @@ an opaque token to be used with unsubscribe
 unsubscribe(token: object): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:397](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L397)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:397](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L397)
 
 remove a previous subscription
 

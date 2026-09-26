@@ -11,7 +11,7 @@ url: >-
 
 # &#x20;LifetimesService
 
-Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/packages/request-utils/src/index.ts#L21)
+Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/packages/request-utils/src/index.ts#L21)
 
 ## Extends
 
@@ -25,7 +25,7 @@ Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/9aa
 new LifetimesService(config: PolicyConfig): LifetimesService;
 ```
 
-Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/packages/request-utils/src/index.ts#L22)
+Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/packages/request-utils/src/index.ts#L22)
 
 #### Parameters
 

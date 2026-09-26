@@ -16,7 +16,7 @@ type ResourceDocument<T = PersistedResourceKey> =
   | ResourceErrorDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:159](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/spec/document.ts#L159)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:159](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/spec/document.ts#L159)
 
 A type useful for representing the raw {json:api} documents that
 the cache may use.

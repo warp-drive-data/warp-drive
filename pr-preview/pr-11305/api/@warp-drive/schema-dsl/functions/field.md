@@ -19,7 +19,7 @@ function field(options: FieldOptions): (target: object, key: string) => void;
 function field(target: object, key: string): void;
 ```
 
-Defined in: [fields/field.ts:62](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/schema-dsl/src/fields/field.ts#L62)
+Defined in: [fields/field.ts:62](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/schema-dsl/src/fields/field.ts#L62)
 
 **`Decorator`**
 
@@ -70,7 +70,7 @@ export class User {
 function field(options: FieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/field.ts:63](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/schema-dsl/src/fields/field.ts#L63)
+Defined in: [fields/field.ts:63](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/schema-dsl/src/fields/field.ts#L63)
 
 **`Decorator`**
 

@@ -17,7 +17,7 @@ type Mutation =
   | SortRelatedRecordsMutation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/cache/mutations.ts#L193)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/cache/mutations.ts#L193)
 
 A `Mutation` is an action that updates the local (uncommitted or "dirty")
 state of the [Cache](../../types/Cache.md) in some manner.

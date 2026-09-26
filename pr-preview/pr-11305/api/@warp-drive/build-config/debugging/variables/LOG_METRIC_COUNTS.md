@@ -18,7 +18,7 @@ description: >-
 const LOG_METRIC_COUNTS: boolean = false;
 ```
 
-Defined in: [debugging.ts:131](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/build-config/src/debugging.ts#L131)
+Defined in: [debugging.ts:131](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/build-config/src/debugging.ts#L131)
 
 Log key count metrics, useful for performance
 debugging.

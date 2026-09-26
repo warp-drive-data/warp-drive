@@ -10,7 +10,7 @@ description: Utility type that strips `readonly` from every property of an objec
 type Mutable<T> = { -readonly [P in keyof T]: T[P] };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/utils.ts:29](https://github.com/warp-drive-data/warp-drive/blob/9aac0cccca5b7489c38352b1f0d67d77818a333a/warp-drive-packages/core/src/types/utils.ts#L29)
+Defined in: [warp-drive-packages/core/src/types/utils.ts:29](https://github.com/warp-drive-data/warp-drive/blob/cfb9e9917e57745bae3891bf6a907cb9bd5a4470/warp-drive-packages/core/src/types/utils.ts#L29)
 
 Removes `readonly` from every property of `T`.
 
