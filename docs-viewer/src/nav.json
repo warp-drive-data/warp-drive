@@ -86,8 +86,7 @@
         {
           "name": "@ember-data/graph",
           "replacement": "@warp-drive/core",
-          "status": "internal",
-          "advice": "It is used by the JSON:API cache; apps should not depend on it directly."
+          "advice": "It re-exports the relationship graph that the JSON:API cache uses internally. Apps should not depend on it, or on the private graph module in `@warp-drive/core` it re-exports."
         },
         {
           "name": "@ember-data/request",

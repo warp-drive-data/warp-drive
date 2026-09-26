@@ -511,10 +511,10 @@ interface ApiNavGroupPackage {
    */
   replacement?: string;
   /**
-   * Legacy packages only: `internal` for a package apps should not depend on at all, `deprecated`
-   * for one slated for removal. Changes the warning's title and first sentence. Default: legacy.
+   * Legacy packages only: `deprecated` for one slated for removal. Changes the badge, the warning's
+   * title and its first sentence. Default: legacy.
    */
-  status?: 'internal' | 'deprecated';
+  status?: 'deprecated';
   /**
    * Legacy packages only: markdown that replaces the warning's default "New code should use
    * `<replacement>` instead." sentence, for guidance a single module can't carry (e.g. Adapters
@@ -1178,11 +1178,6 @@ function fixIndexSignatureIndent(content: string): string {
 
 const LEGACY_STATUS = {
   legacy: { badge: 'Legacy Package', title: 'Legacy package', is: 'is a legacy package' },
-  internal: {
-    badge: 'Internal Package',
-    title: 'Internal package',
-    is: 'is an internal package, not intended for direct use by apps',
-  },
   deprecated: { badge: 'Deprecated Package', title: 'Deprecated package', is: 'is deprecated' },
 } as const;
 
