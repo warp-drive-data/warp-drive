@@ -108,11 +108,16 @@ function loadJson(file, kind, expected) {
 }
 
 /**
- * @typedef {Map<string, string>} Desired
+ * @typedef {import('./surface.mjs').Snapshot | import('./step.mjs').StepMap | import('./merge.mjs').MergedMap | import('./merge.mjs').MergedDelta | import('./token.mjs').Minor[]} Artifact
  */
 
 /**
- * @param {import('./surface.mjs').Snapshot | import('./step.mjs').StepMap | import('./merge.mjs').MergedMap | import('./merge.mjs').MergedDelta | string[]} value
+ * Every file a command wants, by absolute path, before serialization.
+ * @typedef {Map<string, Artifact>} Plan
+ */
+
+/**
+ * @param {Artifact} value
  * @returns {string}
  */
 export function canonical(value) {
@@ -127,11 +132,12 @@ export function canonical(value) {
  */
 
 /**
- * @param {Desired} desired
- * @param {{ check: boolean, managed: string[] }} opts
- * @returns {CheckResult[]}  one per desired path plus one per extra file, sorted by path
+ * @param {Plan} plan
+ * @param {{ check: boolean, managed: string[] }} opts  `managed` directories report files the plan lacks
+ * @returns {CheckResult[]}  one per planned path plus one per extra file, sorted by path
  */
-export function sync(desired, opts) {
+export function sync(plan, opts) {
+  const desired = new Map([...plan].map(([file, value]) => [file, canonical(value)]));
   /** @type {CheckResult[]} */
   const results = [];
   for (const [file, text] of desired) {
