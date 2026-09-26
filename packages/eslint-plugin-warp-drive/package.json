@@ -56,6 +56,7 @@
   "scripts": {
     "sync": "echo \"syncing\"",
     "skip:test": "mocha tests",
+    "test:legacy-imports": "mocha tests/no-legacy-imports.js tests/legacy-import-mapping.js",
     "lint": "eslint . --quiet --cache --cache-strategy=content"
   },
   "license": "MIT"
