@@ -47,8 +47,12 @@ Each command prints one summary line, for example `update: 7 artifacts, 0 writte
 
 ```sh
 node scripts/public-exports-mapping/cli.mjs update
-git add scripts/public-exports-mapping/steps packages/eslint-plugin-warp-drive/src/legacy-import-mapping
+node packages/eslint-plugin-warp-drive/tests/fixtures/legacy-import-decisions.js
+git add scripts/public-exports-mapping/steps packages/eslint-plugin-warp-drive/src/legacy-import-mapping packages/eslint-plugin-warp-drive/tests/fixtures
 ```
+
+The second command rewrites the table of reader decisions that the plugin's tests compare
+against. Its diff shows every import whose outcome changed, so review it with the maps.
 
 CI runs `pnpm lint:public-exports`, which is `cli.mjs update --check`, in the `lint` job on
 every PR. It needs no tags.
@@ -99,7 +103,8 @@ When `v5.10.0` is tagged and main is bumped to `5.11.0-alpha.0`, in that same PR
 ```sh
 git fetch --tags
 node scripts/public-exports-mapping/cli.mjs release 5.10
-git add scripts/public-exports-mapping packages/eslint-plugin-warp-drive/src/legacy-import-mapping
+node packages/eslint-plugin-warp-drive/tests/fixtures/legacy-import-decisions.js
+git add scripts/public-exports-mapping packages/eslint-plugin-warp-drive/src/legacy-import-mapping packages/eslint-plugin-warp-drive/tests/fixtures
 ```
 
 This writes `snapshots/5.10.json`, freezes `steps/5.9-5.10.json` from the two tags, starts
