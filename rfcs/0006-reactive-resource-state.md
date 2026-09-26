@@ -252,16 +252,23 @@ instance is torn down. A record whose `$state` is never read pays nothing for it
 | `isLoading`, `isLoaded`, `isReloading`, `isPreloaded` | — | a PolarisMode resource is materialized from cache data; loading is a property of a *request* |
 | `dirtyType`, `currentState.stateName` | — | string-encoded restatements of the booleans above; `stateName` exposes the long-gone state machine |
 | `currentState` | — | `$state` *is* the state; there's no separate state machine object to reach into |
-| `isDestroying`, `isDestroyed` | — (under discussion) | see [Removal from the store](#removal-from-the-store) |
+| `isDestroying`, `isDestroyed` | — | intentionally omitted; see [Removal from the store](#removal-from-the-store) |
 
 ### Removal from the store
 
 LegacyMode records expose `isDestroying` and `isDestroyed` from their EmberObject lifecycle, and
-apps use them to tell that a record they still hold has been unloaded. This RFC does not carry
-them over, and this section records why, since it is the part of the design most worth a second
-look.
+apps use them to tell that a record they still hold has been unloaded. `$state` intentionally
+omits both.
 
-What actually happens when a PolarisMode record leaves the store:
+Those flags exist to support record-based save and loading patterns: calling `record.save()`,
+`record.reload()` or `record.destroyRecord()` on an instance, and guarding against a record that
+was torn down while one of those calls, or the UI around it, still held it. Record-based saving
+and loading are not part of PolarisMode. Resources are loaded and saved through requests, and it
+is the request (via `getRequestState` / `<Request>`) that reports whether it is pending, succeeded
+or failed. In a request-based paradigm, a destroy flag is much less necessary.
+
+For the cases that remain, `$state` already reports what can be observed. When a PolarisMode
+record leaves the store:
 
 1. `store.unloadRecord` (or `unloadAll`, or deleting a new record) calls the store's
    `teardownRecord` hook, which destroys the record instance synchronously and releases its
@@ -270,29 +277,15 @@ What actually happens when a PolarisMode record leaves the store:
 3. The store stops returning that instance. If the same resource is loaded again, it gets a
    *new* instance; the old one stays disconnected.
 
-So:
+A UI still rendering the torn-down instance sees `$state.isEmpty` become `true` (see
+[`isEmpty`](#isempty)). Teardown is a single synchronous step, so there is no observable
+"destroying" phase that an `isDestroying` flag could report. A successful delete does not by
+itself unload the resource; the instance stays materialized with `isDeletionCommitted: true`,
+which is the flag for "this is gone on the server".
 
-- **`isDestroying` has nothing to report.** Teardown is a single synchronous step; there is no
-  observable window between "destroying" and "destroyed".
-- **`isDestroyed` would coincide with `isEmpty`** for every path we know of: teardown is always
-  followed by the cache dropping the data, and `isEmpty` is invalidated at teardown for exactly
-  this case. They only diverge if an app keeps the old instance around and the same resource is
-  then re-loaded into a new instance, where `isEmpty` on the old one could read `false` again
-  once re-read.
-- **A committed deletion is not a removal.** A successful delete does not by itself unload the
-  resource; the instance stays materialized with `isDeletionCommitted: true`, which is the flag
-  for "this is gone on the server".
-
-The options are:
-
-1. **No destroy flag (this draft).** `isEmpty` covers "removed from the store while referenced",
-   and `isDeletionCommitted` covers "deleted on the server". Smallest surface, but it overloads
-   `isEmpty` with two meanings (never had values, and was removed).
-2. **Add `isDestroyed` only.** A flag set at teardown, independent of cache state, meaning "this
-   instance is disconnected; don't read from it". It stays `true` even if the resource is
-   re-loaded into a new instance, and gives `isEmpty` back its single meaning.
-3. **Carry over both `isDestroying` and `isDestroyed`.** Maximum familiarity for migrating apps,
-   at the cost of a flag (`isDestroying`) that is never observably different from `isDestroyed`.
+If we find that a utility for detecting a disconnected instance is still useful, for example an
+`isDestroyed` flag set at teardown that stays `true` even after the same resource is re-loaded
+into a new instance, one will be added at a later time.
 
 ### TypeScript
 
@@ -399,8 +392,6 @@ the old name was both redundant and incomplete.
 
 ## Unresolved questions
 
-- **Removal from the store:** no destroy flag, `isDestroyed` only, or both `isDestroying` and
-  `isDestroyed`? See [Removal from the store](#removal-from-the-store).
 - **What `isEmpty` means for a resource loaded with an empty payload.** The JSON:API cache's
   `isEmpty` is `true` only when the resource has never received field data; a payload of just
   `{ type, id }` stores an empty set of attributes, so `isEmpty` reports `false` for it. If `$state`
