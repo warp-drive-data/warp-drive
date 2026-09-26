@@ -1,12 +1,13 @@
 // #omit-file-from-starter
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
+import type { PersistedResourceKey, RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL } from '@warp-drive/utilities';
 
 import type { Todo, TodoAttributes } from '../schemas/todo.ts';
 import type Store from '../store.ts';
-import { getActiveTodos, getCompletedTodos } from './query.ts';
+import { getActiveTodos, getAllTodos, getCompletedTodos } from './query.ts';
 import { keyForRequest, keyForSavedResource } from './utils.ts';
 
 /** PATCH /api/todo/:id */
@@ -53,11 +54,26 @@ function moveBetweenLists(
   const to = keyForRequest(store, lists.to);
 
   // Only patch lists that have been requested; the others will fetch fresh.
-  // FIXME: Set a real index on these.
   if (store.cache.peekRequest(to)) {
-    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: 0 });
+    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: serverIndex(store, to, value) });
   }
   if (store.cache.peekRequest(from)) {
     store.cache.patch({ record: from, op: 'remove', field: 'data', value });
   }
+}
+
+/**
+ * Where the server would put `todo` in `list`. The server orders todos by
+ * creation, the order of the unfiltered list, so the todo goes after every
+ * todo in `list` that comes before it there.
+ */
+function serverIndex(store: Store, list: RequestKey, todo: PersistedResourceKey): number {
+  const order = cachedData(store, keyForRequest(store, getAllTodos()));
+  const position = order.indexOf(todo);
+  return cachedData(store, list).filter((key) => order.indexOf(key) < position).length;
+}
+
+function cachedData(store: Store, list: RequestKey): ResourceKey[] {
+  const content = store.cache.peekRequest(list)?.content;
+  return content && 'data' in content && Array.isArray(content.data) ? content.data : [];
 }

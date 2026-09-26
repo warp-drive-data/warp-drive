@@ -28,7 +28,8 @@ to Stun".
 4. [Create](./create.md): save a new todo, and let the store refetch the lists
 5. [Edit title](./edit-title.md): edit a copy of a todo, then save it with a
    `PATCH`
-6. Toggle
+6. [Toggle](./toggle.md): save a todo's completed state, and move it between the
+   cached lists
 7. Delete
 8. Bulk operations
 9. Where next
