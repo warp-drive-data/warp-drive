@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Legacy `JSONAPIAdapter`, which turns store requests into HTTP requests following JSON:API URL, verb and
+ * header conventions.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { RequestManager, Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';

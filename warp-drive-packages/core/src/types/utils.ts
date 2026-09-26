@@ -1,4 +1,10 @@
 /**
+ * @module
+ * @summary Generic TypeScript utility types: `WithPartial` to make named properties optional and `Mutable` to strip
+ * `readonly`.
+ */
+
+/**
  * Makes the properties named in `K` optional on `T`, leaving the rest as-is.
  *
  * @summary Utility type that makes only the named properties of an object type optional.

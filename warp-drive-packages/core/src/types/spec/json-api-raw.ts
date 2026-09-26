@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for raw {json:api} structures: resource objects, relationship objects, resource identifiers, links,
+ * meta and single, collection and empty documents.
+ */
+
 import type { ArrayValue, ObjectValue } from '../json/raw.ts';
 
 /**

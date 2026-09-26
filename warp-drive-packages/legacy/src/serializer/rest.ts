@@ -3,6 +3,12 @@
 /* oxlint-disable typescript/no-unsafe-assignment */
 /* oxlint-disable typescript/no-unsafe-call */
 /* oxlint-disable typescript/no-unsafe-return */
+/**
+ * @module
+ * @summary Legacy `RESTSerializer` for payloads that key records by model name at the root, plus the
+ * `EmbeddedRecordsMixin` for embedded relationships.
+ */
+
 import { warn } from '@ember/debug';
 import type EmberObject from '@ember/object';
 

@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for requests and responses: `RequestInfo`, the request shapes builders return, cache options, the
+ * handler context and the documents a request's `Future` settles with.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { Future, Handler } from '../request.ts';
 // oxlint-disable-next-line no-unused-vars

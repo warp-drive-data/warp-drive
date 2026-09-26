@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Legacy `restoreDeprecatedStoreBehaviors`, which restores the adapter-based `findRecord`, `findAll`, `query`,
+ * `saveRecord` and related methods onto a `Store` class.
+ */
+
 import type { Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import type { LegacyLiveArray, LegacyQueryArray, PrivateStore } from '@warp-drive/core/store/-private';

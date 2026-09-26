@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary The `Cache` interface a cache implementation fulfills to store, patch, mutate and read documents and
+ * resources, plus the `ChangedAttributesHash` and `RelationshipDiff` types.
+ */
+
 import type { ResourceBlob } from './cache/aliases.ts';
 import type { Change } from './cache/change.ts';
 import type { Mutation } from './cache/mutations.ts';

@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary The `DefaultCachePolicy` and `parseCacheControl` for expiring cached requests, plus the
+ * `NotificationManager` type for subscribing to cache change notifications.
+ */
+
 export {
   DefaultCachePolicy,
   type PolicyConfig,

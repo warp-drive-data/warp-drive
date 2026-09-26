@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for records that declare their resource type via the `[Type]` symbol, including `TypedRecordInstance`,
+ * `Includes`, `Mask` and the `createIncludeValidator` helper.
+ */
+
 import type { Type } from './symbols.ts';
 
 /**

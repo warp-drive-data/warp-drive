@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Legacy helpers for migrating ember-data-model-fragments to WarpDrive schemas, including `withLegacy`,
+ * `withFragmentDefaults` and the `Fragment` and `FragmentArray` extensions.
+ */
+
 export { withArrayDefaults } from './model-fragments/utilities/with-array-defaults.ts';
 export { withFragmentDefaults } from './model-fragments/utilities/with-fragment-defaults.ts';
 export { withFragmentArrayDefaults } from './model-fragments/utilities/with-fragment-array-defaults.ts';

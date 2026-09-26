@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Request-layer types such as `Future`, `Handler` and `Context`, plus `withResponseType` and
+ * `withReactiveResponse` for typing the response a request resolves with.
+ */
+
 import type { ReactiveDataDocument } from './reactive.ts';
 import type { RequestInfo } from './types/request.ts';
 import type { Meta } from './types/spec/json-api-raw.ts';

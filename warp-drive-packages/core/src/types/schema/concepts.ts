@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the functions schemas reference by name: `Transformation` to convert field values, `Derivation`
+ * for computed fields and `HashFn` for object identity.
+ */
+
 import type { ResourceKey } from '../identifier.ts';
 import type { ObjectValue, Value } from '../json/raw.ts';
 import type { OpaqueRecordInstance } from '../record.ts';

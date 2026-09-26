@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the operations that update a relationship's remote (persisted) or local (uncommitted) state in the
+ * relationship Graph.
+ */
+
 import type {
   AddToResourceRelationshipMutation as AddResourceMutation,
   RemoveFromResourceRelationshipMutation as RemoveResourceMutation,

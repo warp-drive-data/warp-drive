@@ -1,6 +1,11 @@
 /* oxlint-disable typescript/no-unsafe-member-access */
 /* oxlint-disable typescript/no-unsafe-assignment */
 /* oxlint-disable typescript/no-unsafe-return */
+/**
+ * @module
+ * @summary Legacy `RESTAdapter`, which exchanges conventional REST-style JSON with an HTTP server, plus the request
+ * types it builds.
+ */
 
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';

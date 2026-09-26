@@ -94,6 +94,7 @@ export interface StoreRequestContext extends RequestContext {
  *   method: 'GET',
  *   [EnableHydration]: true
  * });
+ * ```
  *
  * @summary The RequestManager cache handler that serves, dedupes, and caches store requests and returns
  * reactive documents when hydration is enabled.

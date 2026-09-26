@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Experimental reactive wrappers over localStorage, sessionStorage and the Cache API, with decorators such as
+ * `LocalResource` and `param` that bind class fields to storage or query params.
+ */
+
 export * from './storage/storage.ts';
 export type * from './storage/storage.ts';
 export * from './storage/storage-resource.ts';

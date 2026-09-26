@@ -3,6 +3,11 @@
 /* oxlint-disable typescript/no-unsafe-argument */
 /* oxlint-disable typescript/no-unsafe-member-access */
 /* oxlint-disable typescript/no-unsafe-call */
+/**
+ * @module
+ * @summary Legacy `JSONAPISerializer`, which normalizes and serializes record payloads following the JSON:API spec.
+ */
+
 import { warn } from '@ember/debug';
 import type EmberObject from '@ember/object';
 

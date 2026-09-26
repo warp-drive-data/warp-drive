@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @summary The `ResourceBlob` type for opaque raw resource data whose format the Cache defines.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { CacheKeyManager } from '../../store/-private/managers/cache-key-manager.ts';
 // oxlint-disable-next-line no-unused-vars

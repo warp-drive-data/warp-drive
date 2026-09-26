@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @summary The `Change` type describing one upsert or removal of a resource or document recorded by the cache.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { Cache } from '../cache.ts';
 import type { RequestKey, ResourceKey } from '../identifier.ts';

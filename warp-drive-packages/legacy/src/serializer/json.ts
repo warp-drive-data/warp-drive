@@ -3,6 +3,12 @@
 /* oxlint-disable typescript/no-unsafe-return */
 /* oxlint-disable typescript/no-unsafe-member-access */
 /* oxlint-disable typescript/no-unsafe-assignment */
+/**
+ * @module
+ * @summary Legacy `JSONSerializer`, which normalizes and serializes plain JSON payloads that don't follow the JSON:API
+ * spec.
+ */
+
 import { getOwner } from '@ember/application';
 import { warn } from '@ember/debug';
 
