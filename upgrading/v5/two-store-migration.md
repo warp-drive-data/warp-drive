@@ -48,7 +48,7 @@ Utilizing the two-store approach has a few tradeoffs:
 
 1. If you want compatible type signatures for use by your components, you should upgrade your app to make use of native types first, likely using the [types-package approach](/guides/the-manual/typescript/installation.md#using-types-packages).
 
-In fact, it is likely that if you want TypeScript for the v2 store that you are *forced* to remove the `@types/ember*` packages from your project entirely and upgrade to using native types for ember-source and ember-data. This is because the native types for WarpDrive depend on ember's native types.
+WarpDrive's native types depend on Ember's native types, so an app still on the `@types/ember*` packages type-checks the v2 store only through local casts at the call sites that read a request's result. That is workable while the migration covers a few routes. Move to native types before the second store touches most of the app, or the casts become the type system.
 
 2. You should not use both `ember-data` and `ember-data-mirror` or there will be an unresolveable race condition for which one is the `store` service. Instead one of the stores, usually the mirror, MUST import and fully configure the store. The [4.x → 5.x guide](./index.md#step-4-configure-the-store) does this with `useLegacyStore`, which reproduces the store that `ember-data` configured "by default" historically. Its options let you drop pieces of that default you no longer want, such as adapters and serializers, or Model itself.
 
