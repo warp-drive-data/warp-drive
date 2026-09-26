@@ -1,7 +1,7 @@
 ---
 title: A $state Field for PolarisMode ReactiveResources
 description: Proposes adding a reactive, read-only $state field to the PolarisMode defaults that reports a resource's lifecycle state (new, empty, deleted, dirty) and its per-field local changes, replacing the LegacyMode state flags that still apply and dropping the ones that don't.
-warp-drive-rfc: 6
+warp-drive-rfc: 8
 emberjs-rfc:
 emberjs-pr:
 emberjs-branch:
@@ -139,20 +139,19 @@ one of the two.
 
 #### `isEmpty`
 
-`isEmpty` is `true` when the cache holds no field values for the resource. A new resource is
-never empty, matching LegacyMode. There are two ways a PolarisMode instance gets there:
+`isEmpty` reports exactly what the cache reports: it is `!cache.isNew(key) && cache.isEmpty(key)`.
+A new resource is never empty, matching LegacyMode. `$state` does not redefine what "empty"
+means; for the JSON:API cache, it means the resource has no field data at all.
 
-- **It was loaded without values.** A resource can be materialized from a payload that carries
-  no attributes or relationships, which is becoming more common now that partial fields (sparse
-  fieldsets) are supported.
-- **It was removed from the store while still referenced.** `store.unloadRecord` tears the record
-  instance down *before* the cache releases the resource's data, so by the time the data is gone
-  nothing is subscribed to hear about it. To cover that, tearing down a record invalidates
-  `isEmpty`, so a template still rendering the unloaded record re-reads it and sees `true`.
+For a PolarisMode instance, that is most visible when a resource is **removed from the store
+while still referenced**. `store.unloadRecord` tears the record instance down *before* the cache
+releases the resource's data, so by the time the data is gone nothing is subscribed to hear about
+it. To cover that, tearing down a record invalidates `isEmpty`, so a template still rendering the
+unloaded record re-reads it and sees `true`.
 
-`isEmpty` delegates to `cache.isEmpty`, so what counts as "no values" is the cache's call. See
-Unresolved questions for how the JSON:API cache answers that for a resource loaded with an empty
-payload.
+Whether `isEmpty` should also cover a resource that was *loaded* without any field values, a case
+that is becoming more common now that partial fields are supported, is deliberately left for a
+later time; see Unresolved questions.
 
 #### Per-field changes
 
@@ -392,11 +391,13 @@ the old name was both redundant and incomplete.
 
 ## Unresolved questions
 
-- **What `isEmpty` means for a resource loaded with an empty payload.** The JSON:API cache's
-  `isEmpty` is `true` only when the resource has never received field data; a payload of just
-  `{ type, id }` stores an empty set of attributes, so `isEmpty` reports `false` for it. If `$state`
-  should report such a resource as empty, the cache's `isEmpty` would need to change, and that is
-  also what the store's `peekRecord` uses to decide whether a resource is loaded.
+- **What `isEmpty` means for a resource loaded with an empty payload (deferred).** This RFC leaves
+  `isEmpty` as the cache reports it. The JSON:API cache's `isEmpty` is `true` only when the
+  resource has never received field data; a payload of just `{ type, id }` stores an empty set of
+  attributes, so `isEmpty` reports `false` for it. Whether such a resource, which partial fields
+  make more common, should count as empty may be an unresolved question to revisit at a later
+  time. Changing it would mean changing the cache's `isEmpty`, which the store's `peekRecord` also
+  uses to decide whether a resource is loaded.
 - **Per-field validation errors.** Should the cache's per-resource errors be surfaced per field,
   alongside `changes` (e.g. `$state.errors[field]`), now that request-level `errors` / `isValid`
   are out of `$state`?
