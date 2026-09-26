@@ -19,7 +19,7 @@ interface CAUTION_MEGA_DANGER_ZONE_Extension {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:95](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/reactive/-private/schema.ts#L95)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:95](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/reactive/-private/schema.ts#L95)
 
 Extensions allow providing non-schema driven behaviors to
 ReactiveResources, ReactiveArrays, and ReactiveObjects.
@@ -38,7 +38,7 @@ features:
 | Record<string | symbol, unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:185](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/reactive/-private/schema.ts#L185)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:185](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/reactive/-private/schema.ts#L185)
 
 An object with iterable keys whose values are the getters
 or methods to expose on the object or array.
@@ -123,7 +123,7 @@ store.schema.CAUTION_MEGA_DANGER_ZONE_registerExtension({
 kind: "object" | "array";
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:100](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/reactive/-private/schema.ts#L100)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:100](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/reactive/-private/schema.ts#L100)
 
 Whether this extension extends the behaviors of objects
 (both ReactiveObjects and ReactiveResources) or of arrays.
@@ -136,7 +136,7 @@ Whether this extension extends the behaviors of objects
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:106](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/reactive/-private/schema.ts#L106)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:106](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/reactive/-private/schema.ts#L106)
 
 The name of the extension, to be used when specifying
 either `objectExtensions` or `arrayExtensions` on the

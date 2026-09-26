@@ -15,7 +15,7 @@ type ReactiveDataDocument<T, M extends Meta | undefined = Meta | undefined, E ex
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:200](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/reactive/-private/document.ts#L200)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:200](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/reactive/-private/document.ts#L200)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained primary data.

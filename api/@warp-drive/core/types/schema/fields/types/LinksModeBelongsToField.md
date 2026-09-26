@@ -18,7 +18,7 @@ interface LinksModeBelongsToField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1542](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1542)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1542](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1542)
 
 > \[!CAUTION]
 > This Field is LEGACY
@@ -36,7 +36,7 @@ This is the legacy version of the `ResourceField`.
 kind: "belongsTo";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1548](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1548)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1548](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1548)
 
 The kind of field this is.
 
@@ -48,7 +48,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1555](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1555)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1555](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1555)
 
 The name of the field.
 
@@ -66,7 +66,7 @@ options: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1596](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1596)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1596](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1596)
 
 Options for belongsTo are mandatory.
 
@@ -182,7 +182,7 @@ or abstract type specified in `type`.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1579](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1579)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1579](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1579)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs
@@ -213,7 +213,7 @@ This option is only needed when the value differs from name.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1589](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/schema/fields.ts#L1589)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1589](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L1589)
 
 The name of the resource that this field
 refers to. In the case of a polymorphic

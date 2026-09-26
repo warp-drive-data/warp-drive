@@ -19,7 +19,7 @@ interface ReplaceRelatedRecordOperation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:106](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L106)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:106](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L106)
 
 Replaces the state of a `to-one` relationship on the Graph with a new value.
 
@@ -31,7 +31,7 @@ Replaces the state of a `to-one` relationship on the Graph with a new value.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:118](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L118)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:118](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L118)
 
 The name of the relationship to replace
 
@@ -43,7 +43,7 @@ The name of the relationship to replace
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:131](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L131)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:131](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L131)
 
 If the field is a collection relationship, the index at which the swap occurred
 
@@ -55,7 +55,7 @@ If the field is a collection relationship, the index at which the swap occurred
 op: "replaceRelatedRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:110](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L110)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:110](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L110)
 
 The name of the operation
 
@@ -67,7 +67,7 @@ The name of the operation
 optional prior?: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:127](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L127)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:127](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L127)
 
 If the field is a collection relationship, the value being swapped out
 
@@ -79,7 +79,7 @@ If the field is a collection relationship, the value being swapped out
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:114](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L114)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:114](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L114)
 
 The cache key for the resource whose relationship is being updated
 
@@ -91,7 +91,7 @@ The cache key for the resource whose relationship is being updated
 value: ResourceKey | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:123](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/types/graph.ts#L123)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:123](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/graph.ts#L123)
 
 The new value for the relationship. Never `null` if the field is
 actually a collection relationship.

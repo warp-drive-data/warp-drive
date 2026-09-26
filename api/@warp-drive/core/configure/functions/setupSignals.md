@@ -12,7 +12,7 @@ description: >-
 function setupSignals<T>(buildConfig: (options: HooksOptions) => SignalHooks<T>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:170](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/warp-drive-packages/core/src/signals/reactivity/configure.ts#L170)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:170](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/reactivity/configure.ts#L170)
 
 Configures the signals implementation to use. Supports multiple
 implementations simultaneously.

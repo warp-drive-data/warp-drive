@@ -12,7 +12,7 @@ description: >-
 const DEPRECATE_NON_UNIQUE_PAYLOADS: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/deprecations.d.ts:252](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/deprecations.d.ts#L252)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:257](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/build-config/src/deprecations.ts#L257)
 
 Deprecates when the data for a hasMany relationship contains
 duplicate identifiers.

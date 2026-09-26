@@ -18,7 +18,7 @@ function PATCH(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:240](https://github.com/warp-drive-data/warp-drive/blob/1fcf89cc668a45be1ea010edae0840ffaa7dd21d/packages/holodeck/src/mock.ts#L240)
+Defined in: [mock.ts:240](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/packages/holodeck/src/mock.ts#L240)
 
 mock a PATCH request
 
