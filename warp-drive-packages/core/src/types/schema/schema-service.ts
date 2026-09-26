@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary The `SchemaService` interface a store's schema service implements to describe resource types, traits, fields
+ * and derivations, plus the legacy `AttributesSchema` and `RelationshipsSchema` types.
+ */
+
 import type { CAUTION_MEGA_DANGER_ZONE_Extension, ProcessedExtension } from '../../reactive.ts';
 import type { ExtensibleField } from '../../reactive/-private/schema.ts';
 import type { ResourceKey } from '../identifier.ts';

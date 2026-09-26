@@ -1,4 +1,9 @@
 /**
+ * @module
+ * @summary Types for JSON values: `PrimitiveValue`, `ObjectValue`, `ArrayValue` and their `Value` union.
+ */
+
+/**
  * A JSON primitive: a string, number, boolean, or `null`.
  *
  * @summary A JSON primitive (string, number, boolean, or `null`), the scalar case of the JSON `Value` type.

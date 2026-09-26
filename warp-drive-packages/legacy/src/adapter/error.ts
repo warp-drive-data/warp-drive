@@ -1,5 +1,11 @@
 /* oxlint-disable typescript/no-unsafe-assignment */
 /* oxlint-disable typescript/no-unsafe-member-access */
+/**
+ * @module
+ * @summary Legacy adapter errors, such as `AdapterError`, `InvalidError` and `NotFoundError`, that an adapter returns
+ * or throws to signal a failed API request.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { RequestManager } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
@@ -177,6 +183,8 @@ export type AdapterError = AdapterRequestError<'AdapterError'>;
  * or on whichever of the {@link AdapterError} subclasses' `code` values
  * (e.g. `'InvalidError'`, `'NotFoundError'`) the error's `code` matches.
  *
+ * @summary Legacy base error constructor an adapter uses to signal a failed API request; call `extend` on it to
+ * define app-specific error types.
  * @public
  */
 export const AdapterError: AdapterRequestErrorConstructor<AdapterError> = getOrSetGlobal(
@@ -207,6 +215,8 @@ function extend<Final extends AdapterRequestError>(
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link InvalidError} constructor.
+ * @summary Instance type of the legacy `InvalidError`, the adapter error for a request the API rejected as
+ * semantically invalid.
  */
 // TODO @deprecate extractError documentation
 export type InvalidError = AdapterRequestError<'InvalidError'>;
@@ -306,6 +316,8 @@ export type TimeoutError = AdapterRequestError<'TimeoutError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for signaling that a request to the API timed out without receiving a
+ * response.
  * @public
  */
 export const TimeoutError: AdapterRequestErrorConstructor<TimeoutError> = getOrSetGlobal(
@@ -347,6 +359,8 @@ export type AbortError = AdapterRequestError<'AbortError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for signaling that a request to the API was aborted before a response
+ * arrived.
  * @public
  */
 export const AbortError: AdapterRequestErrorConstructor<AbortError> = getOrSetGlobal(
@@ -388,6 +402,8 @@ export type UnauthorizedError = AdapterRequestError<'UnauthorizedError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for an HTTP 401 response, signaling that authorization is required and
+ * failed or was not provided.
  * @public
  */
 export const UnauthorizedError: AdapterRequestErrorConstructor<UnauthorizedError> = getOrSetGlobal(
@@ -431,6 +447,8 @@ export type ForbiddenError = AdapterRequestError<'ForbiddenError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for an HTTP 403 response, signaling that the server refused a valid
+ * request the user lacks permission for.
  * @public
  */
 export const ForbiddenError: AdapterRequestErrorConstructor<ForbiddenError> = getOrSetGlobal(
@@ -475,6 +493,8 @@ export type NotFoundError = AdapterRequestError<'NotFoundError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for an HTTP 404 response, signaling that the requested resource does not
+ * exist on the API.
  * @public
  */
 export const NotFoundError: AdapterRequestErrorConstructor<NotFoundError> = getOrSetGlobal(
@@ -516,6 +536,8 @@ export type ConflictError = AdapterRequestError<'ConflictError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for an HTTP 409 response, signaling that the request conflicts with
+ * existing server state, such as a duplicate client-generated id.
  * @public
  */
 export const ConflictError: AdapterRequestErrorConstructor<ConflictError> = getOrSetGlobal(
@@ -556,6 +578,8 @@ export type ServerError = AdapterRequestError<'ServerError'>;
  * }
  * ```
  *
+ * @summary Legacy adapter error constructor for an HTTP 500 response, signaling that the API failed internally and
+ * an immediate retry is unlikely to succeed.
  * @public
  */
 export const ServerError: AdapterRequestErrorConstructor<ServerError> = getOrSetGlobal(

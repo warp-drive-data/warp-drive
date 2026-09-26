@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Helpers `GET`, `POST`, `PUT`, `PATCH`, `DELETE` and `HEAD` that register a mocked request and its response
+ * with the Holodeck test server, plus the scaffold types they accept.
+ */
+
 import { mock } from '.';
 
 /**

@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the mutations `cache.mutate` applies to a relationship's local (uncommitted) state, such as
+ * adding, removing, replacing or sorting related resources.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { Cache } from '../cache.ts';
 import type { ResourceKey } from '../identifier.ts';

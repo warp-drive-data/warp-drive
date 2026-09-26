@@ -806,6 +806,8 @@ const mixinProps: BuildURLMixin = {
  * The `Mixin` implementation of {@link BuildURLMixin}, ready to be applied
  * to an `EmberObject` subclass such as an `Adapter`.
  *
+ * @summary Legacy `Mixin` that adds `buildURL` and the `urlFor*` hooks to an adapter so it can turn a model name, id,
+ * snapshot, and request type into a request URL.
  * @public
  */
 export const BuildURLMixin: Mixin = Mixin.create(mixinProps);

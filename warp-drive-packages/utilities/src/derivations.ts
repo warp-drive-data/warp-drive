@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @summary The `concat` derivation, which joins a record's listed fields into one string with an optional separator.
+ */
+
 import type { ReactiveResource } from '@warp-drive/core/reactive';
 import { Type } from '@warp-drive/core/types/symbols';
 

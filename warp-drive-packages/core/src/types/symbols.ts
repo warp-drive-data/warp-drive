@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Symbol keys WarpDrive uses on records and requests, such as `Type` to brand a record with its resource type
+ * and `RequestSignature` to type a request's response.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { Store } from '../store/-private/store-service.ts';
 import { getOrSetGlobal } from './-private.ts';

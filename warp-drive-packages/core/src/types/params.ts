@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the query params request builders serialize into a URL and the options that control how arrays are
+ * serialized.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { Includes } from './record.ts';
 

@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the stable keys that reference cached data, `ResourceKey` for resources and `RequestKey` for
+ * request documents, plus their deprecated identifier aliases.
+ */
+
 import { DEBUG } from '@warp-drive/core/build-config/env';
 
 // provided for additional debuggability

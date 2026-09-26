@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the cache-side state of to-one and to-many relationships, with related resources referenced by
+ * `ResourceKey`.
+ */
+
 import type { ResourceKey } from '../identifier.ts';
 import type {
   // oxlint-disable-next-line no-unused-vars

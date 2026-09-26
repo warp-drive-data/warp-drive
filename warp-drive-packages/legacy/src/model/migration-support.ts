@@ -589,6 +589,8 @@ export interface DelegatingSchemaService {
 }
 /**
  * See the {@link DelegatingSchemaService | class documentation above} for usage.
+ * @summary Legacy schema service that serves a resource's schema from the primary service when it has one, and
+ * otherwise from its `Model` class, for incremental migration.
  */
 export class DelegatingSchemaService implements SchemaService {
   /** @internal */

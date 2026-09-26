@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary The `buildSignalConfig` function, which creates the signal hooks that wire WarpDrive reactivity into Ember
+ * autotracking using `@glimmer/validator` tags.
+ */
+
 import { tagForProperty } from '@ember/-internals/metal';
 import { _backburner } from '@ember/runloop';
 import type { UpdatableTag } from '@glimmer/validator';

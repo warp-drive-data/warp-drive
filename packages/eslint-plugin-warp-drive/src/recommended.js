@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @summary Flat ESLint config that registers the `warp-drive` plugin and turns on its recommended rules as errors.
+ */
+
 const warpdrive = require('./index');
 
 /**

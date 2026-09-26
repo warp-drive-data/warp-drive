@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for every field schema kind and for PolarisMode and LegacyMode resource, object and trait schemas,
+ * plus the `resourceSchema` and `objectSchema` helpers and type guards.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { SchemaService } from '../../types.ts';
 // oxlint-disable-next-line no-unused-vars

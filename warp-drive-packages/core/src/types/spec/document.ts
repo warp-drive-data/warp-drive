@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Types for the raw {json:api} documents the cache stores and returns for a request: meta-only,
+ * single-resource, collection and error documents.
+ */
+
 // oxlint-disable-next-line no-unused-vars
 import type { ReactiveDataDocument, ReactiveDocument, ReactiveErrorDocument } from '../../reactive.ts';
 import type { PersistedResourceKey } from '../identifier.ts';

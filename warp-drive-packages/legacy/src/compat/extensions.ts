@@ -1,3 +1,9 @@
+/**
+ * @module
+ * @summary Legacy schema extensions that give reactive objects and arrays the classic `EmberObject` and Ember array
+ * APIs, such as `get`, `set` and `mapBy`, plus matching types.
+ */
+
 import {
   type default as EmberObject,
   get,

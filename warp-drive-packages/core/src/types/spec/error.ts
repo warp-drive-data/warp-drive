@@ -1,3 +1,8 @@
+/**
+ * @module
+ * @summary The `ApiError` type for one {json:api} error object in a document's `errors` array.
+ */
+
 import type { Link, Meta } from './json-api-raw.ts';
 
 /**
