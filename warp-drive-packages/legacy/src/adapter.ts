@@ -29,9 +29,9 @@
  *
  * ### Modern Alternative
  *
- * Use {@link Handler | Handlers} with the {@link RequestManager}. Each request passes through
- * a chain of handlers, any of which can fulfill it, modify it or pass it along. Handlers
- * support:
+ * Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link RequestManager}.
+ * Each request passes through a chain of handlers, any of which can fulfill it, modify it or
+ * pass it along. Handlers support:
  *
  * - request builders, which return a request typed with its expected response, so
  *   `store.request` resolves with that type

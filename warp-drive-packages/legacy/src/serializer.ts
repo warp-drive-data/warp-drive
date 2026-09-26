@@ -24,8 +24,9 @@
   {json:api} format the legacy store works with:
 
   - `store.serializerFor` resolves a serializer by resource type at runtime, looking up
-    `serializer:<type>` and then `serializer:application` through Ember's owner, while APIs
-    usually vary their format per API version rather than per resource type.
+    `serializer:<type>` and then `serializer:application` through Ember's owner, though an
+    API's format more often varies per API version than per resource type (see Serializer
+    Resolution below).
   - Every response is converted into {json:api} before it reaches the cache, whatever format
     the API actually uses.
   - The provided serializer classes extend `EmberObject`, which, together with the owner
@@ -33,7 +34,8 @@
 
   ### Modern Alternative
 
-  Use {@link Handler | Handlers} with the {@link RequestManager}. Modern ***Warp*Drive**:
+  Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link RequestManager}.
+  Modern ***Warp*Drive**:
 
   - normalizes a payload inside a handler when it needs transforming, using plain functions
     and helpers such as `dasherize` and `singularize` from `@warp-drive/utilities/string`
