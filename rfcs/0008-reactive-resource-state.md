@@ -2,10 +2,10 @@
 title: A $state Field for PolarisMode ReactiveResources
 description: Proposes adding a reactive, read-only $state field to the PolarisMode defaults that reports a resource's lifecycle state (new, empty, deleted, dirty) and its per-field local changes, replacing the LegacyMode state flags that still apply and dropping the ones that don't.
 warp-drive-rfc: 8
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1244
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1244
+emberjs-branch: rfc-8-a-state-field-for-polarismode-reactiveresources
+sync-hash: a89b9ae49e3b5d84edbeb6d2e18f082af8726061f5b01d85caf94df4c3335951
 stage: proposed
 start-date: 2026-09-25T00:00:00.000Z
 release-date:
