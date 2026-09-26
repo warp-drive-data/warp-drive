@@ -25,7 +25,7 @@ function serializeResources(cache: Cache, identifiers: ResourceKey): {
 };
 ```
 
-Defined in: [-private/json-api/serialize.ts:42](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L42)
+Defined in: [-private/json-api/serialize.ts:42](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L42)
 
 :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
 
@@ -70,7 +70,7 @@ function serializeResources(cache: Cache, identifiers: ResourceKey[]): {
 };
 ```
 
-Defined in: [-private/json-api/serialize.ts:51](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L51)
+Defined in: [-private/json-api/serialize.ts:51](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L51)
 
 :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
 

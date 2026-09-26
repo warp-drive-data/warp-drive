@@ -16,7 +16,7 @@ type LegacyRelationshipField =
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2670](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/schema/fields.ts#L2670)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2670](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/schema/fields.ts#L2670)
 
 A union of all legacy relationship field schemas, i.e. [LegacyField](LegacyField.md)
 excluding [LegacyAttributeField](LegacyAttributeField.md).

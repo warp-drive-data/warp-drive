@@ -8,9 +8,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ Deprecated in 5.5
-This package historically provided the bindings into Ember's reactivity system. It is no longer
-needed: that configuration now comes from [@warp-drive/ember](../../@warp-drive/ember/index.md).
+:::warning Deprecated package
+`@ember-data/tracking` is deprecated. Deprecated since 5.5: the Ember reactivity bindings it provided now come from [`@warp-drive/ember`](/api/@warp-drive/ember/), so remove it and install that instead.
 :::
 
 Historically, this package configured ***Warp*Drive** to use EmberJS's reactivity system.

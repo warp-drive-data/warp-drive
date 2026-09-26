@@ -14,7 +14,7 @@ function createRequestSubscription<RT, E>(store:
 | RequestManager, args: SubscriptionArgs<RT, E>): RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:848](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/signals/request-subscription.ts#L848)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:848](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/signals/request-subscription.ts#L848)
 
 Creates a [RequestSubscription](../types/RequestSubscription.md), the reactive class powering the
 `<Request />` component's autorefresh, retry, and refresh behaviors.

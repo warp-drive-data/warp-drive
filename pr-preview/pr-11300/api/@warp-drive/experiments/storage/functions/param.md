@@ -14,7 +14,7 @@ description: >-
 function param(config: ParamConfig): PropertyDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:121](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/experiments/src/storage/query-params.ts#L121)
+Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:121](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/experiments/src/storage/query-params.ts#L121)
 
 Decorator which marks a field as a query parameter.
 

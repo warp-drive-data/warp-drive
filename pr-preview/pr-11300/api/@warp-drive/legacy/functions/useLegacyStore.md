@@ -23,7 +23,7 @@ function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndReques
 function useLegacyStore<T extends Cache>(options: LegacyModelStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:299](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/index.ts#L299)
+Defined in: [warp-drive-packages/legacy/src/index.ts:299](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/index.ts#L299)
 
 Use the legacy store with the given options.
 
@@ -164,7 +164,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:303](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/index.ts#L303)
+Defined in: [warp-drive-packages/legacy/src/index.ts:303](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/index.ts#L303)
 
 Use the legacy store with the given options.
 
@@ -305,7 +305,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndRequestStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:307](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/index.ts#L307)
+Defined in: [warp-drive-packages/legacy/src/index.ts:307](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/index.ts#L307)
 
 Use the legacy store with the given options.
 

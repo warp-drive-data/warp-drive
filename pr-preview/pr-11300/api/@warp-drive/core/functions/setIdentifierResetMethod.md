@@ -12,7 +12,7 @@ description: >-
 function setIdentifierResetMethod(method: ResetMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:343](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L343)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:343](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L343)
 
 Configure a callback for when the identifier cache is being torn down.
 

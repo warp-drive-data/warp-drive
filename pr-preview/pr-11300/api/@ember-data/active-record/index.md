@@ -9,8 +9,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ This package only exists for backwards compatibility
-Newer apps should use [@warp-drive/utilities](../../@warp-drive/utilities/index.md)
+:::warning Legacy package
+`@ember-data/active-record` is a legacy package. New code should use [`@warp-drive/utilities/active-record`](/api/@warp-drive/utilities/active-record/) instead.
 :::
 
 This package used to provide the RequestManager and its related

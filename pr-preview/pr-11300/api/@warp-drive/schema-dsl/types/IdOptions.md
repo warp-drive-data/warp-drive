@@ -14,7 +14,7 @@ interface IdOptions {
 }
 ```
 
-Defined in: [fields/id.ts:11](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/id.ts#L11)
+Defined in: [fields/id.ts:11](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/id.ts#L11)
 
 Options accepted by the [id](../functions/id.md) decorator.
 
@@ -26,7 +26,7 @@ Options accepted by the [id](../functions/id.md) decorator.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/id.ts:19](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/id.ts#L19)
+Defined in: [fields/id.ts:19](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/id.ts#L19)
 
 The name of the identity field as returned by the API, if it differs
 from the decorated property's name. Compiles onto the

@@ -9,7 +9,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ This package has been merged into [@warp-drive/utilities](../../@warp-drive/utilities/index.md) and is not recommended for new applications
+:::warning Legacy package
+`@ember-data/request-utils` is a legacy package. New code should use [`@warp-drive/utilities`](/api/@warp-drive/utilities/) instead.
 :::
 
 Simple utility functions to assist in url building,

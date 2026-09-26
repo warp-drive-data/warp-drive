@@ -10,7 +10,7 @@ description: >-
 &#x20;
 
 :::warning Legacy package
-`@ember-data/adapter` is a legacy package. New code should use [`@warp-drive/legacy/adapter`](/api/@warp-drive/legacy/adapter/) instead.
+`@ember-data/adapter` is a legacy package. Adapters are no longer encouraged; new code should use [Handlers](/api/@warp-drive/core/request/types/Handler) with the `RequestManager` from [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 Legacy alias of [@warp-drive/legacy/adapter/rest](../../../@warp-drive/legacy/adapter/rest/index.md).

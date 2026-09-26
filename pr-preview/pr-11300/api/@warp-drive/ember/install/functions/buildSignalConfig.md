@@ -16,7 +16,7 @@ function buildSignalConfig(options: {
 }): SignalHooks<Tag | [Tag, Tag, Tag]>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/install.d.ts:15](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/ember/dist/install.d.ts#L15)
+Defined in: [warp-drive-packages/ember/dist/install.d.ts:15](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/ember/dist/install.d.ts#L15)
 
 Builds the [SignalHooks](../../../core/configure/types/SignalHooks.md) implementation backed by Ember's
 `@glimmer/validator` tags, used to wire WarpDrive's reactivity

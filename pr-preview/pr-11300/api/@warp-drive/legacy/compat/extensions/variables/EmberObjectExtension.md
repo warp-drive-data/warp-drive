@@ -14,7 +14,7 @@ description: >-
 const EmberObjectExtension: CAUTION_MEGA_DANGER_ZONE_Extension;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:105](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/compat/extensions.ts#L105)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:105](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/compat/extensions.ts#L105)
 
 A schema extension that adds the classic `EmberObject` API (`get`, `set`,
 `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,

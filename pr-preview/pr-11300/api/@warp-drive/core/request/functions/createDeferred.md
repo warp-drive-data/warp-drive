@@ -12,7 +12,7 @@ description: >-
 function createDeferred<T>(): Deferred<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/future.ts:21](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/request/-private/future.ts#L21)
+Defined in: [warp-drive-packages/core/src/request/-private/future.ts:21](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/request/-private/future.ts#L21)
 
 Create a [Deferred](../types/Deferred.md): a promise along with the `resolve`/`reject`
 callbacks that settle it, so the promise can be handed out before the

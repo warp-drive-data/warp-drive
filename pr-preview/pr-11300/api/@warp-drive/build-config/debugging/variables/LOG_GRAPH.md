@@ -6,16 +6,16 @@ description: Debug logging flag that logs the updates the relationship graph rec
 
 &#x20;
 
-# &#x20;LOG\_GRAPH
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;LOG\_GRAPH
 
 ```ts
 const LOG_GRAPH: boolean = false;
 ```
 
-Defined in: [debugging.ts:115](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/debugging.ts#L115)
+Defined in: [debugging.ts:115](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/debugging.ts#L115)
 
 log updates received by the graph (relationship pointer storage)

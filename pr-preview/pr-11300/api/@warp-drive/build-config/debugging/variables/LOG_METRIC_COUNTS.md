@@ -8,17 +8,17 @@ description: >-
 
 &#x20;
 
-# &#x20;LOG\_METRIC\_COUNTS
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;LOG\_METRIC\_COUNTS
 
 ```ts
 const LOG_METRIC_COUNTS: boolean = false;
 ```
 
-Defined in: [debugging.ts:131](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/debugging.ts#L131)
+Defined in: [debugging.ts:131](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/debugging.ts#L131)
 
 Log key count metrics, useful for performance
 debugging.

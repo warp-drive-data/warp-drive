@@ -8,9 +8,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ This package only exists for backwards compatibility
-It is for apps still on the `@ember-data/*` packages. Newer apps should use the same builders
-from [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
+:::warning Legacy package
+`@ember-data/rest` is a legacy package. New code should use [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
 :::
 
 Request builders for **REST**ful APIs.

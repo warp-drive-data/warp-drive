@@ -12,7 +12,7 @@ description: >-
 function installAdapterFor(owner: object, store: Store$1): void;
 ```
 
-Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/packages/holodeck/src/index.ts#L426)
+Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/packages/holodeck/src/index.ts#L426)
 
 Creates an adapterFor function that wraps the provided adapterFor function
 to override the adapter's \_fetchRequest method to route requests through

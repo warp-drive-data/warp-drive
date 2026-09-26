@@ -15,7 +15,7 @@ type ResourceIdentifierObject<T extends string = string> =
 | NewResourceIdentifierObject<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:211](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L211)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:211](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L211)
 
 A reference to a resource, in any of the forms WarpDrive's cache accepts.
 

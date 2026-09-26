@@ -19,7 +19,7 @@ interface BelongsToOptions {
 }
 ```
 
-Defined in: [fields/belongs-to.ts:12](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L12)
+Defined in: [fields/belongs-to.ts:12](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L12)
 
 Options accepted by the [belongsTo](../functions/belongsTo.md) decorator.
 
@@ -31,7 +31,7 @@ Options accepted by the [belongsTo](../functions/belongsTo.md) decorator.
 optional as?: string;
 ```
 
-Defined in: [fields/belongs-to.ts:51](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L51)
+Defined in: [fields/belongs-to.ts:51](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L51)
 
 If this field is polymorphic, the trait or abstract type that this
 resource implements.
@@ -44,7 +44,7 @@ resource implements.
 optional async?: boolean;
 ```
 
-Defined in: [fields/belongs-to.ts:34](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L34)
+Defined in: [fields/belongs-to.ts:34](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L34)
 
 Whether the relationship is async. Compiles onto the
 [LegacyBelongsToField](../../core/types/schema/fields/types/LegacyBelongsToField.md)'s `options.async`, defaulting to `false`.
@@ -57,7 +57,7 @@ Whether the relationship is async. Compiles onto the
 inverse: string | null;
 ```
 
-Defined in: [fields/belongs-to.ts:26](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L26)
+Defined in: [fields/belongs-to.ts:26](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L26)
 
 The name of the inverse field on the related resource, or `null` if
 the relationship is unidirectional.
@@ -70,7 +70,7 @@ the relationship is unidirectional.
 optional polymorphic?: boolean;
 ```
 
-Defined in: [fields/belongs-to.ts:43](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L43)
+Defined in: [fields/belongs-to.ts:43](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L43)
 
 Whether this field satisfies a polymorphic relationship on another
 resource, meaning it can point to multiple types of resources so long
@@ -84,7 +84,7 @@ as they implement the trait or abstract type named by `type`.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/belongs-to.ts:59](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L59)
+Defined in: [fields/belongs-to.ts:59](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L59)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name.
@@ -97,6 +97,6 @@ decorated property's name.
 type: string;
 ```
 
-Defined in: [fields/belongs-to.ts:18](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L18)
+Defined in: [fields/belongs-to.ts:18](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L18)
 
 The name of the related resource's `type`.

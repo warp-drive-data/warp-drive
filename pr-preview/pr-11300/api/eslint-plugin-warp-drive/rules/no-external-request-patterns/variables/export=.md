@@ -12,4 +12,4 @@ description: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/no-external-request-patterns.js:41](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/packages/eslint-plugin-warp-drive/src/rules/no-external-request-patterns.js#L41)
+Defined in: [rules/no-external-request-patterns.js:41](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/packages/eslint-plugin-warp-drive/src/rules/no-external-request-patterns.js#L41)

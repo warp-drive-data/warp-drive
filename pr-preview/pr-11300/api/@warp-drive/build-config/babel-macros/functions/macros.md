@@ -9,17 +9,17 @@ description: >-
 
 &#x20;
 
-# &#x20;macros()
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;macros()
 
 ```ts
 function macros(): BabelPlugin[];
 ```
 
-Defined in: [babel-macros.ts:58](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/babel-macros.ts#L58)
+Defined in: [babel-macros.ts:58](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/babel-macros.ts#L58)
 
 ## Returns
 

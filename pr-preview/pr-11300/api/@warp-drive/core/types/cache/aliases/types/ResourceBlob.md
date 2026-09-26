@@ -12,7 +12,7 @@ description: >-
 type ResourceBlob = unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/aliases.ts:28](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/cache/aliases.ts#L28)
+Defined in: [warp-drive-packages/core/src/types/cache/aliases.ts:28](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/cache/aliases.ts#L28)
 
 The `ResourceBlob` is an opaque type that must satisfy two constraints.
 

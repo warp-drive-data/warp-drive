@@ -8,17 +8,17 @@ description: >-
 
 &#x20;
 
-# &#x20;DEPRECATE\_NON\_STRICT\_TYPES&#x20;
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;DEPRECATE\_NON\_STRICT\_TYPES&#x20;
 
 ```ts
 const DEPRECATE_NON_STRICT_TYPES: boolean = true;
 ```
 
-Defined in: [deprecations.ts:168](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/deprecations.ts#L168)
+Defined in: [deprecations.ts:168](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/deprecations.ts#L168)
 
 Currently, ***Warp*Drive** expects that the `type` property associated with
 a resource follows several conventions.

@@ -8,16 +8,16 @@ description: >-
 
 &#x20;
 
-# &#x20;LOG\_REACT\_SIGNAL\_INTEGRATION
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;LOG\_REACT\_SIGNAL\_INTEGRATION
 
 ```ts
 const LOG_REACT_SIGNAL_INTEGRATION: boolean = false;
 ```
 
-Defined in: [debugging.ts:160](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/debugging.ts#L160)
+Defined in: [debugging.ts:160](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/debugging.ts#L160)
 
 Helps when debugging React specific reactivity issues.

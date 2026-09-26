@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;AutoCompress&#x20;
 
-Defined in: [-private/handlers/auto-compress.ts:190](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L190)
+Defined in: [-private/handlers/auto-compress.ts:190](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L190)
 
 A request handler that automatically compresses the request body
 if the request body is a string, array buffer, blob, or form data.
@@ -45,7 +45,7 @@ class AppStore extends Store {
 new AutoCompress(options?: CompressionOptions): AutoCompress;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:202](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L202)
+Defined in: [-private/handlers/auto-compress.ts:202](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L202)
 
 #### Parameters
 
@@ -67,7 +67,7 @@ request<T>(__namedParameters: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:212](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L212)
+Defined in: [-private/handlers/auto-compress.ts:212](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L212)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -110,7 +110,7 @@ options: Required<CompressionOptions> & {
 };
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:195](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L195)
+Defined in: [-private/handlers/auto-compress.ts:195](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L195)
 
 The resolved options this handler was configured with, with all
 defaults (including `constraints` defaults) applied.

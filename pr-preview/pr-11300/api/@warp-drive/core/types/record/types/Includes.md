@@ -12,7 +12,7 @@ description: >-
 type Includes<T extends TypedRecordInstance, MAX_DEPTH extends _DEPTHCOUNT = DEFAULT_MAX_DEPTH> = ExtractUnion<MAX_DEPTH, T, true>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:183](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/record.ts#L183)
+Defined in: [warp-drive-packages/core/src/types/record.ts:183](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/record.ts#L183)
 
 A utility that provides the union type of all valid include paths for the given
 TypedRecordInstance.

@@ -8,11 +8,11 @@ description: >-
 
 &#x20;
 
-# Deprecations
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# Deprecations
 
 This guide is intended to help you understand both how to address an active
 deprecation and how to eliminate the code that supports the deprecation once

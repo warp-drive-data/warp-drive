@@ -8,11 +8,11 @@ description: >-
 
 &#x20;
 
-# &#x20;babelPlugin()
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;babelPlugin()
 
 ```ts
 function babelPlugin(options: WarpDriveConfig): {
@@ -21,7 +21,7 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/index.ts#L31)
+Defined in: [index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/index.ts#L31)
 
 Create the Babel plugin for WarpDrive
 

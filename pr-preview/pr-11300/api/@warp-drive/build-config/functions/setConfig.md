@@ -8,11 +8,11 @@ description: >-
 
 &#x20;
 
-# &#x20;setConfig()
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;setConfig()
 
 ```ts
 function setConfig(macros: object, config: WarpDriveConfig): void;
@@ -29,7 +29,7 @@ function setConfig(
 function setConfig(macros: object, config: WarpDriveConfig): void;
 ```
 
-Defined in: [index.ts:254](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/index.ts#L254)
+Defined in: [index.ts:254](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/index.ts#L254)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
@@ -104,7 +104,7 @@ function setConfig(
 ): void;
 ```
 
-Defined in: [index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/index.ts#L255)
+Defined in: [index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/index.ts#L255)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated

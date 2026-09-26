@@ -14,7 +14,7 @@ type HashFn<T extends object = object> = {
 } & (data: T, options: ObjectValue | null, prop: string | null) => string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:89](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/schema/concepts.ts#L89)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:89](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/schema/concepts.ts#L89)
 
 A HashFn computes a stable string identity for an object from its
 cache data, without access to a record instance.

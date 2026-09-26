@@ -22,7 +22,7 @@ type Operation =
   | RemoveFromDocumentOperation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:302](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/cache/operations.ts#L302)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:302](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/cache/operations.ts#L302)
 
 [Cache](../../types/Cache.md) Operations perform updates to the
 Cache's "remote" (or clean) state to reflect external

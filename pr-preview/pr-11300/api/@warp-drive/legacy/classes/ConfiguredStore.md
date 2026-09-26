@@ -7,7 +7,7 @@ url: >-
 
 # &#x20;ConfiguredStore\<T *extends* { `cache`: `Cache`; }>
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/index.ts#L170)
+Defined in: [warp-drive-packages/legacy/src/index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/index.ts#L170)
 
 ## Extends
 
@@ -35,7 +35,7 @@ Defined in: [warp-drive-packages/legacy/src/index.ts:170](https://github.com/war
 createCache(capabilities: CacheCapabilitiesManager$1): T["cache"];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:179](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/legacy/src/index.ts#L179)
+Defined in: [warp-drive-packages/legacy/src/index.ts:179](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/legacy/src/index.ts#L179)
 
 Instantiation hook allowing applications or addons to configure the store
 to utilize a custom Cache implementation.

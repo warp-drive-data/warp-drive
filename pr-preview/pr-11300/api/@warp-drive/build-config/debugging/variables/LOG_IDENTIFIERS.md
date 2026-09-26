@@ -8,17 +8,17 @@ description: >-
 
 &#x20;
 
-# &#x20;LOG\_IDENTIFIERS
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;LOG\_IDENTIFIERS
 
 ```ts
 const LOG_IDENTIFIERS: boolean = false;
 ```
 
-Defined in: [debugging.ts:108](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/debugging.ts#L108)
+Defined in: [debugging.ts:108](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/debugging.ts#L108)
 
 log peek, generation and updates to
 Record Identifiers.

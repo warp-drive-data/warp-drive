@@ -15,7 +15,7 @@ type PromiseState<T = unknown, E = unknown> =
 | RejectedPromise<E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:240](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/signals/promise-state.ts#L240)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:240](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/signals/promise-state.ts#L240)
 
 The state of a promise. This is the type that is returned
 from `getPromiseState`.

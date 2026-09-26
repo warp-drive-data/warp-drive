@@ -8,11 +8,11 @@ description: >-
 
 &#x20;
 
-# Canary Features&#x20;
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# Canary Features&#x20;
 
 ***Warp*Drive** allows users to test upcoming features that are implemented
 but not yet activated in canary builds.

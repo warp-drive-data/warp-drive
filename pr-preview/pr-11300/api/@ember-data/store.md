@@ -8,8 +8,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ This is a legacy package not recommended for new applications
-Use [@warp-drive/core](../../@warp-drive/core/index.md) instead.
+:::warning Legacy package
+`@ember-data/store` is a legacy package. New code should use [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.

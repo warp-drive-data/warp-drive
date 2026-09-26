@@ -14,7 +14,7 @@ type StructuredDocument<T> =
 | StructuredErrorDocument<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:566](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/core/src/types/request.ts#L566)
+Defined in: [warp-drive-packages/core/src/types/request.ts:566](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/core/src/types/request.ts#L566)
 
 A union of the resolve/reject data types for the [Future](../../../request/types/Future.md)
 returned by [request](../../../classes/Store.md#request)

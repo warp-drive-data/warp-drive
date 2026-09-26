@@ -12,7 +12,7 @@ description: >-
 function underscore(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:83](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/-private/string/transform.ts#L83)
+Defined in: [-private/string/transform.ts:83](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/-private/string/transform.ts#L83)
 
 Returns the lower\_case\_and\_underscored form of a string.
 

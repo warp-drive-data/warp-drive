@@ -10,7 +10,7 @@ description: >-
 &#x20;
 
 :::warning Legacy package
-`@ember-data/model` is a legacy package. New code should use [`@warp-drive/legacy/model`](/api/@warp-drive/legacy/model/) instead.
+`@ember-data/model` is a legacy package. Model classes are no longer encouraged; new code should define schemas with [`@warp-drive/core`](/api/@warp-drive/core/). Apps that still need Models should install them through [`@warp-drive/legacy`](/api/@warp-drive/legacy/) rather than this package.
 :::
 
 Legacy alias of [@warp-drive/legacy/model](../../../@warp-drive/legacy/model/index.md).

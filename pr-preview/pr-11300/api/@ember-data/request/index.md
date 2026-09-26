@@ -7,8 +7,8 @@ description: >-
 
 &#x20;
 
-:::warning ⚠️ This package only exists for backwards compatibility
-Newer apps should use [@warp-drive/core](../../@warp-drive/core/index.md)
+:::warning Legacy package
+`@ember-data/request` is a legacy package. New code should use [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 This package used to provide the RequestManager and its related

@@ -8,17 +8,17 @@ description: >-
 
 &#x20;
 
-# &#x20;ENABLE\_LEGACY\_SCHEMA\_SERVICE&#x20;
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;ENABLE\_LEGACY\_SCHEMA\_SERVICE&#x20;
 
 ```ts
 const ENABLE_LEGACY_SCHEMA_SERVICE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:463](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/deprecations.ts#L463)
+Defined in: [deprecations.ts:463](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/deprecations.ts#L463)
 
 When the flag is `true` (default), the legacy schema
 service features will be enabled on the store and

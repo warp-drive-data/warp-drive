@@ -10,7 +10,7 @@ description: >-
 &#x20;
 
 :::warning Legacy package
-`@ember-data/serializer` is a legacy package. New code should use [`@warp-drive/legacy/serializer`](/api/@warp-drive/legacy/serializer/) instead.
+`@ember-data/serializer` is a legacy package. Serializers are no longer encouraged; new code should use [Handlers](/api/@warp-drive/core/request/types/Handler) with the `RequestManager` from [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 Legacy alias of [@warp-drive/legacy/serializer/json-api](../../../@warp-drive/legacy/serializer/json-api/index.md).

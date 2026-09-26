@@ -9,11 +9,11 @@ description: >-
 
 &#x20;
 
-# &#x20;~~buildSignalConfig()~~&#x20;
-
-:::warning Legacy package
-`@ember-data/tracking` is a legacy package. New code should use [`@warp-drive/ember`](/api/@warp-drive/ember/) instead.
+:::warning Deprecated package
+`@ember-data/tracking` is deprecated. Deprecated since 5.5: the Ember reactivity bindings it provided now come from [`@warp-drive/ember`](/api/@warp-drive/ember/), so remove it and install that instead.
 :::
+
+# &#x20;~~buildSignalConfig()~~&#x20;
 
 ```ts
 function buildSignalConfig(options: {
@@ -30,7 +30,7 @@ function buildSignalConfig(options: {
 };
 ```
 
-Defined in: [index.ts:36](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/packages/tracking/src/index.ts#L36)
+Defined in: [index.ts:36](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/packages/tracking/src/index.ts#L36)
 
 Creates a signal configuration object for WarpDrive that integrates with Ember's
 reactivity system. This will be automatically imported and registered by

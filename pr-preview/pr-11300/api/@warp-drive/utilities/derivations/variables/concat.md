@@ -12,7 +12,7 @@ description: >-
 const concat: ConcatDerivation;
 ```
 
-Defined in: [derivations.ts:37](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/utilities/src/derivations.ts#L37)
+Defined in: [derivations.ts:37](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/utilities/src/derivations.ts#L37)
 
 A derivation for use by ReactiveResource that joins the given fields
 with the optional separator (or '' if no separator is provided).

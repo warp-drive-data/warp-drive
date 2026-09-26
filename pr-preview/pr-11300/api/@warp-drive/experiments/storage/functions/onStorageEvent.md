@@ -15,7 +15,7 @@ description: >-
 function onStorageEvent(listener: (event: EffectStorageEvent) => void): () => void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:140](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/experiments/src/storage/storage.ts#L140)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:140](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/experiments/src/storage/storage.ts#L140)
 
 Subscribes to storage-change events, whether they originate from the
 native Storage API (a `StorageEvent`, fired cross-tab) or from

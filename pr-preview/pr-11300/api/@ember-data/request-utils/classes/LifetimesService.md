@@ -5,13 +5,13 @@ url: >-
 
 &#x20;
 
-# &#x20;LifetimesService
-
 :::warning Legacy package
 `@ember-data/request-utils` is a legacy package. New code should use [`@warp-drive/utilities`](/api/@warp-drive/utilities/) instead.
 :::
 
-Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/packages/request-utils/src/index.ts#L21)
+# &#x20;LifetimesService
+
+Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/packages/request-utils/src/index.ts#L21)
 
 ## Extends
 
@@ -25,7 +25,7 @@ Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/206
 new LifetimesService(config: PolicyConfig): LifetimesService;
 ```
 
-Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/packages/request-utils/src/index.ts#L22)
+Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/packages/request-utils/src/index.ts#L22)
 
 #### Parameters
 

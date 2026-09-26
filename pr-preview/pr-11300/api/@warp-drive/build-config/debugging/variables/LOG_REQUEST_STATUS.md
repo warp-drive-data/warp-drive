@@ -8,17 +8,17 @@ description: >-
 
 &#x20;
 
-# &#x20;LOG\_REQUEST\_STATUS
-
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
+
+# &#x20;LOG\_REQUEST\_STATUS
 
 ```ts
 const LOG_REQUEST_STATUS: boolean = false;
 ```
 
-Defined in: [debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/2060227ee98096ec39bd0c0d9fed4d0fe29fb087/warp-drive-packages/build-config/src/debugging.ts#L98)
+Defined in: [debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/fbc65452c713721d134e87c5af2e1a5a3a8a166b/warp-drive-packages/build-config/src/debugging.ts#L98)
 
 log updates to requests the store has issued to
 the network (adapter) to fulfill.
