@@ -13,6 +13,38 @@
  * `Adapters` accept various kinds of requests from the store
  * and manage fulfillment of the request from your API.
  *
+ * ### Why It's Legacy
+ *
+ * The Adapter pattern was designed for class-based architectures in which each resource type
+ * could have its own data-fetching logic:
+ *
+ * - `store.adapterFor` resolves an adapter by resource type at runtime, looking up
+ *   `adapter:<type>` and then `adapter:application` through Ember's owner.
+ * - Each request is fulfilled by a single adapter, so sharing behavior across resource types
+ *   means extending a common base class rather than composing request logic.
+ * - The provided adapter classes extend `EmberObject`, which, together with the owner lookup,
+ *   ties the pattern to Ember.
+ * - Adapter methods resolve with an untyped `AdapterPayload`, so nothing ties the response's
+ *   type to the request that produced it.
+ *
+ * ### Modern Alternative
+ *
+ * Use {@link Handler | Handlers} with the {@link RequestManager}. Each request passes through
+ * a chain of handlers, any of which can fulfill it, modify it or pass it along. Handlers
+ * support:
+ *
+ * - request builders, which return a request typed with its expected response, so
+ *   `store.request` resolves with that type
+ * - composition: `RequestManager.use` takes a list of handlers, such as the built-in `Fetch`
+ *   handler, and wrappers such as `Gate` from `@warp-drive/utilities/handlers` run another
+ *   handler only for the requests it accepts
+ * - explicit imports rather than lookup by name at runtime
+ * - any framework ***Warp*Drive** supports, since `@warp-drive/core` has no runtime
+ *   dependency on Ember (see [Installation](/guides/installation/))
+ *
+ * For an alternative modern pattern to Adapters, see the
+ * [Request Handlers Guide](/guides/the-manual/requests/handlers).
+ *
  * ### Request Flow
  *
  * When the store decides it needs to issue a request it uses the following flow to manage the request and process the data.
