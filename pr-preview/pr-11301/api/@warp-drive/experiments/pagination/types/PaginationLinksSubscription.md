@@ -1,0 +1,89 @@
+---
+url: >-
+  https://canary.warp-drive.io/pr-preview/pr-11301/api/@warp-drive/experiments/pagination/types/PaginationLinksSubscription.md
+description: >-
+  Experimental: the framework-agnostic lifecycle core of a pagination links
+  component such as `<EachLink />`, exposing the navigation links for a paged
+  pagination state.
+---
+
+&#x20;
+
+# &#x20;PaginationLinksSubscription\<RT, E>&#x20;
+
+```ts
+interface PaginationLinksSubscription<RT, E> {
+  get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
+  (symbol) dispose(): void;
+}
+```
+
+Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:1019](https://github.com/warp-drive-data/warp-drive/blob/837481248be90d10a9aca2fc068d7beb4bd3b31a/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L1019)
+
+**`Hideconstructor`**
+
+The framework-agnostic core of a pagination links component (for example the
+`<EachLink />` component of `@warp-drive/ember`): it owns the component
+lifecycle, while the links themselves live on the [PaginationLinks](PaginationLinks.md)
+it exposes.
+
+Given the [PagedPaginationState](PagedPaginationState.md) a `<Paginate />` component is driving,
+[paginationLinks](#paginationlinks) derives that state's `PaginationLinks` — the numbered
+links (with placeholders for gaps) and the relational
+`first`/`prev`/`next`/`last` links a component yields for the consumer to
+render. All of them read from the same shared page graph as the
+`<Paginate />` component, so they stay in sync as pages load and the active
+page changes.
+
+## Type Parameters
+
+### RT
+
+`RT`
+
+### E
+
+`E`
+
+## Methods
+
+### (symbol) dispose()
+
+```ts
+(symbol) dispose(): void;
+```
+
+Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:1024](https://github.com/warp-drive-data/warp-drive/blob/837481248be90d10a9aca2fc068d7beb4bd3b31a/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L1024)
+
+The method to call when the component this subscription is attached to
+unmounts.
+
+#### Returns
+
+`void`
+
+## Properties
+
+### paginationLinks
+
+#### Get Signature
+
+```ts
+get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
+```
+
+Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:1062](https://github.com/warp-drive-data/warp-drive/blob/837481248be90d10a9aca2fc068d7beb4bd3b31a/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L1062)
+
+The [PaginationLinks](PaginationLinks.md) derived from the [PagedPaginationState](PagedPaginationState.md)
+passed as an arg — the surface a links component yields to its consumer:
+the numbered [links](PaginationLinks.md#links) (empty for cursor-based
+collections) and the relational [first](PaginationLinks.md#first)/
+[prev](PaginationLinks.md#prev)/[next](PaginationLinks.md#next)/
+[last](PaginationLinks.md#last) links.
+
+Recomputes when the `pages` arg changes, so a component whose pagination
+resets to a different collection derives fresh links automatically.
+
+##### Returns
+
+[`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`PaginationLinks`](PaginationLinks.md)<`RT`, `E`>>
