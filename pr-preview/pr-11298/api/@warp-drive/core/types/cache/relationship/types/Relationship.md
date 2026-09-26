@@ -14,7 +14,7 @@ type Relationship<T = ResourceKey> =
 | CollectionRelationship<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:85](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/relationship.ts#L85)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:85](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/relationship.ts#L85)
 
 The stable-cache-key form of a relationship, whether `to-one` or `to-many`.
 

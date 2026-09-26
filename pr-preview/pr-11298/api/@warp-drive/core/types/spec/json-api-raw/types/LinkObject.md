@@ -15,7 +15,7 @@ type LinkObject = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:29](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L29)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:29](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L29)
 
 The object form of a [Link](Link.md), allowing a link to carry
 additional [meta](Meta.md) information alongside its `href`.
@@ -30,7 +30,7 @@ additional [meta](Meta.md) information alongside its `href`.
 href: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:33](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L33)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:33](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L33)
 
 the URI-reference for the link
 
@@ -42,6 +42,6 @@ the URI-reference for the link
 optional meta?: Meta;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:37](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L37)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:37](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L37)
 
 meta information about the link

@@ -14,7 +14,7 @@ type Derivation<R = unknown, T = unknown, FM extends ObjectValue | null = Object
 } & (record: R, options: FM, prop: string) => T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:67](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/schema/concepts.ts#L67)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:67](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/schema/concepts.ts#L67)
 
 A Derivation computes a read-only field value from other fields
 (and options) on a record.

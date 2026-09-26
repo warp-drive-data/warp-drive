@@ -12,7 +12,7 @@ description: >-
 const DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:405](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/build-config/src/deprecations.ts#L405)
+Defined in: [deprecations.ts:405](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L405)
 
 Deprecates when a relationship is updated remotely and the local state
 is cleared of all changes except for "new" records.

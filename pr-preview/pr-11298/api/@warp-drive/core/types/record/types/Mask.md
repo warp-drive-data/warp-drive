@@ -13,7 +13,7 @@ description: >-
 type Mask<K extends object, T extends K> = { [P in keyof T]: P extends keyof K ? T[P] extends K[P] ? K[P] : never : T[P] };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:327](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/record.ts#L327)
+Defined in: [warp-drive-packages/core/src/types/record.ts:327](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/record.ts#L327)
 
 A utility that takes two types, K and T, and produces a new type that is a "mask" of T based on K.
 

@@ -18,7 +18,7 @@ interface SchemaObjectOptions {
 }
 ```
 
-Defined in: [fields/schema-object.ts:13](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L13)
+Defined in: [fields/schema-object.ts:13](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L13)
 
 Options accepted by the [schemaObject](../functions/schemaObject.md) decorator.
 
@@ -30,7 +30,7 @@ Options accepted by the [schemaObject](../functions/schemaObject.md) decorator.
 optional defaultValue?: boolean;
 ```
 
-Defined in: [fields/schema-object.ts:76](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L76)
+Defined in: [fields/schema-object.ts:76](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L76)
 
 If true, a missing cache value becomes `{}` instead of `null`.
 Ignored when `polymorphic` is true. Compiles onto the
@@ -44,7 +44,7 @@ Ignored when `polymorphic` is true. Compiles onto the
 optional polymorphic?: boolean;
 ```
 
-Defined in: [fields/schema-object.ts:52](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L52)
+Defined in: [fields/schema-object.ts:52](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L52)
 
 Whether this field may contain more than one object-schema type.
 Compiles onto the [SchemaObjectField](../../core/types/schema/fields/types/SchemaObjectField.md)'s `options.polymorphic`.
@@ -63,7 +63,7 @@ when `typeField` is `'@hash'`.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/schema-object.ts:38](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L38)
+Defined in: [fields/schema-object.ts:38](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L38)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the
@@ -77,7 +77,7 @@ decorated property's name. Compiles onto the
 optional type?: string | null;
 ```
 
-Defined in: [fields/schema-object.ts:29](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L29)
+Defined in: [fields/schema-object.ts:29](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L29)
 
 If the field is not polymorphic, the `type` of the [ObjectSchema](../functions/ObjectSchema.md)
 that describes the embedded object.
@@ -99,7 +99,7 @@ Compiles onto the [SchemaObjectField](../../core/types/schema/fields/types/Schem
 optional typeField?: string;
 ```
 
-Defined in: [fields/schema-object.ts:67](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L67)
+Defined in: [fields/schema-object.ts:67](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L67)
 
 When `polymorphic` is true, the key on the raw cache value that
 holds the object-schema type, or `'@hash'` to compute it.

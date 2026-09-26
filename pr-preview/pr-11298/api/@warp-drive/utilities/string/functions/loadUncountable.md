@@ -12,7 +12,7 @@ description: >-
 function loadUncountable(uncountables: string[]): void;
 ```
 
-Defined in: [-private/string/inflect.ts:44](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/utilities/src/-private/string/inflect.ts#L44)
+Defined in: [-private/string/inflect.ts:44](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/utilities/src/-private/string/inflect.ts#L44)
 
 Marks a list of words as uncountable. Uncountable words are not pluralized
 or singularized.

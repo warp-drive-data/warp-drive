@@ -16,7 +16,7 @@ interface LazyScaffold {
 }
 ```
 
-Defined in: [mock.ts:40](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/packages/holodeck/src/mock.ts#L40)
+Defined in: [mock.ts:40](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/packages/holodeck/src/mock.ts#L40)
 
 A mock whose method and url are known up front, with the rest of the
 scaffold built only when holodeck is recording. This is what the mock
@@ -31,7 +31,7 @@ run.
 method: string;
 ```
 
-Defined in: [mock.ts:41](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/packages/holodeck/src/mock.ts#L41)
+Defined in: [mock.ts:41](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/packages/holodeck/src/mock.ts#L41)
 
 ***
 
@@ -41,7 +41,7 @@ Defined in: [mock.ts:41](https://github.com/warp-drive-data/warp-drive/blob/5de9
 scaffold: () => Scaffold;
 ```
 
-Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/packages/holodeck/src/mock.ts#L43)
+Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/packages/holodeck/src/mock.ts#L43)
 
 #### Returns
 
@@ -55,4 +55,4 @@ Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/5de9
 url: string;
 ```
 
-Defined in: [mock.ts:42](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/packages/holodeck/src/mock.ts#L42)
+Defined in: [mock.ts:42](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/packages/holodeck/src/mock.ts#L42)

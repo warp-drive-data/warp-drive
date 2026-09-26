@@ -19,7 +19,7 @@ interface ReplaceRelatedRecordMutation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:80](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L80)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:80](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L80)
 
 Replaces the local (uncommitted) state of a `to-one` relationship
 with a new value.
@@ -32,7 +32,7 @@ with a new value.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L92)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:92](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L92)
 
 The name of the relationship to replace
 
@@ -44,7 +44,7 @@ The name of the relationship to replace
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:105](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L105)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:105](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L105)
 
 If the field is a collection relationship, the index at which the swap occurred
 
@@ -56,7 +56,7 @@ If the field is a collection relationship, the index at which the swap occurred
 op: "replaceRelatedRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:84](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L84)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:84](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L84)
 
 The name of the mutation
 
@@ -68,7 +68,7 @@ The name of the mutation
 optional prior?: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:101](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L101)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:101](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L101)
 
 If the field is a collection relationship, the value being swapped out
 
@@ -80,7 +80,7 @@ If the field is a collection relationship, the value being swapped out
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:88](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L88)
 
 The cache key for the resource whose relationship is being updated
 
@@ -92,7 +92,7 @@ The cache key for the resource whose relationship is being updated
 value: ResourceKey | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:97](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/cache/mutations.ts#L97)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:97](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/mutations.ts#L97)
 
 The new value for the relationship. Never `null` if the field is
 actually a collection relationship.

@@ -12,7 +12,7 @@ description: >-
 function settled(): Promise<void>;
 ```
 
-Defined in: [install.ts:55](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/react/src/install.ts#L55)
+Defined in: [install.ts:55](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/react/src/install.ts#L55)
 
 Resolves once all pending requests started via WarpDrive's React signal
 integration have settled. Only tracks requests while `TESTING` is enabled;

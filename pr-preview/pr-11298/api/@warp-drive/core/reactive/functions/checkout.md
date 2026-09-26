@@ -12,7 +12,7 @@ description: >-
 function checkout<T>(resource: unknown): Promise<T & ReactiveResource>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:758](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/reactive/-private/record.ts#L758)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:758](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/reactive/-private/record.ts#L758)
 
 Checkout an immutable resource for editing.
 

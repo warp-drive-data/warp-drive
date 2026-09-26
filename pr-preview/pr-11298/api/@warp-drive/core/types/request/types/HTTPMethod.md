@@ -22,6 +22,6 @@ type HTTPMethod =
   | "TRACE";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:65](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/types/request.ts#L65)
+Defined in: [warp-drive-packages/core/src/types/request.ts:65](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/request.ts#L65)
 
 The HTTP methods WarpDrive's request layer supports.

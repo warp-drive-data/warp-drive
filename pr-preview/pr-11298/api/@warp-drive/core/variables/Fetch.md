@@ -14,7 +14,7 @@ const Fetch: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:136](https://github.com/warp-drive-data/warp-drive/blob/5de9f22d0492ddb5538f446e288d7623ead973ae/warp-drive-packages/core/src/request/-private/fetch.ts#L136)
+Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:136](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/request/-private/fetch.ts#L136)
 
 ```ts
 import { Fetch } from '@warp-drive/core';
