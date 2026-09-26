@@ -1,11 +1,5 @@
 # @ember-data/legacy-compat
 
-:::warning ⚠️ Legacy Compatibility Package
-This package provides **compatibility shims** to bridge legacy EmberData patterns (Models, Adapters, Serializers) with modern WarpDrive infrastructure (RequestManager, Handlers, Cache).
-
-**For new projects:** Do not use this package. Start with {@link @warp-drive/core! | @warp-drive/core} and modern patterns (schemas, Handlers, request builders).
-:::
-
 This package exists to help apps migrate incrementally from legacy EmberData patterns to modern WarpDrive.
 
 **Why it exists:** When migrating from legacy EmberData to modern WarpDrive, you may need to:

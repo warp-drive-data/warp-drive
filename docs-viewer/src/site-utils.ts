@@ -506,9 +506,22 @@ interface ApiNavGroupPackage {
   name: string;
   /**
    * Legacy packages only: the module new code should use instead, e.g. `@warp-drive/core` for
-   * `@ember-data/store`. Every API page of the legacy package links to it.
+   * `@ember-data/store`. The warning at the top of every API page of the legacy package links to
+   * it unless `advice` says something more specific.
    */
   replacement?: string;
+  /**
+   * Legacy packages only: `internal` for a package apps should not depend on at all, `deprecated`
+   * for one slated for removal. Changes the warning's title and first sentence. Default: legacy.
+   */
+  status?: 'internal' | 'deprecated';
+  /**
+   * Legacy packages only: markdown that replaces the warning's default "New code should use
+   * `<replacement>` instead." sentence, for guidance a single module can't carry (e.g. Adapters
+   * are replaced by Handlers, not by another package). Use root-relative links; `{@link}` does not
+   * resolve here.
+   */
+  advice?: string;
 }
 
 interface ApiNavGroup {
@@ -1145,25 +1158,36 @@ function fixIndexSignatureIndent(content: string): string {
   return lines.join('\n');
 }
 
+const LEGACY_STATUS = {
+  legacy: { badge: 'Legacy Package', title: 'Legacy package', is: 'is a legacy package' },
+  internal: {
+    badge: 'Internal Package',
+    title: 'Internal package',
+    is: 'is an internal package, not intended for direct use by apps',
+  },
+  deprecated: { badge: 'Deprecated Package', title: 'Deprecated package', is: 'is deprecated' },
+} as const;
+
 /**
- * Marks every API page of a legacy package (the "Legacy Packages" group in nav.json) with a
- * "Legacy Package" badge and a callout pointing to its `replacement`, so a reader who lands on
- * `@ember-data/store`'s `Store` from a search knows to use `@warp-drive/core` instead. A package's
- * landing page gets the badge only: every legacy package's `src/index.md` already opens with its
- * own warning saying what replaced it.
+ * Marks every API page of a legacy package (the "Legacy Packages" group in nav.json), landing page
+ * included, with a badge and, at the top of the page, a warning saying what to use instead, so a
+ * reader who lands on `@ember-data/store`'s `Store` from a search knows to use `@warp-drive/core`.
+ * The wording comes from the package's nav.json entry (`status`, `replacement`, `advice`); the
+ * packages' own `src/index.md` files carry no warning of their own.
  */
 function markLegacyPackagePage(content: string, file: string): string {
   const pkg = findApiNavGroup('Legacy Packages').packages.find((p) => file.startsWith(`${p.name}/`));
   if (!pkg) return content;
 
-  const marked = content.replace(/^(<ModuleBadge [^\n]+\/>)/, `$1 <Badge type="danger" text="Legacy Package" />`);
-  const { replacement } = pkg;
-  if (!replacement || file === `${pkg.name}/index.md`) return marked;
-
-  const callout = `:::warning Legacy package\n\`${pkg.name}\` is a legacy package. New code should use [\`${replacement}\`](/api/${replacement}/) instead.\n:::`;
-  // under the page's H1 when it has one (symbol pages), otherwise under the badge line (module pages)
-  if (/^# [^\n]*$/m.test(marked)) return marked.replace(/^(# [^\n]*)$/m, `$1\n\n${callout}`);
-  return marked.replace(/^(<ModuleBadge [^\n]+\/>[^\n]*)$/m, `$1\n\n${callout}`);
+  const status = LEGACY_STATUS[pkg.status ?? 'legacy'];
+  const next =
+    pkg.advice ??
+    (pkg.replacement ? `New code should use [\`${pkg.replacement}\`](/api/${pkg.replacement}/) instead.` : '');
+  const callout = `:::warning ${status.title}\n\`${pkg.name}\` ${status.is}.${next ? ` ${next}` : ''}\n:::`;
+  return content.replace(
+    /^(<ModuleBadge [^\n]+\/>)([^\n]*)$/m,
+    `$1 <Badge type="danger" text="${status.badge}" />$2\n\n${callout}`
+  );
 }
 
 export async function postProcessApiDocs() {

@@ -1,13 +1,5 @@
 # @ember-data/model
 
-:::warning ⚠️ Legacy Package
-**Model classes are a LEGACY feature** that is no longer encouraged for new applications.
-
-**For new projects:** Use **schema objects** from {@link @warp-drive/core! | @warp-drive/core} instead.
-
-**On recent ***Warp*Drive** versions:** install this via {@link @warp-drive/legacy! | @warp-drive/legacy} instead of directly.
-:::
-
 This package provides runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
 
 **Why it's legacy:** The Model class pattern uses class inheritance and runtime decorator parsing to define your data schema. This approach:

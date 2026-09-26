@@ -1,9 +1,5 @@
 # @ember-data/store
 
-:::warning ⚠️ This is a legacy package not recommended for new applications
-Use {@link @warp-drive/core! | @warp-drive/core} instead.
-:::
-
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.
 
 A {@link @warp-drive/core!Store | Store} coordinates interaction between your application, a [Cache](/api/@warp-drive/core/types/cache/types/Cache),

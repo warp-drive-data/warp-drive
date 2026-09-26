@@ -1,11 +1,5 @@
 # @ember-data/adapter
 
-:::warning ⚠️ Legacy Package
-**Adapters are a LEGACY feature** that is no longer encouraged for new applications.
-
-**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
-:::
-
 This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy Adapter Interface when using the older packages.
 
 **Why it's legacy:** The Adapter pattern was designed for class-based, inheritance-heavy architectures where each resource type could have its own data fetching logic. This approach:
