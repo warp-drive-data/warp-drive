@@ -62,7 +62,7 @@ preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site
 ## Frontmatter and Agent-Only Content
 
 Every page is also published as plain Markdown for coding agents and indexed in `llms.txt` (see
-[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Three things in the source affect
+[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Four things in the source affect
 what those agents get:
 
 - **An `#` heading at the top.** Start every page with one H1 naming it. It is the page's title in
@@ -75,6 +75,16 @@ what those agents get:
   `- [Title](url): description`. An agent choosing which of 900 pages to fetch has only that line
   to go on, so give every new page a one-sentence `description` that says what a reader can do
   after reading it, and add one to any page you touch that lacks it.
+- **`legacy: true` in the frontmatter.** Set it on a page under `guides/`, `upgrading/` or `blog/`
+  that is only about a legacy setup, such as Models, Adapters or the pre-unification packages. The
+  page moves out of `llms.txt` and `llms-full.txt` into `llms-legacy.txt` and
+  `llms-legacy-full.txt`, and the website shows a Legacy badge and a warning at its top. The
+  warning's second sentence defaults to pointing at the current guides; set `legacyAdvice` to
+  markdown naming the modern equivalent instead, with root-relative links. A legacy page must set
+  `title`, since `llms-legacy.txt` does not read its H1. A draft legacy page is left out of all
+  four files and gets no badge. Don't flag a page that mixes modern and legacy content, or one
+  about [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md), which is a current,
+  recommended schema mode rather than a legacy setup.
 - **`<llm-only>` and `<llm-exclude>` tags.** Content wrapped in `<llm-only>` appears only in the
   Markdown outputs, never on the website; `<llm-exclude>` is the reverse. Use `<llm-only>` for an
   instruction that only makes sense to an agent ("always pair this with the schema from the
