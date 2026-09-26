@@ -25,7 +25,7 @@ to Stun".
    pipeline
 3. [Request builders](./request-builders.md): write builders for each list, then
    move the JSON:API headers into a handler
-4. Create
+4. [Create](./create.md): save a new todo, and let the store refetch the lists
 5. Edit title
 6. Toggle
 7. Delete
