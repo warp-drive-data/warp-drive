@@ -966,6 +966,11 @@
     },
     {
       "module": "@warp-drive/core",
+      "export": "ConfiguredStore",
+      "typeOnly": false
+    },
+    {
+      "module": "@warp-drive/core",
       "export": "Document",
       "typeOnly": true
     },
@@ -3451,6 +3456,11 @@
     },
     {
       "module": "@warp-drive/legacy",
+      "export": "ConfiguredStore",
+      "typeOnly": false
+    },
+    {
+      "module": "@warp-drive/legacy",
       "export": "LegacyModelAndNetworkAndRequestStoreSetupOptions",
       "typeOnly": true
     },
@@ -4671,22 +4681,12 @@
     },
     {
       "module": "warp-drive/-private/warp-drive/generators/adapter",
-      "export": "default",
-      "typeOnly": false
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/adapter",
       "export": "AdapterOptions",
       "typeOnly": true
     },
     {
       "module": "warp-drive/-private/warp-drive/generators/adapter",
       "export": "generateAdapterSource",
-      "typeOnly": false
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/model",
-      "export": "default",
       "typeOnly": false
     },
     {
@@ -4708,11 +4708,6 @@
       "module": "warp-drive/-private/warp-drive/generators/paths",
       "export": "GeneratorType",
       "typeOnly": true
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/serializer",
-      "export": "default",
-      "typeOnly": false
     },
     {
       "module": "warp-drive/-private/warp-drive/generators/serializer",
@@ -4787,11 +4782,6 @@
     {
       "module": "warp-drive/-private/warp-drive/generators/tests",
       "export": "generateUnitTestSource",
-      "typeOnly": false
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/transform",
-      "export": "default",
       "typeOnly": false
     },
     {

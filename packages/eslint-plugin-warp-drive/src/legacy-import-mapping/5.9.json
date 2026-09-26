@@ -988,26 +988,6 @@
       }
     },
     {
-      "module": "@warp-drive/legacy/store",
-      "export": "Store",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/store",
-        "export": "Store",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/adapter",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "warp-drive/-private/warp-drive/generators/adapter",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "warp-drive/-private/warp-drive/generators/adapter",
       "export": "*",
       "typeOnly": false,
@@ -1034,16 +1014,6 @@
       "to": {
         "module": "warp-drive/-private/warp-drive/generators/adapter",
         "export": "generateAdapterSource",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/model",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "warp-drive/-private/warp-drive/generators/model",
-        "export": "default",
         "typeOnly": false
       }
     },
@@ -1105,16 +1075,6 @@
         "module": "warp-drive/-private/warp-drive/generators/paths",
         "export": "GeneratorType",
         "typeOnly": true
-      }
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/serializer",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "warp-drive/-private/warp-drive/generators/serializer",
-        "export": "default",
-        "typeOnly": false
       }
     },
     {
@@ -1304,16 +1264,6 @@
       "to": {
         "module": "warp-drive/-private/warp-drive/generators/tests",
         "export": "generateUnitTestSource",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "warp-drive/-private/warp-drive/generators/transform",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "warp-drive/-private/warp-drive/generators/transform",
-        "export": "default",
         "typeOnly": false
       }
     },

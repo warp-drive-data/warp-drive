@@ -2053,6 +2053,16 @@
     },
     {
       "module": "@warp-drive/core",
+      "export": "ConfiguredStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core",
+        "export": "ConfiguredStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core",
       "export": "Document",
       "typeOnly": true,
       "to": {
@@ -6573,6 +6583,16 @@
     },
     {
       "module": "@warp-drive/legacy",
+      "export": "ConfiguredStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy",
+        "export": "ConfiguredStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy",
       "export": "LegacyModelAndNetworkAndRequestStoreSetupOptions",
       "typeOnly": true,
       "to": {
@@ -7994,7 +8014,7 @@
     {
       "module": "@warp-drive/legacy/store",
       "export": "Store",
-      "typeOnly": false,
+      "typeOnly": true,
       "to": {
         "module": "@warp-drive/legacy/store",
         "export": "Store",

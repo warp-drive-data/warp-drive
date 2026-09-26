@@ -181,8 +181,13 @@ const tsTester = new RuleTester({
 tsTester.run('no-legacy-imports (type-only imports)', rule, {
   valid: [
     {
-      name: 'a type import of a name that became type-only in place stays silent',
+      name: 'a type import of a type that did not move stays silent',
       code: `import type { Store } from '@warp-drive/legacy/store';`,
+      options: [{ from: '5.7' }],
+    },
+    {
+      name: 'a value import of a name that was already type-only in the from release stays silent',
+      code: `import { Store } from '@warp-drive/legacy/store';`,
       options: [{ from: '5.7' }],
     },
   ],
@@ -204,13 +209,6 @@ tsTester.run('no-legacy-imports (type-only imports)', rule, {
       code: `import { type ManyArray } from '@ember-data/model/-private';`,
       output: `import type { ManyArray } from '@warp-drive/legacy/model/-private';`,
       errors: [{ messageId: msg }],
-    },
-    {
-      name: 'a value import of a name that became type-only in place is reported',
-      code: `import { Store } from '@warp-drive/legacy/store';`,
-      output: null,
-      options: [{ from: '5.7' }],
-      errors: [{ messageId: typeOnlyTargetMsg }],
     },
     // A type-only default import converted to a named export must stay type-only,
     // and must become a named import rather than keeping the default form.

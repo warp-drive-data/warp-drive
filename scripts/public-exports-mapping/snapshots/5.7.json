@@ -3297,7 +3297,7 @@
     {
       "module": "@warp-drive/legacy/store",
       "export": "Store",
-      "typeOnly": false
+      "typeOnly": true
     },
     {
       "module": "@warp-drive/legacy/store",

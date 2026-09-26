@@ -199,6 +199,16 @@
     },
     {
       "module": "@warp-drive/core",
+      "export": "ConfiguredStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core",
+        "export": "ConfiguredStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core",
       "export": "StoreSetupOptions",
       "typeOnly": true,
       "to": {
@@ -904,6 +914,16 @@
       "to": {
         "module": "@warp-drive/legacy",
         "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy",
+      "export": "ConfiguredStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy",
+        "export": "ConfiguredStore",
         "typeOnly": false
       }
     },

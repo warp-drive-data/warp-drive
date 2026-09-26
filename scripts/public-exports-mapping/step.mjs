@@ -1,11 +1,9 @@
-import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import ts from 'typescript';
 
+import { parseModule } from './exports.mjs';
 import { compareTokens, keyOf, sameToken, token } from './token.mjs';
 
 const MAX_DEPTH = 8;
-const LOCAL = { kind: 'local' };
 
 /**
  * @typedef {import('./token.mjs').Token & { to: import('./token.mjs').Token | null }} DerivedEntry
@@ -154,79 +152,6 @@ export function manual(source, to, note) {
 }
 
 /**
- * @typedef {{ kind: 'reexport', module: string, name: string, typeOnly: boolean } | { kind: 'local' }} ShimSource
- * @typedef {{ explicit: Map<string, ShimSource>, stars: { module: string, typeOnly: boolean }[] }} ShimFile
- */
-
-/**
- * @param {string} filePath
- * @returns {ShimFile}
- */
-function analyzeShim(filePath) {
-  const source = ts.createSourceFile(filePath, readFileSync(filePath, 'utf8'), ts.ScriptTarget.Latest, true);
-  const imports = new Map();
-  const explicit = new Map();
-  const stars = [];
-
-  for (const statement of source.statements) {
-    if (ts.isImportDeclaration(statement) && statement.importClause) {
-      const { importClause } = statement;
-      const module = statement.moduleSpecifier.text;
-      const typeOnly = importClause.isTypeOnly;
-      if (importClause.name) {
-        imports.set(importClause.name.text, { kind: 'reexport', module, name: 'default', typeOnly });
-      }
-      if (importClause.namedBindings && ts.isNamedImports(importClause.namedBindings)) {
-        for (const element of importClause.namedBindings.elements) {
-          const name = (element.propertyName ?? element.name).text;
-          imports.set(element.name.text, { kind: 'reexport', module, name, typeOnly: typeOnly || element.isTypeOnly });
-        }
-      }
-    } else if (ts.isExportDeclaration(statement)) {
-      const module = statement.moduleSpecifier?.text;
-      const typeOnly = statement.isTypeOnly;
-      if (!statement.exportClause) {
-        stars.push({ module, typeOnly });
-      } else if (ts.isNamespaceExport(statement.exportClause)) {
-        explicit.set(statement.exportClause.name.text, LOCAL);
-      } else {
-        for (const element of statement.exportClause.elements) {
-          const exported = element.name.text;
-          const local = (element.propertyName ?? element.name).text;
-          const elementTypeOnly = typeOnly || element.isTypeOnly;
-          if (module) {
-            explicit.set(exported, { kind: 'reexport', module, name: local, typeOnly: elementTypeOnly });
-          } else if (imports.has(local)) {
-            const imported = imports.get(local);
-            explicit.set(exported, { ...imported, typeOnly: imported.typeOnly || elementTypeOnly });
-          } else {
-            explicit.set(exported, LOCAL);
-          }
-        }
-      }
-    } else if (ts.isExportAssignment(statement)) {
-      const name = ts.isIdentifier(statement.expression) ? statement.expression.text : null;
-      explicit.set('default', imports.get(name) ?? LOCAL);
-    } else if (ts.canHaveModifiers(statement)) {
-      const modifiers = ts.getModifiers(statement) ?? [];
-      if (!modifiers.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)) continue;
-      const isDefault = modifiers.some((m) => m.kind === ts.SyntaxKind.DefaultKeyword);
-      if (ts.isVariableStatement(statement)) {
-        for (const declaration of statement.declarationList.declarations) {
-          if (ts.isIdentifier(declaration.name)) explicit.set(declaration.name.text, LOCAL);
-        }
-      } else if (isDefault) {
-        explicit.set('default', LOCAL);
-      } else if (statement.name) {
-        explicit.set(statement.name.text, LOCAL);
-      }
-    }
-  }
-
-  return { explicit, stars };
-}
-
-/**
  * @param {import('./surface.mjs').Surface} to
  * @returns {(module: string, name: string) => import('./token.mjs').Token | null}
  */
@@ -241,7 +166,7 @@ function createResolver(to) {
   const shims = new Map();
 
   function shimOf(filePath) {
-    if (!shims.has(filePath)) shims.set(filePath, analyzeShim(filePath));
+    if (!shims.has(filePath)) shims.set(filePath, parseModule(filePath));
     return shims.get(filePath);
   }
 
@@ -267,7 +192,7 @@ function createResolver(to) {
     }
 
     const filePath = to.fileOf.get(module);
-    const { explicit, stars } = shimOf(filePath);
+    const { named, stars } = shimOf(filePath);
 
     if (name === '*') {
       if (stars.length !== 1) return null;
@@ -275,7 +200,7 @@ function createResolver(to) {
       return next ? resolve(next, '*', depth + 1) : null;
     }
 
-    const source = explicit.get(name);
+    const source = named.get(name);
     if (source?.kind === 'reexport') {
       const next = moduleOf(source.module, filePath);
       const found = next && resolve(next, source.name, depth + 1);
