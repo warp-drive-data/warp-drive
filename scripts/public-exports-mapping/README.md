@@ -132,12 +132,12 @@ step from the tags.
 ### Archival check
 
 `archive --check` rebuilds every released snapshot and step from tags, folds them with the live
-step into the shipped maps, and diffs all of it. The
-`Public Exports Archive` workflow runs it on every change under `scripts/public-exports-mapping/`
-and once a week, with the full history and tags fetched. Each tag is extracted into a temporary
-directory that holds only package manifests, build configs and `src/`, and the directory is
-removed as soon as that tag is scanned. The 5.5 snapshot is derived first, and every later tag
-reads that copy, so one run always converges. It fails only when the discovery, the
+step into the shipped maps, and diffs all of it. The `Public Exports Archive` workflow runs it
+with the full history and tags fetched. It runs on every change under
+`scripts/public-exports-mapping/` or to `pnpm-lock.yaml`, and once a week. Each tag is extracted
+into a temporary directory that holds only package manifests, build configs and `src/`, and the
+directory is removed as soon as that tag is scanned. The 5.5 snapshot is derived first, and every
+later tag reads that copy, so one run always converges. It fails only when the discovery, the
 export parser or the shim resolution changed, and then the diff is the review.
 
 ## Reading a shipped map
