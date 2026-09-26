@@ -121,7 +121,9 @@ deliberate: the release step cannot be forgotten.
 
 `archive --check` rebuilds every released snapshot and step from tags and diffs them. The
 `Public Exports Archive` workflow runs it on every change under `scripts/public-exports-mapping/`
-and once a week, with the full history and tags fetched. It fails only when the discovery, the
+and once a week, with the full history and tags fetched. Each tag is extracted into a temporary
+directory that holds only package manifests, build configs and `src/`, and the directory is
+removed as soon as that tag is scanned. It fails only when the discovery, the
 export parser or the shim resolution changed, and then the diff is the review.
 
 ## Reading a shipped map
