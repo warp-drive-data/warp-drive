@@ -6,13 +6,19 @@ description: >-
   observer and computed chains on WarpDrive record arrays and ManyArrays.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_COMPUTED\_CHAINS&#x20;
 
 ```ts
 const DEPRECATE_COMPUTED_CHAINS: boolean = true;
 ```
 
-Defined in: [deprecations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L133)
+Defined in: [deprecations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/deprecations.ts#L133)
 
 This is a planned deprecation which will trigger when observer or computed
 chains are used to watch for changes on any WarpDrive LiveArray, CollectionRecordArray,

@@ -7,7 +7,10 @@ description: >-
   `@warp-drive/core/reactive`.
 ---
 
-:::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/schema-record` is a legacy package. New code should use [`@warp-drive/core/reactive`](/api/@warp-drive/core/reactive/) instead.
 :::
 
 This package declares nothing of its own. Its single entry point re-exports the

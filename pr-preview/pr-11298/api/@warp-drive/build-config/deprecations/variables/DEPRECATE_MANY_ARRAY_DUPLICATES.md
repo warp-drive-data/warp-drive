@@ -6,13 +6,19 @@ description: >-
   adding duplicates throws an error instead of being deduped.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_MANY\_ARRAY\_DUPLICATES&#x20;
 
 ```ts
 const DEPRECATE_MANY_ARRAY_DUPLICATES: boolean = true;
 ```
 
-Defined in: [deprecations.ts:423](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L423)
+Defined in: [deprecations.ts:423](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/deprecations.ts#L423)
 
 When the flag is `true` (default), adding duplicate records to a `ManyArray`
 is deprecated in non-production environments. In production environments,

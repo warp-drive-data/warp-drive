@@ -6,13 +6,19 @@ description: >-
   to `false` to stop extending EmberObject.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_STORE\_EXTENDS\_EMBER\_OBJECT&#x20;
 
 ```ts
 const DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: boolean = true;
 ```
 
-Defined in: [deprecations.ts:438](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L438)
+Defined in: [deprecations.ts:438](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/deprecations.ts#L438)
 
 When the flag is `true` (default), the Store class will extend from `@ember/object`.
 When the flag is `false` or `ember-source` is not present, the Store will not extend

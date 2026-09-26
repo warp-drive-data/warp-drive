@@ -6,7 +6,10 @@ description: >-
   `@warp-drive/core/types`.
 ---
 
-:::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/core-types` is a legacy package. New code should use [`@warp-drive/core/types`](/api/@warp-drive/core/types/) instead.
 :::
 
 Every entry point in this package is a type-only re-export of the matching

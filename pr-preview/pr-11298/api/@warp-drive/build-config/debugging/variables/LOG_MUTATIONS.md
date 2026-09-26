@@ -6,13 +6,19 @@ description: >-
   log cache updates instead.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;~~LOG\_MUTATIONS~~&#x20;
 
 ```ts
 const LOG_MUTATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/debugging.ts#L64)
+Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/debugging.ts#L64)
 
 This flag no longer has any effect.
 

@@ -6,13 +6,19 @@ description: >-
   `@ember-data/*`, except `ember-data/store`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_LEGACY\_IMPORTS&#x20;
 
 ```ts
 const DEPRECATE_LEGACY_IMPORTS: boolean = true;
 ```
 
-Defined in: [deprecations.ts:213](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L213)
+Defined in: [deprecations.ts:213](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/deprecations.ts#L213)
 
 Deprecates when importing from `ember-data/*` instead of `@ember-data/*`
 in order to prepare for the eventual removal of the legacy `ember-data/*`

@@ -7,7 +7,11 @@ description: >-
   adapter behavior.
 ---
 
-&#x20;
+&#x20;&#x20;
+
+:::warning Legacy package
+`@ember-data/legacy-compat` is a legacy package. It bridges Models, Adapters, and Serializers to the `RequestManager` and cache; new code should skip it and start from [`@warp-drive/core`](/api/@warp-drive/core/) with schemas, Handlers, and request builders.
+:::
 
 Builders for migrating from `store` methods to `store.request`.
 

@@ -5,6 +5,8 @@ description: >-
   for use by the JSON:API cache; not intended for direct application use.
 ---
 
-:::warning ⚠️ This is an internal package not intended for direct application use
-It is a private implementation used as a peer-dependency by the JSON:API Cache.
+&#x20;
+
+:::warning Internal package
+`@ember-data/graph` is an internal package, not intended for direct use by apps. It is used by the JSON:API cache; apps should not depend on it directly.
 :::

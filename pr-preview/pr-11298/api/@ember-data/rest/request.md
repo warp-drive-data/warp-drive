@@ -6,6 +6,12 @@ description: >-
   that produce fetch options with * stable, camelCase pluralized REST URLs. *
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@ember-data/rest` is a legacy package. New code should use [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
+:::
+
 This package provides utilities for working with **REST**ful APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).
 
 ## Usage

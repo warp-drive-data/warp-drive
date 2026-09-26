@@ -12,7 +12,7 @@ description: >-
 type CacheKeyType = "record" | "document";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:40](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/identifier.ts#L40)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:40](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/identifier.ts#L40)
 
 Identifies which "bucket" of the cache a key belongs to: resources
 (`'record'`, see [ResourceKey](ResourceKey.md)) or request documents

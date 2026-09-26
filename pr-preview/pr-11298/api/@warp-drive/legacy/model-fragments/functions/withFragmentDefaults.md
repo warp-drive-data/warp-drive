@@ -21,7 +21,7 @@ function withFragmentDefaults<FragmentType extends string, FragmentName extends 
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts#L11)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts#L11)
 
 Used as a helper to setup the relevant parts of a fragment schema
 and add extensions etc.

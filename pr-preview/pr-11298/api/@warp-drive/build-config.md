@@ -7,7 +7,10 @@ description: >-
   `@warp-drive/core/build-config` instead.
 ---
 
-:::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
 
 This package provides a build-plugin that enables configuration of deprecations,

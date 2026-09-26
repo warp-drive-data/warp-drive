@@ -19,7 +19,7 @@ interface ReplaceRelatedRecordsOperation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:164](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L164)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:164](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L164)
 
 Replaces the state of a `to-many` relationship on the Graph with a
 new set of values.
@@ -32,7 +32,7 @@ new set of values.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:176](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L176)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:176](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L176)
 
 The name of the relationship to replace
 
@@ -44,7 +44,7 @@ The name of the relationship to replace
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:190](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L190)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:190](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L190)
 
 If this is a "splice", the index to start from
 
@@ -56,7 +56,7 @@ If this is a "splice", the index to start from
 op: "replaceRelatedRecords";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:168](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L168)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:168](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L168)
 
 The name of the operation
 
@@ -68,7 +68,7 @@ The name of the operation
 optional prior?: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:186](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L186)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:186](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L186)
 
 If this is a "splice", the resources expected to be removed
 
@@ -80,7 +80,7 @@ If this is a "splice", the resources expected to be removed
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:172](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L172)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:172](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L172)
 
 The cache key for the resource whose relationship is being updated
 
@@ -92,7 +92,7 @@ The cache key for the resource whose relationship is being updated
 value: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:182](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/graph.ts#L182)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:182](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/graph.ts#L182)
 
 The resources to add. If neither [prior](#prior)
 nor [index](#index) is specified, all

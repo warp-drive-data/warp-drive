@@ -7,6 +7,12 @@ description: >-
   `@warp-drive/core/build-config/debugging`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 While build-config is its own package, it should always be
 used via `@warp-drive/core`.
 

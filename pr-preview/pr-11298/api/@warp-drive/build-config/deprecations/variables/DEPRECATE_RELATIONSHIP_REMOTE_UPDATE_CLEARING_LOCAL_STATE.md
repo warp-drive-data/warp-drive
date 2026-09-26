@@ -6,13 +6,19 @@ description: >-
   changes; set it to `false`, or `resetOnRemoteUpdate: false`, to keep them.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEPRECATE\_RELATIONSHIP\_REMOTE\_UPDATE\_CLEARING\_LOCAL\_STATE&#x20;
 
 ```ts
 const DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE: boolean = true;
 ```
 
-Defined in: [deprecations.ts:405](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/deprecations.ts#L405)
+Defined in: [deprecations.ts:405](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/deprecations.ts#L405)
 
 Deprecates when a relationship is updated remotely and the local state
 is cleared of all changes except for "new" records.

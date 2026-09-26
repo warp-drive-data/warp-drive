@@ -20,7 +20,7 @@ interface RemoveFromResourceRelationshipOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:228](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L228)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:228](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L228)
 
 Removes the specified ResourceKeys from a relationship
 
@@ -36,7 +36,7 @@ Removes the specified ResourceKeys from a relationship
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:237](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L237)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:237](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L237)
 
 The name of the relationship to remove from
 
@@ -48,7 +48,7 @@ The name of the relationship to remove from
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:245](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L245)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:245](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L245)
 
 The index to remove the resource(s) from, if applicable
 
@@ -60,7 +60,7 @@ The index to remove the resource(s) from, if applicable
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:229](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L229)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:229](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L229)
 
 The name of the [operation](Op.md)
 
@@ -76,7 +76,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:233](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L233)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:233](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L233)
 
 The cache key for the resource whose relationship is being updated
 
@@ -90,6 +90,6 @@ value:
   | PersistedResourceKey<string>[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:241](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/types/cache/operations.ts#L241)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:241](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/types/cache/operations.ts#L241)
 
 The resource(s) to remove from the relationship

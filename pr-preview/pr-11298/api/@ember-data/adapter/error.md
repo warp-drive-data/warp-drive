@@ -7,6 +7,12 @@ description: >-
   `@warp-drive/legacy/adapter/error`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@ember-data/adapter` is a legacy package. Adapters are no longer encouraged; new code should use [Handlers](/api/@warp-drive/core/request/types/Handler) with the `RequestManager` from [`@warp-drive/core`](/api/@warp-drive/core/) instead.
+:::
+
 Legacy alias of [@warp-drive/legacy/adapter/error](../../../@warp-drive/legacy/adapter/error/index.md).
 This entry re-exports the adapter error classes from that module unchanged so existing
 `@ember-data/adapter/error` imports keep working; new code should import

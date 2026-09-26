@@ -15,7 +15,7 @@ type ReactiveErrorDocument<T, EM extends Meta | undefined = Meta | undefined, E 
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:160](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/core/src/reactive/-private/document.ts#L160)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:160](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/core/src/reactive/-private/document.ts#L160)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained no primary data, e.g. an error response.

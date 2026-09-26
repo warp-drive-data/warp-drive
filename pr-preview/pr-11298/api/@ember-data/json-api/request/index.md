@@ -7,6 +7,12 @@ description: >-
   JSON:API URLs for `store.request`.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@ember-data/json-api` is a legacy package. New code should use [`@warp-drive/json-api`](/api/@warp-drive/json-api/) for the cache and [`@warp-drive/utilities`](/api/@warp-drive/utilities/) for the request builders instead.
+:::
+
 This package provides utilities for working with [JSON:API](https://jsonapi.org) APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).
 
 ## Installation

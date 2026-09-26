@@ -6,13 +6,19 @@ description: >-
   an update to a hasMany relationship.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;DEBUG\_RELATIONSHIP\_NOTIFICATIONS
 
 ```ts
 const DEBUG_RELATIONSHIP_NOTIFICATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:140](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/debugging.ts#L140)
+Defined in: [debugging.ts:140](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/debugging.ts#L140)
 
 Helps when debugging causes of a change notification
 when processing an update to a hasMany relationship.

@@ -12,7 +12,7 @@ description: >-
 function filterEmpty(source: Record<string, Serializable>): Record<string, Serializable>;
 ```
 
-Defined in: [index.ts:647](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/utilities/src/index.ts#L647)
+Defined in: [index.ts:647](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/utilities/src/index.ts#L647)
 
 filter out keys of an object that have falsy values or point to empty arrays
 returning a new object with only those keys that have truthy values / non-empty arrays

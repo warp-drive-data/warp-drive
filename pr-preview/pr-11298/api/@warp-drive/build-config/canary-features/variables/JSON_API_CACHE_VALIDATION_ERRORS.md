@@ -6,13 +6,19 @@ description: >-
   `cache.put` against registered schemas and the JSON:API spec.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;JSON\_API\_CACHE\_VALIDATION\_ERRORS&#x20;
 
 ```ts
 const JSON_API_CACHE_VALIDATION_ERRORS: boolean | null = false;
 ```
 
-Defined in: [canary-features.ts:142](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/canary-features.ts#L142)
+Defined in: [canary-features.ts:142](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/canary-features.ts#L142)
 
 This upcoming feature adds a validation step to payloads received
 by the JSONAPICache implementation.

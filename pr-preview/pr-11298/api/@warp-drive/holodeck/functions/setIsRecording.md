@@ -12,7 +12,7 @@ description: >-
 function setIsRecording(value: boolean): void;
 ```
 
-Defined in: [index.ts:257](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/packages/holodeck/src/index.ts#L257)
+Defined in: [index.ts:257](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/packages/holodeck/src/index.ts#L257)
 
 ## Parameters
 

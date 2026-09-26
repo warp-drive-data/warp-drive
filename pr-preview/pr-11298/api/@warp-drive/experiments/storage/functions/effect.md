@@ -14,7 +14,7 @@ description: >-
 function effect(fn: <K>(update: ValueTransition<K>) => void, type?: "local" | "session"): PropertyDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:220](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/experiments/src/storage/storage-resource.ts#L220)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:220](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/experiments/src/storage/storage-resource.ts#L220)
 
 Effects are fields that run a side-effecting function.
 

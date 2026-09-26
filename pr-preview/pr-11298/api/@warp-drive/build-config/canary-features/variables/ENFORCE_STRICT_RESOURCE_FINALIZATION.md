@@ -6,13 +6,19 @@ description: >-
   called for a resource whose traits, or its traits' traits, are missing.
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+:::
+
 # &#x20;ENFORCE\_STRICT\_RESOURCE\_FINALIZATION&#x20;
 
 ```ts
 const ENFORCE_STRICT_RESOURCE_FINALIZATION: boolean | null = false;
 ```
 
-Defined in: [canary-features.ts:156](https://github.com/warp-drive-data/warp-drive/blob/beb5a43c684bb64f8448b3f6ac02cc3682c9c9c0/warp-drive-packages/build-config/src/canary-features.ts#L156)
+Defined in: [canary-features.ts:156](https://github.com/warp-drive-data/warp-drive/blob/4d4cead95c05ff5401f363d09091c24064d740c1/warp-drive-packages/build-config/src/canary-features.ts#L156)
 
 This upcoming feature adds a validation step when `schema.fields({ type })`
 is called for the first time for a resource.
