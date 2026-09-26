@@ -121,20 +121,24 @@ shim analysis changed, and then the diff is the review.
 ## Reading a shipped map
 
 Every entry describes one token of the from release. `to` is where it is in the to release.
+The reader's `resolve(module, name)` turns an entry into the decision the rule applies.
 
-- `to` is `null`: the token is `removed`. Nothing in the to release stands in for it. The rule
-  reports the import and leaves it alone.
-- `to.module` is listed in `legacyModules`: the token is `legacy`. It still lives in a legacy
+- `to` is `null`: the token is removed. Nothing in the to release stands in for it. `resolve`
+  answers `report` with reason `removed`, and the rule leaves the import alone.
+- `to.module` is listed in `legacyModules`: the token is legacy. It still lives in a legacy
   package, either because that package declares it itself or because it forwards to another
-  legacy package. There is no modern module to rewrite to yet, so the rule reports it and a
-  human decides.
-- `to` equals the source: unchanged. The rule stays silent.
-- Anything else is a rewrite.
+  legacy package. There is no modern module to rewrite to yet, so `resolve` answers `report`
+  with reason `legacy` and a human decides.
+- `to` names the source's own module and export: unchanged. `resolve` answers `keep`.
+- Anything else is a `rewrite` to `to`.
 
 An entry whose `export` is `"*"` is the module's own move. It is non-null only when the legacy
 shim forwards everything through exactly one `export *`, so it is the sound route for a name
-the map does not list individually. The rule and the codemod use it for names added after
-the from release, and for namespace imports.
+the map does not list individually. `resolve` uses it for names added after the from release,
+and a namespace import asks for `"*"` directly. A module whose `"*"` entry points at itself,
+such as `@warp-drive/build-config`, did not move, so any name from it answers `keep`. A module
+the map knows, with no entry for the name and no module-level move, answers `report` with
+reason `untracked`. A module the map does not know answers `keep`.
 
 An entry holds exactly `module`, `export`, `typeOnly` and `to`. It does not record which
 releases moved the token or whether an override chose the target.

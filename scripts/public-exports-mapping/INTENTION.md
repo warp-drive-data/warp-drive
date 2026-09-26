@@ -62,7 +62,9 @@ fix.
   does one lookup on a full map and never composes steps at lint time.
 - The reader is the public API. `loadMap` and `listFromVersions` in
   `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/index.js` are what a consumer may
-  depend on. The JSON files are an implementation detail of that reader.
+  depend on, and `index.d.ts` next to it is their only type declaration. A loaded map has one
+  method, `resolve(module, name)`, and it returns the decision. The JSON files are an
+  implementation detail of that reader.
 
 ## Decisions and why
 
@@ -112,8 +114,10 @@ decoder.
 
 The codemod imports the reader, not the JSON. Both consumers have to answer the same question,
 which is whether an import should be rewritten, reported, or left alone. That policy lives once,
-in the reader's four `Relocation` outcomes. If the codemod parsed the JSON itself, the two would
-drift, and the on-disk shape would become public API that no one can change.
+in the reader's `resolve`, which answers `rewrite`, `report` or `keep` for one imported name. The
+rule only applies that answer. If the codemod parsed the JSON itself, or rebuilt the decision
+from lower-level lookups, the two would drift, and the on-disk shape would become public API that
+no one can change.
 
 ## What it deliberately does not do
 
