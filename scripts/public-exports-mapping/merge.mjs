@@ -24,6 +24,20 @@ import { compareTokens, keyOf, sameToken, token } from './token.mjs';
  */
 
 /**
+ * A shipped map stored against the full map of the previous from-release in `versions.json`.
+ * @typedef {object} MergedDelta
+ * @property {1} schema
+ * @property {'merged-delta'} kind
+ * @property {import('./token.mjs').Minor} from
+ * @property {import('./token.mjs').Minor} base
+ * @property {import('./token.mjs').Minor[]} via
+ * @property {import('./token.mjs').Minor} to
+ * @property {string[]} [legacyModules]  present only when it differs from the base's
+ * @property {import('./token.mjs').TokenKey[]} remove  keys the base has and `from` lacks, sorted
+ * @property {MergedEntry[]} set  entries new in `from` or different from the base's, in token order
+ */
+
+/**
  * @typedef {object} MergedProblem
  * @property {'target-missing' | 'residual-chain'} kind
  * @property {MergedEntry} entry
@@ -98,6 +112,28 @@ export function mergeSteps(steps, endpoint) {
   const problems = verifyMerged(map, endpoint);
   if (problems.length) throw new MergedError(problems);
   return map;
+}
+
+/**
+ * @param {MergedMap} base  the full map of the previous from-release
+ * @param {MergedMap} current
+ * @returns {MergedDelta}
+ */
+export function diffMerged(base, current) {
+  const before = new Map(base.entries.map((e) => [keyOf(e), JSON.stringify(e)]));
+  const after = new Set(current.entries.map(keyOf));
+  const sameLegacy = JSON.stringify(base.legacyModules) === JSON.stringify(current.legacyModules);
+  return {
+    schema: 1,
+    kind: 'merged-delta',
+    from: current.from,
+    base: base.from,
+    via: current.via,
+    to: current.to,
+    ...(sameLegacy ? {} : { legacyModules: current.legacyModules }),
+    remove: [...before.keys()].filter((key) => !after.has(key)).sort(),
+    set: current.entries.filter((e) => before.get(keyOf(e)) !== JSON.stringify(e)),
+  };
 }
 
 /**

@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const { applyDelta } = require('./delta.js');
+
 /** @typedef {{ module: string, export: string, typeOnly: boolean }} Token */
 /** @typedef {{ at: string, to: Token | null, note?: string }} Hop */
 
@@ -67,7 +69,7 @@ function loadMap(from = listFromVersions()[0]) {
   const cached = cache.get(from);
   if (cached) return cached;
 
-  const file = JSON.parse(fs.readFileSync(path.join(__dirname, `${from}.json`), 'utf8'));
+  const file = fullMapOf(from, versions);
   const byKey = new Map(file.entries.map((entry) => [`${entry.module}::${entry.export}`, entry]));
   const legacy = new Set(file.legacyModules);
   const known = new Set(file.entries.map((entry) => entry.module));
@@ -84,6 +86,40 @@ function loadMap(from = listFromVersions()[0]) {
     knows: (module) => known.has(module),
   };
   cache.set(from, map);
+  return map;
+}
+
+/** @type {Map<string, object>} */
+const fullMaps = new Map();
+
+/**
+ * The oldest release ships a full map. Every later one ships a delta against the release
+ * before it, so a full map is rebuilt by walking the chain from the oldest.
+ * @param {string} from
+ * @param {string[]} versions
+ * @returns {object}  a full merged map
+ */
+function fullMapOf(from, versions) {
+  let map;
+  for (const [i, version] of versions.slice(0, versions.indexOf(from) + 1).entries()) {
+    if (fullMaps.has(version)) {
+      map = fullMaps.get(version);
+      continue;
+    }
+    const file = JSON.parse(fs.readFileSync(path.join(__dirname, `${version}.json`), 'utf8'));
+    if (i === 0) {
+      if (file.kind !== 'merged' || file.from !== version) {
+        throw new Error(`${version}.json must be the full merged map from ${version}`);
+      }
+      map = file;
+    } else {
+      if (file.kind !== 'merged-delta' || file.from !== version || file.base !== versions[i - 1]) {
+        throw new Error(`${version}.json must be a merged-delta from ${version} against ${versions[i - 1]}`);
+      }
+      map = applyDelta(map, file);
+    }
+    fullMaps.set(version, map);
+  }
   return map;
 }
 
