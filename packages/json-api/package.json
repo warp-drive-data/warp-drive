@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/json-api",
   "version": "5.10.0-alpha.12",
-  "description": "(Legacy) JSON:API document and resource cache implementation for EmberData",
+  "description": "(Legacy) JSON:API document and resource cache for the `@ember-data/*` packages, re-exporting `JSONAPICache`; new apps should import it from `@warp-drive/json-api` instead.",
   "keywords": [
     "ember-addon"
   ],

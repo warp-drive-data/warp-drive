@@ -116,8 +116,9 @@ Members don't need one. A method, property, or accessor renders on its parent's 
   TypeDoc tag, not a TSDoc one; TSDoc treats everything before `@remarks` as the summary and has
   no `@summary`.
 - For an overloaded function, put it on the implementation's comment or the first overload's.
-- A package landing page built from `src/index.md` has no doc comment, so it can't carry one
-  and is listed by name only.
+- A package landing page built from `src/index.md` has no doc comment, so it can't carry one.
+  Its entry comes from the `description` in the package's `package.json` instead; see
+  [README vs `src/index.md`](#readme-vs-src-index-md).
 
 ### Every Public API Should Have a Usage Example
 
@@ -1072,6 +1073,14 @@ The split follows from where each file renders:
 
 Some packages still duplicate paragraphs between the two. When you touch one, read the other and
 move each sentence to the file that answers its question.
+
+The landing page's entry in `llms.txt`, the index coding agents read to decide which page to
+fetch, is the `description` in the package's `package.json`: the same role `@summary` plays for a
+symbol's page. Write it as one sentence saying what the package provides and when to use it. For
+a legacy package, start it with `(Legacy)` and say what replaces it; mark an internal package
+`(Internal)` and a deprecated one `(Deprecated)` the same way. npm shows the same text, so it
+serves both readers. Don't
+put frontmatter in `src/index.md`: TypeDoc renders a package readme's `---` block as page text.
 
 ### Keep READMEs short
 

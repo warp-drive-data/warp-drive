@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/ember",
-  "description": "Data bindings and utilities for Ember applications using WarpDrive",
+  "description": "Ember bindings for WarpDrive, providing the `<Request />` and `<Await />` components for rendering request and promise states, Ember reactivity setup and experimental pagination.",
   "version": "5.10.0-alpha.12",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",

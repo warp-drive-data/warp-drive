@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/request",
-  "description": "(Legacy) A simple, small and fast framework-agnostic library to make `fetch` happen",
+  "description": "(Legacy) Package that once provided the `RequestManager` and its related facilities; new apps should import them from `@warp-drive/core` instead.",
   "version": "5.10.0-alpha.12",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
