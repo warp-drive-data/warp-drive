@@ -28,7 +28,7 @@ for the authoring rules that keep these guarantees true.
 
 ## Using A Coding Agent
 
-[`@warp-drive/memory-alpha`](/skills/overview) packages skills that walk a coding agent through some of these migrations, and each guide that has one links it near the top. Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
+[`@warp-drive/memory-alpha`](/skills/) packages skills that walk a coding agent through some of these migrations, and each guide that has one links it near the top. Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
 
 ## Major Versions
 
