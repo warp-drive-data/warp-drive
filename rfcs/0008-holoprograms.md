@@ -20,9 +20,9 @@ suite:
 ---
 
 <!--
-The number 8 is provisional. 0001 to 0007 are merged. Open PRs #11087 (rfcs/0003-warp-drive-aql.md)
-and #11154 (rfcs/0003-cache-layouts.md) still claim 0003 and will renumber when they merge.
-Re-check rfcs/ at merge time and take the next unused number.
+The number 8 is provisional. 0001 to 0007 are merged, and #11286 (RFC B) takes 0009. Open PRs
+#11087 (rfcs/0003-warp-drive-aql.md) and #11154 (rfcs/0003-cache-layouts.md) still claim 0003 and
+will renumber when they merge. Re-check rfcs/ at merge time and take the next unused number.
 -->
 
 # HoloPrograms
@@ -38,9 +38,9 @@ to `.mock-cache` as it writes any fixture. A replayed suite, which is what CI ru
 program. It reads the same fixtures it reads today.
 
 Recording against a real API is out of scope. Safety protocols and the relay modes move to a
-follow-up RFC, "Recording Holodeck Mocks Against a Real API", called RFC B below. This RFC reserves
-the names RFC B needs. The design carries forward the vision in #9616 and supersedes it as the
-design of record.
+follow-up RFC, "Recording Holodeck Mocks Against a Real API" (#11286), called RFC B below. This RFC
+reserves the names RFC B needs. The design carries forward the vision in #9616 and supersedes it as
+the design of record.
 
 ## Motivation
 
