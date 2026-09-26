@@ -34,8 +34,10 @@ Check which `ember-data` version your app is on.
 
 - **4.12 or earlier.** These releases publish only `ember-data` and `@ember-data/*` packages. Start at
   [ember-data → WarpDrive](/upgrading/ember-data/). It runs the latest WarpDrive beside your
-  current `ember-data` and moves one route at a time. To stay on 4.12 and adopt the new request
-  APIs in the store you already have, see
+  current `ember-data` and moves one route at a time. To swap the packages in one change instead,
+  keeping the single store and the Models, adapters and serializers you have, see
+  [Replacing ember-data in place](/upgrading/ember-data/in-place.md). To stay on 4.12 and adopt
+  the new request APIs in the store you already have, see
   [Adopting the Request APIs on 4.12](/upgrading/ember-data/incremental-adoption.md).
 - **4.13 or any 5.x.** These releases already depend on `@warp-drive/*` packages. Start at
   [4.x → 5.x](/upgrading/v5/), which uses
