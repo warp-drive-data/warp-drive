@@ -1076,8 +1076,10 @@ move each sentence to the file that answers its question.
 
 The landing page's entry in `llms.txt`, the index coding agents read to decide which page to
 fetch, is the `description` in the package's `package.json`: the same role `@summary` plays for a
-symbol's page. Write it as one sentence saying what the package provides and when to use it, and
-for a legacy package, what replaces it. npm shows the same text, so it serves both readers. Don't
+symbol's page. Write it as one sentence saying what the package provides and when to use it. For
+a legacy package, start it with `(Legacy)` and say what replaces it; mark an internal package
+`(Internal)` and a deprecated one `(Deprecated)` the same way. npm shows the same text, so it
+serves both readers. Don't
 put frontmatter in `src/index.md`: TypeDoc renders a package readme's `---` block as page text.
 
 ### Keep READMEs short
