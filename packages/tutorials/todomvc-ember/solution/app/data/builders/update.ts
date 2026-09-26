@@ -7,7 +7,7 @@ import { buildBaseURL } from '@warp-drive/utilities';
 import type { Todo, TodoAttributes } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { getActiveTodos, getCompletedTodos } from './query.ts';
-import { keyForRequest, keyForSavedResource } from './utils.ts';
+import { keyForRequest, keyForSavedResource, serverIndex } from './utils.ts';
 
 /** PATCH /api/todo/:id */
 export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): RequestInfo<ReactiveDataDocument<Todo>> {
@@ -15,23 +15,17 @@ export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): Requ
 
   return withReactiveResponse<Todo>({
     method: 'PATCH',
-    url: buildBaseURL({ resourcePath: `todo/${key.id}` }),
+    url: buildBaseURL({ op: 'updateRecord', resourcePath: 'todo', identifier: key }),
     body: JSON.stringify({ data: { type: 'todo', id: key.id, attributes } }),
 
-    // The response updates this todo in the cache, and every list holding it
-    // re-renders with the new attributes.
+    // 'updateRecord' plus the todo's key: on success the cache commits the
+    // response to this todo, and every list holding it re-renders.
+    op: 'updateRecord',
     records: [key],
   });
 }
 
-/**
- * Moves a todo from the cached "active" list to the cached "completed" list.
- *
- * The cache patches a todo's *attributes* into every list that already holds
- * it, but it can't move a todo between lists: a list only tracks the records
- * it returned, not the ones it didn't. So when a todo's completion changes we
- * patch the two list documents ourselves instead of refetching them.
- */
+/** Moves a todo from the cached "active" list to the cached "completed" list. */
 export function patchCacheTodoCompleted(store: Store, todo: Todo): void {
   moveBetweenLists(store, todo, { from: getActiveTodos(), to: getCompletedTodos() });
 }
@@ -51,9 +45,8 @@ function moveBetweenLists(
   const to = keyForRequest(store, lists.to);
 
   // Only patch lists that have been requested; the others will fetch fresh.
-  // FIXME: Set a real index on these.
   if (store.cache.peekRequest(to)) {
-    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: 0 });
+    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: serverIndex(store, to, value) });
   }
   if (store.cache.peekRequest(from)) {
     store.cache.patch({ record: from, op: 'remove', field: 'data', value });

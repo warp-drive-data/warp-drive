@@ -1,10 +1,9 @@
 ---
 title: Overview
-description: Placeholder for WarpDrive's step-by-step tutorials, which are still under construction with no walkthroughs published yet; use the manual instead for now.
+description: Learn WarpDrive by building apps step by step, starting with the data layer of a TodoMVC app in Ember, written one request at a time.
 ---
 
 # Tutorials
 
-:::warning **🚧 Pardon Our Stardust!**
-This section is still in spacedock for construction.
-:::
+- [TodoMVC](./todomvc/index.md): build the data layer for a TodoMVC app in
+  Ember, one request at a time.
