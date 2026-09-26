@@ -24,6 +24,7 @@ import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from 
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';
+import { destroyResourceState } from './resource-state.ts';
 import type { SchemaService } from './schema.ts';
 import { Checkout, Commit, Context, Destroy } from './symbols.ts';
 
@@ -50,6 +51,7 @@ function isPathMatch(a: string[], b: string[]) {
 function isNonEnumerableProp(prop: string | number | symbol) {
   return (
     prop === 'constructor' ||
+    prop === '$state' ||
     prop === 'prototype' ||
     prop === '__proto__' ||
     prop === 'toString' ||
@@ -714,6 +716,7 @@ function _DESTROY(record: ReactiveResource): void {
     }
   }
 
+  destroyResourceState(record);
   record[Context].store.notifications.unsubscribe(record.___notifications);
   record.___notifications = null as unknown as object;
 

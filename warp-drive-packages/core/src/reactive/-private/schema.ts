@@ -41,6 +41,7 @@ import { Type } from '../../types/symbols.ts';
 import type { WithPartial } from '../../types/utils.ts';
 import { getFieldCacheKeyStrict, isNonIdentityCacheableField } from './fields/get-field-key.ts';
 import type { ReactiveResource } from './record.ts';
+import { resourceState } from './resource-state.ts';
 import { Context } from './symbols.ts';
 
 const Support = getOrSetGlobal('Support', new WeakMap<WeakKey, Record<string, unknown>>());
@@ -61,6 +62,11 @@ const IdentifierField = {
   name: '$key',
   kind: 'derived',
   options: { key: '^' },
+} satisfies DerivedField;
+const StateField = {
+  type: '@state',
+  name: '$state',
+  kind: 'derived',
 } satisfies DerivedField;
 const DefaultIdentityField = { name: 'id', kind: '@id' } satisfies IdentityField;
 
@@ -420,6 +426,14 @@ function processExtensions(
  * Utility for constructing a ResourceSchema with the recommended
  * fields for the PolarisMode experience.
  *
+ * Adds the following fields:
+ *
+ * - `id` as the identity field, unless another identity is supplied
+ * - `$key` the {@link ResourceKey} for the resource
+ * - `$type` the resource's type
+ * - `$state` the resource's reactive lifecycle state, see {@link ReactiveResourceState}
+ * - `constructor` a minimal stand-in for debugging tools
+ *
  * Using this requires registering the PolarisMode derivations
  *
  * ```ts
@@ -440,6 +454,7 @@ export function withDefaults(schema: WithPartial<PolarisResourceSchema, 'identit
   // appear right next to the identity field
   schema.fields.unshift(TypeField);
   schema.fields.unshift(IdentifierField);
+  schema.fields.push(StateField);
   schema.fields.push(ConstructorField);
   return schema as PolarisResourceSchema;
 }
@@ -508,6 +523,7 @@ fromIdentity[Type] = '@identity';
 export function registerDerivations(schema: SchemaServiceInterface): void {
   schema.registerDerivation(fromIdentity);
   schema.registerDerivation(_constructor);
+  schema.registerDerivation(resourceState);
 }
 
 /**

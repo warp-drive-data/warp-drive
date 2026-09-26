@@ -249,6 +249,29 @@
  * ]);
  * ```
  *
+ * Alongside identity, `$key` and `$type`, `withDefaults` adds a `$state` field
+ * exposing the resource's reactive lifecycle state: whether it is new, empty,
+ * deleted or dirty, and which of its fields have local changes. See
+ * {@link ReactiveResourceState}.
+ *
+ * ```ts
+ * import type { ReactiveResourceState } from '@warp-drive/core/reactive';
+ *
+ * interface User {
+ *   readonly $type: 'user';
+ *   readonly $state: ReactiveResourceState;
+ *   readonly id: string;
+ *   readonly firstName: string;
+ * }
+ *
+ * if (user.$state.isDirty) {
+ *   // offer to save or discard
+ * }
+ *
+ * // reactive per field: only updates when `firstName` changes
+ * const firstNameChanged = user.$state.changes.firstName !== undefined;
+ * ```
+ *
  * ## Type Support
  *
  * ### Resource Schemas
@@ -305,6 +328,7 @@ export {
   registerDerivations,
 } from './reactive/-private/schema';
 export { commit, type ReactiveResource } from './reactive/-private/record.ts';
+export type { ReactiveResourceState, FieldChange, ResourceFieldChange } from './reactive/-private/resource-state.ts';
 
 export { checkout };
 export {
