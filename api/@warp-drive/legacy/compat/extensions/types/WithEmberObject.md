@@ -14,7 +14,7 @@ description: >-
 type WithEmberObject<T> = T & Pick<T & EmberObject, ArrayType<typeof EmberObjectMethods>>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:401](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/compat/extensions.ts#L401)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:401](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/compat/extensions.ts#L401)
 
 Adds the classic `EmberObject` API (as registered by [EmberObjectExtension](../variables/EmberObjectExtension.md)/
 [EmberObjectArrayExtension](../variables/EmberObjectArrayExtension.md)) to the type of a reactive resource.

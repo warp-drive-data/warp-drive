@@ -16,7 +16,7 @@ interface RecoveryFeatures {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:53](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/core/src/signals/request-subscription.ts#L53)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:53](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/signals/request-subscription.ts#L53)
 
 Utilities to assist in recovering from the error.
 
@@ -28,7 +28,7 @@ Utilities to assist in recovering from the error.
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:61](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/core/src/signals/request-subscription.ts#L61)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:61](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/signals/request-subscription.ts#L61)
 
 Whether the browser reports that the tab is hidden.
 
@@ -40,7 +40,7 @@ Whether the browser reports that the tab is hidden.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:57](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/core/src/signals/request-subscription.ts#L57)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:57](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/signals/request-subscription.ts#L57)
 
 Whether the browser reports that the network is online.
 
@@ -52,7 +52,7 @@ Whether the browser reports that the network is online.
 retry: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:65](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/core/src/signals/request-subscription.ts#L65)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:65](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/signals/request-subscription.ts#L65)
 
 Retries the request, reloading it from the server.
 

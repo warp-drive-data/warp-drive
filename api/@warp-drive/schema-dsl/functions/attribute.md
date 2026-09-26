@@ -18,7 +18,7 @@ function attribute(options: AttributeOptions): (target: object, key: string) => 
 function attribute(target: object, key: string): void;
 ```
 
-Defined in: [fields/attribute.ts:64](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L64)
+Defined in: [fields/attribute.ts:64](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L64)
 
 **`Decorator`**
 
@@ -70,7 +70,7 @@ export class Comment {
 function attribute(options: AttributeOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/attribute.ts:65](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L65)
+Defined in: [fields/attribute.ts:65](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L65)
 
 **`Decorator`**
 

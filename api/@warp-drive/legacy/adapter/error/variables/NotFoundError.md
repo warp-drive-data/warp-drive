@@ -14,7 +14,7 @@ description: >-
 NotFoundError: AdapterRequestErrorConstructor<NotFoundError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:466](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/error.ts#L466)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:466](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/error.ts#L466)
 
 A `NotFoundError` equates to an HTTP `404 Not Found` response status.
 It is used by an adapter to signal that a request to the external API

@@ -11,7 +11,7 @@ description: >-
 function alias(options: AliasOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/alias.ts:82](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/alias.ts#L82)
+Defined in: [fields/alias.ts:82](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/alias.ts#L82)
 
 **`Decorator`**
 

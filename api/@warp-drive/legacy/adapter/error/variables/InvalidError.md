@@ -15,7 +15,7 @@ description: >-
 InvalidError: AdapterRequestErrorConstructor<InvalidError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:222](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/error.ts#L222)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:222](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/error.ts#L222)
 
 An `InvalidError` is used by an adapter to signal that the external API
 was unable to process a request because the content was not semantically

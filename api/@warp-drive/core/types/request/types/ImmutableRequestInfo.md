@@ -18,7 +18,7 @@ type ImmutableRequestInfo<RT = unknown> = Readonly<Omit<RequestInfo<RT>, "contro
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:768](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/core/src/types/request.ts#L768)
+Defined in: [warp-drive-packages/core/src/types/request.ts:768](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/types/request.ts#L768)
 
 Immutable version of [RequestInfo](RequestInfo.md). This is what is passed to handlers.
 

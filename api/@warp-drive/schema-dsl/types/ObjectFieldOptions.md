@@ -15,7 +15,7 @@ interface ObjectFieldOptions {
 }
 ```
 
-Defined in: [fields/object.ts:13](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/object.ts#L13)
+Defined in: [fields/object.ts:13](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/object.ts#L13)
 
 Options accepted by the [object](../functions/object.md) decorator.
 
@@ -27,7 +27,7 @@ Options accepted by the [object](../functions/object.md) decorator.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/object.ts:21](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/object.ts#L21)
+Defined in: [fields/object.ts:21](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/object.ts#L21)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the [ObjectField](../../core/types/schema/fields/types/ObjectField.md)'s
@@ -41,7 +41,7 @@ decorated property's name. Compiles onto the [ObjectField](../../core/types/sche
 optional type?: string;
 ```
 
-Defined in: [fields/object.ts:30](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/schema-dsl/src/fields/object.ts#L30)
+Defined in: [fields/object.ts:30](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/schema-dsl/src/fields/object.ts#L30)
 
 The name of a [Transformation](../../core/types/schema/concepts/types/Transformation.md) to pass the entire object through
 before displaying or serializing it. Compiles onto the

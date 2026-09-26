@@ -18,7 +18,7 @@ description: >-
 const DEPRECATE_MANY_ARRAY_DUPLICATES: boolean = true;
 ```
 
-Defined in: [deprecations.ts:423](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/build-config/src/deprecations.ts#L423)
+Defined in: [deprecations.ts:423](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/build-config/src/deprecations.ts#L423)
 
 When the flag is `true` (default), adding duplicate records to a `ManyArray`
 is deprecated in non-production environments. In production environments,

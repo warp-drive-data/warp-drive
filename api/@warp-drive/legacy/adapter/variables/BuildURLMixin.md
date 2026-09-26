@@ -14,7 +14,7 @@ description: >-
 BuildURLMixin: Mixin;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:29](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L29)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:29](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L29)
 
 The `Mixin` implementation of BuildURLMixin, ready to be applied
 to an `EmberObject` subclass such as an `Adapter`.

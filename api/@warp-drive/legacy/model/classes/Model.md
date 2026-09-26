@@ -9,7 +9,7 @@ description: >-
 
 # &#x20;Model
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:91](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L91)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:91](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L91)
 
 **`No Inherit Doc`** **`Legacy`**
 
@@ -70,7 +70,7 @@ of that type.
 belongsTo<T extends Model, K extends string>(this: T, prop: K & K extends _MaybeBelongsToFields<T> ? K : never): BelongsToReference<T, K>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:370](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L370)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:370](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L370)
 
 Get the reference for the specified belongsTo relationship.
 
@@ -151,7 +151,7 @@ reference for this relationship
 changedAttributes<T extends MinimalLegacyRecord>(this: T): ChangedAttributesHash;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:219](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L219)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:219](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L219)
 
 Returns an object, whose keys are changed properties, and value is
 an \[oldProp, newProp] array.
@@ -220,7 +220,7 @@ and value is an \[oldProp, newProp] array.
 deleteRecord<T extends MinimalLegacyRecord>(this: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:454](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L454)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:454](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L454)
 
 Marks the record as deleted but does not save it. You must call
 `save` afterwards if you want to persist it. You might use this
@@ -271,7 +271,7 @@ export default class extends Component {
 destroyRecord<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): Promise<Model>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:164](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L164)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:164](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L164)
 
 Same as `deleteRecord`, but saves the record immediately.
 
@@ -342,7 +342,7 @@ eachAttribute<T>(callback: (this:
   | undefined, key: string, meta: LegacyAttributeField) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1069](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1069)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1069](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1069)
 
 Iterates over the attributes defined on this record's class, calling
 `callback` for each one. See [the static eachAttribute](#eachattribute-1).
@@ -383,7 +383,7 @@ eachRelationship<T>(callback: (this:
   | undefined, key: string, meta: LegacyRelationshipField) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1040](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1040)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1040](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1040)
 
 Given a callback, iterates over each of the relationships in the model,
 invoking the callback with the name of each relationship and its relationship
@@ -465,7 +465,7 @@ the value to which the callback's `this` should be bound
 hasMany<T extends MinimalLegacyRecord, K extends string>(this: T, prop: K): HasManyReference<T, K>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:424](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L424)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:424](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L424)
 
 Get the reference for the specified hasMany relationship.
 
@@ -548,7 +548,7 @@ inverseFor(name: string):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1058](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1058)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1058](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1058)
 
 Returns the inverse relationship schema for the given relationship
 name, if one exists. See [the static inverseFor](#inversefor-1).
@@ -572,7 +572,7 @@ name, if one exists. See [the static inverseFor](#inversefor-1).
 notifyPropertyChange(prop: string): this;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:974](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L974)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:974](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L974)
 
 Convenience method to call `propertyWillChange` and `propertyDidChange` in
 succession.
@@ -608,7 +608,7 @@ relationshipFor(name: string):
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1050](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1050)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1050](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1050)
 
 Returns the relationship schema for the given relationship name, if any.
 
@@ -631,7 +631,7 @@ Returns the relationship schema for the given relationship name, if any.
 reload<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): Promise<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:314](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L314)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:314](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L314)
 
 Reload the record from the adapter.
 
@@ -684,7 +684,7 @@ with an error.
 rollbackAttributes<T extends MinimalLegacyRecord>(this: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:238](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L238)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:238](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L238)
 
 If the model `hasDirtyAttributes` this function will discard any unsaved
 changes. If the model `isNew` it will be removed from the store.
@@ -723,7 +723,7 @@ record.name; // 'Untitled Document'
 save<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): Promise<Model>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:286](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L286)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:286](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L286)
 
 Save the record and persist any changes to the record to an
 external source via the adapter.
@@ -794,7 +794,7 @@ use Store.request instead
 serialize<T extends MinimalLegacyRecord>(this: T, options?: Record<string, unknown>): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:120](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L120)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:120](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L120)
 
 Create a JSON representation of the record, using the serialization
 strategy of the store's adapter.
@@ -835,7 +835,7 @@ an object whose values are primitive JSON values only
 toString(): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:855](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L855)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:855](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L855)
 
 Returns a string representation which attempts to provide more information
 than Javascript's `toString` typically does, in a generic way for all Ember
@@ -889,7 +889,7 @@ toString
 unloadRecord<T extends MinimalLegacyRecord>(this: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:172](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L172)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:172](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L172)
 
 Unloads the record from the store. This will not send a delete request
 to your server, it just unloads the record from memory.
@@ -918,7 +918,7 @@ to your server, it just unloads the record from memory.
 static eachAttribute<T, Schema extends Model>(callback: (this: T | undefined, key: MaybeAttrFields<Schema>, attribute: LegacyAttributeField) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1822](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1822)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1822](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1822)
 
 Iterates through the attributes of the model, calling the passed function on each
 attribute.
@@ -993,7 +993,7 @@ The callback to execute
 static eachRelatedType<T>(callback: (this: T | undefined, type: string) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1620](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1620)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1620](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1620)
 
 Given a callback, iterates over each of the types related to a model,
 invoking the callback with the related type's class. Each type will be
@@ -1032,7 +1032,7 @@ the value to which the callback's `this` should be bound
 static eachRelationship<T, Schema extends Model>(callback: (this: T | undefined, key: MaybeRelationshipFields<Schema>, relationship: LegacyRelationshipField) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1592](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1592)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1592](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1592)
 
 Given a callback, iterates over each of the relationships in the model,
 invoking the callback with the name of each relationship and its relationship
@@ -1132,7 +1132,7 @@ static eachTransformedAttribute<T, Schema extends Model>(callback: (this: T | un
   | "_isReloading">, type: string) => void, binding?: T): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1879](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1879)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1879](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1879)
 
 Iterates through the transformedAttributes of the model, calling
 the passed function on each attribute. Note the callback will not be
@@ -1268,7 +1268,7 @@ static inverseFor(name: string, store: Store$1):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1206](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1206)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1206](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1206)
 
 Find the relationship which is the inverse of the one asked for.
 
@@ -1322,7 +1322,7 @@ the inverse relationship, or null
 static toString(): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1898](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1898)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1898](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1898)
 
 Returns the name of the model class.
 
@@ -1338,7 +1338,7 @@ Returns the name of the model class.
 static typeForRelationship(name: string, store: Store$1): ModelSchema<unknown> | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1152](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1152)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1152](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1152)
 
 For a given relationship name, returns the model type of the relationship.
 
@@ -1382,7 +1382,7 @@ the type of the relationship, or undefined
 isReloading: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:802](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L802)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:802](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L802)
 
 If `true` the store is attempting to reload the record from the adapter.
 
@@ -1402,7 +1402,7 @@ record.isReloading; // true
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:96](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L96)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:96](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L96)
 
 The store service instance which created this record instance
 
@@ -1414,7 +1414,7 @@ The store service instance which created this record instance
 static modelName: string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1113](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1113)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1113](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1113)
 
 Represents the model's class name as a string. This can be used to look up the model's class name through
 `Store`'s modelFor method.
@@ -1449,7 +1449,7 @@ export default const PostSerializer = RESTSerializer.extend({
 get adapterError(): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:955](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L955)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:955](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L955)
 
 This property holds the `AdapterError` object with which
 last adapter operation was rejected.
@@ -1464,7 +1464,7 @@ last adapter operation was rejected.
 set adapterError(v: unknown): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:961](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L961)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:961](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L961)
 
 `adapterError` is read-only and cannot be set directly.
 
@@ -1488,7 +1488,7 @@ Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:961](https:/
 set currentState(_v: RecordState): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:880](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L880)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:880](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L880)
 
 `currentState` is read-only and cannot be set directly.
 
@@ -1512,7 +1512,7 @@ Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:880](https:/
 get dirtyType(): "" | "updated" | "deleted" | "created";
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:755](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L755)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:755](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L755)
 
 If the record is in the dirty state this property will report what
 kind of change has caused it to move into the dirty
@@ -1543,7 +1543,7 @@ record.dirtyType; // 'created'
 get errors(): Errors;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:942](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L942)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:942](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L942)
 
 When the record is in the `invalid` state this object will contain
 any errors returned by the adapter. When present the errors hash
@@ -1605,7 +1605,7 @@ object to get an array of all the error strings.
 get hasDirtyAttributes(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:630](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L630)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:630](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L630)
 
 If this property is `true` the record is in the `dirty` state. The
 record has local changes that have not yet been saved by the
@@ -1639,7 +1639,7 @@ model.hasDirtyAttributes; // true
 get id(): string | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:822](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L822)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:822](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L822)
 
 All ember models have an id property. This is an identifier
 managed by an external source. These are always coerced to be
@@ -1665,7 +1665,7 @@ model.id; // '1'
 set id(id: string | null): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:839](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L839)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:839](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L839)
 
 Assigns the resource's primary key. Typically only used internally
 when a client-created record is assigned an id upon being saved.
@@ -1690,7 +1690,7 @@ when a client-created record is assigned an id upon being saved.
 get isDeleted(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:695](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L695)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:695](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L695)
 
 If this property is `true` the record is in the `deleted` state
 and has been marked for deletion. When `isDeleted` is true and
@@ -1738,7 +1738,7 @@ promise.then(function() {
 get isEmpty(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:567](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L567)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:567](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L567)
 
 If this property is `true` the record is in the `empty`
 state. Empty is the first state all records enter after they have
@@ -1762,7 +1762,7 @@ unable to locate the record.
 get isError(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:777](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L777)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:777](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L777)
 
 If `true` the adapter reported that it was unable to save local
 changes to the backend for any reason other than a server-side
@@ -1788,7 +1788,7 @@ record.save().then(null, function() {
 set isError(v: boolean): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:783](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L783)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:783](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L783)
 
 `isError` is read-only and cannot be set directly.
 
@@ -1812,7 +1812,7 @@ Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:783](https:/
 get isLoaded(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:603](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L603)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:603](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L603)
 
 If this property is `true` the record is in the `loaded` state. A
 record enters this state when its data is populated. Most of a
@@ -1843,7 +1843,7 @@ model.isLoaded;
 get isLoading(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:580](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L580)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:580](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L580)
 
 If this property is `true` the record is in the `loading` state. A
 record enters this state when the store asks the adapter for its
@@ -1864,7 +1864,7 @@ requested data.
 get isNew(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:719](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L719)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:719](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L719)
 
 If this property is `true` the record is in the `new` state. A
 record will be in the `new` state when it has been created on the
@@ -1896,7 +1896,7 @@ record.save().then(function(model) {
 get isSaving(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:655](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L655)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:655](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L655)
 
 If this property is `true` the record is in the `saving` state. A
 record enters the saving state when `save` is called, but the
@@ -1929,7 +1929,7 @@ promise.then(function() {
 get isValid(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:732](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L732)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:732](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L732)
 
 If this property is `true` the record is in the `valid` state.
 
@@ -1950,7 +1950,7 @@ server-side validation failures.
 get static attributes(): Map<string, LegacyAttributeField>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1702](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1702)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1702](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1702)
 
 A map whose keys are the attributes of the model (properties
 described by attr) and whose values are the meta object for the
@@ -1997,7 +1997,7 @@ attributes.forEach(function(meta, name) {
 get static fields(): Map<string, "belongsTo" | "hasMany" | "attribute">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1565](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1565)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1565](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1565)
 
 A map whose keys are the fields of the model and whose values are strings
 describing the kind of the field. A model's fields are the union of all of its
@@ -2049,7 +2049,7 @@ get static inverseMap(): Record<string,
 | null>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1167](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1167)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1167](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1167)
 
 A cache of resolved inverse relationships by name, populated lazily by
 [inverseFor](#inversefor-1).
@@ -2070,7 +2070,7 @@ A cache of resolved inverse relationships by name, populated lazily by
 get static relatedTypes(): string[];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1417](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1417)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1417](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1417)
 
 An array of types directly related to a model. Each type will be
 included once, regardless of the number of relationships it has with
@@ -2115,7 +2115,7 @@ get static relationshipNames(): {
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1359](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1359)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1359](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1359)
 
 A hash containing lists of the model's relationships, grouped
 by the relationship kind. For example, given a model with this
@@ -2172,7 +2172,7 @@ the names of the model's `hasMany` relationships
 get static relationships(): Map<string, LegacyRelationshipField[]>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1305](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1305)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1305](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1305)
 
 The model's relationships as a map, keyed on the type of the
 relationship. The value of each entry is an array containing a descriptor
@@ -2221,7 +2221,7 @@ relationships.post;
 get static relationshipsByName(): Map<string, LegacyRelationshipField>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1476](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1476)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1476](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1476)
 
 A map whose keys are the relationships of a model and whose values are
 relationship descriptors.
@@ -2266,7 +2266,7 @@ relationshipsByName.owner;
 get static relationshipsObject(): Record<string, LegacyRelationshipField>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1501](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1501)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1501](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1501)
 
 A hash of the model's relationship schemas keyed by relationship name.
 See also [relationshipsByName](#relationshipsbyname), which
@@ -2286,7 +2286,7 @@ provides the same information as a `Map`.
 get static transformedAttributes(): Map<string, string>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1763](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/model/-private/model.ts#L1763)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1763](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/model/-private/model.ts#L1763)
 
 A map whose keys are the attributes of the model (properties
 described by attr) and whose values are type of transformation

@@ -18,7 +18,7 @@ interface FetchRequestInit extends RequestInit {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:75](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/rest.ts#L75)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:75](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L75)
 
 The options passed to the native `fetch` API by RESTAdapter.\_fetchRequest | \_fetchRequest.
 
@@ -34,7 +34,7 @@ The options passed to the native `fetch` API by RESTAdapter.\_fetchRequest | \_f
 method: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:83](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/rest.ts#L83)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:83](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L83)
 
 the HTTP method to use
 
@@ -52,7 +52,7 @@ RequestInit.method
 type: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:87](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/rest.ts#L87)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:87](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L87)
 
 the HTTP method to use, duplicated for jQuery/fetch option compatibility
 
@@ -64,6 +64,6 @@ the HTTP method to use, duplicated for jQuery/fetch option compatibility
 url: string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:79](https://github.com/warp-drive-data/warp-drive/blob/e3eb7533c9b678739ad1f65678b13bf640ce1833/warp-drive-packages/legacy/src/adapter/rest.ts#L79)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:79](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L79)
 
 the url to request
