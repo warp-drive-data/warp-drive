@@ -81,15 +81,9 @@ export function surfaceOf(tree, baseline) {
     // A side-effect-only module has no token to map.
     if (!parsed.named.size && !parsed.stars.length) continue;
     modules.set(module, parsed);
+    // "*" is the module itself, never a binding, so it is never type-only.
+    tokens.push(token(module, '*', false));
     for (const [name, { typeOnly }] of parsed.named) tokens.push(token(module, name, typeOnly));
-    if (parsed.stars.length)
-      tokens.push(
-        token(
-          module,
-          '*',
-          parsed.stars.every((star) => star.typeOnly)
-        )
-      );
     if (dir === 'packages' && (legacyPackages?.has(packageOf(module)) ?? true)) legacyModules.push(module);
   }
 

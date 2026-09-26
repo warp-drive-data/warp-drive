@@ -83,19 +83,22 @@ are listed separately.
 
 ## Names the `from` release did not export
 
-A legacy module that forwards everything through a single `export *` moved as a whole. A name
-the map does not list, such as one added after the `from` release, follows that move with its
-name unchanged. `import { TotallyNew } from '@ember-data/request'` becomes an import from
-`@warp-drive/core/request`.
+A legacy module whose only export is a single `export *` moved as a whole. A name the map does
+not list, such as one added after the `from` release, follows that move with its name unchanged.
+`import { TotallyNew } from '@ember-data/store/-private'` becomes an import from
+`@warp-drive/core/store/-private`.
 
-A legacy module that lists its exports one by one did not move as a whole. A name from it that
-the map does not list is reported as having no replacement.
+A legacy module that names any export of its own did not move as a whole, even when it also has
+an `export *`. `@ember-data/request` forwards `export * from '@warp-drive/core/request'` but takes
+its default export from `@warp-drive/core`. A name from such a module that the map does not list
+is reported as having no replacement.
 
 ## Namespace imports
 
 `import * as compat from '@ember-data/legacy-compat'` follows the module's move when the whole
 module moved, as above. A namespace import from a module that did not move as a whole, such as
-`import * as store from '@ember-data/store'`, is left as written and is not reported.
+`import * as store from '@ember-data/store'` or `import * as req from '@ember-data/request'`, is
+left as written and is not reported.
 
 ## What the rule ignores
 

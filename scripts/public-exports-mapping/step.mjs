@@ -70,7 +70,7 @@ export function deriveStep(from, to, overrides) {
   const toByKey = new Map(to.tokens.map((t) => [keyOf(t), t]));
   /** @type {Map<string, StepEntry>} */
   const byKey = new Map();
-  for (const t of sourcesOf(from)) {
+  for (const t of from.tokens) {
     byKey.set(keyOf(t), derived(t, resolve(t.module, t.export)));
   }
 
@@ -121,17 +121,6 @@ export function deriveStep(from, to, overrides) {
 }
 
 /**
- * @param {import('./surface.mjs').Snapshot} snapshot
- * @returns {import('./token.mjs').Token[]}
- */
-export function sourcesOf(snapshot) {
-  const starred = new Set(snapshot.tokens.filter((t) => t.export === '*').map((t) => t.module));
-  const modules = new Set(snapshot.tokens.map((t) => t.module));
-  const implicit = [...modules].filter((m) => !starred.has(m)).map((m) => token(m, '*', false));
-  return [...snapshot.tokens, ...implicit];
-}
-
-/**
  * @param {import('./token.mjs').Token} source
  * @param {import('./token.mjs').Token | null} to
  * @returns {DerivedEntry}
@@ -172,7 +161,7 @@ function createResolver(to) {
     if (depth > MAX_DEPTH) return null;
     const parsed = to.modules.get(module);
     if (!parsed) return null;
-    const { file, named, stars } = parsed;
+    const { file, named, stars, forward } = parsed;
     const own = named.get(name);
 
     if (!legacy.has(module)) {
@@ -181,8 +170,7 @@ function createResolver(to) {
     }
 
     if (name === '*') {
-      if (stars.length !== 1) return null;
-      const next = moduleOf(stars[0].module, file);
+      const next = moduleOf(forward, file);
       return next ? resolve(next, '*', depth + 1) : null;
     }
 
@@ -192,7 +180,7 @@ function createResolver(to) {
       if (found) return found;
     } else if (!own) {
       for (const star of stars) {
-        const next = moduleOf(star.module, file);
+        const next = moduleOf(star, file);
         const found = next && resolve(next, name, depth + 1);
         if (found) return found;
       }

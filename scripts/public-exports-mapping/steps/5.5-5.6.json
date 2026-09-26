@@ -1377,11 +1377,7 @@
       "module": "@ember-data/request",
       "export": "*",
       "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/request",
-        "export": "*",
-        "typeOnly": false
-      }
+      "to": null
     },
     {
       "module": "@ember-data/request",

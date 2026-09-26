@@ -14,7 +14,8 @@ here. A token whose new home could be argued two ways goes to the home an Ember 
 
 The baseline is 5.5. The new `warp-drive-packages/` tree shipped in 5.6, so 5.5 is the last
 release whose exports are entirely the old contract. `snapshots/5.5.json` is that contract,
-545 tokens across 94 modules, and it also defines which packages count as legacy.
+545 named tokens across 94 modules plus one `"*"` token per module, and it also defines which
+packages count as legacy.
 
 Two consumers read the output. The rule reads it today through the reader at
 `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/index.js`. A codemod in
@@ -33,16 +34,20 @@ These hold across the whole directory. A change that breaks one of them is a red
 fix.
 
 - A step is a total function over the from-release's tokens. `deriveStep` writes one entry for
-  every token in `sourcesOf(snapshot)`, which is the snapshot's tokens plus one `"*"` token per
-  module that has none. No token is left out, and no entry is invented for a token the
-  from-release never had.
+  every token of the from snapshot. No token is left out, and no entry is invented for a token
+  the from-release never had.
+- `"*"` is defined once. `surfaceOf` adds exactly one `"*"` token to every module it finds, and
+  nothing else creates one. A `"*"` token names the module, not a binding, so its `typeOnly` is
+  always false.
 - Merge is a strict left fold. `mergeSteps` walks the steps oldest first and does one lookup per
   step. A lookup that finds nothing is an error. There is no revival, so a token whose target
   went `null` stays `null` through every later step, and there is no fixpoint pass.
-- A `"*"` token is the module's own move. It has a non-null target only when the legacy shim
-  forwards everything through exactly one `export *`, which forwards every name unchanged. That
-  makes it a lookup rather than the guess the rule's old module-level fallback made. A shim that
-  lists its names explicitly has no `"*"` target, and names it does not list stay unmapped.
+- A `"*"` token is the module's own move. It has a non-null target only when the legacy shim's
+  only export is one `export *`, which forwards every name unchanged. `parseModule` records that
+  specifier as `forward`, and it is the only thing the resolver reads for `"*"`. That makes it a
+  lookup rather than the guess the rule's old module-level fallback made. A shim that names any
+  export of its own, a default included, has no `"*"` target, and names it does not list stay
+  unmapped.
 - Legacy is derived, not maintained. A module is legacy at a version when it lives under
   `packages/` at that version and its package was public in 5.5. `surfaceOf` computes the set,
   and each map carries it as `legacyModules`. Nothing lists legacy packages by hand.
@@ -152,8 +157,8 @@ later without touching the rule or the codemod.
 
 The 5.5 tokens with no successor need maintainer decisions. 43 tokens in
 `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/5.5.json` have `to: null`. Another
-46 entries with `to: null` are `"*"` entries for modules whose shim has no single destination;
-those are not lost tokens. The original spec asked for the lost tokens to be found and fixed.
+47 entries with `to: null` are `"*"` entries for modules whose shim has no single destination.
+Those are not lost tokens. The original spec asked for the lost tokens to be found and fixed.
 They are found. Whether each one gets a
 replacement in a current package or is confirmed as gone for good is a call the maintainers
 make, one token at a time.
