@@ -10,7 +10,7 @@ outline:
 <SinceBadge version="5.0.0" /> &nbsp; authored 2023-06-10
 
 ::: tip Using a coding agent?
-`@warp-drive/memory-alpha` ships skills for coding agents. None covers converting Models, adapters and serializers yet, but [Define a Resource Schema](/skills/schemas/define-a-resource-schema) and [Fetch and Cache Data](/skills/requests/fetch-and-cache-data) cover what they turn into, and the relationship migrations that follow this guide each have one; see [WarpDrive Agent Skills](/skills/overview). Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
+`@warp-drive/memory-alpha` ships skills for coding agents. None covers converting Models, adapters and serializers yet, but [Define a Resource Schema](/skills/schemas/define-a-resource-schema) and [Fetch and Cache Data](/skills/requests/fetch-and-cache-data) cover what they turn into, and the relationship migrations that follow this guide each have one; see [WarpDrive Agent Skills](/skills/). Install the package and point your agent at `node_modules/@warp-drive/memory-alpha/skills/index.md`, which routes it to the right skill.
 :::
 
 This guide will *likely* work for apps on 3.28 that have resolved EmberData deprecations from the 3.x series.
