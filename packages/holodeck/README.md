@@ -75,6 +75,7 @@ pnpm add -E @warp-drive/holodeck@canary
 - [Server Setup](https://warp-drive.io/guides/the-manual/testing/server-setup) certificates, and launching with Diagnostic or Testem
 - [Client Setup](https://warp-drive.io/guides/the-manual/testing/client-setup) adding `MockServerHandler` to the request chain
 - [Test Framework Integration](https://warp-drive.io/guides/the-manual/testing/test-framework-integration) test ids and the mock host
+- [Common Setups](https://warp-drive.io/guides/the-manual/testing/common-setups/) one origin for the page and the mock server, from Vite, testem, or Caddy
 - [Writing Mocks](https://warp-drive.io/guides/the-manual/testing/writing-mocks) the mock helpers and the matching rules
 - [Recording and Replaying](https://warp-drive.io/guides/the-manual/testing/record-and-replay) modes, fixtures, and CI
 - [Troubleshooting](https://warp-drive.io/guides/the-manual/testing/troubleshooting) indexed by the errors holodeck prints

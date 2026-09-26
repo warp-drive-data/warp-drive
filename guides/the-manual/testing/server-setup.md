@@ -139,14 +139,9 @@ module.exports = async function () {
 };
 ```
 
-Holodeck accepts only HTTP/2. Testem's `proxies` option and Vite's `server.proxy` speak HTTP/1.1
-to their upstream, and holodeck answers each request through them with a `403 Forbidden` whose body
-starts with ``Missing ALPN Protocol, expected `h2` to be available.`` To serve the mock from the
-test page's own origin, forward its requests with something that speaks HTTP/2:
-[Holodeck through the Vite dev server](/guides/the-manual/cookbook/holodeck-through-the-vite-dev-server.md)
-does it from `vite.config.mjs` with Node's `fetch`, and
-[Holodeck behind a reverse proxy](/guides/the-manual/cookbook/holodeck-behind-a-reverse-proxy.md)
-does it with Caddy and adds HTTPS.
+To serve the mock from the test suite's own origin, see [Common setups](./common-setups/index.md).
+Testem's `proxies` option cannot do it: holodeck accepts only HTTP/2, and `proxies` speaks
+HTTP/1.1 to its target.
 
 ***Warp*Drive**'s own test apps use Diagnostic, so that is the path with test coverage behind it.
 

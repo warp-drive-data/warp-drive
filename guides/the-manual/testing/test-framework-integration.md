@@ -76,10 +76,8 @@ request that records a fixture. Setting the second without the first records fix
 request ever reads, and the tests fail as though the mocks were never declared.
 
 The `+ 1` mirrors the port given to the server in [server setup](./server-setup.md). To serve the
-mock from the test page's own origin instead, put a reverse proxy in front of both servers and set
-`MockHost` to `''`.
-[Holodeck behind a reverse proxy](/guides/the-manual/cookbook/holodeck-behind-a-reverse-proxy.md)
-shows how.
+mock from the test page's own origin instead, set `MockHost` to `''` and forward its requests as
+[Common setups](./common-setups/index.md) shows.
 
 ## Related
 

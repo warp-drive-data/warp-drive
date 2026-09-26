@@ -120,7 +120,5 @@ it doesn't need the holodeck certificate.
 - Apps that serve their tests with `@warp-drive/diagnostic` don't hit this. Its `launch()` starts
   holodeck from its `setup` hook every time the suite runs.
 - The page on `4200` still reaches holodeck on `7358`, so every mocked request is cross-origin.
-  [Holodeck through the Vite dev server](/guides/the-manual/cookbook/holodeck-through-the-vite-dev-server.md)
-  forwards them from Vite itself, and
-  [Holodeck behind a reverse proxy](/guides/the-manual/cookbook/holodeck-behind-a-reverse-proxy.md)
-  serves both from one HTTPS origin. Either way there are no preflight `OPTIONS` requests.
+  [Common setups](/guides/the-manual/testing/common-setups/index.md) puts the mock server on the
+  page's own origin, from Vite, from testem, or behind Caddy, with no preflight `OPTIONS` requests.

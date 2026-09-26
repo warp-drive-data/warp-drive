@@ -4,6 +4,7 @@
     "server-setup",
     "client-setup",
     "test-framework-integration",
+    "common-setups",
     "writing-mocks",
     "record-and-replay",
     "troubleshooting",
