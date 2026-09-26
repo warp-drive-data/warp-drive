@@ -12,6 +12,32 @@ Start with the [Installation](/guides/installation/) and [Setup](/guides/configu
 The API docs assume that context.
 :::
 
+## How the Pieces Connect
+
+Your app talks to the Store. The Store keeps resource data in the Cache and hands requests to the
+RequestManager, whose handlers fetch data from a source such as your API or a local persistence
+layer.
+
+```mermaid
+flowchart LR
+    A[App] ===> D{Store}
+    B{{RequestManager}} <--> C[(Source)]
+    D <--> E[(Cache)]
+    D <--> B
+```
+
+The Store also presents cached data to your app as reactive records. It creates each record with
+its {@link @warp-drive/core!Store.instantiateRecord | instantiateRecord} hook; the Store that
+`useRecommendedStore` produces presents every resource as a
+[ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource).
+
+```mermaid
+flowchart LR
+    A[App] --- B(ReactiveResource)
+    A === C{Store}
+    B --- C
+```
+
 ## Setup
 
 {@link @warp-drive/core!useRecommendedStore | useRecommendedStore} produces a Store class with the

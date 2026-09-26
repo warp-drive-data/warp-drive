@@ -4,23 +4,8 @@ This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-
 
 A {@link @warp-drive/core!Store | Store} coordinates interaction between your application, a [Cache](/api/@warp-drive/core/types/cache/types/Cache),
 and sources of data (such as your API or a local persistence layer) accessed via a {@link @warp-drive/core!RequestManager | RequestManager}.
-
-```mermaid
-flowchart LR
-    A[fa:fa-terminal App] ===> D{fa:fa-code-fork Store}
-    B{{fa:fa-sitemap RequestManager}} <--> C[(fa:fa-database Source)]
-    D <--> E[(fa:fa-archive Cache)]
-    D <--> B
-```
-
 Optionally, a Store can be configured to hydrate the response data into rich presentation classes.
-
-```mermaid
-flowchart LR
-    A[fa:fa-terminal App] --- B(Model)
-    A === C{fa:fa-code-fork Store}
-    B --- C
-```
+[How the Pieces Connect](/api/@warp-drive/core/#how-the-pieces-connect) diagrams both.
 
 ## Creating A Store
 
@@ -154,23 +139,13 @@ export default class extends Store {
 }
 ```
 
-Because `instantiateRecord` is opaque to the nature of the record, an implementation
-can be anything from a fairly simple object to a robust proxy that intelligently links
-together associated records through relationships.
-
-This also enables creating a record that separates `edit` flows from `create` flows
-entirely. A record class might choose to implement a `checkout` method that gives access
-to an editable instance while the primary record continues to be read-only and reflect
-only persisted (non-mutated) state.
+Because the Store treats the record as opaque, an implementation can be anything from a
+simple object to a proxy that links associated records through relationships; the
+{@link @warp-drive/core!Store.instantiateRecord | instantiateRecord hook} documentation says
+what else that boundary makes possible.
 
 Typically you will choose an existing record implementation such as `@ember-data/model`
 for your application.
-
-Because of the boundaries around instantiation and the cache, record implementations
-should be capable of interop both with each other and with any `Cache`. Due to this,
-if needed an application can utilize multiple record implementations and multiple cache
-implementations either to support enhanced features for only a subset of records or to
-be able to incrementally migrate from one record/cache to another record or cache.
 
 :::tip Note
 The `ember-data` package automatically includes the `@ember-data/model`
