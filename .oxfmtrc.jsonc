@@ -82,5 +82,6 @@
     "scripts/public-exports-mapping/snapshots/",
     "scripts/public-exports-mapping/steps/",
     "packages/eslint-plugin-warp-drive/src/legacy-import-mapping/*.json",
+    "packages/eslint-plugin-warp-drive/tests/fixtures/*.json",
   ],
 }

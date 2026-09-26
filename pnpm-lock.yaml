@@ -1190,7 +1190,7 @@ importers:
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
       ember-eslint-parser:
         specifier: ^0.14.6
-        version: 0.14.6(41fc80dc1c4ad46fcf2794891ec967bb)
+        version: 0.14.6(bebcc16779bb69112f22c750e0a8c7a8)
       requireindex:
         specifier: ^1.2.0
         version: 1.2.0
@@ -1204,6 +1204,9 @@ importers:
       '@babel/plugin-proposal-decorators':
         specifier: 'catalog:'
         version: 7.29.7(@babel/core@7.29.7)
+      '@typescript-eslint/parser':
+        specifier: 'catalog:'
+        version: 8.70.1(eslint@10.11.0)(typescript@6.0.3)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config
@@ -1213,6 +1216,9 @@ importers:
       mocha:
         specifier: 'catalog:'
         version: 12.0.2
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
 
   packages/graph:
     dependencies:
@@ -15780,8 +15786,6 @@ snapshots:
       '@typescript-eslint/types': 8.70.1
       '@typescript-eslint/visitor-keys': 8.70.1
 
-  '@typescript-eslint/tsconfig-utils@8.70.0': {}
-
   '@typescript-eslint/tsconfig-utils@8.70.0(typescript@6.0.3)':
     dependencies:
       typescript: 6.0.3
@@ -18658,21 +18662,6 @@ snapshots:
       - ember-inflector
       - ember-provide-consume-context
       - supports-color
-
-  ember-eslint-parser@0.14.6(41fc80dc1c4ad46fcf2794891ec967bb):
-    dependencies:
-      '@glimmer/syntax': 0.95.0
-      '@typescript-eslint/tsconfig-utils': 8.70.0
-      content-tag: 4.2.0
-      ember-estree: 0.6.11
-      eslint-scope: 9.1.2
-      html-tags: 5.1.0
-      mathml-tag-names: 4.0.0
-      svg-tags: 1.0.0
-    optionalDependencies:
-      '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
-    transitivePeerDependencies:
-      - typescript
 
   ember-eslint-parser@0.14.6(bebcc16779bb69112f22c750e0a8c7a8):
     dependencies:

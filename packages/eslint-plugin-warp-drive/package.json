@@ -41,8 +41,10 @@
     "@babel/eslint-parser": "catalog:",
     "@babel/plugin-proposal-decorators": "catalog:",
     "@babel/core": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
     "eslint": "catalog:",
-    "mocha": "catalog:"
+    "mocha": "catalog:",
+    "typescript": "catalog:"
   },
   "files": [
     "src",
