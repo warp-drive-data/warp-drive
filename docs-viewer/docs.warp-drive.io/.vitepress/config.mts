@@ -1,7 +1,7 @@
 import { footnote } from '@mdit/plugin-footnote';
 import { withPwa } from '@vite-pwa/vitepress';
 import { createRequire } from 'node:module';
-import { defineConfig, type Plugin } from 'vitepress';
+import { defineConfig, type DefaultTheme, type Plugin } from 'vitepress';
 import { withMermaid } from 'vitepress-plugin-mermaid';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 
@@ -76,6 +76,39 @@ sidebarItems.push(
     items: BlogStructure.paths,
   }
 );
+// `getContentStructure`'s `deepConvert` (src/site-utils.ts) deliberately copies a collapsed
+// sidebar group's first child's `.link` onto the group itself, so a real visitor gets a
+// clickable header instead of one that only toggles the group open (e.g. "Older Packages
+// (Ember Only)" borrows its "Overview" child's link, and "Setup" borrows its first child's
+// link). VitePress's own sidebar renderer treats that borrowed `.link` as the header's target
+// and never adds a second, separate entry for it -- but vitepress-plugin-llms's TOC walker
+// does: it resolves a group with a `.link` as a leaf in its own right (see `resolveLeafItems`
+// in vitepress-plugin-llms/dist/index.js), in addition to recursing into `.items`, so the same
+// page is listed once for the group and again for the child it borrowed the link from. Give the
+// plugin a clone of the real sidebar with that borrowed `.link` stripped wherever it only
+// duplicates a link already reachable through `.items`, so llms.txt lists each page once while
+// the visible sidebar (built straight from `themeConfig.sidebar` below) is untouched.
+function dropBorrowedGroupLink(item: DefaultTheme.SidebarItem): DefaultTheme.SidebarItem {
+  if (!Array.isArray(item.items) || item.items.length === 0) return item;
+  const items = item.items.map(dropBorrowedGroupLink);
+  const borrowsChildLink = typeof item.link === 'string' && items.some((child) => child.link === item.link);
+  const clone = { ...item, items };
+  if (borrowsChildLink) delete clone.link;
+  return clone;
+}
+function dedupeSidebarForLlms(configSidebar: DefaultTheme.Sidebar | undefined): DefaultTheme.Sidebar | undefined {
+  if (!configSidebar) return configSidebar;
+  if (Array.isArray(configSidebar)) return configSidebar.map(dropBorrowedGroupLink);
+  return Object.fromEntries(
+    Object.entries(configSidebar).map(([base, section]) => [
+      base,
+      Array.isArray(section)
+        ? section.map(dropBorrowedGroupLink)
+        : { ...section, items: section.items.map(dropBorrowedGroupLink) },
+    ])
+  );
+}
+
 const plugin = groupIconVitePlugin({
   customIcon: {
     ember: 'vscode-icons:file-type-ember',
@@ -208,6 +241,9 @@ export default withPwa(
             // preference, not ours: the writing guides say LLMs land on these pages too, and the
             // posts under blog/<version>/ already get through because the pattern is one level deep.
             excludeBlog: false,
+            // Without this, groups whose sidebar header borrows a child's link (see
+            // `dedupeSidebarForLlms` above) list that child's page twice in llms.txt.
+            sidebar: dedupeSidebarForLlms,
             ignoreFilesPerOutput: {
               llmsTxt: LEGACY_API_PAGES,
               llmsFullTxt: LEGACY_API_PAGES,
