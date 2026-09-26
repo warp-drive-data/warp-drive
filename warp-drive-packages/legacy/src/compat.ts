@@ -38,6 +38,8 @@
 
 import { getOwner } from '@ember/application';
 
+// RequestManager is imported only so the @module comment can {@link} it.
+// oxlint-disable-next-line no-unused-vars
 import { recordIdentifierFor, type RequestManager, type Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import { _deprecatingNormalize } from '@warp-drive/core/store/-private';
