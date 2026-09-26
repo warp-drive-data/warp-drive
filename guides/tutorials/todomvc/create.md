@@ -1,6 +1,6 @@
 ---
 title: 4. Create
-description: Write a createTodo builder that POSTs a new todo, send it from the form, and let the store refetch every todo list.
+description: Create a todo with one request, and let cache invalidation refetch every todo list for you.
 ---
 
 # Create
@@ -10,7 +10,7 @@ the request, and watch the lists update themselves.
 
 ## Write the builder
 
-Create `app/data/builders/create.ts`:
+Create a new file, `app/data/builders/create.ts`:
 
 ```ts
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
@@ -34,15 +34,17 @@ export function createTodo(attributes: TodoAttributes): RequestInfo<ReactiveData
 }
 ```
 
-The body is a JSON:API document without an `id`. The server assigns one. The
-last two lines are the important part: when a `createRecord` request succeeds,
-the store invalidates every request registered for the types in its
-`cacheOptions.types`. Here that's all three lists from chapter 3.
+`TodoAttributes`, from the schema file, is a todo's fields. The body is a
+JSON:API document without an `id`, because the server assigns one. The last two
+lines are the important part: when a `createRecord` request succeeds, the store
+invalidates every request registered for the types in its `cacheOptions.types`.
+Here that's all three lists from chapter 3.
 
 ## Send it
 
-Open `app/components/todo-app/create-todo.gts` and replace the `TODO (chapter 4)`
-comment:
+In `app/components/todo-app/create-todo.gts`, `onSubmit` reads the form into
+`attributes` and resets it, but saves nothing in between. Send the request
+there:
 
 ```ts
 await this.store.request(createTodo(attributes));
@@ -81,7 +83,10 @@ and fetches it again
 
 Each `<Request>` keeps the old list on screen until the new one arrives. That's
 one `POST` and a `GET` per list, and the server stays in charge of what each
-list holds. Chapter 6 shows the other way: updating the cached lists yourself.
+list holds.
+
+Without invalidation, the form would need to know every list on the page and
+refresh each one. It knows about none of them.
 
 See [Mutations](../../the-manual/mutations/index.md) for more on saving data.
 
