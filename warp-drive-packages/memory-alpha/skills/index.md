@@ -9,6 +9,8 @@ complete a task.
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | `schemas/define-a-resource-schema.md` |
 | Fetch or query remote data through the `Store` so it's cached and reactive | `requests/fetch-and-cache-data.md` |
+| Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | `holodeck/set-up-holodeck.md` |
+| Mock a request in a test, or fix a mock that stopped matching | `holodeck/mock-http-requests-in-tests.md` |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | `holodeck/using-record.md` |
 | Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | `docs/read-the-docs-as-markdown.md` |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | `contributors/index.md` |

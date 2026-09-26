@@ -18,6 +18,8 @@ Find the row below that matches what you're doing, or browse the categories in t
 | --- | --- |
 | Define a resource's shape — fields, relationships, identity — for the `Store` | [Define a Resource Schema](/skills/schemas/define-a-resource-schema.md) |
 | Fetch or query remote data through the `Store` so it's cached and reactive | [Fetch and Cache Data](/skills/requests/fetch-and-cache-data.md) |
+| Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | [Set Up Holodeck](/skills/holodeck/set-up-holodeck.md) |
+| Mock a request in a test, or fix a mock that stopped matching | [Mock HTTP Requests in Tests](/skills/holodeck/mock-http-requests-in-tests.md) |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) |
 | Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | [Read the Docs as Markdown](/skills/docs/read-the-docs-as-markdown.md) |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
