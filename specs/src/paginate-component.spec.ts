@@ -230,6 +230,20 @@ function renderedNames(root: Element): string[] {
   return Array.from(root.querySelectorAll('[data-test-user-name]')).map((element) => element.textContent?.trim() ?? '');
 }
 
+/**
+ * Runs `trigger` and returns the message it rejects with, or `null` when it
+ * resolves. Development-only contradiction assertions are stripped from
+ * production builds, so callers branch on `PRODUCTION`.
+ */
+async function captureRejection(trigger: () => Promise<unknown>): Promise<string | null> {
+  try {
+    await trigger();
+    return null;
+  } catch (error) {
+    return error instanceof Error ? error.message : String(error);
+  }
+}
+
 export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTestContext, object>> {
   'it handles paged pagination with complete data': SpecTest<
     LocalTestContext,
@@ -515,6 +529,76 @@ export interface PaginateSpecSignature extends Record<string, SpecTest<LocalTest
     }
   >;
   'reloading a page whose next cursor changed drops the stale branch and follows the new one': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page whose next link skips a page is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page whose prev link skips a page is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page above the first with no prev link is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page below the last with no next link is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page beyond the collection total is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a first link that names a page other than page 1 is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a last link that names a page other than the last page is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a first link to a page with a page linked before it is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'a numbered page whose next link skips to a page known only from links is a contradiction': SpecTest<
+    LocalTestContext,
+    {
+      store: RequestManager;
+      request: CollectionRequest;
+    }
+  >;
+  'reloading a page whose next cursor now skips a page drops the skipped page from the run': SpecTest<
     LocalTestContext,
     {
       store: RequestManager;
@@ -3666,6 +3750,432 @@ export const PaginateSpec: SuiteBuilder<LocalTestContext, PaginateSpecSignature>
     );
     assert.equal(Array.from(paginationState.pages).length, 2, 'the run holds 2 pages');
     assert.false(paginationState.hasNext, 'the run ends at the fresh cursor page');
+  })
+
+  .for('a numbered page whose next link skips a page is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+    // page 1 re-requested, now claiming page 3 follows it
+    await GET(this, 'users/1', () => ({
+      ...numberedPage(urls, 0, 3),
+      links: { ...numberedPage(urls, 0, 3).links, next: urls[2] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[2]);
+    await paginationState.loadPage(urls[0]);
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[0])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('next link names page 3, expected page 2') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3],
+      'nothing from the contradicting document is recorded'
+    );
+    assert.equal(paginationState.activePage?.nextLink, urls[1], 'the recorded next link is untouched');
+  })
+
+  .for('a numbered page whose prev link skips a page is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+    // page 3 re-requested, now claiming page 1 precedes it
+    await GET(this, 'users/3', () => ({
+      ...numberedPage(urls, 2, 3),
+      links: { ...numberedPage(urls, 2, 3).links, prev: urls[0] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[2]);
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[2])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('prev link names page 1, expected page 2') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3],
+      'nothing from the contradicting document is recorded'
+    );
+    assert.equal(paginationState.activePage?.prevLink, urls[1], 'the recorded prev link is untouched');
+  })
+
+  .for('a numbered page above the first with no prev link is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    // page 2 re-requested, now claiming to be the start of the collection
+    await GET(this, 'users/2', () => ({
+      ...numberedPage(urls, 1, 2),
+      links: { ...numberedPage(urls, 1, 2).links, prev: null },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[1])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('has no prev link but is not the first page') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'nothing from the contradicting document is recorded');
+    assert.equal(paginationState.activePage?.prevLink, urls[0], 'the recorded prev link is untouched');
+  })
+
+  .for('a numbered page below the last with no next link is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 2));
+    // page 1 re-requested, now claiming to be the end of a 2-page collection
+    await GET(this, 'users/1', () => ({
+      ...numberedPage(urls, 0, 2),
+      links: { ...numberedPage(urls, 0, 2).links, next: null },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[0]);
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[0])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('has no next link but is not the last page') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'nothing from the contradicting document is recorded');
+    assert.equal(paginationState.activePage?.nextLink, urls[1], 'the recorded next link is untouched');
+  })
+
+  .for('a numbered page beyond the collection total is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    // a page 3 of a collection that reports 2 pages
+    await GET(this, 'users/3', () => ({ ...numberedPage(urls, 2, 3), meta: { currentPage: 3, totalPages: 2 } }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+
+    const message = await captureRejection(() => paginationState.loadPage(urls[2]));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('lies beyond the collection total') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.equal(paginationState.totalPages, 2, 'the recorded total is untouched');
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2], 'the contradicting page is not linked into the graph');
+  })
+
+  .for('a first link that names a page other than page 1 is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 3));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 3));
+    // page 3 names page 2 as the first page. (A reload of a loaded page that
+    // did this would be refused earlier as a foreign collection, since the
+    // first link is the collection's key — so this only reaches the graph
+    // through a fresh load.)
+    await GET(this, 'users/3', () => ({
+      ...numberedPage(urls, 2, 3),
+      links: { ...numberedPage(urls, 2, 3).links, first: urls[1] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+
+    const message = await captureRejection(() => paginationState.loadPage(urls[2]));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('first link that names page 2, expected page 1') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.equal(
+      paginationState.activePage?.firstLink ?? null,
+      null,
+      'nothing from the contradicting document is recorded'
+    );
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2, 3], 'the graph is untouched');
+  })
+  .for('a last link that names a page other than the last page is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(2);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 2));
+    // page 1 re-requested, naming itself as the last page of a 2-page collection
+    await GET(this, 'users/1', () => ({
+      ...numberedPage(urls, 0, 2),
+      links: { ...numberedPage(urls, 0, 2).links, last: urls[0] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await request;
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[0])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('last link that names page 1, expected the last page 2') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.equal(paginationState.activePage?.lastLink, urls[1], 'the recorded last link is untouched');
+  })
+
+  .for('a first link to a page with a page linked before it is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(3);
+    const stray = buildBaseURL({ resourcePath: 'users/stray' });
+
+    // pages 1 and 2 without first/last links, so the graph is built from
+    // prev/next only and the collection is keyed by the entry page
+    const bare = (index: number) => {
+      const { first: _first, last: _last, ...links } = numberedPage(urls, index, 3).links;
+      return { ...numberedPage(urls, index, 3), links };
+    };
+    await GET(this, 'users/2', bare.bind(null, 1));
+    await GET(this, 'users/1', bare.bind(null, 0));
+    // a page from another collection (no page hints) that claims page 1 follows it
+    await GET(this, 'users/stray', () => ({ data: [users[5]], links: { self: stray, next: urls[0] } }));
+    // page 3 names page 1 as the first page, which now has the stray page before it
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 3));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[1],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[1]);
+
+    await request;
+    await paginationState.loadPage(urls[0]);
+    await paginationState.loadPage(stray);
+
+    assert.deepEqual(graphPageNumbers(paginationCache), [0, 1, 2, 3], 'the stray page is linked before page 1');
+
+    const message = await captureRejection(() => paginationState.loadPage(urls[2]));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('that first page has a page linked before it') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.equal(
+      paginationState.activePage?.firstLink ?? null,
+      null,
+      'nothing from the contradicting document is recorded'
+    );
+  })
+  .for('a numbered page whose next link skips to a page known only from links is a contradiction')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const urls = pageUrls(4);
+
+    await GET(this, 'users/1', () => numberedPage(urls, 0, 4));
+    await GET(this, 'users/2', () => numberedPage(urls, 1, 4));
+    await GET(this, 'users/3', () => numberedPage(urls, 2, 4));
+    // page 1 re-requested, now claiming page 4 — never loaded, known only as
+    // the last page — follows it
+    await GET(this, 'users/1', () => ({
+      ...numberedPage(urls, 0, 4),
+      links: { ...numberedPage(urls, 0, 4).links, next: urls[3] },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: urls[0],
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+    const paginationCache = getPaginationCache(urls[0]);
+
+    await request;
+    await paginationState.loadPage(urls[1]);
+    await paginationState.loadPage(urls[2]);
+    await paginationState.loadPage(urls[0]);
+
+    assert.deepEqual(graphPageNumbers(paginationCache), [1, 2, 3, 4], 'the last page is known from links only');
+
+    const message = await captureRejection(() => paginationState.adoptPage(reloadRequest(this.manager, urls[0])));
+
+    if (PRODUCTION) {
+      assert.equal(message, null, 'contradictions are not checked in production');
+      return;
+    }
+    assert.true(
+      message?.includes('next link names page 4, expected page 2') ?? false,
+      `the contradiction is reported: ${message}`
+    );
+    assert.deepEqual(
+      graphPageNumbers(paginationCache),
+      [1, 2, 3, 4],
+      'nothing from the contradicting document is recorded'
+    );
+    assert.equal(paginationState.activePage?.nextLink, urls[1], 'the recorded next link is untouched');
+  })
+
+  .for('reloading a page whose next cursor now skips a page drops the skipped page from the run')
+  .use<{ store: RequestManager; request: CollectionRequest }>(async function (assert) {
+    const start = buildBaseURL({ resourcePath: 'users/1' });
+    const cursorA = buildBaseURL({ resourcePath: 'users/cursor-a' });
+    const cursorC = buildBaseURL({ resourcePath: 'users/cursor-c' });
+
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: cursorA },
+    }));
+    await GET(this, 'users/cursor-a', () => ({
+      data: [users[1]],
+      links: { prev: start, self: cursorA, next: cursorC },
+    }));
+    await GET(this, 'users/cursor-c', () => ({
+      data: [users[2]],
+      links: { prev: cursorA, self: cursorC },
+    }));
+    // the items of the middle page were deleted: a keyset cursor names the
+    // first item of the next page, so the first page now continues straight
+    // at the cursor we knew as the third page
+    await GET(this, 'users/1', () => ({
+      data: [users[0]],
+      links: { self: start, next: cursorC },
+    }));
+
+    const request = this.manager.request<CollectionResourceDataDocument<UserResource>>({
+      url: start,
+      method: 'GET',
+    });
+    const paginationState = getPaginationState(request);
+
+    await this.render({ store: this.manager, request });
+    await request;
+    await this.h.rerender();
+
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+    await this.h.click('[data-test-load-next]');
+    await paginationState.nextRequest;
+    await this.h.rerender();
+
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Leo Euclides', 'Mehul Chaudhari'],
+      'all 3 pages render'
+    );
+    assert.false(paginationState.hasNext, 'the run ends at the third page');
+
+    const refreshed = reloadRequest(this.manager, start);
+    await paginationState.adoptPage(refreshed);
+    await this.h.rerender();
+
+    assert.equal(paginationState.activePage?.nextLink, cursorC, 'the next link follows the re-requested document');
+    assert.equal(paginationState.activePage?.next?.prevLink, start, 'the page it now names links back to it');
+    assert.deepEqual(
+      Array.from(paginationState.data).map((user) => user.attributes.name),
+      ['Chris Thoburn', 'Mehul Chaudhari'],
+      'the skipped page drops out of the run; the page after it stays'
+    );
+    assert.deepEqual(
+      renderedNames(this.element),
+      ['Chris Thoburn', 'Mehul Chaudhari'],
+      'the skipped page no longer renders'
+    );
+    assert.equal(Array.from(paginationState.pages).length, 2, 'the run holds 2 pages');
+    assert.false(paginationState.hasNext, 'the run still ends at the last page');
   })
 
   .build();

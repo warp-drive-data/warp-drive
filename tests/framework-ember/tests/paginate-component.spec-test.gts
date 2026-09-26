@@ -1103,6 +1103,22 @@ PaginateSpec.use(useEmber(), function (b) {
       infiniteReloadTemplate
     )
 
+    .test('a numbered page whose next link skips a page is a contradiction', pagedReloadTemplate)
+    .test('a numbered page whose prev link skips a page is a contradiction', pagedReloadTemplate)
+    .test('a numbered page above the first with no prev link is a contradiction', pagedReloadTemplate)
+    .test('a numbered page below the last with no next link is a contradiction', pagedReloadTemplate)
+    .test('a numbered page beyond the collection total is a contradiction', pagedReloadTemplate)
+    .test('a first link that names a page other than page 1 is a contradiction', pagedReloadTemplate)
+    .test('a last link that names a page other than the last page is a contradiction', pagedReloadTemplate)
+    .test('a first link to a page with a page linked before it is a contradiction', pagedReloadTemplate)
+    .test(
+      'a numbered page whose next link skips to a page known only from links is a contradiction',
+      pagedReloadTemplate
+    )
+    .test(
+      'reloading a page whose next cursor now skips a page drops the skipped page from the run',
+      infiniteReloadTemplate
+    )
     // @ts-expect-error need to figure out how to do this for "compiled" versions of this type
     // If there's a typeerror here, we are missing a test.
     .never(null);

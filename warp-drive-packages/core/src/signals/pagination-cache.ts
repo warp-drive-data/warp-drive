@@ -151,26 +151,31 @@ export class PaginationCache<RT = unknown, E = unknown> {
     return page as Readonly<PageCache<RT, E>>;
   }
 
-  /** @internal */
-  loadPage(url: string, request: Future<RT> | null): Readonly<PageCache<RT, E>> {
+  /**
+   * Loads the page at `url` with `request` when it is not loaded (or its load
+   * failed), or re-applies `request`'s document when it is a newer request
+   * for an already-loaded page (a reload, or navigating back to it: the newer
+   * document is authoritative for the page's links and the collection total,
+   * which may have changed since the first load).
+   *
+   * Resolves to the page once that has settled. A rejected request settles
+   * too — it is surfaced through the page's state, not thrown. The promise
+   * rejects only when the document contradicts the collection (see
+   * {@link PageCache.applyDocument}), so the caller that triggered the load
+   * is the one that hears about it.
+   *
+   * @internal
+   */
+  async loadPage(url: string, request: Future<RT> | null): Promise<Readonly<PageCache<RT, E>>> {
     const page = this.getPageCache(url);
     if ((!page.isLoaded || page.isError) && request) {
-      assert('Expected a request to a load a page', request);
-      void page.load(request).then((document) => {
-        this.updateFirstPage(page);
-        if (document) {
-          this.totalPages = this.getTotalPages(document);
-        }
-      });
+      await page.load(request);
+      this.updateFirstPage(page);
     } else if (request && page.isSuccess && request !== page.request) {
-      // a newer request for an already-loaded page (a reload, or navigating
-      // back to it): its document is authoritative for the page's links and
-      // the collection total, which may have changed since the first load.
-      void page.update(request).then((document) => {
-        if (document) {
-          this.updateFirstPage(page);
-        }
-      });
+      const document = await page.update(request);
+      if (document) {
+        this.updateFirstPage(page);
+      }
     }
     return page;
   }
@@ -184,11 +189,6 @@ export class PaginationCache<RT = unknown, E = unknown> {
     if (!this.firstPage || this.firstPage.pageNumber > maybeFirstPage.pageNumber) {
       this.firstPage = maybeFirstPage;
     }
-  }
-
-  /** @internal */
-  getTotalPages(document: ReactiveDocument<unknown>): number {
-    return this.readPageHints(document).totalPages;
   }
 
   /**
@@ -207,17 +207,16 @@ export class PaginationCache<RT = unknown, E = unknown> {
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
-    // oxlint-disable-next-line typescript/no-this-alias
-    const self = this;
-    return {
-      *[Symbol.iterator]() {
-        let page: Readonly<PageCache<RT, E>> | null = self.firstPage;
-        while (page) {
-          yield page;
-          page = page.after;
-        }
-      },
-    };
+    // materialized (not a lazy iterable) so every link read while walking is
+    // a dependency of this memo, and a consumer iterating it re-runs when the
+    // graph changes
+    const pages: Readonly<PageCache<RT, E>>[] = [];
+    let page: Readonly<PageCache<RT, E>> | null = this.firstPage;
+    while (page) {
+      pages.push(page);
+      page = page.after;
+    }
+    return pages;
   }
 
   /**
@@ -230,17 +229,14 @@ export class PaginationCache<RT = unknown, E = unknown> {
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    // oxlint-disable-next-line typescript/no-this-alias
-    const self = this;
-    return {
-      *[Symbol.iterator]() {
-        for (const page of self.pages) {
-          if (page.data) {
-            yield* page.data as ContentItem<RT>[];
-          }
-        }
-      },
-    };
+    // materialized for the same reason as `pages`
+    const items: ContentItem<RT>[] = [];
+    for (const page of this.pages) {
+      if (page.data) {
+        items.push(...(page.data as ContentItem<RT>[]));
+      }
+    }
+    return items;
   }
 }
 
