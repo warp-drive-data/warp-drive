@@ -20,7 +20,7 @@ data layer has, and show how ***Warp*Drive** handles it.
 |     | Chapter                                             | You'll use                                 |
 | --- | --------------------------------------------------- | ------------------------------------------ |
 | 1   | [First request](./first-request.md)                 | `store.request` and `<Request>`            |
-| 2   | [Why that worked](./why-that-worked.md)             | the store, the request pipeline, a schema  |
+| 2   | [Why that worked](./why-that-worked.md)             | the four ideas WarpDrive is built on       |
 | 3   | [Request builders](./request-builders.md)           | builders and a handler                     |
 | 4   | [Create](./create.md)                               | `createRecord` and invalidation            |
 | 5   | [Edit title](./edit-title.md)                       | `checkout` and `updateRecord`              |

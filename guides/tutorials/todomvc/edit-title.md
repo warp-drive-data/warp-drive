@@ -1,36 +1,52 @@
 ---
 title: 5. Edit title
-description: See how checkout gives each todo an editable copy, then write a patchTodo builder with the updateRecord op and save a new title.
+description: See how each todo becomes an editable copy, then save a new title with one request that every list shows.
 ---
 
 # Edit title
 
 Double-click a todo, type a new title, press Enter. The old title comes back.
-Let's save it.
+Let's save it, with one request that updates every list at once.
 
 ## Editable copies
 
-Chapter 2 said a todo's fields are read-only. The list gets around that before
-you write anything. In `app/components/todo-app/todo-list.gts`, each todo passes
-through `checkout`:
+Chapter 2 said a todo's fields are read-only, so the item you're editing isn't
+the record itself. The starter's list hands each item an editable copy. In
+`app/components/todo-app/todo-list.gts`, each todo passes through `checkout`:
 
-```handlebars
-{{#each @todos as |immutableTodo|}}
-  <Await @promise={{this.checkout immutableTodo}}>
-    <:success as |mutableTodoCopy|>
-      <TodoItem @todo={{mutableTodoCopy}} ... />
-    </:success>
-  </Await>
-{{/each}}
+```gts
+import { checkout } from '@warp-drive/core/reactive';
+
+export class TodoList extends Component<Signature> {
+  <template>
+    {{#each @todos as |immutableTodo|}}
+      <Await @promise={{this.checkout immutableTodo}}>
+        <:success as |mutableTodoCopy|>
+          <TodoItem @todo={{mutableTodoCopy}} ... />
+        </:success>
+      </Await>
+    {{/each}}
+  </template>
+
+  checkout(todo: Todo): Promise<EditableTodo> {
+    return checkout<EditableTodo>(todo);
+  }
+}
 ```
 
-`checkout` returns an editable copy of a record. Changes stay on the copy until
-you save. The cache, and every other view of the todo, keep showing what the
-server last sent.
+`checkout`, from `@warp-drive/core/reactive`, returns an editable copy of a
+record. The component's `this.checkout` is a one-line wrapper that tells
+TypeScript the copy is an `EditableTodo`.
+
+`checkout` is async, so `<Await>` renders the item once the copy is ready.
+Changes to a copy stay on it until you save, while the cache and every other
+view of the todo keep showing what the server last sent. The title form doesn't
+change the copy at all: it reads the new title from its input and sends only
+that.
 
 ## Write the builder
 
-Create `app/data/builders/update.ts`:
+Create a new file, `app/data/builders/update.ts`:
 
 ```ts
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
@@ -58,15 +74,19 @@ export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): Requ
 }
 ```
 
-`keyForSavedResource`, shipped in `utils.ts`, returns the todo's cache key: its
-`type` and `id`. `op: 'updateRecord'` with `records: [key]` tells the cache
-which todo this request saves, so the response is written into that todo.
-`attributes` is `Partial`, so the body carries only what changed.
+`keyForSavedResource` returns the todo's cache key: its `type` and `id`. It
+ships in `utils.ts` because the delete and bulk builders use it too, and there's
+little to it: ***Warp*Drive**'s `recordIdentifierFor(todo)`, plus a check that
+the todo has an `id`, since only a saved todo can be updated. `buildBaseURL`
+turns the key into `/api/todo/<id>`.
+`op: 'updateRecord'` with `records: [key]` tells the cache which todo this
+request saves, so the response is written into that todo. `attributes` is
+`Partial`, so the body carries only what changed.
 
 ## Send it
 
-Open `app/components/todo-app/todo-item.gts` and find `TODO (chapter 5)` in
-`TitleForm`. Replace it:
+In `app/components/todo-app/todo-item.gts`, `TitleForm` has a `patchTodoTitle`
+method that doesn't save anything yet. Have it send the request:
 
 ```ts
 await this.store.request(patchTodo(todo, { title }));
@@ -85,7 +105,8 @@ there after a reload.
 
 The Network panel shows one `PATCH` and no `GET`. The response updated the one
 cached todo, and every list holds that same todo, so every list shows the new
-title.
+title. Without a shared cache, you'd update each list yourself, or refetch them
+all.
 
 ## What's next
 
