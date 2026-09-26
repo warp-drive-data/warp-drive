@@ -12,7 +12,7 @@ description: >-
 function loadIrregular(irregularPairs: [string, string][]): void;
 ```
 
-Defined in: [-private/string/inflect.ts:77](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/utilities/src/-private/string/inflect.ts#L77)
+Defined in: [-private/string/inflect.ts:77](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/utilities/src/-private/string/inflect.ts#L77)
 
 Marks a list of word pairs as irregular. Irregular words have unique
 pluralization and singularization rules.

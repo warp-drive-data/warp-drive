@@ -18,7 +18,7 @@ interface CacheOptions {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:84](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L84)
+Defined in: [warp-drive-packages/core/src/types/request.ts:84](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L84)
 
 Use these options to adjust [CacheHandler](../../../variables/CacheHandler.md) behavior for a request
 via [RequestInfo.cacheOptions](RequestInfo.md#cacheoptions).
@@ -31,7 +31,7 @@ via [RequestInfo.cacheOptions](RequestInfo.md#cacheoptions).
 optional ___(unique) Symbol(SkipCache)?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:131](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L131)
+Defined in: [warp-drive-packages/core/src/types/request.ts:131](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L131)
 
 If true, the request will never be handled by the cache-manager and thus
 will never resolve from cache nor update the cache.
@@ -47,7 +47,7 @@ updates in a non-standard way via the LegacyNetworkHandler.
 optional backgroundReload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:102](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L102)
+Defined in: [warp-drive-packages/core/src/types/request.ts:102](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L102)
 
 If true, and a cached response is present and not expired, the request
 will be made in the background and the cached response will be returned.
@@ -60,7 +60,7 @@ will be made in the background and the cached response will be returned.
 optional key?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:90](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L90)
+Defined in: [warp-drive-packages/core/src/types/request.ts:90](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L90)
 
 A key that uniquely identifies this request. If not present, the url wil be used
 as the key for any GET request, while all other requests will not be cached.
@@ -73,7 +73,7 @@ as the key for any GET request, while all other requests will not be cached.
 optional reload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:96](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L96)
+Defined in: [warp-drive-packages/core/src/types/request.ts:96](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L96)
 
 If true, the request will be made even if a cached response is present
 and not expired.
@@ -86,7 +86,7 @@ and not expired.
 optional types?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:121](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/request.ts#L121)
+Defined in: [warp-drive-packages/core/src/types/request.ts:121](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/types/request.ts#L121)
 
 Useful for metadata around when to invalidate the cache. Typically used
 by strategies that invalidate requests by resource type when a new resource

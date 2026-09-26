@@ -18,7 +18,7 @@ function HEAD(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:326](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/packages/holodeck/src/mock.ts#L326)
+Defined in: [mock.ts:326](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/packages/holodeck/src/mock.ts#L326)
 
 Sets up Mocking for a HEAD request on the mock server
 for the supplied url.

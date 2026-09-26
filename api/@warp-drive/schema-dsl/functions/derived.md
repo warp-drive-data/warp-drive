@@ -11,7 +11,7 @@ description: >-
 function derived(options: DerivedOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/derived.ts:65](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/schema-dsl/src/fields/derived.ts#L65)
+Defined in: [fields/derived.ts:65](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/schema-dsl/src/fields/derived.ts#L65)
 
 **`Decorator`**
 

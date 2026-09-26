@@ -6,6 +6,8 @@ description: >-
   React can integrate.
 ---
 
+# Reactive Access to Cached Data
+
 In addition to request and cache management, WarpDrive provides a reactive access
 layer for data in the cache.
 

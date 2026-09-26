@@ -27,7 +27,7 @@ interface CacheControlValue {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:69](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L69)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:69](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L69)
 
 Interface of a parsed Cache-Control header value.
 
@@ -41,7 +41,7 @@ Interface of a parsed Cache-Control header value.
 optional immutable?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:71](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L71)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:71](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L71)
 
 Indicates the response will never change; parsed but not currently used by this cache policy's expiration logic.
 
@@ -53,7 +53,7 @@ Indicates the response will never change; parsed but not currently used by this 
 optional max-age?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:73](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L73)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:73](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L73)
 
 Seconds since the response's `Date` that it is considered fresh; combined with the `Age` header to determine expiration.
 
@@ -65,7 +65,7 @@ Seconds since the response's `Date` that it is considered fresh; combined with t
 optional must-revalidate?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:75](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L75)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:75](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L75)
 
 Indicates a stale response must be revalidated before use; parsed but not currently used by this cache policy's expiration logic.
 
@@ -77,7 +77,7 @@ Indicates a stale response must be revalidated before use; parsed but not curren
 optional must-understand?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:77](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L77)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:77](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L77)
 
 Indicates the client must understand the response's status code semantics before caching; parsed but not currently used by this cache policy's expiration logic.
 
@@ -89,7 +89,7 @@ Indicates the client must understand the response's status code semantics before
 optional no-cache?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:79](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L79)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:79](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L79)
 
 Indicates the response must be revalidated before being reused from cache; parsed but not currently used by this cache policy's expiration logic.
 
@@ -101,7 +101,7 @@ Indicates the response must be revalidated before being reused from cache; parse
 optional no-store?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:81](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L81)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:81](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L81)
 
 Indicates the response must not be stored in any cache; parsed but not currently used by this cache policy's expiration logic.
 
@@ -113,7 +113,7 @@ Indicates the response must not be stored in any cache; parsed but not currently
 optional no-transform?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:83](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L83)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:83](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L83)
 
 Indicates the response must not be transformed by intermediaries; parsed but not currently used by this cache policy's expiration logic.
 
@@ -125,7 +125,7 @@ Indicates the response must not be transformed by intermediaries; parsed but not
 optional only-if-cached?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:85](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L85)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:85](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L85)
 
 Indicates only an already-cached response should be used; parsed but not currently used by this cache policy's expiration logic.
 
@@ -137,7 +137,7 @@ Indicates only an already-cached response should be used; parsed but not current
 optional private?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:87](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L87)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:87](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L87)
 
 Indicates the response is intended for a single user and should not be stored by shared caches; parsed but not currently used by this cache policy's expiration logic.
 
@@ -149,7 +149,7 @@ Indicates the response is intended for a single user and should not be stored by
 optional proxy-revalidate?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:89](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L89)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:89](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L89)
 
 Like `must-revalidate` but only for shared caches; parsed but not currently used by this cache policy's expiration logic.
 
@@ -161,7 +161,7 @@ Like `must-revalidate` but only for shared caches; parsed but not currently used
 optional public?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:91](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L91)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:91](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L91)
 
 Indicates the response may be stored by any cache; parsed but not currently used by this cache policy's expiration logic.
 
@@ -173,7 +173,7 @@ Indicates the response may be stored by any cache; parsed but not currently used
 optional s-maxage?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:93](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L93)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:93](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L93)
 
 Seconds since the response's `Date` that it is considered fresh for shared caches; used as a fallback for `max-age` when determining expiration.
 
@@ -185,7 +185,7 @@ Seconds since the response's `Date` that it is considered fresh for shared cache
 optional stale-if-error?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:95](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L95)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:95](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L95)
 
 Seconds a stale response may be reused if an error occurs while revalidating; parsed but not currently used by this cache policy's expiration logic.
 
@@ -197,6 +197,6 @@ Seconds a stale response may be reused if an error occurs while revalidating; pa
 optional stale-while-revalidate?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:97](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L97)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:97](https://github.com/warp-drive-data/warp-drive/blob/726aa7e4e452d652019a28d42c4ea165f904b847/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L97)
 
 Seconds a stale response may be reused while a revalidation happens in the background; parsed but not currently used by this cache policy's expiration logic.
