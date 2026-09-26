@@ -1499,6 +1499,37 @@ export class Store extends BaseClass {
    */
   declare lifetimes?: CachePolicy;
 
+  /**
+   * An optional upper bound on the number of related resources a single
+   * `collection` relationship payload may contain.
+   *
+   * Collection relationships are not paginated, sorted or filtered: every
+   * member is held in the relationship and materialized when accessed.
+   * Lists large enough to need those features should be loaded with a
+   * top-level request instead (e.g. `query`), which can be paginated and
+   * cached independently of the parent resource.
+   *
+   * When set, any remote payload for a `collection` field whose `data`
+   * array is longer than this value causes an error to be thrown
+   * asynchronously (from a microtask, so it reaches `window.onerror` and
+   * error reporters and fails tests) after the payload has been applied to
+   * the cache. The payload itself is not rejected.
+   *
+   * The check is a count of members in one payload, applies only to
+   * `collection` fields (not legacy `hasMany`), and does not apply to
+   * local mutations. `null` (the default) disables the check.
+   *
+   * ```ts
+   * export const Store = useRecommendedStore({
+   *   cache: JSONAPICache,
+   *   maxCollectionRelationshipSize: 100,
+   * });
+   * ```
+   *
+   * @public
+   */
+  declare maxCollectionRelationshipSize?: number | null;
+
   // Private
   /** @internal */
   declare _graph?: Graph;

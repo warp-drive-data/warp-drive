@@ -1167,6 +1167,8 @@ export interface ResourceField {
  * on the relationship are surfaced on `doc.links` but are never merged
  * into the relationship's membership. Large, sortable, filterable or
  * paginated lists should be loaded with a top-level request instead.
+ * Apps may configure `maxCollectionRelationshipSize` on the store to
+ * be alerted when a relationship payload grows past a chosen size.
  *
  * In LegacyMode the relationship is mutable via `doc.data.push(record)`
  * (and the other array mutation methods) or `doc.data = [records]`.
