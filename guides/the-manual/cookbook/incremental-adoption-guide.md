@@ -6,6 +6,10 @@ description: >-
   RequestManager, LegacyNetworkHandler, and request builders one step at a time.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New code should set up its store as shown in [Setup](/guides/configuration/index.md) and make requests as shown in [Making Requests](/guides/the-manual/requests/index.md).
+:::
+
 # Incremental adoption guide for existing projects
 
 * ⮐ [Cookbook](./index.md)

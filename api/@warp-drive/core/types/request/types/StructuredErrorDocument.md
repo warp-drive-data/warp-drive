@@ -24,7 +24,7 @@ interface StructuredErrorDocument<T = unknown> extends Error {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:531](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/request.ts#L531)
+Defined in: [warp-drive-packages/core/src/types/request.ts:531](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/types/request.ts#L531)
 
 When a [Future](../../../request/types/Future.md) rejects, it throws either an [Error](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Error)
 an [AggregateError](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/AggregateError) or a [DOMException](https://developer.mozilla.org/docs/Web/API/DOMException) that maintains
@@ -66,7 +66,7 @@ Error.cause
 optional content?: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:551](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/request.ts#L551)
+Defined in: [warp-drive-packages/core/src/types/request.ts:551](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/types/request.ts#L551)
 
 the processed content of the response, if any was received before the failure
 
@@ -78,7 +78,7 @@ the processed content of the response, if any was received before the failure
 error: string | object;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:547](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/request.ts#L547)
+Defined in: [warp-drive-packages/core/src/types/request.ts:547](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/types/request.ts#L547)
 
 the error that caused the request to fail
 
@@ -118,7 +118,7 @@ Error.name
 request: ImmutableRequestInfo;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:539](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/request.ts#L539)
+Defined in: [warp-drive-packages/core/src/types/request.ts:539](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/types/request.ts#L539)
 
 #### See
 
@@ -135,7 +135,7 @@ response:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:543](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/request.ts#L543)
+Defined in: [warp-drive-packages/core/src/types/request.ts:543](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/types/request.ts#L543)
 
 the response set by the handler chain, if any
 

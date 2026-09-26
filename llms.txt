@@ -4,7 +4,7 @@
 
 Comprehensive Documentation for Engineers Aiming for the Stars 💫
 
-API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/active-record`, `@ember-data/debug`, `@ember-data/legacy-compat`, `@ember-data/model`, `@ember-data/json-api`, `@ember-data/store`, `@ember-data/graph`, `@ember-data/request`, `@ember-data/request-utils`, `@ember-data/rest`, `@ember-data/serializer`, `@ember-data/tracking`, `@warp-drive/core-types`, `@warp-drive/build-config`, `@warp-drive/schema-record` is indexed separately in https://canary.warp-drive.io/llms-legacy.txt, with full text in https://canary.warp-drive.io/llms-legacy-full.txt.
+Guides for legacy setups and API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/active-record`, `@ember-data/debug`, `@ember-data/legacy-compat`, `@ember-data/model`, `@ember-data/json-api`, `@ember-data/store`, `@ember-data/graph`, `@ember-data/request`, `@ember-data/request-utils`, `@ember-data/rest`, `@ember-data/serializer`, `@ember-data/tracking`, `@warp-drive/core-types`, `@warp-drive/build-config`, `@warp-drive/schema-record` are indexed separately in https://canary.warp-drive.io/llms-legacy.txt, with full text in https://canary.warp-drive.io/llms-legacy-full.txt.
 
 ## Table of Contents
 
@@ -17,16 +17,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 
 - [Setup](https://canary.warp-drive.io/guides/configuration.md): Set up WarpDrive's babel build plugin with compatWith and create a store with useRecommendedStore or useLegacyStore, the two steps required before making any request.
 - [Setup - Advanced](https://canary.warp-drive.io/guides/configuration/advanced.md): Build a Store class by hand, adding RequestManager, SchemaService, JSONAPICache, instantiateRecord, and DefaultCachePolicy step by step, with Ember Model and migration variants.
-- [Setup - Legacy (Ember)](https://canary.warp-drive.io/guides/configuration/ember.md): Restore legacy Adapter, Serializer, Model, and EmberObject features through @warp-drive/legacy in an Ember app, and decide when LegacyNetworkHandler is still needed.
-
-#### Older Packages (Ember Only)
-
-- [Overview](https://canary.warp-drive.io/guides/configuration/legacy-package-setup.md): Install the pre-unification @ember-data/* and @warp-drive/* packages with exact pinned versions, for apps still on the legacy multi-package setup rather than @warp-drive/core.
-
-##### Setup
-
-- [Ember.js](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/setup/ember.md): Configure a legacy Ember app to import @warp-drive/ember/install, drop @ember-data/tracking, and add LegacyNetworkHandler plus adapterFor and serializerFor hooks to the store.
-- [Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/setup/universal.md): Configure the legacy multi-package setup with setConfig in ember-cli-build, unstable-preview-types in tsconfig, and a hand-built Store using RequestManager and JSONAPICache.
 
 ### Tutorials
 
@@ -95,10 +85,7 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 #### TypeScript
 
 - [Overview](https://canary.warp-drive.io/guides/the-manual/typescript.md): Start here to opt in to WarpDrive's alpha-stage TypeScript types, then follow the installation, configuration, brands, model typing, and includes typing pages in order.
-- [Configuration](https://canary.warp-drive.io/guides/the-manual/typescript/configuration.md): Add the unstable-preview-types entries to tsconfig.json so your app consumes WarpDrive's alpha-stage native types from either the runtime packages or the -types packages.
-- [Installation](https://canary.warp-drive.io/guides/the-manual/typescript/installation.md): Install WarpDrive's native types with `npx warp-drive retrofit types@canary` or by hand, replacing DefinitelyTyped @types packages with typed releases or -types packages.
 - [Typing Includes](https://canary.warp-drive.io/guides/the-manual/typescript/typing-includes.md): Type relationship-path include strings with the `Includes` and `StringSatisfiesIncludes` utils and `createIncludeValidator` so typos in includes fail at compile time.
-- [Typing Models & Transforms](https://canary.warp-drive.io/guides/the-manual/typescript/typing-models.md): Brand legacy Model classes and Transforms with the `Type` symbol and add generics to `attr`, `belongsTo`, and `hasMany` so relationships and store calls infer types.
 - [WarpDrive's Types Strategy](https://canary.warp-drive.io/guides/the-manual/typescript/why-brands.md): Understand why WarpDrive brands classes with a `Type` symbol and passes them as generics to `findRecord` instead of using type registries or class tokens.
 
 #### Debugging
@@ -141,7 +128,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Auth Handler](https://canary.warp-drive.io/guides/the-manual/cookbook/auth-handlers.md): Write a request `Handler` that adds JWT bearer tokens or CSRF tokens to outgoing requests, including an Ember class-based handler with injected services.
 - [Requests](https://canary.warp-drive.io/guides/the-manual/cookbook/basic-usage.md): Build a `RequestManager` with the `Fetch` handler, configure `setBuildURLConfig`, issue a JSON:API `query` request, page through results, and handle errors.
 - [Holodeck in Dev Mode](https://canary.warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode.md)
-- [Incremental adoption guide for existing projects](https://canary.warp-drive.io/guides/the-manual/cookbook/incremental-adoption-guide.md): Move an existing 4.12 EmberData app still on adapters and serializers onto RequestManager, LegacyNetworkHandler, and request builders one step at a time.
 - [Resource Type Naming: singular or plural? What to choose? Why is that?](https://canary.warp-drive.io/guides/the-manual/cookbook/naming-conventions.md): Decide whether resource types should be singular or plural and dasherized or snake_case, and keep that one `type` string the same across API responses, ResourceSchemas, relationship fields and request builders.
 
 ### Skills
@@ -211,13 +197,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [A $state Field for PolarisMode ReactiveResources](https://canary.warp-drive.io/rfcs/0008-reactive-resource-state.md): Proposes adding a reactive, read-only $state field to the PolarisMode defaults that reports a resource's lifecycle state (new, empty, deleted, dirty) and its per-field local changes, replacing the LegacyMode state flags that still apply and dropping the ones that don't.
 - [Deprecating Subscription-Based Request State](https://canary.warp-drive.io/rfcs/0009-deprecate-request-state-subscriptions.md): Proposes deprecating the imperative RequestStateService subscription API in favor of the signals-backed reactive request state introduced by RFC 0001, with removal targeted for 6.0.
 
-### Upgrading
-
-#### 4.x → 5.x
-
-- [Migrating 4.x to 5.x](https://canary.warp-drive.io/upgrading/v5.md): Migrate an EmberData 4.6 or 4.12 app to WarpDrive 5.x step by step, using native types, mirror packages, useLegacyStore, and schemas in place of Models.
-- [Migrating Between Versions Using The Two Store Approach](https://canary.warp-drive.io/upgrading/v5/two-store-migration.md): Run a second WarpDrive store built from the -mirror packages beside your existing 4.x store so parts of an app can adopt 5.x incrementally, with the tradeoffs to expect.
-- [Using Codemods](https://canary.warp-drive.io/upgrading/v5/codemods.md): Run the `@ember-data/codemods` migrate-to-schema and legacy-compat-builders codemods to convert 4.x Models and mixins into 5.x schemas and store.request builders.
 
 ### Blog
 
@@ -883,8 +862,8 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [FieldSchema](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/fields/types/FieldSchema.md): Union of every LegacyMode and PolarisMode field schema; prefer the mode-specific unions for more precise type-checking.
 - [FindAllOptions](https://canary.warp-drive.io/api/@warp-drive/core/types/types/FindAllOptions.md): Legacy reload, background-reload, include, and adapterOptions settings for `store.findAll`.
 - [FindManyUrlOptions](https://canary.warp-drive.io/api/@warp-drive/utilities/types/FindManyUrlOptions.md): Options passed to `buildBaseURL` to build the URL for fetching several resources, pathed by the first identifier's type.
-- [FindRecordOptions](https://canary.warp-drive.io/api/@warp-drive/core/types/types/FindRecordOptions.md): Legacy options for `store.findRecord`, adding a discouraged `preload` of field values to the shared reload and adapter settings.
 - [FindRecordOptions](https://canary.warp-drive.io/api/@warp-drive/core/types/request/types/FindRecordOptions.md): Options the `findRecord` request builders accept: the shared url and reload options plus the relationship paths to `include`.
+- [FindRecordOptions](https://canary.warp-drive.io/api/@warp-drive/core/types/types/FindRecordOptions.md): Legacy options for `store.findRecord`, adding a discouraged `preload` of field values to the shared reload and adapter settings.
 - [FindRecordRequestOptions](https://canary.warp-drive.io/api/@warp-drive/core/types/request/types/FindRecordRequestOptions.md): Shape of the `GET` request object that `findRecord` builders return for `store.request`, carrying the url, headers, and requested resource identifier.
 - [FindRecordUrlOptions](https://canary.warp-drive.io/api/@warp-drive/utilities/types/FindRecordUrlOptions.md): Options passed to `buildBaseURL` to build the URL for fetching one resource by type and id.
 - [FindRelatedCollectionUrlOptions](https://canary.warp-drive.io/api/@warp-drive/utilities/types/FindRelatedCollectionUrlOptions.md): Options passed to `buildBaseURL` to build the URL for a record's has-many relationship, ending in the field name.
@@ -913,8 +892,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [InternalCacheStorageEvent](https://canary.warp-drive.io/api/@warp-drive/experiments/storage/types/InternalCacheStorageEvent.md)
 - [KeyFn](https://canary.warp-drive.io/api/@warp-drive/experiments/storage/types/KeyFn.md): Experimental function type that derives a unique storage key from a storage resource instance, so each instance persists its own data.
 - [LazyScaffold](https://canary.warp-drive.io/api/@warp-drive/holodeck/mock/types/LazyScaffold.md): Mock whose method and url are known up front and whose full scaffold is built only when recording, as passed by the Holodeck mock helpers to `mock`.
-- [Legacy Builders](https://canary.warp-drive.io/guides/the-manual/requests/builders-legacy.md): Write request builders for apps still on the legacy adapter/serializer pattern; this page is a draft placeholder with no content yet.
-- [Legacy Handlers](https://canary.warp-drive.io/guides/the-manual/requests/handlers-legacy.md): Write request handlers for apps still on the legacy adapter/serializer pattern; this page is a draft placeholder with no content yet.
 - [LegacyAliasField](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/fields/types/LegacyAliasField.md): Field schema of kind `alias` for LegacyMode resources that exposes another field's cache value, including legacy attributes and relationships, under a new name.
 - [LegacyAttributeField](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/fields/types/LegacyAttributeField.md): Legacy field schema of kind `attribute` for a primitive value whose `type` names a legacy transform a serializer may apply; LegacyMode only.
 - [LegacyBelongsToField](https://canary.warp-drive.io/api/@warp-drive/core/types/schema/fields/types/LegacyBelongsToField.md): Legacy field schema of kind `belongsTo` for a reference to one related resource, with required `async` and `inverse` options and optional `linksMode`.
@@ -942,8 +919,8 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Mask](https://canary.warp-drive.io/api/@warp-drive/core/types/record/types/Mask.md): Type utility that builds a preview type from `T` by replacing selected fields with narrower subset types from `K`, resolving to `never` where a field is not compatible.
 - [MergeOperation](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/MergeOperation.md): Cache operation telling the Cache that two resource keys refer to the same resource, so it can merge the stale one into the kept one.
 - [Meta](https://canary.warp-drive.io/api/@warp-drive/core/types/spec/json-api-raw/types/Meta.md): A JSON object of non-standard information found in the `meta` member of a {json:api} document, resource, relationship, or link.
-- [Migrating](https://canary.warp-drive.io/guides/migrating.md): Find where the WarpDrive upgrade guides now live, since the migrating section has moved to /upgrading/v5 and this page only redirects readers there.
 - [Migrating](https://canary.warp-drive.io/guides/the-manual/misc/migrating.md): Find the current location of the WarpDrive v5 upgrade and migration docs, which have moved out of this section into the Upgrading guide.
+- [Migrating](https://canary.warp-drive.io/guides/migrating.md): Find where the WarpDrive upgrade guides now live, since the migrating section has moved to /upgrading/v5 and this page only redirects readers there.
 - [Miscellaneous](https://canary.warp-drive.io/guides/the-manual/misc.md): Find WarpDrive guides that do not yet have a permanent section, such as LinksMode and terminology, before they are moved into the main manual.
 - [ModelSchema](https://canary.warp-drive.io/api/@warp-drive/core/types/types/ModelSchema.md): Legacy shape of a Model class's static schema API (fields, attributes, relationships, iterators) used by the legacy schema service and Adapters/Serializers.
 - [Mutable](https://canary.warp-drive.io/api/@warp-drive/core/types/utils/types/Mutable.md): Utility type that strips `readonly` from every property of an object type.
@@ -964,8 +941,8 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [ObjectValue](https://canary.warp-drive.io/api/@warp-drive/core/types/json/raw/types/ObjectValue.md): A plain JSON object whose property values are all JSON values.
 - [Op](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/Op.md): Base shape of every cache operation, carrying the operation's name in `op`.
 - [OpaqueRecordInstance](https://canary.warp-drive.io/api/@warp-drive/core/types/record/types/OpaqueRecordInstance.md): Type-erased (`unknown`) stand-in for a record instance where its specific type is unknown or irrelevant.
-- [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/graph/types/Operation.md): Base shape of every relationship Graph operation, carrying the operation's name in `op`.
 - [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/Operation.md): Union of the updates `cache.patch` applies to the cache's remote (clean) state, typically from server pushes such as WebSocket or SSE messages.
+- [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/graph/types/Operation.md): Base shape of every relationship Graph operation, carrying the operation's name in `op`.
 - [Overview](https://canary.warp-drive.io/guides/the-manual/realtime.md): Placeholder for the Realtime section of the manual, which will cover streaming and live-updating data; still under construction, with no content yet.
 - [PageCache](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PageCache.md): Experimental: one page of a paginated collection, exposing its request, loading and error status, data, and links to neighboring pages.
 - [PagedPaginationContentFeatures](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PagedPaginationContentFeatures.md): Experimental: the request controls `<Paginate />` yields to its content block in paged mode, adding `loadPage` to navigate to a page by URL.

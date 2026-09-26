@@ -14,7 +14,7 @@ description: >-
 function isEquivType(expected: string, actual: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:226](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/compat/utils.ts#L226)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:226](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/legacy/src/compat/utils.ts#L226)
 
 Compares two types for strict equality, converting them to
 the format expected by the WarpDrive Cache to ensure

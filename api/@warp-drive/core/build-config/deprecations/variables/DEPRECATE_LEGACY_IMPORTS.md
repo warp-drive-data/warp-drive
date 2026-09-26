@@ -12,7 +12,7 @@ description: >-
 const DEPRECATE_LEGACY_IMPORTS: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/deprecations.ts:213](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/build-config/src/deprecations.ts#L213)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:213](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/build-config/src/deprecations.ts#L213)
 
 Deprecates when importing from `ember-data/*` instead of `@ember-data/*`
 in order to prepare for the eventual removal of the legacy `ember-data/*`

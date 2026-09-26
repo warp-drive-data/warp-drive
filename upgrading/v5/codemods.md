@@ -6,6 +6,10 @@ description: >-
   builders.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead.
+:::
+
 # Using Codemods
 
 WarpDrive provides automated codemods to help migrate your EmberData application to modern WarpDrive patterns. The `@ember-data/codemods` package includes tools for transforming models and mixins into schemas, updating legacy store methods, and managing package dependencies.

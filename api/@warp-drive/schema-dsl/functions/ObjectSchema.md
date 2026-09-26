@@ -21,7 +21,7 @@ function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) =>
 function ObjectSchema(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/object-schema.ts:71](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L71)
+Defined in: [entities/object-schema.ts:71](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L71)
 
 **`Class Decorator`**
 
@@ -80,7 +80,7 @@ export class Address {
 function ObjectSchema(type: string, options?: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:72](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L72)
+Defined in: [entities/object-schema.ts:72](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L72)
 
 **`Class Decorator`**
 
@@ -143,7 +143,7 @@ export class Address {
 function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:73](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L73)
+Defined in: [entities/object-schema.ts:73](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L73)
 
 **`Class Decorator`**
 

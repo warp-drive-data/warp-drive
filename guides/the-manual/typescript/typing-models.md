@@ -6,6 +6,10 @@ description: >-
   calls infer types.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New code should define its data with [ResourceSchemas](/guides/the-manual/schemas/resources/index.md) instead of Models.
+:::
+
 # Typing Models & Transforms
 
 ## Type

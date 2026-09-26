@@ -5,6 +5,10 @@ description: >-
   native types, mirror packages, useLegacyStore, and schemas in place of Models.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead.
+:::
+
 # Migrating 4.x to 5.x
 
 &#x20;  authored 2023-06-10

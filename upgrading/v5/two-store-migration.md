@@ -6,6 +6,10 @@ description: >-
   tradeoffs to expect.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead.
+:::
+
 # Migrating Between Versions Using The Two Store Approach
 
 &#x20;  authored 2023-06-10

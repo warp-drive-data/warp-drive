@@ -14,7 +14,7 @@ description: >-
 function LocalResource(id: string | KeyFn): ClassDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:32](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/experiments/src/storage/storage-resource.ts#L32)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:32](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/experiments/src/storage/storage-resource.ts#L32)
 
 Decorator which transforms a class into a StorageResource
 persisted in localStorage.

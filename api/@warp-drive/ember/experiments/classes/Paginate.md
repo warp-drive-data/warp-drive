@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;\<Paginate />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:201](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/experiments.d.ts#L201)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:201](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/ember/dist/experiments.d.ts#L201)
 
 The `<Paginate />` component provides declarative, reactive control-flow for
 rendering a paginated collection: it monitors the request that loads the
@@ -192,7 +192,7 @@ Component<PaginateSignature<RT, E, M>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:237](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/experiments.d.ts#L237)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:237](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/ember/dist/experiments.d.ts#L237)
 
 Called before the component has been removed from the DOM.
 

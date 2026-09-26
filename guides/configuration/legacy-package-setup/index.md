@@ -6,6 +6,10 @@ description: >-
   than @warp-drive/core.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should follow [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md), which use `@warp-drive/core` instead of these packages.
+:::
+
 ::: tip Boilerplate Sucks 👎🏽
 We're re-aligning our packages into a new streamlined installation and setup experience.
 Below you'll find the current *boilerplate heavy* setup.

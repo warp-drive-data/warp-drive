@@ -7,6 +7,10 @@ description: >-
   serializerFor hooks to the store.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should follow [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md), which use `@warp-drive/core` instead of these packages.
+:::
+
 # Ember.js
 
 ## Configure Reactivity

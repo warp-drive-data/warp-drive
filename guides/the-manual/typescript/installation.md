@@ -6,6 +6,10 @@ description: >-
   -types packages.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. `@warp-drive/core` and the other current packages ship their own types, so new apps can skip this page and follow [Installation](/guides/installation/index.md) instead.
+:::
+
 # Installation
 
 WarpDrive now provides a cli that will handle installation and configuration for you

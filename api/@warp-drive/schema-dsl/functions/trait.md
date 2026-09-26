@@ -12,7 +12,7 @@ description: >-
 function trait(..._traits: AnyConstructor[]): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/compose-trait.ts:48](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L48)
+Defined in: [entities/compose-trait.ts:48](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/schema-dsl/src/entities/compose-trait.ts#L48)
 
 **`Class Decorator`**
 

@@ -6,6 +6,10 @@ description: >-
   still needed.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should create their store with `useRecommendedStore` as shown in [Setup](/guides/configuration/index.md#configure-the-store), without `@warp-drive/legacy`.
+:::
+
 :::warning caution
 Older legacy features of WarpDrive (inherited from when the library was named EmberData) should only be used with Ember.
 :::

@@ -15,7 +15,7 @@ type Deferred<T> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:35](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/request/-private/types.ts#L35)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:35](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/request/-private/types.ts#L35)
 
 A promise paired with the `resolve`/`reject` callbacks that settle it,
 allowing the promise to be created before the work that will settle it
@@ -35,7 +35,7 @@ has begun. See [createDeferred](../functions/createDeferred.md).
 reject(v: unknown): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:39](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/request/-private/types.ts#L39)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:39](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/request/-private/types.ts#L39)
 
 Reject [promise](#promise) with the given reason.
 
@@ -57,7 +57,7 @@ Reject [promise](#promise) with the given reason.
 resolve(v: T): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:37](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/request/-private/types.ts#L37)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:37](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/request/-private/types.ts#L37)
 
 Resolve [promise](#promise) with the given value.
 
@@ -79,6 +79,6 @@ Resolve [promise](#promise) with the given value.
 promise: Promise<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:41](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/request/-private/types.ts#L41)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:41](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/request/-private/types.ts#L41)
 
 The promise controlled by [resolve](#resolve) and [reject](#reject).

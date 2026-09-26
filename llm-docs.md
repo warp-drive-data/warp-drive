@@ -14,9 +14,10 @@ wants to paste a page into a chat.
   following the [llms.txt](https://llmstxt.org/) convention.
 * [llms-full.txt](/llms-full.txt) is every page concatenated into one file. It is a few megabytes;
   prefer `llms.txt` plus the one page you need.
-* [llms-legacy.txt](/llms-legacy.txt) is the same kind of index for the legacy API reference,
-  which the two files above leave out: `@warp-drive/legacy` (Models, Adapters, Serializers) and
-  the legacy `@ember-data/*` and early `@warp-drive/*` packages.
+* [llms-legacy.txt](/llms-legacy.txt) is the same kind of index for the legacy documentation,
+  which the two files above leave out: the guides that only cover a legacy setup, each marked
+  with a Legacy badge on the site, and the API reference for `@warp-drive/legacy` (Models,
+  Adapters, Serializers) and the legacy `@ember-data/*` and early `@warp-drive/*` packages.
   [llms-legacy-full.txt](/llms-legacy-full.txt) is those pages concatenated. Use them only for an
   app that still imports from those packages.
 * Any page's Markdown is at its URL plus `.md`: `/guides/the-manual/requests/builders` becomes

@@ -12,7 +12,7 @@ description: >-
 function plural(regex: RegExp, string: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:177](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/utilities/src/-private/string/inflect.ts#L177)
+Defined in: [-private/string/inflect.ts:177](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/utilities/src/-private/string/inflect.ts#L177)
 
 Adds a pluralization rule.
 

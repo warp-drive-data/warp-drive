@@ -14,7 +14,7 @@ description: >-
 function configureSessionStorage(options: ReactiveStorageOptions): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:87](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/experiments/src/storage/storage.ts#L87)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:87](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/experiments/src/storage/storage.ts#L87)
 
 Configure options for the sessionStorage singleton.
 Must be called before getSessionStorage() is first invoked.

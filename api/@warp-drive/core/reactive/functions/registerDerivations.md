@@ -12,7 +12,7 @@ description: >-
 function registerDerivations(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:523](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/reactive/-private/schema.ts#L523)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:523](https://github.com/warp-drive-data/warp-drive/blob/84081dc1da3e764fc56a2cdce4df50ea41e2704c/warp-drive-packages/core/src/reactive/-private/schema.ts#L523)
 
 Registers the default derivations for records that want
 to use the PolarisMode defaults provided by
