@@ -192,6 +192,103 @@ export function injectRfcStatusBadges(contentDirPath: string) {
   }
 }
 
+interface LegacyGuideFrontMatter {
+  title?: string;
+  description?: string;
+  draft?: boolean;
+  /**
+   * Marks a guide-type page (under `guides/`, `upgrading/`, `blog/` and so on) as being only
+   * about a legacy setup. See `legacyGuidePages`.
+   */
+  legacy?: boolean;
+  /**
+   * Markdown that replaces the legacy callout's default "New code should follow the current
+   * guides instead." sentence, mirroring `advice` on a legacy package in nav.json. Use
+   * root-relative links.
+   */
+  legacyAdvice?: string;
+}
+
+/** A page whose frontmatter sets `legacy: true`, as found by `legacyGuidePages`. */
+export interface LegacyGuidePage {
+  /** Path relative to `docs.warp-drive.io/`, e.g. `guides/configuration/legacy-package-setup/index.md`. */
+  source: string;
+  /**
+   * The path vitepress-plugin-llms publishes the page's `.md` twin to, and matches its ignore
+   * patterns against: a directory's `index.md` publishes as `<directory>.md`.
+   */
+  published: string;
+  title?: string;
+  description?: string;
+  draft: boolean;
+  advice?: string;
+}
+
+const DOCS_ROOT = path.join(__dirname, '../docs.warp-drive.io');
+/**
+ * The synced directories under `docs.warp-drive.io/` whose pages may set `legacy: true`.
+ * `prepare-website.ts` runs `markLegacyGuidePages` on each of them.
+ */
+export const LEGACY_GUIDE_DIRS = ['guides', 'upgrading', 'blog'];
+
+/**
+ * Every page in `LEGACY_GUIDE_DIRS` whose frontmatter sets `legacy: true`, sorted by path. Reads
+ * the synced copies, so call it after `prepare-website.ts` has run.
+ *
+ * A non-draft legacy page is kept out of `llms.txt` and `llms-full.txt` and listed in
+ * `llms-legacy.txt` and `llms-legacy-full.txt` instead, and gets a Legacy badge and callout (see
+ * `markLegacyGuidePages`). A draft legacy page, such as an empty placeholder, is kept out of all
+ * four files and gets no badge. A non-draft legacy page must set `title` in its frontmatter,
+ * since that is its only title in `llms-legacy.txt`.
+ */
+export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[] {
+  const pages: LegacyGuidePage[] = [];
+  const files = LEGACY_GUIDE_DIRS.flatMap((dir) =>
+    globSync('**/*.md', { cwd: path.join(docsRoot, dir) }).map((file) => `${dir}/${normPath(file)}`)
+  );
+  for (const source of files) {
+    const { attributes } = fm<LegacyGuideFrontMatter>(readFileSync(path.join(docsRoot, source), 'utf-8'));
+    if (attributes.legacy !== true) continue;
+
+    const draft = attributes.draft === true;
+    if (!draft && !attributes.title) {
+      throw new Error(`${source} sets \`legacy: true\` but has no \`title\` in its frontmatter`);
+    }
+    pages.push({
+      source,
+      published: source.endsWith('/index.md') ? `${source.slice(0, -'/index.md'.length)}.md` : source,
+      title: attributes.title,
+      description: attributes.description,
+      draft,
+      advice: attributes.legacyAdvice,
+    });
+  }
+  return pages.sort((a, b) => a.source.localeCompare(b.source));
+}
+
+/**
+ * Adds a Legacy badge and a `:::warning` callout to the top of every non-draft page in a synced
+ * content directory whose frontmatter sets `legacy: true`, matching the badge and warning
+ * `markLegacyPackagePage` puts on legacy API pages. The callout's second sentence is the page's
+ * `legacyAdvice`, when set. Inserted right after the frontmatter block, which is left untouched,
+ * so no heading needs to be found; the page's title comes from its frontmatter `title`, which
+ * `legacyGuidePages` requires.
+ */
+export function markLegacyGuidePages(contentDirPath: string) {
+  for (const file of globSync('**/*.md', { cwd: contentDirPath })) {
+    const fullPath = path.join(contentDirPath, file);
+    const raw = readFileSync(fullPath, 'utf-8');
+    const { attributes, body } = fm<LegacyGuideFrontMatter>(raw);
+    if (attributes.legacy !== true || attributes.draft === true) continue;
+
+    const advice = attributes.legacyAdvice ?? 'New code should follow the [current guides](/guides/index.md) instead.';
+    // front-matter's `body` is the file with the frontmatter block cut off the front
+    const head = raw.slice(0, raw.length - body.length).replace(/\n*$/, '\n');
+    const marker = `<Badge type="danger" text="Legacy" />\n\n:::warning Legacy guide\nThis guide covers a legacy setup. ${advice.trim()}\n:::\n\n`;
+    writeFileSync(fullPath, `${head}${marker}${body.replace(/^\n+/, '')}`, 'utf-8');
+  }
+}
+
 interface GuideGroup {
   text: string;
   path: string;

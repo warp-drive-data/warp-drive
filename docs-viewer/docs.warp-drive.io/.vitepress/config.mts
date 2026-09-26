@@ -12,6 +12,7 @@ import {
   getSkillsStructure,
   getUpgradingStructure,
   legacyDocsPackageNames,
+  legacyGuidePages,
   postProcessApiDocs,
 } from '../../src/site-utils.ts';
 
@@ -22,6 +23,9 @@ import {
 // The plugin matches the path it publishes a page to, and it publishes a package's `index.md`
 // landing page as `api/<name>.md`, so that form is listed alongside the pages under it.
 const LEGACY_API_PAGES = legacyDocsPackageNames().flatMap((name) => [`api/${name}.md`, `api/${name}/**`]);
+// Guides whose frontmatter sets `legacy: true` follow the same route, matched by the path the
+// plugin publishes them to. A draft one (an empty placeholder) is left out of the legacy files too.
+const LEGACY_PAGES = [...LEGACY_API_PAGES, ...legacyGuidePages().map((page) => page.published)];
 const LEGACY_PACKAGE_LIST = legacyDocsPackageNames()
   .map((name) => `\`${name}\``)
   .join(', ');
@@ -202,15 +206,15 @@ export default withPwa(
             details: [
               'Comprehensive Documentation for Engineers Aiming for the Stars 💫',
               '',
-              `API reference for ${LEGACY_PACKAGE_LIST} is indexed separately in ${SITE_ORIGIN}/llms-legacy.txt, with full text in ${SITE_ORIGIN}/llms-legacy-full.txt.`,
+              `Guides for legacy setups and API reference for ${LEGACY_PACKAGE_LIST} are indexed separately in ${SITE_ORIGIN}/llms-legacy.txt, with full text in ${SITE_ORIGIN}/llms-legacy-full.txt.`,
             ].join('\n'),
             // The plugin's default ignores `blog/*` and `blog.md`. That is the plugin author's
             // preference, not ours: the writing guides say LLMs land on these pages too, and the
             // posts under blog/<version>/ already get through because the pattern is one level deep.
             excludeBlog: false,
             ignoreFilesPerOutput: {
-              llmsTxt: LEGACY_API_PAGES,
-              llmsFullTxt: LEGACY_API_PAGES,
+              llmsTxt: LEGACY_PAGES,
+              llmsFullTxt: LEGACY_PAGES,
             },
           }),
           plugin,
