@@ -6,19 +6,17 @@ const path = require('path');
 const { applyDelta } = require('./delta.js');
 
 /** @typedef {{ module: string, export: string, typeOnly: boolean }} Token */
-/** @typedef {{ at: string, to: Token | null, note?: string }} Hop */
 
 /**
  * What became of one token between the map's `from` release and its `to` release.
- * `hops` is present only when more than one release changed the token.
  *
  * Precedence when the data could be read two ways: removed, then legacy, then unchanged, then
  * moved. A token a legacy package declares and never moved is `legacy`, not `unchanged`.
  *
- * @typedef {{ outcome: 'moved', to: Token, note?: string, hops?: Hop[] }
+ * @typedef {{ outcome: 'moved', to: Token }
  *        | { outcome: 'unchanged', to: Token }
- *        | { outcome: 'legacy', to: Token, hops?: Hop[] }
- *        | { outcome: 'removed', at: string, note?: string, hops?: Hop[] }} Relocation
+ *        | { outcome: 'legacy', to: Token }
+ *        | { outcome: 'removed' }} Relocation
  */
 
 /**
@@ -78,7 +76,7 @@ function loadMap(from = listFromVersions()[0]) {
   const map = {
     from: file.from,
     to: file.to,
-    lookup: (module, name) => relocationOf(byKey.get(`${module}::${name}`), legacy, file.to),
+    lookup: (module, name) => relocationOf(byKey.get(`${module}::${name}`), legacy),
     moduleMove: (module) => {
       const star = byKey.get(`${module}::*`);
       return star && star.to && !legacy.has(star.to.module) ? star.to : null;
@@ -126,28 +124,16 @@ function fullMapOf(from, versions) {
 /**
  * @param {object | undefined} entry
  * @param {Set<string>} legacy
- * @param {string} to  the map's to-version, the removal version when the entry has no hops
  * @returns {Relocation | null}
  */
-function relocationOf(entry, legacy, to) {
+function relocationOf(entry, legacy) {
   if (!entry) return null;
-  const hops = entry.hops;
-  if (entry.to === null) {
-    const died = hops && hops.find((hop) => hop.to === null);
-    return withOptional({ outcome: 'removed', at: died ? died.at : to }, { note: entry.note, hops });
-  }
-  if (legacy.has(entry.to.module)) return withOptional({ outcome: 'legacy', to: entry.to }, { hops });
+  if (entry.to === null) return { outcome: 'removed' };
+  if (legacy.has(entry.to.module)) return { outcome: 'legacy', to: entry.to };
   if (entry.to.module === entry.module && entry.to.export === entry.export && entry.to.typeOnly === entry.typeOnly) {
     return { outcome: 'unchanged', to: entry.to };
   }
-  return withOptional({ outcome: 'moved', to: entry.to }, { note: entry.note, hops });
-}
-
-function withOptional(base, optional) {
-  for (const [key, value] of Object.entries(optional)) {
-    if (value !== undefined) base[key] = value;
-  }
-  return base;
+  return { outcome: 'moved', to: entry.to };
 }
 
 module.exports = { listFromVersions, loadMap };

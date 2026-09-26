@@ -42,7 +42,7 @@ export async function update(opts) {
   const chain = consecutive(released).map(([a, b]) => loadStep(a, b));
 
   const desired = new Map([[pathOf.step(latest, tree.version), canonical(live)]]);
-  const full = released.map((_, i) => mergeSteps([...chain.slice(i), live], head));
+  const full = released.map((_, i) => mergeSteps([...chain.slice(i), live]));
   full.forEach((map, i) => {
     desired.set(pathOf.shipped(map.from), canonical(i === 0 ? map : provenDelta(full[i - 1], map)));
   });

@@ -14,7 +14,7 @@ const LEGACY_HOME_ID = 'warp-drive.no-legacy-imports.legacy-home';
  * @typedef {import('../legacy-import-mapping').Token} Token
  * @typedef {{ kind: 'rewrite', to: Token }
  *        | { kind: 'unchanged' }
- *        | { kind: 'removed', at: string }
+ *        | { kind: 'removed' }
  *        | { kind: 'legacy-home', to: Token }
  *        | { kind: 'unknown' }
  *        | { kind: 'foreign' }} Outcome
@@ -31,7 +31,7 @@ function outcomeFor(map, moduleName, exportName) {
   if (relocation) {
     switch (relocation.outcome) {
       case 'removed':
-        return { kind: 'removed', at: relocation.at };
+        return { kind: 'removed' };
       case 'legacy':
         return { kind: 'legacy-home', to: relocation.to };
       case 'unchanged':
