@@ -522,6 +522,13 @@ interface ApiNavGroupPackage {
    * resolve here.
    */
   advice?: string;
+  /**
+   * A modern package whose API docs are legacy content anyway, such as `@warp-drive/legacy`, which
+   * restores Models, Adapters and Serializers for apps still migrating off them. Its pages are
+   * indexed in `llms-legacy.txt` with the "Legacy Packages" group instead of in `llms.txt`, but keep
+   * their place in the sidebar and get no legacy badge.
+   */
+  legacyDocs?: boolean;
 }
 
 interface ApiNavGroup {
@@ -543,6 +550,17 @@ function findApiNavGroup(text: string): ApiNavGroup {
   const group = API_NAV_GROUPS.find((g) => g.text === text);
   if (!group) throw new Error(`Missing "${text}" group in nav.json`);
   return group;
+}
+
+/**
+ * The packages whose API docs are legacy content, in index order: packages marked `legacyDocs`
+ * (such as `@warp-drive/legacy`) first, then the "Legacy Packages" group in nav.json. The llms
+ * build keeps these out of `llms.txt` and `llms-full.txt` and lists them in `llms-legacy.txt` and
+ * `llms-legacy-full.txt` instead.
+ */
+export function legacyDocsPackageNames(): string[] {
+  const marked = API_NAV_GROUPS.flatMap((g) => g.packages).filter((p) => p.legacyDocs);
+  return [...marked, ...findApiNavGroup('Legacy Packages').packages].map((p) => p.name);
 }
 
 /** Sorts items by their position in `order`; unlisted items sort alphabetically after listed ones. */

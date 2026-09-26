@@ -5,6 +5,7 @@ import { watch, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 import { emitIndexMarkdown } from './emit-index-markdown';
+import { emitLegacyLlms } from './emit-legacy-llms';
 import { main } from './prepare-website';
 import { postProcessApiDocs } from './site-utils';
 
@@ -97,6 +98,13 @@ if (build) {
   await $`vitepress build docs.warp-drive.io`;
   const copied = emitIndexMarkdown(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'));
   console.log(`emitted ${copied} index.md twins for directory-index pages`);
+  const legacy = emitLegacyLlms(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'), apiDocsPath);
+  console.log(`emitted llms-legacy.txt and llms-legacy-full.txt with ${legacy.pages} legacy API pages`);
+  if (legacy.missingTwins.length) {
+    throw new Error(
+      `llms-legacy-full.txt is missing pages with no .md twin in dist: ${legacy.missingTwins.join(', ')}`
+    );
+  }
 } else {
   await $`vitepress dev docs.warp-drive.io`;
 }

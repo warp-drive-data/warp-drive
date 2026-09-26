@@ -10,7 +10,11 @@ have to read or scrape its HTML.
 1. Fetch `https://warp-drive.io/llms.txt`. It is the table of contents: one absolute link per
    page, grouped by section, with the page title as the link text and, where the page provides
    one, a one-line description after a colon. Pick the one or two pages that match your task and
-   fetch only those.
+   fetch only those. `llms.txt` leaves out the legacy API reference, which is indexed in
+   `https://warp-drive.io/llms-legacy.txt` in the same format. Fetch that index too when the app
+   imports from `@warp-drive/legacy` (Models, Adapters, Serializers) or from a legacy package:
+   `@ember-data/*`, `@warp-drive/core-types`, `@warp-drive/build-config`, or
+   `@warp-drive/schema-record`.
 2. Fetch the page. Every link in `llms.txt` already ends in `.md` and returns raw Markdown. To
    reach a page from any other URL you were given, append `.md`:
    `https://warp-drive.io/guides/the-manual/requests/builders` becomes
@@ -33,8 +37,9 @@ have to read or scrape its HTML.
      the website. Ignore them; they are not part of the code.
 5. Reach for `https://warp-drive.io/llms-full.txt` only when you need the whole corpus at once. It
    concatenates every page, is a few megabytes, and each page in it opens with the same `---` /
-   `url:` block, so you can still tell which page a passage came from. `llms.txt` plus one page is
-   almost always enough.
+   `url:` block, so you can still tell which page a passage came from. Like `llms.txt`, it leaves
+   out the legacy API pages; their full text is in `https://warp-drive.io/llms-legacy-full.txt`.
+   `llms.txt` plus one page is almost always enough.
 
 Both `warp-drive.io` and `https://canary.warp-drive.io` are built from the repository's `main`
 branch; canary is redeployed on every merge and production on demand, so canary may be newer.

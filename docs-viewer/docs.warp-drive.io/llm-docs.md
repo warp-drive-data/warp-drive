@@ -1,6 +1,6 @@
 ---
 title: LLM Optimized Documentation
-description: Where to find llms.txt, llms-full.txt, and the plain-Markdown twin of every page, and how the Copy page button uses them.
+description: Where to find llms.txt, llms-full.txt, their legacy counterparts, and the plain-Markdown twin of every page, and how the Copy page button uses them.
 ---
 
 ## LLM Optimized Documentation
@@ -12,6 +12,11 @@ wants to paste a page into a chat.
   following the [llms.txt](https://llmstxt.org/) convention.
 - [llms-full.txt](/llms-full.txt) is every page concatenated into one file. It is a few megabytes;
   prefer `llms.txt` plus the one page you need.
+- [llms-legacy.txt](/llms-legacy.txt) is the same kind of index for the legacy API reference,
+  which the two files above leave out: `@warp-drive/legacy` (Models, Adapters, Serializers) and
+  the legacy `@ember-data/*` and early `@warp-drive/*` packages.
+  [llms-legacy-full.txt](/llms-legacy-full.txt) is those pages concatenated. Use them only for an
+  app that still imports from those packages.
 - Any page's Markdown is at its URL plus `.md`: `/guides/the-manual/requests/builders` becomes
   `/guides/the-manual/requests/builders.md`. For a URL that ends in `/`,
   drop the slash first (`/guides/installation/` becomes `/guides/installation.md`) or append
