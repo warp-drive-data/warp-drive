@@ -11,6 +11,8 @@
  * - {@link WarpDriveConfig.includeDataAdapterInProduction | includeDataAdapterInProduction}
  * - {@link WarpDriveConfig.compatWith | compatWith}
  *
+ * @summary Build-time configuration for WarpDrive: `setConfig` and its babel plugin for deprecations, features,
+ * debug logging, and polyfill settings.
  * @module
  */
 import type { WarpDriveConfig } from '@warp-drive/build-config';

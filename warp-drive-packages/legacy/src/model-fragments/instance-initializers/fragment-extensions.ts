@@ -10,6 +10,8 @@ import FragmentExtension from '../extensions/fragment.ts';
  * Registers the {@link FragmentExtension}/{@link FragmentArrayExtension} schema
  * extensions on the given `SchemaService`, enabling ModelFragments migration support.
  *
+ * @summary Legacy setup function that registers the fragment and fragment-array schema extensions on a
+ * `SchemaService` to support migrating off ModelFragments.
  * @public
  */
 export function registerFragmentExtensions(schema: SchemaService): void {

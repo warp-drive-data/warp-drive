@@ -4,6 +4,8 @@
  * `@ember-data/store/types` imports keep working; new code should import
  * from `@warp-drive/core/types` directly.
  *
+ * @summary Legacy alias that re-exports the store public types (schema service, finder options, model schema, and more)
+ * from `@warp-drive/core/types`.
  * @module
  */
 export type {

@@ -5,6 +5,8 @@
  * primitives they build on are published from
  * `@warp-drive/experiments/pagination`.
  *
+ * @summary Experimental Ember components, `Paginate` and `EachLink`, for rendering reactive paginated collections built
+ * on `@warp-drive/experiments/pagination`.
  * @module
  */
 export { Paginate } from './-private/paginate.gts';

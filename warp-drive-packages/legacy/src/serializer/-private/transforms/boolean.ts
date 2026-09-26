@@ -42,6 +42,8 @@ export interface BooleanTransform {
   }
   ```
 
+  @summary Legacy transform for `attr('boolean')` that converts payload values to and from booleans, optionally
+  allowing `null`.
   @public
  */
 export class BooleanTransform {

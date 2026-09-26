@@ -8,6 +8,8 @@ import { withDefaults } from '../../model/migration-support';
  * migrated from `Model`, applying the `ember-object` and `fragment` object
  * extensions and a default `@id` identity field.
  *
+ * @summary Legacy ModelFragments migration helper that completes a legacy resource schema with an `id` identity,
+ * `Model` defaults, and the `ember-object` and `fragment` extensions.
  * @param schema the partial legacy resource schema to complete
  * @returns the completed resource schema
  */

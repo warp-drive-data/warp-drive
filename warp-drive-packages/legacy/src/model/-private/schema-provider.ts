@@ -269,6 +269,8 @@ if (ENABLE_LEGACY_SCHEMA_SERVICE) {
  * the result of this to your store's `createSchemaService` method when
  * configuring the store to use `Model` for schema information.
  *
+ * @summary Legacy factory for a schema service that reads resource schemas from an app's `Model` classes, returned from
+ * the store's `createSchemaService` hook.
  * @public
  */
 export function buildSchema(store: Store): SchemaService {

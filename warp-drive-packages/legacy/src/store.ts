@@ -30,6 +30,9 @@ import { getShimClass, preloadData, RecordReference, resourceIsFullyDeleted } fr
  * legacy-network-layer implementations of these methods onto the given
  * `Store` subclass, for apps that have not yet migrated to the
  * `RequestManager`-based equivalents.
+ *
+ * @summary Legacy opt-in that restores the adapter-based `findRecord`, `findAll`, `query`, `saveRecord`, and related
+ * methods onto a `Store` class.
  */
 export function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store): void {
   StoreKlass.prototype.findRecord = function (

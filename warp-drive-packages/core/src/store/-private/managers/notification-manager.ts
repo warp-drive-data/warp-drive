@@ -12,10 +12,16 @@ export type UnsubscribeToken = object;
 
 /**
  * The kinds of change notifications the {@link NotificationManager} can emit for a resource.
+ *
+ * @summary The lifecycle notification kinds sent to resource subscribers: `added`, `removed`, `updated`,
+ * or `state`.
  */
 export type CacheOperation = 'added' | 'removed' | 'updated' | 'state';
 /**
  * The kinds of change notifications the {@link NotificationManager} can emit for a request document.
+ *
+ * @summary The notification kinds sent to request document subscribers, such as `updated` or
+ * `invalidated`.
  */
 export type DocumentCacheOperation = 'invalidated' | 'added' | 'removed' | 'updated' | 'state';
 
@@ -28,6 +34,9 @@ function isCacheOperationValue(value: NotificationType | DocumentCacheOperation)
 /**
  * The full set of notification kinds the {@link NotificationManager} can emit for a resource,
  * including both {@link CacheOperation}s and finer-grained field-level change notifications.
+ *
+ * @summary Every notification kind a resource subscriber can receive, from lifecycle operations to
+ * `attributes`, `relationships`, `errors`, `meta`, and `identity` changes.
  */
 export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'errors' | 'meta' | CacheOperation;
 
@@ -37,6 +46,8 @@ export type NotificationType = 'attributes' | 'relationships' | 'identity' | 'er
  * the `'attributes'` or `'relationships'` namespaces in a single call
  * instead of once per key.
  *
+ * @summary A set of field names passed to `notify` or `notifyChange` to report many `attributes` or
+ * `relationships` changes in one call.
  * @since 5.9.0
  * @public
  */
@@ -73,6 +84,8 @@ export type NotifyKeys = Set<string>;
  * `DocumentCacheOperation` values) are never filtered by channel since they
  * have no local/remote duality.
  *
+ * @summary Scopes an `attributes` or `relationships` notification to a resource's local (editable) or
+ * remote (persisted) view so only matching subscribers hear it.
  * @public
  */
 export type NotificationChannel = 'local' | 'remote';
@@ -273,6 +286,8 @@ function _unsubscribe(
  * This Feature is what allows WarpDrive to create subscriptions that
  * work with any framework or change-notification system.
  *
+ * @summary The store service that lets code subscribe to and batch-deliver change notifications for
+ * cached resources and request documents.
  * @hideconstructor
  * @public
  */

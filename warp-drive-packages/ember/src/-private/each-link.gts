@@ -87,6 +87,8 @@ interface EachLinkSignature<RT, E> {
  * Since the links all read from the shared page graph, they update as pages
  * load and as the active page changes.
  *
+ * @summary Renderless component that yields the numbered, previous, next, first and last navigation links for a
+ * `<Paginate />` collection.
  * @since 5.9.0
  * @public
  * @badge Component

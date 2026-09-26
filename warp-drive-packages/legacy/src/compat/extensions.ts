@@ -78,6 +78,9 @@ EmberObjectMethods.forEach((method) => {
  * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
  * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
  * to reactive array resources.
+ *
+ * @summary Legacy schema extension that gives reactive arrays the classic `EmberObject` API such as `get`, `set`,
+ * and observers, to ease migration from Ember objects.
  */
 export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'array',
@@ -89,6 +92,9 @@ export const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
  * `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,
  * `toggleProperty`, `notifyPropertyChange`, `addObserver`, `removeObserver`)
  * to reactive object resources.
+ *
+ * @summary Legacy schema extension that gives reactive objects the classic `EmberObject` API such as `get`, `set`,
+ * and observers, to ease migration from Ember objects.
  */
 export const EmberObjectExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'object',
@@ -363,6 +369,9 @@ const EmberArrayLikeFeatures = {
  * A schema extension that adds Ember's classic `MutableArray`/`Enumerable`
  * style methods (`pushObject`, `removeObject`, `mapBy`, `filterBy`,
  * `sortBy`, `firstObject`, `lastObject`, etc.) to reactive array resources.
+ *
+ * @summary Legacy schema extension that gives reactive arrays Ember array methods such as `pushObject`, `mapBy`,
+ * `filterBy`, and `firstObject`.
  */
 export const EmberArrayLikeExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
   kind: 'array',
@@ -372,17 +381,25 @@ export const EmberArrayLikeExtension: CAUTION_MEGA_DANGER_ZONE_Extension = {
 
 /**
  * Extracts the element type of an array type, or `never` if `T` is not an array.
+ *
+ * @summary Type utility resolving to the element type of an array type, or `never` for non-arrays.
  */
 export type ArrayType<T> = T extends ReadonlyArray<infer U> ? U : never;
 /**
  * Adds the classic `EmberObject` API (as registered by {@link EmberObjectExtension}/
  * {@link EmberObjectArrayExtension}) to the type of a reactive resource.
+ *
+ * @summary Legacy type that adds the classic `EmberObject` methods to a reactive resource type using
+ * `EmberObjectExtension` or `EmberObjectArrayExtension`.
  */
 export type WithEmberObject<T> = T & Pick<T & EmberObject, ArrayType<typeof EmberObjectMethods>>;
 
 /**
  * Adds Ember's classic array-like API (as registered by {@link EmberArrayLikeExtension})
  * to the type of a reactive array resource.
+ *
+ * @summary Legacy type that adds Ember array methods such as `mapBy` and `firstObject` to a reactive array type
+ * using `EmberArrayLikeExtension`.
  */
 export type WithArrayLike<T> =
   T extends Array<infer U>

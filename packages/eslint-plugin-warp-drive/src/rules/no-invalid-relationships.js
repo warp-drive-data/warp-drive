@@ -1,8 +1,15 @@
 /**
  * {@include ./no-invalid-relationships.md}
+ *
+ * @summary Lint rule that requires `@belongsTo` and `@hasMany` decorators to specify a boolean `async` and an
+ * `inverse`.
  * @module
  */
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `@belongsTo` and `@hasMany` decorators missing a boolean `async` or an
+ * `inverse` option.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'suggestion',

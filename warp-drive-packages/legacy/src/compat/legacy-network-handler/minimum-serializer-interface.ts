@@ -12,6 +12,9 @@ import type { Snapshot } from './snapshot.ts';
 /**
  * Options accepted by {@link MinimumSerializerInterface.serialize | serialize}
  * and related legacy serializer methods.
+ *
+ * @summary Options for legacy serializer `serialize` calls, such as `includeId` to include the record id in the
+ * output.
  */
 export type SerializerOptions = {
   /**
@@ -44,6 +47,8 @@ export type RequestType =
 
   Methods that are not required are marked as **optional**.
 
+  @summary Legacy contract for serializers: `normalizeResponse` to turn adapter payloads into JSON:API, plus
+  `serialize` and other optional methods.
   @public
 */
 export interface MinimumSerializerInterface {

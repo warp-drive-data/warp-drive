@@ -286,6 +286,8 @@ export type DataDecorator = (target: object, key: string, desc?: DecoratorProper
   }
   ```
 
+  @summary Legacy `Model` decorator that declares an attribute field, optionally converted by a named transform and
+  given a `defaultValue`.
   @public
   @param type the attribute type
   @param options a hash of options

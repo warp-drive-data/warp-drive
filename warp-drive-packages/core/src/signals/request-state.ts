@@ -105,6 +105,8 @@ async function watchStream(stream: ReadableStream<Uint8Array>, loadingState: Req
  * reactive properties that can be used to build UIs that respond
  * to the progress of a request.
  *
+ * @summary Reactive download progress for a request, such as bytes loaded and timing, built by lazily
+ * reading its response stream.
  * @hideconstructor
  */
 export class RequestLoadingState {
@@ -634,6 +636,8 @@ export interface PrivateRequestState {
  * - {@link RejectedRequest}
  * - {@link CancelledRequest}
  *
+ * @summary The reactive pending, fulfilled, rejected, or cancelled state of a request `Future`, as
+ * returned by `getRequestState`.
  */
 export type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredErrorDocument> =
   | PendingRequest
@@ -821,6 +825,8 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
  * which offers a number of additional capabilities for requests *beyond* what
  * `RequestState` provides.
  *
+ * @summary Returns a cached, reactive state object tracking a request `Future` through pending, success,
+ * error, and cancellation.
  */
 export function getRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>> {
   let state = RequestCache.get(future);

@@ -5,6 +5,8 @@
  * decorator like {@link field} changes nothing about that field's compiled
  * output.
  *
+ * @summary Reserved property decorator for marking a field create-only in future generated types; currently a no-op
+ * with no effect on the compiled schema.
  * @since 5.9.0
  * @public
  * @decorator

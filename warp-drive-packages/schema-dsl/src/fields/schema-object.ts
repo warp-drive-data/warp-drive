@@ -6,6 +6,8 @@ import type { SchemaObjectField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link schemaObject} decorator.
  *
+ * @summary Options for the `@schemaObject` decorator that choose the embedded object schema, polymorphic type
+ * resolution, and default value.
  * @public
  */
 export interface SchemaObjectOptions {
@@ -84,6 +86,8 @@ export interface SchemaObjectOptions {
  *
  * For a bag of primitives with no schema, use {@link object} instead.
  *
+ * @summary Property decorator that compiles to a schema-object field, an inline embedded object whose shape is defined
+ * by an object schema.
  * @example
  * ::: code-group
  *

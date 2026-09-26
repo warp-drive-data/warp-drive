@@ -5,6 +5,8 @@ import type { LegacyHasManyField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link hasMany} decorator.
  *
+ * @summary Options for the legacy `@hasMany` decorator that describe the related type, inverse, async and polymorphic
+ * behavior, and `sourceKey`.
  * @public
  */
 export interface HasManyOptions {
@@ -65,6 +67,8 @@ export interface HasManyOptions {
  * Marks a property as a {@link LegacyHasManyField} for use with
  * `@warp-drive/legacy/model`.
  *
+ * @summary LEGACY property decorator that compiles to a hasMany relationship field, valid only on resources declared
+ * with `@Resource({ legacy: true })`.
  * @example
  * ::: code-group
  *

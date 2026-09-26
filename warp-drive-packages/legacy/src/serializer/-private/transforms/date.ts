@@ -26,6 +26,8 @@ export interface DateTransform {
   }
  ```
 
+  @summary Legacy transform for `attr('date')` that converts ISO 8601 strings or epoch numbers to `Date` objects and
+  serializes them back to ISO 8601 strings.
   @public
  */
 

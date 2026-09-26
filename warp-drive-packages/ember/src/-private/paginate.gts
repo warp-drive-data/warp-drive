@@ -241,6 +241,8 @@ interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
  * with `createPaginationSubscription` and pass it via `@subscription` — the
  * component then uses it instead of creating and disposing its own.
  *
+ * @summary Component that monitors the request for a paginated collection and yields its pages, in paged or infinite
+ * mode, for navigating and rendering them.
  * @since 5.9.0
  * @public
  * @badge Component

@@ -1,4 +1,6 @@
 /**
+ * @summary Build configuration for WarpDrive that sets up code stripping for environments, deprecations, canary
+ * features, and debug logging.
  * @module
  * @mergeModuleWith <project>
  */
@@ -21,6 +23,8 @@ import type * as DEPRECATIONS from './deprecations.ts';
  * Note: If your project already uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
  * then you should use {@link setConfig} instead of this function.
  *
+ * @summary Creates the Babel plugins that apply a WarpDrive build config, for projects not already using
+ * `@embroider/macros`.
  * @param options WarpDrive configuration options
  * @returns An array of Babel plugins
  */
@@ -71,6 +75,9 @@ const _MacrosConfig = EmbroiderMacros.MacrosConfig as unknown as typeof MacrosCo
  * Build Configuration options for WarpDrive that
  * allow adjusting logging, deprecations, canary features
  * and optional features.
+ *
+ * @summary The options passed to `setConfig` or `babelPlugin` to control WarpDrive logging, deprecation code stripping,
+ * canary features, and optional features.
  */
 export interface WarpDriveConfig {
   /**
@@ -240,6 +247,9 @@ function recastMacrosConfig(macros: object): MacrosWithGlobalConfig {
  *   ],
  * };
  * ```
+ *
+ * @summary Applies a WarpDrive build config through `@embroider/macros`, controlling env behavior, logging,
+ * deprecated-code stripping, and canary features.
  */
 export function setConfig(macros: object, config: WarpDriveConfig): void;
 export function setConfig(context: object, appRoot: string, config: WarpDriveConfig): void;

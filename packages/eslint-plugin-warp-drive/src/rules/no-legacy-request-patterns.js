@@ -1,5 +1,8 @@
 /**
  * {@include ./no-legacy-request-patterns.md}
+ *
+ * @summary Lint rule that disallows legacy store and model request methods such as `findRecord`, `query`, and `save` in
+ * favor of `store.request()`.
  * @module
  */
 'use strict';
@@ -30,7 +33,11 @@ function mergeConfig(userConfigs = []) {
   };
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports legacy store and model request methods such as `findRecord`, `query`, and
+ * `save` in favor of `store.request()`.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

@@ -12,6 +12,8 @@ import type { AnyConstructor } from '../-private/types.ts';
 /**
  * Options accepted by the {@link Resource} decorator.
  *
+ * @summary Options for the `Resource` class decorator that select legacy-mode compilation and name the primary key
+ * property when no property uses `@id`.
  * @public
  */
 export interface ResourceOptions {
@@ -57,6 +59,8 @@ export interface ResourceOptions {
  * {@link DerivedField} are appended automatically: the first before any
  * declared fields, the second after.
  *
+ * @summary Class decorator that compiles a class into a resource schema, with a type derived from the class name and
+ * one field per decorated property.
  * @example
  * ::: code-group
  *

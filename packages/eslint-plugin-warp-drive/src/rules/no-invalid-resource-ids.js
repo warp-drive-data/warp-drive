@@ -1,5 +1,8 @@
 /**
  * {@include ./no-invalid-resource-ids.md}
+ *
+ * @summary Lint rule, with autofix, that requires resource IDs passed to store methods and request builders to be
+ * strings.
  * @module
  */
 'use strict';
@@ -32,7 +35,11 @@ function mergeConfig(userConfig = {}) {
   };
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports and autofixes non-string resource IDs passed to store methods and request
+ * builders.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

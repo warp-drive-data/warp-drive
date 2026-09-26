@@ -41,6 +41,8 @@ export const Destroy: '___(unique) Symbol(Destroy)' = getOrSetGlobal(
  * Symbol for the method used to request a mutable copy of an otherwise
  * immutable {@link ReactiveResource}.
  *
+ * @summary Deprecated symbol-keyed method on a ReactiveResource that resolves with an editable copy;
+ * use `checkout` instead.
  * @deprecated use the {@link checkout} utility function instead.
  */
 export const Checkout: '___(unique) Symbol(Checkout)' = getOrSetGlobal('Checkout', Symbol('Checkout'));

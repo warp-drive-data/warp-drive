@@ -40,6 +40,8 @@
  *   the query or values in an array changes.
  * - URLs follow the most common ActiveRecord format (underscored pluralized resource types).
  *
+ * @summary Request builders for find, query, create, update, and delete against ActiveRecord-style APIs with
+ * underscored plural URLs.
  * @module
  * @public
  */

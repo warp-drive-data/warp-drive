@@ -50,6 +50,7 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a `GET` request that queries a resource type with query params, using ActiveRecord-style URLs.
  * @public
  * @param identifier
  * @param query

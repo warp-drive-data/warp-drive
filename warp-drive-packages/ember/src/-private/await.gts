@@ -22,6 +22,8 @@ interface ThrowSignature<E = Error | string | object> {
  * <Throw @error={{anError}} />
  * ```
  *
+ * @summary Component that throws its `@error` argument when rendered, for templates that should fail if they reach
+ * that point.
  * @category Components
  * @public
  */
@@ -129,6 +131,7 @@ interface AwaitSignature<T, E = Error | string | object> {
  * block -- the `template-require-request-error-block` ESLint rule flags a missing
  * one statically.
  *
+ * @summary Component that renders a pending, error or success block for the state of a promise or awaitable.
  * @category Components
  * @public
  * @badge Component

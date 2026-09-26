@@ -134,6 +134,7 @@ import { JSONSerializer } from './json';
   }
   ```
 
+  @summary Legacy serializer that normalizes and serializes record payloads following the JSON:API spec.
   @since 1.13.0
   @class JSONAPISerializer
   @public

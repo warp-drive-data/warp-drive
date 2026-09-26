@@ -1,6 +1,8 @@
 import { mock } from '.';
 
 /**
+ * @summary Full description of a mocked request, its request body to match, and its response status, headers, and body,
+ * as sent to the Holodeck server to record a fixture.
  * @public
  */
 export interface Scaffold {
@@ -14,6 +16,7 @@ export interface Scaffold {
 }
 
 /**
+ * @summary Function that builds a complete mock scaffold, accepted by `mock` in place of a `LazyScaffold`.
  * @public
  */
 export type ScaffoldGenerator = () => Scaffold;
@@ -24,6 +27,8 @@ export type ScaffoldGenerator = () => Scaffold;
  * helpers pass, so that in replay mode a test's response generators never
  * run.
  *
+ * @summary Mock whose method and url are known up front and whose full scaffold is built only when recording, as passed
+ * by the Holodeck mock helpers to `mock`.
  * @public
  */
 export interface LazyScaffold {
@@ -33,6 +38,8 @@ export interface LazyScaffold {
 }
 
 /**
+ * @summary Function passed to the Holodeck mock helpers that builds the response body, called only when recording a
+ * fixture.
  * @public
  */
 export type ResponseGenerator = () => Record<string, unknown>;
@@ -51,6 +58,8 @@ export type ResponseGenerator = () => Record<string, unknown>;
  *   A local override for re-recording one request. Do not commit it; a committed RECORD means
  *   that request is never replayed against its fixture.
  *
+ * @summary Mocks a GET request to a url on the Holodeck server, returning a generated response with a default 200
+ * status.
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
  * @param options status, headers for the response, body to match against for the request, and whether to force recording
@@ -147,6 +156,9 @@ const STATUS_TEXT_FOR = new Map([
 
 /**
  * Mock a POST request
+ *
+ * @summary Mocks a POST request to a url on the Holodeck server, returning a generated response with a 201 status, or
+ * 204 when it has no body.
  */
 export function POST(
   owner: object,
@@ -180,6 +192,9 @@ export function POST(
 
 /**
  * mock a PUT request
+ *
+ * @summary Mocks a PUT request to a url on the Holodeck server, returning a generated response with a 200 status, or
+ * 204 when it has no body.
  */
 export function PUT(
   owner: object,
@@ -213,6 +228,8 @@ export function PUT(
 /**
  * mock a PATCH request
  *
+ * @summary Mocks a PATCH request to a url on the Holodeck server, returning a generated response with a 200 status, or
+ * 204 when it has no body.
  */
 export function PATCH(
   owner: object,
@@ -245,6 +262,9 @@ export function PATCH(
 }
 /**
  * mock a DELETE request
+ *
+ * @summary Mocks a DELETE request to a url on the Holodeck server, returning a generated response with a 200 status, or
+ * 204 when it has no body.
  */
 export function DELETE(
   owner: object,
@@ -290,6 +310,8 @@ export function DELETE(
  *   A local override for re-recording one request. Do not commit it; a committed RECORD means
  *   that request is never replayed against its fixture.
  *
+ * @summary Mocks a HEAD request to a url on the Holodeck server, returning a generated response with a default 200
+ * status.
  * @param url the url to mock, relative to the mock server host (e.g. `users/1`)
  * @param response a function which generates the response to return
  * @param options status, headers for the response, body to match against for the request, and whether to force recording

@@ -5,6 +5,7 @@ import type { IdentityField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link id} decorator.
  *
+ * @summary Options for the `@id` decorator that set the compiled identity field's `sourceKey`.
  * @public
  */
 export interface IdOptions {
@@ -26,6 +27,8 @@ export interface IdOptions {
  * Only needed when a resource's primary key is not named `id`; most
  * resources can rely on {@link Resource}'s default identity instead.
  *
+ * @summary Property decorator that makes the decorated property a resource's identity field, needed only when the
+ * primary key is not named `id`.
  * @example
  * ::: code-group
  *

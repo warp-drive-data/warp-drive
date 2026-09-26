@@ -23,12 +23,18 @@ import type { RequestSignature } from './symbols.ts';
  * A {@link RequestInfo.cacheOptions | cacheOptions} flag which, when set,
  * signals that a request should never be handled by the cache-manager and
  * thus will never resolve from cache nor update the cache.
+ *
+ * @summary Symbol key for a request's `cacheOptions` that, when true, makes the request bypass the CacheHandler so it
+ * neither resolves from nor updates the cache.
  */
 export const SkipCache: '___(unique) Symbol(SkipCache)' = getOrSetUniversal('SkipCache', Symbol.for('wd:skip-cache'));
 /**
  * A {@link RequestInfo} flag which, when set, signals to the store's
  * `instantiateRecord` hook that the resolved content should be hydrated
  * into reactive records rather than returned as raw data.
+ *
+ * @summary Symbol flag on a request that makes the CacheHandler return reactive records instead of raw cache
+ * documents; `store.request` sets it automatically.
  */
 export const EnableHydration: '___(unique) Symbol(EnableHydration)' = getOrSetUniversal(
   'EnableHydration',
@@ -47,6 +53,8 @@ export type { FetchError };
 
 /**
  * The HTTP methods WarpDrive's request layer supports.
+ *
+ * @summary Union of the HTTP method strings, including `QUERY`, that a WarpDrive request's `method` may be set to.
  */
 export type HTTPMethod =
   | 'QUERY'
@@ -64,6 +72,8 @@ export type HTTPMethod =
  * Use these options to adjust {@link CacheHandler} behavior for a request
  * via {@link RequestInfo.cacheOptions}.
  *
+ * @summary Per-request settings on `cacheOptions` that control the cache key, forced or background reloads,
+ * invalidation by resource type, and cache bypass.
  */
 export interface CacheOptions {
   /**
@@ -117,6 +127,9 @@ export interface CacheOptions {
 /**
  * The request shape produced by the `findRecord` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `GET` request object that `findRecord` builders return for `store.request`, carrying the url,
+ * headers, and requested resource identifier.
  */
 export type FindRecordRequestOptions<RT = unknown, T = unknown> = {
   /**
@@ -152,6 +165,9 @@ export type FindRecordRequestOptions<RT = unknown, T = unknown> = {
 /**
  * The request shape produced by the `query` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `GET` request object that `query` builders return for `store.request`, carrying the url,
+ * headers, and cache options.
  */
 export type QueryRequestOptions<RT = unknown> = {
   /**
@@ -183,6 +199,9 @@ export type QueryRequestOptions<RT = unknown> = {
 /**
  * The request shape produced by the `postQuery` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `POST` or `QUERY` request object that `postQuery` builders return, with a body and a required
+ * cache key since the url cannot serve as one.
  */
 export type PostQueryRequestOptions<RT = unknown> = {
   /**
@@ -224,6 +243,9 @@ export type PostQueryRequestOptions<RT = unknown> = {
 /**
  * The request shape produced by the `deleteRecord` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `DELETE` request object that `deleteRecord` builders return for `store.request`, identifying
+ * the resource being deleted.
  */
 export type DeleteRequestOptions<RT = unknown, T = unknown> = {
   /**
@@ -273,6 +295,9 @@ type ImmutableRequest<T> = Readonly<T> & {
 /**
  * The request shape produced by the `updateRecord` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `PATCH` or `PUT` request object that `updateRecord` builders return for `store.request`,
+ * identifying the resource being saved.
  */
 export type UpdateRequestOptions<RT = unknown, T = unknown> = {
   /**
@@ -317,6 +342,9 @@ export type UpdateRequestOptions<RT = unknown, T = unknown> = {
 /**
  * The request shape produced by the `createRecord` request builders, for
  * use with {@link Store.request}.
+ *
+ * @summary Shape of the `POST` request object that `createRecord` builders return for `store.request`, identifying the
+ * new resource being saved.
  */
 export type CreateRequestOptions<RT = unknown, T = unknown> = {
   /**
@@ -360,20 +388,32 @@ export type CreateRequestOptions<RT = unknown, T = unknown> = {
 
 /**
  * The immutable, handler-facing form of {@link DeleteRequestOptions}.
+ *
+ * @summary Read-only view of a `deleteRecord` request as a handler receives it, with immutable headers and `records`
+ * as resource keys.
  */
 export type ImmutableDeleteRequestOptions = ImmutableRequest<DeleteRequestOptions>;
 /**
  * The immutable, handler-facing form of {@link UpdateRequestOptions}.
+ *
+ * @summary Read-only view of an `updateRecord` request as a handler receives it, with immutable headers and `records`
+ * as resource keys.
  */
 export type ImmutableUpdateRequestOptions = ImmutableRequest<UpdateRequestOptions>;
 /**
  * The immutable, handler-facing form of {@link CreateRequestOptions}.
+ *
+ * @summary Read-only view of a `createRecord` request as a handler receives it, with immutable headers and `records`
+ * as resource keys.
  */
 export type ImmutableCreateRequestOptions = ImmutableRequest<CreateRequestOptions>;
 
 /**
  * A minimal reference to a resource sufficient to build a URL for it,
  * as accepted by the request builders.
+ *
+ * @summary A resource reference with a persisted `id` and `type` and an optional `lid`, which is enough for request
+ * builders to construct its url.
  */
 export type RemotelyAccessibleIdentifier<T extends string = string> = {
   /**
@@ -393,6 +433,9 @@ export type RemotelyAccessibleIdentifier<T extends string = string> = {
 /**
  * Options accepted by the request builders for constraining how a
  * request's url is constructed and how the request interacts with the cache.
+ *
+ * @summary Options the request builders accept to set reload behavior and override the url's host, namespace, resource
+ * path, and query param serialization.
  */
 export interface ConstrainedRequestOptions {
   /**
@@ -428,6 +471,9 @@ export interface ConstrainedRequestOptions {
 
 /**
  * Options accepted by the `findRecord` request builders.
+ *
+ * @summary Options the `findRecord` request builders accept: the shared url and reload options plus the relationship
+ * paths to `include`.
  */
 export interface FindRecordOptions extends ConstrainedRequestOptions {
   /**
@@ -441,6 +487,9 @@ export interface FindRecordOptions extends ConstrainedRequestOptions {
  * containing the original {@link RequestInfo | request},
  * the {@link Response | response} set by the handler chain (if any), and
  * the processed content.
+ *
+ * @summary The `{ request, response, content }` object that a request's `Future` resolves with when the request
+ * succeeds.
  */
 export interface StructuredDataDocument<T> {
   /**
@@ -469,6 +518,9 @@ export interface StructuredDataDocument<T> {
  *
  * If using the error originates from the {@link Fetch | Fetch Handler}
  * the error will be a {@link FetchError}
+ *
+ * @summary The Error a request's `Future` rejects with when the request fails, carrying the `request`, `response`,
+ * `error`, and any `content` received.
  */
 export interface StructuredErrorDocument<T = unknown> extends Error {
   /**
@@ -502,6 +554,8 @@ export interface StructuredErrorDocument<T = unknown> extends Error {
  * - {@link Future}
  * - {@link StructuredDataDocument} (resolved/successful requests)
  * - {@link StructuredErrorDocument} (rejected/failed requests)
+ *
+ * @summary Union of the success and error documents that a request's `Future` resolves or rejects with.
  */
 export type StructuredDocument<T> = StructuredDataDocument<T> | StructuredErrorDocument<T>;
 
@@ -580,6 +634,9 @@ interface NativeRequestInit {
 /**
  * A read-only {@link Headers} instance, as passed to {@link Handler | Handlers}
  * via {@link ImmutableRequestInfo.headers}.
+ *
+ * @summary Read-only `Headers` that handlers see on a request, adding `toJSON` to serialize them as `[key, value]`
+ * pairs and an optional mutable `clone`.
  */
 export interface ImmutableHeaders extends Headers {
   /**
@@ -599,6 +656,8 @@ export interface ImmutableHeaders extends Headers {
  * This interface is used to define the shape of a request that can be made via
  * either the {@link RequestManager.request} or {@link Store.request} methods.
  *
+ * @summary Describes a request for `store.request` or `RequestManager.request`: native fetch options plus cache
+ * options, operation name, records, data, and the store.
  * @privateRemarks
  * - [MDN Reference (fetch)](https://developer.mozilla.org/docs/Web/API/Window/fetch)
  * - [MDN Reference (RequestInit)](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit)
@@ -697,6 +756,8 @@ export interface RequestInfo<RT = unknown> extends NativeRequestInit {
 /**
  * Immutable version of {@link RequestInfo}. This is what is passed to handlers.
  *
+ * @summary Read-only form of a request as handlers receive it, with frozen headers, data, options, and cache options
+ * and no `controller`.
  */
 export type ImmutableRequestInfo<RT = unknown> = Readonly<Omit<RequestInfo<RT>, 'controller'>> & {
   /**
@@ -724,6 +785,9 @@ export type ImmutableRequestInfo<RT = unknown> = Readonly<Omit<RequestInfo<RT>, 
 /**
  * An immutable, JSON-serializable subset of the native {@link Response}
  * interface.
+ *
+ * @summary Immutable, JSON-serializable snapshot of a fetch `Response`'s headers, status, url, and type, usable in
+ * place of a `Response` in request results.
  */
 export interface ResponseInfo {
   /**
@@ -760,6 +824,9 @@ export interface ResponseInfo {
  * The object a {@link Handler} uses to fulfill a request: it provides a
  * readonly view of the {@link RequestContext.request | request} and methods
  * for supplying the {@link Future}'s stream and final response.
+ *
+ * @summary Object passed to each request handler with the immutable request, a request id, and methods for setting the
+ * response stream and the response.
  */
 export interface RequestContext {
   /**

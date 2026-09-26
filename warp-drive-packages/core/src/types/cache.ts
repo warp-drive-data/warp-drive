@@ -15,6 +15,8 @@ import type { ExistingResourceObject } from './spec/json-api-raw.ts';
  * A hash of changed attributes with the key being the attribute name and the value being an
  * array of `[oldValue, newValue]`.
  *
+ * @summary Map of attribute name to `[oldValue, newValue]` for a resource's uncommitted attribute changes, as
+ * returned by `cache.changedAttrs`.
  */
 export type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
 
@@ -22,6 +24,8 @@ export type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
  * Describes the local (uncommitted) changes to a single relationship,
  * as returned by {@link Cache.changedRelationships}.
  *
+ * @summary Remote versus local state of one relationship, with additions, removals, and reordering for to-many,
+ * as returned by `cache.changedRelationships`.
  * @example
  * ```ts
  * const diff: RelationshipDiff = {
@@ -82,6 +86,8 @@ export type RelationshipDiff =
  * A Cache handles in-memory storage of Document and Resource
  * data.
  *
+ * @summary Contract a Cache implementation fulfills to store, patch, mutate, and read document and resource data
+ * for the Store, including local changes, errors, and SSR hydration.
  * @public
  */
 export interface Cache {

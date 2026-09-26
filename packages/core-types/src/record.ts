@@ -4,6 +4,8 @@
  * `@warp-drive/core-types/record` imports keep working; new code should import
  * from `@warp-drive/core/types/record` directly.
  *
+ * @summary Legacy alias re-exporting `@warp-drive/core/types/record`, the type utilities for typed records and include
+ * paths; new code should import from there.
  * @module
  */
 export * from '@warp-drive/core/types/record';

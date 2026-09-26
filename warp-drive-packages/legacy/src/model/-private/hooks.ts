@@ -16,6 +16,8 @@ function recast(context: Store): asserts context is ModelStore {}
  * this to your store's `instantiateRecord` method when configuring the
  * store to use `Model` for schema/record instantiation.
  *
+ * @summary Legacy store hook that creates a `Model` instance for a resource key using the `Model` class registered
+ * for its type.
  * @public
  */
 export function instantiateRecord(
@@ -51,6 +53,7 @@ export function instantiateRecord(
  * to your store's `teardownRecord` method when configuring the store to
  * use `Model` for schema/record instantiation.
  *
+ * @summary Legacy store hook that destroys a `Model` instance when the store releases its record.
  * @public
  */
 export function teardownRecord(record: Model): void {
@@ -66,6 +69,8 @@ export function teardownRecord(record: Model): void {
  * as `store.modelFor(type)` when the store is configured to use `Model`.
  * Returns the `Model` subclass registered for the given type, if any.
  *
+ * @summary Legacy `store.modelFor` implementation that returns the `Model` class registered for a resource type, if
+ * there is one.
  * @public
  */
 export function modelFor<T>(type: TypeFromInstance<T>): typeof Model | void;

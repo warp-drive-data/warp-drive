@@ -34,6 +34,8 @@ export interface PromiseManyArray<T> {
   const comments = await post.comments;
   ```
 
+  @summary Legacy promise-like, iterable proxy returned by an async `hasMany` on a `Model`, which templates can
+  consume while the related records load.
   @public
 */
 export class PromiseManyArray<T = unknown> {

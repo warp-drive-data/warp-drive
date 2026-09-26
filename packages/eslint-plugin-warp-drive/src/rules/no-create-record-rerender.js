@@ -1,5 +1,8 @@
 /**
  * {@include ./no-create-record-rerender.md}
+ *
+ * @summary Lint rule that disallows `store.createRecord` in getters, constructors, class properties, and component
+ * lifecycle hooks, where it can cause re-render issues.
  * @module
  */
 // @ts-check
@@ -21,7 +24,11 @@ const forbiddenParentMethodKeyNames = [
   'didDestroyElement',
 ];
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `store.createRecord` calls in getters, constructors, class properties, and
+ * component lifecycle hooks.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

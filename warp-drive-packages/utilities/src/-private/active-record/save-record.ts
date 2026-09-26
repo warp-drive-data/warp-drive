@@ -69,6 +69,7 @@ function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a `DELETE` request that persists deletion of an existing record, using ActiveRecord-style URLs.
  * @public
  * @param record
  * @param options
@@ -139,6 +140,7 @@ export function deleteRecord(record: unknown, options: ConstrainedRequestOptions
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a `POST` request that saves a newly created record, using ActiveRecord-style URLs.
  * @public
  * @param record
  * @param options
@@ -211,6 +213,7 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a `PUT` (or `PATCH`) request that saves changes to an existing record, using ActiveRecord-style URLs.
  * @public
  * @param record
  * @param options

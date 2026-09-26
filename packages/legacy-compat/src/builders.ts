@@ -5,6 +5,8 @@
   This is useful for quickly upgrading an entire app to a unified syntax while a longer incremental migration is made to shift off of adapters and serializers.
   To that end, these builders are deprecated and will be removed in a future version of Ember Data.
 
+  @summary Deprecated request builders (`findAll`, `findRecord`, `query`, `queryRecord`, `saveRecord`) that move store
+  method calls onto `store.request` while keeping adapter behavior.
   @module
   @deprecated
 */

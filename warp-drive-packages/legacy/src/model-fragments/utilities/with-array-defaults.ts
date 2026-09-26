@@ -2,6 +2,8 @@
  * Used as a helper to setup the relevant parts of an array
  * schema and add extensions etc.
  *
+ * @summary Legacy ModelFragments migration helper that builds an `array` schema field preconfigured with the
+ * `ember-object`, `ember-array-like`, and `fragment-array` extensions.
  * @param arrayName The name of the array
  * @param primitiveType The primitive type of items in the array (optional)
  * @returns The schema for an array

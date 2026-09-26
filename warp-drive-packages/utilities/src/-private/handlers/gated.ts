@@ -9,6 +9,8 @@ type CheckFn = (context: RequestContext) => boolean;
 
 /**
  *
+ * @summary Request handler that wraps another handler and runs it only when a check function returns true for the
+ * request.
  * @group Handlers
  * @public
  */

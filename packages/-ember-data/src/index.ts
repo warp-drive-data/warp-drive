@@ -89,6 +89,8 @@ And finally:
 - [Configuration Settings](../modules/@warp-drive%2Fbuild-config)
 
 
+ @summary Legacy meta package that bundles the store, models, adapters, serializers, and transforms in the classic
+ configuration and exports them on the `DS` namespace.
  @module ember-data-overview
  @main ember-data-overview
 */

@@ -16,5 +16,8 @@ import type { ResourceKey } from '../identifier.ts';
  *
  * This opaqueness allows arbitrary storage of any serializable/transferable
  * state, including such things as `Buffer`s and `String`s.
+ *
+ * @summary Opaque raw resource data whose format the Cache defines and from which the CacheKeyManager can derive a
+ * `ResourceKey`.
  */
 export type ResourceBlob = unknown;

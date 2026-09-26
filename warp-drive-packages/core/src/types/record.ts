@@ -9,6 +9,8 @@ import type { Type } from './symbols.ts';
  * and WarpDrive to provide better type safety and
  * intellisense.
  *
+ * @summary Shape of a record type that declares its resource type via the `[Type]` symbol, letting WarpDrive APIs
+ * infer types for better type safety.
  * @class TypedRecordInstance
  */
 export interface TypedRecordInstance {
@@ -34,6 +36,7 @@ export interface TypedRecordInstance {
  * A type utility that extracts the Type if available,
  * otherwise it returns never.
  *
+ * @summary Type utility giving a record type's `[Type]` resource type string, or `never` if it declares none.
  */
 export type TypeFromInstance<T> = T extends TypedRecordInstance ? T[typeof Type] : never;
 
@@ -41,6 +44,7 @@ export type TypeFromInstance<T> = T extends TypedRecordInstance ? T[typeof Type]
  * A type utility that extracts the Type if available,
  * otherwise it returns string
  *
+ * @summary Type utility giving a record type's `[Type]` resource type string, or `string` if it declares none.
  */
 export type TypeFromInstanceOrString<T> = T extends TypedRecordInstance ? T[typeof Type] : string;
 
@@ -153,6 +157,8 @@ type DEFAULT_MAX_DEPTH = 3;
  * A utility that provides the union of all ResourceName for all potential
  * includes for the given TypedRecordInstance.
  *
+ * @summary Type utility giving the union of resource types reachable from a typed record through its
+ * relationships, up to a max depth.
  */
 export type ExtractSuggestedCacheTypes<
   T extends TypedRecordInstance,
@@ -165,6 +171,8 @@ export type ExtractSuggestedCacheTypes<
  *
  * Cyclical paths are filtered out.
  *
+ * @summary Type utility giving the union of valid dot-separated `include` relationship paths for a typed record,
+ * excluding cycles.
  */
 export type Includes<T extends TypedRecordInstance, MAX_DEPTH extends _DEPTHCOUNT = DEFAULT_MAX_DEPTH> = ExtractUnion<
   MAX_DEPTH,
@@ -175,6 +183,8 @@ export type Includes<T extends TypedRecordInstance, MAX_DEPTH extends _DEPTHCOUN
 /**
  * A type-erased placeholder for a record instance, used where the
  * specific record type is not known or not relevant.
+ *
+ * @summary Type-erased (`unknown`) stand-in for a record instance where its specific type is unknown or irrelevant.
  */
 export type OpaqueRecordInstance = unknown;
 
@@ -196,6 +206,8 @@ export type _StringSatisfiesIncludes<T extends string, SET extends string, FT ex
  * TypeScript cannot autocomplete against this type; prefer {@link createIncludeValidator}
  * for a better development experience unless you are writing a similar wrapper utility.
  *
+ * @summary Type utility that checks a comma-separated `include` string contains only paths from an allowed union,
+ * resolving to `never` otherwise.
  * @example
  * ```ts
  * import type { StringSatisfiesIncludes, Includes } from '@warp-drive/core/types/record';
@@ -213,6 +225,8 @@ export type StringSatisfiesIncludes<T extends string, SET extends string> = _Str
  * ensuring at compile time that only valid paths for `T` (per {@link Includes})
  * are supplied.
  *
+ * @summary Returns a function that type-checks a comma-separated `include` string against the valid relationship paths
+ * of a record type and returns it unchanged.
  * @example
  * ```ts
  * import { createIncludeValidator } from '@warp-drive/core/types/record';
@@ -300,6 +314,9 @@ export function createIncludeValidator<T extends TypedRecordInstance>() {
  *
  * But what if your app has data with massive interfaces such that the TypeScript performance of this
  * approach becomes a problem? In that case, see {@link Validate}
+ *
+ * @summary Type utility that builds a preview type from `T` by replacing selected fields with narrower subset types
+ * from `K`, resolving to `never` where a field is not compatible.
  */
 export type Mask<K extends object, T extends K> = {
   [P in keyof T]: P extends keyof K ? (T[P] extends K[P] ? K[P] : never) : T[P];
@@ -355,5 +372,8 @@ export type Mask<K extends object, T extends K> = {
  * ```
  *
  * For help creating subsets of types, see {@link Mask}
+ *
+ * @summary Type utility that checks a hand-written preview type `K` is a valid subset of the full type `T`, resolving
+ * to `K` if so and `never` otherwise.
  */
 export type Validate<K extends object, T extends K> = T extends K ? K : never;

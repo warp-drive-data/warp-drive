@@ -4,6 +4,8 @@
  * `@ember-data/adapter/json-api` imports keep working; new code should import
  * from `@warp-drive/legacy/adapter/json-api` directly.
  *
+ * @summary Legacy alias that re-exports `JSONAPIAdapter` from `@warp-drive/legacy/adapter/json-api` so
+ * `@ember-data/adapter/json-api` imports keep working.
  * @module
  */
 export { JSONAPIAdapter as default } from '@warp-drive/legacy/adapter/json-api';

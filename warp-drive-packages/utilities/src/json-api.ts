@@ -48,6 +48,8 @@
  * - The response document's `errors` are typed as `ApiError`, the
  *   [{json:api} error object](https://jsonapi.org/format/#error-objects).
  *
+ * @summary Request builders and cache serializers for JSON:API servers, with dasherized plural URLs and configurable
+ * `Accept` headers.
  * @module
  * @public
  */

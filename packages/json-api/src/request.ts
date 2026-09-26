@@ -55,6 +55,8 @@ the query or values in an array changes.
 
 URLs follow the most common JSON:API format (dasherized pluralized resource types).
  *
+ * @summary Legacy alias re-exporting request builders from `@warp-drive/utilities/json-api` that produce fetch options
+ * with stable JSON:API URLs for `store.request`.
  * @module
  */
 export * from '@warp-drive/utilities/json-api';

@@ -62,6 +62,8 @@ type Links = {
  * }
  * ```
  *
+ * @summary Experimental: one page of a paginated collection, exposing its request, loading and error status, data,
+ * and links to neighboring pages.
  * @since 5.9.0
  * @public
  * @hideconstructor

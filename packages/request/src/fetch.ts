@@ -8,6 +8,8 @@
  * manager.use([Fetch]);
  * ```
  *
+ * @summary Legacy entry re-exporting `Fetch`, a request handler that sends each request with `fetch` and parses the
+ * response as JSON.
  * @module
  */
 

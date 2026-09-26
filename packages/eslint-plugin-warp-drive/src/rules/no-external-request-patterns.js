@@ -1,5 +1,8 @@
 /**
  * {@include ./no-external-request-patterns.md}
+ *
+ * @summary Lint rule that disallows `fetch`, jQuery, ajax-service, and `XMLHttpRequest` requests in favor of
+ * `store.request()`.
  * @module
  */
 'use strict';
@@ -30,7 +33,11 @@ const ADDITIONAL_FUNCTION_NAMES = new Set(['GET', 'POST', 'PUT', 'DELETE', 'PATC
 const CONSTRUCTOR_NAMES = new Set(['XMLHttpRequest']);
 const RULE_ID = 'warp-drive.no-external-request-patterns';
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `fetch`, jQuery, ajax-service, and `XMLHttpRequest` requests in favor of
+ * `store.request()`.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

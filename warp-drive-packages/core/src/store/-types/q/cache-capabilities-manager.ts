@@ -16,6 +16,8 @@ import type { SchemaService } from '../../../types/schema/schema-service.ts';
  *
  * This class cannot be directly instantiated.
  *
+ * @summary The narrow slice of Store API handed to a Cache via `createCache`, for key lookup, schema access, record
+ * id updates, and change notifications.
  * @public
  */
 export type CacheCapabilitiesManager = {

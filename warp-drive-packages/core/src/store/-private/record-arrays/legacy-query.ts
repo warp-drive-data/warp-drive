@@ -79,6 +79,8 @@ import { createReactiveResourceArray, destroy, type ReactiveResourceArray } from
  * from the cache, but it does remove the array as well as the overhead it requires
  * from the store for book-keeping.
  *
+ * @summary Legacy immutable reactive array of the primary records returned by `store.query`, refreshable with
+ * `update()` and released with `destroy()`.
  * @legacy we recommend againt using QueryArrays. Use {@link Store.request} instead
  */
 export interface LegacyQueryArray<T = unknown> extends LegacyLiveArray<T> {

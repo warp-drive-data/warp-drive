@@ -31,12 +31,15 @@ function getTabId() {
  * useful for observability/tracing and deduping
  * across multiple tabs.
  *
+ * @summary Random UUID identifying the current browser tab, kept in `sessionStorage` across reloads, for request
+ * tracing.
  * @group Constants
  */
 export const TAB_ID: string = getTabId();
 /**
  * The epoch seconds at which the tab id was generated
  *
+ * @summary Epoch seconds recorded when this module loaded, paired with `TAB_ID` in trace headers.
  * @group Constants
  */
 export const TAB_ASSIGNED: number = Math.floor(Date.now() / 1000);
@@ -50,6 +53,8 @@ export const TAB_ASSIGNED: number = Math.floor(Date.now() / 1000);
  *
  * Follows the template: `Root=1-${now}-${uuidv4};TabId=1-${epochSeconds}-${tab-uuid}`
  *
+ * @summary Sets an `X-Amzn-Trace-Id` header carrying a per-request id and the tab id, so requests can be traced to
+ * their browser tab.
  * @group Utility Functions
  */
 export function addTraceHeader(headers: Headers): Headers {
@@ -63,6 +68,7 @@ export function addTraceHeader(headers: Headers): Headers {
  * Source: https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html
  * As of 2024-12-05 the maximum URL length is 8192 bytes.
  *
+ * @summary The 8192-byte URL length limit, taken from AWS CloudFront, that `assertInvalidUrlLength` checks against.
  * @group Constants
  */
 export const MAX_URL_LENGTH = 8192;
@@ -72,6 +78,8 @@ export const MAX_URL_LENGTH = 8192;
  *
  * See also {@link MAX_URL_LENGTH}
  *
+ * @summary Dev-mode assertion that throws when a URL is longer than `MAX_URL_LENGTH`, suggesting a `POST` or `QUERY`
+ * request instead.
  * @group Utility Functions
  */
 export function assertInvalidUrlLength(url: string | undefined): void {

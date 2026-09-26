@@ -5,6 +5,9 @@ import { initMeta } from './-private/storage-infra.ts';
 
 /**
  * Configuration options for fields that are also query parameters
+ *
+ * @summary Experimental config passed to the `param` decorator that describes how a field is serialized to and parsed
+ * from a URL query parameter.
  */
 export interface ParamConfig {
   /**
@@ -32,6 +35,8 @@ export interface ParamConfig {
 /**
  * Creates a {@link ParamConfig} for boolean fields that serialize to '1' or null.
  *
+ * @summary Experimental helper that creates a query-param config serializing a boolean field as '1' when true and
+ * omitting it when false.
  * @returns ParamConfig for boolean fields
  *
  * @example
@@ -51,6 +56,8 @@ export function BooleanParam(): ParamConfig {
 /**
  * Creates a {@link ParamConfig} for numeric fields with default value checking.
  *
+ * @summary Experimental helper that creates a query-param config serializing numbers, optionally to a fixed precision,
+ * with an optional default value.
  * @param precision - When given, the number of digits to serialize after the decimal point
  * @param getDefault - Function to get the default value for comparison
  * @returns ParamConfig for number fields
@@ -94,6 +101,8 @@ export function NumberParam(precision?: number, getDefault?: (instance: any) => 
  * - Compare URL and local values
  * - Determine when to include/exclude params from the URL
  *
+ * @summary Experimental decorator that marks a storage resource field as a URL query parameter, recording how to
+ * serialize it for a router integration.
  * @param config - Configuration for URL serialization/deserialization
  *
  * @example

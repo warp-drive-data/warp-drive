@@ -69,6 +69,8 @@ import { createReactiveResourceArray } from './resource-array.ts';
  * and "bmw" will have populated LiveArrays, but the LiveArray for "car"
  * would be empty.
  *
+ * @summary Legacy reactive array of every record of one type in the store, returned by `store.peekAll` and
+ * `store.findAll`.
  * @legacy we recommend againt using LiveArrays. Use {@link Store.request} instead
  */
 export interface LegacyLiveArray<T = unknown> extends LegacyArray<T> {

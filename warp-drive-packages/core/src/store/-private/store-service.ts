@@ -1394,6 +1394,7 @@ export interface Store {
  * Most projects will only have a single `Store`, though using multiple distinct stores
  * is possible.
  *
+ * @summary Central coordinator that connects requests for data with schemas, the cache and reactivity.
  * @public
  * @hideconstructor
  */

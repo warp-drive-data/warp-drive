@@ -10,6 +10,8 @@ function isCompressibleMethod(method?: HTTPMethod): boolean {
  * Whether the browser supports `ReadableStream` as a request body
  * in a `POST` request.
  *
+ * @summary Whether the current browser can send a `ReadableStream` as a `fetch` request body, detected once at
+ * module load.
  * @group Constants
  */
 export const SupportsRequestStreams: boolean = (() => {
@@ -179,6 +181,8 @@ const TypedArray = Object.getPrototypeOf(Uint8Array) as typeof Uint8Array;
  * }
  * ```
  *
+ * @summary Request handler that compresses large `POST`, `PUT`, `PATCH`, and `DELETE` bodies with `CompressionStream`,
+ * optionally streaming them.
  * @group Handlers
  * @public
  * @since 5.5.0

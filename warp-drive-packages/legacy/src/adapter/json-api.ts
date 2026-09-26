@@ -148,6 +148,8 @@ import { RESTAdapter } from './rest.ts';
   Requests for the `person` model would now target
   `https://api.example.com/people/1`.
 
+  @summary Legacy adapter that turns store requests into HTTP requests following JSON:API URL, verb, and
+  `application/vnd.api+json` conventions.
   @since 1.13.0
   @class JSONAPIAdapter
   @public

@@ -180,6 +180,8 @@ By default when using with Ember you only need to implement this hook if you wan
   Many applications will find writing their own adapter to be allow greater flexibility,
   customization, and maintenance than attempting to override methods in these adapters.
 
+  @summary Legacy adapter layer through which the store fetches and saves data from an API, superseded by
+  `RequestManager` handlers.
   @module
 */
 
@@ -252,6 +254,8 @@ const service = s.service ?? s.inject;
   For an example of the implementation, see `RESTAdapter`, the
   included REST adapter.
 
+  @summary Legacy abstract base class for adapters that translate store requests such as `findRecord` and
+  `updateRecord` into calls against a persistence layer.
   @public
 */
 export class Adapter extends EmberObject implements MinimumAdapterInterface {

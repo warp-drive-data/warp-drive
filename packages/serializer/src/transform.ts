@@ -4,6 +4,8 @@
  * `@ember-data/serializer/transform` imports keep working; new code should import
  * from `@warp-drive/legacy/serializer/transform` directly.
  *
+ * @summary Legacy alias that re-exports the base `Transform` and the boolean, string, number, and date attribute
+ * transforms from `@warp-drive/legacy/serializer/transform`.
  * @module
  */
 export {

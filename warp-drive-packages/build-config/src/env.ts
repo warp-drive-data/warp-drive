@@ -1,6 +1,8 @@
 /**
  * Internal constants for instrumenting the library's code for different environments.
  *
+ * @summary Internal build-time constants, like `DEBUG`, `PRODUCTION`, and `TESTING`, that WarpDrive uses to strip
+ * environment-specific code from builds.
  * @hidden
  * @module
  */

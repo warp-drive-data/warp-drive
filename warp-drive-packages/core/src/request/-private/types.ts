@@ -28,6 +28,8 @@ export interface GodContext {
  * allowing the promise to be created before the work that will settle it
  * has begun. See {@link createDeferred}.
  *
+ * @summary A promise bundled with the `resolve` and `reject` callbacks that settle it, as returned by
+ * `createDeferred`.
  * @public
  */
 export type Deferred<T> = {
@@ -45,6 +47,8 @@ export type Deferred<T> = {
  * background reload that other requests may dedupe against without
  * waiting on it.
  *
+ * @summary Marks whether a deduped managed request blocks its caller's promise or runs as a
+ * non-blocking background reload.
  * @public
  */
 export type ManagedRequestPriority = {
@@ -63,6 +67,8 @@ export type DeferredStream = {
  * while providing the ability to {@link Future.abort | abort} the underlying request, and
  * {@link Future.getStream | access the response stream} before the outer promise resolves;
  *
+ * @summary The promise returned for every request, resolving with the response document and able to
+ * abort the request or expose its response stream early.
  * @public
  */
 export interface Future<T> extends Promise<StructuredDataDocument<T>> {
@@ -133,6 +139,8 @@ export type DeferredFuture<T> = {
  * used to forward a request to the next handler in the chain. Resolves to a
  * {@link Future} carrying the downstream response.
  *
+ * @summary The function a request handler calls to pass a request to the next handler in the chain,
+ * returning a `Future` for its response.
  * @public
  */
 export type NextFn<P = unknown> = (req: RequestInfo) => Future<P>;
@@ -244,6 +252,8 @@ const manager = new RequestManager()
 
 Handlers will be invoked in the order they are registered ("fifo", first-in first-out), and may only be registered up until the first request is made. It is recommended but not required to register all handlers at one time in order to ensure explicitly visible handler ordering.
 
+ @summary An object with a `request` method that a RequestManager calls to fulfill a request, either
+ itself or by calling `next` to pass it along.
  @public
 */
 export interface Handler {
@@ -265,6 +275,8 @@ export interface Handler {
  * A RequestManager may only have one CacheHandler, registered via
  * `manager.useCache(CacheHandler)`.
  *
+ * @summary The single handler a RequestManager runs before all others via `useCache`, which may return
+ * a result synchronously.
  * @public
  */
 export interface CacheHandler {

@@ -53,6 +53,9 @@ const PotentialLegacyOperations = new Set([
  * `deleteRecord` requests using the store's configured {@link MinimumAdapterInterface | adapter}
  * and {@link MinimumSerializerInterface | serializer}, passing any other
  * request through to the next handler unchanged.
+ *
+ * @summary Legacy `RequestManager` handler that fulfills find, query, create, update, and delete operations through
+ * the store's adapters and serializers, passing other requests along.
  */
 export const LegacyNetworkHandler: Handler = {
   request<T>(context: StoreRequestContext, next: NextFn<T>): Future<T> | Promise<StructuredDataDocument<T>> {

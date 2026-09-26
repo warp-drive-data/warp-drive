@@ -34,6 +34,8 @@
   of the file in the `app/models` folder and should be lowercase, singular
   and dasherized.
 
+  @summary Legacy `Model` base class and `attr`, `belongsTo`, and `hasMany` decorators that define resource schemas
+  as classes and present records.
   @module
  */
 export { attr } from './model/-private/attr';

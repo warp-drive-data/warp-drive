@@ -17,6 +17,9 @@ interface ErrorFeatures {
 /**
  * The content features available in both pagination modes: the state and
  * controls of the initial request.
+ *
+ * @summary Experimental: the request status flags and controls, like `isRefreshing`, `refresh`, and `reload`,
+ * that `<Paginate />` yields to its content block in both modes.
  */
 export interface SharedPaginationContentFeatures<RT> {
   isOnline: boolean;
@@ -39,6 +42,9 @@ export interface SharedPaginationContentFeatures<RT> {
 /**
  * The content features yielded in `'paged'` mode: navigation happens by
  * loading a specific page.
+ *
+ * @summary Experimental: the request controls `<Paginate />` yields to its content block in paged mode, adding
+ * `loadPage` to navigate to a page by URL.
  */
 export interface PagedPaginationContentFeatures<RT> extends SharedPaginationContentFeatures<RT> {
   loadPage: (url: string) => Promise<RT | null>;
@@ -47,6 +53,9 @@ export interface PagedPaginationContentFeatures<RT> extends SharedPaginationCont
 /**
  * The content features yielded in `'infinite'` mode: navigation happens by
  * extending the loaded run at either end.
+ *
+ * @summary Experimental: the request controls `<Paginate />` yields to its content block in infinite mode, adding
+ * `loadNext` and `loadPrev` to extend the loaded pages.
  */
 export interface InfinitePaginationContentFeatures<RT> extends SharedPaginationContentFeatures<RT> {
   loadNext: () => Promise<RT | null>;
@@ -57,12 +66,18 @@ export interface InfinitePaginationContentFeatures<RT> extends SharedPaginationC
  * The full set of content features a {@link PaginationSubscription} builds —
  * both modes' surfaces. The `<Paginate />` component narrows this to one mode
  * via {@link PaginationContentFeaturesFor} before yielding.
+ *
+ * @summary Experimental: the combined paged and infinite content features a pagination subscription builds, before
+ * `<Paginate />` narrows them to one mode.
  */
 export type PaginationContentFeatures<RT> = PagedPaginationContentFeatures<RT> & InfinitePaginationContentFeatures<RT>;
 
 /**
  * Resolves a {@link PaginateMode} to the content features it exposes. Mirror of
  * {@link PaginationStateFor}.
+ *
+ * @summary Experimental: resolves a pagination mode to the content features `<Paginate />` yields, the infinite
+ * set for `'infinite'` and the paged set otherwise.
  */
 export type PaginationContentFeaturesFor<RT = unknown, M extends PaginateMode = 'paged'> = M extends 'infinite'
   ? InfinitePaginationContentFeatures<RT>
@@ -112,6 +127,8 @@ export interface PaginationSubscription<RT, E> {
  * {@link RequestSubscription} (loading/error state, autorefresh, disposal) and
  * the per-component {@link PaginationState} that it hands to the component.
  *
+ * @summary Experimental: the lifecycle core of `<Paginate />`, owning the initial request subscription and the
+ * component's pagination state.
  * @since 5.9.0
  * @public
  * @hideconstructor
@@ -403,6 +420,8 @@ defineSignal(PaginationSubscription.prototype, '_navRequest', null);
  * subscription[DISPOSE](); // tear down when the owning component unmounts
  * ```
  *
+ * @summary Experimental: creates the subscription that manages a `<Paginate />` component's initial request
+ * lifecycle and pagination state, for managing that lifecycle yourself.
  * @since 5.9.0
  * @public
  */

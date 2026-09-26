@@ -1,4 +1,5 @@
 /**
+ * @summary Legacy entry re-exporting `JSONAPICache` from `@warp-drive/json-api` as its default export.
  * @module
  * @mergeModuleWith <project>
  */

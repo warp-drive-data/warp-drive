@@ -5,6 +5,8 @@ While this Graph is abstract, it currently is a private implementation required 
 
 We intend to make this Graph public API after some additional iteration during the 5.x timeframe, until then all APIs should be considered experimental and unstable, not fit for direct application or 3rd party library usage.
 
+  @summary Experimental, private relationship graph used by the {json:api} Cache to track links between resources
+  by identity.
   @module
 */
 import { DEBUG } from '@warp-drive/core/build-config/env';

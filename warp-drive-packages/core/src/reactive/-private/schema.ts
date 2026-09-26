@@ -88,6 +88,9 @@ _constructor[Type] = '@constructor';
  * This should only be used for temporary migration purposes
  * to the new schema system when migrating from either Model
  * or ModelFragments.
+ *
+ * @summary Registers named methods, getters, and values to add to ReactiveResources, ReactiveObjects,
+ * or ReactiveArrays; meant only as a temporary aid when migrating from Model or ModelFragments.
  */
 export interface CAUTION_MEGA_DANGER_ZONE_Extension {
   /**
@@ -186,6 +189,9 @@ export interface CAUTION_MEGA_DANGER_ZONE_Extension {
  * Describes one feature added to a resource by a schema extension, as
  * classified by {@link processExtension} from the property descriptor it
  * was declared with (a method, a plain value, or a getter/setter pair).
+ *
+ * @summary One normalized feature of a schema extension, tagged by kind as a method, a readonly or
+ * mutable value, or a getter/setter accessor.
  */
 export type ExtensionDef =
   | {
@@ -232,6 +238,9 @@ export type ExtensionDef =
  * The result of {@link processExtension} normalizing a
  * {@link CAUTION_MEGA_DANGER_ZONE_Extension} into a lookup of its features
  * by name.
+ *
+ * @summary A registered schema extension normalized into its kind, name, and a map of its features
+ * keyed by property name.
  */
 export interface ProcessedExtension {
   /** Whether this extension applies to objects/resources or to arrays. */
@@ -428,6 +437,8 @@ function processExtensions(
  * registerDerivations(schema);
  * ```
  *
+ * @summary Adds the default `id` identity plus `$key`, `$type`, and `constructor` derived fields to a
+ * PolarisMode resource schema.
  * @public
  * @param schema
  * @return {PolarisResourceSchema}
@@ -476,6 +487,8 @@ interface FromIdentityDerivation {
  *
  * `^` returns the entire identifier object.
  *
+ * @summary The `@identity` derivation, which reads a record's `id`, `lid`, `type`, or whole resource key
+ * for use in derived fields.
  * @public
  */
 export const fromIdentity = ((
@@ -503,6 +516,8 @@ fromIdentity[Type] = '@identity';
  * import { withDefaults } from '@warp-drive/schema-record';
  * ```
  *
+ * @summary Registers the `@identity` and `@constructor` derivations that schemas built with
+ * `withDefaults` depend on.
  * @public
  */
 export function registerDerivations(schema: SchemaServiceInterface): void {
@@ -629,6 +644,9 @@ interface InternalSchema {
  * Defines how to convert a `GenericField`, `ObjectField`, or `ArrayField`
  * between the raw value `T` stored in the cache and the presentation value
  * `PT` exposed on the record.
+ *
+ * @summary A registered converter between a field's raw cache value and the value exposed on the
+ * record, with optional default.
  */
 export type Transformation<T extends Value = Value, PT = unknown> = {
   /** Converts the presentation value into the raw value to store in the cache. */
@@ -693,6 +711,8 @@ interface InternalTrait {
 /**
  * A SchemaService designed to work with dynamically registered schemas.
  *
+ * @summary The default schema service, which stores resource and object schemas, traits, derivations,
+ * transformations, hash functions and extensions registered at runtime.
  * @public
  */
 export class SchemaService implements SchemaServiceInterface {

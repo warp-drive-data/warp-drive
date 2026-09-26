@@ -99,6 +99,8 @@
  * If this happens, we'd like to know 💜
  * :::
  *
+ * @summary Deprecation flags for WarpDrive and how to strip the code behind resolved deprecations at build time, by
+ * `compatWith` version or by individual flag.
  * @module
  */
 
@@ -122,6 +124,8 @@ export const DEPRECATE_CATCH_ALL: boolean = true;
  * Once we've added the deprecation message, we will
  * update this version number to the proper version.
  *
+ * @summary Planned deprecation flag, with no deprecation ID yet, guarding support for observer and computed chains on
+ * WarpDrive record arrays and ManyArrays.
  * @since 5.0
  * @until 8.0
  * @public
@@ -155,6 +159,8 @@ export const DEPRECATE_COMPUTED_CHAINS: boolean = true;
  *
  * e.g. `app/models/foo/bar-bem.js` must have a type of `foo/bar-bem`
  *
+ * @summary Deprecation flag for resource `type` values that are not non-empty, singular, dasherized strings; set it to
+ * `false` once resolved to strip that support.
  * @since 5.3
  * @until 6.0
  * @public
@@ -178,6 +184,8 @@ export const DEPRECATE_NON_STRICT_TYPES: boolean = true;
  * However, for identifiers we will always use string IDs and so any
  * custom identifier configuration should provide a string ID.
  *
+ * @summary Deprecation flag for legacy support of numeric resource IDs that are coerced to strings; set it to `false`
+ * once resolved to strip that support.
  * @since 5.3
  * @until 6.0
  * @public
@@ -196,6 +204,8 @@ export const DEPRECATE_NON_STRICT_ID: boolean = true;
  * instead of `@ember-data/store` in order to receive the appropriate configuration
  * of defaults.
  *
+ * @summary Deprecation flag for importing from the legacy `ember-data/*` paths instead of `@ember-data/*`, except
+ * `ember-data/store`.
  * @since 5.3
  * @until 6.0
  * @public
@@ -238,6 +248,8 @@ export const DEPRECATE_LEGACY_IMPORTS: boolean = true;
  * in either a request handler or serializer which removes
  * duplicate data from relationship payloads.
  *
+ * @summary Deprecation flag for hasMany relationship payloads containing duplicate identifiers, which were silently
+ * de-duped and will instead error.
  * @since 5.3
  * @until 6.0
  * @public
@@ -384,6 +396,8 @@ export const DEPRECATE_NON_UNIQUE_PAYLOADS: boolean = true;
  * If none of these options work for you, you can always opt-out more broadly by implementing
  * a custom Cache with the relationship behaviors you need.
  *
+ * @summary Deprecation flag for remote relationship updates discarding unsaved local changes; set it to `false`, or
+ * `resetOnRemoteUpdate: false`, to keep them.
  * @since 5.3
  * @until 6.0
  * @public
@@ -400,6 +414,8 @@ export const DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE: boolean 
  *
  * When the flag is `false`, an error will be thrown when duplicates are added.
  *
+ * @summary Deprecation flag for adding duplicate records to a ManyArray; when `false`, adding duplicates throws an
+ * error instead of being deduped.
  * @since 5.3
  * @until 6.0
  * @public
@@ -413,6 +429,8 @@ export const DEPRECATE_MANY_ARRAY_DUPLICATES: boolean = true;
  * When the flag is `false` or `ember-source` is not present, the Store will not extend
  * from EmberObject.
 
+ * @summary Deprecation flag controlling whether the Store extends `@ember/object`; set it to `false` to stop extending
+ * EmberObject.
  * @since 5.4
  * @until 6.0
  * @public
@@ -436,6 +454,8 @@ export const DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: boolean = true;
  * - `SchemaService.attributesDefinitionFor` method is deprecated in favor of the `SchemaService.fields` method
  * - `SchemaService.relationshipsDefinitionFor` method is deprecated in favor of the `SchemaService.fields` method
  *
+ * @summary Deprecation flag that keeps the legacy schema service APIs, such as `registerSchemaDefinitionService`,
+ * enabled while warning when they are used.
  * @since 5.4
  * @until 6.0
  * @public
@@ -468,6 +488,8 @@ export const ENABLE_LEGACY_SCHEMA_SERVICE: boolean = true;
  * setConfig(app, __dirname, { deprecations: { DEPRECATE_EMBER_INFLECTOR: false }});
  * ```
  *
+ * @summary Deprecation flag for using ember-inflector for pluralization and singularization instead of the
+ * `@ember-data/request-utils/string` utilities.
  * @since 5.3
  * @until 6.0
  * @public
@@ -506,6 +528,8 @@ export const DEPRECATE_EMBER_INFLECTOR: boolean = true;
  * });
  * ```
  *
+ * @summary Deprecation flag for the `@ember-data/tracking` package, which is replaced by the Ember reactivity setup in
+ * `@warp-drive/ember/install`.
  * @since 5.5
  * @until 6.0
  * @public
@@ -520,6 +544,8 @@ export const DEPRECATE_TRACKING_PACKAGE: boolean = true;
  *
  * A cheatsheat for moving from various methods to using requests is [available here](https://request-service-cheat-sheet.netlify.app/)
  *
+ * @summary Deprecation flag for store request methods like `findRecord`, `query`, and `saveRecord` that bypass
+ * `store.request()`; `false` strips them.
  * @since 5.6
  * @until 6.0
  * @public
@@ -536,6 +562,8 @@ export const ENABLE_LEGACY_REQUEST_METHODS: boolean = true;
  * When this flag is present and set to `false`, the deprecations from the 6.x branch will
  * print and can be resolved.
  *
+ * @summary Opt-in flag: set it to `false` to make deprecations backported from 6.x print and become resolvable; by
+ * default they stay silent and unresolvable.
  * @since 5.3
  * @until 7.0
  * @public

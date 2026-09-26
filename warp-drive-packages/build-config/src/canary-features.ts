@@ -113,6 +113,8 @@
  *  - `false` | The feature is **disabled** at all times, and cannot be enabled.
  *  - `null` | The feature is **disabled by default**, but can be enabled via configuration.
  *
+ * @summary Build-time feature flags that gate unreleased WarpDrive features, which can be activated only in canary
+ * development builds via `setConfig` or an env var.
  * @module
  * @public
  */
@@ -132,6 +134,8 @@ export const SAMPLE_FEATURE_FLAG: boolean | null = null;
  * `cache.put`, the cache will validate the payload against registered
  * schemas as well as the JSON:API spec.
  *
+ * @summary Canary feature flag that makes the JSON:API cache validate payloads given to `cache.put` against registered
+ * schemas and the JSON:API spec.
  * @since 5.4
  * @public
  */
@@ -144,6 +148,8 @@ export const JSON_API_CACHE_VALIDATION_ERRORS: boolean | null = false;
  * When active, if any trait specified by the resource or one of its traits is
  * missing an error will be thrown in development.
  *
+ * @summary Canary feature flag that throws in development when `schema.fields` is first called for a resource whose
+ * traits, or its traits' traits, are missing.
  * @since 5.7
  * @public
  */

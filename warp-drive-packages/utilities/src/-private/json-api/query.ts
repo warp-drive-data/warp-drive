@@ -60,6 +60,7 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a JSON:API `GET` request that queries a resource type, sending the query as URL query params.
  * @public
  * @badge Builder
  */
@@ -145,6 +146,8 @@ export function query(
  * const data = await store.request(options);
  * ```
  *
+ * @summary Builds a JSON:API `POST` request that sends a query as the JSON body, cached under a key built from the
+ * query params.
  * @public
  * @param type - the name of the resource type to query
  * @param query - the query params to send with the request

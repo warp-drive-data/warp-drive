@@ -4,6 +4,8 @@
  * `@ember-data/adapter/rest` imports keep working; new code should import
  * from `@warp-drive/legacy/adapter/rest` directly.
  *
+ * @summary Legacy alias that re-exports `RESTAdapter`, `fetchOptions`, and their request types from
+ * `@warp-drive/legacy/adapter/rest` so `@ember-data/adapter/rest` imports keep working.
  * @module
  */
 export {

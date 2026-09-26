@@ -6,6 +6,8 @@ import type { SchemaArrayField } from '@warp-drive/core/types/schema/fields';
 /**
  * Options accepted by the {@link schemaArray} decorator.
  *
+ * @summary Options for the `@schemaArray` decorator that choose the element object schema, polymorphic type resolution,
+ * element identity key, and default value.
  * @public
  */
 export interface SchemaArrayOptions {
@@ -98,6 +100,8 @@ export interface SchemaArrayOptions {
  *
  * For an array of primitives with no schema, use {@link array} instead.
  *
+ * @summary Property decorator that compiles to a schema-array field, an inline array of embedded objects whose shape is
+ * defined by an object schema.
  * @example
  * ::: code-group
  *

@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy `Model`, adapter, and serializer support for WarpDrive, including `useLegacyStore` to configure a
+ * store that uses them.
  * @module
  * @mergeModuleWith <project>
  */
@@ -66,6 +68,8 @@ interface _LegacyStoreSetupOptions<T extends Cache> extends Omit<StoreSetupOptio
  * Setup options for a legacy store configured to use `Model` with `linksMode`
  * enabled, meaning no legacy adapter/serializer request infrastructure is required.
  *
+ * @summary `useLegacyStore` options for a store that uses `Model` in `linksMode`, without the legacy adapter and
+ * serializer network layer.
  * @public
  */
 export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
@@ -94,6 +98,8 @@ export interface LegacyModelStoreSetupOptions<T extends Cache> extends _LegacySt
  * legacy adapter/serializer network layer, but without the deprecated
  * `store.findRecord`/`findAll`/`query`/etc. request methods.
  *
+ * @summary `useLegacyStore` options for a store that uses `Model` and the legacy adapter and serializer network
+ * layer, without deprecated request methods like `store.findRecord`.
  * @public
  */
 export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
@@ -120,6 +126,8 @@ export interface LegacyModelAndNetworkStoreSetupOptions<T extends Cache> extends
  * legacy adapter/serializer network layer and the deprecated
  * `store.findRecord`/`findAll`/`query`/etc. request methods.
  *
+ * @summary `useLegacyStore` options for a store that uses `Model`, the legacy adapter and serializer network layer,
+ * and deprecated request methods like `store.findRecord`.
  * @public
  */
 export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cache> extends _LegacyStoreSetupOptions<T> {
@@ -150,6 +158,9 @@ export interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cach
  * - {@link LegacyModelStoreSetupOptions}
  * - {@link LegacyModelAndNetworkStoreSetupOptions}
  * - {@link LegacyModelAndNetworkAndRequestStoreSetupOptions}
+ *
+ * @summary Options accepted by `useLegacyStore`, choosing via `linksMode` and `legacyRequests` how much of the
+ * legacy `Model`, adapter, and request support to enable.
  */
 export type LegacyStoreSetupOptions<T extends Cache = Cache> =
   | LegacyModelStoreSetupOptions<T>
@@ -281,6 +292,9 @@ export declare class ConfiguredStore<
  * {@link RequestManager} won't have it set unless the caller supplies it
  * explicitly, so a handler relying on it should treat it as optional (as
  * `LoggingHandler` does above).
+ *
+ * @summary Creates a `Store` class preconfigured for legacy apps, with `Model` schema support, request handlers,
+ * cache, and optional adapter, serializer, and fragment support.
  */
 export function useLegacyStore<T extends Cache>(
   options: LegacyModelStoreSetupOptions<T>,

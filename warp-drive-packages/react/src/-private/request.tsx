@@ -175,6 +175,8 @@ export function Throw({ error }: { error: Error }): never {
  *
  * ```
  *
+ * @summary Component that renders idle, loading, error, cancelled, or content states for a request as it progresses,
+ * with retry and refresh support.
  * @category Components
  */
 export function Request<RT, E>($props: RequestProps<RT, E>): JSX.Element {

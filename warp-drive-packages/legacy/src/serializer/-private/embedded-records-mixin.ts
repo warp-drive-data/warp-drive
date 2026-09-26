@@ -96,6 +96,8 @@ import { inverseForRelationship } from './utils.ts';
   are. Please read the docs for the methods this mixin provides, in case you need
   to modify it to fit your specific needs.**
 
+  @summary Legacy serializer mixin that extracts and serializes related records embedded in a payload instead of
+  referenced by id, configured per relationship via `attrs`.
   @class EmbeddedRecordsMixin
   @public
 */

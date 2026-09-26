@@ -54,6 +54,8 @@ export let ACCEPT_HEADER_VALUE = 'application/vnd.api+json';
  * }
  * ```
  *
+ * @summary Sets the JSON:API extensions and profiles sent in the `Accept` header, plus the global URL host and
+ * namespace.
  * @public
  * @param {BuildURLConfig} config
  * @return {void}

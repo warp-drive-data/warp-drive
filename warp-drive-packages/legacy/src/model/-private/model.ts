@@ -496,6 +496,8 @@ interface Model {
  * the class to use as the reactive object for data of resource
  * of that type.
  *
+ * @summary Legacy base class whose subclasses both define a resource type's schema with `attr`, `belongsTo` and
+ * `hasMany` and serve as its reactive record.
  * @public
  * @noInheritDoc
  * @hideconstructor
@@ -1948,6 +1950,9 @@ defineGate(Model.prototype, 'isReloading', {
  * `destroyRecord`, and `reload` onto the given `Model` subclass, for
  * apps that have not yet migrated off of the deprecated
  * `ENABLE_LEGACY_REQUEST_METHODS` behaviors.
+ *
+ * @summary Legacy opt-in that restores the pre-`RequestManager` `save`, `destroyRecord`, `reload`, and `isReloading`
+ * onto a `Model` class without deprecation warnings.
  */
 export function restoreDeprecatedModelRequestBehaviors(ModelKlass: typeof Model): void {
   // @ts-expect-error TS doesn't know how to do `this` function overloads

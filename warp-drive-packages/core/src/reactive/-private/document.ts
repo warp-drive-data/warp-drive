@@ -153,6 +153,8 @@ type DocumentMeta<M extends Meta | undefined> = undefined extends M
  * The variant of {@link ReactiveDocument} returned for a request whose
  * response contained no primary data, e.g. an error response.
  *
+ * @summary The shape of a reactive response document that carries `errors` and no primary `data`,
+ * such as the result of a failed request.
  * @public
  */
 export type ReactiveErrorDocument<
@@ -191,6 +193,8 @@ export type ReactiveErrorDocument<
  * The variant of {@link ReactiveDocument} returned for a request whose
  * response contained primary data.
  *
+ * @summary The shape of a reactive response document whose `data` holds the request's primary
+ * records, with no `errors`.
  * @public
  */
 export type ReactiveDataDocument<
@@ -253,6 +257,8 @@ function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
  * be directly modified. Whether individual properties are mutable or not is
  * determined by the record instance itself.
  *
+ * @summary The reactive wrapper around a request's response document that exposes its data or errors
+ * as live records, plus meta, links, and pagination helpers.
  * @public
  */
 export type ReactiveDocument<

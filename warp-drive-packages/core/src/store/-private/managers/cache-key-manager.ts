@@ -257,6 +257,8 @@ export type MergeMethod = (
 
   ⚠️ Caution: Requests that do not have a `method` assigned are assumed to be `GET`
 
+  @summary Overrides how the store generates `lid` cache keys for resources and documents; must be set
+  before the store is created.
   @public
 */
 export function setIdentifierGenerationMethod(method: GenerationMethod | null): void {
@@ -292,6 +294,8 @@ export function setIdentifierGenerationMethod(method: GenerationMethod | null): 
   `updateRecordIdentifier` that attempt to change the `id` or calling update
   without providing an `id` when one is missing will throw an error.
 
+  @summary Registers a callback run when an existing resource key receives new data, for updating your
+  own secondary lookup tables.
   @public
 */
 export function setIdentifierUpdateMethod(method: UpdateMethod | null): void {
@@ -310,6 +314,8 @@ export function setIdentifierUpdateMethod(method: UpdateMethod | null): void {
  Takes method which can expect to receive an existing `Identifier` that should be eliminated
  from any secondary lookup tables or caches that the user has populated for it.
 
+  @summary Registers a callback run when the store releases a resource key, for cleaning up your own
+  lookup tables.
   @public
 */
 export function setIdentifierForgetMethod(method: ForgetMethod | null): void {
@@ -330,6 +336,8 @@ export function setIdentifierForgetMethod(method: ForgetMethod | null): void {
  If you have properly used a WeakMap to encapsulate the state of your customization
  to the application instance, you may not need to implement the `resetMethod`.
 
+  @summary Registers a callback run when the store's key cache is torn down, for resetting any custom
+  key-generation state.
   @public
 */
 export function setIdentifierResetMethod(method: ResetMethod | null): void {
@@ -349,6 +357,8 @@ export function setIdentifierResetMethod(method: ResetMethod | null): void {
  import { setKeyInfoForResource } from '@warp-drive/core';
  ```
 
+  @summary Overrides how the store derives the `type` and `id` of a new `ResourceKey` from resource data;
+  must be set before the store is created.
   @public
  */
 export function setKeyInfoForResource(method: KeyInfoMethod | null): void {

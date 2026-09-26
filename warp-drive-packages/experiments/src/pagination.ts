@@ -10,6 +10,8 @@
  * See the [Pagination guide](/guides/the-manual/experiments/pagination) for
  * an introduction.
  *
+ * @summary Experimental reactive pagination primitives for tracking page state, links, and caches across paginated
+ * requests.
  * @module
  */
 export {

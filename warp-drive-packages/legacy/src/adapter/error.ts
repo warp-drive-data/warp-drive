@@ -36,6 +36,9 @@ function _AdapterError(this: AdapterRequestError, errors: ApiError[], message = 
 
 /**
  * The shape of the errors thrown/returned by {@link AdapterError} and its subclasses.
+ *
+ * @summary Legacy adapter error shape: an `Error` flagged `isAdapterError` with a `code` string and a {json:api}
+ * `errors` array, as thrown by `AdapterError` and its subclasses.
  */
 export interface AdapterRequestError<T extends string = string> extends Error {
   /**
@@ -54,6 +57,9 @@ export interface AdapterRequestError<T extends string = string> extends Error {
 /**
  * The static interface shared by {@link AdapterError} and its subclasses,
  * allowing further subclassing via {@link AdapterRequestErrorConstructor.extend | extend}.
+ *
+ * @summary Static side of the legacy adapter error constructors: `new (errors?, message?)` plus `extend({ message })`
+ * for creating further error subclasses.
  */
 export interface AdapterRequestErrorConstructor<Instance extends AdapterRequestError = AdapterRequestError> {
   new (errors?: unknown[], message?: string): Instance;
@@ -70,6 +76,9 @@ _AdapterError.extend = extendFn(_AdapterError as unknown as AdapterRequestErrorC
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link AdapterError} constructor.
+ *
+ * @summary Legacy base error an adapter returns or throws to signal a failed API request; extend it to define
+ * app-specific error types.
  */
 export type AdapterError = AdapterRequestError<'AdapterError'>;
 /**
@@ -256,6 +265,8 @@ export type InvalidError = AdapterRequestError<'InvalidError'>;
  * model. As a result, it is safe for the `InvalidError` to wrap the error
  * payload unaltered.
  *
+ * @summary Legacy adapter error signaling that the API rejected a request as semantically invalid, typically failed
+ * server-side validation, putting the record in the `invalid` state.
  * @public
  */
 export const InvalidError: AdapterRequestErrorConstructor<InvalidError> = getOrSetGlobal(
@@ -266,6 +277,8 @@ InvalidError.prototype.code = 'InvalidError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link TimeoutError} constructor.
+ *
+ * @summary Legacy adapter error signaling that a request to the API timed out without receiving a response.
  */
 export type TimeoutError = AdapterRequestError<'TimeoutError'>;
 /**
@@ -303,6 +316,8 @@ TimeoutError.prototype.code = 'TimeoutError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link AbortError} constructor.
+ *
+ * @summary Legacy adapter error signaling that a request to the API was aborted before a response arrived.
  */
 export type AbortError = AdapterRequestError<'AbortError'>;
 /**
@@ -342,6 +357,9 @@ AbortError.prototype.code = 'AbortError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link UnauthorizedError} constructor.
+ *
+ * @summary Legacy adapter error for an HTTP 401 response, signaling that authorization is required and failed or
+ * was not provided.
  */
 export type UnauthorizedError = AdapterRequestError<'UnauthorizedError'>;
 /**
@@ -380,6 +398,9 @@ UnauthorizedError.prototype.code = 'UnauthorizedError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link ForbiddenError} constructor.
+ *
+ * @summary Legacy adapter error for an HTTP 403 response, signaling that the server refused a valid request the
+ * user lacks permission for.
  */
 export type ForbiddenError = AdapterRequestError<'ForbiddenError'>;
 /**
@@ -420,6 +441,9 @@ ForbiddenError.prototype.code = 'ForbiddenError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link NotFoundError} constructor.
+ *
+ * @summary Legacy adapter error for an HTTP 404 response, signaling that the requested resource does not exist on
+ * the API.
  */
 export type NotFoundError = AdapterRequestError<'NotFoundError'>;
 /**
@@ -461,6 +485,9 @@ NotFoundError.prototype.code = 'NotFoundError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link ConflictError} constructor.
+ *
+ * @summary Legacy adapter error for an HTTP 409 response, signaling that the request conflicts with existing
+ * server state, such as a duplicate client-generated id.
  */
 export type ConflictError = AdapterRequestError<'ConflictError'>;
 /**
@@ -499,6 +526,9 @@ ConflictError.prototype.code = 'ConflictError';
 
 /**
  * The {@link AdapterRequestError} shape thrown by the {@link ServerError} constructor.
+ *
+ * @summary Legacy adapter error for an HTTP 500 response, signaling that the API failed internally and an
+ * immediate retry is unlikely to succeed.
  */
 export type ServerError = AdapterRequestError<'ServerError'>;
 /**

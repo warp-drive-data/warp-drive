@@ -403,6 +403,9 @@ const Storages = new Map<string, WeakRef<InternalDocumentStorage>>();
  * - ?? support for relationship based cache traversal
  * - a way to index records by type + another field (e.g updatedAt/createAt/name)
  *   such that simple queries can be done without having to scan all records
+ *
+ * @summary Experimental persistent store for request documents and their resources, backed by the Origin Private File
+ * System and synced across tabs via `BroadcastChannel`.
  */
 export class DocumentStorage {
   declare readonly _storage: InternalDocumentStorage;

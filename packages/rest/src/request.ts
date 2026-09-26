@@ -40,6 +40,8 @@ URLs follow the most common REST format (camelCase pluralized resource types).
 
 These builders are re-exported from {@link @warp-drive/utilities!rest | @warp-drive/utilities/rest}; new code should import from there.
 
+ * @summary Legacy alias re-exporting request builders from `@warp-drive/utilities/rest` that produce fetch options with
+ * stable, camelCase pluralized REST URLs.
  * @module
  */
 // oxlint-disable-next-line no-unused-vars

@@ -6,6 +6,8 @@ import type { CompatStore } from '../compat.ts';
  * Utilities - often temporary - for maintaining backwards compatibility with
  * older parts of WarpDrive.
  *
+ * @summary Legacy internals of the adapter-based network layer, such as `Snapshot` and `FetchManager`, shared across
+ * the legacy packages.
   @module
 */
 export { SnapshotRecordArray } from './legacy-network-handler/snapshot-record-array.ts';

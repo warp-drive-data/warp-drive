@@ -47,6 +47,7 @@ export function peekResourceKey(record: OpaqueRecordInstance): ResourceKey | und
   const { id, type, lid } = identifier;
   ```
 
+  @summary Returns the stable `ResourceKey` (type, id, and lid) the store assigned to a record instance.
   @public
   @param record a record instance previously obstained from the store.
  */

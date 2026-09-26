@@ -269,6 +269,8 @@
  * - {@link LegacyModeFieldSchema}
  * - {@link PolarisModeFieldSchema}
  *
+ * @summary Schema-driven reactive records, arrays, and documents the store builds from cached data, plus the
+ * `SchemaService` and schema types that define them.
  * @module
  */
 import { checkout } from './reactive/-private/record.ts';

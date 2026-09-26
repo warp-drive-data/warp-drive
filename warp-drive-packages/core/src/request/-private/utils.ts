@@ -113,6 +113,9 @@ function ensureDoc<T>(owner: ContextOwner, content: T | Error, isError: boolean)
  * Else it extends from {@link AggregateError} if the
  * response includes an array of errors, falling back
  * to {@link Error} as its base.
+ *
+ * @summary The shape of errors thrown by the Fetch handler for failed, aborted, or network-errored
+ * requests, carrying the HTTP `status` and `statusText`.
  */
 export interface FetchError extends DOMException {
   /**

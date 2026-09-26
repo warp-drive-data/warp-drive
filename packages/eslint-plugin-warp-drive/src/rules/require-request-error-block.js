@@ -1,5 +1,7 @@
 /**
  * {@include ./require-request-error-block.md}
+ *
+ * @summary Lint rule that requires every React `<Request>` component to be given a `states.error` handler.
  * @module
  */
 'use strict';
@@ -31,7 +33,10 @@ function getPropertyKeyName(property) {
   return undefined;
 }
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports React `<Request>` components that are not given a `states.error` handler.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'problem',

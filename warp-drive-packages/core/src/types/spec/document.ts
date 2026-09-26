@@ -7,6 +7,9 @@ import type { Links, Meta, PaginationLinks } from './json-api-raw.ts';
 /**
  * This type represents a raw {json:api} document for a meta-only
  * document returned by a request intended to be inserted into the cache.
+ *
+ * @summary A raw {json:api} document carrying only `meta` and optional `links`, as returned by a request and
+ * inserted into the cache.
  */
 export interface ResourceMetaDocument {
   /**
@@ -28,6 +31,9 @@ export interface ResourceMetaDocument {
  * returned by a request intended to be inserted into the cache.
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
+ *
+ * @summary A raw {json:api} document whose `data` is a single resource or `null`, as returned by a request and
+ * inserted into the cache.
  */
 export interface SingleResourceDataDocument<T = PersistedResourceKey, R = PersistedResourceKey> {
   /**
@@ -57,6 +63,9 @@ export interface SingleResourceDataDocument<T = PersistedResourceKey, R = Persis
  * returned by a request intended to be inserted into the cache.
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
+ *
+ * @summary A raw {json:api} document whose `data` is an array of resources, as returned by a request and inserted
+ * into the cache.
  */
 export interface CollectionResourceDataDocument<T = PersistedResourceKey> {
   /**
@@ -90,6 +99,9 @@ export interface CollectionResourceDataDocument<T = PersistedResourceKey> {
  * - {@link CollectionResourceDataDocument}
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDataDocument} instead.
+ *
+ * @summary Either a single-resource or a collection raw {json:api} data document, as stored in and returned by
+ * the cache.
  */
 export type ResourceDataDocument<T = PersistedResourceKey> =
   | SingleResourceDataDocument<T>
@@ -100,6 +112,9 @@ export type ResourceDataDocument<T = PersistedResourceKey> =
  * the cache may use.
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveErrorDocument} instead.
+ *
+ * @summary A raw {json:api} document carrying an `errors` array for a failed request, as stored in and returned
+ * by the cache.
  */
 export interface ResourceErrorDocument {
   /**
@@ -131,6 +146,9 @@ export interface ResourceErrorDocument {
  * - {@link ResourceErrorDocument}
  *
  * For the Reactive value returned by a request using the store, use {@link ReactiveDocument} instead.
+ *
+ * @summary Any raw {json:api} document the cache stores and returns: meta-only, single-resource, collection, or
+ * error.
  */
 export type ResourceDocument<T = PersistedResourceKey> =
   | ResourceMetaDocument

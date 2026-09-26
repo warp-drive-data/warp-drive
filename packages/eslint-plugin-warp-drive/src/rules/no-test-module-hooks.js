@@ -1,5 +1,8 @@
 /**
  * {@include ./no-test-module-hooks.md}
+ *
+ * @summary Lint rule that disallows `hooks.beforeEach` and `hooks.afterEach` in tests in favor of setup functions each
+ * test calls explicitly.
  * @module
  */
 // @ts-check
@@ -8,7 +11,11 @@ const messageId = 'noTestModuleHooks';
 const hookCallSelector =
   'CallExpression[callee.type="MemberExpression"][callee.object.name="hooks"][callee.property.name=/^(beforeEach|afterEach)$/]';
 
-/** @type {import('eslint').Rule.RuleModule} */
+/**
+ * @summary ESLint rule object that reports `hooks.beforeEach` and `hooks.afterEach` in tests in favor of setup
+ * functions each test calls explicitly.
+ * @type {import('eslint').Rule.RuleModule}
+ */
 module.exports = {
   meta: {
     type: 'suggestion',

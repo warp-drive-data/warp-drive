@@ -27,6 +27,8 @@ type FindAllBuilderOptions = FindAllOptions;
   This is useful for quickly upgrading an entire app to a unified syntax while a longer incremental migration is made to shift off of adapters and serializers.
   To that end, these builders are deprecated and will be removed in a future version of WarpDrive.
 
+  @summary Deprecated legacy builder for a `store.request` config that behaves like `store.findAll`, easing
+  migration off adapters and serializers.
   @deprecated
   @public
   @param type the name of the resource

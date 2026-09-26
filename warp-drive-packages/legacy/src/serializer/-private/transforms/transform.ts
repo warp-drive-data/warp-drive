@@ -116,6 +116,8 @@ export interface Transform {
   }
   ```
 
+  @summary Legacy base for custom attribute transforms, which implement `serialize` and `deserialize` to convert
+  values between payloads and records.
   @class Transform
   @public
  */

@@ -17,6 +17,8 @@ const emberDirtyTag = dirtyTag as unknown as (tag: Tag) => void;
  * `@glimmer/validator` tags, used to wire WarpDrive's reactivity
  * primitives into Ember's autotracking system.
  *
+ * @summary Creates the signal hooks that wire WarpDrive reactivity into Ember autotracking using `@glimmer/validator`
+ * tags.
  * @public
  */
 export function buildSignalConfig(options: {

@@ -13,6 +13,8 @@ import type { Store } from '../store-service';
  * Implementing this service allows you to programatically define
  * when a request should be considered expired.
  *
+ * @summary The interface a store's `lifetimes` service implements to decide when cached requests are
+ * hard or soft expired and should be refetched.
  * @public
  */
 export interface CachePolicy {

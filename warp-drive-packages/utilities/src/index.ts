@@ -1,4 +1,5 @@
 /**
+ * @summary Helpers for building request URLs and sorted query strings, with a configurable global host and namespace.
  * @module
  * @mergeModuleWith <project>
  */
@@ -15,6 +16,7 @@ import type { QueryParamsSerializationOptions, QueryParamsSource, Serializable }
  * The global configuration used by {@link buildBaseURL} when a call does
  * not provide its own `host`/`namespace`. Set via {@link setBuildURLConfig}.
  *
+ * @summary The global `host` and `namespace` that `buildBaseURL` prefixes onto URLs when a call does not pass its own.
  * @public
  */
 export interface BuildURLConfig {
@@ -66,6 +68,7 @@ const CONFIG: BuildURLConfig = getOrSetGlobal('CONFIG', {
  * });
  * ```
  *
+ * @summary Sets the app-wide default `host` and `namespace` used by `buildBaseURL` and the request builders.
  * @public
  */
 export function setBuildURLConfig(config: BuildURLConfig): void {
@@ -95,6 +98,7 @@ export function setBuildURLConfig(config: BuildURLConfig): void {
 /**
  * {@link buildBaseURL} options for a `findRecord` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for fetching one resource by type and id.
  * @public
  */
 export interface FindRecordUrlOptions {
@@ -132,6 +136,7 @@ export interface FindRecordUrlOptions {
 /**
  * {@link buildBaseURL} options for a `query` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for querying a collection of one resource type.
  * @public
  */
 export interface QueryUrlOptions {
@@ -165,6 +170,8 @@ export interface QueryUrlOptions {
 /**
  * {@link buildBaseURL} options for a `findMany` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for fetching several resources, pathed by the first
+ * identifier's type.
  * @public
  */
 export interface FindManyUrlOptions {
@@ -201,6 +208,8 @@ export interface FindManyUrlOptions {
 /**
  * {@link buildBaseURL} options for a `findRelatedCollection` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for a record's has-many relationship, ending in the
+ * field name.
  * @public
  */
 export interface FindRelatedCollectionUrlOptions {
@@ -242,6 +251,8 @@ export interface FindRelatedCollectionUrlOptions {
 /**
  * {@link buildBaseURL} options for a `findRelatedRecord` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for a record's belongs-to relationship, ending in the
+ * field name.
  * @public
  */
 export interface FindRelatedResourceUrlOptions {
@@ -283,6 +294,7 @@ export interface FindRelatedResourceUrlOptions {
 /**
  * {@link buildBaseURL} options for a `createRecord` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the collection URL a new record of a given type is saved to.
  * @public
  */
 export interface CreateRecordUrlOptions {
@@ -316,6 +328,7 @@ export interface CreateRecordUrlOptions {
 /**
  * {@link buildBaseURL} options for an `updateRecord` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for saving changes to an existing record by type and id.
  * @public
  */
 export interface UpdateRecordUrlOptions {
@@ -353,6 +366,7 @@ export interface UpdateRecordUrlOptions {
 /**
  * {@link buildBaseURL} options for a `deleteRecord` request.
  *
+ * @summary Options passed to `buildBaseURL` to build the URL for deleting an existing record by type and id.
  * @public
  */
 export interface DeleteRecordUrlOptions {
@@ -391,6 +405,7 @@ export interface DeleteRecordUrlOptions {
  * {@link buildBaseURL} options for building a URL directly from a `resourcePath`
  * without an associated request operation.
  *
+ * @summary Options passed to `buildBaseURL` to build a URL from an explicit `resourcePath` with no request `op`.
  * @public
  */
 export interface GenericUrlOptions {
@@ -421,6 +436,7 @@ export interface GenericUrlOptions {
  * - {@link DeleteRecordUrlOptions}
  * - {@link GenericUrlOptions}
  *
+ * @summary Any of the option shapes `buildBaseURL` accepts, one per request `op` plus a generic `resourcePath` form.
  * @public
  */
 export type UrlOptions =
@@ -499,6 +515,7 @@ function resourcePathForType(options: UrlOptions): string {
  *   - 'findRecord' 'query' 'findMany' 'findRelatedCollection' 'findRelatedRecord'` 'createRecord' 'updateRecord' 'deleteRecord'
  * - Depending on the value of `op`, `identifier` or `identifiers` will be required.
  *
+ * @summary Joins host, namespace, resource path, id, and relationship field into a request URL without query params.
  * @public
  */
 export function buildBaseURL(urlOptions: UrlOptions): string {
@@ -621,6 +638,8 @@ function handleInclude(include: string | string[]): string[] {
  * filter out keys of an object that have falsy values or point to empty arrays
  * returning a new object with only those keys that have truthy values / non-empty arrays
  *
+ * @summary Returns a copy of an object without keys whose values are `undefined`, `null`, empty strings, or empty
+ * arrays.
  * @public
  * @param source object to filter keys with empty values from
  * @return A new object with the keys that contained empty values removed
@@ -657,6 +676,8 @@ export function filterEmpty(source: Record<string, Serializable>): Record<string
  * 'repeat': appends the key for every value e.g. `&ids=1&ids=2`
  * 'comma' (default): appends the key once with a comma separated list of values e.g. `&ids=1,2`
  *
+ * @summary Builds a `URLSearchParams` with keys and array values sorted, so equivalent queries produce identical
+ * params.
  * @public
  * @return A {@link URLSearchParams} with keys inserted in sorted order
  */
@@ -740,6 +761,8 @@ export function sortQueryParams(params: QueryParamsSource, options?: QueryParams
  * 'repeat': appends the key for every value e.g. `ids=1&ids=2`
  * 'comma' (default): appends the key once with a comma separated list of values e.g. `ids=1,2`
  *
+ * @summary Serializes query params into a string with keys and array values sorted, so equivalent queries share one
+ * URL.
  * @public
  * @return A sorted query params string without the leading `?`
  */

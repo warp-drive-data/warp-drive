@@ -80,6 +80,9 @@ StorageEvents.addEventListener('message', handleCacheEvent);
  *
  * This is a good option for larger data sets than can be efficiently stored in localStorage
  * but should not be used as a permanent DB or storage solution.
+ *
+ * @summary Experimental `Storage`-compatible interface over the browser Cache API, suited to larger JSON data sets than
+ * localStorage.
  */
 export class CacheStorage implements Storage {
   #cache: Cache | null;

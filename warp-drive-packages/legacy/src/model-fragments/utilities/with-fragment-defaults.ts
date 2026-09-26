@@ -2,6 +2,8 @@
  * Used as a helper to setup the relevant parts of a fragment schema
  * and add extensions etc.
  *
+ * @summary Legacy ModelFragments migration helper that builds a `schema-object` field for a single `fragment:`
+ * type with the `ember-object` and `fragment` extensions.
  * @param fragmentType The type of the fragment
  * @param fragmentName The optional name of the fragment. If not provided, it will default to the fragmentType.
  * @returns The schema for a fragment

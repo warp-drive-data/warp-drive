@@ -62,6 +62,9 @@ type Store = {
  * Interface of a parsed Cache-Control header value.
  *
  * - [MDN Cache-Control Reference](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control)
+ *
+ * @summary The directives of a `Cache-Control` header as an object of flags and second counts, as
+ * returned by `parseCacheControl`.
  */
 export interface CacheControlValue {
   /** Indicates the response will never change; parsed but not currently used by this cache policy's expiration logic. */
@@ -122,6 +125,8 @@ const NUMERIC_KEYS = new Set(['max-age', 's-maxage', 'stale-if-error', 'stale-wh
  *
  * See also {@link CacheControlValue} and [Response Directives](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control#response_directives)
  *
+ * @summary Parses a `Cache-Control` header string into a `CacheControlValue` object, caching results
+ * per header string.
  * @public
  */
 export function parseCacheControl(header: string): CacheControlValue {
@@ -384,6 +389,8 @@ export interface PolicyConfigConstraints {
  * }
  * ```
  *
+ * @summary Options for `DefaultCachePolicy`: soft and hard expiration times, header-based expiration
+ * constraints, and test-mode behavior.
  */
 export interface PolicyConfig {
   /**
@@ -544,6 +551,8 @@ export interface PolicyConfig {
  * This behavior can be opted out of by setting `disableTestOptimization = true`
  * in the policy config.
  *
+ * @summary The built-in cache policy, which expires cached requests using expiration headers or time
+ * since the response `date`, and invalidates queries after matching creates.
  * @public
  */
 export class DefaultCachePolicy implements CachePolicy {

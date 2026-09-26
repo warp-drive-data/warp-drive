@@ -2,6 +2,8 @@
  * This package provides core types, type-utilities, symbols
  * and constants used across the WarpDrive ecosystem.
  *
+ * @summary Shared WarpDrive types such as `ResourceKey`, `SchemaService`, `CacheCapabilitiesManager`, and the
+ * legacy finder option types.
  * @module
  */
 export type { StableRecordIdentifier, ResourceKey } from './types/identifier.ts';

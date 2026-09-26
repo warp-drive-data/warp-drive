@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting `Store` as its default, plus `CacheHandler`, `recordIdentifierFor`, identifier
+ * configuration hooks, and store types from `@warp-drive/core`.
  * @module
  * @mergeModuleWith <project>
  */

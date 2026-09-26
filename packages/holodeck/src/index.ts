@@ -1,4 +1,6 @@
 /**
+ * @summary Test utilities for mocking HTTP requests against the Holodeck mock server, which records responses as
+ * fixtures and replays them in later runs.
  * @module
  * @mergeModuleWith <project>
  */
@@ -136,6 +138,7 @@ type TestEntry = NonNullable<ReturnType<(typeof TEST_IDS)['get']>>;
 let HOST = '/';
 
 /**
+ * @summary Sets the host url of the Holodeck mock server that recordings are sent to.
  * @public
  */
 
@@ -144,6 +147,8 @@ export function setConfig({ host }: { host: string }): void {
 }
 
 /**
+ * @summary Assigns a test context its Holodeck test id before a test, or clears it after, reporting an error for any
+ * mock the test never requested.
  * @public
  */
 
@@ -245,6 +250,8 @@ const shouldRecord = SHOULD_RECORD ? true : false;
 let IS_RECORDING: boolean | null = null;
 
 /**
+ * @summary Overrides at runtime whether Holodeck mocks are recorded to fixtures, in place of the build-time
+ * `SHOULD_RECORD` flag.
  * @public
  */
 export function setIsRecording(value: boolean): void {
@@ -252,6 +259,8 @@ export function setIsRecording(value: boolean): void {
 }
 
 /**
+ * @summary Reports whether Holodeck mocks are recorded to fixtures, using the `setIsRecording` override when set or the
+ * build-time `SHOULD_RECORD` flag otherwise.
  * @public
  */
 export function getIsRecording(): boolean {
@@ -267,6 +276,8 @@ export function getIsRecording(): boolean {
  *
  * Requires that the test context be configured with a testId using `setTestId`.
  *
+ * @summary RequestManager handler that routes requests to the Holodeck mock server by tagging each url with the test id
+ * and request count.
  * @param owner - the test context object used to retrieve the test ID.
  */
 export class MockServerHandler implements Handler {
@@ -408,6 +419,8 @@ function upgradeStore(store: Store): asserts store is Store & { adapterFor: HasA
  * to override the adapter's _fetchRequest method to route requests through
  * the Holodeck mock server.
  *
+ * @summary Patches a legacy store so its adapters send `_fetchRequest` calls through the Holodeck mock server for the
+ * given test context.
  * @param owner - The test context object used to retrieve the test ID.
  */
 export function installAdapterFor(owner: object, store: Store): void {
@@ -447,6 +460,8 @@ export function installAdapterFor(owner: object, store: Store): void {
 /**
  * Mock a request by sending the scaffold to the mock server.
  *
+ * @summary Registers a mock response with the Holodeck server for the current test, recording it as a fixture when
+ * recording and only counting it when replaying.
  * @public
  */
 export async function mock(

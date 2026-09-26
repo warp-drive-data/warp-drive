@@ -16,6 +16,8 @@ interface ConcatDerivation {
  *
  * Generally you should not need to import and use this function directly.
  *
+ * @summary Derivation registered as `concat` that joins a record's listed `fields` into one string with an optional
+ * `separator`.
  * @example
  * {
  *   name: 'fullName',

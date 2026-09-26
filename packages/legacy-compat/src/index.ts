@@ -1,4 +1,6 @@
 /**
+ * @summary Legacy entry re-exporting `LegacyNetworkHandler`, `adapterFor`, `serializerFor`, and related helpers that
+ * let a request-based store keep using adapters and serializers.
  * @module
  * @mergeModuleWith <project>
  */

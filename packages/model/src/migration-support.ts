@@ -15,6 +15,8 @@
  * additions. LegacyMode is not intended to be a long-term solution, but rather a stepping stone
  * to assist in more rapidly adopting modern WarpDrive features.
  *
+ * @summary Legacy helpers (`withDefaults`, `registerDerivations`, `DelegatingSchemaService`, `WithLegacy`) for
+ * migrating from `@ember-data/model` to schema-driven records in LegacyMode.
  * @module
  */
 export * from '@warp-drive/legacy/model/migration-support';

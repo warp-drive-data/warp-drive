@@ -1,4 +1,6 @@
 /**
+ * @summary React integration for WarpDrive, providing components and hooks for supplying a Store, rendering request
+ * states, and re-rendering on data changes.
  * @module
  * @mergeModuleWith <project>
  */

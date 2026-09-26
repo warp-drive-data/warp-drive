@@ -128,6 +128,8 @@ const ERROR_STATUS_CODE_FOR = new Map([
  *   .use([Fetch]);
  * ```
  *
+ * @summary Terminal request handler that sends the request with native `fetch` and resolves with the
+ * parsed JSON body, turning HTTP failures into errors.
  * @public
  * @badge Handler
  */

@@ -38,6 +38,9 @@ export interface StorageResourceMeta {
  * Use functions when you want to create more than
  * one instance of a resource type, each with its own
  * persisted data.
+ *
+ * @summary Experimental function type that derives a unique storage key from a storage resource instance, so each
+ * instance persists its own data.
  */
 // oxlint-disable-next-line typescript/no-explicit-any
 export type KeyFn = (obj: any) => string;
