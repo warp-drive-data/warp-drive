@@ -1,8 +1,5 @@
 # @warp-drive/core-types
 
-:::warning ⚠️ This package has been merged into {@link @warp-drive/core! | @warp-drive/core} and is not recommended for new applications
-:::
-
 Every entry point in this package is a type-only re-export of the matching
 `@warp-drive/core/types/*` module, kept so existing `@warp-drive/core-types/*`
 imports keep compiling. Nothing is declared here; the documentation for each

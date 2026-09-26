@@ -1,11 +1,5 @@
 # @ember-data/json-api
 
-:::warning ⚠️ Legacy Package
-**This package only exists for backwards compatibility.**
-
-**For new projects:** Use {@link @warp-drive/json-api! | @warp-drive/json-api} for the cache and {@link @warp-drive/utilities! | @warp-drive/utilities} for the request builders.
-:::
-
 ## Overview
 
 This package provides an in-memory [{json:api}](https://jsonapi.org/) document and resource [Cache](/api/@warp-drive/core/types/cache/types/Cache) implementation for use with the older EmberData package setup.

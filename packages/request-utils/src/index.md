@@ -1,8 +1,5 @@
 # @ember-data/request-utils
 
-:::warning ⚠️ This package has been merged into {@link @warp-drive/utilities! | @warp-drive/utilities} and is not recommended for new applications
-:::
-
 Simple utility functions to assist in url building,
 query params, and other common request operations.
 
