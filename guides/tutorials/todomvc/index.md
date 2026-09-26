@@ -30,7 +30,8 @@ to Stun".
    `PATCH`
 6. [Toggle](./toggle.md): save a todo's completed state, and move it between the
    cached lists
-7. Delete
+7. [Delete](./delete.md): delete a todo, and let the cache drop it from every
+   list
 8. Bulk operations
 9. Where next
 
