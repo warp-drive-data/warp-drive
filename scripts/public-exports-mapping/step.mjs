@@ -45,16 +45,18 @@ const LOCAL = { kind: 'local' };
  */
 
 /**
- * @typedef {object} OverrideProblem
- * @property {'unknown-source' | 'unknown-target' | 'duplicate' | 'redundant'} kind
- * @property {Override} override
+ * @typedef {object} Problem
+ * @property {'unknown-source' | 'unknown-target' | 'duplicate' | 'redundant' | 'residual-chain'} kind
  * @property {string} detail
  */
 
-export class OverrideError extends Error {
-  /** @param {OverrideProblem[]} problems */
-  constructor(problems) {
-    super(`${problems.length} override(s) refused`);
+export class ProblemsError extends Error {
+  /**
+   * @param {string} what
+   * @param {Problem[]} problems
+   */
+  constructor(what, problems) {
+    super(`${problems.length} ${what}`);
     this.problems = problems;
   }
 }
@@ -64,7 +66,7 @@ export class OverrideError extends Error {
  * @param {import('./surface.mjs').Surface} to
  * @param {Overrides | null} overrides
  * @returns {StepMap}
- * @throws {OverrideError}
+ * @throws {ProblemsError}
  */
 export function deriveStep(from, to, overrides) {
   const resolve = createResolver(to);
@@ -75,27 +77,26 @@ export function deriveStep(from, to, overrides) {
     byKey.set(keyOf(t), derived(t, resolve(t.module, t.export)));
   }
 
-  /** @type {OverrideProblem[]} */
+  /** @type {Problem[]} */
   const problems = [];
   const seen = new Set();
   for (const override of overrides?.entries ?? []) {
     const key = keyOf(override);
     const label = `${overrides.from}-${overrides.to}: ${key}`;
     if (seen.has(key)) {
-      problems.push({ kind: 'duplicate', override, detail: `${label} is overridden twice` });
+      problems.push({ kind: 'duplicate', detail: `${label} is overridden twice` });
       continue;
     }
     seen.add(key);
     const current = byKey.get(key);
     if (!current) {
-      problems.push({ kind: 'unknown-source', override, detail: `${label} is not a token of ${from.version}` });
+      problems.push({ kind: 'unknown-source', detail: `${label} is not a token of ${from.version}` });
       continue;
     }
     const target = override.to && toByKey.get(keyOf(override.to));
     if (override.to && !target) {
       problems.push({
         kind: 'unknown-target',
-        override,
         detail: `${label} targets ${keyOf(override.to)}, not a token of ${to.version}`,
       });
       continue;
@@ -104,14 +105,13 @@ export function deriveStep(from, to, overrides) {
     if (sameToken(current.to, resolved)) {
       problems.push({
         kind: 'redundant',
-        override,
         detail: `${label} is already derived from the shims; delete the override`,
       });
       continue;
     }
     byKey.set(key, manual(current, resolved, override.note));
   }
-  if (problems.length) throw new OverrideError(problems);
+  if (problems.length) throw new ProblemsError('override(s) refused', problems);
 
   return {
     schema: 1,

@@ -1490,9 +1490,7 @@
         "module": "@warp-drive/ember",
         "export": "PromiseState",
         "typeOnly": true
-      },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+      }
     },
     {
       "module": "@warp-drive/core/store/-private",
@@ -1542,9 +1540,7 @@
         "module": "@warp-drive/ember",
         "export": "RequestLoadingState",
         "typeOnly": true
-      },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+      }
     },
     {
       "module": "@warp-drive/core/store/-private",
@@ -1554,9 +1550,7 @@
         "module": "@warp-drive/ember",
         "export": "RequestState",
         "typeOnly": true
-      },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+      }
     },
     {
       "module": "@warp-drive/core/store/-private",
@@ -1770,9 +1764,7 @@
         "module": "@warp-drive/ember",
         "export": "getPromiseState",
         "typeOnly": false
-      },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+      }
     },
     {
       "module": "@warp-drive/core/store/-private",
@@ -1782,9 +1774,7 @@
         "module": "@warp-drive/ember",
         "export": "getRequestState",
         "typeOnly": false
-      },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience."
+      }
     },
     {
       "module": "@warp-drive/core/store/-private",
@@ -5161,18 +5151,6 @@
       }
     },
     {
-      "module": "@warp-drive/schema-record/-private",
-      "export": "Editable",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@warp-drive/schema-record/-private",
-      "export": "Legacy",
-      "typeOnly": false,
-      "to": null
-    },
-    {
       "module": "@warp-drive/utilities",
       "export": "*",
       "typeOnly": false,
@@ -5840,16 +5818,6 @@
         "module": "@warp-drive/utilities/string",
         "export": "underscore",
         "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "ManyArray",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model/-private",
-        "export": "ManyArray",
-        "typeOnly": true
       }
     }
   ]

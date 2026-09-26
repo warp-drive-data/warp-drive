@@ -78,8 +78,9 @@ audience. Write such a move by hand in `overrides/<from>-<to>.json`:
 ```
 
 `to` may be `null` to declare a token removed. Source `typeOnly` comes from the from snapshot
-and target `typeOnly` from the to tree, so an override states neither. The `note` travels
-into the shipped map, so write the sentence a user should read.
+and target `typeOnly` from the to tree, so an override states neither. The `note` is the
+maintainers' reason for the move. It stays in the override and the step file it produces, and
+it does not reach the shipped map.
 
 An override is refused, and the command fails, when:
 
@@ -135,8 +136,8 @@ shim forwards everything through exactly one `export *`, so it is the sound rout
 the map does not list individually. The rule and the codemod use it for names added after
 the from release, and for namespace imports.
 
-`origin: "manual"` and `note` mark an entry that came from an override. `hops` appear only when
-more than one release changed the token, one per change, oldest first.
+An entry holds exactly `module`, `export`, `typeOnly` and `to`. It does not record which
+releases moved the token or whether an override chose the target.
 
 ```json
 {
@@ -157,13 +158,7 @@ more than one release changed the token, one per change, oldest first.
       "module": "@ember-data/store/-private",
       "export": "getRequestState",
       "typeOnly": false,
-      "to": { "module": "@warp-drive/ember", "export": "getRequestState", "typeOnly": false },
-      "origin": "manual",
-      "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience.",
-      "hops": [
-        { "at": "5.6", "to": { "module": "@warp-drive/core/store/-private", "export": "getRequestState", "typeOnly": false } },
-        { "at": "5.8", "to": { "module": "@warp-drive/ember", "export": "getRequestState", "typeOnly": false }, "note": "Landed in both @warp-drive/core/reactive and @warp-drive/ember in 5.8; ember is the target because older Ember apps are the lint's audience." }
-      ]
+      "to": { "module": "@warp-drive/ember", "export": "getRequestState", "typeOnly": false }
     },
     {
       "module": "@warp-drive/experiments/persisted-cache",
@@ -200,7 +195,7 @@ scripts/public-exports-mapping/
   generate.mjs     the scanner; scan() reads build configs and lists exports
   surface.mjs      what a version exports; tags, working tree, legacy modules, snapshots
   step.mjs         where a token goes next; shim analysis, the "*" rule, overrides
-  merge.mjs        the fold, the two properties every shipped map must have, and the delta encoding
+  merge.mjs        the fold, the residual-chain check, and the delta encoding
   artifacts.mjs    paths, byte-stable serialization, check mode
   token.mjs        Token, identity, ordering
   snapshots/       one per released minor; their names define what is released
