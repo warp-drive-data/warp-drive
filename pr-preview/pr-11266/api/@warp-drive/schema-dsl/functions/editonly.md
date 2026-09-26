@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/editonly.md
+description: >-
+  Reserved property decorator for marking a field edit-only in future generated
+  types; currently a no-op with no effect on the compiled schema.
 ---
 
 # &#x20;editonly()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function editonly(target: object, key: string): void;
 ```
 
-Defined in: [fields/editonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/editonly.ts#L12)
+Defined in: [fields/editonly.ts:14](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/editonly.ts#L14)
 
 **`Decorator`**
 

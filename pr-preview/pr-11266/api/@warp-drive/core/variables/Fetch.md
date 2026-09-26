@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/variables/Fetch.md
+description: >-
+  Terminal request handler that sends the request with native `fetch` and
+  resolves with the parsed JSON body, turning HTTP failures into errors.
 ---
 
 # &#x20;Fetch
@@ -11,7 +14,7 @@ const Fetch: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:134](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/request/-private/fetch.ts#L134)
+Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:136](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/request/-private/fetch.ts#L136)
 
 ```ts
 import { Fetch } from '@warp-drive/core';

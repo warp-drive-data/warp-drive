@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/model/functions/instantiateRecord.md
+description: >-
+  Legacy store hook that creates a `Model` instance for a resource key using the
+  `Model` class registered for its type.
 ---
 
 &#x20;
@@ -17,7 +20,7 @@ function instantiateRecord(
 ): Model;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/model/-private/hooks.ts#L21)
+Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:23](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/model/-private/hooks.ts#L23)
 
 The `instantiateRecord` hook implementation for use with `Model`. Pass
 this to your store's `instantiateRecord` method when configuring the

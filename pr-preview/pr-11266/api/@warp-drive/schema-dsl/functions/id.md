@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/id.md
+description: >-
+  Property decorator that makes the decorated property a resource's identity
+  field, needed only when the primary key is not named `id`.
 ---
 
 # &#x20;id()
@@ -16,7 +19,7 @@ function id(options: IdOptions): (target: object, key: string) => void;
 function id(target: object, key: string): void;
 ```
 
-Defined in: [fields/id.ts:55](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/id.ts#L55)
+Defined in: [fields/id.ts:58](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/id.ts#L58)
 
 **`Decorator`**
 
@@ -70,7 +73,7 @@ export class Post {
 function id(options: IdOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/id.ts:56](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/id.ts#L56)
+Defined in: [fields/id.ts:59](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/id.ts#L59)
 
 **`Decorator`**
 

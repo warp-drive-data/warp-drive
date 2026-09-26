@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/attribute.md
+description: >-
+  LEGACY property decorator that compiles to an attribute field for
+  `@warp-drive/legacy/model` resources; prefer `field` for new schemas.
 ---
 
 # &#x20;attribute()
@@ -16,7 +19,7 @@ function attribute(options: AttributeOptions): (target: object, key: string) => 
 function attribute(target: object, key: string): void;
 ```
 
-Defined in: [fields/attribute.ts:60](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L60)
+Defined in: [fields/attribute.ts:64](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L64)
 
 **`Decorator`**
 
@@ -68,7 +71,7 @@ export class Comment {
 function attribute(options: AttributeOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/attribute.ts:61](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L61)
+Defined in: [fields/attribute.ts:65](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L65)
 
 **`Decorator`**
 

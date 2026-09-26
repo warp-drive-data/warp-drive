@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/model-fragments/functions/withLegacy.md
+description: >-
+  Legacy ModelFragments migration helper that completes a legacy resource schema
+  with an `id` identity, `Model` defaults, and the `ember-object` and `fragment`
+  extensions.
 ---
 
 &#x20;
@@ -11,7 +15,7 @@ url: >-
 function withLegacy(schema: WithPartial<LegacyResourceSchema, "identity" | "legacy">): ResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts:14](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts#L14)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts:16](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts#L16)
 
 Used as a helper to setup the relevant parts of a legacy resource schema
 migrated from `Model`, applying the `ember-object` and `fragment` object

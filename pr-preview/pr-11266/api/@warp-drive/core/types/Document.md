@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/Document.md
+description: >-
+  Deprecated alias for `ReactiveDocument`, the reactive wrapper around a
+  request's response document.
 ---
 
 # &#x20;~~Document\<T, M *extends* [`Meta`](spec/json-api-raw/types/Meta.md) | `undefined` = [`Meta`](spec/json-api-raw/types/Meta.md) | `undefined`, E *extends* `object` = `object`, EM *extends* [`Meta`](spec/json-api-raw/types/Meta.md) | `undefined` = `M`>~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 type Document<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M> = ReactiveDocument<T, M, E, EM>;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:50](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/index.ts#L50)
+Defined in: [warp-drive-packages/core/src/index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/index.ts#L53)
 
 ## Type Parameters
 

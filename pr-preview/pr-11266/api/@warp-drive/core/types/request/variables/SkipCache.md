@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/request/variables/SkipCache.md
+description: >-
+  Symbol key for a request's `cacheOptions` that, when true, makes the request
+  bypass the CacheHandler so it neither resolves from nor updates the cache.
 ---
 
 # &#x20;SkipCache
@@ -9,7 +12,7 @@ url: >-
 const SkipCache: "___(unique) Symbol(SkipCache)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:27](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L27)
+Defined in: [warp-drive-packages/core/src/types/request.ts:36](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L36)
 
 A [cacheOptions](../types/RequestInfo.md#cacheoptions) flag which, when set,
 signals that a request should never be handled by the cache-manager and

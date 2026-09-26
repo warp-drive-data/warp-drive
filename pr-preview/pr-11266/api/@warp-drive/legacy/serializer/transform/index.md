@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/serializer/transform.md
+description: >-
+  Legacy transforms that serialize and deserialize attribute values: the
+  `Transform` base class plus the boolean, date, number and string transforms.
 ---
 
 &#x20;

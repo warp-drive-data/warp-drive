@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/react/functions/ReactiveContext.md
+description: >-
+  Component that re-renders its children when WarpDrive signals they read
+  change, by providing a signal watcher through `WatcherContext`.
 ---
 
 # &#x20;ReactiveContext()
@@ -11,7 +14,7 @@ function ReactiveContext(__namedParameters: {
 }): Element;
 ```
 
-Defined in: [-private/reactive-context.tsx:167](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/react/src/-private/reactive-context.tsx#L167)
+Defined in: [-private/reactive-context.tsx:171](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/react/src/-private/reactive-context.tsx#L171)
 
 ## Parameters
 

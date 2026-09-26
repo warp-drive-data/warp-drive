@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/error/types/InvalidError.md
+description: >-
+  Instance type of the legacy `InvalidError`, the adapter error for a request
+  the API rejected as semantically invalid.
 ---
 
 &#x20;
@@ -11,6 +14,6 @@ url: >-
 type InvalidError = AdapterRequestError<"InvalidError">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:203](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/error.ts#L203)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:222](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/error.ts#L222)
 
 The [AdapterRequestError](AdapterRequestError.md) shape thrown by the [InvalidError](../variables/InvalidError.md) constructor.

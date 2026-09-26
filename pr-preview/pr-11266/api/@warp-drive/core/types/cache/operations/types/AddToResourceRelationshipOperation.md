@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/cache/operations/types/AddToResourceRelationshipOperation.md
+description: >-
+  Cache operation passed to `cache.patch` that adds resources to a
+  relationship's remote state, optionally at an index.
 ---
 
 # &#x20;AddToResourceRelationshipOperation
@@ -17,7 +20,7 @@ interface AddToResourceRelationshipOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:176](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L176)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:204](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L204)
 
 Adds the specified ResourceKeys to a relationship
 
@@ -33,7 +36,7 @@ Adds the specified ResourceKeys to a relationship
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:185](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L185)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:213](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L213)
 
 The name of the relationship to add to
 
@@ -45,7 +48,7 @@ The name of the relationship to add to
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L193)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:221](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L221)
 
 The index at which to insert the resource(s), if applicable
 
@@ -57,7 +60,7 @@ The index at which to insert the resource(s), if applicable
 op: "add";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:177](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L177)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:205](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L205)
 
 The name of the [operation](Op.md)
 
@@ -73,7 +76,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:181](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L181)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:209](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L209)
 
 The cache key for the resource whose relationship is being updated
 
@@ -87,6 +90,6 @@ value:
   | PersistedResourceKey<string>[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:189](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L189)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:217](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L217)
 
 The resource(s) to add to the relationship

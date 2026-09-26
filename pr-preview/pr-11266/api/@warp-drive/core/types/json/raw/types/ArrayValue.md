@@ -1,6 +1,7 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/json/raw/types/ArrayValue.md
+description: A JSON array whose members are all JSON values.
 ---
 
 # &#x20;ArrayValue
@@ -9,6 +10,6 @@ url: >-
 type ArrayValue = Value[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/json/raw.ts:22](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/json/raw.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/json/raw.ts:30](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/json/raw.ts#L30)
 
 A JSON array whose members are valid [Value](Value.md)s.

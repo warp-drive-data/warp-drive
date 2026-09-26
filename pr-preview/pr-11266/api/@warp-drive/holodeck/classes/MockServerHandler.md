@@ -1,11 +1,14 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/holodeck/classes/MockServerHandler.md
+description: >-
+  RequestManager handler that routes requests to the Holodeck mock server by
+  tagging each url with the test id and request count.
 ---
 
 # &#x20;MockServerHandler
 
-Defined in: [index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/index.ts#L272)
+Defined in: [index.ts:283](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/index.ts#L283)
 
 A request handler that intercepts requests and routes them through
 the Holodeck mock server.
@@ -33,7 +36,7 @@ the test context object used to retrieve the test ID.
 new MockServerHandler(owner: object): MockServerHandler;
 ```
 
-Defined in: [index.ts:274](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/index.ts#L274)
+Defined in: [index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/index.ts#L285)
 
 #### Parameters
 
@@ -53,7 +56,7 @@ Defined in: [index.ts:274](https://github.com/warp-drive-data/warp-drive/blob/1a
 request<T>(context: RequestContext, next: NextFn<T>): Promise<StructuredDataDocument<T>>;
 ```
 
-Defined in: [index.ts:277](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/index.ts#L277)
+Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/index.ts#L288)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -93,4 +96,4 @@ Handler.request
 owner: object;
 ```
 
-Defined in: [index.ts:273](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/index.ts#L273)
+Defined in: [index.ts:284](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/index.ts#L284)

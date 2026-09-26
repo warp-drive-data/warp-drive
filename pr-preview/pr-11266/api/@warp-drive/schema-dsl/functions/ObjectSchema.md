@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/ObjectSchema.md
+description: >-
+  Class decorator that compiles a class into an object schema for embedded,
+  identity-less data used as the value of `schemaObject` and `schemaArray`
+  fields.
 ---
 
 # &#x20;ObjectSchema()
@@ -17,7 +21,7 @@ function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) =>
 function ObjectSchema(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/object-schema.ts:67](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L67)
+Defined in: [entities/object-schema.ts:71](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L71)
 
 **`Class Decorator`**
 
@@ -76,7 +80,7 @@ export class Address {
 function ObjectSchema(type: string, options?: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:68](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L68)
+Defined in: [entities/object-schema.ts:72](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L72)
 
 **`Class Decorator`**
 
@@ -139,7 +143,7 @@ export class Address {
 function ObjectSchema(options: ObjectSchemaOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/object-schema.ts:69](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L69)
+Defined in: [entities/object-schema.ts:73](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L73)
 
 **`Class Decorator`**
 

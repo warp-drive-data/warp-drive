@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/reactive/functions/getRequestState.md
+description: >-
+  Returns a cached, reactive state object tracking a request `Future` through
+  pending, success, error, and cancellation.
 ---
 
 # &#x20;getRequestState()
@@ -9,7 +12,7 @@ url: >-
 function getRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:825](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/signals/request-state.ts#L825)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:831](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-state.ts#L831)
 
 `getRequestState` can be used in both JavaScript and Template contexts.
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/active-record/functions/deleteRecord.md
+description: >-
+  Builds a `DELETE` request that persists deletion of an existing record, using
+  ActiveRecord-style URLs.
 ---
 
 # &#x20;deleteRecord()
@@ -16,7 +19,7 @@ function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): Del
 function deleteRecord<T>(record: T, options?: ConstrainedRequestOptions): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/active-record/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L76)
+Defined in: [-private/active-record/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L77)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.
@@ -88,7 +91,7 @@ const data = await store.request(options);
 function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): DeleteRequestOptions;
 ```
 
-Defined in: [-private/active-record/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L77)
+Defined in: [-private/active-record/save-record.ts:78](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L78)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/local.md
+description: >-
+  Property decorator that compiles to a local field, instance-only state that is
+  never read from or written to the cache or sent to the server.
 ---
 
 # &#x20;local()
@@ -16,7 +19,7 @@ function local(options: LocalOptions): (target: object, key: string) => void;
 function local(target: object, key: string): void;
 ```
 
-Defined in: [fields/local.ts:54](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/local.ts#L54)
+Defined in: [fields/local.ts:57](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/local.ts#L57)
 
 **`Decorator`**
 
@@ -68,7 +71,7 @@ export class User {
 function local(options: LocalOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/local.ts:55](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/local.ts#L55)
+Defined in: [fields/local.ts:58](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/local.ts#L58)
 
 **`Decorator`**
 

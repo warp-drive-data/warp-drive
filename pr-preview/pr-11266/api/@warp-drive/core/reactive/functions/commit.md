@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/reactive/functions/commit.md
+description: >-
+  Forcibly makes an editable resource's local changes its new remote (immutable)
+  state, bypassing a save round-trip.
 ---
 
 # &#x20;commit()
@@ -9,7 +12,7 @@ url: >-
 function commit(record: ReactiveResource): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:769](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/reactive/-private/record.ts#L769)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:774](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/reactive/-private/record.ts#L774)
 
 Forcibly commit all local changes on an editable resource to
 the remote (immutable) version.

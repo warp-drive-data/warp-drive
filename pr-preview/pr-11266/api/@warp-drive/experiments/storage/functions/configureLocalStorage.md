@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/storage/functions/configureLocalStorage.md
+description: >-
+  Experimental function that sets fallback and quota-handling options for the
+  reactive localStorage singleton before its first use.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function configureLocalStorage(options: ReactiveStorageOptions): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:70](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L70)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:76](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L76)
 
 Configure options for the localStorage singleton.
 Must be called before getLocalStorage() is first invoked.

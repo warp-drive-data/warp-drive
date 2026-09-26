@@ -3,9 +3,15 @@ url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@ember-data/request-utils/classes/LifetimesService.md
 ---
 
+&#x20;
+
+:::warning Legacy package
+`@ember-data/request-utils` is a legacy package. New code should use [`@warp-drive/utilities`](/api/@warp-drive/utilities/) instead.
+:::
+
 # &#x20;LifetimesService
 
-Defined in: [index.ts:19](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/request-utils/src/index.ts#L19)
+Defined in: [index.ts:21](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/request-utils/src/index.ts#L21)
 
 ## Extends
 
@@ -19,7 +25,7 @@ Defined in: [index.ts:19](https://github.com/warp-drive-data/warp-drive/blob/1a7
 new LifetimesService(config: PolicyConfig): LifetimesService;
 ```
 
-Defined in: [index.ts:20](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/request-utils/src/index.ts#L20)
+Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/request-utils/src/index.ts#L22)
 
 #### Parameters
 

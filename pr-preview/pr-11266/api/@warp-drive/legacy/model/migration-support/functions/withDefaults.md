@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/model/migration-support/functions/withDefaults.md
+description: >-
+  Legacy helper that marks a resource schema as LegacyMode and adds the fields
+  that give its records `Model`-like state and methods.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function withDefaults(schema: WithPartial<LegacyResourceSchema, "identity" | "legacy">): LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:338](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/model/migration-support.ts#L338)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:347](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/model/migration-support.ts#L347)
 
 A function which adds the necessary fields to a schema and marks it as
 being in LegacyMode. This is used to support the legacy features of

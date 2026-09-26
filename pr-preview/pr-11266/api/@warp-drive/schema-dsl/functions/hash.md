@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/hash.md
+description: >-
+  Property decorator that compiles to the hash field an object schema uses as
+  its identity, computed by a registered hash function.
 ---
 
 # &#x20;hash()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function hash(options: HashOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/hash.ts:52](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/hash.ts#L52)
+Defined in: [fields/hash.ts:56](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/hash.ts#L56)
 
 **`Decorator`**
 

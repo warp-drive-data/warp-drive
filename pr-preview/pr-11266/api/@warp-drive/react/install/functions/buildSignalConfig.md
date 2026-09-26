@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/react/install/functions/buildSignalConfig.md
+description: >-
+  Builds the signal hooks, backed by the Signal polyfill, that connect WarpDrive
+  reactivity to React rendering and test waiters.
 ---
 
 # &#x20;buildSignalConfig()
@@ -9,7 +12,7 @@ url: >-
 function buildSignalConfig(options: HooksOptions): SignalHooks;
 ```
 
-Defined in: [install.ts:72](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/react/src/install.ts#L72)
+Defined in: [install.ts:79](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/react/src/install.ts#L79)
 
 Builds the [SignalHooks](../../../core/configure/types/SignalHooks.md) implementation backed by the
 [Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),

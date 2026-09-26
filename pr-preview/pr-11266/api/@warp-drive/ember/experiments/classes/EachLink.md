@@ -1,11 +1,14 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/ember/experiments/classes/EachLink.md
+description: >-
+  Renderless component that yields the numbered, previous, next, first and last
+  navigation links for a `<Paginate />` collection.
 ---
 
 # &#x20;\<EachLink />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:320](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/ember/dist/experiments.d.ts#L320)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:324](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/ember/dist/experiments.d.ts#L324)
 
 The `<EachLink />` component yields the navigation links for a paginated
 collection, derived from the [PagedPaginationState](../../../experiments/pagination/types/PagedPaginationState.md) a `<Paginate />`
@@ -91,8 +94,6 @@ new EachLink<RT, E>(owner: Owner, args: {
 }): EachLink<RT, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
-
 #### Parameters
 
 ##### owner
@@ -126,7 +127,7 @@ Component<EachLinkSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:323](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/ember/dist/experiments.d.ts#L323)
+Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:327](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/ember/dist/experiments.d.ts#L327)
 
 Called before the component has been removed from the DOM.
 

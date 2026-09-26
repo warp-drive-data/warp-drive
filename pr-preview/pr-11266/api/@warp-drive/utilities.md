@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities.md
+description: >-
+  Request-building utilities for WarpDrive, including URL and query-param
+  helpers such as `buildBaseURL` and ready-made request builders for JSON:API,
+  REST and ActiveRecord APIs.
 ---
 
 Simple utility function to assist in url building,

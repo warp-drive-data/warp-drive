@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/utils/functions/formattedType.md
+description: >-
+  Legacy migration helper that normalizes a resource type to the singular
+  dasherized form the cache expects, such as `'PostComments'` to
+  `'post-comment'`.
 ---
 
 &#x20;
@@ -11,7 +15,7 @@ url: >-
 function formattedType<T extends string>(type: string | T): T;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:105](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/utils.ts#L105)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:115](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/utils.ts#L115)
 
 Converts a potentially unnormalized type into the format expected
 by our WarpDrive Cache. Currently this is singular-dasherized.

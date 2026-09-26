@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/eslint-plugin-warp-drive/rules/no-legacy-imports.md
+description: >-
+  Lint rule, with autofix, that rewrites imports from legacy EmberData module
+  paths to their modern replacements.
 ---
 
 | Rule | 🏷️ | ✨ |

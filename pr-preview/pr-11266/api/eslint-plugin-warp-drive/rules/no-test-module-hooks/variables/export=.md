@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/eslint-plugin-warp-drive/rules/no-test-module-hooks/variables/export=.md
+description: >-
+  ESLint rule object that reports `hooks.beforeEach` and `hooks.afterEach` in
+  tests in favor of setup functions each test calls explicitly.
 ---
 
 # &#x20;export=
@@ -9,4 +12,4 @@ url: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/no-test-module-hooks.js:12](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/eslint-plugin-warp-drive/src/rules/no-test-module-hooks.js#L12)
+Defined in: [rules/no-test-module-hooks.js:19](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/eslint-plugin-warp-drive/src/rules/no-test-module-hooks.js#L19)

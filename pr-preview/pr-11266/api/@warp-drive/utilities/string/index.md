@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/string.md
+description: >-
+  Cached case-conversion and English pluralization helpers, with configurable
+  inflection rules, for mapping server names.
 ---
 
 String utilities for transforming and inflecting strings useful for

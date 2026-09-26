@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/schema/fields/functions/isLegacyResourceSchema.md
+description: >-
+  Type guard that returns true when a schema is a LegacyMode resource schema,
+  meaning it is a resource schema with `legacy: true`.
 ---
 
 # &#x20;isLegacyResourceSchema()
@@ -11,7 +14,7 @@ function isLegacyResourceSchema(schema:
   | ResourceSchema): schema is LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2548](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/schema/fields.ts#L2548)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2628](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/schema/fields.ts#L2628)
 
 A type utility to narrow a schema to LegacyResourceSchema
 

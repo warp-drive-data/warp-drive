@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/storage/types/ReactiveStorage.md
+description: >-
+  Experimental signal-backed wrapper around a `Storage` area that makes reads
+  reactive and updates on changes from other tabs.
 ---
 
 &#x20;
@@ -20,7 +23,7 @@ interface ReactiveStorage {
 }
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:143](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L143)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:158](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L158)
 
 A reactive wrapper around the Web Storage API (localStorage/sessionStorage)
 that provides signal-based access to storage items and length.
@@ -39,7 +42,7 @@ Will automatically update when storage events occur in other tabs/windows.
 clear(): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:334](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L334)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:349](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L349)
 
 Clears all keys from Storage, triggering reactivity
 
@@ -61,7 +64,7 @@ Storage.clear
 getItem(key: string): string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:228](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L228)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:243](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L243)
 
 Reactive access to Storage contents
 
@@ -89,7 +92,7 @@ Storage.getItem
 key(index: number): string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:349](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L349)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:364](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L364)
 
 Reactive access to the key at the given index
 
@@ -117,7 +120,7 @@ Storage.key
 peekItem(key: string): string | null;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:206](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L206)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:221](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L221)
 
 Non-reactive way to peek the current value of a key in Storage
 
@@ -139,7 +142,7 @@ Non-reactive way to peek the current value of a key in Storage
 removeItem(key: string): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:312](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L312)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:327](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L327)
 
 Remove a value from Storage, triggering reactivity
 
@@ -167,7 +170,7 @@ Storage.removeItem
 setEffect(key: string, fn: (value: EffectStorageEvent) => void): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:153](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L153)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:168](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L168)
 
 #### Parameters
 
@@ -191,7 +194,7 @@ Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:153](https:/
 setItem(key: string, value: string): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:253](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L253)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:268](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L268)
 
 Set a value in Storage, triggering reactivity
 
@@ -225,7 +228,7 @@ Storage.setItem
 get length(): number;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:199](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L199)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:214](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L214)
 
 Reactive access to the number of keys in Storage
 

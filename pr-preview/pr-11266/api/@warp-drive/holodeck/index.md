@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/holodeck.md
+description: >-
+  ⚡️ Simple, Fast HTTP Mocking for Tests: experimental mocking that makes real
+  network requests and replays git-managed recordings, via `MockServerHandler`
+  and the `GET`/`POST` helpers in `@warp-drive/holodeck/mock`.
 ---
 
 :::danger 🛑 **CANARY ONLY** 🛑

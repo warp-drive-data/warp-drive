@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/builders/functions/findRecord.md
+description: >-
+  Deprecated legacy builder for a `store.request` config that behaves like
+  `store.findRecord`, taking a type and id or a resource identifier.
 ---
 
 &#x20;
@@ -32,7 +35,7 @@ function findRecord<T extends TypedRecordInstance>(
 ): FindRecordRequestInput<TypeFromInstance<T>, T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:57](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L57)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:59](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L59)
 
 This function builds a request config to find the record for a given identifier or type and id combination.
 When passed to `store.request`, this config will result in the same behavior as a `store.findRecord` request.
@@ -102,7 +105,7 @@ function findRecord(
 ): FindRecordRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:62](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L62)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:64](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L64)
 
 This function builds a request config to find the record for a given identifier or type and id combination.
 When passed to `store.request`, this config will result in the same behavior as a `store.findRecord` request.
@@ -162,7 +165,7 @@ request config
 function findRecord<T extends TypedRecordInstance>(resource: ResourceIdentifierObject<TypeFromInstance<T>>, options?: FindRecordBuilderOptions): FindRecordRequestInput<TypeFromInstance<T>, T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:63](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L63)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:65](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L65)
 
 This function builds a request config to find the record for a given identifier or type and id combination.
 When passed to `store.request`, this config will result in the same behavior as a `store.findRecord` request.
@@ -224,7 +227,7 @@ request config
 function findRecord(resource: ResourceIdentifierObject, options?: FindRecordBuilderOptions): FindRecordRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:67](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L67)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-record.ts:69](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/find-record.ts#L69)
 
 This function builds a request config to find the record for a given identifier or type and id combination.
 When passed to `store.request`, this config will result in the same behavior as a `store.findRecord` request.

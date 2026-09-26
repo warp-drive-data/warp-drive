@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/pagination/functions/createPaginationLinksSubscription.md
+description: >-
+  Experimental: creates the subscription a pagination links component such as
+  `<EachLink />` uses to derive navigation links from a paged pagination state.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function createPaginationLinksSubscription<RT, E>(args: PaginationLinksSubscriptionArgs<RT, E>): PaginationLinksSubscription<RT, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:998](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L998)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:85](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L85)
 
 Creates the [PaginationLinksSubscription](../types/PaginationLinksSubscription.md) a links component (such as
 `<EachLink />`) uses to derive its links from a [PagedPaginationState](../types/PagedPaginationState.md).

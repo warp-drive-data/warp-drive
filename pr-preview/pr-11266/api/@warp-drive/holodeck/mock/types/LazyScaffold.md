@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/holodeck/mock/types/LazyScaffold.md
+description: >-
+  Mock whose method and url are known up front and whose full scaffold is built
+  only when recording, as passed by the Holodeck mock helpers to `mock`.
 ---
 
 # &#x20;LazyScaffold
@@ -13,7 +16,7 @@ interface LazyScaffold {
 }
 ```
 
-Defined in: [mock.ts:29](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/mock.ts#L29)
+Defined in: [mock.ts:40](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/mock.ts#L40)
 
 A mock whose method and url are known up front, with the rest of the
 scaffold built only when holodeck is recording. This is what the mock
@@ -28,7 +31,7 @@ run.
 method: string;
 ```
 
-Defined in: [mock.ts:30](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/mock.ts#L30)
+Defined in: [mock.ts:41](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/mock.ts#L41)
 
 ***
 
@@ -38,7 +41,7 @@ Defined in: [mock.ts:30](https://github.com/warp-drive-data/warp-drive/blob/1a7c
 scaffold: () => Scaffold;
 ```
 
-Defined in: [mock.ts:32](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/mock.ts#L32)
+Defined in: [mock.ts:43](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/mock.ts#L43)
 
 #### Returns
 
@@ -52,4 +55,4 @@ Defined in: [mock.ts:32](https://github.com/warp-drive-data/warp-drive/blob/1a7c
 url: string;
 ```
 
-Defined in: [mock.ts:31](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/mock.ts#L31)
+Defined in: [mock.ts:42](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/mock.ts#L42)

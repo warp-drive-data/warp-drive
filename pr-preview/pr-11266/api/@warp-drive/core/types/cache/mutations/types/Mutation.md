@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/cache/mutations/types/Mutation.md
+description: >-
+  Union of the relationship changes `cache.mutate` applies to local
+  (uncommitted) state rather than remote state.
 ---
 
 # &#x20;Mutation
@@ -14,7 +17,7 @@ type Mutation =
   | SortRelatedRecordsMutation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:171](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/mutations.ts#L171)
+Defined in: [warp-drive-packages/core/src/types/cache/mutations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/mutations.ts#L193)
 
 A `Mutation` is an action that updates the local (uncommitted or "dirty")
 state of the [Cache](../../types/Cache.md) in some manner.

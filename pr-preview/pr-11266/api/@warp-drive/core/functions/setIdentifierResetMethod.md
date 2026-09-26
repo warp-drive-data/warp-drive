@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/functions/setIdentifierResetMethod.md
+description: >-
+  Registers a callback run when the store's key cache is torn down, for
+  resetting any custom key-generation state.
 ---
 
 # &#x20;setIdentifierResetMethod()
@@ -9,7 +12,7 @@ url: >-
 function setIdentifierResetMethod(method: ResetMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:335](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L335)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:343](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L343)
 
 Configure a callback for when the identifier cache is being torn down.
 

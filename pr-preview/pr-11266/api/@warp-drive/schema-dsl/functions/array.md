@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/array.md
+description: >-
+  Property decorator that compiles to an array field holding primitive values;
+  use `schemaArray` for arrays of structured objects.
 ---
 
 # &#x20;array()
@@ -16,7 +19,7 @@ function array(options: ArrayFieldOptions): (target: object, key: string) => voi
 function array(target: object, key: string): void;
 ```
 
-Defined in: [fields/array.ts:60](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/array.ts#L60)
+Defined in: [fields/array.ts:64](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/array.ts#L64)
 
 **`Decorator`**
 
@@ -65,7 +68,7 @@ export class Post {
 function array(options: ArrayFieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/array.ts:61](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/array.ts#L61)
+Defined in: [fields/array.ts:65](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/array.ts#L65)
 
 **`Decorator`**
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/request/functions/setPromiseResult.md
+description: >-
+  Records a promise's settled value or error so it can later be read
+  synchronously with `getPromiseResult`.
 ---
 
 # &#x20;setPromiseResult()
@@ -11,7 +14,7 @@ function setPromiseResult(promise:
   | Promise<unknown>, result: CacheResult): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:57](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/request/-private/promise-cache.ts#L57)
+Defined in: [warp-drive-packages/core/src/request/-private/promise-cache.ts:61](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/request/-private/promise-cache.ts#L61)
 
 Cache the settled result (or error) of a promise-like value so that its
 outcome can be synchronously read later via [getPromiseResult](getPromiseResult.md),

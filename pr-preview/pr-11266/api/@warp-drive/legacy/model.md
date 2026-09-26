@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/model.md
+description: >-
+  Legacy `Model` base class and `attr`, `belongsTo`, and `hasMany` decorators
+  that define resource schemas as classes and present records.
 ---
 
 &#x20;

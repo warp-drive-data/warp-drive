@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/builders/functions/saveRecord.md
+description: >-
+  Deprecated legacy builder for a `store.request` config that creates, updates,
+  or deletes a record through adapters, like the legacy `store.saveRecord`.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function saveRecord<T extends TypedRecordInstance>(record: T, options?: Record<string, unknown>): SaveRecordRequestInput<TypeFromInstance<T>, T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:46](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L46)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/save-record.ts:48](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/save-record.ts#L48)
 
 This function builds a request config for saving the given record (e.g. creating, updating, or deleting the record).
 When passed to `store.request`, this config will result in the same behavior as a legacy `store.saveRecord` request.

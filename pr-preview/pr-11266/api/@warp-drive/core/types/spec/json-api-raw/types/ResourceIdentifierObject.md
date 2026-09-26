@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/spec/json-api-raw/types/ResourceIdentifierObject.md
+description: >-
+  A reference to a resource in any form the cache accepts: `lid` only, `type`
+  plus `id`, or a new resource's `type` plus `lid`.
 ---
 
 # &#x20;ResourceIdentifierObject\<T *extends* `string` = `string`>
@@ -12,7 +15,7 @@ type ResourceIdentifierObject<T extends string = string> =
 | NewResourceIdentifierObject<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:186](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L186)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:211](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L211)
 
 A reference to a resource, in any of the forms WarpDrive's cache accepts.
 

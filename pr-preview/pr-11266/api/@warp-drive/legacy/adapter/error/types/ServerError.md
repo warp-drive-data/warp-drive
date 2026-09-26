@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/error/types/ServerError.md
+description: >-
+  Legacy adapter error for an HTTP 500 response, signaling that the API failed
+  internally and an immediate retry is unlikely to succeed.
 ---
 
 &#x20;
@@ -11,6 +14,6 @@ url: >-
 type ServerError = AdapterRequestError<"ServerError">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:503](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/error.ts#L503)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:555](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/error.ts#L555)
 
 The [AdapterRequestError](AdapterRequestError.md) shape thrown by the [ServerError](../variables/ServerError.md) constructor.

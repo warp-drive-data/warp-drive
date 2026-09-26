@@ -13,4 +13,4 @@ type EffectStorageEvent =
   | StorageEvent;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:108](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage.ts#L108)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:117](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage.ts#L117)

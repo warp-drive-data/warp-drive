@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/handlers/variables/MetaDocHandler.md
+description: >-
+  Request handler that wraps the whole response body in `meta` for requests with
+  `options.isMetaRequest` set.
 ---
 
 # &#x20;MetaDocHandler
@@ -9,7 +12,7 @@ url: >-
 const MetaDocHandler: Handler;
 ```
 
-Defined in: [-private/handlers/meta-doc.ts:50](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L50)
+Defined in: [-private/handlers/meta-doc.ts:51](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/-private/handlers/meta-doc.ts#L51)
 
 MetaDocHandler processes requests that are marked as meta requests.
 

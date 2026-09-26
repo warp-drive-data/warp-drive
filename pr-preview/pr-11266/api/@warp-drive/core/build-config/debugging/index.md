@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/build-config/debugging.md
+description: >-
+  Debug-only logging flags, such as `LOG_CACHE` and `LOG_REQUESTS`, set in build
+  config or at runtime via `setWarpDriveLogging`.
 ---
 
 # Log Instrumentation&#x20;

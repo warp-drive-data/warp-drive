@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/spec/document/types/ResourceDocument.md
+description: >-
+  Any raw {json:api} document the cache stores and returns: meta-only,
+  single-resource, collection, or error.
 ---
 
 # &#x20;ResourceDocument\<T = [`PersistedResourceKey`](../../../identifier/types/PersistedResourceKey.md)>
@@ -13,7 +16,7 @@ type ResourceDocument<T = PersistedResourceKey> =
   | ResourceErrorDocument;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:135](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/spec/document.ts#L135)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:159](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/spec/document.ts#L159)
 
 A type useful for representing the raw {json:api} documents that
 the cache may use.

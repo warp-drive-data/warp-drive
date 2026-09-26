@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/builders/functions/query.md
+description: >-
+  Deprecated legacy builder for a `store.request` config that behaves like
+  `store.query`, returning the records matching a query object.
 ---
 
 &#x20;
@@ -30,7 +33,7 @@ function query<T extends TypedRecordInstance>(
 ): QueryRequestInput<TypeFromInstance<T>, T[]>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:38](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/query.ts#L38)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:40](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/query.ts#L40)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.query` request.
@@ -84,7 +87,7 @@ function query(
 ): QueryRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:43](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/builders/query.ts#L43)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/query.ts:45](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/builders/query.ts#L45)
 
 This function builds a request config for a given type and query object.
 When passed to `store.request`, this config will result in the same behavior as a `store.query` request.

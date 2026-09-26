@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/field.md
+description: >-
+  Property decorator that compiles to a generic field holding a primitive value,
+  usable on resources, object schemas, and traits.
 ---
 
 # &#x20;field()
@@ -16,7 +19,7 @@ function field(options: FieldOptions): (target: object, key: string) => void;
 function field(target: object, key: string): void;
 ```
 
-Defined in: [fields/field.ts:59](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/field.ts#L59)
+Defined in: [fields/field.ts:62](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/field.ts#L62)
 
 **`Decorator`**
 
@@ -67,7 +70,7 @@ export class User {
 function field(options: FieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/field.ts:60](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/field.ts#L60)
+Defined in: [fields/field.ts:63](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/field.ts#L63)
 
 **`Decorator`**
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/cache/operations/types/RemoveDocumentOperation.md
+description: >-
+  Cache operation passed to `cache.patch` that removes a request's document from
+  the cache.
 ---
 
 # &#x20;RemoveDocumentOperation
@@ -12,7 +15,7 @@ interface RemoveDocumentOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:63](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L63)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:72](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L72)
 
 Removes a document and its associated request from
 the cache.
@@ -29,7 +32,7 @@ the cache.
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:64](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L64)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:73](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L73)
 
 The name of the [operation](Op.md)
 
@@ -45,6 +48,6 @@ The name of the [operation](Op.md)
 record: RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:68](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/cache/operations.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:77](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/cache/operations.ts#L77)
 
 The cache key for the request

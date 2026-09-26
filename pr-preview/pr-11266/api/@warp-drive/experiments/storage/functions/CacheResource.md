@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/storage/functions/CacheResource.md
+description: >-
+  Experimental class decorator that turns a class into a reactive resource whose
+  fields persist via the Cache API and are shared across tabs.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function CacheResource(id: string | KeyFn, namespace?: string | null): ClassDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:70](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/experiments/src/storage/storage-resource.ts#L70)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:79](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/experiments/src/storage/storage-resource.ts#L79)
 
 Decorator which transforms a class into a StorageResource
 persisted via the [Cache API](https://developer.mozilla.org/en-US/docs/Web/API/Cache).

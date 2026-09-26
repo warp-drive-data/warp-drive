@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/schema/fields/types/ObjectFieldSchema.md
+description: >-
+  Union of the field schemas allowed in an `ObjectSchema`, which excludes
+  identity and relationship fields.
 ---
 
 # &#x20;ObjectFieldSchema
@@ -18,7 +21,7 @@ type ObjectFieldSchema =
   | DerivedField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2175](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/schema/fields.ts#L2175)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2230](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/schema/fields.ts#L2230)
 
 A union of all possible field schemas that can be
 used in an ObjectSchema.

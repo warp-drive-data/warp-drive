@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/types/LocalOptions.md
+description: >-
+  Options for the `@local` decorator that set the local field's value before it
+  is first set.
 ---
 
 # &#x20;LocalOptions
@@ -11,7 +14,7 @@ interface LocalOptions {
 }
 ```
 
-Defined in: [fields/local.ts:12](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/local.ts#L12)
+Defined in: [fields/local.ts:13](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/local.ts#L13)
 
 Options accepted by the [local](../functions/local.md) decorator.
 
@@ -23,7 +26,7 @@ Options accepted by the [local](../functions/local.md) decorator.
 optional defaultValue?: PrimitiveValue;
 ```
 
-Defined in: [fields/local.ts:19](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/local.ts#L19)
+Defined in: [fields/local.ts:20](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/local.ts#L20)
 
 The value to use for the field until it is first set. Compiles onto
 the [LocalField](../../core/types/schema/fields/types/LocalField.md)'s `options.defaultValue`.

@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/model/migration-support/types/WithLegacy.md
+description: >-
+  Legacy type that adds the `Model`-style state flags and methods (`save`,
+  `isNew`, `errors`, etc.) that `withDefaults` provides to a LegacyMode record
+  type.
 ---
 
 &#x20;
@@ -11,7 +15,7 @@ url: >-
 type WithLegacy<T extends TypedRecordInstance> = T & LegacyModeRecord<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:205](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/model/migration-support.ts#L205)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:212](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/model/migration-support.ts#L212)
 
 A Type utility that enables quickly adding type information for the fields
 defined by `import { withDefaults } from '@warp-drive/legacy/model/migration-support'`.

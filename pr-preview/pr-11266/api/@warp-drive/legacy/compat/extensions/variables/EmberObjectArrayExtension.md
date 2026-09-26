@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/extensions/variables/EmberObjectArrayExtension.md
+description: >-
+  Legacy schema extension that gives reactive arrays the classic `EmberObject`
+  API such as `get`, `set`, and observers, to ease migration from Ember objects.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 const EmberObjectArrayExtension: CAUTION_MEGA_DANGER_ZONE_Extension;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:82](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat/extensions.ts#L82)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:91](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat/extensions.ts#L91)
 
 A schema extension that adds the classic `EmberObject` API (`get`, `set`,
 `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,

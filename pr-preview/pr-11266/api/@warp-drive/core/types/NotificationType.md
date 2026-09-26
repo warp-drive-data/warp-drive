@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/NotificationType.md
+description: >-
+  Every notification kind a resource subscriber can receive, from lifecycle
+  operations to `attributes`, `relationships`, `errors`, `meta`, and `identity`
+  changes.
 ---
 
 # &#x20;NotificationType
@@ -15,7 +19,7 @@ type NotificationType =
   | CacheOperation;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:32](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L32)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:41](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L41)
 
 The full set of notification kinds the [NotificationManager](../store/types/NotificationManager.md) can emit for a resource,
 including both [CacheOperation](CacheOperation.md)s and finer-grained field-level change notifications.

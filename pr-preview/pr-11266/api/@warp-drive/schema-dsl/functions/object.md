@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/object.md
+description: >-
+  Property decorator that compiles to an object field, a map of primitive values
+  with no defined shape; use `schemaObject` for shaped objects.
 ---
 
 # &#x20;object()
@@ -16,7 +19,7 @@ function object(options: ObjectFieldOptions): (target: object, key: string) => v
 function object(target: object, key: string): void;
 ```
 
-Defined in: [fields/object.ts:62](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/object.ts#L62)
+Defined in: [fields/object.ts:66](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/object.ts#L66)
 
 **`Decorator`**
 
@@ -67,7 +70,7 @@ export class User {
 function object(options: ObjectFieldOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/object.ts:63](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/fields/object.ts#L63)
+Defined in: [fields/object.ts:67](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/fields/object.ts#L67)
 
 **`Decorator`**
 

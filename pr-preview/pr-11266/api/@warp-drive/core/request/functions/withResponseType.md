@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/request/functions/withResponseType.md
+description: >-
+  Types a request object with the response type that `store.request` or
+  `RequestManager.request` should resolve with; no runtime effect.
 ---
 
 # &#x20;withResponseType()
@@ -11,7 +14,7 @@ function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:35](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/request.ts#L35)
+Defined in: [warp-drive-packages/core/src/request.ts:43](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/request.ts#L43)
 
 Brands the supplied object with the supplied response type.
 

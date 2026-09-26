@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/compat/functions/serializeRecord.md
+description: >-
+  Legacy store method that serializes a record into a payload using its model
+  type's serializer.
 ---
 
 &#x20;
@@ -15,7 +18,7 @@ function serializeRecord(
 ): unknown;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:328](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/compat.ts#L328)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:348](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/compat.ts#L348)
 
 Serializes a record using the store's legacy network layer, as with
 [store.serializeRecord](../types/LegacyStoreCompat.md#serializerecord).

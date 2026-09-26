@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/string/functions/pluralize.md
+description: >-
+  Returns the plural form of an English word using the registered inflection
+  rules, with cached results.
 ---
 
 # &#x20;pluralize()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function pluralize(word: string): string;
 ```
 
-Defined in: [-private/string/inflect.ts:145](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/-private/string/inflect.ts#L145)
+Defined in: [-private/string/inflect.ts:155](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/-private/string/inflect.ts#L155)
 
 Pluralizes a word.
 

@@ -21,7 +21,7 @@ interface PaginateArgs<RT, E> extends PaginationSubscriptionArgs<RT, E> {
 }
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:808](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L808)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:95](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-subscription.ts#L95)
 
 ## Extends
 
@@ -45,7 +45,7 @@ Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\
 optional autorefresh?: AutorefreshBehaviorCombos;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts:9038](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts#L9038)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:166](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-subscription.ts#L166)
 
 The autorefresh behavior for the request. This can be a boolean, or any
 combination of the following values: `'online'`, `'interval'`, `'invalid'`.
@@ -72,7 +72,7 @@ PaginationSubscriptionArgs.autorefresh
 optional autorefreshBehavior?: "reload" | "refresh" | "policy";
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts:9062](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts#L9062)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:192](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-subscription.ts#L192)
 
 The behavior of the request initiated by autorefresh. This can be one of
 the following values:
@@ -98,7 +98,7 @@ PaginationSubscriptionArgs.autorefreshBehavior
 optional autorefreshThreshold?: number;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts:9049](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts#L9049)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:178](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-subscription.ts#L178)
 
 The number of milliseconds to wait before refreshing the request when the
 browser comes back online or the network becomes available.
@@ -122,7 +122,7 @@ PaginationSubscriptionArgs.autorefreshThreshold
 optional mode?: PaginateMode;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:814](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L814)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:101](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-subscription.ts#L101)
 
 Which navigation surface the component yields: `'paged'` (the default) or
 `'infinite'`. Type-only — it narrows the yielded state and features so the
@@ -136,7 +136,7 @@ two surfaces cannot be mixed, and is never read at runtime.
 optional pageHints?: PageHints;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:806](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L806)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:92](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-subscription.ts#L92)
 
 A function to extract the `currentPage` and `totalPages` from a loaded document
 when they are not available in the default `meta` locations. Must be the same
@@ -156,7 +156,7 @@ PaginationSubscriptionArgs.pageHints
 optional query?: StoreRequestInput<RT> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts:9024](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts#L9024)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:151](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-subscription.ts#L151)
 
 A query to use for the request. This should be an object that can be
 passed to `store.request`. Use this in place of `@request` if you would
@@ -176,7 +176,7 @@ PaginationSubscriptionArgs.query
 optional request?: Future<RT> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts:9017](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/internal-DBnp5uP6.d.ts#L9017)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:143](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/request-subscription.ts#L143)
 
 The request to monitor. This should be a `Future` instance returned
 by either the `store.request` or `store.requestManager.request` methods.
@@ -195,7 +195,7 @@ PaginationSubscriptionArgs.request
 optional store?: Store$1 | RequestManager;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:824](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L824)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:113](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-subscription.ts#L113)
 
 The store instance to use for making requests. If contexts are available,
 the component will default to using the `store` on the context.
@@ -211,4 +211,4 @@ different from the store provided via context.
 optional subscription?: PaginationSubscription<RT, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:815](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L815)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:103](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-subscription.ts#L103)

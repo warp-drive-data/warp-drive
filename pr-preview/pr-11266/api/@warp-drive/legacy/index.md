@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy.md
+description: >-
+  Opt-in support for features deprecated out of `@warp-drive/core`, such as
+  Models, Adapters, Serializers and legacy store APIs, for apps that still need
+  to migrate away from them.
 ---
 
 &#x20;

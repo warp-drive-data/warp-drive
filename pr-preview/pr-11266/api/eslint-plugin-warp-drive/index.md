@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/eslint-plugin-warp-drive.md
+description: >-
+  ESLint rules and a recommended flat config for apps using WarpDrive, catching
+  invalid resource types, ids and relationships, legacy imports and discouraged
+  request patterns.
 ---
 
 Lint rules for helping to ensure best practices and hygiene when using ***Warp*Drive**.

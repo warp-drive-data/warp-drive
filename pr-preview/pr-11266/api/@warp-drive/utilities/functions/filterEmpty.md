@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/functions/filterEmpty.md
+description: >-
+  Returns a copy of an object without keys whose values are `undefined`, `null`,
+  empty strings, or empty arrays.
 ---
 
 # &#x20;filterEmpty()
@@ -9,7 +12,7 @@ url: >-
 function filterEmpty(source: Record<string, Serializable>): Record<string, Serializable>;
 ```
 
-Defined in: [index.ts:628](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L628)
+Defined in: [index.ts:647](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L647)
 
 filter out keys of an object that have falsy values or point to empty arrays
 returning a new object with only those keys that have truthy values / non-empty arrays

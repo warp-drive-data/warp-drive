@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/image-worker.md
+description: >-
+  Experimental worker-side image loader that fetches and caches images for
+  main-thread `ImageFetch` clients.
 ---
 
 &#x20;

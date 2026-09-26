@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/pagination/types/PageHints.md
+description: >-
+  Experimental: a function you pass to `<Paginate />` that reads `currentPage`
+  and `totalPages` from a loaded document when they are not in the default
+  `meta` locations.
 ---
 
 &#x20;
@@ -11,7 +15,7 @@ url: >-
 interface PageHints {}
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:121](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L121)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:31](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-cache.ts#L31)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -34,7 +38,7 @@ PageHints(document: ReactiveDocument<unknown>): {
 };
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:122](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L122)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:32](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-cache.ts#L32)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/variables/CacheHandler.md
+description: >-
+  The RequestManager cache handler that serves, dedupes, and caches store
+  requests and returns reactive documents when hydration is enabled.
 ---
 
 # &#x20;CacheHandler
@@ -9,7 +12,7 @@ url: >-
 const CacheHandler: CacheHandler;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:96](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L96)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:102](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L102)
 
 A CacheHandler that adds support for using an WarpDrive Cache with a RequestManager.
 

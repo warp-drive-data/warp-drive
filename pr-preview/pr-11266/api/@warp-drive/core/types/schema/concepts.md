@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/schema/concepts.md
+description: >-
+  Types for the functions schemas reference by name: `Transformation` to convert
+  field values, `Derivation` for computed fields and `HashFn` for object
+  identity.
 ---
 
 ## Types

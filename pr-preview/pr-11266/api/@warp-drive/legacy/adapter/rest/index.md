@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/rest.md
+description: >-
+  Legacy `RESTAdapter`, which exchanges conventional REST-style JSON with an
+  HTTP server, plus the request types it builds.
 ---
 
 &#x20;

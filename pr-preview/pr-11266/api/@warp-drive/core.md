@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core.md
+description: >-
+  The core WarpDrive package, providing the `Store`, the `RequestManager` and
+  its handlers, the Cache interface, reactive resources and
+  `useRecommendedStore` for app setup.
 ---
 
 ***Warp*Drive** is the lightweight data library for web apps: universal, typed, reactive, and

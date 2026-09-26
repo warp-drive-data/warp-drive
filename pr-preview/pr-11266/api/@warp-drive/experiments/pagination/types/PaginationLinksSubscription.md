@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/experiments/pagination/types/PaginationLinksSubscription.md
+description: >-
+  Experimental: the framework-agnostic lifecycle core of a pagination links
+  component such as `<EachLink />`, exposing the navigation links for a paged
+  pagination state.
 ---
 
 &#x20;
@@ -14,7 +18,7 @@ interface PaginationLinksSubscription<RT, E> {
 }
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:941](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L941)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:8](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L8)
 
 **`Hideconstructor`**
 
@@ -49,7 +53,7 @@ page changes.
 (symbol) dispose(): void;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:946](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L946)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:13](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L13)
 
 The method to call when the component this subscription is attached to
 unmounts.
@@ -68,7 +72,7 @@ unmounts.
 get paginationLinks(): Readonly<PaginationLinks<RT, E>>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:982](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L982)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links-subscription.ts:64](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/signals/pagination-links-subscription.ts#L64)
 
 The [PaginationLinks](PaginationLinks.md) derived from the [PagedPaginationState](PagedPaginationState.md)
 passed as an arg — the surface a links component yields to its consumer:

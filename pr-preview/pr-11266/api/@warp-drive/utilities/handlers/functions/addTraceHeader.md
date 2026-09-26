@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/handlers/functions/addTraceHeader.md
+description: >-
+  Sets an `X-Amzn-Trace-Id` header carrying a per-request id and the tab id, so
+  requests can be traced to their browser tab.
 ---
 
 # &#x20;addTraceHeader()
@@ -9,7 +12,7 @@ url: >-
 function addTraceHeader(headers: Headers): Headers;
 ```
 
-Defined in: [-private/handlers/utils.ts:55](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L55)
+Defined in: [-private/handlers/utils.ts:60](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L60)
 
 Adds the `X-Amzn-Trace-Id` header to support observability
 tooling around request routing.

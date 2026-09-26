@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/schema/concepts/types/HashFn.md
+description: >-
+  A registered function that computes a stable string identity from an object's
+  cache data, used for `@hash` fields and polymorphic schema-object types.
 ---
 
 # &#x20;HashFn\<T *extends* `object` = `object`>
@@ -11,7 +14,7 @@ type HashFn<T extends object = object> = {
 } & (data: T, options: ObjectValue | null, prop: string | null) => string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:74](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/schema/concepts.ts#L74)
+Defined in: [warp-drive-packages/core/src/types/schema/concepts.ts:89](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/schema/concepts.ts#L89)
 
 A HashFn computes a stable string identity for an object from its
 cache data, without access to a record instance.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/request/types/StructuredDocument.md
+description: >-
+  Union of the success and error documents that a request's `Future` resolves or
+  rejects with.
 ---
 
 # &#x20;StructuredDocument\<T>
@@ -11,7 +14,7 @@ type StructuredDocument<T> =
 | StructuredErrorDocument<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:506](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L506)
+Defined in: [warp-drive-packages/core/src/types/request.ts:566](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L566)
 
 A union of the resolve/reject data types for the [Future](../../../request/types/Future.md)
 returned by [request](../../../classes/Store.md#request)

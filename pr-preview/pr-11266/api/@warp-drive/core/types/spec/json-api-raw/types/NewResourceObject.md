@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/spec/json-api-raw/types/NewResourceObject.md
+description: >-
+  A raw {json:api} resource object for a client-created resource not yet
+  persisted, identified by `type` and `lid` with an `id` that may be `null`.
 ---
 
 # &#x20;NewResourceObject\<T *extends* `string` = `string`>
@@ -14,7 +17,7 @@ type NewResourceObject<T extends string = string> = NewResourceIdentifierObject<
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:305](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L305)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:345](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L345)
 
 Represents a new resource that has not yet been persisted, as it would
 appear in a {json:api} document (for instance, the body of a `POST` request).

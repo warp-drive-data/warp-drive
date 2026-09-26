@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/error/variables/InvalidError.md
+description: >-
+  Legacy adapter error signaling that the API rejected a request as semantically
+  invalid, typically failed server-side validation, putting the record in the
+  `invalid` state.
 ---
 
 &#x20;
@@ -11,7 +15,7 @@ url: >-
 InvalidError: AdapterRequestErrorConstructor<InvalidError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:203](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/error.ts#L203)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:222](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/error.ts#L222)
 
 An `InvalidError` is used by an adapter to signal that the external API
 was unable to process a request because the content was not semantically

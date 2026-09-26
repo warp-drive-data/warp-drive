@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/graph/types/LocalRelationshipOperation.md
+description: >-
+  Union of the Graph operations that update a relationship's local (uncommitted)
+  state.
 ---
 
 # &#x20;LocalRelationshipOperation
@@ -14,7 +17,7 @@ type LocalRelationshipOperation =
   | SortRelatedRecords;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:206](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/graph.ts#L206)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:232](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/graph.ts#L232)
 
 The Graph operations that apply to a relationship's local
 (uncommitted/dirty) state.

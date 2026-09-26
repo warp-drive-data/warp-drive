@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/Trait-1.md
+description: >-
+  Class decorator that compiles a class into a trait, a reusable set of fields
+  that resources and other traits can compose via `@trait`.
 ---
 
 # &#x20;Trait()
@@ -17,7 +20,7 @@ function Trait(options: TraitOptions): (target: AnyConstructor) => void;
 function Trait(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/trait.ts:71](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L71)
+Defined in: [entities/trait.ts:75](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/trait.ts#L75)
 
 **`Class Decorator`**
 
@@ -76,7 +79,7 @@ export class Timestamped {
 function Trait(name: string, options?: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:72](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L72)
+Defined in: [entities/trait.ts:76](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/trait.ts#L76)
 
 **`Class Decorator`**
 
@@ -139,7 +142,7 @@ export class Timestamped {
 function Trait(options: TraitOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/trait.ts:73](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/trait.ts#L73)
+Defined in: [entities/trait.ts:77](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/trait.ts#L77)
 
 **`Class Decorator`**
 

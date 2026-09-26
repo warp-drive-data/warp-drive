@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/types/BuildURLMixin.md
+description: >-
+  Legacy adapter mixin providing `buildURL` and the `urlFor*` hooks that turn a
+  model name, id, snapshot, and request type into a request URL.
 ---
 
 &#x20;
@@ -34,7 +37,7 @@ interface BuildURLMixin {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:26](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L26)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:29](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L29)
 
 The methods provided by the `BuildURLMixin` mixin (see the exported
 `BuildURLMixin` Mixin below).
@@ -139,7 +142,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:41](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L41)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:44](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L44)
 
 Builds a URL for a given type and optional ID.
 
@@ -190,7 +193,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:53](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L53)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:56](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L56)
 
 Builds the URL for a `store.findAll(type)` call.
 
@@ -233,7 +236,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:65](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L65)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:68](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L68)
 
 Builds the URL for a `store.query(type, query)` call.
 
@@ -280,7 +283,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:78](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L78)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:81](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L81)
 
 Builds the URL for a `store.queryRecord(type, query)` call.
 
@@ -326,7 +329,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:94](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L94)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:97](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L97)
 
 Builds the URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -371,7 +374,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:107](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L107)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:110](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L110)
 
 Builds the URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -414,7 +417,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:120](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L120)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:123](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L123)
 
 Builds the URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -457,7 +460,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:133](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L133)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:136](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L136)
 
 Builds the URL for a `record.save()` call when the record was
 created locally using `store.createRecord()`.
@@ -500,7 +503,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:146](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L146)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:149](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L149)
 
 Builds the URL for a `record.save()` call when the record has been
 updated locally.
@@ -543,7 +546,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:159](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L159)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:162](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L162)
 
 Builds the URL for a `record.save()` call when the record has been
 deleted locally.
@@ -585,7 +588,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:171](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L171)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:174](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L174)
 
 Builds a URL for a given type and ID without a specific request type.
 
@@ -619,7 +622,7 @@ Builds a URL for a given type and ID without a specific request type.
 pathForType(this: MixtBuildURLMixin, modelName: string): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:255](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L255)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:258](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L258)
 
 Determines the pathname for a given type.
 
@@ -652,7 +655,7 @@ urlForCreateRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:228](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L228)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:231](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L231)
 
 Builds a URL for a `record.save()` call when the record was created
 locally using `store.createRecord()`.
@@ -688,7 +691,7 @@ urlForDeleteRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:242](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L242)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:245](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L245)
 
 Builds a URL for a `record.save()` call when the record has been
 deleted locally.
@@ -727,7 +730,7 @@ urlForFindAll(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:187](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L187)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:190](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L190)
 
 Builds a URL for a `store.findAll(type)` call.
 
@@ -762,7 +765,7 @@ urlForFindBelongsTo(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:221](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L221)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:224](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L224)
 
 Builds a URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -802,7 +805,7 @@ urlForFindHasMany(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:214](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L214)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:217](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L217)
 
 Builds a URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -842,7 +845,7 @@ urlForFindMany(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:207](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L207)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:210](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L210)
 
 Builds a URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -883,7 +886,7 @@ urlForFindRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:181](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L181)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:184](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L184)
 
 Builds a URL for a `store.findRecord(type, id)` call.
 
@@ -921,7 +924,7 @@ urlForQuery(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:199](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L199)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:202](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L202)
 
 Builds a URL for a `store.query(type, query)` call.
 
@@ -955,7 +958,7 @@ urlForQueryRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:193](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L193)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:196](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L196)
 
 Builds a URL for a `store.queryRecord(type, query)` call.
 
@@ -990,7 +993,7 @@ urlForUpdateRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:235](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L235)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:238](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L238)
 
 Builds a URL for a `record.save()` call when the record has been
 updated locally.

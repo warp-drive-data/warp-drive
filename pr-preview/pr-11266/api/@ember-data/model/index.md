@@ -1,13 +1,15 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@ember-data/model.md
+description: >-
+  (Legacy) `Model` class and its `attr`, `belongsTo` and `hasMany` decorators,
+  re-exported from `@warp-drive/legacy/model`; new apps should define schemas
+  for `@warp-drive/core` instead.
 ---
 
-:::warning ⚠️ Legacy Package
-**Model classes are a LEGACY feature** that is no longer encouraged for new applications.
+&#x20;
 
-**For new projects:** Use **schema objects** from [@warp-drive/core](../../@warp-drive/core/index.md) instead.
-
-**On recent ***Warp*Drive** versions:** install this via [@warp-drive/legacy](../../@warp-drive/legacy/index.md) instead of directly.
+:::warning Legacy package
+`@ember-data/model` is a legacy package. Model classes are no longer encouraged; new code should define schemas with [`@warp-drive/core`](/api/@warp-drive/core/). Apps that still need Models should install them through [`@warp-drive/legacy`](/api/@warp-drive/legacy/) rather than this package.
 :::
 
 This package provides runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.

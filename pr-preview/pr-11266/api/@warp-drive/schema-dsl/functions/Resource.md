@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/schema-dsl/functions/Resource.md
+description: >-
+  Class decorator that compiles a class into a resource schema, with a type
+  derived from the class name and one field per decorated property.
 ---
 
 # &#x20;Resource()
@@ -17,7 +20,7 @@ function Resource(options: ResourceOptions): (target: AnyConstructor) => void;
 function Resource(target: AnyConstructor): void;
 ```
 
-Defined in: [entities/resource.ts:120](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L120)
+Defined in: [entities/resource.ts:124](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/resource.ts#L124)
 
 **`Class Decorator`**
 
@@ -110,7 +113,7 @@ export class Post {
 function Resource(type: string, options?: ResourceOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/resource.ts:121](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L121)
+Defined in: [entities/resource.ts:125](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/resource.ts#L125)
 
 **`Class Decorator`**
 
@@ -207,7 +210,7 @@ export class Post {
 function Resource(options: ResourceOptions): (target: AnyConstructor) => void;
 ```
 
-Defined in: [entities/resource.ts:122](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/schema-dsl/src/entities/resource.ts#L122)
+Defined in: [entities/resource.ts:126](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/schema-dsl/src/entities/resource.ts#L126)
 
 **`Class Decorator`**
 

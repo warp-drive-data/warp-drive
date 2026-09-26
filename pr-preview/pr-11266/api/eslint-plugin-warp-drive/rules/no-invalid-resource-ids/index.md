@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/eslint-plugin-warp-drive/rules/no-invalid-resource-ids.md
+description: >-
+  Lint rule, with autofix, that requires resource IDs passed to store methods
+  and request builders to be strings.
 ---
 
 | Rule | 🏷️ | ✨ |

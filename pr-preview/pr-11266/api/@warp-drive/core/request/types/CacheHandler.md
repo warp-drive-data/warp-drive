@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/request/types/CacheHandler.md
+description: >-
+  The single handler a RequestManager runs before all others via `useCache`,
+  which may return a result synchronously.
 ---
 
 # &#x20;CacheHandler
@@ -16,7 +19,7 @@ interface CacheHandler {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:270](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/request/-private/types.ts#L270)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:282](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/request/-private/types.ts#L282)
 
 The CacheHandler is identical to other handlers except that it
 is allowed to return a value synchronously. This is useful for
@@ -38,7 +41,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:278](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/request/-private/types.ts#L278)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:290](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/request/-private/types.ts#L290)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to

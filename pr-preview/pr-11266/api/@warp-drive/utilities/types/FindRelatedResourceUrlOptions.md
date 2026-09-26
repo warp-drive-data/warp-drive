@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/types/FindRelatedResourceUrlOptions.md
+description: >-
+  Options passed to `buildBaseURL` to build the URL for a record's belongs-to
+  relationship, ending in the field name.
 ---
 
 # &#x20;FindRelatedResourceUrlOptions
@@ -16,7 +19,7 @@ interface FindRelatedResourceUrlOptions {
 }
 ```
 
-Defined in: [index.ts:247](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L247)
+Defined in: [index.ts:258](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L258)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `findRelatedRecord` request.
 
@@ -28,7 +31,7 @@ Defined in: [index.ts:247](https://github.com/warp-drive-data/warp-drive/blob/1a
 fieldPath: string;
 ```
 
-Defined in: [index.ts:268](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L268)
+Defined in: [index.ts:279](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L279)
 
 The relationship field name, appended to the resource path.
 
@@ -40,7 +43,7 @@ The relationship field name, appended to the resource path.
 optional host?: string;
 ```
 
-Defined in: [index.ts:276](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L276)
+Defined in: [index.ts:287](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L287)
 
 Overrides the globally configured host for this call only.
 
@@ -55,7 +58,7 @@ identifier: {
 };
 ```
 
-Defined in: [index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L255)
+Defined in: [index.ts:266](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L266)
 
 The type and id of the record whose relationship is being fetched.
 
@@ -83,7 +86,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:280](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L280)
+Defined in: [index.ts:291](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L291)
 
 Overrides the globally configured namespace for this call only.
 
@@ -95,7 +98,7 @@ Overrides the globally configured namespace for this call only.
 op: "findRelatedRecord";
 ```
 
-Defined in: [index.ts:251](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L251)
+Defined in: [index.ts:262](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L262)
 
 The request operation this URL is for.
 
@@ -107,6 +110,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:272](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L272)
+Defined in: [index.ts:283](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L283)
 
 The path segment for the resource, defaults to `identifier.type` if not provided.

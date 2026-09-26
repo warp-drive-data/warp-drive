@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/holodeck/mock/functions/PUT.md
+description: >-
+  Mocks a PUT request to a url on the Holodeck server, returning a generated
+  response with a 200 status, or 204 when it has no body.
 ---
 
 # &#x20;PUT()
@@ -16,7 +19,7 @@ function PUT(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:184](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/holodeck/src/mock.ts#L184)
+Defined in: [mock.ts:205](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/holodeck/src/mock.ts#L205)
 
 mock a PUT request
 

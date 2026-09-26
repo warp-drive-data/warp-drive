@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/request/types/RequestInfo.md
+description: >-
+  Describes a request for `store.request` or `RequestManager.request`: native
+  fetch options plus cache options, operation name, records, data, and the
+  store.
 ---
 
 # &#x20;RequestInfo\<RT = `unknown`>&#x20;
@@ -35,7 +39,7 @@ interface RequestInfo<RT = unknown> extends NativeRequestInit {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:610](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L610)
+Defined in: [warp-drive-packages/core/src/types/request.ts:675](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L675)
 
 Extends JavaScript's native [fetch](https://developer.mozilla.org/docs/Web/API/Window/fetch) NativeRequestInit | RequestInit with additional
 properties specific to the [RequestManager's](../../../classes/RequestManager.md) capabilities.
@@ -61,7 +65,7 @@ either the [RequestManager.request](../../../classes/RequestManager.md#request) 
 optional ___(unique) Symbol(EnableHydration)?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:694](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L694)
+Defined in: [warp-drive-packages/core/src/types/request.ts:759](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L759)
 
 see [EnableHydration](../variables/EnableHydration.md)
 
@@ -73,7 +77,7 @@ see [EnableHydration](../variables/EnableHydration.md)
 optional body?: BodyInit | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:568](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L568)
+Defined in: [warp-drive-packages/core/src/types/request.ts:628](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L628)
 
 Any body that you want to add to your request. Note that a GET or HEAD request may not have a body.
 
@@ -91,7 +95,7 @@ NativeRequestInit.body
 optional cache?: RequestCache;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:522](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L522)
+Defined in: [warp-drive-packages/core/src/types/request.ts:582](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L582)
 
 Returns the cache mode associated with request, which is a string indicating how the request will interact with the browser's cache when fetching.
 
@@ -109,7 +113,7 @@ NativeRequestInit.cache
 optional cacheOptions?: CacheOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:620](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L620)
+Defined in: [warp-drive-packages/core/src/types/request.ts:685](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L685)
 
 #### See
 
@@ -123,7 +127,7 @@ Defined in: [warp-drive-packages/core/src/types/request.ts:620](https://github.c
 optional controller?: AbortController;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:615](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L615)
+Defined in: [warp-drive-packages/core/src/types/request.ts:680](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L680)
 
 If provided, used instead of the AbortController auto-configured for each request by the RequestManager
 
@@ -135,7 +139,7 @@ If provided, used instead of the AbortController auto-configured for each reques
 optional credentials?: RequestCredentials;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:525](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L525)
+Defined in: [warp-drive-packages/core/src/types/request.ts:585](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L585)
 
 Returns the credentials mode associated with request, which is a string indicating whether credentials will be sent with the request always, never, or only when sent to a same-origin URL.
 
@@ -153,7 +157,7 @@ NativeRequestInit.credentials
 optional data?: Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:678](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L678)
+Defined in: [warp-drive-packages/core/src/types/request.ts:743](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L743)
 
 data that a handler should convert into
 the query (GET) or body (POST).
@@ -169,7 +173,7 @@ and body directly in most scenarios.
 optional destination?: RequestDestination;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:528](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L528)
+Defined in: [warp-drive-packages/core/src/types/request.ts:588](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L588)
 
 Returns the kind of resource requested by request, e.g., "document" or "script".
 
@@ -187,7 +191,7 @@ NativeRequestInit.destination
 optional disableTestWaiter?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:669](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L669)
+Defined in: [warp-drive-packages/core/src/types/request.ts:734](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L734)
 
 If true, this request will not be tracked by test waiters.
 
@@ -199,7 +203,7 @@ If true, this request will not be tracked by test waiters.
 optional duplex?: "half";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:577](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L577)
+Defined in: [warp-drive-packages/core/src/types/request.ts:637](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L637)
 
 When sending a ReadableStream as the body of a request, 'half' must be
 specified.
@@ -220,7 +224,7 @@ NativeRequestInit.duplex
 optional headers?: Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:531](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L531)
+Defined in: [warp-drive-packages/core/src/types/request.ts:591](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L591)
 
 Returns a Headers object consisting of the headers associated with request. Note that headers added in the network layer by the user agent will not be accounted for in this object, e.g., the "Host" header.
 
@@ -238,7 +242,7 @@ NativeRequestInit.headers
 optional integrity?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:534](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L534)
+Defined in: [warp-drive-packages/core/src/types/request.ts:594](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L594)
 
 Returns request's subresource integrity metadata, which is a cryptographic hash of the resource being fetched. Its value consists of multiple hashes separated by whitespace. \[SRI]
 
@@ -256,7 +260,7 @@ NativeRequestInit.integrity
 optional keepalive?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:537](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L537)
+Defined in: [warp-drive-packages/core/src/types/request.ts:597](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L597)
 
 Returns a boolean indicating whether or not request can outlive the global in which it was created.
 
@@ -274,7 +278,7 @@ NativeRequestInit.keepalive
 optional method?: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:540](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L540)
+Defined in: [warp-drive-packages/core/src/types/request.ts:600](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L600)
 
 Returns request's HTTP method, which is "GET" by default.
 
@@ -292,7 +296,7 @@ NativeRequestInit.method
 optional mode?: RequestMode;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:546](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L546)
+Defined in: [warp-drive-packages/core/src/types/request.ts:606](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L606)
 
 Returns the mode associated with request, which is a string indicating whether the request will use CORS, or will be restricted to same-origin URLs.
 
@@ -312,7 +316,7 @@ NativeRequestInit.mode
 optional op?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:656](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L656)
+Defined in: [warp-drive-packages/core/src/types/request.ts:721](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L721)
 
 The name of the request operation, if any (e.g. `'findRecord'`, `'query'`).
 
@@ -324,7 +328,7 @@ The name of the request operation, if any (e.g. `'findRecord'`, `'query'`).
 optional options?: Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:684](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L684)
+Defined in: [warp-drive-packages/core/src/types/request.ts:749](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L749)
 
 options specifically intended for [Handlers](../../../request/types/Handler.md)
 to utilize to process the request
@@ -337,7 +341,7 @@ to utilize to process the request
 optional priority?: RequestPriority;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:550](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L550)
+Defined in: [warp-drive-packages/core/src/types/request.ts:610](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L610)
 
 provides an explicit priority hint for the request.
 
@@ -355,7 +359,7 @@ NativeRequestInit.priority
 optional records?: ResourceKey[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:664](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L664)
+Defined in: [warp-drive-packages/core/src/types/request.ts:729](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L729)
 
 The [ResourceKeys](../../identifier/types/ResourceKey.md) of the primary resources involved in the request
 (if any). This may be used by handlers to perform transactional
@@ -369,7 +373,7 @@ operations on the store.
 optional redirect?: RequestRedirect;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:553](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L553)
+Defined in: [warp-drive-packages/core/src/types/request.ts:613](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L613)
 
 Returns the redirect mode associated with request, which is a string indicating how redirects for the request will be handled during fetching. A request will follow redirects by default.
 
@@ -387,7 +391,7 @@ NativeRequestInit.redirect
 optional referrer?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:556](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L556)
+Defined in: [warp-drive-packages/core/src/types/request.ts:616](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L616)
 
 Returns the referrer of request. Its value can be a same-origin URL if explicitly set in init, the empty string to indicate no referrer, and "about:client" when defaulting to the global's default. This is used during fetching to determine the value of the `Referer` header of the request being made.
 
@@ -405,7 +409,7 @@ NativeRequestInit.referrer
 optional referrerPolicy?: ReferrerPolicy;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:559](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L559)
+Defined in: [warp-drive-packages/core/src/types/request.ts:619](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L619)
 
 Returns the referrer policy associated with request. This is used during fetching to compute the value of the request's referrer.
 
@@ -423,7 +427,7 @@ NativeRequestInit.referrerPolicy
 optional signal?: AbortSignal;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:562](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L562)
+Defined in: [warp-drive-packages/core/src/types/request.ts:622](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L622)
 
 Returns the signal associated with request, which is an AbortSignal object indicating whether or not request has been aborted, and its abort event handler.
 
@@ -441,7 +445,7 @@ NativeRequestInit.signal
 optional store?: Store;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:651](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L651)
+Defined in: [warp-drive-packages/core/src/types/request.ts:716](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L716)
 
 The [Store](../../../classes/Store.md) the request was made against, if made via
 [Store.request](../../../classes/Store.md#request) rather than directly against a [RequestManager](../../../classes/RequestManager.md).
@@ -481,7 +485,7 @@ const LoggingHandler = {
 optional url?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:565](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/request.ts#L565)
+Defined in: [warp-drive-packages/core/src/types/request.ts:625](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/request.ts#L625)
 
 Returns the URL of request as a string.
 

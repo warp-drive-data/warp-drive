@@ -1,10 +1,15 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11266/api/@ember-data/rest.md
+description: >-
+  (Legacy) REST request builders such as `findRecord`, `query` and
+  `createRecord` that produce camelCase, pluralized URLs; new apps should import
+  them from `@warp-drive/utilities/rest` instead.
 ---
 
-:::warning ⚠️ This package only exists for backwards compatibility
-It is for apps still on the `@ember-data/*` packages. Newer apps should use the same builders
-from [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
+&#x20;
+
+:::warning Legacy package
+`@ember-data/rest` is a legacy package. New code should use [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
 :::
 
 Request builders for **REST**ful APIs.

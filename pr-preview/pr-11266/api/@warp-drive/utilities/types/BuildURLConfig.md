@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/types/BuildURLConfig.md
+description: >-
+  The global `host` and `namespace` that `buildBaseURL` prefixes onto URLs when
+  a call does not pass its own.
 ---
 
 # &#x20;BuildURLConfig
@@ -12,7 +15,7 @@ interface BuildURLConfig {
 }
 ```
 
-Defined in: [index.ts:20](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L20)
+Defined in: [index.ts:22](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L22)
 
 The global configuration used by [buildBaseURL](../functions/buildBaseURL.md) when a call does
 not provide its own `host`/`namespace`. Set via [setBuildURLConfig](../functions/setBuildURLConfig.md).
@@ -25,7 +28,7 @@ not provide its own `host`/`namespace`. Set via [setBuildURLConfig](../functions
 host: string | null;
 ```
 
-Defined in: [index.ts:24](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L24)
+Defined in: [index.ts:26](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L26)
 
 The scheme, domain and port (if any) to prefix built URLs with, e.g. `'https://api.example.com'`.
 
@@ -37,6 +40,6 @@ The scheme, domain and port (if any) to prefix built URLs with, e.g. `'https://a
 namespace: string | null;
 ```
 
-Defined in: [index.ts:28](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/utilities/src/index.ts#L28)
+Defined in: [index.ts:30](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/utilities/src/index.ts#L30)
 
 The path segment to insert between `host` and the resource path, e.g. `'api/v1'`.

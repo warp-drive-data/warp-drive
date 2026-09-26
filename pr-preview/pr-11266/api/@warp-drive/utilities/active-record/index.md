@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/utilities/active-record.md
+description: >-
+  Request builders for find, query, create, update, and delete against
+  ActiveRecord-style APIs with underscored plural URLs.
 ---
 
 This module provides utilities for working with [ActiveRecord](https://guides.rubyonrails.org/active_record_basics.html#convention-over-configuration-in-active-record) APIs with ***Warp*Drive**

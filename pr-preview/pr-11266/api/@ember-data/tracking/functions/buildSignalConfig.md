@@ -1,7 +1,17 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@ember-data/tracking/functions/buildSignalConfig.md
+description: >-
+  Deprecated: builds signal hooks that back WarpDrive reactivity with Ember
+  tags; `@ember-data/store` registers it automatically, and `@warp-drive/ember`
+  replaces it.
 ---
+
+&#x20;
+
+:::warning Deprecated package
+`@ember-data/tracking` is deprecated. Deprecated since 5.5: the Ember reactivity bindings it provided now come from [`@warp-drive/ember`](/api/@warp-drive/ember/), so remove it and install that instead.
+:::
 
 # &#x20;~~buildSignalConfig()~~&#x20;
 
@@ -20,7 +30,7 @@ function buildSignalConfig(options: {
 };
 ```
 
-Defined in: [index.ts:32](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/packages/tracking/src/index.ts#L32)
+Defined in: [index.ts:36](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/packages/tracking/src/index.ts#L36)
 
 Creates a signal configuration object for WarpDrive that integrates with Ember's
 reactivity system. This will be automatically imported and registered by

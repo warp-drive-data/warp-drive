@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/rest/types/JQueryRequestInit.md
+description: >-
+  jQuery `$.ajax` settings plus `url`, `method`, and `type` that the legacy
+  `RESTAdapter` builds when it sends a request through jQuery.
 ---
 
 &#x20;
@@ -15,7 +18,7 @@ interface JQueryRequestInit extends JQueryAjaxSettings {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:82](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/rest.ts#L82)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:96](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/rest.ts#L96)
 
 The options passed to jQuery's `$.ajax` by RESTAdapter.\_ajaxRequest | \_ajaxRequest.
 
@@ -31,7 +34,7 @@ The options passed to jQuery's `$.ajax` by RESTAdapter.\_ajaxRequest | \_ajaxReq
 method: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:90](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/rest.ts#L90)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:104](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/rest.ts#L104)
 
 the HTTP method to use
 
@@ -49,7 +52,7 @@ JQueryAjaxSettings.method
 type: HTTPMethod;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:94](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/rest.ts#L94)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:108](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/rest.ts#L108)
 
 the HTTP method to use, duplicated for jQuery/fetch option compatibility
 
@@ -67,7 +70,7 @@ JQueryAjaxSettings.type
 url: string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:86](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/legacy/src/adapter/rest.ts#L86)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:100](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/legacy/src/adapter/rest.ts#L100)
 
 the url to request
 

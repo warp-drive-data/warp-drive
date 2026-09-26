@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/core/types/graph/types/RemoteRelationshipOperation.md
+description: >-
+  Union of the Graph operations that update a relationship's remote (persisted)
+  state.
 ---
 
 # &#x20;RemoteRelationshipOperation
@@ -17,7 +20,7 @@ type RemoteRelationshipOperation =
   | SortRelatedRecords;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:185](https://github.com/warp-drive-data/warp-drive/blob/1a7c85f0c565d334929c0f2dd26023bb9bbcb6f7/warp-drive-packages/core/src/types/graph.ts#L185)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:209](https://github.com/warp-drive-data/warp-drive/blob/49b7d5502612c6681613bd683d94c70417318756/warp-drive-packages/core/src/types/graph.ts#L209)
 
 The Graph operations that apply to a relationship's remote
 (persisted/clean) state.

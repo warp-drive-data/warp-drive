@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11266/api/@warp-drive/legacy/adapter/error.md
+description: >-
+  Legacy adapter errors, such as `AdapterError`, `InvalidError` and
+  `NotFoundError`, that an adapter returns or throws to signal a failed API
+  request.
 ---
 
 &#x20;
