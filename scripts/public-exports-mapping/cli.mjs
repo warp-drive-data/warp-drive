@@ -30,16 +30,11 @@ export async function update(opts) {
   const released = releasedVersions();
   const latest = released[released.length - 1];
   const tree = workingTree();
-  if (compareMinors(tree.version, latest) <= 0) {
-    throw new Error(
-      `root package.json is ${tree.version} but snapshots/${latest}.json exists; bump the version, or run \`cli.mjs release ${tree.version}\` if the tag is out`
-    );
-  }
-  refuseStrayOverrides(new Set([...consecutive(released), [latest, tree.version]].map(([a, b]) => `${a}-${b}`)));
+  const pairs = stepPairs(released, tree.version);
 
   const head = surfaceOf(tree, loadSnapshot(BASELINE));
   const live = deriveStep(loadSnapshot(latest), head, loadOverrides(latest, tree.version));
-  const chain = consecutive(released).map(([a, b]) => loadStep(a, b));
+  const chain = pairs.slice(0, -1).map(([a, b]) => loadStep(a, b));
 
   const desired = new Map([[pathOf.step(latest, tree.version), canonical(live)]]);
   const full = released.map((_, i) => mergeSteps([...chain.slice(i), live]));
@@ -58,9 +53,7 @@ export async function archive(opts) {
   const released = releasedVersions();
   const baseline = loadSnapshot(BASELINE);
   const tree = workingTree();
-  refuseStrayOverrides(
-    new Set([...consecutive(released), [released[released.length - 1], tree.version]].map(([a, b]) => `${a}-${b}`))
-  );
+  const pairs = stepPairs(released, tree.version);
 
   /** @type {Map<string, import('./surface.mjs').Surface>} */
   const surfaces = new Map();
@@ -72,7 +65,7 @@ export async function archive(opts) {
 
   const desired = new Map();
   for (const version of released) desired.set(pathOf.snapshot(version), canonical(snapshotOf(surfaces.get(version))));
-  for (const [a, b] of [...consecutive(released), [released[released.length - 1], tree.version]]) {
+  for (const [a, b] of pairs) {
     const step = deriveStep(snapshotOf(surfaces.get(a)), surfaces.get(b), loadOverrides(a, b));
     desired.set(pathOf.step(a, b), canonical(step));
   }
@@ -124,21 +117,33 @@ function provenDelta(base, current) {
 }
 
 /**
- * @param {import('./token.mjs').Minor[]} versions  sorted
+ * Every step, released pairs oldest first and the live pair last. Each step goes to the next minor,
+ * so a working tree that skips one names the release that has to be promoted first.
+ * @param {import('./token.mjs').Minor[]} released  sorted
+ * @param {import('./token.mjs').Minor} head  the working tree's minor
  * @returns {[import('./token.mjs').Minor, import('./token.mjs').Minor][]}
  */
-function consecutive(versions) {
-  return versions.slice(1).map((v, i) => [versions[i], v]);
-}
-
-/** @param {Set<string>} stepNames */
-function refuseStrayOverrides(stepNames) {
-  const stray = overridePairs().filter(({ from, to }) => !stepNames.has(`${from}-${to}`));
+function stepPairs(released, head) {
+  /** @type {[import('./token.mjs').Minor, import('./token.mjs').Minor][]} */
+  const pairs = [...released.slice(1).map((v, i) => [released[i], v]), [released[released.length - 1], head]];
+  for (const [a, b] of pairs) {
+    const [major, minor] = a.split('.').map(Number);
+    const next = `${major}.${minor + 1}`;
+    if (b === next || b === `${major + 1}.0`) continue;
+    throw new Error(
+      compareMinors(b, a) <= 0
+        ? `root package.json is ${b} but snapshots/${a}.json exists; bump the version`
+        : `step ${a}-${b} skips ${next}; run \`cli.mjs release ${next}\` once v${next}.0 is tagged`
+    );
+  }
+  const names = new Set(pairs.map(([a, b]) => `${a}-${b}`));
+  const stray = overridePairs().filter(({ from, to }) => !names.has(`${from}-${to}`));
   if (stray.length) {
     throw new Error(
       `overrides name pairs that are not steps: ${stray.map(({ from, to }) => `${from}-${to}`).join(', ')}`
     );
   }
+  return pairs;
 }
 
 async function main() {
