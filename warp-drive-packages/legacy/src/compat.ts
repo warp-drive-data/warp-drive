@@ -1,4 +1,36 @@
 /**
+ * Helps an app migrate incrementally from legacy EmberData patterns to modern ***Warp*Drive**.
+ *
+ * ## Why it exists
+ *
+ * While migrating, you may need to:
+ *
+ * - keep Adapters and Serializers working on a Store whose requests go through the
+ *   {@link RequestManager}
+ * - keep the deprecated request methods such as `store.findRecord` and `store.query`, which
+ *   Adapters fulfill, working while you move calls to `store.request`
+ * - adopt modern patterns one piece at a time rather than all at once
+ *
+ * ## What it provides
+ *
+ * - {@link LegacyNetworkHandler}, a request handler that fulfills those legacy requests through
+ *   the store's Adapters and Serializers and passes every other request along
+ * - {@link adapterFor}, {@link serializerFor}, {@link normalize}, {@link pushPayload} and
+ *   {@link serializeRecord}, the store methods for working with Adapters and Serializers, and
+ *   {@link LegacyStoreCompat}, the Store type that includes them
+ *
+ * The Store that [useLegacyStore](/api/@warp-drive/legacy/functions/useLegacyStore) produces
+ * adds `LegacyNetworkHandler` to its RequestManager unless `linksMode` is `true`. The hooks
+ * that present `Model` instances live in [@warp-drive/legacy/model](/api/@warp-drive/legacy/model/),
+ * not here.
+ *
+ * ## When to use it
+ *
+ * Only during a migration from legacy EmberData to modern ***Warp*Drive**. It lets you adopt
+ * modern patterns incrementally while your existing Adapters and Serializers keep working. For
+ * incremental migration strategies, see the [Migration Guide](/upgrading/v5/) and the
+ * [Two Store Migration Strategy](/upgrading/v5/two-store-migration).
+ *
  * @module
  * @summary Legacy store support for adapters and serializers: the `LegacyNetworkHandler` plus store methods such as
  * `adapterFor`, `serializerFor`, `normalize` and `pushPayload`.
@@ -6,6 +38,8 @@
 
 import { getOwner } from '@ember/application';
 
+// oxlint-disable-next-line no-unused-vars
+import type { RequestManager } from '@warp-drive/core';
 import { recordIdentifierFor, type Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import { _deprecatingNormalize } from '@warp-drive/core/store/-private';
