@@ -38,9 +38,7 @@
 
 import { getOwner } from '@ember/application';
 
-// oxlint-disable-next-line no-unused-vars
-import type { RequestManager } from '@warp-drive/core';
-import { recordIdentifierFor, type Store } from '@warp-drive/core';
+import { recordIdentifierFor, type RequestManager, type Store } from '@warp-drive/core';
 import { assert } from '@warp-drive/core/build-config/macros';
 import { _deprecatingNormalize } from '@warp-drive/core/store/-private';
 import type { ObjectValue } from '@warp-drive/core/types/json/raw';
