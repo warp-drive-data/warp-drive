@@ -206,12 +206,14 @@ state and autotrack.
 
 The exact public API shape for consuming these (and for the imperative
 subscription escape hatch that replaces `subscribeForRecord`) is an
-unresolved question below. The sunset path is not: `getRequestStateService`
-and `subscribeForRecord` remain as a compatibility shim — an internal
-pass-two subscriber replaying transitions to old callbacks — behind a
-deprecation (id `warp-drive:deprecate-request-state-subscriptions`,
-`until: 6.0`, gated by a build-config flag following the existing
-`ENABLE_LEGACY_*` pattern).
+unresolved question below. During migration, `getRequestStateService` and
+`subscribeForRecord` keep working via a compatibility shim — an internal
+pass-two subscriber replaying transitions to old callbacks — so nothing
+breaks the day this lands. Retiring that shim is a *separate* concern from
+this feature and is proposed on its own timeline in
+[RFC 0009, Deprecating Subscription-Based Request State](./0009-deprecate-request-state-subscriptions.md),
+which deprecates the subscription API only once this RFC's reactive request
+state is Recommended.
 
 ### 4. Who owns the transaction (async paths)
 
@@ -261,8 +263,9 @@ framework suites):
 3. **CacheManager floor**; `notify()` self-wraps; delete the
    relationships-only carve-out. Gate: `peekAll`/`peekRecord` agreement;
    bare-`cache.put` custom-handler test.
-4. **Request state v2** + compat shim + deprecation. Gate: request-state
-   suites; an `isSaving`-vs-data correlation test.
+4. **Request state v2** + compat shim (the subscription API keeps working;
+   its deprecation is deferred to [RFC 0009](./0009-deprecate-request-state-subscriptions.md)).
+   Gate: request-state suites; an `isSaving`-vs-data correlation test.
 5. **Handler-owned transactions**; delete `_enableAsyncFlush` and all
    explicit flushes; finalize flush becomes an assertion. Gate: a
    two-concurrent-responses isolation test; the assertion stays silent
@@ -276,8 +279,13 @@ window reopens the data/request-state tear.
 
 ### Ecosystem implications
 
-- **Deprecations**: `getRequestStateService` / `subscribeForRecord` (see §3);
-  the `asyncFlush` parameter of `store._push` (intimate API).
+- **Deprecations**: the public subscription-based request-state API
+  (`getRequestStateService` / `subscribeForRecord`) is superseded by §3's
+  reactive request state, but its deprecation is proposed separately in
+  [RFC 0009](./0009-deprecate-request-state-subscriptions.md) rather than
+  here — this RFC only ships the replacement (behind a compatibility shim).
+  The `asyncFlush` parameter of `store._push` is intimate/private and is
+  removed as part of this RFC's implementation, not via a public deprecation.
 - **Addon ecosystem**: custom `Cache` implementations and custom request
   handlers are the affected extension points; both get *stronger* guarantees
   with no interface change (the CacheManager floor wraps them). Addons that
@@ -296,22 +304,88 @@ window reopens the data/request-state tear.
 
 The concept maps to vocabulary developers already have from databases and
 other reactive systems: *writes happen in transactions; observers see
-transaction boundaries, never intermediate states*. Teaching materials need
-one new sentence more than they have today, and several fewer caveats:
+transaction boundaries, never intermediate states*. Rather than describe a
+guide to be written later, the guide text itself follows — this is the prose
+intended for the "reactivity" section of the docs, ready to lift in with the
+implementation.
 
-- Guides: the "reactivity" section of the WarpDrive docs gains a short
-  "when do observers see changes?" passage stating the delivery contract.
-  Existing guidance about awaiting settled state is unchanged.
-- API docs: `NotificationManager.subscribe` documents the contract in §2;
-  the new request-state read APIs are documented alongside `getRequestState`
-  usage they replace.
-- Existing users are reached through the deprecation guide entry for
-  `warp-drive:deprecate-request-state-subscriptions`, which shows the
-  mechanical migration from `subscribeForRecord` callbacks to reading
-  signals-backed request state.
+### Guide: When do my components see changes?
 
-No reorganization of the guides is required; this removes special cases
-rather than adding concepts.
+> **The one rule:** WarpDrive applies every change to your data inside a
+> *transaction*, and tells the rest of your app about it all at once, the
+> moment that transaction finishes. You never see a half-applied change.
+
+When a request resolves, when you `push` a payload, when you edit a record —
+WarpDrive may be updating many things at once: several records, their
+relationships, the request's own status. It does all of that as one unit,
+then notifies your components in a single batch. Between the start and end of
+that unit, nothing outside WarpDrive runs, so your components can only ever
+observe the *before* state or the *after* state — never a mix.
+
+This is why the following "just works," with no `await` between the two reads:
+
+```js
+store.push({ data: { type: 'user', id: '1', attributes: { name: 'Chris' } } });
+
+store.peekRecord('user', '1').name;      // 'Chris'
+store.peekAll('user').length;            // includes user:1
+```
+
+`push` returns only after its transaction has closed and notifications have
+been delivered, so `peekRecord` and `peekAll` can never disagree about whether
+`user:1` exists. The same holds for relationships: after a write settles,
+reading a relationship and reading its inverse always agree.
+
+#### Data and request status change together
+
+Because a request's *status* is written in the same transaction as the data it
+delivered, your loading and saving states are always consistent with what's in
+the cache:
+
+```js
+// In a component, reading reactive request state:
+const state = getRequestState(user);   // exact import finalized during Exploring
+
+state.isLoading;   // false once the data below is readable
+user.name;         // the freshly-loaded value
+```
+
+You will never render a spinner (`isLoading === true`) over data that has
+already arrived, or the reverse — the two are published in the same instant.
+
+#### What this means for `await`
+
+Nothing changes about awaiting requests. `await store.request(...)` still
+resolves after its data (and status) are visible, exactly as before. What's
+new is a *stronger* guarantee underneath: even code that runs between other
+promises — an interleaved callback, a scheduled render — sees a consistent
+snapshot whenever it looks. You no longer have to reason about "did the
+notification for this change land yet?"
+
+#### Subscribing to changes directly (advanced)
+
+If you use the low-level `NotificationManager.subscribe` API, the delivery
+contract is now explicit:
+
+> A notification is delivered to you exactly once, at the close of the
+> transaction that emitted it, always against a fully-settled cache — never
+> mid-update.
+
+In practice this means a subscription callback can freely read any record,
+relationship, or request state and trust that everything it reads reflects the
+same completed change.
+
+### Where this lands in the docs
+
+- **Guides**: the guide text above is added to the "reactivity" section. No
+  reorganization is needed — it removes caveats rather than adding concepts.
+- **API docs**: `NotificationManager.subscribe` documents the delivery
+  contract; the reactive request-state read API is documented where
+  `getRequestState` is taught today.
+- **Migration off the old subscription API** is taught separately, by the
+  deprecation guide entry that ships with
+  [RFC 0009](./0009-deprecate-request-state-subscriptions.md); it links back
+  to this guide for the reactive replacement.
 
 ## Drawbacks
 
@@ -322,8 +396,11 @@ rather than adding concepts.
   in WarpDrive's own suites first.
 - **Churn in intimate APIs.** Several semi-public internals
   (`getRequestStateService`, `_enableAsyncFlush`, forced `_flush()`) are load
-  bearing in the wild despite their markings; the compatibility shim and
-  deprecation window carry real maintenance cost until 6.0.
+  bearing in the wild despite their markings. This RFC keeps them working via
+  a compatibility shim; the deprecation window that eventually retires the
+  public subscription surface (proposed in
+  [RFC 0009](./0009-deprecate-request-state-subscriptions.md)) carries real
+  maintenance cost until 6.0.
 - **A transaction wrapper on every write is hot-path code.** If the
   internal shape is wrong, this trades a correctness problem for a
   performance one (see unresolved questions).
