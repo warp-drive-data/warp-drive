@@ -146,11 +146,26 @@ export class PaginationState<RT = unknown, E = unknown>
    * them backward/forward. Both seed to {@link initialPage}; a purely paged
    * consumer never extends them, so they stay put and are effectively unused.
    *
+   * Only ever written through {@link extendRun} and {@link restartRun}, which
+   * keep {@link runMembers} in step.
+   *
    * @internal
    */
   declare private frontierStart: Readonly<PageCache<RT, E>> | null;
   /** @internal */
   declare private frontierEnd: Readonly<PageCache<RT, E>> | null;
+
+  /**
+   * Every page this component has loaded into its run — what the frontier
+   * spanned each time it moved. Bounds the walk in {@link pages}: the shared
+   * graph may relink a page in the run to one that another component sharing
+   * the collection loaded, and that page is not part of this run until it is
+   * loaded through here. Untracked bookkeeping — it only changes together with
+   * the frontier signals, which carry the notification.
+   *
+   * @internal
+   */
+  declare private runMembers: Set<Readonly<PageCache<RT, E>>>;
 
   /**
    * The request of the latest {@link adoptPage} call — only that call may
@@ -167,6 +182,7 @@ export class PaginationState<RT = unknown, E = unknown>
     this.request = request;
     this.pageHints = pageHints;
     this._adoptTarget = null;
+    this.runMembers = new Set();
 
     void this.setup();
   }
@@ -218,24 +234,50 @@ export class PaginationState<RT = unknown, E = unknown>
    * same collection to different extents each see only what they have scrolled
    * through. For every page known to the whole collection, see
    * {@link PaginationCache.pages}.
+   *
+   * The run is walked through the shared graph, so it ends early when a page
+   * that was in it no longer follows the page before it — a reload that showed
+   * the collection now ends sooner, or that its next cursor moved. It also ends
+   * before a page this component never loaded: a reload may relink a page in
+   * the run to one another component sharing the collection scrolled to, and
+   * that page joins this run only through {@link loadNext}.
    */
   @memoized
   get pages(): Iterable<Readonly<PageCache<RT, E>>> {
-    // oxlint-disable-next-line typescript/no-this-alias
-    const self = this;
-    return {
-      *[Symbol.iterator]() {
-        const end = self.frontierEnd;
-        let page: Readonly<PageCache<RT, E>> | null = self.frontierStart;
-        while (page) {
-          yield page;
-          if (page === end) {
-            break;
-          }
-          page = page.after;
-        }
-      },
-    };
+    // materialized (not a lazy iterable) so every link and page state read
+    // while walking is a dependency of this memo, and a consumer iterating it
+    // re-runs when any of them changes
+    const pages: Readonly<PageCache<RT, E>>[] = [];
+    const end = this.frontierEnd;
+    let page: Readonly<PageCache<RT, E>> | null = this.frontierStart;
+    while (page) {
+      pages.push(page);
+      if (page === end) {
+        break;
+      }
+      const next = page.after;
+      if (!next?.isSuccess || !this.runMembers.has(next)) {
+        break;
+      }
+      page = next;
+    }
+    return pages;
+  }
+
+  /**
+   * The last page of the run {@link pages} walks — the forward frontier, or
+   * the page before the first one that no longer follows in the graph or that
+   * this component never loaded.
+   *
+   * @internal
+   */
+  @memoized
+  get runEnd(): Readonly<PageCache<RT, E>> | null {
+    let end: Readonly<PageCache<RT, E>> | null = null;
+    for (const page of this.pages) {
+      end = page;
+    }
+    return end;
   }
 
   /**
@@ -262,17 +304,14 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get data(): Iterable<ContentItem<RT>> {
-    // oxlint-disable-next-line typescript/no-this-alias
-    const self = this;
-    return {
-      *[Symbol.iterator]() {
-        for (const page of self.pages) {
-          if (page.data) {
-            yield* page.data as ContentItem<RT>[];
-          }
-        }
-      },
-    };
+    // materialized for the same reason as `pages`
+    const items: ContentItem<RT>[] = [];
+    for (const page of this.pages) {
+      if (page.data) {
+        items.push(...(page.data as ContentItem<RT>[]));
+      }
+    }
+    return items;
   }
 
   /**
@@ -287,7 +326,7 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get hasNext(): boolean {
-    return Boolean(this.frontierEnd?.nextLink);
+    return Boolean(this.runEnd?.nextLink);
   }
 
   /**
@@ -302,7 +341,10 @@ export class PaginationState<RT = unknown, E = unknown>
    * The request for the page just after the forward frontier, for the infinite
    * surface. `null` until {@link loadNext} fires it (so a `<Request>` wrapping it
    * renders its idle block), the in-flight `Future` while that page loads, then
-   * `null` again once the frontier advances onto it. Also `null` at end-of-list.
+   * `null` again once the frontier advances onto it. Also `null` at end-of-list,
+   * and while the page sits loaded in the shared cache (another component
+   * scrolled to it) but outside this run — {@link loadNext} then joins it
+   * without a request of its own.
    *
    * ```gts
    * {{#if pages.hasNext}}
@@ -315,11 +357,11 @@ export class PaginationState<RT = unknown, E = unknown>
    */
   @memoized
   get nextRequest(): Future<RT> | null {
-    const url = this.frontierEnd?.nextLink;
+    const url = this.runEnd?.nextLink;
     if (!url) {
       return null;
     }
-    return this.paginationCache?.getPageCache(url).request ?? null;
+    return this.pendingRequest(url);
   }
 
   /**
@@ -332,7 +374,22 @@ export class PaginationState<RT = unknown, E = unknown>
     if (!url) {
       return null;
     }
-    return this.paginationCache?.getPageCache(url).request ?? null;
+    return this.pendingRequest(url);
+  }
+
+  /**
+   * The request of the page at `url` unless it already succeeded, in which
+   * case there is nothing pending: the page either sits in this run, or joins
+   * it on the next {@link loadNext}/{@link loadPrev} without a new request.
+   *
+   * @internal
+   */
+  private pendingRequest(url: string): Future<RT> | null {
+    const page = this.paginationCache?.getPageCache(url);
+    if (!page || page.isSuccess) {
+      return null;
+    }
+    return page.request ?? null;
   }
 
   /** @internal */
@@ -355,9 +412,36 @@ export class PaginationState<RT = unknown, E = unknown>
     const cache = getPaginationCache<RT, E>(cacheKey);
     cache.installPageHints(this.pageHints);
     this.paginationCache = cache;
-    cache.totalPages = cache.getTotalPages(content);
-    this.activePage = this.initialPage = cache.loadPage(selfLink, this.request);
-    this.frontierStart = this.frontierEnd = this.initialPage;
+    const page = cache.getPageCache(selfLink);
+    this.activePage = this.initialPage = page;
+    this.restartRun(page);
+    await cache.loadPage(selfLink, this.request);
+  }
+
+  /**
+   * Moves the frontier onto a page adjacent to the run, recording it as a
+   * member.
+   *
+   * @internal
+   */
+  private extendRun(dir: 'prev' | 'next', page: Readonly<PageCache<RT, E>>): void {
+    this.runMembers.add(page);
+    if (dir === 'next') {
+      this.frontierEnd = page;
+    } else {
+      this.frontierStart = page;
+    }
+  }
+
+  /**
+   * Restarts the run at a single page, forgetting every earlier member.
+   *
+   * @internal
+   */
+  private restartRun(page: Readonly<PageCache<RT, E>>): void {
+    this.runMembers.clear();
+    this.runMembers.add(page);
+    this.frontierStart = this.frontierEnd = page;
   }
 
   /**
@@ -381,12 +465,12 @@ export class PaginationState<RT = unknown, E = unknown>
       }
     }
 
-    if (this.frontierEnd?.nextLink === url) {
-      this.frontierEnd = page;
+    if (this.runEnd?.nextLink === url) {
+      this.extendRun('next', page);
     } else if (this.frontierStart?.prevLink === url) {
-      this.frontierStart = page;
+      this.extendRun('prev', page);
     } else {
-      this.frontierStart = this.frontierEnd = page;
+      this.restartRun(page);
     }
   }
 
@@ -418,6 +502,10 @@ export class PaginationState<RT = unknown, E = unknown>
    * - the document is a page of a *different* collection
    * - this state has not finished setting up its own collection yet
    * - the call was superseded by a newer navigation
+   *
+   * In development, a document that contradicts the collection's page
+   * numbers (a `next` that skips a page, a `first` that is not page 1, ...)
+   * rejects instead of resolving: the graph is not updated from it.
    *
    * ```ts
    * const pages = getPaginationState(initialRequest);
@@ -457,14 +545,9 @@ export class PaginationState<RT = unknown, E = unknown>
       return null;
     }
 
-    const page = cache.loadPage(selfLink, request);
-    try {
-      // wait for the page's request state to settle its value; adopting an
-      // already-settled future still needs this microtask
-      await page.request;
-    } catch {
-      return null;
-    }
+    // the request already resolved above, so the load settles without failing;
+    // a document that contradicts the collection rejects here (see loadPage)
+    const page = await cache.loadPage(selfLink, request);
     if (this._adoptTarget !== request) {
       // a newer navigation claimed the slot while the page loaded
       return null;
@@ -517,7 +600,7 @@ export class PaginationState<RT = unknown, E = unknown>
     const cache = this.paginationCache;
     assert('Expected the pagination cache to be set up before loading a page', cache);
 
-    const frontier = dir === 'next' ? this.frontierEnd : this.frontierStart;
+    const frontier = dir === 'next' ? this.runEnd : this.frontierStart;
     const url = dir === 'next' ? frontier?.nextLink : frontier?.prevLink;
     if (!url) {
       return null;
@@ -530,13 +613,18 @@ export class PaginationState<RT = unknown, E = unknown>
       const request = this.store.request(
         page.isError ? { method: 'GET', url, cacheOptions: { reload: true } } : { method: 'GET', url }
       );
-      cache.loadPage(url, request as Future<RT>);
+      await cache.loadPage(url, request as Future<RT>);
+    } else {
+      try {
+        // in flight for another component sharing the collection
+        await page.request;
+      } catch {
+        // surfaced through the page's state, handled below
+      }
     }
 
-    try {
-      await page.request;
-    } catch {
-      // the failure is surfaced reactively: the frontier stays put, so
+    if (!page.isSuccess) {
+      // the failure (or cancellation) is surfaced reactively: the frontier stays put, so
       // `nextRequest`/`previousRequest` resolves to the failed page and a
       // wrapping `<Request>` renders its error block. Calling again retries.
       return null;
@@ -545,11 +633,7 @@ export class PaginationState<RT = unknown, E = unknown>
     // Advance the frontier only after the load resolves. While loading, the
     // frontier still points at the previous page, so `nextRequest`/`prevRequest`
     // resolves to this in-flight page and a wrapping `<Request>` shows loading.
-    if (dir === 'next') {
-      this.frontierEnd = page;
-    } else {
-      this.frontierStart = page;
-    }
+    this.extendRun(dir, page);
 
     return page.value;
   };
@@ -570,7 +654,9 @@ export class PaginationState<RT = unknown, E = unknown>
    * On failure the page stays active and {@link activePageRequest} resolves to
    * it, so a wrapping `<Request>` renders its error block. Calling again (for
    * example clicking the page's link a second time) retries: the failed page
-   * is re-requested with a forced reload.
+   * is re-requested with a forced reload. In development, a document that
+   * contradicts the collection's page numbers rejects instead (see
+   * {@link adoptPage}).
    *
    * ```gts
    * <EachLink @pages={{pages}}>
@@ -596,11 +682,9 @@ export class PaginationState<RT = unknown, E = unknown>
       const request = this.store.request(
         page.isError ? { method: 'GET', url, cacheOptions: { reload: true } } : { method: 'GET', url }
       );
-      cache.loadPage(url, request as Future<RT>);
-      try {
-        await page.request;
-      } catch {
-        // the failure is surfaced reactively: the page stays active, so
+      await cache.loadPage(url, request as Future<RT>);
+      if (!page.isSuccess) {
+        // the failure (or cancellation) is surfaced reactively: the page stays active, so
         // `activePageRequest` resolves to it and a wrapping `<Request>`
         // renders its error block. Calling again retries.
         return null;
