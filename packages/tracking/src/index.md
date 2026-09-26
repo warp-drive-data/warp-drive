@@ -22,7 +22,7 @@ To resolve this deprecation, follow these steps:
 
 Once the above steps are complete, the deprecation can be silenced and the automatic fallback
 registration of reactivity from `@ember-data/tracking` can be removed by updating your
-{@link @warp-drive/build-config! | WarpDrive Build Config} in your `ember-cli-build` file. On current
+{@link @warp-drive/core!build-config | WarpDrive Build Config} in your `ember-cli-build` file. On current
 versions `setConfig` is exported from `@warp-drive/core/build-config`; `@warp-drive/build-config` is its
 older home and still works. Set `compatWith` to the most recent `major.minor` your app has fully resolved
 deprecations for, not to the `4.12` shown.
