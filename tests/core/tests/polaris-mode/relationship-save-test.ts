@@ -27,8 +27,8 @@ function setup(response: unknown = { data: null }) {
     cache: JSONAPICache,
     handlers: [
       {
-        request() {
-          return Promise.resolve(response);
+        request<T>() {
+          return Promise.resolve(response as T);
         },
       },
     ],
