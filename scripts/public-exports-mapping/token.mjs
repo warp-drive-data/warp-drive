@@ -40,15 +40,15 @@ export function sameToken(a, b) {
 const rank = (name) => (name === 'default' ? 0 : name === '*' ? 1 : 2);
 
 /**
- * @param {Pick<Token, 'module' | 'export' | 'typeOnly'>} a
- * @param {Pick<Token, 'module' | 'export' | 'typeOnly'>} b
+ * Orders by identity alone. Every sorted list is keyed by `keyOf`, so no two items tie.
+ * @param {Pick<Token, 'module' | 'export'>} a
+ * @param {Pick<Token, 'module' | 'export'>} b
  * @returns {number}
  */
 export function compareTokens(a, b) {
   if (a.module !== b.module) return a.module < b.module ? -1 : 1;
   if (rank(a.export) !== rank(b.export)) return rank(a.export) - rank(b.export);
-  if (a.export !== b.export) return a.export < b.export ? -1 : 1;
-  return Number(a.typeOnly) - Number(b.typeOnly);
+  return a.export < b.export ? -1 : a.export > b.export ? 1 : 0;
 }
 
 /**
