@@ -320,7 +320,7 @@ catalog:
   "@sqlite.org/sqlite-wasm": 3.46.0-build2
   "@sveltejs/kit": ^2.70.3
   "@sveltejs/package": ^2.5.8
-  "@sveltejs/vite-plugin-svelte": ^7.3.0
+  "@sveltejs/vite-plugin-svelte": ^7.3.1
   "@types/babel__core": ^7.20.5
   "@types/bun": ^1.4.2
   "@types/debug": ^4.1.13

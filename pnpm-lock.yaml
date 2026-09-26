@@ -272,8 +272,8 @@ catalogs:
       specifier: ^2.5.8
       version: 2.5.8
     '@sveltejs/vite-plugin-svelte':
-      specifier: ^7.3.0
-      version: 7.3.0
+      specifier: ^7.3.1
+      version: 7.3.1
     '@types/babel__core':
       specifier: ^7.20.5
       version: 7.20.5
@@ -4073,13 +4073,13 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: 'catalog:'
-        version: 2.70.3(a7fa2a7174d844d1caae1b3ed072d076)
+        version: 2.70.3(d65d642cd05dec2abc99493f124f69a1)
       '@sveltejs/package':
         specifier: 'catalog:'
         version: 2.5.8(svelte@5.57.1)(typescript@6.0.3)
       '@sveltejs/vite-plugin-svelte':
         specifier: 'catalog:'
-        version: 7.3.0(svelte@5.57.1)(vite@8.3.0)
+        version: 7.3.1(svelte@5.57.1)(vite@8.3.0)
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(vite@8.3.0)
@@ -6710,8 +6710,8 @@ packages:
     peerDependencies:
       svelte: ^3.44.0 || ^4.0.0 || ^5.0.0-next.1
 
-  '@sveltejs/vite-plugin-svelte@7.3.0':
-    resolution: {integrity: sha512-QbRoJyD92e9R0ufeQIWRHrCC0ObcqSv/aBDdrQMoU+sypav3cDx5wytdQ6GLdXjEMO6xjrXGzfkUygng8JMv0A==}
+  '@sveltejs/vite-plugin-svelte@7.3.1':
+    resolution: {integrity: sha512-ZPsLN8B1e/En+Ak5s4V7srFDT532oS0qieLsQwu63NGKsS+iAjoO2Js1BochlHlglcU+Pt7WAO3C5Ee+4f6gVA==}
     engines: {node: ^20.19 || ^22.12 || >=24}
     peerDependencies:
       svelte: ^5.46.4
@@ -15429,11 +15429,11 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/kit@2.70.3(a7fa2a7174d844d1caae1b3ed072d076)':
+  '@sveltejs/kit@2.70.3(d65d642cd05dec2abc99493f124f69a1)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.18.0)
-      '@sveltejs/vite-plugin-svelte': 7.3.0(svelte@5.57.1)(vite@8.3.0)
+      '@sveltejs/vite-plugin-svelte': 7.3.1(svelte@5.57.1)(vite@8.3.0)
       '@types/cookie': 0.6.0
       acorn: 8.18.0
       cookie: 0.6.0
@@ -15460,7 +15460,7 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@sveltejs/vite-plugin-svelte@7.3.0(svelte@5.57.1)(vite@8.3.0)':
+  '@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.1)(vite@8.3.0)':
     dependencies:
       deepmerge: 4.3.1
       magic-string: 1.4.1
