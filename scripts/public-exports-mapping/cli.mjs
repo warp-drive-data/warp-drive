@@ -65,7 +65,8 @@ export async function archive(opts) {
   /** @type {Map<string, import('./surface.mjs').Surface>} */
   const surfaces = new Map();
   for (const version of released) {
-    surfaces.set(version, surfaceOf(await taggedTree(version), version === BASELINE ? null : baseline));
+    using tagged = taggedTree(version);
+    surfaces.set(version, surfaceOf(tagged, version === BASELINE ? null : baseline));
   }
   surfaces.set(tree.version, surfaceOf(tree, baseline));
 
@@ -94,7 +95,8 @@ export async function release(minor, opts) {
   if (compareMinors(tree.version, minor) <= 0) {
     throw new Error(`root package.json is still ${tree.version}; bump it past ${minor} before releasing`);
   }
-  const surface = surfaceOf(await taggedTree(minor), loadSnapshot(BASELINE));
+  using tagged = taggedTree(minor);
+  const surface = surfaceOf(tagged, loadSnapshot(BASELINE));
   const step = deriveStep(loadSnapshot(prev), surface, loadOverrides(prev, minor));
   const results = sync(
     new Map([

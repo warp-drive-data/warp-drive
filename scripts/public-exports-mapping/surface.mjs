@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { existsSync, globSync, mkdtempSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, globSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import url from 'node:url';
@@ -45,20 +45,29 @@ export function workingTree(repoRoot = REPO_ROOT) {
 }
 
 /**
+ * Extracts only what discovery and parsing read, into a temporary directory that disposing the
+ * tree removes. Declare it with `using`.
  * @param {import('./token.mjs').Minor} version
  * @param {string} [repoRoot]
- * @returns {Promise<Tree>}
+ * @returns {Tree & Disposable}
  */
-export async function taggedTree(version, repoRoot = REPO_ROOT) {
+export function taggedTree(version, repoRoot = REPO_ROOT) {
   const tag = `v${version}.0`;
-  const root = mkdtempSync(path.join(tmpdir(), `warp-drive-${tag}-`));
-  const git = spawnSync('git', ['archive', tag, ...SOURCE_DIRS], { cwd: repoRoot, maxBuffer: 1 << 30 });
+  // git archive fails on a pathspec that matches nothing, and before 5.6 warp-drive-packages/ has
+  // no build config or src/, so each pattern spans both source directories.
+  const pathspecs = ['package.json', '*.config.mjs', 'src/**'].map((file) => `:(glob)*packages/*/${file}`);
+  const git = spawnSync('git', ['archive', tag, '--', ...pathspecs], { cwd: repoRoot, maxBuffer: 1 << 30 });
   if (git.status !== 0) {
     throw new Error(`git archive ${tag} failed (run \`git fetch origin tag ${tag}\`): ${git.stderr.toString().trim()}`);
   }
+  const root = mkdtempSync(path.join(tmpdir(), `warp-drive-${tag}-`));
+  const tree = { version, root, [Symbol.dispose]: () => rmSync(root, { recursive: true, force: true }) };
   const tar = spawnSync('tar', ['-x', '-C', root], { input: git.stdout });
-  if (tar.status !== 0) throw new Error(`extracting ${tag} failed: ${tar.stderr.toString().trim()}`);
-  return { version, root };
+  if (tar.status !== 0) {
+    tree[Symbol.dispose]();
+    throw new Error(`extracting ${tag} failed: ${tar.stderr.toString().trim()}`);
+  }
+  return tree;
 }
 
 /**
