@@ -88,13 +88,15 @@ export interface ReactiveResourceState {
   readonly isNew: boolean;
 
   /**
-   * `true` if the cache holds no field values for the resource.
+   * `true` if the cache reports the resource as empty, i.e.
+   * `cache.isEmpty` for a resource that is not new. A new resource is
+   * never empty.
    *
-   * This happens when a resource was loaded without any fields, e.g. as
-   * a reference, or with a partial set of fields that turned out empty.
-   * It also becomes `true` when the resource is removed from the store,
-   * e.g. via `store.unloadRecord`, while something still holds a
-   * reference to the record. A new resource is never empty.
+   * For the JSON:API cache, a resource is empty when it has no field
+   * data at all, which a materialized PolarisMode resource typically
+   * only reaches when it is removed from the store, e.g. via
+   * `store.unloadRecord`, while something still holds a reference to
+   * the record.
    *
    * @public
    */
