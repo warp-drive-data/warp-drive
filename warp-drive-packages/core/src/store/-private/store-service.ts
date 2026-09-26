@@ -388,8 +388,8 @@ export interface Store {
    * another incrementally. The Store that
    * [useLegacyStore](/api/@warp-drive/legacy/functions/useLegacyStore) produces does this:
    * its hook creates a legacy `Model` for each resource type that only has a Model schema,
-   * and a ReactiveResource for every other type. The same boundary allows an app to use
-   * more than one Cache implementation, one per Store.
+   * and a ReactiveResource for every other type. Each Store creates one Cache, so an
+   * app that needs more than one Cache implementation uses more than one Store.
    *
    * @param identifier - The Resource CacheKey
    * @param createRecordArgs - An object containing any properties passed to `store.createRecord`
