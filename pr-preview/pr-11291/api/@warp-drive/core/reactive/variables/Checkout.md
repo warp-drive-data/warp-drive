@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/reactive/variables/Checkout.md
+description: >-
+  Deprecated symbol-keyed method on a ReactiveResource that resolves with an
+  editable copy; use `checkout` instead.
 ---
 
 # &#x20;~~Checkout~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 const Checkout: "___(unique) Symbol(Checkout)";
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/symbols.ts:46](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/reactive/-private/symbols.ts#L46)
+Defined in: [warp-drive-packages/core/src/reactive/-private/symbols.ts:48](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/reactive/-private/symbols.ts#L48)
 
 Symbol for the method used to request a mutable copy of an otherwise
 immutable [ReactiveResource](../types/ReactiveResource.md).

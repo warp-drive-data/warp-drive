@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/string/functions/plural.md
+description: >-
+  Adds a regex and replacement rule that `pluralize` checks before all existing
+  plural rules.
 ---
 
 # &#x20;plural()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function plural(regex: RegExp, string: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:166](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/-private/string/inflect.ts#L166)
+Defined in: [-private/string/inflect.ts:177](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/-private/string/inflect.ts#L177)
 
 Adds a pluralization rule.
 

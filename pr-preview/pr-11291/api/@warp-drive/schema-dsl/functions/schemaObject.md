@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl/functions/schemaObject.md
+description: >-
+  Property decorator that compiles to a schema-object field, an inline embedded
+  object whose shape is defined by an object schema.
 ---
 
 # &#x20;schemaObject()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function schemaObject(options: SchemaObjectOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/schema-object.ts:112](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L112)
+Defined in: [fields/schema-object.ts:116](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L116)
 
 **`Decorator`**
 

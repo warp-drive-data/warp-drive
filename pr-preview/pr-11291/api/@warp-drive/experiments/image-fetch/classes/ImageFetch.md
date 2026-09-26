@@ -1,13 +1,16 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/experiments/image-fetch/classes/ImageFetch.md
+description: >-
+  Experimental main-thread client that asks an `ImageWorker` to load image urls
+  and resolves with cached object urls.
 ---
 
 &#x20;
 
 # &#x20;ImageFetch
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:32](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L32)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:34](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L34)
 
 Main-thread client for an [ImageWorker](../../image-worker/classes/ImageWorker.md). Sends image `load`
 requests to a `Worker` or `SharedWorker` running an `ImageWorker`.
@@ -30,7 +33,7 @@ new ImageFetch(worker:
   | null): ImageFetch;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:44](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L44)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:46](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L46)
 
 #### Parameters
 
@@ -56,7 +59,7 @@ in FastBoot/SSR).
 _send(event: RequestEventData): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:93](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L93)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:95](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L95)
 
 #### Parameters
 
@@ -76,7 +79,7 @@ Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:93](https
 cleanupRequest(url: string): Deferred<string> | undefined;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:86](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L86)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:88](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L88)
 
 #### Parameters
 
@@ -96,7 +99,7 @@ Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:86](https
 load(url: string): Promise<string>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:116](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L116)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:118](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L118)
 
 Requests that the given image url be loaded by the connected
 [ImageWorker](../../image-worker/classes/ImageWorker.md), resolving with an object url for the fetched
@@ -131,7 +134,7 @@ resolve.
 cache: Map<string, string>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:37](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L37)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:39](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L39)
 
 ***
 
@@ -141,7 +144,7 @@ Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:37](https
 channel: MessageChannel;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:36](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L36)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:38](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L38)
 
 ***
 
@@ -151,7 +154,7 @@ Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:36](https
 pending: Map<string, Deferred<string>>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:35](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L35)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:37](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L37)
 
 ***
 
@@ -161,7 +164,7 @@ Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:35](https
 threadId: string;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:34](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L34)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:36](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L36)
 
 ***
 
@@ -173,4 +176,4 @@ worker:
   | SharedWorker;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:33](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/image-worker/fetch.ts#L33)
+Defined in: [warp-drive-packages/experiments/src/image-worker/fetch.ts:35](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/image-worker/fetch.ts#L35)

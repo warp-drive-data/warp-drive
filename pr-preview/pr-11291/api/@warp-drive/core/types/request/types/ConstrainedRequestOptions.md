@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/request/types/ConstrainedRequestOptions.md
+description: >-
+  Options the request builders accept to set reload behavior and override the
+  url's host, namespace, resource path, and query param serialization.
 ---
 
 # &#x20;ConstrainedRequestOptions
@@ -16,7 +19,7 @@ interface ConstrainedRequestOptions {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:397](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L397)
+Defined in: [warp-drive-packages/core/src/types/request.ts:446](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L446)
 
 Options accepted by the request builders for constraining how a
 request's url is constructed and how the request interacts with the cache.
@@ -33,7 +36,7 @@ request's url is constructed and how the request interacts with the cache.
 optional backgroundReload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:407](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L407)
+Defined in: [warp-drive-packages/core/src/types/request.ts:456](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L456)
 
 If true, and a cached response is present and not expired, the request
 will be made in the background and the cached response will be returned.
@@ -46,7 +49,7 @@ will be made in the background and the cached response will be returned.
 optional host?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:412](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L412)
+Defined in: [warp-drive-packages/core/src/types/request.ts:461](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L461)
 
 The host to use when constructing the request's url, overriding any
 host configured via `setBuildURLConfig`.
@@ -59,7 +62,7 @@ host configured via `setBuildURLConfig`.
 optional namespace?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:417](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L417)
+Defined in: [warp-drive-packages/core/src/types/request.ts:466](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L466)
 
 The namespace to use when constructing the request's url, overriding
 any namespace configured via `setBuildURLConfig`.
@@ -72,7 +75,7 @@ any namespace configured via `setBuildURLConfig`.
 optional reload?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:402](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L402)
+Defined in: [warp-drive-packages/core/src/types/request.ts:451](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L451)
 
 If true, the request will be made even if a cached response is present
 and not expired.
@@ -85,7 +88,7 @@ and not expired.
 optional resourcePath?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:422](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L422)
+Defined in: [warp-drive-packages/core/src/types/request.ts:471](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L471)
 
 The resource path to use when constructing the request's url,
 overriding the default of pluralizing the resource's type.
@@ -98,6 +101,6 @@ overriding the default of pluralizing the resource's type.
 optional urlParamsSettings?: QueryParamsSerializationOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:426](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L426)
+Defined in: [warp-drive-packages/core/src/types/request.ts:475](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L475)
 
 Options for how to serialize the request's query params, see [QueryParamsSerializationOptions](../../params/types/QueryParamsSerializationOptions.md).

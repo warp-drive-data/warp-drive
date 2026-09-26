@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/schema/fields/types/PolarisTrait.md
+description: >-
+  A named, reusable set of PolarisMode fields that resource schemas compose in
+  via their `traits`, often to model polymorphic capabilities.
 ---
 
 # &#x20;PolarisTrait
@@ -14,7 +17,7 @@ interface PolarisTrait {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2426](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2426)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2494](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2494)
 
 A trait for use on a PolarisMode record.
 
@@ -30,7 +33,7 @@ multiple resource types.
 fields: PolarisModeFieldSchema[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2447](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2447)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2515](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2515)
 
 The fields that this trait contributes to any resource schema
 that implements it.
@@ -43,7 +46,7 @@ that implements it.
 mode: "polaris";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2441](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2441)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2509](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2509)
 
 The mode this trait is valid for use with.
 
@@ -57,7 +60,7 @@ A PolarisTrait may only be applied to PolarisMode resource schemas.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2434](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2434)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2502](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2502)
 
 The name of the trait.
 
@@ -73,7 +76,7 @@ trait.
 optional traits?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2455](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2455)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2523](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2523)
 
 A list of other traits that this trait itself implements.
 

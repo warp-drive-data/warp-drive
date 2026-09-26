@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/holodeck/functions/mock.md
+description: >-
+  Registers a mock response with the Holodeck server for the current test,
+  recording it as a fixture when recording and only counting it when replaying.
 ---
 
 # &#x20;mock()
@@ -15,7 +18,7 @@ function mock(
 ): Promise<void>;
 ```
 
-Defined in: [index.ts:452](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/packages/holodeck/src/index.ts#L452)
+Defined in: [index.ts:467](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/packages/holodeck/src/index.ts#L467)
 
 Mock a request by sending the scaffold to the mock server.
 

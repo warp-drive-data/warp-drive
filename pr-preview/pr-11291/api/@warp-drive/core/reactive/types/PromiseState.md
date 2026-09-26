@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/reactive/types/PromiseState.md
+description: >-
+  The reactive pending, fulfilled, or rejected state of a promise, as returned
+  by `getPromiseState`.
 ---
 
 # &#x20;PromiseState\<T = `unknown`, E = `unknown`>
@@ -12,7 +15,7 @@ type PromiseState<T = unknown, E = unknown> =
 | RejectedPromise<E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:232](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/signals/promise-state.ts#L232)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:240](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/promise-state.ts#L240)
 
 The state of a promise. This is the type that is returned
 from `getPromiseState`.

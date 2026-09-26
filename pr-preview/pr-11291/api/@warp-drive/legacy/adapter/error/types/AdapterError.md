@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/adapter/error/types/AdapterError.md
+description: >-
+  Legacy base error an adapter returns or throws to signal a failed API request;
+  extend it to define app-specific error types.
 ---
 
 &#x20;
@@ -11,6 +14,6 @@ url: >-
 type AdapterError = AdapterRequestError<"AdapterError">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:74](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/adapter/error.ts#L74)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:89](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/adapter/error.ts#L89)
 
 The [AdapterRequestError](AdapterRequestError.md) shape thrown by the [AdapterError](../variables/AdapterError.md) constructor.

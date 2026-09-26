@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/build-config/debugging/variables/LOG_INSTANCE_CACHE.md
+description: >-
+  Debug logging flag that logs when the store creates or removes record
+  instances and their cache entries.
 ---
 
 # &#x20;LOG\_INSTANCE\_CACHE
@@ -9,7 +12,7 @@ url: >-
 const LOG_INSTANCE_CACHE: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/debugging.d.ts:102](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/debugging.d.ts#L102)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:123](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/build-config/src/debugging.ts#L123)
 
 log creation/removal of RecordData and Record
 instances.

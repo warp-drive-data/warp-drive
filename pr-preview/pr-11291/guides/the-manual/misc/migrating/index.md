@@ -6,6 +6,8 @@ description: >-
   which have moved out of this section into the Upgrading guide.
 ---
 
+# Migrating
+
 :::danger **We've moved!**
 Migration docs have [moved](/upgrading/v5/index.md)
 :::

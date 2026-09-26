@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/build-config/functions/babelPlugin.md
+description: >-
+  Creates the Babel plugins that apply a WarpDrive build config, for projects
+  not already using `@embroider/macros`.
 ---
 
 # &#x20;babelPlugin()
@@ -12,7 +15,7 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/index.d.ts:41](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/index.d.ts#L41)
+Defined in: [warp-drive-packages/build-config/src/index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/build-config/src/index.ts#L31)
 
 Create the Babel plugin for WarpDrive
 

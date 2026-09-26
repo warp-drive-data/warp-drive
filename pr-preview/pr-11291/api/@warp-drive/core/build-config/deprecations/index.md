@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/build-config/deprecations.md
+description: >-
+  Deprecation flags, such as `DEPRECATE_NON_STRICT_TYPES`, that keep deprecated
+  WarpDrive behavior active until the build config drops it by `compatWith`
+  version or by flag.
 ---
 
 ## Variables

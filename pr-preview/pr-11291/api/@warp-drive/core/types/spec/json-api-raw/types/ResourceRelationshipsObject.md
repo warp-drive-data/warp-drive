@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/spec/json-api-raw/types/ResourceRelationshipsObject.md
+description: >-
+  The `relationships` member of a {json:api} resource object: to-one or to-many
+  relationship objects keyed by relationship name.
 ---
 
 # &#x20;ResourceRelationshipsObject\<T = `ExistingResourceIdentifierObject` | `NewResourceIdentifierObject`>
@@ -9,7 +12,7 @@ url: >-
 type ResourceRelationshipsObject<T = ExistingResourceIdentifierObject | NewResourceIdentifierObject> = Record<string, InnerRelationshipDocument<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:263](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L263)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:298](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L298)
 
 The `relationships` member of a {json:api} resource object, keyed
 by relationship name.

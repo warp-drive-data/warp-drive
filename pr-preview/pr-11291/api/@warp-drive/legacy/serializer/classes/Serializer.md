@@ -1,13 +1,16 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/serializer/classes/Serializer.md
+description: >-
+  Legacy abstract base class for serializers that normalize API responses into
+  JSON:API and serialize records into the API's request format. Serializer
 ---
 
 &#x20;
 
 # &#x20;Serializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:144](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/serializer.ts#L144)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:148](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/serializer.ts#L148)
 
 > ⚠️ CAUTION you likely want the docs for [MinimumSerializerInterface](../../compat/types/MinimumSerializerInterface.md)
 > as extending this abstract class is unnecessary.
@@ -25,8 +28,6 @@ And you can optionally override the following methods:
 
 For an example implementation, see the included [JSONSerializer](../json/classes/JSONSerializer.md).
 
-Serializer
-
 ## Extends
 
 * `EmberObject`
@@ -38,8 +39,6 @@ Serializer
 ```ts
 new Serializer(owner?: Owner): Serializer;
 ```
-
-Defined in: [node\_modules/.pnpm/ember-source@7.3.0/node\_modules/ember-source/types/stable/@ember/object/index.d.ts:28](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/node_modules/.pnpm/ember-source@7.3.0/node_modules/ember-source/types/stable/@ember/object/index.d.ts#L28)
 
 #### Parameters
 
@@ -67,7 +66,7 @@ normalize(_typeClass: ModelSchema, hash: Record<string, unknown>):
   | SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:268](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/serializer.ts#L268)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:272](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/serializer.ts#L272)
 
 The `normalize` method is used to convert a payload received from your
 external data source into the normalized form `store.push()` expects. You
@@ -118,7 +117,7 @@ the normalized resource document
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:164](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/serializer.ts#L164)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:168](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/serializer.ts#L168)
 
 The `store` property is the application's `store` that contains
 all records. It can be used to look up serializers for other model

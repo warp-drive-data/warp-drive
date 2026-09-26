@@ -1,9 +1,15 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11291/api/@ember-data/store.md
+description: >-
+  (Legacy) EmberData `Store` class that coordinates the cache, the
+  `RequestManager` and record presentation; new apps should use the `Store` from
+  `@warp-drive/core` instead.
 ---
 
-:::warning ⚠️ This is a legacy package not recommended for new applications
-Use [@warp-drive/core](../../@warp-drive/core/index.md) instead.
+&#x20;
+
+:::warning Legacy package
+`@ember-data/store` is a legacy package. New code should use [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 This package provides [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/)'s `Store` class.

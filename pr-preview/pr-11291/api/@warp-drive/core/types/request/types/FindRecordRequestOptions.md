@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/request/types/FindRecordRequestOptions.md
+description: >-
+  Shape of the `GET` request object that `findRecord` builders return for
+  `store.request`, carrying the url, headers, and requested resource identifier.
 ---
 
 # &#x20;FindRecordRequestOptions\<RT = `unknown`, T = `unknown`>
@@ -16,7 +19,7 @@ type FindRecordRequestOptions<RT = unknown, T = unknown> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:121](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L121)
+Defined in: [warp-drive-packages/core/src/types/request.ts:140](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L140)
 
 The request shape produced by the `findRecord` request builders, for
 use with [Store.request](../../../classes/Store.md#request).
@@ -39,7 +42,7 @@ use with [Store.request](../../../classes/Store.md#request).
 optional cacheOptions?: CacheOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:137](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L137)
+Defined in: [warp-drive-packages/core/src/types/request.ts:156](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L156)
 
 see [CacheOptions](CacheOptions.md)
 
@@ -51,7 +54,7 @@ see [CacheOptions](CacheOptions.md)
 headers: Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:133](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L133)
+Defined in: [warp-drive-packages/core/src/types/request.ts:152](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L152)
 
 the headers to send with the request
 
@@ -63,7 +66,7 @@ the headers to send with the request
 method: "GET";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:129](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L129)
+Defined in: [warp-drive-packages/core/src/types/request.ts:148](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L148)
 
 the HTTP method to use
 
@@ -75,7 +78,7 @@ the HTTP method to use
 op: "findRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:141](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L141)
+Defined in: [warp-drive-packages/core/src/types/request.ts:160](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L160)
 
 the name of the request operation
 
@@ -87,7 +90,7 @@ the name of the request operation
 records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:145](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L145)
+Defined in: [warp-drive-packages/core/src/types/request.ts:164](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L164)
 
 the resource being requested
 
@@ -99,6 +102,6 @@ the resource being requested
 url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:125](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/request.ts#L125)
+Defined in: [warp-drive-packages/core/src/types/request.ts:144](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L144)
 
 the url to request

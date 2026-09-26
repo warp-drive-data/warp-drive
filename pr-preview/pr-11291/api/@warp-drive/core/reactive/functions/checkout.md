@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/reactive/functions/checkout.md
+description: >-
+  Resolves with an editable copy of an immutable `ReactiveResource` so its
+  fields can be changed locally.
 ---
 
 # &#x20;checkout()
@@ -9,7 +12,7 @@ url: >-
 function checkout<T>(resource: unknown): Promise<T & ReactiveResource>;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:755](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/reactive/-private/record.ts#L755)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:758](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/reactive/-private/record.ts#L758)
 
 Checkout an immutable resource for editing.
 

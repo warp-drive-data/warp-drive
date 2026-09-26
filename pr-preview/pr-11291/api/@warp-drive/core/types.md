@@ -1,5 +1,8 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types.md
+description: >-
+  Shared WarpDrive types such as `ResourceKey`, `SchemaService`,
+  `CacheCapabilitiesManager`, and the legacy finder option types.
 ---
 
 This package provides core types, type-utilities, symbols

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/string/functions/clear.md
+description: >-
+  Empties the cached results of `singularize` and `pluralize` while keeping all
+  inflection rules.
 ---
 
 # &#x20;clear()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function clear(): void;
 ```
 
-Defined in: [-private/string/inflect.ts:91](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/-private/string/inflect.ts#L91)
+Defined in: [-private/string/inflect.ts:97](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/-private/string/inflect.ts#L97)
 
 Clears the caches for singularize and pluralize.
 

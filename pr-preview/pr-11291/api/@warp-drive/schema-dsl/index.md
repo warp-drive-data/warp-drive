@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl.md
+description: >-
+  TypeScript decorators such as `@Resource` and `@field` for authoring WarpDrive
+  schemas as classes, compiled to plain JSON schemas at build time by a Vite
+  plugin.
 ---
 
 &#x20;

@@ -1,6 +1,7 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/params/types/SerializablePrimitive.md
+description: A string, number, boolean, or `null` usable as a single query parameter value.
 ---
 
 # &#x20;SerializablePrimitive
@@ -9,7 +10,7 @@ url: >-
 type SerializablePrimitive = string | number | boolean | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:8](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/params.ts#L8)
+Defined in: [warp-drive-packages/core/src/types/params.ts:16](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/params.ts#L16)
 
 A JSON-serializable primitive value, suitable for use as a single
 query parameter value.

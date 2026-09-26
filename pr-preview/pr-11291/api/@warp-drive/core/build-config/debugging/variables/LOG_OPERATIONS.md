@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/build-config/debugging/variables/LOG_OPERATIONS.md
+description: >-
+  Removed debug logging flag that no longer has any effect; use `LOG_CACHE` to
+  log cache updates instead.
 ---
 
 # &#x20;~~LOG\_OPERATIONS~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 const LOG_OPERATIONS: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/debugging.d.ts:46](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/debugging.d.ts#L46)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:51](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/build-config/src/debugging.ts#L51)
 
 This flag no longer has any effect.
 

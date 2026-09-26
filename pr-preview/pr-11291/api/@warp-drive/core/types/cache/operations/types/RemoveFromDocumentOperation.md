@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/cache/operations/types/RemoveFromDocumentOperation.md
+description: >-
+  Cache operation passed to `cache.patch` that removes resources from a request
+  document's `data` or `included`.
 ---
 
 # &#x20;RemoveFromDocumentOperation
@@ -17,7 +20,7 @@ interface RemoveFromDocumentOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:222](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L222)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:255](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L255)
 
 Removes a resource from a request document, optionally
 at a specific index. This can be used to update the
@@ -35,7 +38,7 @@ result of a request.
 field: "data" | "included";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:231](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L231)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:264](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L264)
 
 Which member of the document to remove from
 
@@ -47,7 +50,7 @@ Which member of the document to remove from
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:239](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L239)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:272](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L272)
 
 The index to remove the resource(s) from, if applicable
 
@@ -59,7 +62,7 @@ The index to remove the resource(s) from, if applicable
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:223](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L223)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:256](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L256)
 
 The name of the [operation](Op.md)
 
@@ -75,7 +78,7 @@ The name of the [operation](Op.md)
 record: RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:227](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L227)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:260](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L260)
 
 The cache key for the request document
 
@@ -89,6 +92,6 @@ value:
   | PersistedResourceKey<string>[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:235](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/cache/operations.ts#L235)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:268](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/cache/operations.ts#L268)
 
 The resource(s) to remove

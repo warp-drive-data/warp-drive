@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/json/raw.md
+description: >-
+  Types for JSON values: `PrimitiveValue`, `ObjectValue`, `ArrayValue` and their
+  `Value` union.
 ---
 
 ## Types

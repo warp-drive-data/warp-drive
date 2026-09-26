@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/cache/operations.md
+description: >-
+  Types for the operations passed to `cache.patch` to update the cache's remote
+  (clean) state, such as from WebSocket or server-sent event messages.
 ---
 
 [Cache](../types/Cache.md) Operations perform updates to the

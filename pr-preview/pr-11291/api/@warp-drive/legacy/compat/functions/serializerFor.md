@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/compat/functions/serializerFor.md
+description: >-
+  Legacy store method that returns the cached serializer for a model type,
+  falling back to the `application` serializer, or `null` if neither exists.
 ---
 
 &#x20;
@@ -13,7 +16,7 @@ function serializerFor(this: Store$1, modelName: string):
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:161](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/compat.ts#L161)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:175](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/compat.ts#L175)
 
 Returns an instance of the serializer for a given type. For
 example, `serializerFor('person')` will return an instance of

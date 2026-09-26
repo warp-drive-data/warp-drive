@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/require-request-error-block/variables/export=.md
+description: >-
+  ESLint rule object that reports React `<Request>` components that are not
+  given a `states.error` handler.
 ---
 
 # &#x20;export=
@@ -9,4 +12,4 @@ url: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/require-request-error-block.js:35](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/packages/eslint-plugin-warp-drive/src/rules/require-request-error-block.js#L35)
+Defined in: [rules/require-request-error-block.js:40](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/packages/eslint-plugin-warp-drive/src/rules/require-request-error-block.js#L40)

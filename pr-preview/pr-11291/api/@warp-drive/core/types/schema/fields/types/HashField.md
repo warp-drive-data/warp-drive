@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/schema/fields/types/HashField.md
+description: >-
+  Field schema of kind `@hash` that computes a schema-object's identity from its
+  cache data using a registered hash function.
 ---
 
 # &#x20;HashField
@@ -14,7 +17,7 @@ interface HashField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:360](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L360)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:381](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L381)
 
 Represents a specialized field whose computed value
 will be used as the primary key of a schema-object
@@ -44,7 +47,7 @@ in place of an `IdentityField`.
 kind: "@hash";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:366](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L366)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:387](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L387)
 
 The kind of field this is.
 
@@ -56,7 +59,7 @@ The kind of field this is.
 name: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:377](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L377)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:398](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L398)
 
 The name of the field that serves as the
 hash for the resource.
@@ -72,7 +75,7 @@ the UI is desired, it can be `null` otherwise.
 optional options?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:394](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L394)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:415](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L415)
 
 Any options that should be provided to the hash
 function.
@@ -85,7 +88,7 @@ function.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:386](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L386)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:407](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L407)
 
 The name of a function to run to compute the hash.
 The function will only have access to the cached

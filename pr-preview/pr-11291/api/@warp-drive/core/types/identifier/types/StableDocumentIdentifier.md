@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/identifier/types/StableDocumentIdentifier.md
+description: >-
+  Deprecated alias for `RequestKey`, the stable cache reference to a request
+  document.
 ---
 
 # &#x20;~~StableDocumentIdentifier~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 type StableDocumentIdentifier = RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:57](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/identifier.ts#L57)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:70](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/identifier.ts#L70)
 
 ## Deprecated
 

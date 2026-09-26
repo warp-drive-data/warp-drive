@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/types/UpdateRecordUrlOptions.md
+description: >-
+  Options passed to `buildBaseURL` to build the URL for saving changes to an
+  existing record by type and id.
 ---
 
 # &#x20;UpdateRecordUrlOptions
@@ -15,7 +18,7 @@ interface UpdateRecordUrlOptions {
 }
 ```
 
-Defined in: [index.ts:321](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L321)
+Defined in: [index.ts:334](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L334)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for an `updateRecord` request.
 
@@ -27,7 +30,7 @@ Defined in: [index.ts:321](https://github.com/warp-drive-data/warp-drive/blob/ae
 optional host?: string;
 ```
 
-Defined in: [index.ts:346](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L346)
+Defined in: [index.ts:359](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L359)
 
 Overrides the globally configured host for this call only.
 
@@ -42,7 +45,7 @@ identifier: {
 };
 ```
 
-Defined in: [index.ts:329](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L329)
+Defined in: [index.ts:342](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L342)
 
 The type and id of the record being updated.
 
@@ -70,7 +73,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:350](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L350)
+Defined in: [index.ts:363](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L363)
 
 Overrides the globally configured namespace for this call only.
 
@@ -82,7 +85,7 @@ Overrides the globally configured namespace for this call only.
 op: "updateRecord";
 ```
 
-Defined in: [index.ts:325](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L325)
+Defined in: [index.ts:338](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L338)
 
 The request operation this URL is for.
 
@@ -94,6 +97,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:342](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L342)
+Defined in: [index.ts:355](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L355)
 
 The path segment for the resource, defaults to `identifier.type` if not provided.

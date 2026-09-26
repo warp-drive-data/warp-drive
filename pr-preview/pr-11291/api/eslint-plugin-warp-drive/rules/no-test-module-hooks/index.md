@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/no-test-module-hooks.md
+description: >-
+  Lint rule that disallows `hooks.beforeEach` and `hooks.afterEach` in tests in
+  favor of setup functions each test calls explicitly.
 ---
 
 | Rule | 🏷️ | ✨ |

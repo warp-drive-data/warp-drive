@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/no-invalid-resource-types.md
+description: >-
+  Lint rule, with autofix, that enforces a configurable naming convention for
+  resource types, defaulting to singular dasherized.
 ---
 
 | Rule | 🏷️ | ✨ |

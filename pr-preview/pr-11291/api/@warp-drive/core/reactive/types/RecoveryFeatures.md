@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/reactive/types/RecoveryFeatures.md
+description: >-
+  The online and visibility state plus a `retry` function that a request
+  subscription exposes for recovering from a failed request.
 ---
 
 # &#x20;RecoveryFeatures
@@ -13,7 +16,7 @@ interface RecoveryFeatures {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:44](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/signals/request-subscription.ts#L44)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:53](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/request-subscription.ts#L53)
 
 Utilities to assist in recovering from the error.
 
@@ -25,7 +28,7 @@ Utilities to assist in recovering from the error.
 isHidden: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:52](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/signals/request-subscription.ts#L52)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:61](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/request-subscription.ts#L61)
 
 Whether the browser reports that the tab is hidden.
 
@@ -37,7 +40,7 @@ Whether the browser reports that the tab is hidden.
 isOnline: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:48](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/signals/request-subscription.ts#L48)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:57](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/request-subscription.ts#L57)
 
 Whether the browser reports that the network is online.
 
@@ -49,7 +52,7 @@ Whether the browser reports that the network is online.
 retry: () => Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:56](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/signals/request-subscription.ts#L56)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:65](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/request-subscription.ts#L65)
 
 Retries the request, reloading it from the server.
 

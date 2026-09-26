@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/string/functions/camelize.md
+description: >-
+  Converts dashed, underscored, dotted, or spaced strings to lowerCamelCase,
+  such as `action_name` to `actionName`.
 ---
 
 # &#x20;camelize()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function camelize(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:59](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/-private/string/transform.ts#L59)
+Defined in: [-private/string/transform.ts:62](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/-private/string/transform.ts#L62)
 
 Returns the lowerCamelCase form of a string.
 

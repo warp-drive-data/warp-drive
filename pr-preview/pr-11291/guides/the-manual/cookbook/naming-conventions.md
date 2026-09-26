@@ -3,60 +3,119 @@ url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/guides/the-manual/cookbook/naming-conventions.md
 description: >-
   Decide whether resource types should be singular or plural and dasherized or
-  snake_case, and see what consistency across the API, store calls, and models
-  requires.
+  snake_case, and keep that one `type` string the same across API responses,
+  ResourceSchemas, relationship fields and request builders.
 ---
 
-# Model Name: singular or plural? What to choose? Why is that?
+# Resource Type Naming: singular or plural? What to choose? Why is that?
 
-## Resource Type (model name) conventions – or, why it was singular
+Every resource in ***Warp*Drive** has a type: the `type` string that identifies it in API
+responses, in its [ResourceSchema](../schemas/resources/index.md), in the relationship fields
+that point to it and in the requests that fetch it. ***Warp*Drive** has no rule about what that
+string looks like. It can be singular or plural, dasherized or snake\_case. It only has to be the
+same string everywhere.
 
-If you have been working with WarpDrive (or EmberData) for a while, you might remember a convention about singular-dasherized resource types (or modelNames). It was a convention that model names should be singular. But why is that? Why not plural? And why dasherized?
+## Why older apps use singular, dasherized types
 
-There is no longer any strict rule in WarpDrive governing what naming convention to use for resource types. Before, you may have been using singular names, because you had default Serializer configured in your app. The default serializers assume types should be singular and dasherized, and since they do the job of data normalization for you, they would singularize and dasherize the `types` received from your server.
+The legacy serializers in `@warp-drive/legacy` singularize and dasherize every `type` they
+receive, so apps that use them end up with types like `user-setting` no matter what the API
+sends.
 
-### So what to choose?
+Without those serializers, ***Warp*Drive** uses the `type` your API sends as-is, and normalizing
+it is up to you.
 
-When using WarpDrive without Legacy setup, you are responsible for data normalization. You can choose whatever you want. You can use singular or plural names. It is up to you. Or up to your backend to be precise, as it would be beneficial for you to not do all that normalization on frontend. Just have it as a part of API contract of your app. But remember, you need to be consistent. If you choose singular names, stick with it. If you choose plural names, stick with it. **Be Consistent!**
+## So what to choose?
 
-What does consistency look like?
+Whatever your API already sends. You can choose singular or plural names, but it is usually best
+to let the backend decide and treat the type as part of your app's API contract, rather than
+renaming every type on the frontend. Whichever you choose, stick with it. **Be Consistent!**
 
-#### Let's say your convention is singular dasherized, e.g. `user-setting`
+## What does consistency look like?
 
-* the API should respond with `user-setting` (or your handler/serializer should normalize the type to)
+### Let's say your convention is singular dasherized, e.g. `user-setting`
 
-* calls to store methods should use the same format: `store.findRecord('user-setting', '1')`
+* The API responds with `"type": "user-setting"`, or a [handler](../requests/handlers.md)
+  normalizes the type to that.
 
-* relationship definitions should also use this format:
+* The ResourceSchema's `type` and every relationship field's `type` that points to it use the
+  same string:
+
+  ```ts [schemas/user.ts]
+  import { withDefaults } from '@warp-drive/legacy/model/migration-support';
+
+  export const UserSettingSchema = withDefaults({
+    type: 'user-setting',
+    fields: [{ kind: 'attribute', name: 'value' }],
+  });
+
+  export const UserSchema = withDefaults({
+    type: 'user',
+    fields: [
+      {
+        kind: 'hasMany',
+        name: 'userSettings',
+        type: 'user-setting',
+        options: { async: false, inverse: null },
+      },
+    ],
+  });
+
+  // wherever you configure the store
+  store.schema.registerResources([UserSchema, UserSettingSchema]);
+  ```
+
+* Requests made with a [request builder](../requests/builders.md) use it too:
 
   ```ts
-  class User extends Model {
-    @hasMany('user-setting', { async: false, inverse: null }) userSettings;
+  import { findRecord } from '@warp-drive/utilities/json-api';
+
+  const { content } = await store.request(findRecord('user-setting', '1'));
+  ```
+
+### But what about plural and snake case?
+
+The same places use `user_settings` instead:
+
+* The API responds with `"type": "user_settings"`.
+
+* The schema and the relationship field use it:
+
+  ```ts
+  export const UserSettingSchema = withDefaults({
+    type: 'user_settings',
+    fields: [{ kind: 'attribute', name: 'value' }],
+  });
+
+  // in UserSchema's fields
+  {
+    kind: 'hasMany',
+    name: 'userSettings',
+    type: 'user_settings',
+    options: { async: false, inverse: null },
   }
   ```
 
-* The model files should also use this format, e.g. the model would be located in `app/models/user-setting.{js,ts}`
-
-#### But what about plural and snake case?
-
-* the API should respond with `user_settings`
-
-* calls to store methods: `store.findRecord('user_settings', '1')`
-
-* relationship definitions:
+* So do requests:
 
   ```ts
-  class User extends Model {
-    @hasMany('user_settings', { async: false, inverse: null }) userSettings;
-  }
+  const { content } = await store.request(findRecord('user_settings', '1'));
   ```
 
-* The model file would be located in `app/models/user_settings.{js,ts}`
+The example schemas use [LegacyMode](../schemas/resources/legacy-mode.md), which despite its name
+is the recommended mode today. The resource type rules are the same in [PolarisMode](../schemas/resources/polaris-mode.md)
+and for apps still defining `Model` classes.
 
-### But what about JSON:API spec?
+:::tip 💡 The type and the URL are separate
+The `findRecord` builder from `@warp-drive/utilities/json-api` builds the URL path by pluralizing
+the type you pass. If your endpoint uses a different path, keep the type as it is and pass the
+`resourcePath` option to [findRecord](/api/@warp-drive/utilities/json-api/functions/findRecord)
+instead.
+:::
 
-It's pretty simple, JSON:API spec agnostic about the `type` field convention. Here is the quote from the spec:
+## But what about the JSON:API spec?
 
-> Note: This spec is agnostic about inflection rules, so the value of type can be either plural or singular. However, the same value should be used consistently throughout an implementation.
+The JSON:API spec is agnostic about how `type` is named. Here is the quote from the spec:
+
+> Note: This spec is agnostic about inflection rules, so the value of `type` can be either plural or singular. However, the same value should be used consistently throughout an implementation.
 
 You can read more about it in the [JSON:API spec](https://jsonapi.org/format/#document-resource-object-identification).

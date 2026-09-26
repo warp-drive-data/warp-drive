@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/compat/types/CompatStore.md
+description: >-
+  Deprecated alias of `LegacyStoreCompat`, the `Store` type extended with legacy
+  adapter and serializer methods.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 type CompatStore = LegacyStoreCompat;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:85](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/compat.ts#L85)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:95](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/compat.ts#L95)
 
 ## Deprecated
 

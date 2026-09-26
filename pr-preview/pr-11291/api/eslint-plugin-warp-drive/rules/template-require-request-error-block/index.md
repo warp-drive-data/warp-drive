@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/template-require-request-error-block.md
+description: >-
+  Lint rule that requires `<Request>` and `<Await>` components to provide an
+  `:error` block so rejections do not crash the app.
 ---
 
 | Rule | 🏷️ | ✨ |

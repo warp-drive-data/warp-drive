@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/holodeck/functions/setTestId.md
+description: >-
+  Assigns a test context its Holodeck test id before a test, or clears it after,
+  reporting an error for any mock the test never requested.
 ---
 
 # &#x20;setTestId()
@@ -9,7 +12,7 @@ url: >-
 function setTestId(context: object, str: string | null): void;
 ```
 
-Defined in: [index.ts:150](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/packages/holodeck/src/index.ts#L150)
+Defined in: [index.ts:155](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/packages/holodeck/src/index.ts#L155)
 
 ## Parameters
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/no-external-request-patterns.md
+description: >-
+  Lint rule that disallows `fetch`, jQuery, ajax-service, and `XMLHttpRequest`
+  requests in favor of `store.request()`.
 ---
 
 | Rule | 🏷️ | ✨ |

@@ -11,7 +11,7 @@ url: >-
 function getSessionStorage(): ReactiveStorage;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:47](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/experiments/src/storage/storage.ts#L47)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:50](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/storage/storage.ts#L50)
 
 ## Returns
 

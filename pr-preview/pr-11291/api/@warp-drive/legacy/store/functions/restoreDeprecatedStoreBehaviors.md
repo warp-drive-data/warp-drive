@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/store/functions/restoreDeprecatedStoreBehaviors.md
+description: >-
+  Legacy opt-in that restores the adapter-based `findRecord`, `findAll`,
+  `query`, `saveRecord`, and related methods onto a `Store` class.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store$1): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/store.ts:34](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/store.ts#L34)
+Defined in: [warp-drive-packages/legacy/src/store.ts:43](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/store.ts#L43)
 
 Restores the deprecated `findRecord`/`findAll`/`query`/`queryRecord`/
 `findBelongsTo`/`findHasMany`/`createRecord`/`deleteRecord`/`saveRecord`

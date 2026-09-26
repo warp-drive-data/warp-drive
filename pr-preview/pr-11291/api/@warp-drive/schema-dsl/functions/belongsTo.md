@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl/functions/belongsTo.md
+description: >-
+  LEGACY property decorator that compiles to a belongsTo relationship field,
+  valid only on resources declared with `@Resource({ legacy: true })`.
 ---
 
 # &#x20;belongsTo()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function belongsTo(options: BelongsToOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/belongs-to.ts:98](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L98)
+Defined in: [fields/belongs-to.ts:102](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L102)
 
 **`Decorator`**
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/schema/fields/types/LegacyModeFieldSchema.md
+description: >-
+  Union of every field schema allowed on a LegacyMode resource schema, including
+  legacy attribute, belongsTo, and hasMany fields.
 ---
 
 # &#x20;LegacyModeFieldSchema
@@ -20,7 +23,7 @@ type LegacyModeFieldSchema =
   | LegacyHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2066](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L2066)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2115](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2115)
 
 A union of all possible LegacyMode field schemas.
 

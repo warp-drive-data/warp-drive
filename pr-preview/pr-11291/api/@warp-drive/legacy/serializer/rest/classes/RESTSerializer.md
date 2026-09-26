@@ -1,13 +1,16 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/serializer/rest/classes/RESTSerializer.md
+description: >-
+  Legacy serializer for REST payloads that key records by model type name at the
+  root, with hooks for normalizing keys and payloads. RESTSerializer
 ---
 
 &#x20;
 
 # &#x20;RESTSerializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:77](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/legacy/src/serializer/rest.ts#L77)
+Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:85](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/serializer/rest.ts#L85)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
@@ -52,5 +55,3 @@ You can also implement `keyForRelationship`, which takes the name
 of the relationship as the first parameter, the kind of
 relationship (`hasMany` or `belongsTo`) as the second parameter, and
 the method (`serialize` or `deserialize`) as the third parameter.
-
-RESTSerializer

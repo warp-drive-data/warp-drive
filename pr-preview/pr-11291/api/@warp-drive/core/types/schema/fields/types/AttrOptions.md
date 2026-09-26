@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/schema/fields/types/AttrOptions.md
+description: >-
+  Options object on a legacy `attribute` field schema, holding a `defaultValue`
+  (a primitive or a function producing one) plus any transform-specific options.
 ---
 
 # &#x20;AttrOptions
@@ -17,7 +20,7 @@ interface AttrOptions {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:10](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L10)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:19](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L19)
 
 Options signature for Legacy Attributes.
 
@@ -40,6 +43,6 @@ optional defaultValue?:
   | (() => Value);
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:14](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/schema/fields.ts#L14)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:23](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L23)
 
 A primitive value or a function which produces a value.

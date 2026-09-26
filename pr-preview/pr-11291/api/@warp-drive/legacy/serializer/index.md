@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/legacy/serializer.md
+description: >-
+  Legacy serializer layer that converts data between an API's format and
+  JSON:API for the adapter-based request flow.
 ---
 
 &#x20;

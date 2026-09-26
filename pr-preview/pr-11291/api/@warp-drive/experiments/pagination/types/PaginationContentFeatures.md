@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/experiments/pagination/types/PaginationContentFeatures.md
+description: >-
+  Experimental: the combined paged and infinite content features a pagination
+  subscription builds, before `<Paginate />` narrows them to one mode.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 type PaginationContentFeatures<RT> = PagedPaginationContentFeatures<RT> & InfinitePaginationContentFeatures<RT>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:794](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L794)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:73](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L73)
 
 The full set of content features a [PaginationSubscription](PaginationSubscription.md) builds —
 both modes' surfaces. The `<Paginate />` component narrows this to one mode

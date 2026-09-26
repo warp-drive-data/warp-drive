@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/string/functions/resetToDefaults.md
+description: >-
+  Discards all custom inflection rules and caches, then restores the built-in
+  default rules.
 ---
 
 # &#x20;resetToDefaults()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function resetToDefaults(): void;
 ```
 
-Defined in: [-private/string/inflect.ts:102](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/-private/string/inflect.ts#L102)
+Defined in: [-private/string/inflect.ts:109](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/-private/string/inflect.ts#L109)
 
 Resets the inflection rules to the defaults.
 

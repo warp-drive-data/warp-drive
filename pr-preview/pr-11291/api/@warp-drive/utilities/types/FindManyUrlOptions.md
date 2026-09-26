@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/types/FindManyUrlOptions.md
+description: >-
+  Options passed to `buildBaseURL` to build the URL for fetching several
+  resources, pathed by the first identifier's type.
 ---
 
 # &#x20;FindManyUrlOptions
@@ -18,7 +21,7 @@ interface FindManyUrlOptions {
 }
 ```
 
-Defined in: [index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L170)
+Defined in: [index.ts:177](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L177)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for a `findMany` request.
 
@@ -30,7 +33,7 @@ Defined in: [index.ts:170](https://github.com/warp-drive-data/warp-drive/blob/ae
 optional host?: string;
 ```
 
-Defined in: [index.ts:195](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L195)
+Defined in: [index.ts:202](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L202)
 
 Overrides the globally configured host for this call only.
 
@@ -45,7 +48,7 @@ identifiers: {
 }[];
 ```
 
-Defined in: [index.ts:178](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L178)
+Defined in: [index.ts:185](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L185)
 
 The type and id of each record to find.
 
@@ -73,7 +76,7 @@ The resource type.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:199](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L199)
+Defined in: [index.ts:206](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L206)
 
 Overrides the globally configured namespace for this call only.
 
@@ -85,7 +88,7 @@ Overrides the globally configured namespace for this call only.
 op: "findMany";
 ```
 
-Defined in: [index.ts:174](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L174)
+Defined in: [index.ts:181](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L181)
 
 The request operation this URL is for.
 
@@ -97,6 +100,6 @@ The request operation this URL is for.
 optional resourcePath?: string;
 ```
 
-Defined in: [index.ts:191](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/index.ts#L191)
+Defined in: [index.ts:198](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/index.ts#L198)
 
 The path segment for the resource, defaults to the first identifier's `type` if not provided.

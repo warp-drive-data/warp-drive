@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl/functions/alias.md
+description: >-
+  Property decorator that compiles to an alias field, which reads from another
+  field in the same schema and can write back to it in editable modes.
 ---
 
 # &#x20;alias()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function alias(options: AliasOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/alias.ts:78](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/alias.ts#L78)
+Defined in: [fields/alias.ts:82](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/alias.ts#L82)
 
 **`Decorator`**
 

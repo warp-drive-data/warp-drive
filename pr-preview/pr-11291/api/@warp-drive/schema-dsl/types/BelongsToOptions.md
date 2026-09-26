@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl/types/BelongsToOptions.md
+description: >-
+  Options for the legacy `@belongsTo` decorator that describe the related type,
+  inverse, async and polymorphic behavior, and `sourceKey`.
 ---
 
 # &#x20;BelongsToOptions
@@ -16,7 +19,7 @@ interface BelongsToOptions {
 }
 ```
 
-Defined in: [fields/belongs-to.ts:10](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L10)
+Defined in: [fields/belongs-to.ts:12](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L12)
 
 Options accepted by the [belongsTo](../functions/belongsTo.md) decorator.
 
@@ -28,7 +31,7 @@ Options accepted by the [belongsTo](../functions/belongsTo.md) decorator.
 optional as?: string;
 ```
 
-Defined in: [fields/belongs-to.ts:49](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L49)
+Defined in: [fields/belongs-to.ts:51](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L51)
 
 If this field is polymorphic, the trait or abstract type that this
 resource implements.
@@ -41,7 +44,7 @@ resource implements.
 optional async?: boolean;
 ```
 
-Defined in: [fields/belongs-to.ts:32](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L32)
+Defined in: [fields/belongs-to.ts:34](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L34)
 
 Whether the relationship is async. Compiles onto the
 [LegacyBelongsToField](../../core/types/schema/fields/types/LegacyBelongsToField.md)'s `options.async`, defaulting to `false`.
@@ -54,7 +57,7 @@ Whether the relationship is async. Compiles onto the
 inverse: string | null;
 ```
 
-Defined in: [fields/belongs-to.ts:24](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L24)
+Defined in: [fields/belongs-to.ts:26](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L26)
 
 The name of the inverse field on the related resource, or `null` if
 the relationship is unidirectional.
@@ -67,7 +70,7 @@ the relationship is unidirectional.
 optional polymorphic?: boolean;
 ```
 
-Defined in: [fields/belongs-to.ts:41](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L41)
+Defined in: [fields/belongs-to.ts:43](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L43)
 
 Whether this field satisfies a polymorphic relationship on another
 resource, meaning it can point to multiple types of resources so long
@@ -81,7 +84,7 @@ as they implement the trait or abstract type named by `type`.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/belongs-to.ts:57](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L57)
+Defined in: [fields/belongs-to.ts:59](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L59)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name.
@@ -94,6 +97,6 @@ decorated property's name.
 type: string;
 ```
 
-Defined in: [fields/belongs-to.ts:16](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L16)
+Defined in: [fields/belongs-to.ts:18](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/belongs-to.ts#L18)
 
 The name of the related resource's `type`.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/schema-dsl/types/ObjectSchemaOptions.md
+description: >-
+  Options for the `ObjectSchema` class decorator; currently only a reserved
+  `hash` flag that has no effect on the compiled object schema.
 ---
 
 # &#x20;ObjectSchemaOptions
@@ -11,7 +14,7 @@ interface ObjectSchemaOptions {
 }
 ```
 
-Defined in: [entities/object-schema.ts:12](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L12)
+Defined in: [entities/object-schema.ts:14](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L14)
 
 Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 
@@ -23,7 +26,7 @@ Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 optional hash?: boolean;
 ```
 
-Defined in: [entities/object-schema.ts:20](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L20)
+Defined in: [entities/object-schema.ts:22](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L22)
 
 Reserved for future use. The compiled schema's `identity` is currently
 determined solely by whether a property on the class is decorated with

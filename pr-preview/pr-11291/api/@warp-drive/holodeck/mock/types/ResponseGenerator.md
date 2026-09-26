@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/holodeck/mock/types/ResponseGenerator.md
+description: >-
+  Function passed to the Holodeck mock helpers that builds the response body,
+  called only when recording a fixture.
 ---
 
 # &#x20;ResponseGenerator
@@ -9,7 +12,7 @@ url: >-
 type ResponseGenerator = () => Record<string, unknown>;
 ```
 
-Defined in: [mock.ts:38](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/packages/holodeck/src/mock.ts#L38)
+Defined in: [mock.ts:51](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/packages/holodeck/src/mock.ts#L51)
 
 ## Returns
 

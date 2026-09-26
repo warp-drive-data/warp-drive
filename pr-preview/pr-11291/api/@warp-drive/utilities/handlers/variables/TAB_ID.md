@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/utilities/handlers/variables/TAB_ID.md
+description: >-
+  Random UUID identifying the current browser tab, kept in `sessionStorage`
+  across reloads, for request tracing.
 ---
 
 # &#x20;TAB\_ID
@@ -9,7 +12,7 @@ url: >-
 const TAB_ID: string;
 ```
 
-Defined in: [-private/handlers/utils.ts:36](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L36)
+Defined in: [-private/handlers/utils.ts:38](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L38)
 
 A unique identifier for the current browser tab
 useful for observability/tracing and deduping

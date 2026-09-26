@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/spec/json-api-raw/types/SingleResourceDocument.md
+description: >-
+  A raw {json:api} document whose `data` is one existing resource object, with
+  optional `included`, `meta`, and `links`.
 ---
 
 # &#x20;SingleResourceDocument\<T *extends* `string` = `string`>
@@ -11,7 +14,7 @@ type SingleResourceDocument<T extends string = string> = Document & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:372](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L372)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:418](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L418)
 
 Represents a {json:api} document containing a single resource.
 

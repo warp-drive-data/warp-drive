@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/eslint-plugin-warp-drive/rules/template-always-use-request-content.md
+description: >-
+  Lint rule that requires a `<Request>` component's `:content` block to capture
+  and use the yielded request result.
 ---
 
 | Rule | 🏷️ | ✨ |

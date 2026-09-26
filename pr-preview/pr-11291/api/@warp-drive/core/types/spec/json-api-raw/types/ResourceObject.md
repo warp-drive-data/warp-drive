@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/core/types/spec/json-api-raw/types/ResourceObject.md
+description: >-
+  A raw {json:api} resource object, either for a persisted resource or for a new
+  one created on the client.
 ---
 
 # &#x20;ResourceObject\<T *extends* `string` = `string`>
@@ -11,7 +14,7 @@ type ResourceObject<T extends string = string> =
 | NewResourceObject<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:334](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L334)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:377](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L377)
 
 Represents a single {json:api} resource object, whether already
 persisted or newly created on the client.

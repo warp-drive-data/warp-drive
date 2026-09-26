@@ -1,9 +1,17 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@ember-data/legacy-compat/builders.md
+description: >-
+  Deprecated request builders (`findAll`, `findRecord`, `query`, `queryRecord`,
+  `saveRecord`) that move store method calls onto `store.request` while keeping
+  adapter behavior.
 ---
 
-&#x20;
+&#x20;&#x20;
+
+:::warning Legacy package
+`@ember-data/legacy-compat` is a legacy package. It bridges Models, Adapters, and Serializers to the `RequestManager` and cache; new code should skip it and start from [`@warp-drive/core`](/api/@warp-drive/core/) with schemas, Handlers, and request builders.
+:::
 
 Builders for migrating from `store` methods to `store.request`.
 

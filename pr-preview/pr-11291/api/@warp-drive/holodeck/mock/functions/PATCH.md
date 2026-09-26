@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11291/api/@warp-drive/holodeck/mock/functions/PATCH.md
+description: >-
+  Mocks a PATCH request to a url on the Holodeck server, returning a generated
+  response with a 200 status, or 204 when it has no body.
 ---
 
 # &#x20;PATCH()
@@ -16,7 +19,7 @@ function PATCH(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:217](https://github.com/warp-drive-data/warp-drive/blob/aed3f52874c34501c8eb0b5a5a50cc1fceaf02b9/packages/holodeck/src/mock.ts#L217)
+Defined in: [mock.ts:240](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/packages/holodeck/src/mock.ts#L240)
 
 mock a PATCH request
 
