@@ -60,8 +60,12 @@ fix.
   the derivation re-derives the archived files with it. Only the live step, `steps/5.9-5.10.json`
   while the root `package.json` is on 5.10, changes on an ordinary pull request. The set of files
   in `snapshots/` is the definition of which releases exist.
-- Every command has a `--check` mode. It regenerates the same files in memory, prints a unified
-  diff for each file that would change, and exits 1.
+- Every step goes to the next release. `stepPairs` builds the list of steps once, from
+  `snapshots/` and the root `package.json`, and refuses a pair that skips a minor. A working tree
+  ahead of the next minor gets a message naming the `release` to run, not a step that skips it.
+- Every command plans all of its files in memory, then syncs them once. Its `--check` mode diffs
+  that same plan, so `release 5.10 --check` shows exactly what `release 5.10` writes. It prints
+  a unified diff for each file that would change and exits 1.
 - Shipped maps are precomputed. `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/5.5.json`
   already holds the fold through 5.6, 5.7, 5.8, 5.9 and the working tree, 639 entries. Each
   later file is a delta against the map of the release before it in `versions.json`. The reader
