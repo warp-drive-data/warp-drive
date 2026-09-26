@@ -1,19 +1,32 @@
-export interface Token {
+/** Where an imported name lives in the map's `to` release. */
+export interface Target {
   module: string;
   export: string;
-  typeOnly: boolean;
 }
-export type Relocation =
-  | { outcome: 'moved'; to: Token }
-  | { outcome: 'unchanged'; to: Token }
-  | { outcome: 'legacy'; to: Token }
-  | { outcome: 'removed' };
+/**
+ * What a consumer does with one imported name.
+ *
+ * - `rewrite`: import `to.export` from `to.module` instead.
+ * - `report`: leave the import as written and tell the user. `removed` means nothing in the `to`
+ *   release stands in for the name. `untracked` means the from-release module is known but the
+ *   map has no entry for the name and no module-level move to carry it. `legacy` means the name
+ *   still lives only in a legacy package.
+ * - `keep`: say nothing. The name did not move, or the module is not one the map knows.
+ */
+export type Decision =
+  | { action: 'rewrite'; to: Target }
+  | { action: 'report'; reason: 'removed' | 'untracked' | 'legacy' }
+  | { action: 'keep' };
 export interface ExportMap {
   readonly from: string;
   readonly to: string;
-  lookup(module: string, name: string): Relocation | null;
-  moduleMove(module: string): Token | null;
-  knows(module: string): boolean;
+  /** `name` is a binding name, `"default"`, or `"*"` for a namespace import. */
+  resolve(module: string, name: string): Decision;
 }
+/** From-releases this plugin ships a map for, oldest first. */
 export function listFromVersions(): string[];
+/**
+ * The map from `from` to this plugin's own release. Defaults to the oldest shipped release.
+ * Throws, naming the shipped versions, when `from` is not one of them.
+ */
 export function loadMap(from?: string): ExportMap;
