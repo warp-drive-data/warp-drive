@@ -268,6 +268,24 @@ export class RequestStateService {
   }
 
   /**
+   * Remove a callback previously registered via {@link RequestStateService.subscribeForRecord}.
+   *
+   * @internal
+   */
+  _unsubscribeForRecord(identifier: ResourceKey, callback: RequestSubscription): void {
+    const subscriptions = this._subscriptions.get(identifier);
+    if (!subscriptions) return;
+    // replace rather than splice, so that a flush iterating the
+    // existing array is not affected by an unsubscribe mid-flush
+    const remaining = subscriptions.filter((cb) => cb !== callback);
+    if (remaining.length === 0) {
+      this._subscriptions.delete(identifier);
+    } else {
+      this._subscriptions.set(identifier, remaining);
+    }
+  }
+
+  /**
    * Retrieve all active requests for a given resource identity.
    *
    * @public

@@ -100,6 +100,7 @@ type GlobalKey =
   | 'ManagedArrayMap'
   | 'ManagedObjectMap'
   | 'Support'
+  | 'ResourceStates'
   | 'SOURCE'
   | 'Destroy'
   | 'Checkout'
