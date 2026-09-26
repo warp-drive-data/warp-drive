@@ -6,11 +6,20 @@ description: Request the todos with store.request, then render the Future it ret
 # First request
 
 The list is empty because nothing asks the API for todos. Let's fix that. By the
-end of this chapter three todos are on screen, and it takes two edits.
+end of this chapter three todos are on screen, and every filter works.
+
+In ***Warp*Drive** you don't ask for a model. You describe a **request** (a URL
+and some options) and hand it to the **store**, which every request goes
+through. The store returns a **Future** right away: a promise that also knows
+whether it's loading, done or failed. It resolves to a **document**, the whole
+response, with the records you asked for in its `data`. The store keeps what it
+receives in its **cache**, and the records are **reactive**: templates showing
+them update when the cache changes.
 
 ## Request the todos
 
-Open `app/routes/index.ts` and replace the `TODO (chapter 1)` comment:
+The route for the main list, `app/routes/index.ts`, returns an empty model. Have
+its `model()` hook ask the store for the todos:
 
 ```ts
 model(): { todos?: Future<TodosDocument> } {
@@ -20,14 +29,33 @@ model(): { todos?: Future<TodosDocument> } {
 }
 ```
 
-`store.request` returns a `Future` right away, without waiting for the response.
-The route hands it to the page, and the page decides what to show while it
-loads.
+The route doesn't wait for the response. It hands the `Future` to the page,
+which decides what to show while it loads.
+
+`TodosDocument` is the response's type. The starter defines it in
+`app/data/schemas/todo.ts` as `ReactiveDataDocument<Todo[]>`: a document whose
+`data` is a list of reactive todos. For now you pass it by hand; in chapter 3
+the request carries its own type.
+
+The Active and Completed pages have routes of their own. Have each ask for its
+part of the list:
+
+```ts
+// app/routes/active.ts
+todos: this.store.request<TodosDocument>({ url: '/api/todo?filter[completed]=false' }),
+
+// app/routes/completed.ts
+todos: this.store.request<TodosDocument>({ url: '/api/todo?filter[completed]=true' }),
+```
+
+That's the same request three times, with the URL and the type spelled out in
+each. Chapter 3 fixes that.
 
 ## Render the response
 
-Open `app/components/todo-app/todo-provider.gts` and replace its
-`TODO (chapter 1)` comment with a `<Request>` block:
+The `Future` reaches `app/components/todo-app/todo-provider.gts` as
+`@todoFuture`, and its template renders nothing yet. Render the `Future` with a
+`<Request>` block:
 
 ```handlebars
 <Request @request={{@todoFuture}} @autorefresh={{true}} @autorefreshBehavior="refresh">
@@ -48,20 +76,17 @@ Open `app/components/todo-app/todo-provider.gts` and replace its
 
 `<Request>` takes the `Future` and renders `<:loading>`, `<:content>` or
 `<:error>`, depending on where the request is. The todos are `content.data`. The
-two `@autorefresh` arguments refetch in the background when the request goes
-stale, which chapter 4 relies on.
+two `@autorefresh` arguments refetch in the background when the store marks the
+response out of date, which chapter 4 relies on.
 
 ## Check it
 
-Reload. Three todos.
+Reload. Three todos. Click Active, then Completed: each shows its part of the
+list.
 
-<img src="../../images/tutorials/todomvc/first-request.png" alt="Three todos in the list, with no footer yet" width="100%">
+<img src="../../images/tutorials/todomvc/first-request.png" alt="Three todos in the list, over a footer with only the All, Active and Completed filters" width="100%">
 
-Nothing else works yet, and the footer is missing. Each chapter adds a piece.
-
-::: tip
-Don't click Active or Completed yet. Their routes request nothing until
-chapter 3, so they show an error for now.
-:::
+The footer's count and "Clear completed" are still empty, and nothing saves yet.
+Each chapter adds a piece.
 
 Next, a short look at why that took so little code.

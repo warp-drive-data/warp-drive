@@ -43,10 +43,11 @@ pnpm install
 pnpm start
 ```
 
-Open the URL Vite prints. You should see the TodoMVC header over an empty list.
-That's right: nothing requests todos until chapter 1.
+Open the URL Vite prints. You should see the TodoMVC header and the filters,
+with no todos between them. That's right: nothing requests todos until
+chapter 1.
 
-<img src="../../images/tutorials/todomvc/setup-empty.png" alt="The starter app: the todos header and the new-todo input over an empty list" width="100%">
+<img src="../../images/tutorials/todomvc/setup-empty.png" alt="The starter app: the todos header, the new-todo input, and a footer with only the All, Active and Completed filters" width="100%">
 
 ## What's in the starter
 

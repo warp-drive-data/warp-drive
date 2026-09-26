@@ -11,7 +11,7 @@ export default class CompletedTodos extends Route {
 
   model(): { todos?: Future<TodosDocument> } {
     return {
-      // TODO (chapter 3): request the completed todos
+      // TODO (chapter 1): request the completed todos
     };
   }
 }

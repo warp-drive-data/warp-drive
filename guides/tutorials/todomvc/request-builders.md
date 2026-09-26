@@ -5,9 +5,9 @@ description: Write builders for the all, active and completed lists, use them in
 
 # Request builders
 
-The Active and Completed pages need their own lists, and so does the footer.
-Rather than write the same request in five places, let's write it once as a
-builder. By the end of this chapter the whole footer works.
+Chapter 1 wrote the todo request three times, spelling out the URL and the
+response type each time, and the footer needs three more. Let's write it once,
+as a builder. By the end of this chapter the whole footer works.
 
 A builder is a plain function that returns a request. It sends nothing. You pass
 its result to `store.request`, or to `<Request>`.
@@ -55,17 +55,22 @@ export function getCompletedTodos(): RequestInfo<TodosDocument> {
 }
 ```
 
+`RequestInfo<TodosDocument>` is the type of a request whose response is a
+`TodosDocument`. `buildBaseURL` and `buildQueryParams`, from
+`@warp-drive/utilities`, build its URL.
+
 Two lines to notice:
 
 - `withReactiveResponse<Todo[]>` records the response type on the request, so
   callers don't have to. Chapter 1 wrote `store.request<TodosDocument>` for that.
 - `op: 'query'` with `cacheOptions: { types: ['todo'] }` registers the request
-  as a list of todos. Chapter 4 uses that to refetch every list when a todo is
-  created.
+  as a list of todos. When a todo is created, the store **invalidates** every
+  such request: it marks the cached response out of date, so `<Request>` fetches
+  it again. That's chapter 4.
 
 ## Use them in the routes
 
-Open `app/routes/index.ts` and replace chapter 1's request:
+In `app/routes/index.ts`, replace chapter 1's request with the builder:
 
 ```ts
 import { getAllTodos } from '#app/data/builders/query.ts';
@@ -75,15 +80,17 @@ import { getAllTodos } from '#app/data/builders/query.ts';
 todos: this.store.request(getAllTodos()),
 ```
 
-Do the same at the `TODO (chapter 3)` comments in `app/routes/active.ts` and
-`app/routes/completed.ts`, with `getActiveTodos` and `getCompletedTodos`.
+Do the same in `app/routes/active.ts` and `app/routes/completed.ts`, with
+`getActiveTodos` and `getCompletedTodos`.
 
 ## Use them in the footer
 
-The footer has three `TODO (chapter 3)` comments. Each passes a builder to
-`<Request>` as `@query`, and `<Request>` calls `store.request` for you.
+Three parts of the footer need todos. Each passes a builder to `<Request>` as
+`@query`, and `<Request>` calls `store.request` for you.
 
-In `app/components/todo-app/footer.gts`, show the footer once there are todos:
+TodoMVC hides the footer when there are no todos. In
+`app/components/todo-app/footer.gts`, wrap the footer in a request for all of
+them:
 
 ```handlebars
 <Request @query={{(getAllTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
@@ -136,7 +143,7 @@ from the template.
 ## Check it
 
 Reload. The footer says "2 items left" and shows "Clear completed", because one
-of the three todos is done. Active and Completed show their lists.
+of the three todos is done.
 
 <img src="../../images/tutorials/todomvc/footer.png" alt="The list with its footer: 2 items left, the All, Active and Completed links, and a Clear completed button" width="100%">
 
