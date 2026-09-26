@@ -1,4 +1,4 @@
 {
   "title": "TodoMVC",
-  "items": ["setup", "first-request", "why-that-worked", "request-builders", "create"]
+  "items": ["setup", "first-request", "why-that-worked", "request-builders", "create", "edit-title"]
 }

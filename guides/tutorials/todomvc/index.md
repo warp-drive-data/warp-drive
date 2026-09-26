@@ -26,7 +26,8 @@ to Stun".
 3. [Request builders](./request-builders.md): write builders for each list, then
    move the JSON:API headers into a handler
 4. [Create](./create.md): save a new todo, and let the store refetch the lists
-5. Edit title
+5. [Edit title](./edit-title.md): edit a copy of a todo, then save it with a
+   `PATCH`
 6. Toggle
 7. Delete
 8. Bulk operations

@@ -15,11 +15,13 @@ export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): Requ
 
   return withReactiveResponse<Todo>({
     method: 'PATCH',
-    url: buildBaseURL({ resourcePath: `todo/${key.id}` }),
+    url: buildBaseURL({ op: 'updateRecord', resourcePath: 'todo', identifier: key }),
     body: JSON.stringify({ data: { type: 'todo', id: key.id, attributes } }),
 
-    // The response updates this todo in the cache, and every list holding it
-    // re-renders with the new attributes.
+    // The 'updateRecord' op plus the todo's key tells the cache this request
+    // saves the todo. On success the response is committed to it, and every
+    // list holding it re-renders with the new attributes.
+    op: 'updateRecord',
     records: [key],
   });
 }
