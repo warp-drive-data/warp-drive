@@ -21,6 +21,7 @@ const eslintTester = new RuleTester({
 const msg = 'warp-drive.no-legacy-imports';
 const unmappedMsg = 'warp-drive.no-legacy-imports.unmapped-export';
 const legacyHomeMsg = 'warp-drive.no-legacy-imports.legacy-home';
+const typeOnlyTargetMsg = 'warp-drive.no-legacy-imports.type-only-target';
 
 eslintTester.run('no-legacy-imports', rule, {
   valid: [
@@ -178,8 +179,39 @@ const tsTester = new RuleTester({
 });
 
 tsTester.run('no-legacy-imports (type-only imports)', rule, {
-  valid: [],
+  valid: [
+    {
+      name: 'a type import of a name that became type-only in place stays silent',
+      code: `import type { Store } from '@warp-drive/legacy/store';`,
+      options: [{ from: '5.7' }],
+    },
+  ],
   invalid: [
+    {
+      name: 'a value import of a value that moved onto a type-only export is reported, not rewritten',
+      code: `import { ManyArray } from '@ember-data/model/-private';`,
+      output: null,
+      errors: [{ messageId: typeOnlyTargetMsg }],
+    },
+    {
+      name: 'a type import of a value that moved onto a type-only export is rewritten',
+      code: `import type { ManyArray } from '@ember-data/model/-private';`,
+      output: `import type { ManyArray } from '@warp-drive/legacy/model/-private';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      name: 'an inline type specifier onto a type-only export is rewritten',
+      code: `import { type ManyArray } from '@ember-data/model/-private';`,
+      output: `import type { ManyArray } from '@warp-drive/legacy/model/-private';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      name: 'a value import of a name that became type-only in place is reported',
+      code: `import { Store } from '@warp-drive/legacy/store';`,
+      output: null,
+      options: [{ from: '5.7' }],
+      errors: [{ messageId: typeOnlyTargetMsg }],
+    },
     // A type-only default import converted to a named export must stay type-only,
     // and must become a named import rather than keeping the default form.
     {

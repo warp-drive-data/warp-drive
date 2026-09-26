@@ -129,6 +129,9 @@ The reader's `resolve(module, name)` turns an entry into the decision the rule a
   package, either because that package declares it itself or because it forwards to another
   legacy package. There is no modern module to rewrite to yet, so `resolve` answers `report`
   with reason `legacy` and a human decides.
+- The source is a value and `to.typeOnly` is true: a value import answers `report` with reason
+  `type-only`, because rewriting it would import a name that has no runtime value. A type import
+  follows the other rules.
 - `to` names the source's own module and export: unchanged. `resolve` answers `keep`.
 - Anything else is a `rewrite` to `to`.
 
