@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/reactive/types/ReactiveResource.md
+description: >-
+  The rich, reactive record object that presents a resource's cached data
+  through its `ResourceSchema`.
 ---
 
 # &#x20;ReactiveResource
@@ -9,7 +12,7 @@ url: >-
 interface ReactiveResource {}
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:64](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/reactive/-private/record.ts#L64)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:64](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/reactive/-private/record.ts#L64)
 
 **`Hideconstructor`**
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/build-config/debugging/variables/LOG_MUTATIONS.md
+description: >-
+  Removed debug logging flag that no longer has any effect; use `LOG_CACHE` to
+  log cache updates instead.
 ---
 
 # &#x20;~~LOG\_MUTATIONS~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 const LOG_MUTATIONS: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/debugging.d.ts:57](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/debugging.d.ts#L57)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/build-config/src/debugging.ts#L64)
 
 This flag no longer has any effect.
 

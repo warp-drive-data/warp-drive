@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/CacheOperation.md
+description: >-
+  The lifecycle notification kinds sent to resource subscribers: `added`,
+  `removed`, `updated`, or `state`.
 ---
 
 # &#x20;CacheOperation
@@ -9,6 +12,6 @@ url: >-
 type CacheOperation = "added" | "removed" | "updated" | "state";
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:16](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L16)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:19](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L19)
 
 The kinds of change notifications the [NotificationManager](../store/types/NotificationManager.md) can emit for a resource.

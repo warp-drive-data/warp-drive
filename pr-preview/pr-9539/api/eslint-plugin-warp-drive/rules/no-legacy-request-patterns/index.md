@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/eslint-plugin-warp-drive/rules/no-legacy-request-patterns.md
+description: >-
+  Lint rule that disallows legacy store and model request methods such as
+  `findRecord`, `query`, and `save` in favor of `store.request()`.
 ---
 
 | Rule | 🏷️ | ✨ |

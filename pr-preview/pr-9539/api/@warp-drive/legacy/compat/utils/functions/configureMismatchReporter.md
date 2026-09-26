@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/compat/utils/functions/configureMismatchReporter.md
+description: >-
+  Legacy migration helper that registers a callback invoked whenever
+  `formattedId` or `formattedType` has to change the id or type it was given.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function configureMismatchReporter(fn: Reporter): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:41](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/compat/utils.ts#L41)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:45](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/compat/utils.ts#L45)
 
 Configure a function to be called when an id or type
 changes during normalization. This is useful for instrumenting

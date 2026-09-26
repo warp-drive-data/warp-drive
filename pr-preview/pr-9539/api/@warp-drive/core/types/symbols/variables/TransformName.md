@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/symbols/variables/TransformName.md
+description: >-
+  Alias of the `Type` symbol that a legacy transform can declare so
+  `attr<Transform>('name')` checks the transform name at the type level.
 ---
 
 # &#x20;TransformName
@@ -9,7 +12,7 @@ url: >-
 const TransformName: "___(unique) Symbol($type)" = Type;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:84](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/symbols.ts#L84)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:97](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/symbols.ts#L97)
 
 Symbol for the name of a transform.
 

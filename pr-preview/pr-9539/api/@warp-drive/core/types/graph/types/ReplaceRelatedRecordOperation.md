@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/graph/types/ReplaceRelatedRecordOperation.md
+description: >-
+  Graph operation that sets a to-one relationship's value, or swaps a single
+  member of a to-many.
 ---
 
 # &#x20;ReplaceRelatedRecordOperation
@@ -16,7 +19,7 @@ interface ReplaceRelatedRecordOperation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:88](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L88)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:106](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L106)
 
 Replaces the state of a `to-one` relationship on the Graph with a new value.
 
@@ -28,7 +31,7 @@ Replaces the state of a `to-one` relationship on the Graph with a new value.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:100](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L100)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:118](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L118)
 
 The name of the relationship to replace
 
@@ -40,7 +43,7 @@ The name of the relationship to replace
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:113](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L113)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:131](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L131)
 
 If the field is a collection relationship, the index at which the swap occurred
 
@@ -52,7 +55,7 @@ If the field is a collection relationship, the index at which the swap occurred
 op: "replaceRelatedRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:92](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L92)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:110](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L110)
 
 The name of the operation
 
@@ -64,7 +67,7 @@ The name of the operation
 optional prior?: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:109](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L109)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:127](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L127)
 
 If the field is a collection relationship, the value being swapped out
 
@@ -76,7 +79,7 @@ If the field is a collection relationship, the value being swapped out
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:96](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L96)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:114](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L114)
 
 The cache key for the resource whose relationship is being updated
 
@@ -88,7 +91,7 @@ The cache key for the resource whose relationship is being updated
 value: ResourceKey | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:105](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L105)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:123](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L123)
 
 The new value for the relationship. Never `null` if the field is
 actually a collection relationship.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/cache/operations/types/MergeOperation.md
+description: >-
+  Cache operation telling the Cache that two resource keys refer to the same
+  resource, so it can merge the stale one into the kept one.
 ---
 
 # &#x20;MergeOperation
@@ -13,7 +16,7 @@ interface MergeOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:45](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache/operations.ts#L45)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:52](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache/operations.ts#L52)
 
 Occasionally the Store discovers that two previously
 thought to be distinct resources refer to the same resource.
@@ -34,7 +37,7 @@ is made.
 op: "mergeIdentifiers";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:46](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache/operations.ts#L46)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:53](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache/operations.ts#L53)
 
 The name of the [operation](Op.md)
 
@@ -50,7 +53,7 @@ The name of the [operation](Op.md)
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:51](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache/operations.ts#L51)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:58](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache/operations.ts#L58)
 
 The stale [ResourceKey](../../../identifier/types/ResourceKey.md) that
 the cache should eliminate in favor of [value](#value)
@@ -63,7 +66,7 @@ the cache should eliminate in favor of [value](#value)
 value: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:56](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache/operations.ts#L56)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:63](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache/operations.ts#L63)
 
 The kept [ResourceKey](../../../identifier/types/ResourceKey.md) that
 the cache should also keep and merge [record](#record) into.

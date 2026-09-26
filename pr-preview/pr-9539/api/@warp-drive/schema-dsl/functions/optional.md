@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/schema-dsl/functions/optional.md
+description: >-
+  Reserved property decorator for marking a field optional in future generated
+  create types; currently a no-op with no effect on the compiled schema.
 ---
 
 # &#x20;optional()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function optional(target: object, key: string): void;
 ```
 
-Defined in: [fields/optional.ts:12](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/optional.ts#L12)
+Defined in: [fields/optional.ts:14](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/optional.ts#L14)
 
 **`Decorator`**
 

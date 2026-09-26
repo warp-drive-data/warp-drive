@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/utilities/string/functions/uncountable.md
+description: >-
+  Registers a word that `pluralize` and `singularize` should always return
+  unchanged.
 ---
 
 # &#x20;uncountable()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function uncountable(word: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:31](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/-private/string/inflect.ts#L31)
+Defined in: [-private/string/inflect.ts:32](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/-private/string/inflect.ts#L32)
 
 Marks a word as uncountable. Uncountable words are not pluralized
 or singularized.

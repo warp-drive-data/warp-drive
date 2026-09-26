@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments/pagination/types/PaginationContentFeaturesFor.md
+description: >-
+  Experimental: resolves a pagination mode to the content features `<Paginate
+  />` yields, the infinite set for `'infinite'` and the paged set otherwise.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 type PaginationContentFeaturesFor<RT = unknown, M extends PaginateMode = "paged"> = M extends "infinite" ? InfinitePaginationContentFeatures<RT> : PagedPaginationContentFeatures<RT>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:799](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L799)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:82](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-subscription.ts#L82)
 
 Resolves a [PaginateMode](PaginateMode.md) to the content features it exposes. Mirror of
 [PaginationStateFor](PaginationStateFor.md).

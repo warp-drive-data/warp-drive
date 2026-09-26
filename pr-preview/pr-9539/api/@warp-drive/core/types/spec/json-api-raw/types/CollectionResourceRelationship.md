@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/spec/json-api-raw/types/CollectionResourceRelationship.md
+description: >-
+  A to-many {json:api} relationship object whose `data` is an array of resource
+  identifiers, with optional `meta` and pagination `links`.
 ---
 
 # &#x20;CollectionResourceRelationship\<T = `ExistingResourceIdentifierObject` | `NewResourceIdentifierObject`>
@@ -13,7 +16,7 @@ interface CollectionResourceRelationship<T = ExistingResourceIdentifierObject | 
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:231](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L231)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:260](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L260)
 
 Represents a `to-many` {json:api} relationship.
 
@@ -41,7 +44,7 @@ Represents a `to-many` {json:api} relationship.
 optional data?: T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:235](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L235)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:264](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L264)
 
 the related resources
 
@@ -53,7 +56,7 @@ the related resources
 optional links?: PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:243](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L243)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:272](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L272)
 
 links related to the relationship, including pagination links
 
@@ -65,6 +68,6 @@ links related to the relationship, including pagination links
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:239](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L239)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:268](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L268)
 
 meta information about the relationship

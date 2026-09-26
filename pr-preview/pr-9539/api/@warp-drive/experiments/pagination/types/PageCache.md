@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments/pagination/types/PageCache.md
+description: >-
+  Experimental: one page of a paginated collection, exposing its request,
+  loading and error status, data, and links to neighboring pages.
 ---
 
 &#x20;
@@ -32,7 +35,7 @@ interface PageCache<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:41](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L41)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:71](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L71)
 
 **`Hideconstructor`**
 
@@ -74,7 +77,7 @@ if (page?.isLoading) {
 firstLink: string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:55](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L55)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:95](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L95)
 
 The `first` link of the collection, when the response exposed one.
 
@@ -86,7 +89,7 @@ The `first` link of the collection, when the response exposed one.
 lastLink: string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:57](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L57)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:98](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L98)
 
 The `last` link of the collection, when the response exposed one.
 
@@ -98,7 +101,7 @@ The `last` link of the collection, when the response exposed one.
 nextLink: string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:53](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L53)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:92](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L92)
 
 The `next` link of this page, or `null` at the end of the collection.
 
@@ -110,7 +113,7 @@ The `next` link of this page, or `null` at the end of the collection.
 pageNumber: number;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:63](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L63)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:105](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L105)
 
 The 1-based page number, or `0` when unknown (for example cursor-based
 pagination, where pages have no ordinal position). Derived from the
@@ -124,7 +127,7 @@ collection's [PageHints](PageHints.md).
 prevLink: string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:51](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L51)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:89](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L89)
 
 The `prev` link of this page, or `null` at the start of the collection.
 
@@ -136,7 +139,7 @@ The `prev` link of this page, or `null` at the start of the collection.
 request: Future<RT> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:47](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L47)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:80](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L80)
 
 The request that loaded (or is loading) this page, or `null` if the page is
 known from links but was never requested. Wrap it in a `<Request>` component
@@ -150,7 +153,7 @@ to render the page's loading, error, and content states.
 selfLink: string | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:49](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L49)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:86](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L86)
 
 The `self` link of this page — the URL that identifies it in the collection.
 
@@ -162,7 +165,7 @@ The `self` link of this page — the URL that identifies it in the collection.
 get data(): ContentData<RT> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:74](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L74)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:132](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L132)
 
 The `data` member of the loaded document — the page's items — or `null`
 while the page has not loaded.
@@ -181,7 +184,7 @@ while the page has not loaded.
 get first(): PageCache<RT, E> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:97](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L97)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:197](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L197)
 
 The first page of the collection, when the response exposed a `first` link.
 
@@ -199,7 +202,7 @@ The first page of the collection, when the response exposed a `first` link.
 get isCancelled(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:87](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L87)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:165](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L165)
 
 Whether this page's request was cancelled (aborted).
 
@@ -217,7 +220,7 @@ Whether this page's request was cancelled (aborted).
 get isError(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:89](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L89)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:171](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L171)
 
 Whether this page's request rejected with an error.
 
@@ -235,7 +238,7 @@ Whether this page's request rejected with an error.
 get isLoaded(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:81](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L81)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:147](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L147)
 
 Whether this page's request has settled (successfully or with an error).
 
@@ -253,7 +256,7 @@ Whether this page's request has settled (successfully or with an error).
 get isLoading(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:83](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L83)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:153](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L153)
 
 Whether this page's request is currently in flight.
 
@@ -271,7 +274,7 @@ Whether this page's request is currently in flight.
 get isRequested(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:79](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L79)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:141](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L141)
 
 Whether a request has ever been issued for this page. `false` for pages that
 are known only from links.
@@ -290,7 +293,7 @@ are known only from links.
 get isSuccess(): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:85](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L85)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:159](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L159)
 
 Whether this page's request resolved successfully.
 
@@ -308,7 +311,7 @@ Whether this page's request resolved successfully.
 get last(): PageCache<RT, E> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:99](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L99)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:204](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L204)
 
 The last page of the collection, when the response exposed a `last` link.
 
@@ -326,7 +329,7 @@ The last page of the collection, when the response exposed a `last` link.
 get next(): PageCache<RT, E> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:95](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L95)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:190](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L190)
 
 The page at this page's `next` link, or `null` at the end of the collection.
 
@@ -344,7 +347,7 @@ The page at this page's `next` link, or `null` at the end of the collection.
 get prev(): PageCache<RT, E> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:93](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L93)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:183](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L183)
 
 The page at this page's `prev` link, or `null` at the start of the collection.
 
@@ -362,7 +365,7 @@ The page at this page's `prev` link, or `null` at the start of the collection.
 get reason(): StructuredErrorDocument<E> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:91](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L91)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:177](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L177)
 
 The error this page's request rejected with, or `null` if it did not reject.
 
@@ -380,7 +383,7 @@ The error this page's request rejected with, or `null` if it did not reject.
 get value(): RT | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:69](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L69)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:123](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/page-cache.ts#L123)
 
 The document this page's request resolved to, or `null` while it has not
 resolved.

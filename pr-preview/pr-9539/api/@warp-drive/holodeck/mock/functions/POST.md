@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/holodeck/mock/functions/POST.md
+description: >-
+  Mocks a POST request to a url on the Holodeck server, returning a generated
+  response with a 201 status, or 204 when it has no body.
 ---
 
 # &#x20;POST()
@@ -16,7 +19,7 @@ function POST(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:151](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/packages/holodeck/src/mock.ts#L151)
+Defined in: [mock.ts:169](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/packages/holodeck/src/mock.ts#L169)
 
 Mock a POST request
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments/pagination.md
+description: >-
+  Experimental reactive pagination primitives for tracking page state, links,
+  and caches across paginated requests.
 ---
 
 &#x20;

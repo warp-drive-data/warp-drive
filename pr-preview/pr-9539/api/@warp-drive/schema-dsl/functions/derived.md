@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/schema-dsl/functions/derived.md
+description: >-
+  Property decorator that compiles to a derived field, a read-only value
+  computed by a registered derivation and never cached or sent to the server.
 ---
 
 # &#x20;derived()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function derived(options: DerivedOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/derived.ts:61](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/derived.ts#L61)
+Defined in: [fields/derived.ts:65](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/derived.ts#L65)
 
 **`Decorator`**
 

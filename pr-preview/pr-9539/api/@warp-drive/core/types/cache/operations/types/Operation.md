@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/cache/operations/types/Operation.md
+description: >-
+  Union of the updates `cache.patch` applies to the cache's remote (clean)
+  state, typically from server pushes such as WebSocket or SSE messages.
 ---
 
 # &#x20;Operation
@@ -19,7 +22,7 @@ type Operation =
   | RemoveFromDocumentOperation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:266](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache/operations.ts#L266)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:302](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache/operations.ts#L302)
 
 [Cache](../../types/Cache.md) Operations perform updates to the
 Cache's "remote" (or clean) state to reflect external

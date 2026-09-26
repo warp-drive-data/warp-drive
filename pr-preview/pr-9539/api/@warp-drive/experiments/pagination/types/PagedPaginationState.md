@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments/pagination/types/PagedPaginationState.md
+description: >-
+  Experimental: the pagination state `<Paginate />` yields in paged mode,
+  exposing the active page, its request, and `loadPage` for navigating to a page
+  by URL.
 ---
 
 &#x20;
@@ -19,7 +23,7 @@ interface PagedPaginationState<RT = unknown, E = unknown> extends SharedPaginati
 }
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:226](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L226)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:52](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L52)
 
 The paged (single-page view) surface of a [PaginationState](PaginationState.md): render
 [activePageRequest](PaginationState.md#activepagerequest), navigate with
@@ -48,7 +52,7 @@ component yields in `'paged'` mode (the default).
 adoptPage(request: Future<RT>): Promise<RT | null>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:218](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L218)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:34](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L34)
 
 See [PaginationState.adoptPage](PaginationState.md#adoptpage).
 
@@ -76,7 +80,7 @@ readonly activePage:
   | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:228](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L228)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:54](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L54)
 
 See [PaginationState.activePage](PaginationState.md#activepage).
 
@@ -88,7 +92,7 @@ See [PaginationState.activePage](PaginationState.md#activepage).
 readonly activePageRequest: Future<RT> | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:230](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L230)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:56](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L56)
 
 See [PaginationState.activePageRequest](PaginationState.md#activepagerequest).
 
@@ -100,7 +104,7 @@ See [PaginationState.activePageRequest](PaginationState.md#activepagerequest).
 loadPage: (url: string) => Promise<RT | null>;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:232](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L232)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:58](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L58)
 
 See [PaginationState.loadPage](PaginationState.md#loadpage).
 
@@ -122,7 +126,7 @@ See [PaginationState.loadPage](PaginationState.md#loadpage).
 readonly totalPages: number;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:216](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L216)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:32](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-state.ts#L32)
 
 See [PaginationState.totalPages](PaginationState.md#totalpages).
 

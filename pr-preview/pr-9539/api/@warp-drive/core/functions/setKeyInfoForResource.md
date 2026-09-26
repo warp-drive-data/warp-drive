@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/functions/setKeyInfoForResource.md
+description: >-
+  Overrides how the store derives the `type` and `id` of a new `ResourceKey`
+  from resource data; must be set before the store is created.
 ---
 
 # &#x20;setKeyInfoForResource()
@@ -9,7 +12,7 @@ url: >-
 function setKeyInfoForResource(method: KeyInfoMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:354](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L354)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:364](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L364)
 
 Configure a callback for when the identifier cache is generating a new
 ResourceKey for a resource.

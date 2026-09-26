@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/spec/json-api-raw.md
+description: >-
+  Types for raw {json:api} structures: resource objects, relationship objects,
+  resource identifiers, links, meta and single, collection and empty documents.
 ---
 
 ## Types

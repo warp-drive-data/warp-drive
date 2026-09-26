@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/compat/functions/pushPayload.md
+description: >-
+  Legacy store method that pushes a raw payload into the store after the
+  application serializer, or the given model type's serializer, normalizes it.
 ---
 
 &#x20;
@@ -15,7 +18,7 @@ function pushPayload(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:305](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/compat.ts#L305)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:323](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/compat.ts#L323)
 
 Push some raw data into the store.
 

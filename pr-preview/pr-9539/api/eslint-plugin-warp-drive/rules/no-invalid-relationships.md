@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/eslint-plugin-warp-drive/rules/no-invalid-relationships.md
+description: >-
+  Lint rule that requires `@belongsTo` and `@hasMany` decorators to specify a
+  boolean `async` and an `inverse`.
 ---
 
 | Rule | 🏷️ | ✨ |

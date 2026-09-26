@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/react/functions/useStore.md
+description: >-
+  Hook that returns the Store provided by the nearest `StoreProvider`, asserting
+  that one exists.
 ---
 
 # &#x20;useStore()
@@ -9,7 +12,7 @@ url: >-
 function useStore(): Store$1;
 ```
 
-Defined in: [-private/store-provider.tsx:15](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/react/src/-private/store-provider.tsx#L15)
+Defined in: [-private/store-provider.tsx:16](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/react/src/-private/store-provider.tsx#L16)
 
 ## Returns
 

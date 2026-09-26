@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/schema/fields/functions/resourceSchema.md
+description: >-
+  Returns the given resource schema unchanged, typed so its definition is
+  type-checked; relationship inverses and related types are not validated.
 ---
 
 # &#x20;resourceSchema()
@@ -13,7 +16,7 @@ function resourceSchema<T extends
   | LegacyResourceSchema): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2516](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/schema/fields.ts#L2516)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2591](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/schema/fields.ts#L2591)
 
 A no-op type utility that enables type-checking resource schema
 definitions.

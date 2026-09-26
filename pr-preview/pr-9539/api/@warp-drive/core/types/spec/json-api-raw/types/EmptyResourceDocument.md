@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/spec/json-api-raw/types/EmptyResourceDocument.md
+description: >-
+  A raw {json:api} document whose `data` is `null`, such as the response to a
+  `DELETE` request.
 ---
 
 # &#x20;EmptyResourceDocument
@@ -11,7 +14,7 @@ type EmptyResourceDocument = Document & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:355](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L355)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:399](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L399)
 
 Represents a {json:api} document containing no resource, for
 instance the response to a `DELETE` request or a `to-one`

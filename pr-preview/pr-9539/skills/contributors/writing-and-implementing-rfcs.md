@@ -15,6 +15,25 @@ or behavior, it needs an RFC before implementation begins — see
 [The RFC Process](/guides/contributing/rfc-process.md) for the full discussion-and-consensus
 workflow leading up to drafting.
 
+### Keep deprecations in their own RFC, separate from the feature that replaces them
+
+When a new feature makes existing public API or behavior obsolete, the feature and the
+deprecation of what it replaces belong in **two separate RFCs**, not one combined proposal. The
+feature RFC comes first and stands on its own. The deprecation is a distinct RFC that follows,
+and deprecates the old behavior only once the replacement has shipped and reached the Recommended
+stage — the point at which we're confident the successor is the right one to steer people toward.
+
+Combining them couples two decisions the team needs to make independently: whether the new API is
+right, and whether (and when) the old one should go. It also forces the deprecation's timeline to
+track the feature's before either is settled, and tends to bloat the feature RFC with flag ids and
+migration mechanics that distract from the design under review.
+
+So: keep the feature RFC to the feature. It's fine — often helpful — to note in its "Detailed
+design" ecosystem section that a follow-on deprecation is expected, but put the deprecation's flag
+id, `since`/`until` versions, and migration path in its own RFC. See
+[`0005-deprecate-legacy-packages.md`](/rfcs/0005-deprecate-legacy-packages.md) for the shape a
+deprecation RFC takes.
+
 ## Drafting
 
 WarpDrive-specific RFCs live in [`rfcs/`](/rfcs/index.md) in this repository, which is the

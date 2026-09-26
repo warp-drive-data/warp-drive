@@ -1,11 +1,15 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-9539/api/@ember-data/serializer.md
+description: >-
+  (Legacy) JSON, REST and JSON:API implementations of the Serializer interface,
+  re-exported from `@warp-drive/legacy/serializer`; new apps should normalize
+  data in request handlers instead.
 ---
 
-:::warning ⚠️ Legacy Package
-**Serializers are a LEGACY feature** that is no longer encouraged for new applications.
+&#x20;
 
-**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the [RequestManager](../../@warp-drive/core/classes/RequestManager.md) instead.
+:::warning Legacy package
+`@ember-data/serializer` is a legacy package. Serializers are no longer encouraged; new code should use [Handlers](/api/@warp-drive/core/request/types/Handler) with the `RequestManager` from [`@warp-drive/core`](/api/@warp-drive/core/) instead.
 :::
 
 This package provides JSON, REST and JSON:API Implementations of the legacy Serializer Interface.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/schema-dsl/types/SchemaObjectOptions.md
+description: >-
+  Options for the `@schemaObject` decorator that choose the embedded object
+  schema, polymorphic type resolution, and default value.
 ---
 
 # &#x20;SchemaObjectOptions
@@ -15,7 +18,7 @@ interface SchemaObjectOptions {
 }
 ```
 
-Defined in: [fields/schema-object.ts:11](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L11)
+Defined in: [fields/schema-object.ts:13](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L13)
 
 Options accepted by the [schemaObject](../functions/schemaObject.md) decorator.
 
@@ -27,7 +30,7 @@ Options accepted by the [schemaObject](../functions/schemaObject.md) decorator.
 optional defaultValue?: boolean;
 ```
 
-Defined in: [fields/schema-object.ts:74](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L74)
+Defined in: [fields/schema-object.ts:76](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L76)
 
 If true, a missing cache value becomes `{}` instead of `null`.
 Ignored when `polymorphic` is true. Compiles onto the
@@ -41,7 +44,7 @@ Ignored when `polymorphic` is true. Compiles onto the
 optional polymorphic?: boolean;
 ```
 
-Defined in: [fields/schema-object.ts:50](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L50)
+Defined in: [fields/schema-object.ts:52](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L52)
 
 Whether this field may contain more than one object-schema type.
 Compiles onto the [SchemaObjectField](../../core/types/schema/fields/types/SchemaObjectField.md)'s `options.polymorphic`.
@@ -60,7 +63,7 @@ when `typeField` is `'@hash'`.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/schema-object.ts:36](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L36)
+Defined in: [fields/schema-object.ts:38](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L38)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the
@@ -74,7 +77,7 @@ decorated property's name. Compiles onto the
 optional type?: string | null;
 ```
 
-Defined in: [fields/schema-object.ts:27](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L27)
+Defined in: [fields/schema-object.ts:29](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L29)
 
 If the field is not polymorphic, the `type` of the [ObjectSchema](../functions/ObjectSchema.md)
 that describes the embedded object.
@@ -96,7 +99,7 @@ Compiles onto the [SchemaObjectField](../../core/types/schema/fields/types/Schem
 optional typeField?: string;
 ```
 
-Defined in: [fields/schema-object.ts:65](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L65)
+Defined in: [fields/schema-object.ts:67](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/schema-object.ts#L67)
 
 When `polymorphic` is true, the key on the raw cache value that
 holds the object-schema type, or `'@hash'` to compute it.

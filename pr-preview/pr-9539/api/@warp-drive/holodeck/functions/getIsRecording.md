@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/holodeck/functions/getIsRecording.md
+description: >-
+  Reports whether Holodeck mocks are recorded to fixtures, using the
+  `setIsRecording` override when set or the build-time `SHOULD_RECORD` flag
+  otherwise.
 ---
 
 # &#x20;getIsRecording()
@@ -9,7 +13,7 @@ url: >-
 function getIsRecording(): boolean;
 ```
 
-Defined in: [index.ts:257](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/packages/holodeck/src/index.ts#L257)
+Defined in: [index.ts:266](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/packages/holodeck/src/index.ts#L266)
 
 ## Returns
 

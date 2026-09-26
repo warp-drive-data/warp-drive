@@ -1,5 +1,8 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/json-api.md
+description: >-
+  The recommended in-memory JSON:API document and resource cache for WarpDrive,
+  `JSONAPICache`, which most apps pass to `useRecommendedStore`.
 ---
 
 :::tip 💡 TIP

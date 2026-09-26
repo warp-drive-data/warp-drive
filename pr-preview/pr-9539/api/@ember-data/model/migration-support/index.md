@@ -1,7 +1,17 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@ember-data/model/migration-support.md
+description: >-
+  Legacy helpers (`withDefaults`, `registerDerivations`,
+  `DelegatingSchemaService`, `WithLegacy`) for migrating from
+  `@ember-data/model` to schema-driven records in LegacyMode.
 ---
+
+&#x20;
+
+:::warning Legacy package
+`@ember-data/model` is a legacy package. Model classes are no longer encouraged; new code should define schemas with [`@warp-drive/core`](/api/@warp-drive/core/). Apps that still need Models should install them through [`@warp-drive/legacy`](/api/@warp-drive/legacy/) rather than this package.
+:::
 
 This module provides support for migrating away from @ember-data/model
 to @warp-drive/schema-record.

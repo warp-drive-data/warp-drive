@@ -1,15 +1,24 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/build-config.md
+description: >-
+  (Legacy) Home of the `setConfig` build plugin that configures WarpDrive
+  deprecations, optional features and debug logging; new apps should use
+  `@warp-drive/core/build-config` instead.
 ---
 
-:::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications
+&#x20;
+
+:::warning Legacy package
+`@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
 :::
 
-This package provides a build-plugin that enables configuration of deprecations,
-optional features, development/testing support and debug logging.
+This package is the implementation home of the `setConfig` build plugin that configures
+deprecations, optional features, development/testing support and debug logging. Apps import it
+as [@warp-drive/core/build-config](../core/build-config/index.md), which re-exports every
+entry point below; the documentation for each lives on the `@warp-drive/core` page it maps to.
 
-This configuration is done using `setConfig` in `ember-cli-build`.
+Apps still importing from this package configure it with `setConfig` in `ember-cli-build`:
 
 ```ts [ember-cli-build.js]
 'use strict';
@@ -35,18 +44,21 @@ module.exports = async function (defaults) {
 
 Available settings include:
 
-* [debugging](debugging/index.md)
-* [deprecations](deprecations/index.md)
-* [features](canary-features/index.md)
-* [polyfillUUID](types/WarpDriveConfig.md#polyfilluuid)
-* [includeDataAdapterInProduction](types/WarpDriveConfig.md#includedataadapterinproduction)
-* [compatWith](types/WarpDriveConfig.md#compatwith)
+* [debugging](../core/build-config/debugging/index.md)
+* [deprecations](../core/build-config/deprecations/index.md)
+* [features](../core/build-config/canary-features/index.md)
+* [polyfillUUID](../core/build-config/types/WarpDriveConfig.md#polyfilluuid)
+* [includeDataAdapterInProduction](../core/build-config/types/WarpDriveConfig.md#includedataadapterinproduction)
+* [compatWith](../core/build-config/types/WarpDriveConfig.md#compatwith)
 
-## Functions
+Every entry point maps to its `@warp-drive/core` equivalent:
 
-* [babelPlugin](functions/babelPlugin.md)
-* [setConfig](functions/setConfig.md)
-
-## Types
-
-* [WarpDriveConfig](types/WarpDriveConfig.md)
+| `@warp-drive/build-config` entry | re-exported as                                                                                      |
+| -------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `.` (root)                       | [@warp-drive/core/build-config](../core/build-config/index.md)                                 |
+| `/babel-macros`                  | [@warp-drive/core/build-config/babel-macros](../core/build-config/babel-macros/index.md)       |
+| `/canary-features`               | [@warp-drive/core/build-config/canary-features](../core/build-config/canary-features/index.md) |
+| `/debugging`                     | [@warp-drive/core/build-config/debugging](../core/build-config/debugging/index.md)             |
+| `/deprecations`                  | [@warp-drive/core/build-config/deprecations](../core/build-config/deprecations/index.md)       |
+| `/env`                           | `@warp-drive/core/build-config/env` (internal, no API page)                                         |
+| `/macros`                        | `@warp-drive/core/build-config/macros` (internal, no API page)                                      |

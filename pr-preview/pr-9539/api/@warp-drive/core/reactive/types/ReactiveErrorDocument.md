@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/reactive/types/ReactiveErrorDocument.md
+description: >-
+  The shape of a reactive response document that carries `errors` and no primary
+  `data`, such as the result of a failed request.
 ---
 
 # &#x20;ReactiveErrorDocument\<T, EM *extends* [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined` = [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined`, E *extends* `object` = `object`, M *extends* [`Meta`](../../types/spec/json-api-raw/types/Meta.md) | `undefined` = `EM`>
@@ -12,7 +15,7 @@ type ReactiveErrorDocument<T, EM extends Meta | undefined = Meta | undefined, E 
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:158](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/reactive/-private/document.ts#L158)
+Defined in: [warp-drive-packages/core/src/reactive/-private/document.ts:160](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/reactive/-private/document.ts#L160)
 
 The variant of [ReactiveDocument](ReactiveDocument.md) returned for a request whose
 response contained no primary data, e.g. an error response.

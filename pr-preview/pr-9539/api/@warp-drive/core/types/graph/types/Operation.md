@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/graph/types/Operation.md
+description: >-
+  Base shape of every relationship Graph operation, carrying the operation's
+  name in `op`.
 ---
 
 # &#x20;Operation
@@ -11,7 +14,7 @@ interface Operation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:18](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:26](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L26)
 
 All Graph operations are objects with at least one property,
 `op`, which contains a string with the name of the operation
@@ -25,6 +28,6 @@ to perform.
 op: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:22](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/graph.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:30](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/graph.ts#L30)
 
 The name of the operation

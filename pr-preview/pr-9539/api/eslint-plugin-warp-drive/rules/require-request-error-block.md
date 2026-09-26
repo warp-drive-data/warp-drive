@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/eslint-plugin-warp-drive/rules/require-request-error-block.md
+description: >-
+  Lint rule that requires every React `<Request>` component to be given a
+  `states.error` handler.
 ---
 
 | Rule | 🏷️ | ✨ |

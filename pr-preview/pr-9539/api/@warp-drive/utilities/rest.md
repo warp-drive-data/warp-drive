@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/utilities/rest.md
+description: >-
+  Request builders for find, query, create, update, and delete against REST APIs
+  with camelCased plural URLs.
 ---
 
 This module provides utilities for working with **REST**ful APIs with ***Warp*Drive**

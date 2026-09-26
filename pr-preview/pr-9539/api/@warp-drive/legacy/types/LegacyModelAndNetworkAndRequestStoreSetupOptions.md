@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/types/LegacyModelAndNetworkAndRequestStoreSetupOptions.md
+description: >-
+  `useLegacyStore` options for a store that uses `Model`, the legacy adapter and
+  serializer network layer, and deprecated request methods like
+  `store.findRecord`.
 ---
 
 &#x20;
@@ -18,7 +22,7 @@ interface LegacyModelAndNetworkAndRequestStoreSetupOptions<T extends Cache> exte
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:125](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/index.ts#L125)
+Defined in: [warp-drive-packages/legacy/src/index.ts:133](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/index.ts#L133)
 
 Setup options for a legacy store configured to use `Model` along with the
 legacy adapter/serializer network layer and the deprecated
@@ -42,7 +46,7 @@ legacy adapter/serializer network layer and the deprecated
 legacyRequests: true;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:141](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/index.ts#L141)
+Defined in: [warp-drive-packages/legacy/src/index.ts:149](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/index.ts#L149)
 
 if true, all legacy request methods and supporting infrastructure will
 be available on the store.
@@ -63,7 +67,7 @@ false
 linksMode: false;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:132](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/index.ts#L132)
+Defined in: [warp-drive-packages/legacy/src/index.ts:140](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/index.ts#L140)
 
 If true, it is presumed that no requests require use of the LegacyNetworkHandler
 and associated adapters/serializer methods.
@@ -82,7 +86,7 @@ false
 optional modelFragments?: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:62](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/index.ts#L62)
+Defined in: [warp-drive-packages/legacy/src/index.ts:64](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/index.ts#L64)
 
 Whether to include support for ModelFragments migrations.
 
@@ -108,7 +112,7 @@ optional schemas?: (
   | ObjectSchema)[];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:55](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/index.ts#L55)
+Defined in: [warp-drive-packages/legacy/src/index.ts:57](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/index.ts#L57)
 
 The [ResourceSchemas](../../core/types/schema/fields/types/ResourceSchema.md) or [ObjectSchemas](../../core/types/schema/fields/types/ObjectSchema.md) of entities
 migrated to no longer use [Model](../model/classes/Model.md).

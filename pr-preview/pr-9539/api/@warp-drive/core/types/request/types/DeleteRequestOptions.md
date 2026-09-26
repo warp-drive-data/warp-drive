@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/request/types/DeleteRequestOptions.md
+description: >-
+  Shape of the `DELETE` request object that `deleteRecord` builders return for
+  `store.request`, identifying the resource being deleted.
 ---
 
 # &#x20;DeleteRequestOptions\<RT = `unknown`, T = `unknown`>
@@ -21,7 +24,7 @@ type DeleteRequestOptions<RT = unknown, T = unknown> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:228](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L228)
+Defined in: [warp-drive-packages/core/src/types/request.ts:256](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L256)
 
 The request shape produced by the `deleteRecord` request builders, for
 use with [Store.request](../../../classes/Store.md#request).
@@ -47,7 +50,7 @@ optional body?:
   | FormData;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:248](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L248)
+Defined in: [warp-drive-packages/core/src/types/request.ts:276](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L276)
 
 the body to send with the request
 
@@ -61,7 +64,7 @@ data: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:252](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L252)
+Defined in: [warp-drive-packages/core/src/types/request.ts:280](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L280)
 
 data for handlers to convert into the request body
 
@@ -81,7 +84,7 @@ the resource being deleted
 headers: Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:240](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L240)
+Defined in: [warp-drive-packages/core/src/types/request.ts:268](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L268)
 
 the headers to send with the request
 
@@ -93,7 +96,7 @@ the headers to send with the request
 method: "DELETE";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:236](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L236)
+Defined in: [warp-drive-packages/core/src/types/request.ts:264](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L264)
 
 the HTTP method to use
 
@@ -105,7 +108,7 @@ the HTTP method to use
 op: "deleteRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:244](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L244)
+Defined in: [warp-drive-packages/core/src/types/request.ts:272](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L272)
 
 the name of the request operation
 
@@ -117,7 +120,7 @@ the name of the request operation
 records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:261](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L261)
+Defined in: [warp-drive-packages/core/src/types/request.ts:289](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L289)
 
 the resource being deleted
 
@@ -129,6 +132,6 @@ the resource being deleted
 url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:232](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/request.ts#L232)
+Defined in: [warp-drive-packages/core/src/types/request.ts:260](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/request.ts#L260)
 
 the url to request

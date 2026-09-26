@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments.md
+description: >-
+  Experimental WarpDrive features not yet through an RFC, one entry point each,
+  including the SharedWorker-based `DataWorker` and `ImageWorker`, browser
+  storage and reactive pagination.
 ---
 
 &#x20;

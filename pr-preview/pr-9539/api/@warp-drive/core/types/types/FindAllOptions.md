@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/types/FindAllOptions.md
+description: >-
+  Legacy reload, background-reload, include, and adapterOptions settings for
+  `store.findAll`.
 ---
 
 # &#x20;FindAllOptions
@@ -9,6 +12,6 @@ url: >-
 type FindAllOptions = BaseFinderOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:74](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-types/q/store.ts#L74)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:85](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-types/q/store.ts#L85)
 
 Options for `store.findAll()`.

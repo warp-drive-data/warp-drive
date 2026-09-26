@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/build-config/deprecations/variables/DEPRECATE_NON_STRICT_ID.md
+description: >-
+  Deprecation flag for legacy support of numeric resource IDs that are coerced
+  to strings; set it to `false` once resolved to strip that support.
 ---
 
 # &#x20;DEPRECATE\_NON\_STRICT\_ID&#x20;
@@ -9,7 +12,7 @@ url: >-
 const DEPRECATE_NON_STRICT_ID: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/deprecations.d.ts:182](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/deprecations.d.ts#L182)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:193](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/build-config/src/deprecations.ts#L193)
 
 Currently, WarpDrive expects that the `id` property associated with
 a resource is a string.

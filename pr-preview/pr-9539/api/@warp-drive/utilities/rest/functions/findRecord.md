@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/utilities/rest/functions/findRecord.md
+description: >-
+  Builds a `GET` request for one resource by type and id, using REST-style
+  pluralized, camelCased URLs.
 ---
 
 # &#x20;findRecord()
@@ -38,7 +41,7 @@ function findRecord<T, M extends
 | undefined, E extends object = object>(identifier: RemotelyAccessibleIdentifier<TypeFromInstance<T>>, options?: FindRecordOptions$2): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/rest/find-record.ts:67](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L67)
+Defined in: [-private/rest/find-record.ts:68](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L68)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -128,7 +131,7 @@ const data = await store.request(options);
 function findRecord(identifier: RemotelyAccessibleIdentifier, options?: FindRecordOptions$2): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/rest/find-record.ts:71](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L71)
+Defined in: [-private/rest/find-record.ts:72](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L72)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -208,7 +211,7 @@ function findRecord<T, M extends
 ): FindRecordRequestOptions<ReactiveDataDocument<T, M, E>, T>;
 ```
 
-Defined in: [-private/rest/find-record.ts:75](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L75)
+Defined in: [-private/rest/find-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L76)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.
@@ -306,7 +309,7 @@ function findRecord(
 ): FindRecordRequestOptions;
 ```
 
-Defined in: [-private/rest/find-record.ts:80](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L80)
+Defined in: [-private/rest/find-record.ts:81](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/-private/rest/find-record.ts#L81)
 
 Builds request options to fetch a single resource by a known id or identifier
 configured for the url and header expectations of most REST APIs.

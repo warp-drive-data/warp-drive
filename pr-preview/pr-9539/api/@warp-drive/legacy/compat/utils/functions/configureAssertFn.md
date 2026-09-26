@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/compat/utils/functions/configureAssertFn.md
+description: >-
+  Legacy migration helper that registers a callback invoked when an id or type
+  passed to these utilities fails validation.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function configureAssertFn(fn: (message: string, condition: unknown) => void): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:53](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/compat/utils.ts#L53)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:59](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/compat/utils.ts#L59)
 
 Configure a function to be called when an id or type
 fails validation. This is useful for instrumenting

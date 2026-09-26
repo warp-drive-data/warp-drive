@@ -5,7 +5,7 @@ description: >-
   asks you to align and why JSON:API is the recommended wire and cache format.
 ---
 
-## Data
+# Data
 
 In every application data can take on many different representations:
 

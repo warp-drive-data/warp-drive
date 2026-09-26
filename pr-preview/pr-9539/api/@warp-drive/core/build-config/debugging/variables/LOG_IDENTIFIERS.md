@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/build-config/debugging/variables/LOG_IDENTIFIERS.md
+description: >-
+  Debug logging flag that logs lookups, generation, and updates of the
+  identifiers (cache keys) WarpDrive assigns to resources.
 ---
 
 # &#x20;LOG\_IDENTIFIERS
@@ -9,7 +12,7 @@ url: >-
 const LOG_IDENTIFIERS: boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/debugging.d.ts:89](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/debugging.d.ts#L89)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:108](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/build-config/src/debugging.ts#L108)
 
 log peek, generation and updates to
 Record Identifiers.

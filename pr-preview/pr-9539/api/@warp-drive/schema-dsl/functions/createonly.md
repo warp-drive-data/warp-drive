@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/schema-dsl/functions/createonly.md
+description: >-
+  Reserved property decorator for marking a field create-only in future
+  generated types; currently a no-op with no effect on the compiled schema.
 ---
 
 # &#x20;createonly()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function createonly(target: object, key: string): void;
 ```
 
-Defined in: [fields/createonly.ts:12](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/schema-dsl/src/fields/createonly.ts#L12)
+Defined in: [fields/createonly.ts:14](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/schema-dsl/src/fields/createonly.ts#L14)
 
 **`Decorator`**
 

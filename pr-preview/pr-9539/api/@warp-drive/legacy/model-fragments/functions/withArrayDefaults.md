@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/model-fragments/functions/withArrayDefaults.md
+description: >-
+  Legacy ModelFragments migration helper that builds an `array` schema field
+  preconfigured with the `ember-object`, `ember-array-like`, and
+  `fragment-array` extensions.
 ---
 
 &#x20;
@@ -25,7 +29,7 @@ function withArrayDefaults<ArrayName extends string, PrimitiveType extends strin
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:9](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L9)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L11)
 
 Used as a helper to setup the relevant parts of an array
 schema and add extensions etc.

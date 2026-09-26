@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/reactive/types/LegacyLiveArray.md
+description: >-
+  Legacy reactive array of every record of one type in the store, returned by
+  `store.peekAll` and `store.findAll`. we recommend againt using LiveArrays. Use
+  Store.request instead
 ---
 
 # &#x20;LegacyLiveArray\<T = `unknown`>
@@ -69,7 +73,7 @@ interface LegacyLiveArray<T = unknown> extends LegacyArray<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:74](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L74)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:76](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L76)
 
 **`Legacy`**
 
@@ -124,8 +128,6 @@ type "car" with concrete types "ferrari" and "bmw", then "ferrari"
 and "bmw" will have populated LiveArrays, but the LiveArray for "car"
 would be empty.
 
-we recommend againt using LiveArrays. Use [Store.request](../../classes/Store.md#request) instead
-
 ## Extends
 
 * `LegacyArray`<`T`>
@@ -154,8 +156,6 @@ we recommend againt using LiveArrays. Use [Store.request](../../classes/Store.md
 iterator: ArrayIterator<T>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.iterable.d.ts:76](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.iterable.d.ts#L76)
-
 Iterator
 
 #### Returns
@@ -175,8 +175,6 @@ LegacyArray.[iterator]
 ```ts
 at(index: number): T | undefined;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2022.array.d.ts:22](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2022.array.d.ts#L22)
 
 Returns the item located at the specified index.
 
@@ -213,8 +211,6 @@ concat(...items: (T | ConcatArray<T>)[]): T[];
 concat(...items: ConcatArray<T>[]): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1351](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1351)
-
 Combines two or more arrays.
 This method returns a new array without modifying any existing arrays.
 
@@ -241,8 +237,6 @@ LegacyArray.concat
 ```ts
 concat(...items: (T | ConcatArray<T>)[]): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1357](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1357)
 
 Combines two or more arrays.
 This method returns a new array without modifying any existing arrays.
@@ -276,8 +270,6 @@ copyWithin(
    end?: number
 ): this;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:60](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L60)
 
 Returns the this object after copying a section of the array identified by start and end
 to the same array starting at position target
@@ -322,8 +314,6 @@ LegacyArray.copyWithin
 entries(): ArrayIterator<[number, T]>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.iterable.d.ts:81](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.iterable.d.ts#L81)
-
 Returns an iterable of key, value pairs for every entry in the array
 
 #### Returns
@@ -350,8 +340,6 @@ every(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any
 ```ts
 every<S>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): this is S[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1438](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1438)
 
 Determines whether all the members of an array satisfy the specified test.
 
@@ -394,8 +382,6 @@ LegacyArray.every
 every(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1447](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1447)
-
 Determines whether all the members of an array satisfy the specified test.
 
 ##### Parameters
@@ -436,8 +422,6 @@ fill(
    end?: number
 ): this;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:49](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L49)
 
 Changes all array elements from `start` to `end` index to a static `value` and returns the modified array
 
@@ -488,8 +472,6 @@ filter(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: an
 filter<S>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1474](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1474)
-
 Returns the elements of an array that meet the condition specified in a callback function.
 
 ##### Type Parameters
@@ -527,8 +509,6 @@ LegacyArray.filter
 ```ts
 filter(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1480](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1480)
 
 Returns the elements of an array that meet the condition specified in a callback function.
 
@@ -570,8 +550,6 @@ find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): 
 ```ts
 find<S>(predicate: (value: T, index: number, obj: T[]) => value is S, thisArg?: any): S | undefined;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:27](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L27)
 
 Returns the value of the first element in the array where predicate is true, and undefined
 otherwise.
@@ -615,8 +593,6 @@ LegacyArray.find
 find(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): T | undefined;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:28](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L28)
-
 ##### Parameters
 
 ###### predicate
@@ -644,8 +620,6 @@ LegacyArray.find
 ```ts
 findIndex(predicate: (value: T, index: number, obj: T[]) => unknown, thisArg?: any): number;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:39](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L39)
 
 Returns the index of the first element in the array where predicate is true, and -1
 otherwise.
@@ -692,8 +666,6 @@ findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: 
 findLast<S>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S | undefined;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:27](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L27)
-
 Returns the value of the last element in the array where predicate is true, and undefined
 otherwise.
 
@@ -736,8 +708,6 @@ LegacyArray.findLast
 findLast(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T | undefined;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:28](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L28)
-
 ##### Parameters
 
 ###### predicate
@@ -765,8 +735,6 @@ LegacyArray.findLast
 ```ts
 findLastIndex(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): number;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:39](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L39)
 
 Returns the index of the last element in the array where predicate is true, and -1
 otherwise.
@@ -805,8 +773,6 @@ LegacyArray.findLastIndex
 ```ts
 flat<A, D extends number = 1>(this: A, depth?: D): FlatArray<A, D>[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2019.array.d.ts:73](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2019.array.d.ts#L73)
 
 Returns a new array with all sub-array elements concatenated into it recursively up to the
 specified depth.
@@ -850,8 +816,6 @@ LegacyArray.flat
 ```ts
 flatMap<U, This = undefined>(callback: (this: This, value: T, index: number, array: T[]) => U | readonly U[], thisArg?: This): U[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2019.array.d.ts:62](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2019.array.d.ts#L62)
 
 Calls a defined callback function on each element of an array. Then, flattens the result into
 a new array.
@@ -901,8 +865,6 @@ LegacyArray.flatMap
 forEach(callbackfn: (value: T, index: number, array: T[]) => void, thisArg?: any): void;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1462](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1462)
-
 Performs the specified action for each element in an array.
 
 #### Parameters
@@ -936,8 +898,6 @@ LegacyArray.forEach
 ```ts
 includes(searchElement: T, fromIndex?: number): boolean;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2016.array.include.d.ts:23](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2016.array.include.d.ts#L23)
 
 Determines whether an array includes a certain element, returning true or false as appropriate.
 
@@ -973,8 +933,6 @@ LegacyArray.includes
 indexOf(searchElement: T, fromIndex?: number): number;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1423](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1423)
-
 Returns the index of the first occurrence of a value in an array, or -1 if it is not present.
 
 #### Parameters
@@ -1009,8 +967,6 @@ LegacyArray.indexOf
 join(separator?: string): string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1362](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1362)
-
 Adds all the elements of an array into a string, separated by the specified separator string.
 
 #### Parameters
@@ -1039,8 +995,6 @@ LegacyArray.join
 keys(): ArrayIterator<number>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.iterable.d.ts:86](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.iterable.d.ts#L86)
-
 Returns an iterable of keys in the array
 
 #### Returns
@@ -1060,8 +1014,6 @@ LegacyArray.keys
 ```ts
 lastIndexOf(searchElement: T, fromIndex?: number): number;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1429](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1429)
 
 Returns the index of the last occurrence of a specified value in an array, or -1 if it is not present.
 
@@ -1096,8 +1048,6 @@ LegacyArray.lastIndexOf
 ```ts
 map<U>(callbackfn: (value: T, index: number, array: T[]) => U, thisArg?: any): U[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1468](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1468)
 
 Calls a defined callback function on each element of an array, and returns an array that contains the results.
 
@@ -1139,8 +1089,6 @@ LegacyArray.map
 pop(): T | undefined;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1340](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1340)
-
 Removes the last element from an array and returns it.
 If the array is empty, undefined is returned and the array is not modified.
 
@@ -1161,8 +1109,6 @@ LegacyArray.pop
 ```ts
 push(...items: T[]): number;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1345](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1345)
 
 Appends new elements to the end of an array, and returns the new length of the array.
 
@@ -1200,8 +1146,6 @@ reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, 
 reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T): T;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1486](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1486)
-
 Calls the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
 
 ##### Parameters
@@ -1228,8 +1172,6 @@ LegacyArray.reduce
 reduce(callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T, initialValue: T): T;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1487](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1487)
-
 ##### Parameters
 
 ###### callbackfn
@@ -1255,8 +1197,6 @@ LegacyArray.reduce
 ```ts
 reduce<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1493](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1493)
 
 Calls the specified callback function for all the elements in an array. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
 
@@ -1306,8 +1246,6 @@ reduceRight<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: num
 reduceRight(callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T): T;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1499](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1499)
-
 Calls the specified callback function for all the elements in an array, in descending order. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
 
 ##### Parameters
@@ -1334,8 +1272,6 @@ LegacyArray.reduceRight
 reduceRight(callbackfn: (previousValue: T, currentValue: T, currentIndex: number, array: T[]) => T, initialValue: T): T;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1500](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1500)
-
 ##### Parameters
 
 ###### callbackfn
@@ -1361,8 +1297,6 @@ LegacyArray.reduceRight
 ```ts
 reduceRight<U>(callbackfn: (previousValue: U, currentValue: T, currentIndex: number, array: T[]) => U, initialValue: U): U;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1506](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1506)
 
 Calls the specified callback function for all the elements in an array, in descending order. The return value of the callback function is the accumulated result, and is provided as an argument in the next call to the callback function.
 
@@ -1404,8 +1338,6 @@ LegacyArray.reduceRight
 reverse(): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1367](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1367)
-
 Reverses the elements in an array in place.
 This method mutates the array and returns a reference to the same array.
 
@@ -1427,7 +1359,7 @@ LegacyArray.reverse
 save(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
 
 Saves all of the records in the `RecordArray`.
 
@@ -1465,8 +1397,6 @@ LegacyArray.save
 shift(): T | undefined;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1372](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1372)
-
 Removes the first element from an array and returns it.
 If the array is empty, undefined is returned and the array is not modified.
 
@@ -1487,8 +1417,6 @@ LegacyArray.shift
 ```ts
 slice(start?: number, end?: number): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1382](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1382)
 
 Returns a copy of a section of an array.
 For both start and end, a negative index can be used to indicate an offset from the end of the array.
@@ -1528,8 +1456,6 @@ LegacyArray.slice
 some(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): boolean;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1456](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1456)
-
 Determines whether the specified callback function returns true for any element of an array.
 
 #### Parameters
@@ -1566,8 +1492,6 @@ LegacyArray.some
 ```ts
 sort(compareFn?: (a: T, b: T) => number): this;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1393](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1393)
 
 Sorts an array in place.
 This method mutates the array and returns a reference to the same array.
@@ -1615,8 +1539,6 @@ splice(
 splice(start: number, deleteCount?: number): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1402](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1402)
-
 Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
 
 ##### Parameters
@@ -1656,8 +1578,6 @@ splice(
    ...items: T[]
 ): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1412](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1412)
 
 Removes elements from an array and, if necessary, inserts new elements in their place, returning the deleted elements.
 
@@ -1710,8 +1630,6 @@ toLocaleString(locales: string | string[], options?: NumberFormatOptions & DateT
 toLocaleString(): string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1335](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1335)
-
 Returns a string representation of an array. The elements are converted to string using their toLocaleString methods.
 
 ##### Returns
@@ -1729,8 +1647,6 @@ LegacyArray.toLocaleString
 ```ts
 toLocaleString(locales: string | string[], options?: NumberFormatOptions & DateTimeFormatOptions): string;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.core.d.ts:62](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.core.d.ts#L62)
 
 ##### Parameters
 
@@ -1760,8 +1676,6 @@ LegacyArray.toLocaleString
 toReversed(): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:44](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L44)
-
 Returns a copy of an array with its elements reversed.
 
 #### Returns
@@ -1781,8 +1695,6 @@ LegacyArray.toReversed
 ```ts
 toSorted(compareFn?: (a: T, b: T) => number): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:55](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L55)
 
 Returns a copy of an array with its elements sorted.
 
@@ -1833,8 +1745,6 @@ toSpliced(
 ): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:64](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L64)
-
 Copies an array and removes elements and, if necessary, inserts new elements in their place. Returns the copied array.
 
 ##### Parameters
@@ -1875,8 +1785,6 @@ LegacyArray.toSpliced
 toSpliced(start: number, deleteCount?: number): T[];
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:72](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L72)
-
 Copies an array and removes elements while returning the remaining elements.
 
 ##### Parameters
@@ -1913,8 +1821,6 @@ LegacyArray.toSpliced
 toString(): string;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1331](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1331)
-
 Returns a string representation of an array.
 
 #### Returns
@@ -1934,8 +1840,6 @@ LegacyArray.toString
 ```ts
 unshift(...items: T[]): number;
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1417](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1417)
 
 Inserts new elements at the start of an array, and returns the new length of the array.
 
@@ -1965,7 +1869,7 @@ LegacyArray.unshift
 update(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
 
 Used to get the latest version of all of the records in this array
 from the adapter.
@@ -2007,8 +1911,6 @@ LegacyArray.update
 values(): ArrayIterator<T>;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.iterable.d.ts:91](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.iterable.d.ts#L91)
-
 Returns an iterable of values in the array
 
 #### Returns
@@ -2028,8 +1930,6 @@ LegacyArray.values
 ```ts
 with(index: number, value: T): T[];
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2023.array.d.ts:83](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2023.array.d.ts#L83)
 
 Copies an array, then overwrites the value at the provided index with the
 given value. If the index is negative, then it replaces from the end
@@ -2112,8 +2012,6 @@ readonly [unscopables]: {
   with?: boolean;
 };
 ```
-
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts:95](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es2015.symbol.wellknown.d.ts#L95)
 
 Is an object whose properties have the value 'true'
 when they will be absent when used in a 'with' statement.
@@ -2389,7 +2287,7 @@ LegacyArray.[unscopables]
 isLoaded: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:79](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L79)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:81](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L81)
 
 Whether this LiveArray has loaded. LiveArrays are always considered
 loaded once created.
@@ -2402,7 +2300,7 @@ loaded once created.
 isUpdating: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
 
 The flag to signal a `RecordArray` is currently loading data.
 Example
@@ -2428,8 +2326,6 @@ LegacyArray.isUpdating
 length: number;
 ```
 
-Defined in: [node\_modules/.pnpm/typescript@6.0.3/node\_modules/typescript/lib/lib.es5.d.ts:1327](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/typescript@6.0.3/node_modules/typescript/lib/lib.es5.d.ts#L1327)
-
 Gets or sets the length of the array. This is a number one higher than the highest index in the array.
 
 #### Inherited from
@@ -2446,6 +2342,6 @@ LegacyArray.length
 modelName: TypeFromInstanceOrString<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:87](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L87)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:89](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L89)
 
 The resource type (`ResourceType`) whose records this LiveArray contains.

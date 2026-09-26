@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/utilities/functions/sortQueryParams.md
+description: >-
+  Builds a `URLSearchParams` with keys and array values sorted, so equivalent
+  queries produce identical params.
 ---
 
 # &#x20;sortQueryParams()
@@ -9,7 +12,7 @@ url: >-
 function sortQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): URLSearchParams;
 ```
 
-Defined in: [index.ts:663](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/utilities/src/index.ts#L663)
+Defined in: [index.ts:684](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/utilities/src/index.ts#L684)
 
 Sorts query params by both key and value returning a new URLSearchParams
 object with the keys inserted in sorted order.

@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/eslint-plugin-warp-drive/rules/no-create-record-rerender.md
+description: >-
+  Lint rule that disallows `store.createRecord` in getters, constructors, class
+  properties, and component lifecycle hooks, where it can cause re-render
+  issues.
 ---
 
 | Rule | 🏷️ | ✨ |

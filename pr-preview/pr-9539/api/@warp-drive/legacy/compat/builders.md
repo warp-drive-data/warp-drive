@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/compat/builders.md
+description: >-
+  Deprecated request builders that move `findRecord`, `query`, and `saveRecord`
+  calls to `store.request` while still using adapters and serializers.
 ---
 
 &#x20;&#x20;

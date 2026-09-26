@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/ember.md
+description: >-
+  Ember bindings for WarpDrive, providing the `<Request />` and `<Await />`
+  components for rendering request and promise states, Ember reactivity setup
+  and experimental pagination.
 ---
 
 This library provides reactive utilities for working with promises

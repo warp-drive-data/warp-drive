@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/types/cache/types/RelationshipDiff.md
+description: >-
+  Remote versus local state of one relationship, with additions, removals, and
+  reordering for to-many, as returned by `cache.changedRelationships`.
 ---
 
 # &#x20;RelationshipDiff
@@ -22,7 +25,7 @@ type RelationshipDiff =
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:37](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/core/src/types/cache.ts#L37)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:47](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/types/cache.ts#L47)
 
 Describes the local (uncommitted) changes to a single relationship,
 as returned by [Cache.changedRelationships](Cache.md#changedrelationships).

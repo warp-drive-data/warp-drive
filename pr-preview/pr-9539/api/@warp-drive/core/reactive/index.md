@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/core/reactive.md
+description: >-
+  Schema-driven reactive records, arrays, and documents the store builds from
+  cached data, plus the `SchemaService` and schema types that define them.
 ---
 
 # About

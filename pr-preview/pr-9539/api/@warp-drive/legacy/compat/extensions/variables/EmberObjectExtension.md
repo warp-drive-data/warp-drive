@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/legacy/compat/extensions/variables/EmberObjectExtension.md
+description: >-
+  Legacy schema extension that gives reactive objects the classic `EmberObject`
+  API such as `get`, `set`, and observers, to ease migration from Ember objects.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 const EmberObjectExtension: CAUTION_MEGA_DANGER_ZONE_Extension;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:93](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/warp-drive-packages/legacy/src/compat/extensions.ts#L93)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:105](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/legacy/src/compat/extensions.ts#L105)
 
 A schema extension that adds the classic `EmberObject` API (`get`, `set`,
 `getProperties`, `setProperties`, `incrementProperty`, `decrementProperty`,

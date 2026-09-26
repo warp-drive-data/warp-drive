@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-9539/api/@warp-drive/experiments/pagination/types/PaginationLinks.md
+description: >-
+  Experimental: the reactive navigation links for a pagination state, with
+  numbered links and gap placeholders plus `first`, `prev`, `next`, and `last`
+  links for the active page.
 ---
 
 &#x20;
@@ -17,7 +21,7 @@ interface PaginationLinks<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:687](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L687)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:247](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L247)
 
 **`Hideconstructor`**
 
@@ -69,7 +73,7 @@ See also:
 get first(): RelationalPaginationLink | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:696](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L696)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:263](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L263)
 
 The relational `first` link of the collection, or `null` when the active
 page's response did not expose one. Unlike [prev](#prev)/[next](#next) it is
@@ -91,7 +95,7 @@ link's [isCurrent](RelationalPaginationLink.md#iscurrent) is `true`
 get last(): RelationalPaginationLink | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:712](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L712)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:303](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L303)
 
 The relational `last` link of the collection, or `null` when the active
 page's response did not expose one. Mirror of [first](#first) for the end of
@@ -111,7 +115,7 @@ the collection.
 get links(): PaginationLink[];
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:720](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L720)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:319](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L319)
 
 The numbered links and placeholders, derived from the shared page graph.
 
@@ -133,7 +137,7 @@ Cursor-based collections have no page numbers, so this is empty — use
 get next(): RelationalPaginationLink | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:706](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L706)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:289](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L289)
 
 The relational `next` link for the active page, or `null` at the end of the
 collection. Available in both numbered and cursor pagination.
@@ -152,7 +156,7 @@ collection. Available in both numbered and cursor pagination.
 get prev(): RelationalPaginationLink | null;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_5e1563e0e582c8365bb74466d3761d6d/node\_modules/@warp-drive/core/dist/signals/-leaked.d.ts:701](https://github.com/warp-drive-data/warp-drive/blob/323cb08c6f42aefbe421e128ab4c4e6fbb31a57d/node_modules/.pnpm/@warp-d_5e1563e0e582c8365bb74466d3761d6d/node_modules/@warp-drive/core/dist/signals/-leaked.d.ts#L701)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:276](https://github.com/warp-drive-data/warp-drive/blob/c039fb29fe72f3ac3b016ef16a9261222923fb96/warp-drive-packages/core/src/signals/pagination-links.ts#L276)
 
 The relational `prev` link for the active page, or `null` at the start of the
 collection. Available in both numbered and cursor pagination.
