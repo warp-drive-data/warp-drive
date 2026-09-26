@@ -1,10 +1,5 @@
 # @ember-data/rest
 
-:::warning ⚠️ This package only exists for backwards compatibility
-It is for apps still on the `@ember-data/*` packages. Newer apps should use the same builders
-from [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
-:::
-
 Request builders for **REST**ful APIs.
 
 A request builder is a function that takes the few things that vary about a request, such as

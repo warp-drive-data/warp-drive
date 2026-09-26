@@ -1,8 +1,5 @@
 # @warp-drive/build-config
 
-:::warning ⚠️ This package has been merged into {@link @warp-drive/core! | @warp-drive/core} and is not recommended for new applications
-:::
-
 This package provides a build-plugin that enables configuration of deprecations,
 optional features, development/testing support and debug logging.
 

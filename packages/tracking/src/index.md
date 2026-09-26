@@ -1,10 +1,5 @@
 # @ember-data/tracking
 
-:::warning ⚠️ Deprecated in 5.5
-This package historically provided the bindings into Ember's reactivity system. It is no longer
-needed: that configuration now comes from {@link @warp-drive/ember! | @warp-drive/ember}.
-:::
-
 Historically, this package configured ***Warp*Drive** to use EmberJS's reactivity system.
 
 ## Migration Guide

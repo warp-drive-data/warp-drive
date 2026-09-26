@@ -1,11 +1,5 @@
 # @ember-data/serializer
 
-:::warning ⚠️ Legacy Package
-**Serializers are a LEGACY feature** that is no longer encouraged for new applications.
-
-**For new projects:** Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the {@link @warp-drive/core!RequestManager | RequestManager} instead.
-:::
-
 This package provides JSON, REST and JSON:API Implementations of the legacy Serializer Interface.
 
 **Why it's legacy:** The Serializer pattern was designed to transform data between your API format and the format expected by Models. This approach:

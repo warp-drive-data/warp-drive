@@ -1,8 +1,5 @@
 # @warp-drive/schema-record
 
-:::warning ⚠️ This package has been merged into {@link @warp-drive/core! | @warp-drive/core} and is not recommended for new applications
-:::
-
 This package declares nothing of its own. Its single entry point re-exports the
 reactive-resource API from {@link @warp-drive/core!reactive | @warp-drive/core/reactive}
 so existing `@warp-drive/schema-record` imports keep working:
