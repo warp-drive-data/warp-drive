@@ -11,7 +11,7 @@ url: >-
 function input(type: "number" | "boolean" | "float"): PropertyDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:133](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/storage/storage-resource.ts#L133)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:133](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/storage/storage-resource.ts#L133)
 
 ## Parameters
 

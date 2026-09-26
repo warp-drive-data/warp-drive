@@ -18,7 +18,7 @@ function DELETE(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:275](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/packages/holodeck/src/mock.ts#L275)
+Defined in: [mock.ts:275](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/packages/holodeck/src/mock.ts#L275)
 
 mock a DELETE request
 

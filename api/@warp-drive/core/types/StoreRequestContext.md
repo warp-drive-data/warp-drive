@@ -31,7 +31,7 @@ interface StoreRequestContext extends RequestContext {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:52](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L52)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:52](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L52)
 
 The object a [Handler](../request/types/Handler.md) uses to fulfill a request: it provides a
 readonly view of the [request](request/types/RequestContext.md#request) and methods
@@ -52,7 +52,7 @@ setResponse(response:
   | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:855](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/types/request.ts#L855)
+Defined in: [warp-drive-packages/core/src/types/request.ts:855](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/request.ts#L855)
 
 Supplies the response for the request.
 
@@ -84,7 +84,7 @@ setStream(stream:
   | null>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:851](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/types/request.ts#L851)
+Defined in: [warp-drive-packages/core/src/types/request.ts:851](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/request.ts#L851)
 
 Supplies the stream of the response's content, if available, enabling
 consumers to monitor download progress via [RequestLoadingState](../reactive/types/RequestLoadingState.md).
@@ -114,7 +114,7 @@ consumers to monitor download progress via [RequestLoadingState](../reactive/typ
 id: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:845](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/types/request.ts#L845)
+Defined in: [warp-drive-packages/core/src/types/request.ts:845](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/request.ts#L845)
 
 a unique id for this request
 
@@ -138,7 +138,7 @@ request: Readonly<Omit<RequestInfo<unknown>, "controller">> & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:53](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L53)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:53](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L53)
 
 #### Type Declaration
 

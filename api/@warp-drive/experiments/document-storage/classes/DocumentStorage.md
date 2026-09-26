@@ -11,7 +11,7 @@ description: >-
 
 # &#x20;DocumentStorage
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:410](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L410)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:410](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L410)
 
 DocumentStorage is a wrapper around the StorageManager API that provides
 a simple interface for reading and updating documents and requests.
@@ -38,7 +38,7 @@ optional features:
 new DocumentStorage(options?: Partial<DocumentStorageOptions>): DocumentStorage;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:413](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L413)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:413](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L413)
 
 #### Parameters
 
@@ -58,7 +58,7 @@ Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:413](
 clear(reset?: boolean): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:451](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L451)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:451](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L451)
 
 #### Parameters
 
@@ -78,7 +78,7 @@ Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:451](
 getDocument(key: DocumentIdentifier): Promise<CacheDocument | null>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:433](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L433)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:433](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L433)
 
 #### Parameters
 
@@ -98,7 +98,7 @@ Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:433](
 putDocument(document: CacheFileDocument, resourceCollector: (resourceIdentifier: PersistedResourceKey) => ExistingResourceObject): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:437](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L437)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:437](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L437)
 
 #### Parameters
 
@@ -122,7 +122,7 @@ Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:437](
 putResources(document: ResourceDataDocument, resourceCollector: (resourceIdentifier: PersistedResourceKey) => ExistingResourceObject): Promise<void>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:444](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L444)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:444](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L444)
 
 #### Parameters
 
@@ -146,4 +146,4 @@ Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:444](
 readonly _storage: InternalDocumentStorage;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:411](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/experiments/src/document-storage/index.ts#L411)
+Defined in: [warp-drive-packages/experiments/src/document-storage/index.ts:411](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/experiments/src/document-storage/index.ts#L411)

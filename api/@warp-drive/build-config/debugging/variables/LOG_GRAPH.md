@@ -16,6 +16,6 @@ description: Debug logging flag that logs the updates the relationship graph rec
 const LOG_GRAPH: boolean = false;
 ```
 
-Defined in: [debugging.ts:115](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/build-config/src/debugging.ts#L115)
+Defined in: [debugging.ts:115](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/build-config/src/debugging.ts#L115)
 
 log updates received by the graph (relationship pointer storage)

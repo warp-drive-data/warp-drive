@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;RESTAdapter
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:366](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L366)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:366](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L366)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
@@ -247,7 +247,7 @@ export default class ApplicationAdapter extends RESTAdapter {
 new RESTAdapter(owner?: Owner): RESTAdapter;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:139](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L139)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:139](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L139)
 
 #### Parameters
 
@@ -273,7 +273,7 @@ AdapterWithBuildURLMixin.constructor
 buildQuery(snapshot: Snapshot<unknown> | SnapshotRecordArray): QueryState;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1259](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L1259)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1259](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L1259)
 
 Used by `findAll` and `findRecord` to build the query's `data` hash
 supplied to the ajax method.
@@ -385,7 +385,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:44](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L44)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:44](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L44)
 
 Builds a URL for a given type and optional ID.
 
@@ -436,7 +436,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:56](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L56)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:56](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L56)
 
 Builds the URL for a `store.findAll(type)` call.
 
@@ -479,7 +479,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:68](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L68)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:68](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L68)
 
 Builds the URL for a `store.query(type, query)` call.
 
@@ -526,7 +526,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:81](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L81)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:81](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L81)
 
 Builds the URL for a `store.queryRecord(type, query)` call.
 
@@ -572,7 +572,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:97](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L97)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:97](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L97)
 
 Builds the URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -617,7 +617,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:110](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L110)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:110](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L110)
 
 Builds the URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -660,7 +660,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:123](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L123)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:123](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L123)
 
 Builds the URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -703,7 +703,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:136](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L136)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:136](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L136)
 
 Builds the URL for a `record.save()` call when the record was
 created locally using `store.createRecord()`.
@@ -746,7 +746,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:149](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L149)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:149](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L149)
 
 Builds the URL for a `record.save()` call when the record has been
 updated locally.
@@ -789,7 +789,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:162](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L162)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:162](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L162)
 
 Builds the URL for a `record.save()` call when the record has been
 deleted locally.
@@ -831,7 +831,7 @@ buildURL(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:174](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L174)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:174](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L174)
 
 Builds a URL for a given type and ID without a specific request type.
 
@@ -869,7 +869,7 @@ createRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:818](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L818)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:818](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L818)
 
 Called by the store when a newly created record is
 saved via the `save` method on a model record instance.
@@ -916,7 +916,7 @@ deleteRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:855](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L855)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:855](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L855)
 
 Called by the store when a record is deleted.
 
@@ -959,7 +959,7 @@ findAll(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:617](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L617)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:617](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L617)
 
 Called by the store in order to fetch a JSON array for all
 of the records for a given type.
@@ -1008,7 +1008,7 @@ findBelongsTo(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:794](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L794)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:794](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L794)
 
 Called by the store in order to fetch the JSON for the unloaded record in a
 belongs-to relationship that was originally specified as a URL (inside of
@@ -1073,7 +1073,7 @@ findHasMany(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:745](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L745)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:745](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L745)
 
 Called by the store in order to fetch a JSON array for
 the unloaded records in a has-many relationship that were originally
@@ -1138,7 +1138,7 @@ findMany(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:709](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L709)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:709](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L709)
 
 Called by the store in order to fetch several records together if `coalesceFindRequests` is true
 
@@ -1200,7 +1200,7 @@ findRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:601](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L601)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:601](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L601)
 
 Called by the store in order to fetch the JSON for a given
 type and ID.
@@ -1246,7 +1246,7 @@ AdapterWithBuildURLMixin.findRecord
 groupRecordsForFindMany(store: Store$1, snapshots: Snapshot<unknown>[]): Snapshot<unknown>[][];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:922](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L922)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:922](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L922)
 
 Organize records into groups, each of which is to be passed to separate
 calls to `findMany`.
@@ -1301,7 +1301,7 @@ handleResponse(
   | Payload;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:970](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L970)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:970](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L970)
 
 Takes an ajax response, and returns the json payload or an error.
 
@@ -1358,7 +1358,7 @@ isInvalid(
 ): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1024](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L1024)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1024](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L1024)
 
 Default `handleResponse` implementation uses this hook to decide if the
 response is an invalid error.
@@ -1393,7 +1393,7 @@ isSuccess(
 ): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1013](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L1013)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:1013](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L1013)
 
 Default `handleResponse` implementation uses this hook to decide if the
 response is a success.
@@ -1424,7 +1424,7 @@ response is a success.
 pathForType(this: MixtBuildURLMixin, modelName: string): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:258](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L258)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:258](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L258)
 
 Determines the pathname for a given type.
 
@@ -1457,7 +1457,7 @@ query(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:642](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L642)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:642](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L642)
 
 Called by the store in order to fetch a JSON array for
 the records that match a particular query.
@@ -1506,7 +1506,7 @@ queryRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:666](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L666)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:666](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L666)
 
 Called by the store in order to fetch a JSON object for
 the record that matches a particular query.
@@ -1554,7 +1554,7 @@ AdapterWithBuildURLMixin.queryRecord
 serialize(snapshot: Snapshot, options: SerializerOptions): Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:468](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L468)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:468](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L468)
 
 Proxies to the serializer's `serialize` method.
 
@@ -1601,7 +1601,7 @@ AdapterWithBuildURLMixin.serialize
 shouldBackgroundReloadAll(store: Store$1, snapshotRecordArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:875](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L875)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:875](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L875)
 
 This method is used by the store to determine if the store should
 reload a record array after the `store.findAll` method resolves
@@ -1656,7 +1656,7 @@ AdapterWithBuildURLMixin.shouldBackgroundReloadAll
 shouldBackgroundReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:839](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L839)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:839](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L839)
 
 This method is used by the store to determine if the store should
 reload a record after the `store.findRecord` method resolves a
@@ -1711,7 +1711,7 @@ AdapterWithBuildURLMixin.shouldBackgroundReloadRecord
 shouldReloadAll(store: Store$1, snapshotRecordArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:803](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L803)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:803](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L803)
 
 This method is used by the store to determine if the store should
 reload all records from the adapter when records are requested by
@@ -1785,7 +1785,7 @@ AdapterWithBuildURLMixin.shouldReloadAll
 shouldReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:748](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L748)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:748](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L748)
 
 This method is used by the store to determine if the store should
 reload a record from the adapter when a record is requested by
@@ -1854,7 +1854,7 @@ AdapterWithBuildURLMixin.shouldReloadRecord
 sortQueryParams(obj: Record<string, unknown>): Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:460](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L460)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:460](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L460)
 
 By default, the RESTAdapter will send the query params sorted alphabetically to the
 server.
@@ -1915,7 +1915,7 @@ updateRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:838](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L838)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:838](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L838)
 
 Called by the store when an existing record is saved
 via the `save` method on a model record instance.
@@ -1962,7 +1962,7 @@ urlForCreateRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:231](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L231)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:231](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L231)
 
 Builds a URL for a `record.save()` call when the record was created
 locally using `store.createRecord()`.
@@ -1998,7 +1998,7 @@ urlForDeleteRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:245](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L245)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:245](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L245)
 
 Builds a URL for a `record.save()` call when the record has been
 deleted locally.
@@ -2037,7 +2037,7 @@ urlForFindAll(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:190](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L190)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:190](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L190)
 
 Builds a URL for a `store.findAll(type)` call.
 
@@ -2072,7 +2072,7 @@ urlForFindBelongsTo(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:224](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L224)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:224](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L224)
 
 Builds a URL for fetching an async `belongsTo` relationship when a
 URL is not provided by the server.
@@ -2112,7 +2112,7 @@ urlForFindHasMany(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:217](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L217)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:217](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L217)
 
 Builds a URL for fetching an async `hasMany` relationship when a
 URL is not provided by the server.
@@ -2152,7 +2152,7 @@ urlForFindMany(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:210](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L210)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:210](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L210)
 
 Builds a URL for coalescing multiple `store.findRecord(type, id)`
 records into 1 request when the adapter's `coalesceFindRequests`
@@ -2193,7 +2193,7 @@ urlForFindRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:184](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L184)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:184](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L184)
 
 Builds a URL for a `store.findRecord(type, id)` call.
 
@@ -2231,7 +2231,7 @@ urlForQuery(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:202](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L202)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:202](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L202)
 
 Builds a URL for a `store.query(type, query)` call.
 
@@ -2265,7 +2265,7 @@ urlForQueryRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:196](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L196)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:196](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L196)
 
 Builds a URL for a `store.queryRecord(type, query)` call.
 
@@ -2300,7 +2300,7 @@ urlForUpdateRecord(
 ): string;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:238](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L238)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:238](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L238)
 
 Builds a URL for a `record.save()` call when the record has been
 updated locally.
@@ -2335,7 +2335,7 @@ updated locally.
 _defaultContentType: string = 'application/json; charset=utf-8';
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:396](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L396)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:396](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L396)
 
 The `Content-Type` header used when serializing request bodies
 that don't otherwise specify one.
@@ -2350,7 +2350,7 @@ headers:
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:587](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L587)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:587](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L587)
 
 Some APIs require HTTP headers, e.g. to provide an API
 key. Arbitrary headers can be set as key/value pairs on the
@@ -2378,7 +2378,7 @@ export default class ApplicationAdapter extends RESTAdapter {
 host: string | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:378](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L378)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:378](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L378)
 
 See "Host customization" above.
 
@@ -2390,7 +2390,7 @@ See "Host customization" above.
 maxURLLength: number = 2048;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:900](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L900)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:900](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L900)
 
 The maximum URL length to allow when coalescing `findRecord` requests
 into a single `findMany` request via [groupRecordsForFindMany](#grouprecordsforfindmany).
@@ -2406,7 +2406,7 @@ See http://stackoverflow.com/questions/417142/what-is-the-maximum-length-of-a-ur
 namespace: string | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:382](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L382)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:382](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L382)
 
 See "Namespace customization" above.
 
@@ -2418,7 +2418,7 @@ See "Namespace customization" above.
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:265](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter.ts#L265)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:265](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter.ts#L265)
 
 The Store service instance that owns this Adapter.
 
@@ -2436,7 +2436,7 @@ AdapterWithBuildURLMixin.store
 useFetch: boolean = true;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:390](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L390)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:390](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L390)
 
 This property allows ajax to still be used instead when `false`.
 
@@ -2455,7 +2455,7 @@ true
 get coalesceFindRequests(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:521](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L521)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:521](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L521)
 
 By default the RESTAdapter will send each find request coming from a `store.find`
 or from accessing a relationship separately to the server. If your server supports passing
@@ -2510,7 +2510,7 @@ Note: Requests coalescing rely on URL building strategy. So if you override `bui
 set coalesceFindRequests(value: boolean): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:529](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L529)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:529](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L529)
 
 By default the store will try to coalesce all `findRecord` calls within the same runloop
 into as few requests as possible by calling groupRecordsForFindMany and passing it into a findMany call.
@@ -2543,7 +2543,7 @@ AdapterWithBuildURLMixin.coalesceFindRequests
 get fastboot(): FastBoot;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:403](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L403)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:403](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L403)
 
 The FastBoot service instance, if running in a FastBoot environment.
 Lazily looked up on first access.
@@ -2558,7 +2558,7 @@ Lazily looked up on first access.
 set fastboot(value: FastBoot): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:416](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/adapter/rest.ts#L416)
+Defined in: [warp-drive-packages/legacy/src/adapter/rest.ts:416](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/adapter/rest.ts#L416)
 
 Sets the FastBoot service instance to use.
 

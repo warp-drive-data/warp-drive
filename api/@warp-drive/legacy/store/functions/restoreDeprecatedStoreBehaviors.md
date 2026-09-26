@@ -14,7 +14,7 @@ description: >-
 function restoreDeprecatedStoreBehaviors(StoreKlass: typeof Store$1): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/store.ts:43](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/legacy/src/store.ts#L43)
+Defined in: [warp-drive-packages/legacy/src/store.ts:43](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/store.ts#L43)
 
 Restores the deprecated `findRecord`/`findAll`/`query`/`queryRecord`/
 `findBelongsTo`/`findHasMany`/`createRecord`/`deleteRecord`/`saveRecord`

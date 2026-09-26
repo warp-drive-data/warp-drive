@@ -12,7 +12,7 @@ description: >-
 function sortQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): URLSearchParams;
 ```
 
-Defined in: [index.ts:684](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/utilities/src/index.ts#L684)
+Defined in: [index.ts:684](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/utilities/src/index.ts#L684)
 
 Sorts query params by both key and value returning a new URLSearchParams
 object with the keys inserted in sorted order.

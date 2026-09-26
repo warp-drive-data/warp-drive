@@ -7,6 +7,6 @@ description: >-
 
 &#x20;
 
-:::warning Internal package
-`@ember-data/graph` is an internal package, not intended for direct use by apps. It is used by the JSON:API cache; apps should not depend on it directly.
+:::warning Legacy package
+`@ember-data/graph` is a legacy package. It re-exports the relationship graph that the JSON:API cache uses internally. Apps should not depend on it, or on the private graph module in `@warp-drive/core` it re-exports.
 :::

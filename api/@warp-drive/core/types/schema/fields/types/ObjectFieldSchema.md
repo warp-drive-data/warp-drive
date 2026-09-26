@@ -21,7 +21,7 @@ type ObjectFieldSchema =
   | DerivedField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2230](https://github.com/warp-drive-data/warp-drive/blob/04cea93913a7a25c755902c8d51a14fc830e6695/warp-drive-packages/core/src/types/schema/fields.ts#L2230)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2230](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/schema/fields.ts#L2230)
 
 A union of all possible field schemas that can be
 used in an ObjectSchema.
