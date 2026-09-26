@@ -504,8 +504,6 @@ type SidebarItem = { text: string; items?: SidebarItem[]; link?: string; collaps
 interface ApiNavGroupPackage {
   /** The package name, matching its `package.json` `name` field. */
   name: string;
-  /** A short description of the package, shown alongside its nav entry. */
-  description: string;
   /**
    * Legacy packages only: the module new code should use instead, e.g. `@warp-drive/core` for
    * `@ember-data/store`. Every API page of the legacy package links to it.
