@@ -24,6 +24,8 @@ its own request pipeline, so a second store is a place to put the setup you are 
 while the first one keeps serving the code you have not touched yet. You migrate one route at a
 time instead of landing one enormous change.
 
+To swap the packages in one change instead, keeping the single store and the Models, adapters
+and serializers you have, see [Replacing ember-data in place](/upgrading/ember-data/in-place.md).
 To adopt newer APIs inside the store you already have, without a second one, see
 [Adopting the Request APIs on 4.12](/upgrading/ember-data/incremental-adoption.md) instead.
 
