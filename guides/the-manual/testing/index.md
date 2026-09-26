@@ -35,7 +35,12 @@ both.
 Running the mock inside ***Warp*Drive** rather than beside it is the other half of the argument.
 ***Warp*Drive** already knows your schemas and your request builders, so a mock library that shares
 them can scope every request to a test, skip work in replay, and keep using the same builders your
-application code uses. [HoloPrograms](./holo-programs.md) is where that idea is heading next.
+application code uses.
+
+:::tip More is planned
+[Read the proposal](https://github.com/warp-drive-data/warp-drive/pull/11205) for more advanced
+features, such as reusable mock scenarios and recording against a real API.
+:::
 
 ## Record once, replay forever
 
@@ -105,4 +110,3 @@ the one command that reproduces CI's behavior before you push.
 - [Writing mocks](./writing-mocks.md) covers the mock helpers and the rules for matching a request.
 - [Recording and replaying](./record-and-replay.md) covers the modes, the fixtures, and CI.
 - [Troubleshooting](./troubleshooting.md) is indexed by the error text you see.
-- [HoloPrograms](./holo-programs.md) is the design the package is being built toward.

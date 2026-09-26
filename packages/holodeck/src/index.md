@@ -37,5 +37,4 @@ pnpm add -E @warp-drive/holodeck@canary
 - [Writing Mocks](https://warp-drive.io/guides/the-manual/testing/writing-mocks) the mock helpers and the matching rules
 - [Recording and Replaying](https://warp-drive.io/guides/the-manual/testing/record-and-replay) modes, fixtures, and CI
 - [Troubleshooting](https://warp-drive.io/guides/the-manual/testing/troubleshooting) indexed by the errors holodeck prints
-- [HoloPrograms](https://warp-drive.io/guides/the-manual/testing/holo-programs) the design this package is being built toward
 
