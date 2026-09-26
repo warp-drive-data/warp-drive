@@ -11,8 +11,16 @@ import {
   getRfcsStructure,
   getSkillsStructure,
   getUpgradingStructure,
+  legacyPackageNames,
   postProcessApiDocs,
 } from '../../src/site-utils.ts';
+
+// Legacy packages' API pages stay out of llms.txt and llms-full.txt: they mostly re-export modern
+// packages, so listing them doubles the index for no new information. src/emit-legacy-llms.ts lists
+// them in llms-legacy.txt instead, and each page keeps its `.md` twin.
+// The plugin matches the path it publishes a page to, and it publishes a package's `index.md`
+// landing page as `api/<name>.md`, so that form is listed alongside the pages under it.
+const LEGACY_API_PAGES = legacyPackageNames().flatMap((name) => [`api/${name}.md`, `api/${name}/**`]);
 
 const TypeDocSidebar = await postProcessApiDocs();
 
@@ -188,6 +196,10 @@ export default withPwa(
             // preference, not ours: the writing guides say LLMs land on these pages too, and the
             // posts under blog/<version>/ already get through because the pattern is one level deep.
             excludeBlog: false,
+            ignoreFilesPerOutput: {
+              llmsTxt: LEGACY_API_PAGES,
+              llmsFullTxt: LEGACY_API_PAGES,
+            },
           }),
           plugin,
           ViteImageOptimizer({

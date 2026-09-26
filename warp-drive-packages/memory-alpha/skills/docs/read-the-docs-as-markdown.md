@@ -10,7 +10,9 @@ have to read or scrape its HTML.
 1. Fetch `https://warp-drive.io/llms.txt`. It is the table of contents: one absolute link per
    page, grouped by section, with the page title as the link text and, where the page provides
    one, a one-line description after a colon. Pick the one or two pages that match your task and
-   fetch only those.
+   fetch only those. If the app imports from a legacy package (`@ember-data/*`,
+   `@warp-drive/core-types`, `@warp-drive/build-config`, or `@warp-drive/schema-record`), its API
+   pages are indexed in `https://warp-drive.io/llms-legacy.txt` instead, which uses the same format.
 2. Fetch the page. Every link in `llms.txt` already ends in `.md` and returns raw Markdown. To
    reach a page from any other URL you were given, append `.md`:
    `https://warp-drive.io/guides/the-manual/requests/builders` becomes

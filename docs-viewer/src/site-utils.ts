@@ -529,6 +529,15 @@ function findApiNavGroup(text: string): ApiNavGroup {
   return group;
 }
 
+/**
+ * The legacy packages, in display order: the "Legacy Packages" group in nav.json, which also
+ * puts them under "Legacy API Docs" in the sidebar. The llms build keeps these out of `llms.txt`
+ * and lists them in `llms-legacy.txt` instead.
+ */
+export function legacyPackageNames(): string[] {
+  return findApiNavGroup('Legacy Packages').packages.map((p) => p.name);
+}
+
 /** Sorts items by their position in `order`; unlisted items sort alphabetically after listed ones. */
 function sortByPackageOrder(items: SidebarItem[], order: string[]): SidebarItem[] {
   return [...items].sort((a, b) => {
@@ -545,7 +554,7 @@ export function splitApiDocsSidebar(sidebar: SidebarItem[]) {
   const universalOrder = findApiNavGroup('Universal').packages.map((p) => p.name);
   const frameworksOrder = findApiNavGroup('Frameworks').packages.map((p) => p.name);
   const toolingOrder = findApiNavGroup('Tooling').packages.map((p) => p.name);
-  const legacyOrder = findApiNavGroup('Legacy Packages').packages.map((p) => p.name);
+  const legacyOrder = legacyPackageNames();
 
   const oldPackages: SidebarItem[] = [];
   const corePackages = { text: 'Universal', items: [] as SidebarItem[] } satisfies SidebarItem;

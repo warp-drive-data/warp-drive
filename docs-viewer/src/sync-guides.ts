@@ -5,6 +5,7 @@ import { watch, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 
 import { emitIndexMarkdown } from './emit-index-markdown';
+import { emitLegacyLlms } from './emit-legacy-llms';
 import { main } from './prepare-website';
 import { postProcessApiDocs } from './site-utils';
 
@@ -97,6 +98,8 @@ if (build) {
   await $`vitepress build docs.warp-drive.io`;
   const copied = emitIndexMarkdown(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'));
   console.log(`emitted ${copied} index.md twins for directory-index pages`);
+  const legacy = emitLegacyLlms(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'), apiDocsPath);
+  console.log(`emitted llms-legacy.txt with ${legacy} legacy API pages`);
 } else {
   await $`vitepress dev docs.warp-drive.io`;
 }
