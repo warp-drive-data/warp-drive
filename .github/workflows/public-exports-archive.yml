@@ -5,12 +5,15 @@ on:
     paths:
       - 'scripts/public-exports-mapping/**'
       - '.github/workflows/public-exports-archive.yml'
+      # The TypeScript version decides how shims and build configs parse.
+      - 'pnpm-lock.yaml'
   push:
     branches:
       - main
     paths:
       - 'scripts/public-exports-mapping/**'
       - '.github/workflows/public-exports-archive.yml'
+      - 'pnpm-lock.yaml'
   schedule:
     - cron: '0 6 * * 1'
 
