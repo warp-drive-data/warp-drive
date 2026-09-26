@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-warp-drive",
-  "description": "ESLint rules for Applications using WarpDrive or EmberData",
+  "description": "ESLint rules and a recommended flat config for apps using WarpDrive, catching invalid resource types, ids and relationships, legacy imports and discouraged request patterns.",
   "main": "./src/index.js",
   "version": "5.10.0-alpha.12",
   "private": false,

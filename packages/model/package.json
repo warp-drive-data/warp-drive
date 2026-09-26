@@ -1,7 +1,7 @@
 {
   "name": "@ember-data/model",
   "version": "5.10.0-alpha.12",
-  "description": "(Legacy) Ember implementation of a resource presentation layer for use with @ember-data/store",
+  "description": "Legacy `Model` class and its `attr`, `belongsTo` and `hasMany` decorators, re-exported from `@warp-drive/legacy/model`; new apps should define schemas for `@warp-drive/core` instead.",
   "keywords": [
     "ember-addon"
   ],

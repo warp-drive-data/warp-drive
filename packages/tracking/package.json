@@ -1,6 +1,6 @@
 {
   "name": "@ember-data/tracking",
-  "description": "DEPRECATED - Use @warp-drive/ember",
+  "description": "Deprecated package that once wired WarpDrive into Ember's reactivity system; remove it and install `@warp-drive/ember` instead, following the migration steps on this page.",
   "version": "5.10.0-alpha.12",
   "deprecated": "Use @warp-drive/ember",
   "private": false,
