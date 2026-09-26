@@ -51,15 +51,18 @@ export async function update(opts) {
  */
 export async function archive(opts) {
   const released = releasedVersions();
-  const baseline = loadSnapshot(BASELINE);
   const tree = workingTree();
   const pairs = stepPairs(released, tree.version);
 
+  // The baseline is released[0], so it is derived first and every later tree reads this run's
+  // copy rather than the committed one, which this run may be about to rewrite.
   /** @type {Map<string, import('./surface.mjs').Surface>} */
   const surfaces = new Map();
+  let baseline = null;
   for (const version of released) {
     using tagged = taggedTree(version);
-    surfaces.set(version, surfaceOf(tagged, version === BASELINE ? null : baseline));
+    surfaces.set(version, surfaceOf(tagged, baseline));
+    baseline ??= snapshotOf(surfaces.get(version));
   }
   surfaces.set(tree.version, surfaceOf(tree, baseline));
 
