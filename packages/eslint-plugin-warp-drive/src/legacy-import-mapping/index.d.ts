@@ -10,18 +10,22 @@ export interface Target {
  * - `report`: leave the import as written and tell the user. `removed` means nothing in the `to`
  *   release stands in for the name. `untracked` means the from-release module is known but the
  *   map has no entry for the name and no module-level move to carry it. `legacy` means the name
- *   still lives only in a legacy package.
+ *   still lives only in a legacy package. `type-only` means a value import names something that
+ *   was a value in the from release and is only a type in the `to` release.
  * - `keep`: say nothing. The name did not move, or the module is not one the map knows.
  */
 export type Decision =
   | { action: 'rewrite'; to: Target }
-  | { action: 'report'; reason: 'removed' | 'untracked' | 'legacy' }
+  | { action: 'report'; reason: 'removed' | 'untracked' | 'legacy' | 'type-only' }
   | { action: 'keep' };
 export interface ExportMap {
   readonly from: string;
   readonly to: string;
-  /** `name` is a binding name, `"default"`, or `"*"` for a namespace import. */
-  resolve(module: string, name: string): Decision;
+  /**
+   * `name` is a binding name, `"default"`, or `"*"` for a namespace import. `typeOnly` is true
+   * for an `import type` declaration or an inline `type` specifier.
+   */
+  resolve(module: string, name: string, importKind: { typeOnly: boolean }): Decision;
 }
 /** From-releases this plugin ships a map for, oldest first. */
 export function listFromVersions(): string[];

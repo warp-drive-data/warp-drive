@@ -9,7 +9,13 @@ const { listFromVersions, loadMap } = require('../legacy-import-mapping/index.js
 const RULE_ID = 'warp-drive.no-legacy-imports';
 const UNMAPPED_EXPORT_ID = 'warp-drive.no-legacy-imports.unmapped-export';
 const LEGACY_HOME_ID = 'warp-drive.no-legacy-imports.legacy-home';
-const MESSAGE_FOR = { removed: UNMAPPED_EXPORT_ID, untracked: UNMAPPED_EXPORT_ID, legacy: LEGACY_HOME_ID };
+const TYPE_ONLY_TARGET_ID = 'warp-drive.no-legacy-imports.type-only-target';
+const MESSAGE_FOR = {
+  removed: UNMAPPED_EXPORT_ID,
+  untracked: UNMAPPED_EXPORT_ID,
+  legacy: LEGACY_HOME_ID,
+  'type-only': TYPE_ONLY_TARGET_ID,
+};
 
 function importedName(spec) {
   if (spec.type === 'ImportDefaultSpecifier') return 'default';
@@ -57,6 +63,9 @@ module.exports = {
       [LEGACY_HOME_ID]:
         'Import{{plural}} "{{tokens}}" from "{{from}}" still live{{s}} in a legacy package in {{to}}. ' +
         'There is no modern module to rewrite to yet.',
+      [TYPE_ONLY_TARGET_ID]:
+        'Import{{plural}} "{{tokens}}" from "{{from}}" {{verb}} no value export in {{to}}, only a type. ' +
+        'This import was left as-is. Use `import type` if it is only used as a type; otherwise it needs manual migration.',
     },
   },
 
@@ -70,10 +79,10 @@ module.exports = {
         const items = node.specifiers.map((spec) => {
           const name = importedName(spec);
           const isType = node.importKind === 'type' || spec.importKind === 'type';
-          return { spec, name, isType, decision: map.resolve(from, name) };
+          return { spec, name, isType, decision: map.resolve(from, name, { typeOnly: isType }) };
         });
 
-        const reported = { [UNMAPPED_EXPORT_ID]: [], [LEGACY_HOME_ID]: [] };
+        const reported = { [UNMAPPED_EXPORT_ID]: [], [LEGACY_HOME_ID]: [], [TYPE_ONLY_TARGET_ID]: [] };
         const groups = new Map();
         for (const { spec, name, isType, decision } of items) {
           if (decision.action === 'report') reported[MESSAGE_FOR[decision.reason]].push(name);

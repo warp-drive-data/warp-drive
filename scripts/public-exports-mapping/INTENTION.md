@@ -79,8 +79,13 @@ A value and a type of one name collapse into one token. Token identity is `(modu
 and `typeOnly` is an attribute of the token rather than part of its identity. The old mapping
 had three names exported as both a value and a type, and the rule's `module::export` key silently
 kept whichever came last. One token per key means the data cannot express the collision, so the
-rule needs no tie-break rule and no import-kind check. All three pairs agree on their
-destination today.
+rule needs no tie-break rule. All three pairs agree on their destination today.
+
+A value import never lands on a type. When a token was a value in the from release and is only a
+type in the map's `to` release, `resolve` answers `report` with reason `type-only` for a value
+import, whether or not the token moved, and treats a type import as usual. It is the only place
+`typeOnly` changes a decision. A token that was already a type keeps its rewrite, because a value
+import of it could never have used a runtime value.
 
 Overrides are refused when they are redundant. `deriveStep` fails an override whose source is
 not a token of the from-release, whose target is not a token of the to-release, that names a

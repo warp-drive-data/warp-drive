@@ -53,11 +53,13 @@ function loadMap(from = listFromVersions()[0]) {
   const known = new Set(file.entries.map((entry) => entry.module));
 
   /** @type {import('./index').ExportMap['resolve']} */
-  function resolve(module, name) {
+  function resolve(module, name, { typeOnly }) {
     const entry = byKey.get(`${module}::${name}`);
     if (entry) {
       if (entry.to === null) return name === '*' ? KEEP : { action: 'report', reason: 'removed' };
       if (legacy.has(entry.to.module)) return { action: 'report', reason: 'legacy' };
+      // A value import of a name that lost its value would break at runtime whether or not it moves.
+      if (!typeOnly && !entry.typeOnly && entry.to.typeOnly) return { action: 'report', reason: 'type-only' };
       if (entry.to.module === module && entry.to.export === name) return KEEP;
       return { action: 'rewrite', to: { module: entry.to.module, export: entry.to.export } };
     }
