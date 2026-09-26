@@ -12,7 +12,7 @@ description: >-
 const SupportsRequestStreams: boolean;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:17](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L17)
+Defined in: [-private/handlers/auto-compress.ts:17](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L17)
 
 Whether the browser supports `ReadableStream` as a request body
 in a `POST` request.

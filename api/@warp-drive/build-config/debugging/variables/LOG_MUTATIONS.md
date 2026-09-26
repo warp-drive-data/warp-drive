@@ -18,7 +18,7 @@ description: >-
 const LOG_MUTATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/build-config/src/debugging.ts#L64)
+Defined in: [debugging.ts:64](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/build-config/src/debugging.ts#L64)
 
 This flag no longer has any effect.
 

@@ -18,12 +18,10 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Setup](https://canary.warp-drive.io/guides/configuration.md): Set up WarpDrive's babel build plugin with compatWith and create a store with useRecommendedStore or useLegacyStore, the two steps required before making any request.
 - [Setup - Advanced](https://canary.warp-drive.io/guides/configuration/advanced.md): Build a Store class by hand, adding RequestManager, SchemaService, JSONAPICache, instantiateRecord, and DefaultCachePolicy step by step, with Ember Model and migration variants.
 - [Setup - Legacy (Ember)](https://canary.warp-drive.io/guides/configuration/ember.md): Restore legacy Adapter, Serializer, Model, and EmberObject features through @warp-drive/legacy in an Ember app, and decide when LegacyNetworkHandler is still needed.
-- [Overview](https://canary.warp-drive.io/guides/configuration/legacy-package-setup.md): Install the pre-unification @ember-data/* and @warp-drive/* packages with exact pinned versions, for apps still on the legacy multi-package setup rather than @warp-drive/core.
 
 #### Older Packages (Ember Only)
 
 - [Overview](https://canary.warp-drive.io/guides/configuration/legacy-package-setup.md): Install the pre-unification @ember-data/* and @warp-drive/* packages with exact pinned versions, for apps still on the legacy multi-package setup rather than @warp-drive/core.
-- [Ember.js](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/setup/ember.md): Configure a legacy Ember app to import @warp-drive/ember/install, drop @ember-data/tracking, and add LegacyNetworkHandler plus adapterFor and serializerFor hooks to the store.
 
 ##### Setup
 
@@ -37,17 +35,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 ### The Manual
 
 - [Introduction](https://canary.warp-drive.io/guides.md): Learn what WarpDrive offers as a framework-agnostic data layer, from fine-grained reactivity and Fetch-style requests to schemas, the relational cache, mutations, and handlers.
-- [Making Requests](https://canary.warp-drive.io/guides/the-manual/requests.md): Start here to make requests with store.request, the <Request /> component, and getRequestState, then set RequestInfo options and chain handlers in a RequestManager.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/schemas.md): Start here for the schemas section to see how a ResourceSchema maps raw cached fields to camelCase reactive properties and relationships, then pick LegacyMode or PolarisMode.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/relational-data.md): Start here to configure relationships in WarpDrive; links each cardinality page from one-to-none through many-to-many plus the inverses, LinksMode, and polymorphism guides.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/caching.md): Understand how the CacheHandler resolves a RequestKey, applies CachePolicy for staleness, and stores responses, resources, fields, and relationships by replace or upsert.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/reactivity.md): Understand how WarpDrive uses signals as side-signals or gates to notify consumers of cache changes while letting you plug in your own or your framework's signals implementation.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/typescript.md): Start here to opt in to WarpDrive's alpha-stage TypeScript types, then follow the installation, configuration, brands, model typing, and includes typing pages in order.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/debugging.md): Enable WarpDrive's regionalized debug logging with `setWarpDriveLogging` at runtime or via build config, using flags such as LOG_REQUESTS, LOG_CACHE, and LOG_GRAPH.
-- [Overview](https://canary.warp-drive.io/guides/the-manual/testing.md)
-- [Overview](https://canary.warp-drive.io/guides/the-manual/mutations.md): Start here for how-to patterns on changing data in WarpDrive; routes to the Mutating State and Patching The Cache pages, both of which are still under construction.
-- [Experiments](https://canary.warp-drive.io/guides/the-manual/experiments.md): Browse WarpDrive's experimental, pre-RFC features that may change or be removed, currently Storage Resources and Pagination, and pick which one to read next.
-- [Index](https://canary.warp-drive.io/guides/the-manual/cookbook.md): Start here for task-focused WarpDrive recipes, including the incremental adoption guide for legacy apps and guidance on singular versus plural resource types.
 - [Community Resources](https://canary.warp-drive.io/guides/the-manual/community-resources.md): Find conference talks, blog posts, and podcasts about WarpDrive and EmberData from 2019 onward, and learn how to add your own to the list via PR.
 
 #### Requests
@@ -61,7 +48,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 #### Schemas
 
 - [Overview](https://canary.warp-drive.io/guides/the-manual/schemas.md): Start here for the schemas section to see how a ResourceSchema maps raw cached fields to camelCase reactive properties and relationships, then pick LegacyMode or PolarisMode.
-- [ResourceSchemas](https://canary.warp-drive.io/guides/the-manual/schemas/resources.md): Create a top-level ResourceSchema with `withDefaults`, choose `field`, `resource`, `collection`, or `schema-object` kinds, register it, and pick LegacyMode or PolarisMode.
 - [ObjectSchemas](https://canary.warp-drive.io/guides/the-manual/schemas/object-schemas.md): Define an embedded ObjectSchema with a null identity, reference it from a resource via a `schema-object` field, and register it with `registerResource` so nested data is reactive.
 - [SimpleFields](https://canary.warp-drive.io/guides/the-manual/schemas/simple-fields.md): Declare primitive string, number, boolean, or date attributes on a ResourceSchema or ObjectSchema as `field` kinds and attach a `type` to route them through a Transformation.
 - [Relational Fields](https://canary.warp-drive.io/guides/the-manual/schemas/relational-fields.md): Placeholder for the guide to relational fields such as `resource`, `collection`, `belongsTo`, and `hasMany` on a ResourceSchema; no content yet.
@@ -80,8 +66,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 #### Relational Data
 
 - [Overview](https://canary.warp-drive.io/guides/the-manual/relational-data.md): Start here to configure relationships in WarpDrive; links each cardinality page from one-to-none through many-to-many plus the inverses, LinksMode, and polymorphism guides.
-- [Many To Many Relationships](https://canary.warp-drive.io/guides/the-manual/relational-data/configuration/many-to-many.md): Define a bidirectional many-to-many hasMany relationship with a managed inverse, or split it into two many-to-none collections, via Model, JSON schema, or LegacyMode withDefaults.
-- [Relationship Inverses](https://canary.warp-drive.io/guides/the-manual/relational-data/features/inverses.md): Placeholder for the guide to relationship inverses, how WarpDrive keeps both sides of a relationship in sync; still under construction, with no content yet.
 
 ##### Configuration
 
@@ -127,7 +111,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Server Setup](https://canary.warp-drive.io/guides/the-manual/testing/server-setup.md)
 - [Client Setup](https://canary.warp-drive.io/guides/the-manual/testing/client-setup.md)
 - [Test Framework Integration](https://canary.warp-drive.io/guides/the-manual/testing/test-framework-integration.md)
-- [Common Setups](https://canary.warp-drive.io/guides/the-manual/testing/common-setups.md): Serve the test page and the holodeck mock server from one origin, so mocked requests need no CORS and no preflight, with the forwarder that Vite, testem, and Caddy setups share.
 - [Writing Mocks](https://canary.warp-drive.io/guides/the-manual/testing/writing-mocks.md)
 - [Recording and Replaying](https://canary.warp-drive.io/guides/the-manual/testing/record-and-replay.md)
 - [Troubleshooting](https://canary.warp-drive.io/guides/the-manual/testing/troubleshooting.md)
@@ -162,12 +145,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Model Name: singular or plural? What to choose? Why is that?](https://canary.warp-drive.io/guides/the-manual/cookbook/naming-conventions.md): Decide whether resource types should be singular or plural and dasherized or snake_case, and see what consistency across the API, store calls, and models requires.
 
 ### Skills
-
-- [Define a Resource Schema](https://canary.warp-drive.io/skills/schemas/define-a-resource-schema.md)
-- [Fetch and Cache Data](https://canary.warp-drive.io/skills/requests/fetch-and-cache-data.md)
-- [Set Up Holodeck](https://canary.warp-drive.io/skills/holodeck/set-up-holodeck.md)
-- [Read the Docs as Markdown](https://canary.warp-drive.io/skills/docs/read-the-docs-as-markdown.md)
-- [Start In A Fresh Worktree](https://canary.warp-drive.io/skills/contributors/start-in-a-fresh-worktree.md)
 
 #### Schemas
 
@@ -210,7 +187,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Setting Up The Project](https://canary.warp-drive.io/guides/contributing/setting-up-the-project.md): Set up a WarpDrive contributor checkout: install mise, pnpm, and mkcert, run `pnpm install`, create holodeck certs, and use `pnpm start` plus `pnpm sync` while developing.
 - [Project Architecture](https://canary.warp-drive.io/guides/contributing/project-architecture.md): See how WarpDrive's packages and primitives fit together through interface-driven boundaries, via an architectural diagram for contributors to the library itself.
 - [Key Concepts](https://canary.warp-drive.io/guides/contributing/key-concepts.md): Choose the right identity type in WarpDrive internals: ResourceIdentifier, RecordIdentifier, or ResourceKey, based on whether lid is required and must be stable.
-- [Overview](https://canary.warp-drive.io/guides/contributing/writing-documentation.md): Which type of doc to write for a change, who each type is for, how the docs site is built from the repo, and the checks to run before opening the PR.
 - [Submitting PRs](https://canary.warp-drive.io/guides/contributing/submitting-prs.md): Open a PR against WarpDrive main with the right tests, a title like `feat: ...` that auto-applies its `:label:` changelog label, and `target:` labels for any backports.
 - [The RFC Process](https://canary.warp-drive.io/guides/contributing/rfc-process.md): Propose a WarpDrive feature or deprecation: discuss it on Discord, draft from rfcs/0000-template.md, open a PR labeled `:label: rfc`, and shepherd it through emberjs/rfcs.
 - [Performing A Release](https://canary.warp-drive.io/guides/contributing/RELEASE.md): Perform a WarpDrive release from the GitHub Actions workflow: order the lts, release, beta, and canary channels, then polish the GitHub release notes and announce it.
@@ -237,8 +213,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 
 ### Upgrading
 
-- [Migrating 4.x to 5.x](https://canary.warp-drive.io/upgrading/v5.md): Migrate an EmberData 4.6 or 4.12 app to WarpDrive 5.x step by step, using native types, mirror packages, useLegacyStore, and schemas in place of Models.
-
 #### 4.x → 5.x
 
 - [Migrating 4.x to 5.x](https://canary.warp-drive.io/upgrading/v5.md): Migrate an EmberData 4.6 or 4.12 app to WarpDrive 5.x step by step, using native types, mirror packages, useLegacyStore, and schemas in place of Models.
@@ -246,8 +220,6 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [Using Codemods](https://canary.warp-drive.io/upgrading/v5/codemods.md): Run the `@ember-data/codemods` migrate-to-schema and legacy-compat-builders codemods to convert 4.x Models and mixins into 5.x schemas and store.request builders.
 
 ### Blog
-
-- [5.x](https://canary.warp-drive.io/blog/v5.md): Browse the WarpDrive 5.x blog posts, starting with the 5.10 announcement of the permanent Upgrading and Blog sections on warp-drive.io.
 
 #### 5.x
 
@@ -992,8 +964,8 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [ObjectValue](https://canary.warp-drive.io/api/@warp-drive/core/types/json/raw/types/ObjectValue.md): A plain JSON object whose property values are all JSON values.
 - [Op](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/Op.md): Base shape of every cache operation, carrying the operation's name in `op`.
 - [OpaqueRecordInstance](https://canary.warp-drive.io/api/@warp-drive/core/types/record/types/OpaqueRecordInstance.md): Type-erased (`unknown`) stand-in for a record instance where its specific type is unknown or irrelevant.
-- [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/Operation.md): Union of the updates `cache.patch` applies to the cache's remote (clean) state, typically from server pushes such as WebSocket or SSE messages.
 - [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/graph/types/Operation.md): Base shape of every relationship Graph operation, carrying the operation's name in `op`.
+- [Operation](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/operations/types/Operation.md): Union of the updates `cache.patch` applies to the cache's remote (clean) state, typically from server pushes such as WebSocket or SSE messages.
 - [Overview](https://canary.warp-drive.io/guides/the-manual/realtime.md): Placeholder for the Realtime section of the manual, which will cover streaming and live-updating data; still under construction, with no content yet.
 - [PageCache](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PageCache.md): Experimental: one page of a paginated collection, exposing its request, loading and error status, data, and links to neighboring pages.
 - [PagedPaginationContentFeatures](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PagedPaginationContentFeatures.md): Experimental: the request controls `<Paginate />` yields to its content block in paged mode, adding `loadPage` to navigate to a page by URL.
@@ -1005,8 +977,8 @@ API reference for `@warp-drive/legacy`, `@ember-data/adapter`, `@ember-data/acti
 - [PaginationContentFeatures](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationContentFeatures.md): Experimental: the combined paged and infinite content features a pagination subscription builds, before `<Paginate />` narrows them to one mode.
 - [PaginationContentFeaturesFor](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationContentFeaturesFor.md): Experimental: resolves a pagination mode to the content features `<Paginate />` yields, the infinite set for `'infinite'` and the paged set otherwise.
 - [PaginationLink](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationLink.md): Experimental: an entry in the numbered pagination links list, either a navigable numbered link or a placeholder for a gap, told apart by `isReal`.
-- [PaginationLinks](https://canary.warp-drive.io/api/@warp-drive/core/types/spec/json-api-raw/types/PaginationLinks.md): A {json:api} `links` member that adds `first`, `last`, `prev`, and `next` pagination links to `self` and `related`.
 - [PaginationLinks](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationLinks.md): Experimental: the reactive navigation links for a pagination state, with numbered links and gap placeholders plus `first`, `prev`, `next`, and `last` links for the active page.
+- [PaginationLinks](https://canary.warp-drive.io/api/@warp-drive/core/types/spec/json-api-raw/types/PaginationLinks.md): A {json:api} `links` member that adds `first`, `last`, `prev`, and `next` pagination links to `self` and `related`.
 - [PaginationLinksSubscription](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationLinksSubscription.md): Experimental: the framework-agnostic lifecycle core of a pagination links component such as `<EachLink />`, exposing the navigation links for a paged pagination state.
 - [PaginationState](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationState.md): Experimental: one component's pagination state over a shared collection, tracking the active page and the loaded run and providing paged and infinite navigation.
 - [PaginationStateFor](https://canary.warp-drive.io/api/@warp-drive/experiments/pagination/types/PaginationStateFor.md): Experimental: resolves a pagination mode to its state type, the infinite-mode state for `'infinite'` and the paged-mode state otherwise.

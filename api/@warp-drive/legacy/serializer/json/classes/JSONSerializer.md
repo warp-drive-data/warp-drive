@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;JSONSerializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer/json.ts:113](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/legacy/src/serializer/json.ts#L113)
+Defined in: [warp-drive-packages/legacy/src/serializer/json.ts:113](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/legacy/src/serializer/json.ts#L113)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.

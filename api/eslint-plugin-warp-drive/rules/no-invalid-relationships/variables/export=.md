@@ -12,4 +12,4 @@ description: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/no-invalid-relationships.js:13](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/packages/eslint-plugin-warp-drive/src/rules/no-invalid-relationships.js#L13)
+Defined in: [rules/no-invalid-relationships.js:13](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/packages/eslint-plugin-warp-drive/src/rules/no-invalid-relationships.js#L13)

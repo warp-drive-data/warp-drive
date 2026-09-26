@@ -7,7 +7,7 @@ description: >-
 
 # &#x20;Throw\<T>
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:329](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/ember/dist/index.d.ts#L329)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:329](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/ember/dist/index.d.ts#L329)
 
 The `<Throw />` component is used to throw an error in a template.
 
@@ -38,7 +38,7 @@ new Throw<T>(owner: Owner, args: {
 }): Throw<T>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:330](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/ember/dist/index.d.ts#L330)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:330](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/ember/dist/index.d.ts#L330)
 
 #### Parameters
 

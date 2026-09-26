@@ -12,7 +12,7 @@ description: >-
 function setIdentifierUpdateMethod(method: UpdateMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:301](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L301)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:301](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L301)
 
 Configure a callback for when the identifier cache encounters new resource
 data for an existing resource.

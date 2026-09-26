@@ -12,7 +12,7 @@ description: >-
 type AttributesSchema = Record<string, LegacyAttributeField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:36](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/schema/schema-service.ts#L36)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:36](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/schema/schema-service.ts#L36)
 
 A dictionary of [LegacyAttributeField](../../fields/types/LegacyAttributeField.md) definitions keyed by
 attribute name, as returned by the deprecated

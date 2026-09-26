@@ -15,7 +15,7 @@ interface RequestKey {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:53](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/identifier.ts#L53)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:53](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/identifier.ts#L53)
 
 A referentially stable object with a unique string (lid) that can be used
 as a reference to request data in the cache.
@@ -31,7 +31,7 @@ the cache, though requests without RequestKeys may still update cache state.
 lid: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:57](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/identifier.ts#L57)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:57](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/identifier.ts#L57)
 
 A string representing a unique identity.
 
@@ -43,6 +43,6 @@ A string representing a unique identity.
 type: "@document";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:61](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/core/src/types/identifier.ts#L61)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:61](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/core/src/types/identifier.ts#L61)
 
 Discriminates a RequestKey from a [ResourceKey](ResourceKey.md).

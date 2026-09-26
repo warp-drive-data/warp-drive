@@ -12,7 +12,7 @@ description: >-
 function setBuildURLConfig(config: JSONAPIConfig): void;
 ```
 
-Defined in: [-private/json-api/-utils.ts:63](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L63)
+Defined in: [-private/json-api/-utils.ts:63](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L63)
 
 Allows setting extensions and profiles to be used in the `Accept` header.
 

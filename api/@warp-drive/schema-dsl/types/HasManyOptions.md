@@ -19,7 +19,7 @@ interface HasManyOptions {
 }
 ```
 
-Defined in: [fields/has-many.ts:12](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L12)
+Defined in: [fields/has-many.ts:12](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L12)
 
 Options accepted by the [hasMany](../functions/hasMany.md) decorator.
 
@@ -31,7 +31,7 @@ Options accepted by the [hasMany](../functions/hasMany.md) decorator.
 optional as?: string;
 ```
 
-Defined in: [fields/has-many.ts:51](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L51)
+Defined in: [fields/has-many.ts:51](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L51)
 
 If this field is polymorphic, the trait or abstract type that this
 resource implements.
@@ -44,7 +44,7 @@ resource implements.
 optional async?: boolean;
 ```
 
-Defined in: [fields/has-many.ts:34](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L34)
+Defined in: [fields/has-many.ts:34](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L34)
 
 Whether the relationship is async. Compiles onto the
 [LegacyHasManyField](../../core/types/schema/fields/types/LegacyHasManyField.md)'s `options.async`, defaulting to `false`.
@@ -57,7 +57,7 @@ Whether the relationship is async. Compiles onto the
 inverse: string | null;
 ```
 
-Defined in: [fields/has-many.ts:26](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L26)
+Defined in: [fields/has-many.ts:26](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L26)
 
 The name of the inverse field on the related resources, or `null` if
 the relationship is unidirectional.
@@ -70,7 +70,7 @@ the relationship is unidirectional.
 optional polymorphic?: boolean;
 ```
 
-Defined in: [fields/has-many.ts:43](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L43)
+Defined in: [fields/has-many.ts:43](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L43)
 
 Whether this field satisfies a polymorphic relationship on another
 resource, meaning it can point to multiple types of resources so long
@@ -84,7 +84,7 @@ as they implement the trait or abstract type named by `type`.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/has-many.ts:59](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L59)
+Defined in: [fields/has-many.ts:59](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L59)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name.
@@ -97,6 +97,6 @@ decorated property's name.
 type: string;
 ```
 
-Defined in: [fields/has-many.ts:18](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L18)
+Defined in: [fields/has-many.ts:18](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L18)
 
 The name of the related resources' `type`.

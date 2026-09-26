@@ -12,7 +12,7 @@ description: >-
 type ResponseGenerator = () => Record<string, unknown>;
 ```
 
-Defined in: [mock.ts:51](https://github.com/warp-drive-data/warp-drive/blob/ab446faa777b02e3f65bc760ce1b94788e490c4d/packages/holodeck/src/mock.ts#L51)
+Defined in: [mock.ts:51](https://github.com/warp-drive-data/warp-drive/blob/03dcb5d183725315ce1f5cc5933667e6e64ba5c3/packages/holodeck/src/mock.ts#L51)
 
 ## Returns
 
