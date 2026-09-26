@@ -205,13 +205,10 @@ handler all live in `@warp-drive/core`.
 Let the linter do the bulk of it. Install
 [`eslint-plugin-warp-drive`](/guides/linting/index.md), enable its `no-legacy-imports` rule, and
 run ESLint with `--fix`. The rule rewrites the module paths and turns the default imports above
-into the named ones. Review the diff before committing it, because as of 5.10 the rule stops
-short in three places:
+into the named ones, which covers every row of the table except the last two:
 
-* It sends a default import of `@ember-data/request` to the `Request` component in
-  `@warp-drive/ember`. Change it by hand to `RequestManager` from `@warp-drive/core`.
-* It rewrites `ember-data/store` to the base `Store` class in `@warp-drive/core`. Code that
-  imported the pre-configured store wants your service from Step 4 instead.
+* It reports `ember-data/store` as still living in a legacy package and leaves the import as
+  written. Import your service from Step 4 instead.
 * It leaves `ember-inflector` alone, since it is not an `ember-data` package. Import `pluralize`
   and `singularize` from `@warp-drive/utilities/string` instead. Custom rules move too: register
   them once, before the first request, with `irregular('person', 'people')`, `uncountable('sheep')`,

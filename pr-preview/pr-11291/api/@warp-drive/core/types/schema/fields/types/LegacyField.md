@@ -17,7 +17,7 @@ type LegacyField =
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2649](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/schema/fields.ts#L2649)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2649](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/schema/fields.ts#L2649)
 
 A union of all field schemas considered "legacy", i.e. those historically
 associated with `@warp-drive/legacy/model`'s Attribute, BelongsTo and

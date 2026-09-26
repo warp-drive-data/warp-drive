@@ -12,7 +12,7 @@ description: >-
 function optional(target: object, key: string): void;
 ```
 
-Defined in: [fields/optional.ts:14](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/schema-dsl/src/fields/optional.ts#L14)
+Defined in: [fields/optional.ts:14](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/schema-dsl/src/fields/optional.ts#L14)
 
 **`Decorator`**
 

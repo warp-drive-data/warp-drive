@@ -12,6 +12,6 @@ description: >-
 type PrimitiveValue = string | number | boolean | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/json/raw.ts:12](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/json/raw.ts#L12)
+Defined in: [warp-drive-packages/core/src/types/json/raw.ts:12](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/json/raw.ts#L12)
 
 A JSON primitive: a string, number, boolean, or `null`.

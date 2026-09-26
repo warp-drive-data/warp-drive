@@ -12,7 +12,7 @@ description: >-
 type StableExistingRecordIdentifier<T extends string = string> = PersistedResourceKey<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:122](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/identifier.ts#L122)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:122](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/identifier.ts#L122)
 
 ## Type Parameters
 

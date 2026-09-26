@@ -12,7 +12,7 @@ description: >-
 const LOG_INSTANCE_CACHE: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/debugging.ts:123](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/build-config/src/debugging.ts#L123)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:123](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/build-config/src/debugging.ts#L123)
 
 log creation/removal of RecordData and Record
 instances.

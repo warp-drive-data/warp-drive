@@ -12,7 +12,7 @@ description: >-
 function parseCacheControl(header: string): CacheControlValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:132](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L132)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:132](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L132)
 
 Parses a string Cache-Control header value into an object with the following structure:
 

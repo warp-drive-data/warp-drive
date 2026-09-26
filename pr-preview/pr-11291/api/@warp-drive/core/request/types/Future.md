@@ -28,7 +28,7 @@ interface Future<T> extends Promise<StructuredDataDocument<T>> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:74](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L74)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:74](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L74)
 
 A Future is a [Promise](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Promise) which resolves or rejects with a [StructuredDocument](../../types/request/types/StructuredDocument.md)
 while providing the ability to [abort](#abort) the underlying request, and
@@ -52,7 +52,7 @@ while providing the ability to [abort](#abort) the underlying request, and
 abort(reason?: string): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:89](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L89)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:89](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L89)
 
 Cancel this request by firing the [AbortController](https://developer.mozilla.org/docs/Web/API/AbortController)'s signal.
 
@@ -152,7 +152,7 @@ getStream(): Promise<
 | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:98](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L98)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:98](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L98)
 
 Get the response stream, if any, once made available.
 
@@ -173,7 +173,7 @@ context is bound to the Future instance.
 onFinalize(cb: () => void): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:106](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L106)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:106](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L106)
 
 Run a callback when this request completes. Use sparingly,
 mostly useful for instrumentation and infrastructure.
@@ -261,7 +261,7 @@ Promise.[toStringTag]
 id: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:121](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L121)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:121](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L121)
 
 The id of the associated request, if any, as assigned
 by the RequestManager
@@ -277,7 +277,7 @@ be used to identify or dedupe requests.
 lid: RequestKey | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:112](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request/-private/types.ts#L112)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:112](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request/-private/types.ts#L112)
 
 The identifier of the associated request, if any, as
 assigned by the CacheHandler.

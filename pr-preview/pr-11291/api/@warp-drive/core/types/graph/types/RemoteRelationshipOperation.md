@@ -20,7 +20,7 @@ type RemoteRelationshipOperation =
   | SortRelatedRecords;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:209](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/graph.ts#L209)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:209](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/graph.ts#L209)
 
 The Graph operations that apply to a relationship's remote
 (persisted/clean) state.

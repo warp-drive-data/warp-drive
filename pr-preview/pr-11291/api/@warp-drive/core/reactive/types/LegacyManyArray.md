@@ -76,7 +76,7 @@ interface LegacyManyArray<T = unknown> extends ReactiveResourceArray<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L68)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L68)
 
 A `ManyArray` is a `MutableArray` that represents the contents of a has-many
 relationship.
@@ -289,7 +289,7 @@ If not specified, length of the this object is used as its default value.
 createRecord(hash: CreateRecordProperties<T>): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:133](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L133)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:133](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L133)
 
 Create a child record and associated it to the collection
 
@@ -1277,7 +1277,7 @@ If initialValue is specified, it is used as the initial value to start the accum
 reload(options?: BaseFinderOptions): Promise<LegacyManyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:126](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L126)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:126](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L126)
 
 Reloads all of the records in the manyArray. If the manyArray
 holds a relationship that was originally fetched using a links url
@@ -2148,7 +2148,7 @@ optional with?: boolean;
 isLoaded: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:100](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L100)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:100](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L100)
 
 The loading state of this array
 
@@ -2177,7 +2177,7 @@ links:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:84](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L84)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:84](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L84)
 
 The links for the has-many relationship, as returned in the
 relationship's payload from the server. Used to refetch the
@@ -2191,7 +2191,7 @@ relationship when reloading.
 meta: ObjectValue | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:75](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L75)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:75](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L75)
 
 The meta data for the has-many relationship, as returned in the
 relationship's payload from the server.
@@ -2204,7 +2204,7 @@ relationship's payload from the server.
 save: () => Promise<LegacyManyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:154](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L154)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts:154](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#L154)
 
 Saves all of the records in the `ManyArray`.
 

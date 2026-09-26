@@ -14,7 +14,7 @@ type ResourceObject<T extends string = string> =
 | NewResourceObject<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:377](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L377)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:377](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L377)
 
 Represents a single {json:api} resource object, whether already
 persisted or newly created on the client.

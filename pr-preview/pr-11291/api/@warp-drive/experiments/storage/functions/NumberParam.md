@@ -14,7 +14,7 @@ description: >-
 function NumberParam(precision?: number, getDefault?: (instance: any) => number | undefined): ParamConfig;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:72](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/experiments/src/storage/query-params.ts#L72)
+Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:72](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/experiments/src/storage/query-params.ts#L72)
 
 Creates a [ParamConfig](../types/ParamConfig.md) for numeric fields with default value checking.
 

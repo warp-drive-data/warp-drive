@@ -10,7 +10,7 @@ description: A string, number, boolean, or `null` usable as a single query param
 type SerializablePrimitive = string | number | boolean | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/params.ts:16](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/params.ts#L16)
+Defined in: [warp-drive-packages/core/src/types/params.ts:16](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/params.ts#L16)
 
 A JSON-serializable primitive value, suitable for use as a single
 query parameter value.

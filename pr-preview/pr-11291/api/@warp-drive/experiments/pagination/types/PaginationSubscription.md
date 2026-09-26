@@ -28,7 +28,7 @@ interface PaginationSubscription<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:117](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L117)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:117](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L117)
 
 **`Hideconstructor`**
 
@@ -54,7 +54,7 @@ the per-component [PaginationState](PaginationState.md) that it hands to the com
 (symbol) dispose(): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:122](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L122)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:122](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L122)
 
 The method to call when the component this subscription is attached to
 unmounts.
@@ -71,7 +71,7 @@ unmounts.
 store: Store$1 | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:147](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L147)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:147](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L147)
 
 The Store this subscription subscribes to or the RequestManager
 which issues this request.
@@ -84,7 +84,7 @@ which issues this request.
 get contentFeatures(): PaginationContentFeatures<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:377](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L377)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:377](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L377)
 
 Content features to yield to the content slot of a component
 
@@ -102,7 +102,7 @@ Content features to yield to the content slot of a component
 get errorFeatures(): ErrorFeatures;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:365](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L365)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:365](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L365)
 
 Error features to yield to the error slot of a component
 
@@ -120,7 +120,7 @@ Error features to yield to the error slot of a component
 get isCancelled(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:341](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L341)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:341](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L341)
 
 Whether the initial request was cancelled (aborted).
 
@@ -138,7 +138,7 @@ Whether the initial request was cancelled (aborted).
 get isError(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:349](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L349)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:349](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L349)
 
 Whether the initial request rejected with an error.
 
@@ -156,7 +156,7 @@ Whether the initial request rejected with an error.
 get isIdle(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:282](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L282)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:282](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L282)
 
 Whether there is no request or query to monitor, so the component has
 nothing to load.
@@ -175,7 +175,7 @@ nothing to load.
 get isLoading(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:299](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L299)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:299](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L299)
 
 Whether the collection is still blocking-loading: no [PaginationState](PaginationState.md)
 has finished setting up yet. Only the very first page load (or the reset
@@ -202,7 +202,7 @@ pagination surface.
 get isNavigating(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:312](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L312)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:312](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L312)
 
 Whether a changed `@request` arg is resolving while a collection is
 already on screen — route-driven navigation, e.g. the browser back
@@ -224,7 +224,7 @@ use this to show a lightweight navigation indicator, the same way a
 get isSuccess(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:332](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L332)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:332](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L332)
 
 Whether the component has a set-up [paginationState](#paginationstate) to render and
 the current request did not fail. Stays `true` while a changed `@request`
@@ -245,7 +245,7 @@ rendering instead of falling back to a blocking loading state.
 get loadingState(): RequestLoadingState;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:321](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L321)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:321](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L321)
 
 The RequestLoadingState for the initial request, for building UIs
 that respond to download progress.
@@ -264,7 +264,7 @@ that respond to download progress.
 get paginationState(): PaginationState<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:214](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L214)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:214](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L214)
 
 The per-component pagination state yielded to the component.
 
@@ -293,7 +293,7 @@ state is stable across refreshes.
 get reason(): StructuredErrorDocument<E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:357](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/pagination-subscription.ts#L357)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:357](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/pagination-subscription.ts#L357)
 
 The error the initial request rejected with, or `null` if it did not reject.
 

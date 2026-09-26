@@ -16,7 +16,7 @@ type AutorefreshBehaviorCombos =
   | `${AutorefreshBehaviorType},${AutorefreshBehaviorType},${AutorefreshBehaviorType}`;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:41](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/signals/request-subscription.ts#L41)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:41](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/signals/request-subscription.ts#L41)
 
 The value accepted by [SubscriptionArgs.autorefresh](SubscriptionArgs.md#autorefresh): either a
 boolean, a single [AutorefreshBehaviorType](AutorefreshBehaviorType.md), or a comma-separated

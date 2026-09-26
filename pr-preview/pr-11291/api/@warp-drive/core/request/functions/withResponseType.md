@@ -14,7 +14,7 @@ function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:43](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/request.ts#L43)
+Defined in: [warp-drive-packages/core/src/request.ts:43](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/request.ts#L43)
 
 Brands the supplied object with the supplied response type.
 

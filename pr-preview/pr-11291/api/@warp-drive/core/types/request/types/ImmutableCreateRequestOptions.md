@@ -12,6 +12,6 @@ description: >-
 type ImmutableCreateRequestOptions = ImmutableRequest<CreateRequestOptions>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:415](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/core/src/types/request.ts#L415)
+Defined in: [warp-drive-packages/core/src/types/request.ts:415](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/core/src/types/request.ts#L415)
 
 The immutable, handler-facing form of [CreateRequestOptions](CreateRequestOptions.md).

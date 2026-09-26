@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;RESTSerializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:85](https://github.com/warp-drive-data/warp-drive/blob/48bcd79ff60e6edb86b5f60b53fff9a572cd3711/warp-drive-packages/legacy/src/serializer/rest.ts#L85)
+Defined in: [warp-drive-packages/legacy/src/serializer/rest.ts:85](https://github.com/warp-drive-data/warp-drive/blob/386ea92f352abcdc370b266f4efd3b092b378453/warp-drive-packages/legacy/src/serializer/rest.ts#L85)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
