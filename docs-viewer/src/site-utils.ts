@@ -197,8 +197,8 @@ interface LegacyGuideFrontMatter {
   description?: string;
   draft?: boolean;
   /**
-   * Marks a guide-type page (under `guides/`, `upgrading/`, `blog/` and so on) as being only
-   * about a legacy setup. See `legacyGuidePages`.
+   * Marks a page in one of the `LEGACY_GUIDE_DIRS` as being only about a legacy setup. See
+   * `legacyGuidePages`.
    */
   legacy?: boolean;
   /**
@@ -221,7 +221,6 @@ export interface LegacyGuidePage {
   title?: string;
   description?: string;
   draft: boolean;
-  advice?: string;
 }
 
 const DOCS_ROOT = path.join(__dirname, '../docs.warp-drive.io');
@@ -260,7 +259,6 @@ export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[
       title: attributes.title,
       description: attributes.description,
       draft,
-      advice: attributes.legacyAdvice,
     });
   }
   return pages.sort((a, b) => a.source.localeCompare(b.source));
