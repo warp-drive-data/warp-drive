@@ -3,6 +3,8 @@ description: Find the current home of the WarpDrive two-store migration guide, w
 draft: true
 ---
 
+# Two Store Migration
+
 :::danger **We've moved!**
 This guide has [moved](/upgrading/v5/two-store-migration.md)
 :::

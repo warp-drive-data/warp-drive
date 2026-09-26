@@ -3,6 +3,8 @@ description: Learn how WarpDrive exposes cached documents, resources, and fields
 draft: true
 ---
 
+# Reactive Access to Cached Data
+
 In addition to request and cache management, WarpDrive provides a reactive access
 layer for data in the cache.
 

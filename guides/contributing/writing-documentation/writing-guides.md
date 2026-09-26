@@ -62,9 +62,14 @@ preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site
 ## Frontmatter and Agent-Only Content
 
 Every page is also published as plain Markdown for coding agents and indexed in `llms.txt` (see
-[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Two things in the source affect
+[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Three things in the source affect
 what those agents get:
 
+- **An `#` heading at the top.** Start every page with one H1 naming it. It is the page's title in
+  the browser tab, the outline, and `llms.txt`; a page that opens with `##`, prose, or a `:::`
+  callout is listed there as `Untitled`, and its tab reads only "WarpDrive". The sidebar label
+  comes from `_meta.json` or the file name instead, so a page can look fine in the sidebar and
+  still have no title.
 - **`description` in the frontmatter.** The `llms.txt` entry for a page is its title alone unless
   the frontmatter sets `description`, in which case the entry reads
   `- [Title](url): description`. An agent choosing which of 900 pages to fetch has only that line
