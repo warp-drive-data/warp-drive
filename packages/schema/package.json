@@ -25,6 +25,7 @@
     "build:scaffold": "bun build src/scaffold.ts --compile --outfile scaffold",
     "build:cli": "bun run build:parse && bun run build:scaffold"
   },
+  "type": "module",
   "files": [
     "README.md",
     "LICENSE.md",
