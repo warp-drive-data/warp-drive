@@ -10,7 +10,8 @@ Let's build the data layer of a TodoMVC app with ***Warp*Drive**.
 The starter ships the Ember UI and a local API. You write the ***Warp*Drive**
 part: requests, builders, one handler and a few cache updates. No models,
 adapters or serializers. Your first request renders todos in chapter 1, and each
-chapter after that adds one operation.
+chapter after that adds one operation. Most chapters start with a problem every
+data layer has, and show how ***Warp*Drive** handles it.
 
 <img src="../../images/tutorials/todomvc/finished.png" alt="The finished TodoMVC app: three todos, one completed, and a footer that says 2 items left" width="100%">
 

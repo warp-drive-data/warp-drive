@@ -79,6 +79,9 @@ The `Future` reaches `app/components/todo-app/todo-provider.gts` as
 two `@autorefresh` arguments refetch in the background when the store marks the
 response out of date, which chapter 4 relies on.
 
+Without ***Warp*Drive**, every component that fetches tracks its own loading and
+error state. Here the `Future` carries that state, and `<Request>` renders it.
+
 ## Check it
 
 Reload. Three todos. Click Active, then Completed: each shows its part of the

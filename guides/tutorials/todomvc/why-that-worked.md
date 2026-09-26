@@ -1,34 +1,29 @@
 ---
 title: 2. Why that worked
-description: The store, the request pipeline and the todo schema, the three pieces that made one store.request call enough.
+description: The four ideas WarpDrive is built on: requests instead of models, one path for every request, one cached copy of each thing, and read-only records.
 ---
 
 # Why that worked
 
-No code in this chapter. It's a five-minute look at the three pieces behind
-chapter 1: the store, the request pipeline and the schema. None of them import
-Ember. Everything in `app/data/` is plain TypeScript.
+Chapter 1 took a few small edits, and you got loading states, a cache and live
+records. That isn't magic. It comes from four ideas ***Warp*Drive** is built
+on, and the rest of the tutorial puts each one to work. Let's find them in the
+code you just ran.
 
-## The store
+## 1. You ask with requests, not models
 
-Open `app/data/store.ts`:
+Here's the whole of what the route asked for:
 
 ```ts
-export default class Store extends useRecommendedStore({
-  cache: JSONAPICache,
-  schemas: [TodoSchema],
-  handlers: [
-    // TODO (chapter 3): add the JSON:API handler
-  ],
-}) {}
+this.store.request<TodosDocument>({ url: '/api/todo' });
 ```
 
-`useRecommendedStore` gives you a `Store` with sensible defaults. You supply the
-parts that depend on your API: a cache that understands the response format, the
-schemas, and handlers that run on every request. Chapter 3 adds the first
-handler.
+There's no model class, adapter or serializer to fit your API into. You send
+the request your API already understands, and the store handles the response.
+Because a request is just an object, you can build it in a function and reuse
+it.
 
-## The request pipeline
+## 2. Every request takes the same path
 
 Here's what happened when the route called `store.request`:
 
@@ -51,12 +46,22 @@ JSONAPICache ◄──────────────── JSON:API docume
 the Future resolves: content.data is Todo[]
 ```
 
-Your handlers always sit between the cache and the network. The records in
-`content.data` are reactive: when the cache changes a todo, every template
-showing it updates. [Making Requests](../../the-manual/requests/index.md) covers
-the rest.
+Every request goes through this same pipeline, and your handlers always sit
+between the cache and the network. So anything you add there, such as headers,
+auth or logging, every request gets. [Making Requests](../../the-manual/requests/index.md)
+covers the rest.
 
-## The schema
+## 3. The cache keeps one copy of each thing
+
+Look at the cache step in the diagram. The cache doesn't just file away each
+response. It pulls out each todo and stores it once, by its `type` and `id`. The
+All, Active and Completed lists don't hold three copies of a todo. They hold the
+same one.
+
+The records are reactive too: when the cache changes a todo, every template
+showing it updates. So change a todo once, and every list shows the change.
+
+## 4. Schemas describe data, and records are read-only
 
 Open `app/data/schemas/todo.ts`:
 
@@ -70,14 +75,36 @@ export const TodoSchema = withDefaults({
 });
 ```
 
-A schema tells the store which fields a resource type has. `type: 'todo'`
-matches the `type` in the API's responses, and `withDefaults` adds `id`. The
-`Todo` type below it is what templates read, and its fields are read-only. To
-change a todo you edit a copy and save it, which is chapter 5.
+A **resource** is one thing the API returns, such as a single todo, identified
+by its `type` and `id`. A schema tells the store which fields a resource type
+has. `type: 'todo'` matches the `type` in the API's responses, and
+`withDefaults` adds `id`. That's all you write: no model class.
 
-## What's missing
+The records you get back are read-only. To change a todo, you edit a copy and
+save it, so a half-finished edit never shows up anywhere else.
 
-Two things won't last. JSON:API servers expect `Accept` and `Content-Type`
-headers this request didn't send. And the store doesn't know this request
-returns a list of todos, which it needs once you start creating them. Chapter 3
-fixes both.
+## Where they meet
+
+`app/data/store.ts` is where you plug in all four:
+
+```ts
+export default class Store extends useRecommendedStore({
+  cache: JSONAPICache,
+  schemas: [TodoSchema],
+  handlers: [
+    // TODO (chapter 3): add the JSON:API handler
+  ],
+}) {}
+```
+
+`useRecommendedStore` gives you a `Store` with sensible defaults. You supply the
+parts that depend on your API: a cache that understands its response format, the
+schemas, and the handlers. None of `app/data/` imports Ember. It's plain
+TypeScript, so the same data layer works in any framework.
+
+## What's next
+
+Chapter 3 puts the first two ideas to work. Chapter 1's requests don't send the
+`Accept` and `Content-Type` headers JSON:API servers expect. And once you can
+create todos, the store needs to know which requests to refetch, and nothing
+tells it yet. A builder and a handler fix both.
