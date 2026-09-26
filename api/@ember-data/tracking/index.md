@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/tracking.md
+description: >-
+  (Deprecated) Package that once wired WarpDrive into Ember's reactivity system;
+  remove it and install `@warp-drive/ember` instead, following the migration
+  steps on this page.
 ---
 
 :::warning ⚠️ Deprecated in 5.5

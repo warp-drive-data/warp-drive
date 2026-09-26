@@ -1,5 +1,8 @@
 ---
 url: https://canary.warp-drive.io/api/@warp-drive/react.md
+description: >-
+  React bindings for WarpDrive, providing `StoreProvider`, `useStore` and the
+  `<Request />` component for rendering request states with React reactivity.
 ---
 
 This package provides a React-specific reactivity integration,

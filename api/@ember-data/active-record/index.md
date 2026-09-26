@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/active-record.md
+description: >-
+  (Legacy) ActiveRecord request builders such as `findRecord` and `query` that
+  produce underscored, pluralized URLs; new apps should use
+  `@warp-drive/utilities/active-record` instead.
 ---
 
 :::warning ⚠️ This package only exists for backwards compatibility

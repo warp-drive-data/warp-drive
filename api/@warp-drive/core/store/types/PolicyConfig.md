@@ -16,7 +16,7 @@ interface PolicyConfig {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:395](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L395)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:395](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L395)
 
 The configuration options for the [DefaultCachePolicy](../classes/DefaultCachePolicy.md)
 
@@ -39,7 +39,7 @@ export default class AppStore extends Store {
 apiCacheHardExpires: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:423](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L423)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:423](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L423)
 
 the number of milliseconds after which a request is considered
 expired and should be re-fetched. If a request is issued again
@@ -60,7 +60,7 @@ without a `date` header will be considered hard expired immediately.
 apiCacheSoftExpires: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:409](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L409)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:409](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L409)
 
 the number of milliseconds after which a request is considered
 stale. If a request is issued again after this time, the request
@@ -81,7 +81,7 @@ without a `date` header will be considered stale immediately.
 optional constraints?: PolicyConfigConstraints;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:470](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L470)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:470](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L470)
 
 In addition to the simple time-based expiration strategy, CachePolicy
 supports various common server-supplied expiration strategies via
@@ -122,7 +122,7 @@ See PolicyConfigConstraints for configuration options.
 optional disableTestOptimization?: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:436](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L436)
+Defined in: [warp-drive-packages/core/src/store/-private/default-cache-policy.ts:436](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/store/-private/default-cache-policy.ts#L436)
 
 In Testing environments, the `apiCacheSoftExpires` will always be `false`
 and `apiCacheHardExpires` will use the `apiCacheSoftExpires` value.

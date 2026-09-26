@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@warp-drive/build-config.md
+description: >-
+  (Legacy) Home of the `setConfig` build plugin that configures WarpDrive
+  deprecations, optional features and debug logging; new apps should use
+  `@warp-drive/core/build-config` instead.
 ---
 
 :::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications

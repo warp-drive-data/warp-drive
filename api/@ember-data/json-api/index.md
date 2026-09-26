@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/json-api.md
+description: >-
+  (Legacy) JSON:API document and resource cache for the `@ember-data/*`
+  packages, re-exporting `JSONAPICache`; new apps should import it from
+  `@warp-drive/json-api` instead.
 ---
 
 :::warning ⚠️ Legacy Package

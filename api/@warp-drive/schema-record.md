@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@warp-drive/schema-record.md
+description: >-
+  (Legacy) Re-export of the reactive-resource API such as `SchemaService`,
+  `instantiateRecord` and `withDefaults`; new code should import these from
+  `@warp-drive/core/reactive`.
 ---
 
 :::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications

@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@warp-drive/core-types.md
+description: >-
+  (Legacy) Type-only re-exports of the `@warp-drive/core/types` modules, kept so
+  existing `@warp-drive/core-types` imports compile; new code should import from
+  `@warp-drive/core/types`.
 ---
 
 :::warning ⚠️ This package has been merged into [@warp-drive/core](../core/index.md) and is not recommended for new applications

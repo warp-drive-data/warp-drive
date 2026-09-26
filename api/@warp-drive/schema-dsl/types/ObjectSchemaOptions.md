@@ -14,7 +14,7 @@ interface ObjectSchemaOptions {
 }
 ```
 
-Defined in: [entities/object-schema.ts:14](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L14)
+Defined in: [entities/object-schema.ts:14](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L14)
 
 Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 
@@ -26,7 +26,7 @@ Options accepted by the [ObjectSchema](../functions/ObjectSchema.md) decorator.
 optional hash?: boolean;
 ```
 
-Defined in: [entities/object-schema.ts:22](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L22)
+Defined in: [entities/object-schema.ts:22](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/schema-dsl/src/entities/object-schema.ts#L22)
 
 Reserved for future use. The compiled schema's `identity` is currently
 determined solely by whether a property on the class is decorated with

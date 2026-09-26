@@ -12,7 +12,7 @@ description: >-
 function irregular(single: string, plur: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:59](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/-private/string/inflect.ts#L59)
+Defined in: [-private/string/inflect.ts:59](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/utilities/src/-private/string/inflect.ts#L59)
 
 Marks a word as irregular. Irregular words have unique
 pluralization and singularization rules.

@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/request-utils.md
+description: >-
+  (Legacy) URL and query-param helpers such as `buildBaseURL` and
+  `buildQueryParams` for request builders; new apps should import them from
+  `@warp-drive/utilities` instead.
 ---
 
 :::warning ⚠️ This package has been merged into [@warp-drive/utilities](../../@warp-drive/utilities/index.md) and is not recommended for new applications

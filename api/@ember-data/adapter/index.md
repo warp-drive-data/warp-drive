@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/adapter.md
+description: >-
+  (Legacy) REST and JSON:API implementations of the Adapter interface,
+  re-exported from `@warp-drive/legacy/adapter`; new apps should write request
+  handlers for the `RequestManager` instead.
 ---
 
 :::warning ⚠️ Legacy Package

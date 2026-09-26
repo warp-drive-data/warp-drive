@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/model.md
+description: >-
+  (Legacy) `Model` class and its `attr`, `belongsTo` and `hasMany` decorators,
+  re-exported from `@warp-drive/legacy/model`; new apps should define schemas
+  for `@warp-drive/core` instead.
 ---
 
 :::warning ⚠️ Legacy Package

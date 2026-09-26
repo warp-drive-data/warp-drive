@@ -26,7 +26,7 @@ function useRecommendedStore<T extends Cache, Policy extends CachePolicy>(option
 }, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:277](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/index.ts#L277)
+Defined in: [warp-drive-packages/core/src/index.ts:277](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/index.ts#L277)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -168,7 +168,7 @@ function useRecommendedStore<T extends Cache>(options: StoreSetupOptions<T> & {
 }, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:281](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/index.ts#L281)
+Defined in: [warp-drive-packages/core/src/index.ts:281](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/index.ts#L281)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
@@ -304,7 +304,7 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T extends Cache>(options: StoreSetupOptions<T>, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/index.ts#L285)
+Defined in: [warp-drive-packages/core/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/index.ts#L285)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.

@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/rest.md
+description: >-
+  (Legacy) REST request builders such as `findRecord`, `query` and
+  `createRecord` that produce camelCase, pluralized URLs; new apps should import
+  them from `@warp-drive/utilities/rest` instead.
 ---
 
 :::warning ⚠️ This package only exists for backwards compatibility

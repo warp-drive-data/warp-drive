@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/api/@ember-data/legacy-compat.md
+description: >-
+  (Legacy) Shims such as `LegacyNetworkHandler`, `adapterFor` and
+  `serializerFor` that keep Adapters and Serializers working with the
+  `RequestManager`; now published as `@warp-drive/legacy/compat`.
 ---
 
 :::warning ⚠️ Legacy Compatibility Package

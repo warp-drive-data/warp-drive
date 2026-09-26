@@ -16,7 +16,7 @@ interface DeleteRecordOperation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:64](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/types/graph.ts#L64)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:64](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/graph.ts#L64)
 
 Signals to the Graph that a resource has been deleted, so that
 it can be removed from any relationships that reference it.
@@ -29,7 +29,7 @@ it can be removed from any relationships that reference it.
 isNew: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:76](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/types/graph.ts#L76)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:76](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/graph.ts#L76)
 
 Whether the resource was a client-created resource that had not yet been persisted
 
@@ -41,7 +41,7 @@ Whether the resource was a client-created resource that had not yet been persist
 op: "deleteRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:68](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/types/graph.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:68](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/graph.ts#L68)
 
 The name of the operation
 
@@ -53,6 +53,6 @@ The name of the operation
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:72](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/core/src/types/graph.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:72](https://github.com/warp-drive-data/warp-drive/blob/0491c8693bd1f37a23e5f2c61ac79e025249c535/warp-drive-packages/core/src/types/graph.ts#L72)
 
 The cache key for the resource that was deleted
