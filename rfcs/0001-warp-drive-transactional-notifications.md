@@ -9,7 +9,7 @@ warp-drive-rfc: 1
 emberjs-rfc: 1236
 emberjs-pr: https://github.com/emberjs/rfcs/pull/1236
 emberjs-branch: rfc-1-transactional-notification-delivery-and-reactive-request-state
-sync-hash: 9706cb059783fb311434fb26799945023141c92b4894c0c3a5b772a973f9bab1
+sync-hash: baa78bdd504af8d5c5452422a25966fffad129b0156c0a8aa1eaea5b0c398a67
 stage: proposed
 start-date: 2026-09-02T00:00:00.000Z
 release-date:
