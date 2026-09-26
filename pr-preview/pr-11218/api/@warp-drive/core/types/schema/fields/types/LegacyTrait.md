@@ -1,0 +1,81 @@
+---
+url: >-
+  https://canary.warp-drive.io/pr-preview/pr-11218/api/@warp-drive/core/types/schema/fields/types/LegacyTrait.md
+---
+
+# &#x20;LegacyTrait
+
+```ts
+interface LegacyTrait {
+  fields: LegacyModeFieldSchema[];
+  mode: "legacy";
+  name: string;
+  traits?: string[];
+}
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2517](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/warp-drive-packages/core/src/types/schema/fields.ts#L2517)
+
+A trait for use on a LegacyMode record.
+
+Traits are reusable collections of fields that can be composed onto a
+resource schema, often to describe a polymorphic capability shared by
+multiple resource types.
+
+## Properties
+
+### fields
+
+```ts
+fields: LegacyModeFieldSchema[];
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2538](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/warp-drive-packages/core/src/types/schema/fields.ts#L2538)
+
+The fields that this trait contributes to any resource schema
+that implements it.
+
+***
+
+### mode
+
+```ts
+mode: "legacy";
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2532](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/warp-drive-packages/core/src/types/schema/fields.ts#L2532)
+
+The mode this trait is valid for use with.
+
+A LegacyTrait may only be applied to LegacyMode resource schemas.
+
+***
+
+### name
+
+```ts
+name: string;
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2525](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/warp-drive-packages/core/src/types/schema/fields.ts#L2525)
+
+The name of the trait.
+
+This is the string referenced by a resource schema's `traits` array,
+or by another trait's `traits` array, in order to make use of this
+trait.
+
+***
+
+### traits?
+
+```ts
+optional traits?: string[];
+```
+
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2546](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/warp-drive-packages/core/src/types/schema/fields.ts#L2546)
+
+A list of other traits that this trait itself implements.
+
+As with a resource schema's `traits`, each entry should be a string
+matching the `name` of another trait.

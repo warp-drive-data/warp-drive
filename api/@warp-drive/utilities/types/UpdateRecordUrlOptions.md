@@ -1,0 +1,102 @@
+---
+url: >-
+  https://canary.warp-drive.io/api/@warp-drive/utilities/types/UpdateRecordUrlOptions.md
+description: >-
+  Options passed to `buildBaseURL` to build the URL for saving changes to an
+  existing record by type and id.
+---
+
+# &#x20;UpdateRecordUrlOptions
+
+```ts
+interface UpdateRecordUrlOptions {
+  host?: string;
+  identifier: { id: string; type: string };
+  namespace?: string;
+  op: "updateRecord";
+  resourcePath?: string;
+}
+```
+
+Defined in: [index.ts:334](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L334)
+
+[buildBaseURL](../functions/buildBaseURL.md) options for an `updateRecord` request.
+
+## Properties
+
+### host?
+
+```ts
+optional host?: string;
+```
+
+Defined in: [index.ts:359](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L359)
+
+Overrides the globally configured host for this call only.
+
+***
+
+### identifier
+
+```ts
+identifier: {
+  id: string;
+  type: string;
+};
+```
+
+Defined in: [index.ts:342](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L342)
+
+The type and id of the record being updated.
+
+#### id
+
+```ts
+id: string;
+```
+
+The resource id.
+
+#### type
+
+```ts
+type: string;
+```
+
+The resource type.
+
+***
+
+### namespace?
+
+```ts
+optional namespace?: string;
+```
+
+Defined in: [index.ts:363](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L363)
+
+Overrides the globally configured namespace for this call only.
+
+***
+
+### op
+
+```ts
+op: "updateRecord";
+```
+
+Defined in: [index.ts:338](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L338)
+
+The request operation this URL is for.
+
+***
+
+### resourcePath?
+
+```ts
+optional resourcePath?: string;
+```
+
+Defined in: [index.ts:355](https://github.com/warp-drive-data/warp-drive/blob/d5d42e1fa405f75c4c98f1176b6b7e27fc144fca/warp-drive-packages/utilities/src/index.ts#L355)
+
+The path segment for the resource, defaults to `identifier.type` if not provided.

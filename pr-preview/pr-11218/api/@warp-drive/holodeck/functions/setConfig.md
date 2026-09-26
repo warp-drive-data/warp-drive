@@ -1,0 +1,26 @@
+---
+url: >-
+  https://canary.warp-drive.io/pr-preview/pr-11218/api/@warp-drive/holodeck/functions/setConfig.md
+---
+
+# &#x20;setConfig()
+
+```ts
+function setConfig(__namedParameters: {
+  host: string;
+}): void;
+```
+
+Defined in: [index.ts:142](https://github.com/warp-drive-data/warp-drive/blob/9a1ba598bf4f66d8348de75c9ad9359698e5c8ba/packages/holodeck/src/index.ts#L142)
+
+## Parameters
+
+### \_\_namedParameters
+
+#### host
+
+`string`
+
+## Returns
+
+`void`

@@ -1,0 +1,16 @@
+---
+url: >-
+  https://canary.warp-drive.io/pr-preview/pr-11238/api/@warp-drive/core/types/identifier/types/StableDocumentIdentifier.md
+---
+
+# &#x20;~~StableDocumentIdentifier~~&#x20;
+
+```ts
+type StableDocumentIdentifier = RequestKey;
+```
+
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:57](https://github.com/warp-drive-data/warp-drive/blob/6380bdd49555e2e65e41f86fc2f4535226e95f84/warp-drive-packages/core/src/types/identifier.ts#L57)
+
+## Deprecated
+
+use [RequestKey](RequestKey.md)
