@@ -32,6 +32,10 @@ eslintTester.run('no-legacy-imports', rule, {
     {
       code: `import * as REST from '@ember-data/rest/request';`,
     },
+    {
+      name: 'a namespace import of a shim whose default lives elsewhere is left alone',
+      code: `import * as req from '@ember-data/request';`,
+    },
     // Export-all skipped in v1
     {
       code: `export * from '@ember-data/rest/request';`,
@@ -101,9 +105,21 @@ eslintTester.run('no-legacy-imports', rule, {
       errors: [{ messageId: unmappedMsg }],
     },
     {
-      name: 'an unrecorded name rides the single export * of its module',
+      name: 'an unrecorded name rides a shim that only forwards through one export *',
+      code: `import { TotallyMadeUpExportName } from '@ember-data/store/-private';`,
+      output: `import { TotallyMadeUpExportName } from '@warp-drive/core/store/-private';`,
+      errors: [{ messageId: msg }],
+    },
+    {
+      name: 'an unrecorded name from a shim that also names exports is reported',
       code: `import { TotallyMadeUpExportName } from '@ember-data/request';`,
-      output: `import { TotallyMadeUpExportName } from '@warp-drive/core/request';`,
+      output: null,
+      errors: [{ messageId: unmappedMsg }],
+    },
+    {
+      name: 'a named value import from that shim still rewrites',
+      code: `import { createDeferred } from '@ember-data/request';`,
+      output: `import { createDeferred } from '@warp-drive/core/request';`,
       errors: [{ messageId: msg }],
     },
     // The default export of '@ember-data/request' is the RequestManager class

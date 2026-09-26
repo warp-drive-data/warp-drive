@@ -16,9 +16,9 @@ v5.7.0 and which of its modules are legacy. A module is legacy when it still liv
 files in `snapshots/` is the definition of "released".
 
 A step is where each token of one release went in the next. `steps/5.7-5.8.json` has one entry
-per token of the 5.7 snapshot, plus one `"*"` entry per module for the module's own move. It
-is derived by following the re-exports in the legacy shims of the 5.8 tree, plus
-`overrides/5.7-5.8.json` when that file exists. A step between released tags changes only when
+per token of the 5.7 snapshot. Every module in a snapshot has one `"*"` token, which stands for
+the module's own move and is never type-only. The step is derived by following the re-exports
+in the legacy shims of the 5.8 tree, plus `overrides/5.7-5.8.json` when that file exists. A step between released tags changes only when
 the derivation changes, and then `archive` rewrites it from the tags.
 
 The live step, `steps/5.9-5.10.json` while the root `package.json` is on 5.10, goes from the
@@ -142,7 +142,7 @@ The reader's `resolve(module, name)` turns an entry into the decision the rule a
 - Anything else is a `rewrite` to `to`.
 
 An entry whose `export` is `"*"` is the module's own move. It is non-null only when the legacy
-shim forwards everything through exactly one `export *`, so it is the sound route for a name
+shim's only export is one `export *`, so it is the sound route for a name
 the map does not list individually. `resolve` uses it for names added after the from release,
 and a namespace import asks for `"*"` directly. A module whose `"*"` entry points at itself,
 such as `@warp-drive/build-config`, did not move, so any name from it answers `keep`. A module

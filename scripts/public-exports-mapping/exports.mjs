@@ -11,7 +11,8 @@ import ts from 'typescript';
  * @typedef {object} ModuleExports
  * @property {string} file  absolute path of the parsed source
  * @property {Map<string, ExportSource>} named  every exported name, `default` included
- * @property {{ module: string, typeOnly: boolean }[]} stars  each `export * from`, in source order
+ * @property {string[]} stars  the specifier of each `export * from`, in source order
+ * @property {string | null} forward  the one `export *` specifier when the file exports nothing else
  */
 
 /**
@@ -50,7 +51,7 @@ export function parseModule(file) {
     } else if (ts.isExportDeclaration(statement)) {
       const module = statement.moduleSpecifier?.text;
       if (!statement.exportClause) {
-        stars.push({ module, typeOnly: statement.isTypeOnly });
+        stars.push(module);
       } else if (ts.isNamespaceExport(statement.exportClause)) {
         add(statement.exportClause.name.text, local(statement.isTypeOnly));
       } else {
@@ -87,5 +88,5 @@ export function parseModule(file) {
     }
   }
 
-  return { file, named, stars };
+  return { file, named, stars, forward: stars.length === 1 && named.size === 0 ? stars[0] : null };
 }

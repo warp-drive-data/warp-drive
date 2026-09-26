@@ -733,11 +733,7 @@
       "module": "@ember-data/request",
       "export": "*",
       "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/request",
-        "export": "*",
-        "typeOnly": false
-      }
+      "to": null
     },
     {
       "module": "@ember-data/request",
@@ -2034,7 +2030,7 @@
     {
       "module": "@warp-drive/core-types",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types",
         "export": "*",
@@ -2054,7 +2050,7 @@
     {
       "module": "@warp-drive/core-types/cache",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache",
         "export": "*",
@@ -2064,7 +2060,7 @@
     {
       "module": "@warp-drive/core-types/cache/aliases",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache/aliases",
         "export": "*",
@@ -2074,7 +2070,7 @@
     {
       "module": "@warp-drive/core-types/cache/change",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache/change",
         "export": "*",
@@ -2084,7 +2080,7 @@
     {
       "module": "@warp-drive/core-types/cache/mutations",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache/mutations",
         "export": "*",
@@ -2094,7 +2090,7 @@
     {
       "module": "@warp-drive/core-types/cache/operations",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache/operations",
         "export": "*",
@@ -2104,7 +2100,7 @@
     {
       "module": "@warp-drive/core-types/cache/relationship",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/cache/relationship",
         "export": "*",
@@ -2114,7 +2110,7 @@
     {
       "module": "@warp-drive/core-types/graph",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/graph",
         "export": "*",
@@ -2134,7 +2130,7 @@
     {
       "module": "@warp-drive/core-types/json/raw",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/json/raw",
         "export": "*",
@@ -2144,7 +2140,7 @@
     {
       "module": "@warp-drive/core-types/params",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/params",
         "export": "*",
@@ -2184,7 +2180,7 @@
     {
       "module": "@warp-drive/core-types/schema/concepts",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/schema/concepts",
         "export": "*",
@@ -2204,7 +2200,7 @@
     {
       "module": "@warp-drive/core-types/spec/document",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/spec/document",
         "export": "*",
@@ -2214,7 +2210,7 @@
     {
       "module": "@warp-drive/core-types/spec/error",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/spec/error",
         "export": "*",
@@ -2224,7 +2220,7 @@
     {
       "module": "@warp-drive/core-types/spec/json-api-raw",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/spec/json-api-raw",
         "export": "*",
@@ -2244,7 +2240,7 @@
     {
       "module": "@warp-drive/core-types/utils",
       "export": "*",
-      "typeOnly": true,
+      "typeOnly": false,
       "to": {
         "module": "@warp-drive/core/types/utils",
         "export": "*",

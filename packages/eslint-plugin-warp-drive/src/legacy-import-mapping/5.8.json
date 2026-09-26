@@ -178,16 +178,6 @@
       }
     },
     {
-      "module": "@ember-data/request-utils",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@warp-drive/build-config",
       "export": "babelPlugin",
       "typeOnly": false,

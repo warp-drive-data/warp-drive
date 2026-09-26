@@ -200,7 +200,7 @@
     },
     "@ember-data/request": {
       "default": "rewrite @warp-drive/core::RequestManager",
-      "*": "rewrite @warp-drive/core/request::*",
+      "*": "keep",
       "Awaitable": "rewrite @warp-drive/core/request::Awaitable",
       "CacheHandler": "rewrite @warp-drive/core/request::CacheHandler",
       "Future": "rewrite @warp-drive/core/request::Future",
@@ -216,7 +216,7 @@
       "createDeferred": "rewrite @warp-drive/core/request::createDeferred",
       "getPromiseResult": "rewrite @warp-drive/core/request::getPromiseResult",
       "setPromiseResult": "rewrite @warp-drive/core/request::setPromiseResult",
-      "NameNoReleaseExported": "rewrite @warp-drive/core/request::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils": {
       "*": "keep",
@@ -1089,7 +1089,7 @@
     },
     "@ember-data/request": {
       "default": "rewrite @warp-drive/core::RequestManager",
-      "*": "rewrite @warp-drive/core/request::*",
+      "*": "keep",
       "ImmutableRequestInfo": "rewrite @warp-drive/core/types/request::ImmutableRequestInfo",
       "RequestContext": "rewrite @warp-drive/core/types/request::RequestContext",
       "RequestInfo": "rewrite @warp-drive/core/types/request::RequestInfo",
@@ -1097,7 +1097,7 @@
       "StructuredDataDocument": "rewrite @warp-drive/core/types/request::StructuredDataDocument",
       "StructuredDocument": "rewrite @warp-drive/core/types/request::StructuredDocument",
       "StructuredErrorDocument": "rewrite @warp-drive/core/types/request::StructuredErrorDocument",
-      "NameNoReleaseExported": "rewrite @warp-drive/core/request::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils": {
       "*": "keep",
@@ -2443,7 +2443,7 @@
     },
     "@ember-data/request": {
       "default": "rewrite @warp-drive/core::RequestManager",
-      "*": "rewrite @warp-drive/core/request::*",
+      "*": "keep",
       "ImmutableRequestInfo": "rewrite @warp-drive/core/types/request::ImmutableRequestInfo",
       "RequestContext": "rewrite @warp-drive/core/types/request::RequestContext",
       "RequestInfo": "rewrite @warp-drive/core/types/request::RequestInfo",
@@ -2451,7 +2451,7 @@
       "StructuredDataDocument": "rewrite @warp-drive/core/types/request::StructuredDataDocument",
       "StructuredDocument": "rewrite @warp-drive/core/types/request::StructuredDocument",
       "StructuredErrorDocument": "rewrite @warp-drive/core/types/request::StructuredErrorDocument",
-      "NameNoReleaseExported": "rewrite @warp-drive/core/request::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils": {
       "*": "keep",
@@ -3852,7 +3852,7 @@
     },
     "@ember-data/request": {
       "default": "rewrite @warp-drive/core::RequestManager",
-      "*": "rewrite @warp-drive/core/request::*",
+      "*": "keep",
       "ImmutableRequestInfo": "rewrite @warp-drive/core/types/request::ImmutableRequestInfo",
       "RequestContext": "rewrite @warp-drive/core/types/request::RequestContext",
       "RequestInfo": "rewrite @warp-drive/core/types/request::RequestInfo",
@@ -3860,16 +3860,16 @@
       "StructuredDataDocument": "rewrite @warp-drive/core/types/request::StructuredDataDocument",
       "StructuredDocument": "rewrite @warp-drive/core/types/request::StructuredDocument",
       "StructuredErrorDocument": "rewrite @warp-drive/core/types/request::StructuredErrorDocument",
-      "NameNoReleaseExported": "rewrite @warp-drive/core/request::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils": {
-      "*": "rewrite @warp-drive/utilities::*",
+      "*": "keep",
       "CacheControlValue": "rewrite @warp-drive/core/store::CacheControlValue",
       "CachePolicy": "rewrite @warp-drive/core/store::DefaultCachePolicy",
       "LifetimesService": "report legacy",
       "PolicyConfig": "rewrite @warp-drive/core/store::PolicyConfig",
       "parseCacheControl": "rewrite @warp-drive/core/store::parseCacheControl",
-      "NameNoReleaseExported": "rewrite @warp-drive/utilities::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils/handlers": {
       "*": "rewrite @warp-drive/utilities/handlers::*",
@@ -5335,7 +5335,7 @@
     },
     "@ember-data/request": {
       "default": "rewrite @warp-drive/core::RequestManager",
-      "*": "rewrite @warp-drive/core/request::*",
+      "*": "keep",
       "ImmutableRequestInfo": "rewrite @warp-drive/core/types/request::ImmutableRequestInfo",
       "RequestContext": "rewrite @warp-drive/core/types/request::RequestContext",
       "RequestInfo": "rewrite @warp-drive/core/types/request::RequestInfo",
@@ -5343,16 +5343,16 @@
       "StructuredDataDocument": "rewrite @warp-drive/core/types/request::StructuredDataDocument",
       "StructuredDocument": "rewrite @warp-drive/core/types/request::StructuredDocument",
       "StructuredErrorDocument": "rewrite @warp-drive/core/types/request::StructuredErrorDocument",
-      "NameNoReleaseExported": "rewrite @warp-drive/core/request::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils": {
-      "*": "rewrite @warp-drive/utilities::*",
+      "*": "keep",
       "CacheControlValue": "rewrite @warp-drive/core/store::CacheControlValue",
       "CachePolicy": "rewrite @warp-drive/core/store::DefaultCachePolicy",
       "LifetimesService": "report legacy",
       "PolicyConfig": "rewrite @warp-drive/core/store::PolicyConfig",
       "parseCacheControl": "rewrite @warp-drive/core/store::parseCacheControl",
-      "NameNoReleaseExported": "rewrite @warp-drive/utilities::NameNoReleaseExported"
+      "NameNoReleaseExported": "report untracked"
     },
     "@ember-data/request-utils/handlers": {
       "*": "rewrite @warp-drive/utilities/handlers::*",
