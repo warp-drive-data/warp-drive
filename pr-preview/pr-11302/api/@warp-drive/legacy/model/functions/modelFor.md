@@ -21,7 +21,7 @@ function modelFor(type: string): void | typeof Model;
 function modelFor<T>(type: TypeFromInstance<T>): void | typeof Model;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:76](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/hooks.ts#L76)
+Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:76](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/hooks.ts#L76)
 
 The `modelFor` implementation for use with `Model`, exposed on the store
 as `store.modelFor(type)` when the store is configured to use `Model`.
@@ -49,7 +49,7 @@ Returns the `Model` subclass registered for the given type, if any.
 function modelFor(type: string): void | typeof Model;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:82](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/hooks.ts#L82)
+Defined in: [warp-drive-packages/legacy/src/model/-private/hooks.ts:82](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/hooks.ts#L82)
 
 Overload accepting a raw type string instead of a typed record instance.
 

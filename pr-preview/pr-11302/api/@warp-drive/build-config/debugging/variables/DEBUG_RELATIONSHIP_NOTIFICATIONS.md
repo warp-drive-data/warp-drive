@@ -18,7 +18,7 @@ description: >-
 const DEBUG_RELATIONSHIP_NOTIFICATIONS: boolean = false;
 ```
 
-Defined in: [debugging.ts:140](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/build-config/src/debugging.ts#L140)
+Defined in: [debugging.ts:140](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/build-config/src/debugging.ts#L140)
 
 Helps when debugging causes of a change notification
 when processing an update to a hasMany relationship.

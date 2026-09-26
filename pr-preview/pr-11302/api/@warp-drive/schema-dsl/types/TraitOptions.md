@@ -14,7 +14,7 @@ interface TraitOptions {
 }
 ```
 
-Defined in: [entities/trait.ts:19](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/schema-dsl/src/entities/trait.ts#L19)
+Defined in: [entities/trait.ts:19](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/schema-dsl/src/entities/trait.ts#L19)
 
 Options accepted by the [Trait](../functions/Trait-1.md) decorator.
 
@@ -26,7 +26,7 @@ Options accepted by the [Trait](../functions/Trait-1.md) decorator.
 optional mode?: "legacy" | "polaris";
 ```
 
-Defined in: [entities/trait.ts:26](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/schema-dsl/src/entities/trait.ts#L26)
+Defined in: [entities/trait.ts:26](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/schema-dsl/src/entities/trait.ts#L26)
 
 The mode this trait is valid for use with: `'polaris'` compiles a
 [PolarisTrait](../../core/types/schema/fields/types/PolarisTrait.md), `'legacy'` compiles a [LegacyTrait](../../core/types/schema/fields/types/LegacyTrait.md).

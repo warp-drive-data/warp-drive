@@ -24,7 +24,7 @@ interface PolarisAliasField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:202](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L202)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:202](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L202)
 
 A field that can be used to alias one key to another
 key present in the cache version of the resource.
@@ -59,7 +59,7 @@ same field, with both being capable of being written to.
 kind: "alias";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:208](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L208)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:208](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L208)
 
 The kind of field this is.
 
@@ -71,7 +71,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:215](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L215)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:215](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L215)
 
 The name of the field.
 
@@ -90,7 +90,7 @@ options:
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:229](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L229)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:229](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L229)
 
 The field def for which this is an alias.
 
@@ -102,6 +102,6 @@ The field def for which this is an alias.
 type: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:222](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L222)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:222](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L222)
 
 Always null (for now)

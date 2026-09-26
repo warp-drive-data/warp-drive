@@ -12,7 +12,7 @@ description: >-
 const SkipCache: "___(unique) Symbol(SkipCache)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:36](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L36)
+Defined in: [warp-drive-packages/core/src/types/request.ts:36](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L36)
 
 A [cacheOptions](../types/RequestInfo.md#cacheoptions) flag which, when set,
 signals that a request should never be handled by the cache-manager and

@@ -16,7 +16,7 @@ interface GenericUrlOptions {
 }
 ```
 
-Defined in: [index.ts:411](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/utilities/src/index.ts#L411)
+Defined in: [index.ts:411](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/utilities/src/index.ts#L411)
 
 [buildBaseURL](../functions/buildBaseURL.md) options for building a URL directly from a `resourcePath`
 without an associated request operation.
@@ -29,7 +29,7 @@ without an associated request operation.
 optional host?: string;
 ```
 
-Defined in: [index.ts:419](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/utilities/src/index.ts#L419)
+Defined in: [index.ts:419](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/utilities/src/index.ts#L419)
 
 Overrides the globally configured host for this call only.
 
@@ -41,7 +41,7 @@ Overrides the globally configured host for this call only.
 optional namespace?: string;
 ```
 
-Defined in: [index.ts:423](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/utilities/src/index.ts#L423)
+Defined in: [index.ts:423](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/utilities/src/index.ts#L423)
 
 Overrides the globally configured namespace for this call only.
 
@@ -53,6 +53,6 @@ Overrides the globally configured namespace for this call only.
 resourcePath: string;
 ```
 
-Defined in: [index.ts:415](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/utilities/src/index.ts#L415)
+Defined in: [index.ts:415](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/utilities/src/index.ts#L415)
 
 The path segment for the resource.

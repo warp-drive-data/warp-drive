@@ -18,7 +18,7 @@ description: >-
 const DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: boolean = true;
 ```
 
-Defined in: [deprecations.ts:438](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/build-config/src/deprecations.ts#L438)
+Defined in: [deprecations.ts:438](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/build-config/src/deprecations.ts#L438)
 
 When the flag is `true` (default), the Store class will extend from `@ember/object`.
 When the flag is `false` or `ember-source` is not present, the Store will not extend

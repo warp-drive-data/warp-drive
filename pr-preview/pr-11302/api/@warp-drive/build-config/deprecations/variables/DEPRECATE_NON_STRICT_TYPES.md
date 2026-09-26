@@ -18,7 +18,7 @@ description: >-
 const DEPRECATE_NON_STRICT_TYPES: boolean = true;
 ```
 
-Defined in: [deprecations.ts:168](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/build-config/src/deprecations.ts#L168)
+Defined in: [deprecations.ts:168](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/build-config/src/deprecations.ts#L168)
 
 Currently, ***Warp*Drive** expects that the `type` property associated with
 a resource follows several conventions.

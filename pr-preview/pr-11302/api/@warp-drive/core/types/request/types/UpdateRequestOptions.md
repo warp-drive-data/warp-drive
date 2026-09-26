@@ -24,7 +24,7 @@ type UpdateRequestOptions<RT = unknown, T = unknown> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:308](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L308)
+Defined in: [warp-drive-packages/core/src/types/request.ts:308](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L308)
 
 The request shape produced by the `updateRecord` request builders, for
 use with [Store.request](../../../classes/Store.md#request).
@@ -50,7 +50,7 @@ optional body?:
   | FormData;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:328](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L328)
+Defined in: [warp-drive-packages/core/src/types/request.ts:328](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L328)
 
 the body to send with the request
 
@@ -64,7 +64,7 @@ data: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:332](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L332)
+Defined in: [warp-drive-packages/core/src/types/request.ts:332](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L332)
 
 data for handlers to convert into the request body
 
@@ -84,7 +84,7 @@ the resource being updated
 headers: Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:320](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L320)
+Defined in: [warp-drive-packages/core/src/types/request.ts:320](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L320)
 
 the headers to send with the request
 
@@ -96,7 +96,7 @@ the headers to send with the request
 method: "PATCH" | "PUT";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:316](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L316)
+Defined in: [warp-drive-packages/core/src/types/request.ts:316](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L316)
 
 the HTTP method to use
 
@@ -108,7 +108,7 @@ the HTTP method to use
 op: "updateRecord";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:324](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L324)
+Defined in: [warp-drive-packages/core/src/types/request.ts:324](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L324)
 
 the name of the request operation
 
@@ -120,7 +120,7 @@ the name of the request operation
 records: [ResourceIdentifierObject<TypeFromInstanceOrString<T>>];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:341](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L341)
+Defined in: [warp-drive-packages/core/src/types/request.ts:341](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L341)
 
 the resource being updated
 
@@ -132,6 +132,6 @@ the resource being updated
 url: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:312](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/request.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/request.ts:312](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/request.ts#L312)
 
 the url to request

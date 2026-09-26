@@ -20,7 +20,7 @@ interface AddToDocumentOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:179](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L179)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:179](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L179)
 
 Adds a resource to a request document, optionally
 at a specific index. This can be used to update the
@@ -38,7 +38,7 @@ result of a request.
 field: "data" | "included";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:188](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L188)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:188](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L188)
 
 Which member of the document to add to
 
@@ -50,7 +50,7 @@ Which member of the document to add to
 optional index?: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:196](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L196)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:196](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L196)
 
 The index at which to insert the resource(s), if applicable
 
@@ -62,7 +62,7 @@ The index at which to insert the resource(s), if applicable
 op: "add";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:180](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L180)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:180](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L180)
 
 The name of the [operation](Op.md)
 
@@ -78,7 +78,7 @@ The name of the [operation](Op.md)
 record: RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:184](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L184)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:184](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L184)
 
 The cache key for the request document
 
@@ -92,6 +92,6 @@ value:
   | PersistedResourceKey<string>[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:192](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/operations.ts#L192)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:192](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/operations.ts#L192)
 
 The resource(s) to add

@@ -17,7 +17,7 @@ interface PolarisTrait {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2494](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L2494)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2494](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L2494)
 
 A trait for use on a PolarisMode record.
 
@@ -33,7 +33,7 @@ multiple resource types.
 fields: PolarisModeFieldSchema[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2515](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L2515)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2515](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L2515)
 
 The fields that this trait contributes to any resource schema
 that implements it.
@@ -46,7 +46,7 @@ that implements it.
 mode: "polaris";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2509](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L2509)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2509](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L2509)
 
 The mode this trait is valid for use with.
 
@@ -60,7 +60,7 @@ A PolarisTrait may only be applied to PolarisMode resource schemas.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2502](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L2502)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2502](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L2502)
 
 The name of the trait.
 
@@ -76,7 +76,7 @@ trait.
 optional traits?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2523](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/schema/fields.ts#L2523)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2523](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/schema/fields.ts#L2523)
 
 A list of other traits that this trait itself implements.
 

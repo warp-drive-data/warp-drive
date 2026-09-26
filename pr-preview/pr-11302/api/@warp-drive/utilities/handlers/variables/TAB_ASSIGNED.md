@@ -12,6 +12,6 @@ description: >-
 const TAB_ASSIGNED: number;
 ```
 
-Defined in: [-private/handlers/utils.ts:45](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L45)
+Defined in: [-private/handlers/utils.ts:45](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L45)
 
 The epoch seconds at which the tab id was generated

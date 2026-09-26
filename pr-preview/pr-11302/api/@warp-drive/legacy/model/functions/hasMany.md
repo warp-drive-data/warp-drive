@@ -23,7 +23,7 @@ function hasMany(type: string, options: RelationshipOptions<unknown, boolean>): 
 function hasMany(): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:255](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L255)
+Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:255](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L255)
 
 `hasMany` is used to define Many-To-One and Many-To-Many, and Many-To-None
 relationships on a [Model](../classes/Model.md).
@@ -185,7 +185,7 @@ type each record satisfies on both sides.
 function hasMany(type: string): never;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:256](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L256)
+Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:256](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L256)
 
 `hasMany` is used to define Many-To-One and Many-To-Many, and Many-To-None
 relationships on a [Model](../classes/Model.md).
@@ -355,7 +355,7 @@ the name of the related resource
 function hasMany<T>(type: TypeFromInstance<NoNull<T>>, options: RelationshipOptions<T, boolean>): RelationshipDecorator<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:257](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L257)
+Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:257](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L257)
 
 `hasMany` is used to define Many-To-One and Many-To-Many, and Many-To-None
 relationships on a [Model](../classes/Model.md).
@@ -537,7 +537,7 @@ a hash of options
 function hasMany(type: string, options: RelationshipOptions<unknown, boolean>): RelationshipDecorator<unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:265](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L265)
+Defined in: [warp-drive-packages/legacy/src/model/-private/has-many.ts:265](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/legacy/src/model/-private/has-many.ts#L265)
 
 `hasMany` is used to define Many-To-One and Many-To-Many, and Many-To-None
 relationships on a [Model](../classes/Model.md).

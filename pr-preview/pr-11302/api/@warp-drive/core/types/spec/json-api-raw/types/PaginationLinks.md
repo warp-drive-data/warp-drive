@@ -19,7 +19,7 @@ interface PaginationLinks extends Links {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:83](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L83)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:83](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L83)
 
 The `links` member of a {json:api} document that supports pagination.
 
@@ -37,7 +37,7 @@ The `links` member of a {json:api} document that supports pagination.
 optional first?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:87](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L87)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:87](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L87)
 
 a link to the first page of data
 
@@ -49,7 +49,7 @@ a link to the first page of data
 optional last?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:91](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L91)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:91](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L91)
 
 a link to the last page of data
 
@@ -61,7 +61,7 @@ a link to the last page of data
 optional next?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:99](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L99)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:99](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L99)
 
 a link to the next page of data
 
@@ -73,7 +73,7 @@ a link to the next page of data
 optional prev?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:95](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L95)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:95](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L95)
 
 a link to the previous page of data
 
@@ -85,7 +85,7 @@ a link to the previous page of data
 optional related?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:68](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L68)
 
 a link for retrieving the related resource(s)
 
@@ -101,7 +101,7 @@ a link for retrieving the related resource(s)
 optional self?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:72](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L72)
 
 a link for retrieving the resource or document itself
 

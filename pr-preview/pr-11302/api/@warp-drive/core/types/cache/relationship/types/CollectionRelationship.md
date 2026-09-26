@@ -16,7 +16,7 @@ interface CollectionRelationship<T = ResourceKey> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:60](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/relationship.ts#L60)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:60](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/relationship.ts#L60)
 
 The stable-cache-key form of a `to-many` [relationship](../../../spec/json-api-raw/types/CollectionResourceRelationship.md).
 
@@ -44,7 +44,7 @@ const relationship: CollectionRelationship = { data: [resourceKey] };
 optional data?: T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:64](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/relationship.ts#L64)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:64](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/relationship.ts#L64)
 
 the related resources
 
@@ -56,7 +56,7 @@ the related resources
 optional links?: PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:72](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/relationship.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:72](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/relationship.ts#L72)
 
 links related to the relationship, including pagination links
 
@@ -68,6 +68,6 @@ links related to the relationship, including pagination links
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:68](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/cache/relationship.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/cache/relationship.ts:68](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/cache/relationship.ts#L68)
 
 meta information about the relationship

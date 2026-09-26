@@ -16,7 +16,7 @@ interface CollectionResourceRelationship<T = ExistingResourceIdentifierObject | 
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:260](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L260)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:260](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L260)
 
 Represents a `to-many` {json:api} relationship.
 
@@ -44,7 +44,7 @@ Represents a `to-many` {json:api} relationship.
 optional data?: T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:264](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L264)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:264](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L264)
 
 the related resources
 
@@ -56,7 +56,7 @@ the related resources
 optional links?: PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:272](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L272)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:272](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L272)
 
 links related to the relationship, including pagination links
 
@@ -68,6 +68,6 @@ links related to the relationship, including pagination links
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:268](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L268)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:268](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L268)
 
 meta information about the relationship

@@ -29,7 +29,7 @@ function setConfig(
 function setConfig(macros: object, config: WarpDriveConfig): void;
 ```
 
-Defined in: [index.ts:254](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/build-config/src/index.ts#L254)
+Defined in: [index.ts:254](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/build-config/src/index.ts#L254)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
@@ -104,7 +104,7 @@ function setConfig(
 ): void;
 ```
 
-Defined in: [index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/build-config/src/index.ts#L255)
+Defined in: [index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/build-config/src/index.ts#L255)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated

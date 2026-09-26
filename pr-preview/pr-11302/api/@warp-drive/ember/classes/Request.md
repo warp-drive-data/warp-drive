@@ -9,7 +9,7 @@ description: >-
 
 # &#x20;Request\<RT, E>
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:275](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/ember/dist/index.d.ts#L275)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:275](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/ember/dist/index.d.ts#L275)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your Ember application. It provides a declarative approach to reactive
@@ -248,7 +248,7 @@ same, only one actual request will be made.
 new Request<RT, E>(owner: Owner, args: EmberRequestArgs<RT>): Request<RT, E>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
+Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
 
 #### Parameters
 
@@ -278,7 +278,7 @@ Component<RequestSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:306](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/ember/dist/index.d.ts#L306)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:306](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/ember/dist/index.d.ts#L306)
 
 Called before the component has been removed from the DOM.
 
@@ -302,7 +302,7 @@ Component.willDestroy
 get state(): RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:292](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/ember/dist/index.d.ts#L292)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:292](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/ember/dist/index.d.ts#L292)
 
 The active RequestSubscription for this component's request,
 created lazily and recreated if the store changes or a `@subscription` is provided.
@@ -321,7 +321,7 @@ created lazily and recreated if the store changes or a `@subscription` is provid
 get store(): Store$1 | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:285](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/ember/dist/index.d.ts#L285)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:285](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/ember/dist/index.d.ts#L285)
 
 The store or request manager used to make the request, resolved from
 either the `@store` arg or the consumed context/service.

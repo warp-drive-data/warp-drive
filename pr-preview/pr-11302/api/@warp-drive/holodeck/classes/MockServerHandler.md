@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;MockServerHandler
 
-Defined in: [index.ts:283](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/packages/holodeck/src/index.ts#L283)
+Defined in: [index.ts:283](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/packages/holodeck/src/index.ts#L283)
 
 A request handler that intercepts requests and routes them through
 the Holodeck mock server.
@@ -36,7 +36,7 @@ the test context object used to retrieve the test ID.
 new MockServerHandler(owner: object): MockServerHandler;
 ```
 
-Defined in: [index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/packages/holodeck/src/index.ts#L285)
+Defined in: [index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/packages/holodeck/src/index.ts#L285)
 
 #### Parameters
 
@@ -56,7 +56,7 @@ Defined in: [index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/3f
 request<T>(context: RequestContext, next: NextFn<T>): Promise<StructuredDataDocument<T>>;
 ```
 
-Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/packages/holodeck/src/index.ts#L288)
+Defined in: [index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/packages/holodeck/src/index.ts#L288)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -96,4 +96,4 @@ Handler.request
 owner: object;
 ```
 
-Defined in: [index.ts:284](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/packages/holodeck/src/index.ts#L284)
+Defined in: [index.ts:284](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/packages/holodeck/src/index.ts#L284)

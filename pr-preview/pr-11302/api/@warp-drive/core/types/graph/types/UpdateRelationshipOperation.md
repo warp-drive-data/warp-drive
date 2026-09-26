@@ -23,7 +23,7 @@ interface UpdateRelationshipOperation {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:38](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/graph.ts#L38)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:38](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/graph.ts#L38)
 
 Replaces the state of a relationship on the Graph with a new state.
 
@@ -35,7 +35,7 @@ Replaces the state of a relationship on the Graph with a new state.
 field: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:50](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/graph.ts#L50)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:50](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/graph.ts#L50)
 
 The name of the relationship to update
 
@@ -47,7 +47,7 @@ The name of the relationship to update
 op: "updateRelationship";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:42](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/graph.ts#L42)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:42](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/graph.ts#L42)
 
 The name of the operation
 
@@ -59,7 +59,7 @@ The name of the operation
 record: ResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:46](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/graph.ts#L46)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:46](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/graph.ts#L46)
 
 The cache key for the resource whose relationship is being updated
 
@@ -77,6 +77,6 @@ value:
 | NewResourceIdentifierObject<string>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/graph.ts:54](https://github.com/warp-drive-data/warp-drive/blob/3f164194e7ab3e4dc44a2db5bc70f8b99cb7b4f4/warp-drive-packages/core/src/types/graph.ts#L54)
+Defined in: [warp-drive-packages/core/src/types/graph.ts:54](https://github.com/warp-drive-data/warp-drive/blob/efb887b3989a37a1b5644c05469fcfa30c38e5c4/warp-drive-packages/core/src/types/graph.ts#L54)
 
 The new state for the relationship
