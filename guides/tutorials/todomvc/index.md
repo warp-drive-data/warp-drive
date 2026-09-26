@@ -32,8 +32,8 @@ to Stun".
    cached lists
 7. [Delete](./delete.md): delete a todo, and let the cache drop it from every
    list
-8. Bulk operations
-9. Where next
+8. [Bulk operations](./bulk-operations.md): toggle every todo and clear the
+   completed ones, then where to go next
 
 ## Before you start
 

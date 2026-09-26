@@ -34,9 +34,7 @@ export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<
  * matching cached list. Pass only the todos that actually changed.
  */
 export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: boolean): void {
-  // Each todo is added to the top of its new list, so go in reverse to keep
-  // them in their original order.
-  for (const todo of changed.toReversed()) {
+  for (const todo of changed) {
     store.cache.patch({ record: keyForSavedResource(todo), op: 'update', field: 'completed', value: completed });
     if (completed) patchCacheTodoCompleted(store, todo);
     else patchCacheTodoActivated(store, todo);
