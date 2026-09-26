@@ -62,19 +62,7 @@ todomvc-ember/
     routes/       one per filter: all, active, completed
 ```
 
-The Ember side is done. You write ***Warp*Drive** code in two places: new files
-in `app/data/builders/`, and short additions at `TODO` comments that name the
-chapter:
-
-```ts
-// TODO (chapter 1): request the todos from /api/todo
-```
-
-To find a chapter's `TODO`s:
-
-```sh
-grep -rn "chapter 1" app
-```
+The Ember side is done. Each chapter tells you what to write and where.
 
 ## The API
 
