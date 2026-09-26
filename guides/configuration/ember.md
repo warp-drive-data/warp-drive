@@ -1,6 +1,8 @@
 ---
 title: Setup - Legacy (Ember)
 description: Restore legacy Adapter, Serializer, Model, and EmberObject features through @warp-drive/legacy in an Ember app, and decide when LegacyNetworkHandler is still needed.
+legacy: true
+legacyAdvice: "New apps should create their store with `useRecommendedStore` as shown in [Setup](/guides/configuration/index.md#configure-the-store), without `@warp-drive/legacy`."
 ---
 
 :::warning caution

@@ -1,6 +1,8 @@
 ---
 title: Overview
 description: Install the pre-unification @ember-data/* and @warp-drive/* packages with exact pinned versions, for apps still on the legacy multi-package setup rather than @warp-drive/core.
+legacy: true
+legacyAdvice: "New apps should follow [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md), which use `@warp-drive/core` instead of these packages."
 ---
 
 

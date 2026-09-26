@@ -10,7 +10,7 @@ import { existsSync, rmSync } from 'fs';
 */
 import { join } from 'path';
 
-import { finalizeSyncedContent, injectRfcStatusBadges } from './site-utils';
+import { finalizeSyncedContent, injectRfcStatusBadges, LEGACY_GUIDE_DIRS, markLegacyGuidePages } from './site-utils';
 
 function sync(sourcePath: string, destPath: string) {
   if (existsSync(destPath)) {
@@ -29,12 +29,15 @@ function sync(sourcePath: string, destPath: string) {
 }
 
 export async function main() {
-  sync(join(__dirname, '../../guides'), join(__dirname, '../docs.warp-drive.io/guides'));
-  // Upgrading and Blog hold permanent-URL, point-in-time content (see /upgrading and /blog).
-  // Like guides/, a `draft: true` page here is hidden from nav but its page stays published,
-  // so it is intentionally not passed through finalizeSyncedContent below.
-  sync(join(__dirname, '../../upgrading'), join(__dirname, '../docs.warp-drive.io/upgrading'));
-  sync(join(__dirname, '../../blog'), join(__dirname, '../docs.warp-drive.io/blog'));
+  // guides/, upgrading/ and blog/ are the LEGACY_GUIDE_DIRS. Upgrading and Blog hold
+  // permanent-URL, point-in-time content (see /upgrading and /blog). Like guides/, a
+  // `draft: true` page here is hidden from nav but its page stays published, so it is
+  // intentionally not passed through finalizeSyncedContent below.
+  for (const dir of LEGACY_GUIDE_DIRS) {
+    const destPath = join(__dirname, `../docs.warp-drive.io/${dir}`);
+    sync(join(__dirname, `../../${dir}`), destPath);
+    markLegacyGuidePages(destPath);
+  }
   const rfcsDestPath = join(__dirname, '../docs.warp-drive.io/rfcs');
   sync(join(__dirname, '../../rfcs'), rfcsDestPath);
   injectRfcStatusBadges(rfcsDestPath);

@@ -1,4 +1,6 @@
 ---
+legacy: true
+legacyAdvice: "New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead."
 description: Run a second WarpDrive store built from the -mirror packages beside your existing 4.x store so parts of an app can adopt 5.x incrementally, with the tradeoffs to expect.
 ---
 
