@@ -2,10 +2,10 @@
 title: Deprecating Subscription-Based Request State
 description: Proposes deprecating the imperative RequestStateService subscription API in favor of the signals-backed reactive request state introduced by RFC 0001, with removal targeted for 6.0.
 warp-drive-rfc: 9
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1245
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1245
+emberjs-branch: rfc-9-deprecating-subscription-based-request-state
+sync-hash: ccf41c7620d72e35e6415fae9abe09730544643199c3fc9de8e7ca6601e99917
 stage: proposed
 start-date: 2026-09-26T00:00:00.000Z
 release-date:
