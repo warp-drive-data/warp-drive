@@ -2,10 +2,10 @@
 title: Virtualized Resources
 description: Proposes virtual resource schemas, the frontend equivalent of a materialized view, whose fields reflect fields of other cached resources through pointers so that data read or written through the view stays consistent everywhere.
 warp-drive-rfc: 7
-emberjs-rfc:
-emberjs-pr:
-emberjs-branch:
-sync-hash:
+emberjs-rfc: 1243
+emberjs-pr: https://github.com/emberjs/rfcs/pull/1243
+emberjs-branch: rfc-7-virtualized-resources
+sync-hash: c0a8d280049ad728d3255efb8e4230da9d832140c2e336ef65c8bf95b5793bb9
 stage: proposed
 start-date: 2026-09-26T00:00:00.000Z
 release-date:
