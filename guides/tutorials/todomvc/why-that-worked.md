@@ -80,6 +80,16 @@ by its `type` and `id`. A schema tells the store which fields a resource type
 has. `type: 'todo'` matches the `type` in the API's responses, and
 `withDefaults` adds `id`. That's all you write: no model class.
 
+Below the schema, the file declares TypeScript interfaces for the same fields,
+such as `Todo`. The schema is what the store uses at runtime, and the interfaces
+are what TypeScript checks.
+
+::: tip Try it
+Delete the `completed` line from `TodoSchema` and reload. The list disappears,
+and the console says `No field named completed on todo`: a record has exactly
+the fields its schema declares. Put the line back.
+:::
+
 The records you get back are read-only. To change a todo, you edit a copy and
 save it, so a half-finished edit never shows up anywhere else.
 
