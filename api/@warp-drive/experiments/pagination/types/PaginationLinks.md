@@ -21,7 +21,7 @@ interface PaginationLinks<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:247](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L247)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:247](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L247)
 
 **`Hideconstructor`**
 
@@ -73,7 +73,7 @@ See also:
 get first(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:263](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L263)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:263](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L263)
 
 The relational `first` link of the collection, or `null` when the active
 page's response did not expose one. Unlike [prev](#prev)/[next](#next) it is
@@ -95,7 +95,7 @@ link's [isCurrent](RelationalPaginationLink.md#iscurrent) is `true`
 get last(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:303](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L303)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:303](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L303)
 
 The relational `last` link of the collection, or `null` when the active
 page's response did not expose one. Mirror of [first](#first) for the end of
@@ -115,7 +115,7 @@ the collection.
 get links(): PaginationLink[];
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:319](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L319)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:319](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L319)
 
 The numbered links and placeholders, derived from the shared page graph.
 
@@ -137,7 +137,7 @@ Cursor-based collections have no page numbers, so this is empty — use
 get next(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:289](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L289)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:289](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L289)
 
 The relational `next` link for the active page, or `null` at the end of the
 collection. Available in both numbered and cursor pagination.
@@ -156,7 +156,7 @@ collection. Available in both numbered and cursor pagination.
 get prev(): RelationalPaginationLink | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:276](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-links.ts#L276)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:276](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-links.ts#L276)
 
 The relational `prev` link for the active page, or `null` at the start of the
 collection. Available in both numbered and cursor pagination.

@@ -11,7 +11,7 @@ url: >-
 function getCacheStorage(namespace?: string | null): ReactiveStorage;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:58](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/experiments/src/storage/storage.ts#L58)
+Defined in: [warp-drive-packages/experiments/src/storage/storage.ts:58](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/experiments/src/storage/storage.ts#L58)
 
 ## Parameters
 

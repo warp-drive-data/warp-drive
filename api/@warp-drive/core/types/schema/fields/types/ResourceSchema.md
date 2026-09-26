@@ -14,7 +14,7 @@ type ResourceSchema =
   | LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2410](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/fields.ts#L2410)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2410](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/fields.ts#L2410)
 
 A type which represents a valid JSON schema
 definition for either a PolarisMode or a

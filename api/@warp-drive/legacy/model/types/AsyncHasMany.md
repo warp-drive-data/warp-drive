@@ -39,7 +39,7 @@ interface AsyncHasMany<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:16](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L16)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:16](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L16)
 
 This class is returned as the result of accessing an async hasMany relationship
 on an instance of a Model extending from `@warp-drive/legacy/model`.
@@ -67,7 +67,7 @@ const comments = await post.comments;
 catch(cb: ((reason: any) => unknown) | null | undefined): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:162](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L162)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:162](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L162)
 
 catch errors thrown by this promise
 
@@ -89,7 +89,7 @@ catch errors thrown by this promise
 destroy(): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:183](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L183)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:183](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L183)
 
 Tears down this proxy, releasing its [content](#content) and
 [promise](#promise) and marking it as [destroyed](#isdestroyed).
@@ -106,7 +106,7 @@ Tears down this proxy, releasing its [content](#content) and
 finally(cb: (() => void) | null | undefined): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:171](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L171)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:171](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L171)
 
 run cleanup after this promise completes
 
@@ -128,7 +128,7 @@ run cleanup after this promise completes
 reload(options: Omit<BaseFinderOptions, "">): this;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:113](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L113)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:113](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L113)
 
 Reload the relationship
 
@@ -150,7 +150,7 @@ Reload the relationship
 then(success: ((value: LegacyManyArray) => unknown) | null | undefined, rejected?: ((reason: any) => unknown) | null): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:151](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L151)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:151](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L151)
 
 chain this promise
 
@@ -176,7 +176,7 @@ chain this promise
 [LegacyPromiseProxy]: true;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:21](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L21)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:21](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L21)
 
 A property signifying that this object implements the classic Ember
 `PromiseProxyMixin`-like API. See LegacyPromiseProxy.
@@ -189,7 +189,7 @@ A property signifying that this object implements the classic Ember
 content: LegacyManyArray<T> | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:55](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L55)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:55](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L55)
 
 The resolved `ManyArray` for the relationship, if the promise has
 resolved, else `null`.
@@ -202,7 +202,7 @@ resolved, else `null`.
 isDestroyed: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:50](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L50)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:50](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L50)
 
 Whether [destroy](#destroy) has been called.
 
@@ -214,7 +214,7 @@ Whether [destroy](#destroy) has been called.
 isFulfilled: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:138](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L138)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:138](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L138)
 
 Whether the loading promise succeeded
 
@@ -226,7 +226,7 @@ Whether the loading promise succeeded
 isPending: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:126](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L126)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:126](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L126)
 
 Whether the loading promise is still pending
 
@@ -238,7 +238,7 @@ Whether the loading promise is still pending
 isRejected: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L132)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:132](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L132)
 
 Whether the loading promise rejected
 
@@ -250,7 +250,7 @@ Whether the loading promise rejected
 isSettled: boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:144](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L144)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:144](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L144)
 
 Whether the loading promise completed (resolved or rejected)
 
@@ -264,7 +264,7 @@ promise:
   | null;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:46](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L46)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:46](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L46)
 
 The promise for the relationship's content, or `null` once
 [destroy](#destroy) has been called.
@@ -277,7 +277,7 @@ The promise for the relationship's content, or `null` once
 get length(): number;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L68)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:68](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L68)
 
 Retrieve the length of the content
 
@@ -298,7 +298,7 @@ get links():
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:196](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L196)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:196](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L196)
 
 Retrieve the links for this relationship
 
@@ -321,7 +321,7 @@ get meta():
   | undefined;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:205](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L205)
+Defined in: [warp-drive-packages/legacy/src/model/-private/promise-many-array.ts:205](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#L205)
 
 Retrieve the meta for this relationship
 

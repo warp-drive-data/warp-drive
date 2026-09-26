@@ -18,7 +18,7 @@ type NotificationType =
   | CacheOperation;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:41](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L41)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:41](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L41)
 
 The full set of notification kinds the [NotificationManager](../store/types/NotificationManager.md) can emit for a resource,
 including both [CacheOperation](CacheOperation.md)s and finer-grained field-level change notifications.

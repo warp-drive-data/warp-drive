@@ -81,7 +81,7 @@ interface SchemaService {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:104](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L104)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:104](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L104)
 
 The SchemaService provides the ability to query for information about the structure
 of any resource type.
@@ -140,7 +140,7 @@ optional attributesDefinitionFor(key:
   | ObjectWithStringTypeProperty): AttributesSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:312](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:312](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L312)
 
 DEPRECATED - use `fields` instead
 
@@ -216,7 +216,7 @@ optional cacheFields(resource:
 | LinksModeHasManyField>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:152](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L152)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:152](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L152)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -255,7 +255,7 @@ optional CAUTION_MEGA_DANGER_ZONE_arrayExtensions(field: ExtensibleField):
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:434](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L434)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:434](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L434)
 
 Retrieve the extension map for an array field
 
@@ -281,7 +281,7 @@ optional CAUTION_MEGA_DANGER_ZONE_hasExtension(ext: {
 }): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:441](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L441)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:441](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L441)
 
 Check if a specific extension has been registered previously
 
@@ -311,7 +311,7 @@ optional CAUTION_MEGA_DANGER_ZONE_objectExtensions(field: ExtensibleField, resol
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:424](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L424)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:424](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L424)
 
 Retrieve the extension map for an object field
 
@@ -338,7 +338,7 @@ Retrieve the extension map for an object field
 optional CAUTION_MEGA_DANGER_ZONE_registerExtension(extension: CAUTION_MEGA_DANGER_ZONE_Extension): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:408](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L408)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:408](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L408)
 
 Register an extension for either objects or arrays
 
@@ -368,7 +368,7 @@ optional CAUTION_MEGA_DANGER_ZONE_resourceExtensions(resource:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:415](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L415)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:415](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L415)
 
 Retrieve the extension map for a resource
 
@@ -396,7 +396,7 @@ derivation(field:
   | ObjectWithStringTypeProperty): Derivation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:178](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L178)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:178](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L178)
 
 Returns the derivation registered with the name provided
 by `field.type`. Validates that the field is a valid DerivedField.
@@ -420,7 +420,7 @@ by `field.type`. Validates that the field is a valid DerivedField.
 optional doesTypeExist(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:113](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L113)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:113](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L113)
 
 DEPRECATED - use `hasResource` instead
 
@@ -450,7 +450,7 @@ fields(resource:
 | ObjectWithStringTypeProperty): Map<string, FieldSchema>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:143](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L143)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:143](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L143)
 
 Queries for the fields of a given resource type or resource identity.
 
@@ -477,7 +477,7 @@ hashFn(field:
   | HashField): HashFn;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:170](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L170)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:170](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L170)
 
 Returns the hash function registered with the name provided
 by `field.type`. Validates that the field is a valid HashField.
@@ -503,7 +503,7 @@ hasResource(resource:
   | ObjectWithStringTypeProperty): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:120](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L120)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:120](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L120)
 
 Queries whether the SchemaService recognizes `type` as a resource type
 
@@ -526,7 +526,7 @@ Queries whether the SchemaService recognizes `type` as a resource type
 hasTrait(type: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:127](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L127)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:127](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L127)
 
 Queries whether the SchemaService recognizes `type` as a resource trait
 
@@ -548,7 +548,7 @@ Queries whether the SchemaService recognizes `type` as a resource trait
 registerDerivation<R, T, FM extends ObjectValue | null>(derivation: Derivation<R, T, FM>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:229](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L229)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:229](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L229)
 
 Enables registration of a derivation.
 
@@ -587,7 +587,7 @@ attached to it's `[Type]` property.
 registerHashFn(hashFn: HashFn): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:239](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L239)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:239](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L239)
 
 Enables registration of a hashing function
 
@@ -612,7 +612,7 @@ attached to it's `[Type]` property.
 registerResource(schema: Schema): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:209](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L209)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:209](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L209)
 
 Enables registration of a single Schema representing either
 a resource in PolarisMode or LegacyMode or an ObjectSchema
@@ -640,7 +640,7 @@ or other sources just-in-time.
 registerResources(schemas: Schema[]): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:196](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L196)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:196](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L196)
 
 Enables registration of multiple Schemas at once.
 
@@ -666,7 +666,7 @@ or other sources just-in-time.
 optional registerTrait(trait: Trait): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:269](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L269)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:269](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L269)
 
 Registers a [Trait](../../fields/types/Trait.md) for use by resource schemas.
 
@@ -711,7 +711,7 @@ resource's fields always being applied last and winning out.
 registerTransformation(transform: Transformation): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:219](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L219)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:219](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L219)
 
 Enables registration of a transformation.
 
@@ -738,7 +738,7 @@ optional relationshipsDefinitionFor(key:
   | ObjectWithStringTypeProperty): RelationshipsSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:392](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L392)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:392](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L392)
 
 DEPRECATED - use `fields` instead
 
@@ -843,7 +843,7 @@ resource(resource:
   | ObjectWithStringTypeProperty): Schema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:185](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L185)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:185](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L185)
 
 Returns the schema for the provided resource type.
 
@@ -868,7 +868,7 @@ resourceHasTrait(resource:
   | ObjectWithStringTypeProperty, trait: string): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:134](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L134)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:134](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L134)
 
 Queries whether the given resource has the given trait
 
@@ -895,7 +895,7 @@ Queries whether the given resource has the given trait
 resourceTypes(): readonly string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:399](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L399)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:399](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L399)
 
 Returns all known resource types
 
@@ -915,7 +915,7 @@ transformation(field:
   | ObjectWithStringTypeProperty): Transformation;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:162](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/schema/schema-service.ts#L162)
+Defined in: [warp-drive-packages/core/src/types/schema/schema-service.ts:162](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/schema/schema-service.ts#L162)
 
 Returns the transformation registered with the name provided
 by `field.type`. Validates that the field is a valid transformable.

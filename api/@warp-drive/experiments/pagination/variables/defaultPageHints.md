@@ -15,7 +15,7 @@ description: >-
 const defaultPageHints: PageHints;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:45](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/pagination-cache.ts#L45)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:45](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/pagination-cache.ts#L45)
 
 The default [PageHints](../types/PageHints.md). Reads `currentPage`/`page` and `totalPages` from the
 document `meta`, matching the behavior used before `pageHints` was configurable.

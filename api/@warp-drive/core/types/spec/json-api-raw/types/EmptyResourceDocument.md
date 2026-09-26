@@ -14,7 +14,7 @@ type EmptyResourceDocument = Document & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:399](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L399)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:399](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L399)
 
 Represents a {json:api} document containing no resource, for
 instance the response to a `DELETE` request or a `to-one`

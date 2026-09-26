@@ -15,7 +15,7 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/build-config/src/index.ts#L31)
+Defined in: [warp-drive-packages/build-config/src/index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/build-config/src/index.ts#L31)
 
 Create the Babel plugin for WarpDrive
 

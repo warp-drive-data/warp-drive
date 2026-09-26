@@ -73,7 +73,7 @@ interface LegacyLiveArray<T = unknown> extends LegacyArray<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:76](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L76)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:76](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L76)
 
 **`Legacy`**
 
@@ -1359,7 +1359,7 @@ LegacyArray.reverse
 save(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
 
 Saves all of the records in the `RecordArray`.
 
@@ -1869,7 +1869,7 @@ LegacyArray.unshift
 update(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
 
 Used to get the latest version of all of the records in this array
 from the adapter.
@@ -2287,7 +2287,7 @@ LegacyArray.[unscopables]
 isLoaded: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:81](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L81)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:81](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L81)
 
 Whether this LiveArray has loaded. LiveArrays are always considered
 loaded once created.
@@ -2300,7 +2300,7 @@ loaded once created.
 isUpdating: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
 
 The flag to signal a `RecordArray` is currently loading data.
 Example
@@ -2342,6 +2342,6 @@ LegacyArray.length
 modelName: TypeFromInstanceOrString<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:89](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L89)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:89](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L89)
 
 The resource type (`ResourceType`) whose records this LiveArray contains.

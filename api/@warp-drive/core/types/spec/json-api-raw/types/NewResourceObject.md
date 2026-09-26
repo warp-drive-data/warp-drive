@@ -17,7 +17,7 @@ type NewResourceObject<T extends string = string> = NewResourceIdentifierObject<
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:345](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L345)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:345](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L345)
 
 Represents a new resource that has not yet been persisted, as it would
 appear in a {json:api} document (for instance, the body of a `POST` request).

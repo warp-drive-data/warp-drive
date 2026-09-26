@@ -82,7 +82,7 @@ interface LegacyQueryArray<T = unknown> extends LegacyLiveArray<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:86](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L86)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:86](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L86)
 
 **`Legacy`**
 
@@ -1302,7 +1302,7 @@ This method mutates the array and returns a reference to the same array.
 save(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:66](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L66)
 
 Saves all of the records in the `RecordArray`.
 
@@ -1782,7 +1782,7 @@ Elements to insert at the start of the array.
 update(this: LegacyArray<T>): Promise<LegacyArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:49](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L49)
 
 Used to get the latest version of all of the records in this array
 from the adapter.
@@ -2192,7 +2192,7 @@ optional with?: boolean;
 isLoaded: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:81](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L81)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:81](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L81)
 
 Whether this LiveArray has loaded. LiveArrays are always considered
 loaded once created.
@@ -2209,7 +2209,7 @@ loaded once created.
 isUpdating: boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts:26](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#L26)
 
 The flag to signal a `RecordArray` is currently loading data.
 Example
@@ -2250,7 +2250,7 @@ links:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:98](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L98)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:98](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L98)
 
 The JSON:API `links` included in the response that produced this
 QueryArray, if any.
@@ -2263,7 +2263,7 @@ QueryArray, if any.
 meta: ObjectValue | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:104](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L104)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:104](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L104)
 
 The JSON:API `meta` included in the response that produced this
 QueryArray, if any.
@@ -2276,7 +2276,7 @@ QueryArray, if any.
 modelName: TypeFromInstanceOrString<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:89](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L89)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts:89](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#L89)
 
 The resource type (`ResourceType`) whose records this LiveArray contains.
 
@@ -2295,7 +2295,7 @@ query:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:91](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L91)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts:91](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#L91)
 
 The query originally passed to `store.query()` that produced this
 QueryArray. Used by `update()` to re-run the query.

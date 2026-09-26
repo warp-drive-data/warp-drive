@@ -35,7 +35,7 @@ interface PageCache<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:71](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L71)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:71](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L71)
 
 **`Hideconstructor`**
 
@@ -77,7 +77,7 @@ if (page?.isLoading) {
 firstLink: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:95](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L95)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:95](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L95)
 
 The `first` link of the collection, when the response exposed one.
 
@@ -89,7 +89,7 @@ The `first` link of the collection, when the response exposed one.
 lastLink: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:98](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L98)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:98](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L98)
 
 The `last` link of the collection, when the response exposed one.
 
@@ -101,7 +101,7 @@ The `last` link of the collection, when the response exposed one.
 nextLink: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:92](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L92)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:92](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L92)
 
 The `next` link of this page, or `null` at the end of the collection.
 
@@ -113,7 +113,7 @@ The `next` link of this page, or `null` at the end of the collection.
 pageNumber: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:105](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L105)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:105](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L105)
 
 The 1-based page number, or `0` when unknown (for example cursor-based
 pagination, where pages have no ordinal position). Derived from the
@@ -127,7 +127,7 @@ collection's [PageHints](PageHints.md).
 prevLink: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:89](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L89)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:89](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L89)
 
 The `prev` link of this page, or `null` at the start of the collection.
 
@@ -139,7 +139,7 @@ The `prev` link of this page, or `null` at the start of the collection.
 request: Future<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:80](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L80)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:80](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L80)
 
 The request that loaded (or is loading) this page, or `null` if the page is
 known from links but was never requested. Wrap it in a `<Request>` component
@@ -153,7 +153,7 @@ to render the page's loading, error, and content states.
 selfLink: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:86](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L86)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:86](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L86)
 
 The `self` link of this page — the URL that identifies it in the collection.
 
@@ -165,7 +165,7 @@ The `self` link of this page — the URL that identifies it in the collection.
 get data(): ContentData<RT> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:132](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L132)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:132](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L132)
 
 The `data` member of the loaded document — the page's items — or `null`
 while the page has not loaded.
@@ -184,7 +184,7 @@ while the page has not loaded.
 get first(): PageCache<RT, E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:197](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L197)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:197](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L197)
 
 The first page of the collection, when the response exposed a `first` link.
 
@@ -202,7 +202,7 @@ The first page of the collection, when the response exposed a `first` link.
 get isCancelled(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:165](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L165)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:165](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L165)
 
 Whether this page's request was cancelled (aborted).
 
@@ -220,7 +220,7 @@ Whether this page's request was cancelled (aborted).
 get isError(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:171](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L171)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:171](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L171)
 
 Whether this page's request rejected with an error.
 
@@ -238,7 +238,7 @@ Whether this page's request rejected with an error.
 get isLoaded(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:147](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L147)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:147](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L147)
 
 Whether this page's request has settled (successfully or with an error).
 
@@ -256,7 +256,7 @@ Whether this page's request has settled (successfully or with an error).
 get isLoading(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:153](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L153)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:153](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L153)
 
 Whether this page's request is currently in flight.
 
@@ -274,7 +274,7 @@ Whether this page's request is currently in flight.
 get isRequested(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:141](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L141)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:141](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L141)
 
 Whether a request has ever been issued for this page. `false` for pages that
 are known only from links.
@@ -293,7 +293,7 @@ are known only from links.
 get isSuccess(): boolean;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:159](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L159)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:159](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L159)
 
 Whether this page's request resolved successfully.
 
@@ -311,7 +311,7 @@ Whether this page's request resolved successfully.
 get last(): PageCache<RT, E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:204](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L204)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:204](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L204)
 
 The last page of the collection, when the response exposed a `last` link.
 
@@ -329,7 +329,7 @@ The last page of the collection, when the response exposed a `last` link.
 get next(): PageCache<RT, E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:190](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L190)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:190](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L190)
 
 The page at this page's `next` link, or `null` at the end of the collection.
 
@@ -347,7 +347,7 @@ The page at this page's `next` link, or `null` at the end of the collection.
 get prev(): PageCache<RT, E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:183](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L183)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:183](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L183)
 
 The page at this page's `prev` link, or `null` at the start of the collection.
 
@@ -365,7 +365,7 @@ The page at this page's `prev` link, or `null` at the start of the collection.
 get reason(): StructuredErrorDocument<E> | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:177](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L177)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:177](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L177)
 
 The error this page's request rejected with, or `null` if it did not reject.
 
@@ -383,7 +383,7 @@ The error this page's request rejected with, or `null` if it did not reject.
 get value(): RT | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:123](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/core/src/signals/page-cache.ts#L123)
+Defined in: [warp-drive-packages/core/src/signals/page-cache.ts:123](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/core/src/signals/page-cache.ts#L123)
 
 The document this page's request resolved to, or `null` while it has not
 resolved.

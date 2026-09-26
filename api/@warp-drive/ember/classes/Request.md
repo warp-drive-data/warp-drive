@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;Request\<RT, E>
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:275](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/ember/dist/index.d.ts#L275)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:275](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/index.d.ts#L275)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your Ember application. It provides a declarative approach to reactive
@@ -275,7 +275,7 @@ Component<RequestSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:306](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/ember/dist/index.d.ts#L306)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:306](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/index.d.ts#L306)
 
 Called before the component has been removed from the DOM.
 
@@ -299,7 +299,7 @@ Component.willDestroy
 get state(): RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:292](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/ember/dist/index.d.ts#L292)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:292](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/index.d.ts#L292)
 
 The active RequestSubscription for this component's request,
 created lazily and recreated if the store changes or a `@subscription` is provided.
@@ -318,7 +318,7 @@ created lazily and recreated if the store changes or a `@subscription` is provid
 get store(): Store$1 | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:285](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/ember/dist/index.d.ts#L285)
+Defined in: [warp-drive-packages/ember/dist/index.d.ts:285](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/ember/dist/index.d.ts#L285)
 
 The store or request manager used to make the request, resolved from
 either the `@store` arg or the consumed context/service.

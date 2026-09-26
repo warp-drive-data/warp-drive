@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;Serializer
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:148](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/serializer.ts#L148)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:148](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/serializer.ts#L148)
 
 > ⚠️ CAUTION you likely want the docs for [MinimumSerializerInterface](../../compat/types/MinimumSerializerInterface.md)
 > as extending this abstract class is unnecessary.
@@ -66,7 +66,7 @@ normalize(_typeClass: ModelSchema, hash: Record<string, unknown>):
   | SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:272](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/serializer.ts#L272)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:272](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/serializer.ts#L272)
 
 The `normalize` method is used to convert a payload received from your
 external data source into the normalized form `store.push()` expects. You
@@ -117,7 +117,7 @@ the normalized resource document
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/serializer.ts:168](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/serializer.ts#L168)
+Defined in: [warp-drive-packages/legacy/src/serializer.ts:168](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/serializer.ts#L168)
 
 The `store` property is the application's `store` that contains
 all records. It can be used to look up serializers for other model

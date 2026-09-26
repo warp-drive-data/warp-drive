@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;JSONAPISerializer&#x20;
 
-Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:148](https://github.com/warp-drive-data/warp-drive/blob/2aa21ad9839e44187e51cb047292dba6d70de712/warp-drive-packages/legacy/src/serializer/json-api.ts#L148)
+Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:148](https://github.com/warp-drive-data/warp-drive/blob/7d14928562bb412c61b403e577095b9a3f9cb0b7/warp-drive-packages/legacy/src/serializer/json-api.ts#L148)
 
 :::danger
 ⚠️ This is LEGACY documentation for a feature that is no longer encouraged to be used.
