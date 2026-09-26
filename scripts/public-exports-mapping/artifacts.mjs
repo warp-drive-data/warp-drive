@@ -112,7 +112,7 @@ function loadJson(file, kind, expected) {
  */
 
 /**
- * @param {import('./surface.mjs').Snapshot | import('./step.mjs').StepMap | import('./merge.mjs').MergedMap | string[]} value
+ * @param {import('./surface.mjs').Snapshot | import('./step.mjs').StepMap | import('./merge.mjs').MergedMap | import('./merge.mjs').MergedDelta | string[]} value
  * @returns {string}
  */
 export function canonical(value) {

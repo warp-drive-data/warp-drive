@@ -23,9 +23,12 @@ is derived by following the re-exports in the legacy shims of the 5.8 tree, plus
 The live step, `steps/5.9-5.10.json` while the root `package.json` is on 5.10, goes from the
 last release to the working tree. It changes whenever a legacy package's exports change.
 
-A shipped map is the fold of every step from one release to the working tree. `5.7.json` is
-`steps/5.7-5.8.json`, then `steps/5.8-5.9.json`, then `steps/5.9-5.10.json`, one lookup per
-step. `versions.json` next to the maps lists the releases a map exists for.
+A shipped map is the fold of every step from one release to the working tree. The map from 5.7
+is `steps/5.7-5.8.json`, then `steps/5.8-5.9.json`, then `steps/5.9-5.10.json`, one lookup per
+step. `versions.json` next to the maps lists the releases a map exists for, oldest first.
+
+Only the oldest map, `5.5.json`, is stored in full. Every later file is a delta against the map
+of the release before it in `versions.json`. The reader rebuilds each full map from that chain.
 
 ## Commands
 
@@ -172,6 +175,23 @@ more than one release changed the token, one per change, oldest first.
 }
 ```
 
+The later files hold deltas. `5.7.json` lists the `module::export` keys the 5.6 map has and the
+5.7 map lacks, and every entry that is new in 5.7 or differs from the 5.6 map's entry.
+`legacyModules` appears only when it differs from the base's.
+
+```json
+{
+  "schema": 1,
+  "kind": "merged-delta",
+  "from": "5.7",
+  "base": "5.6",
+  "via": ["5.8", "5.9"],
+  "to": "5.10",
+  "remove": ["@warp-drive/core/store/-private::createMemo", "..."],
+  "set": [{ "module": "@ember-data/legacy-compat", "export": "*", "typeOnly": false, "to": null }, "..."]
+}
+```
+
 ## Layout
 
 ```
@@ -180,7 +200,7 @@ scripts/public-exports-mapping/
   generate.mjs     the scanner; scan() reads build configs and lists exports
   surface.mjs      what a version exports; tags, working tree, legacy modules, snapshots
   step.mjs         where a token goes next; shim analysis, the "*" rule, overrides
-  merge.mjs        the fold, and the two properties every shipped map must have
+  merge.mjs        the fold, the two properties every shipped map must have, and the delta encoding
   artifacts.mjs    paths, byte-stable serialization, check mode
   token.mjs        Token, identity, ordering
   snapshots/       one per released minor; their names define what is released

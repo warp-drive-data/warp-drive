@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { createRequire } from 'node:module';
+import path from 'node:path';
 import { parseArgs } from 'node:util';
 
 import {
@@ -13,10 +15,12 @@ import {
   releasedVersions,
   sync,
 } from './artifacts.mjs';
-import { mergeSteps } from './merge.mjs';
+import { diffMerged, mergeSteps } from './merge.mjs';
 import { deriveStep } from './step.mjs';
 import { BASELINE, snapshotOf, surfaceOf, taggedTree, workingTree } from './surface.mjs';
-import { compareMinors } from './token.mjs';
+import { compareMinors, compareTokens } from './token.mjs';
+
+const { applyDelta } = createRequire(import.meta.url)(path.join(layout.shipped, 'delta.js'));
 
 /**
  * @param {{ check: boolean }} opts
@@ -38,8 +42,9 @@ export async function update(opts) {
   const chain = consecutive(released).map(([a, b]) => loadStep(a, b));
 
   const desired = new Map([[pathOf.step(latest, tree.version), canonical(live)]]);
-  released.forEach((from, i) => {
-    desired.set(pathOf.shipped(from), canonical(mergeSteps([...chain.slice(i), live], head)));
+  const full = released.map((_, i) => mergeSteps([...chain.slice(i), live], head));
+  full.forEach((map, i) => {
+    desired.set(pathOf.shipped(map.from), canonical(i === 0 ? map : provenDelta(full[i - 1], map)));
   });
   desired.set(pathOf.versions(), canonical(released));
   return sync(desired, { check: opts.check, managed: [layout.shipped] });
@@ -99,6 +104,21 @@ export async function release(minor, opts) {
     { check: opts.check, managed: [] }
   );
   return [...results, ...(await update(opts))];
+}
+
+/**
+ * @param {import('./merge.mjs').MergedMap} base
+ * @param {import('./merge.mjs').MergedMap} current
+ * @returns {import('./merge.mjs').MergedDelta}
+ */
+function provenDelta(base, current) {
+  const delta = diffMerged(base, current);
+  const rebuilt = applyDelta(base, delta);
+  rebuilt.entries.sort(compareTokens);
+  if (canonical(rebuilt) !== canonical(current)) {
+    throw new Error(`the ${current.from} delta against ${base.from} does not rebuild the ${current.from} map`);
+  }
+  return delta;
 }
 
 /**

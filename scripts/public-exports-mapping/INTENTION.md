@@ -56,8 +56,10 @@ fix.
 - Every command has a `--check` mode. It regenerates the same files in memory, prints a unified
   diff for each file that would change, and exits 1.
 - Shipped maps are precomputed. `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/5.5.json`
-  already holds the fold through 5.6, 5.7, 5.8, 5.9 and the working tree, 639 entries. The rule
-  does one lookup and never composes steps at lint time.
+  already holds the fold through 5.6, 5.7, 5.8, 5.9 and the working tree, 639 entries. Each
+  later file is a delta against the map of the release before it in `versions.json`. The reader
+  rebuilds full maps from that chain once per load, and it applies deltas, never steps. The rule
+  does one lookup on a full map and never composes steps at lint time.
 - The reader is the public API. `loadMap` and `listFromVersions` in
   `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/index.js` are what a consumer may
   depend on. The JSON files are an implementation detail of that reader.
@@ -99,6 +101,15 @@ before anything ships and `mergeSteps` then asserts that no target of the map ap
 source in it. A lint rule also has no loop to run a chain in, so one lookup is a requirement
 here rather than a speed-up.
 
+Later maps ship as deltas against the previous release. A token that did not change between two
+releases has the same merged entry in both maps, so full files repeat most of their content. With
+deltas, a live-step change to one token rewrites the full map and only the deltas where that
+token's entry differs from the previous release's. A new release adds one small file. The oldest
+map stays whole because it is every consumer's default, so the default load reads one file.
+`cli.mjs update` rebuilds every delta through the reader's own `applyDelta` and fails when the
+result differs from the full map, so every `--check` run is also a round-trip test of the
+decoder.
+
 The codemod imports the reader, not the JSON. Both consumers have to answer the same question,
 which is whether an import should be rewritten, reported, or left alone. That policy lives once,
 in the reader's four `Relocation` outcomes. If the codemod parsed the JSON itself, the two would
@@ -123,9 +134,10 @@ drift, and the on-disk shape would become public API that no one can change.
 The codemod in `packages/codemods` is not written yet. It needs an `apply legacy-imports` entry
 with a `--from` flag, and it must go through the reader for every decision.
 
-A compact shipped encoding is possible and not needed yet. Grouping entries by module is about
-five times smaller on disk. The reader hides the on-disk shape from both consumers, so this can
-land later without touching the rule or the codemod.
+Later maps already ship as deltas. A compact marker for an entry whose target is the token
+itself is still possible and not needed yet. Measured, it takes the shipped total from about
+416 KB to about 315 KB. The reader hides the on-disk shape from both consumers, so this can land
+later without touching the rule or the codemod.
 
 The 5.5 tokens with no successor need maintainer decisions. 43 tokens in
 `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/5.5.json` have `to: null`. Another

@@ -1,621 +1,359 @@
 {
   "schema": 1,
-  "kind": "merged",
+  "kind": "merged-delta",
   "from": "5.6",
+  "base": "5.5",
   "via": [
     "5.7",
     "5.8",
     "5.9"
   ],
   "to": "5.10",
-  "legacyModules": [
-    "@ember-data/active-record/request",
-    "@ember-data/adapter",
-    "@ember-data/adapter/-private",
-    "@ember-data/adapter/error",
-    "@ember-data/adapter/json-api",
-    "@ember-data/adapter/rest",
-    "@ember-data/debug",
-    "@ember-data/debug/_app_/data-adapter",
-    "@ember-data/debug/data-adapter",
-    "@ember-data/graph/-private",
-    "@ember-data/json-api",
-    "@ember-data/json-api/request",
-    "@ember-data/legacy-compat",
-    "@ember-data/legacy-compat/-private",
-    "@ember-data/legacy-compat/builders",
-    "@ember-data/legacy-compat/utils",
-    "@ember-data/model",
-    "@ember-data/model/-private",
-    "@ember-data/model/hooks",
-    "@ember-data/model/migration-support",
-    "@ember-data/request",
-    "@ember-data/request-utils",
-    "@ember-data/request-utils/handlers",
-    "@ember-data/request-utils/string",
-    "@ember-data/request/fetch",
-    "@ember-data/rest/request",
-    "@ember-data/serializer",
-    "@ember-data/serializer/json",
-    "@ember-data/serializer/json-api",
-    "@ember-data/serializer/rest",
-    "@ember-data/serializer/transform",
-    "@ember-data/store",
-    "@ember-data/store/-private",
-    "@ember-data/store/configure",
-    "@ember-data/store/types",
-    "@ember-data/tracking",
-    "@warp-drive/core-types",
-    "@warp-drive/core-types/-private",
-    "@warp-drive/core-types/cache",
-    "@warp-drive/core-types/cache/aliases",
-    "@warp-drive/core-types/cache/change",
-    "@warp-drive/core-types/cache/mutations",
-    "@warp-drive/core-types/cache/operations",
-    "@warp-drive/core-types/cache/relationship",
-    "@warp-drive/core-types/graph",
-    "@warp-drive/core-types/identifier",
-    "@warp-drive/core-types/json/raw",
-    "@warp-drive/core-types/params",
-    "@warp-drive/core-types/record",
-    "@warp-drive/core-types/request",
-    "@warp-drive/core-types/runtime",
-    "@warp-drive/core-types/schema/concepts",
-    "@warp-drive/core-types/schema/fields",
-    "@warp-drive/core-types/spec/document",
-    "@warp-drive/core-types/spec/error",
-    "@warp-drive/core-types/spec/json-api-raw",
-    "@warp-drive/core-types/symbols",
-    "@warp-drive/core-types/utils",
-    "@warp-drive/schema-record",
-    "@warp-drive/schema-record/-private",
-    "ember-data",
-    "ember-data/-private/core",
-    "ember-data/-private/index",
-    "ember-data/adapter",
-    "ember-data/adapters/errors",
-    "ember-data/adapters/json-api",
-    "ember-data/adapters/rest",
-    "ember-data/attr",
-    "ember-data/model",
-    "ember-data/relationships",
-    "ember-data/serializer",
-    "ember-data/serializers/embedded-records-mixin",
-    "ember-data/serializers/json",
-    "ember-data/serializers/json-api",
-    "ember-data/serializers/rest",
-    "ember-data/setup-container",
-    "ember-data/store",
-    "ember-data/transform",
-    "ember-data/version"
+  "remove": [
+    "@ember-data/adapter/-private::BuildURLMixin",
+    "@ember-data/graph/-private::CollectionEdge",
+    "@ember-data/graph/-private::Graph",
+    "@ember-data/graph/-private::GraphEdge",
+    "@ember-data/graph/-private::ImplicitEdge",
+    "@ember-data/graph/-private::ResourceEdge",
+    "@ember-data/graph/-private::UpgradedMeta",
+    "@ember-data/graph/-private::graphFor",
+    "@ember-data/graph/-private::isBelongsTo",
+    "@ember-data/graph/-private::peekGraph",
+    "@ember-data/json-api/request::createRecord",
+    "@ember-data/json-api/request::deleteRecord",
+    "@ember-data/json-api/request::findRecord",
+    "@ember-data/json-api/request::postQuery",
+    "@ember-data/json-api/request::query",
+    "@ember-data/json-api/request::serializePatch",
+    "@ember-data/json-api/request::serializeResources",
+    "@ember-data/json-api/request::setBuildURLConfig",
+    "@ember-data/json-api/request::updateRecord",
+    "@ember-data/legacy-compat/-private::FetchManager",
+    "@ember-data/legacy-compat/-private::SaveOp",
+    "@ember-data/legacy-compat/-private::Snapshot",
+    "@ember-data/legacy-compat/-private::SnapshotRecordArray",
+    "@ember-data/legacy-compat/-private::upgradeStore",
+    "@ember-data/legacy-compat/builders::findAll",
+    "@ember-data/legacy-compat/builders::findRecord",
+    "@ember-data/legacy-compat/builders::query",
+    "@ember-data/legacy-compat/builders::queryRecord",
+    "@ember-data/legacy-compat/builders::saveRecord",
+    "@ember-data/legacy-compat/utils::configureAssertFn",
+    "@ember-data/legacy-compat/utils::configureMismatchReporter",
+    "@ember-data/legacy-compat/utils::configureTypeNormalization",
+    "@ember-data/legacy-compat/utils::expectId",
+    "@ember-data/legacy-compat/utils::formattedId",
+    "@ember-data/legacy-compat/utils::formattedType",
+    "@ember-data/legacy-compat/utils::isEquivId",
+    "@ember-data/legacy-compat/utils::isEquivType",
+    "@ember-data/legacy-compat::AdapterPayload",
+    "@ember-data/legacy-compat::CompatStore",
+    "@ember-data/legacy-compat::LegacyNetworkHandler",
+    "@ember-data/legacy-compat::LegacyStoreCompat",
+    "@ember-data/legacy-compat::MinimumAdapterInterface",
+    "@ember-data/legacy-compat::MinimumSerializerInterface",
+    "@ember-data/legacy-compat::SerializerOptions",
+    "@ember-data/legacy-compat::adapterFor",
+    "@ember-data/legacy-compat::cleanup",
+    "@ember-data/legacy-compat::normalize",
+    "@ember-data/legacy-compat::pushPayload",
+    "@ember-data/legacy-compat::serializeRecord",
+    "@ember-data/legacy-compat::serializerFor",
+    "@ember-data/model/-private::Errors",
+    "@ember-data/model/-private::LEGACY_SUPPORT",
+    "@ember-data/model/-private::ManyArray",
+    "@ember-data/model/-private::Model",
+    "@ember-data/model/-private::ModelStore",
+    "@ember-data/model/-private::PromiseBelongsTo",
+    "@ember-data/model/-private::PromiseManyArray",
+    "@ember-data/model/-private::attr",
+    "@ember-data/model/-private::belongsTo",
+    "@ember-data/model/-private::hasMany",
+    "@ember-data/model/-private::lookupLegacySupport",
+    "@ember-data/model/migration-support::DelegatingSchemaService",
+    "@ember-data/model/migration-support::WithLegacy",
+    "@ember-data/model/migration-support::WithLegacyDerivations",
+    "@ember-data/model/migration-support::registerDerivations",
+    "@ember-data/model/migration-support::withDefaults",
+    "@ember-data/model::ModelSchemaProvider",
+    "@ember-data/request-utils/handlers::AutoCompress",
+    "@ember-data/request-utils/handlers::SupportsRequestStreams",
+    "@ember-data/request-utils/string::camelize",
+    "@ember-data/request-utils/string::capitalize",
+    "@ember-data/request-utils/string::clear",
+    "@ember-data/request-utils/string::clearRules",
+    "@ember-data/request-utils/string::dasherize",
+    "@ember-data/request-utils/string::irregular",
+    "@ember-data/request-utils/string::loadIrregular",
+    "@ember-data/request-utils/string::loadUncountable",
+    "@ember-data/request-utils/string::plural",
+    "@ember-data/request-utils/string::pluralize",
+    "@ember-data/request-utils/string::resetToDefaults",
+    "@ember-data/request-utils/string::setMaxLRUCacheSize",
+    "@ember-data/request-utils/string::singular",
+    "@ember-data/request-utils/string::singularize",
+    "@ember-data/request-utils/string::uncountable",
+    "@ember-data/request-utils/string::underscore",
+    "@ember-data/request-utils::BuildURLConfig",
+    "@ember-data/request-utils::CreateRecordUrlOptions",
+    "@ember-data/request-utils::DeleteRecordUrlOptions",
+    "@ember-data/request-utils::FindManyUrlOptions",
+    "@ember-data/request-utils::FindRecordUrlOptions",
+    "@ember-data/request-utils::FindRelatedCollectionUrlOptions",
+    "@ember-data/request-utils::FindRelatedResourceUrlOptions",
+    "@ember-data/request-utils::GenericUrlOptions",
+    "@ember-data/request-utils::NotificationCallback",
+    "@ember-data/request-utils::QueryUrlOptions",
+    "@ember-data/request-utils::UpdateRecordUrlOptions",
+    "@ember-data/request-utils::UrlOptions",
+    "@ember-data/request-utils::buildBaseURL",
+    "@ember-data/request-utils::buildQueryParams",
+    "@ember-data/request-utils::filterEmpty",
+    "@ember-data/request-utils::setBuildURLConfig",
+    "@ember-data/request-utils::sortQueryParams",
+    "@ember-data/request::Awaitable",
+    "@ember-data/request::CacheHandler",
+    "@ember-data/request::Future",
+    "@ember-data/request::Handler",
+    "@ember-data/request::NextFn",
+    "@ember-data/request::createDeferred",
+    "@ember-data/request::getPromiseResult",
+    "@ember-data/request::setPromiseResult",
+    "@ember-data/store/-private::ARRAY_SIGNAL",
+    "@ember-data/store/-private::CacheHandler",
+    "@ember-data/store/-private::CachePolicy",
+    "@ember-data/store/-private::CollectionRecordArray",
+    "@ember-data/store/-private::CreateRecordProperties",
+    "@ember-data/store/-private::Document",
+    "@ember-data/store/-private::FindRecordQuery",
+    "@ember-data/store/-private::InstanceCache",
+    "@ember-data/store/-private::LiveArray",
+    "@ember-data/store/-private::MUTATE",
+    "@ember-data/store/-private::NativeProxy",
+    "@ember-data/store/-private::OBJECT_SIGNAL",
+    "@ember-data/store/-private::PromiseState",
+    "@ember-data/store/-private::RecordArrayManager",
+    "@ember-data/store/-private::RelatedCollection",
+    "@ember-data/store/-private::Request",
+    "@ember-data/store/-private::RequestCacheRequestState",
+    "@ember-data/store/-private::RequestLoadingState",
+    "@ember-data/store/-private::RequestState",
+    "@ember-data/store/-private::RequestStateService",
+    "@ember-data/store/-private::SOURCE",
+    "@ember-data/store/-private::SaveRecordMutation",
+    "@ember-data/store/-private::SignalHooks",
+    "@ember-data/store/-private::Signals",
+    "@ember-data/store/-private::Store",
+    "@ember-data/store/-private::StoreMap",
+    "@ember-data/store/-private::StoreRequestContext",
+    "@ember-data/store/-private::StoreRequestInput",
+    "@ember-data/store/-private::WarpDriveSignal",
+    "@ember-data/store/-private::_clearCaches",
+    "@ember-data/store/-private::_deprecatingNormalize",
+    "@ember-data/store/-private::coerceId",
+    "@ember-data/store/-private::constructResource",
+    "@ember-data/store/-private::consumeInternalSignal",
+    "@ember-data/store/-private::createMemo",
+    "@ember-data/store/-private::defineNonEnumerableSignal",
+    "@ember-data/store/-private::defineSignal",
+    "@ember-data/store/-private::ensureStringId",
+    "@ember-data/store/-private::entangleSignal",
+    "@ember-data/store/-private::fastPush",
+    "@ember-data/store/-private::gate",
+    "@ember-data/store/-private::getOrCreateInternalSignal",
+    "@ember-data/store/-private::getPromiseState",
+    "@ember-data/store/-private::getRequestState",
+    "@ember-data/store/-private::isDocumentIdentifier",
+    "@ember-data/store/-private::isStableIdentifier",
+    "@ember-data/store/-private::log",
+    "@ember-data/store/-private::logGroup",
+    "@ember-data/store/-private::memoized",
+    "@ember-data/store/-private::notifyInternalSignal",
+    "@ember-data/store/-private::peekCache",
+    "@ember-data/store/-private::peekInternalSignal",
+    "@ember-data/store/-private::recordIdentifierFor",
+    "@ember-data/store/-private::removeRecordDataFor",
+    "@ember-data/store/-private::setCacheFor",
+    "@ember-data/store/-private::setRecordIdentifier",
+    "@ember-data/store/-private::storeFor",
+    "@ember-data/store/-private::withSignalStore",
+    "@warp-drive/core-types/-private::getOrSetGlobal",
+    "@warp-drive/core-types/-private::getOrSetUniversal",
+    "@warp-drive/core-types/-private::peekTransient",
+    "@warp-drive/core-types/-private::peekUniversalTransient",
+    "@warp-drive/core-types/-private::setTransient",
+    "@warp-drive/core-types/-private::setUniversalTransient",
+    "@warp-drive/core-types/cache/aliases::ResourceBlob",
+    "@warp-drive/core-types/cache/change::Change",
+    "@warp-drive/core-types/cache/mutations::AddToResourceRelationshipMutation",
+    "@warp-drive/core-types/cache/mutations::Mutation",
+    "@warp-drive/core-types/cache/mutations::RemoveFromResourceRelationshipMutation",
+    "@warp-drive/core-types/cache/mutations::ReplaceRelatedRecordMutation",
+    "@warp-drive/core-types/cache/mutations::ReplaceRelatedRecordsMutation",
+    "@warp-drive/core-types/cache/mutations::SortRelatedRecordsMutation",
+    "@warp-drive/core-types/cache/operations::AddResourceOperation",
+    "@warp-drive/core-types/cache/operations::AddToDocumentOperation",
+    "@warp-drive/core-types/cache/operations::AddToResourceRelationshipOperation",
+    "@warp-drive/core-types/cache/operations::MergeOperation",
+    "@warp-drive/core-types/cache/operations::Op",
+    "@warp-drive/core-types/cache/operations::Operation",
+    "@warp-drive/core-types/cache/operations::RemoveDocumentOperation",
+    "@warp-drive/core-types/cache/operations::RemoveFromDocumentOperation",
+    "@warp-drive/core-types/cache/operations::RemoveFromResourceRelationshipOperation",
+    "@warp-drive/core-types/cache/operations::RemoveResourceOperation",
+    "@warp-drive/core-types/cache/operations::UpdateResourceFieldOperation",
+    "@warp-drive/core-types/cache/operations::UpdateResourceOperation",
+    "@warp-drive/core-types/cache/operations::UpdateResourceRelationshipOperation",
+    "@warp-drive/core-types/cache/relationship::CollectionRelationship",
+    "@warp-drive/core-types/cache/relationship::Relationship",
+    "@warp-drive/core-types/cache/relationship::ResourceRelationship",
+    "@warp-drive/core-types/cache::Cache",
+    "@warp-drive/core-types/cache::ChangedAttributesHash",
+    "@warp-drive/core-types/cache::RelationshipDiff",
+    "@warp-drive/core-types/graph::DeleteRecordOperation",
+    "@warp-drive/core-types/graph::Graph",
+    "@warp-drive/core-types/graph::LocalRelationshipOperation",
+    "@warp-drive/core-types/graph::Operation",
+    "@warp-drive/core-types/graph::RemoteRelationshipOperation",
+    "@warp-drive/core-types/graph::ReplaceRelatedRecordOperation",
+    "@warp-drive/core-types/graph::ReplaceRelatedRecordsOperation",
+    "@warp-drive/core-types/graph::SortRelatedRecords",
+    "@warp-drive/core-types/graph::UnknownOperation",
+    "@warp-drive/core-types/graph::UpdateRelationshipOperation",
+    "@warp-drive/core-types/identifier::CACHE_OWNER",
+    "@warp-drive/core-types/identifier::DEBUG_CLIENT_ORIGINATED",
+    "@warp-drive/core-types/identifier::DEBUG_IDENTIFIER_BUCKET",
+    "@warp-drive/core-types/identifier::DEBUG_STALE_CACHE_OWNER",
+    "@warp-drive/core-types/identifier::ExistingRecordIdentifier",
+    "@warp-drive/core-types/identifier::Identifier",
+    "@warp-drive/core-types/identifier::IdentifierBucket",
+    "@warp-drive/core-types/identifier::NewRecordIdentifier",
+    "@warp-drive/core-types/identifier::RecordIdentifier",
+    "@warp-drive/core-types/identifier::StableDocumentIdentifier",
+    "@warp-drive/core-types/identifier::StableExistingRecordIdentifier",
+    "@warp-drive/core-types/identifier::StableIdentifier",
+    "@warp-drive/core-types/identifier::StableNewRecordIdentifier",
+    "@warp-drive/core-types/identifier::StableRecordIdentifier",
+    "@warp-drive/core-types/json/raw::ArrayValue",
+    "@warp-drive/core-types/json/raw::ObjectValue",
+    "@warp-drive/core-types/json/raw::PrimitiveValue",
+    "@warp-drive/core-types/json/raw::Value",
+    "@warp-drive/core-types/params::QueryParamsSerializationOptions",
+    "@warp-drive/core-types/params::QueryParamsSource",
+    "@warp-drive/core-types/params::Serializable",
+    "@warp-drive/core-types/params::SerializablePrimitive",
+    "@warp-drive/core-types/record::ExtractSuggestedCacheTypes",
+    "@warp-drive/core-types/record::Includes",
+    "@warp-drive/core-types/record::OpaqueRecordInstance",
+    "@warp-drive/core-types/record::StringSatisfiesIncludes",
+    "@warp-drive/core-types/record::TypeFromInstance",
+    "@warp-drive/core-types/record::TypeFromInstanceOrString",
+    "@warp-drive/core-types/record::TypedRecordInstance",
+    "@warp-drive/core-types/record::_StringSatisfiesIncludes",
+    "@warp-drive/core-types/record::createIncludeValidator",
+    "@warp-drive/core-types/request::CacheOptions",
+    "@warp-drive/core-types/request::ConstrainedRequestOptions",
+    "@warp-drive/core-types/request::CreateRequestOptions",
+    "@warp-drive/core-types/request::DeleteRequestOptions",
+    "@warp-drive/core-types/request::EnableHydration",
+    "@warp-drive/core-types/request::FindRecordOptions",
+    "@warp-drive/core-types/request::FindRecordRequestOptions",
+    "@warp-drive/core-types/request::HTTPMethod",
+    "@warp-drive/core-types/request::IS_FUTURE",
+    "@warp-drive/core-types/request::ImmutableCreateRequestOptions",
+    "@warp-drive/core-types/request::ImmutableDeleteRequestOptions",
+    "@warp-drive/core-types/request::ImmutableHeaders",
+    "@warp-drive/core-types/request::ImmutableRequestInfo",
+    "@warp-drive/core-types/request::ImmutableUpdateRequestOptions",
+    "@warp-drive/core-types/request::PostQueryRequestOptions",
+    "@warp-drive/core-types/request::QueryRequestOptions",
+    "@warp-drive/core-types/request::RemotelyAccessibleIdentifier",
+    "@warp-drive/core-types/request::RequestContext",
+    "@warp-drive/core-types/request::RequestInfo",
+    "@warp-drive/core-types/request::ResponseInfo",
+    "@warp-drive/core-types/request::STRUCTURED",
+    "@warp-drive/core-types/request::SkipCache",
+    "@warp-drive/core-types/request::StructuredDataDocument",
+    "@warp-drive/core-types/request::StructuredDocument",
+    "@warp-drive/core-types/request::StructuredErrorDocument",
+    "@warp-drive/core-types/request::UpdateRequestOptions",
+    "@warp-drive/core-types/runtime::getRuntimeConfig",
+    "@warp-drive/core-types/runtime::setLogging",
+    "@warp-drive/core-types/schema/concepts::Derivation",
+    "@warp-drive/core-types/schema/concepts::HashFn",
+    "@warp-drive/core-types/schema/concepts::Transformation",
+    "@warp-drive/core-types/schema/fields::ArrayField",
+    "@warp-drive/core-types/schema/fields::CollectionField",
+    "@warp-drive/core-types/schema/fields::DerivedField",
+    "@warp-drive/core-types/schema/fields::FieldSchema",
+    "@warp-drive/core-types/schema/fields::GenericField",
+    "@warp-drive/core-types/schema/fields::HashField",
+    "@warp-drive/core-types/schema/fields::IdentityField",
+    "@warp-drive/core-types/schema/fields::LegacyAliasField",
+    "@warp-drive/core-types/schema/fields::LegacyAttributeField",
+    "@warp-drive/core-types/schema/fields::LegacyBelongsToField",
+    "@warp-drive/core-types/schema/fields::LegacyField",
+    "@warp-drive/core-types/schema/fields::LegacyHasManyField",
+    "@warp-drive/core-types/schema/fields::LegacyModeFieldSchema",
+    "@warp-drive/core-types/schema/fields::LegacyRelationshipField",
+    "@warp-drive/core-types/schema/fields::LegacyResourceSchema",
+    "@warp-drive/core-types/schema/fields::LinksModeBelongsToField",
+    "@warp-drive/core-types/schema/fields::LinksModeHasManyField",
+    "@warp-drive/core-types/schema/fields::LocalField",
+    "@warp-drive/core-types/schema/fields::ObjectAliasField",
+    "@warp-drive/core-types/schema/fields::ObjectField",
+    "@warp-drive/core-types/schema/fields::ObjectFieldSchema",
+    "@warp-drive/core-types/schema/fields::ObjectSchema",
+    "@warp-drive/core-types/schema/fields::PolarisAliasField",
+    "@warp-drive/core-types/schema/fields::PolarisModeFieldSchema",
+    "@warp-drive/core-types/schema/fields::PolarisResourceSchema",
+    "@warp-drive/core-types/schema/fields::ResourceField",
+    "@warp-drive/core-types/schema/fields::ResourceSchema",
+    "@warp-drive/core-types/schema/fields::Schema",
+    "@warp-drive/core-types/schema/fields::SchemaArrayField",
+    "@warp-drive/core-types/schema/fields::SchemaObjectField",
+    "@warp-drive/core-types/schema/fields::isLegacyResourceSchema",
+    "@warp-drive/core-types/schema/fields::isResourceSchema",
+    "@warp-drive/core-types/schema/fields::objectSchema",
+    "@warp-drive/core-types/schema/fields::resourceSchema",
+    "@warp-drive/core-types/spec/document::CollectionResourceDataDocument",
+    "@warp-drive/core-types/spec/document::ResourceDataDocument",
+    "@warp-drive/core-types/spec/document::ResourceDocument",
+    "@warp-drive/core-types/spec/document::ResourceErrorDocument",
+    "@warp-drive/core-types/spec/document::ResourceMetaDocument",
+    "@warp-drive/core-types/spec/document::SingleResourceDataDocument",
+    "@warp-drive/core-types/spec/error::ApiError",
+    "@warp-drive/core-types/spec/json-api-raw::CollectionResourceDocument",
+    "@warp-drive/core-types/spec/json-api-raw::CollectionResourceRelationship",
+    "@warp-drive/core-types/spec/json-api-raw::EmptyResourceDocument",
+    "@warp-drive/core-types/spec/json-api-raw::ExistingResourceIdentifierObject",
+    "@warp-drive/core-types/spec/json-api-raw::ExistingResourceObject",
+    "@warp-drive/core-types/spec/json-api-raw::InnerRelationshipDocument",
+    "@warp-drive/core-types/spec/json-api-raw::JsonApiDocument",
+    "@warp-drive/core-types/spec/json-api-raw::Link",
+    "@warp-drive/core-types/spec/json-api-raw::LinkObject",
+    "@warp-drive/core-types/spec/json-api-raw::Links",
+    "@warp-drive/core-types/spec/json-api-raw::Meta",
+    "@warp-drive/core-types/spec/json-api-raw::NewResourceIdentifierObject",
+    "@warp-drive/core-types/spec/json-api-raw::NewResourceObject",
+    "@warp-drive/core-types/spec/json-api-raw::PaginationLinks",
+    "@warp-drive/core-types/spec/json-api-raw::ResourceIdentifier",
+    "@warp-drive/core-types/spec/json-api-raw::ResourceIdentifierObject",
+    "@warp-drive/core-types/spec/json-api-raw::ResourceObject",
+    "@warp-drive/core-types/spec/json-api-raw::ResourceRelationshipsObject",
+    "@warp-drive/core-types/spec/json-api-raw::SingleResourceDocument",
+    "@warp-drive/core-types/spec/json-api-raw::SingleResourceRelationship",
+    "@warp-drive/core-types/symbols::RecordStore",
+    "@warp-drive/core-types/symbols::RequestSignature",
+    "@warp-drive/core-types/symbols::ResourceType",
+    "@warp-drive/core-types/symbols::TransformName",
+    "@warp-drive/core-types/symbols::Type",
+    "@warp-drive/core-types/utils::Mutable",
+    "@warp-drive/core-types/utils::WithPartial",
+    "@warp-drive/core-types::StableRecordIdentifier"
   ],
-  "entries": [
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "createRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/active-record",
-        "export": "createRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "deleteRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/active-record",
-        "export": "deleteRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "findRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/active-record",
-        "export": "findRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "query",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/active-record",
-        "export": "query",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/active-record/request",
-      "export": "updateRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/active-record",
-        "export": "updateRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter",
-        "export": "Adapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/adapter",
-      "export": "BuildURLMixin",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter",
-        "export": "BuildURLMixin",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "determineBodyPromise",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "determineBodyPromise",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "fetch",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "fetch",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "parseResponseHeaders",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "parseResponseHeaders",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "serializeIntoHash",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "serializeIntoHash",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "serializeQueryParams",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "serializeQueryParams",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/-private",
-      "export": "setupFastboot",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/-private",
-        "export": "setupFastboot",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "AdapterError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "AbortError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "AbortError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "ConflictError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ConflictError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "ForbiddenError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ForbiddenError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "InvalidError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "InvalidError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "NotFoundError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "NotFoundError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "ServerError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ServerError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "TimeoutError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "TimeoutError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/error",
-      "export": "UnauthorizedError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "UnauthorizedError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/json-api",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/json-api",
-        "export": "JSONAPIAdapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/json-api",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "RESTAdapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "FetchRequestInit",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "FetchRequestInit",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "JQueryRequestInit",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "JQueryRequestInit",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "QueryState",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "QueryState",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "RequestData",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "RequestData",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/adapter/rest",
-      "export": "fetchOptions",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "fetchOptions",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/debug",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@ember-data/debug/data-adapter",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/debug",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/debug/_app_/data-adapter",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@ember-data/debug/data-adapter",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/debug/_app_/data-adapter",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/debug/data-adapter",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@ember-data/debug/data-adapter",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/debug/data-adapter",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/graph/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/graph/-private",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/json-api",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/json-api",
-        "export": "JSONAPICache",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/json-api",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/json-api/request",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/json-api",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/legacy-compat",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/legacy-compat/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat/-private",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/legacy-compat/builders",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat/builders",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/legacy-compat/utils",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat/utils",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "AsyncBelongsTo",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "AsyncBelongsTo",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "AsyncHasMany",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "AsyncHasMany",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "HasMany",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "HasMany",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "ManyArray",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "ManyArray",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "attr",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "attr",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "belongsTo",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "belongsTo",
-        "typeOnly": false
-      }
-    },
+  "set": [
     {
       "module": "@ember-data/model",
       "export": "buildSchema",
@@ -623,46 +361,6 @@
       "to": {
         "module": "@warp-drive/legacy/model",
         "export": "buildSchema",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "hasMany",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "hasMany",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "instantiateRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "instantiateRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "modelFor",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "modelFor",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model",
-      "export": "teardownRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "teardownRecord",
         "typeOnly": false
       }
     },
@@ -673,878 +371,10 @@
       "to": null
     },
     {
-      "module": "@ember-data/model/hooks",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/model/hooks",
-      "export": "buildSchema",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "buildSchema",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model/hooks",
-      "export": "instantiateRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "instantiateRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model/hooks",
-      "export": "modelFor",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "modelFor",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/model/hooks",
-      "export": "teardownRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "teardownRecord",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@ember-data/model/migration-support",
       "export": "*",
       "typeOnly": false,
       "to": null
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "RequestManager",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/request",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "ImmutableRequestInfo",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "ImmutableRequestInfo",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "RequestContext",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "RequestContext",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "RequestInfo",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "RequestInfo",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "ResponseInfo",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "ResponseInfo",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "StructuredDataDocument",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "StructuredDataDocument",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "StructuredDocument",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "StructuredDocument",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request",
-      "export": "StructuredErrorDocument",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "StructuredErrorDocument",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "CacheControlValue",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/store",
-        "export": "CacheControlValue",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "CachePolicy",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/store",
-        "export": "DefaultCachePolicy",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "LifetimesService",
-      "typeOnly": false,
-      "to": {
-        "module": "@ember-data/request-utils",
-        "export": "LifetimesService",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "PolicyConfig",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/store",
-        "export": "PolicyConfig",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/request-utils",
-      "export": "parseCacheControl",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/store",
-        "export": "parseCacheControl",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request-utils/handlers",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/handlers",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request-utils/string",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/string",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request/fetch",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "Fetch",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/request/fetch",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "createRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/rest",
-        "export": "createRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "deleteRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/rest",
-        "export": "deleteRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "findRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/rest",
-        "export": "findRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "query",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/rest",
-        "export": "query",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/rest/request",
-      "export": "updateRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/utilities/rest",
-        "export": "updateRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer",
-        "export": "Serializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/serializer/json",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/json",
-        "export": "JSONSerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/json",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/serializer/json-api",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/json-api",
-        "export": "JSONAPISerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/json-api",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/serializer/rest",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/rest",
-        "export": "RESTSerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/rest",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/serializer/rest",
-      "export": "EmbeddedRecordsMixin",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/rest",
-        "export": "EmbeddedRecordsMixin",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "Transform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "BooleanTransform",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "BooleanTransform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "DateTransform",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "DateTransform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "NumberTransform",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "NumberTransform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/serializer/transform",
-      "export": "StringTransform",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "StringTransform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "Store",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "CacheHandler",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "CacheHandler",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "CacheOperation",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "CacheOperation",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "CachePolicy",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "CachePolicy",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "Document",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "Document",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "DocumentCacheOperation",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "DocumentCacheOperation",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "NotificationType",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "NotificationType",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "StoreRequestContext",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "StoreRequestContext",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "StoreRequestInput",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "StoreRequestInput",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "recordIdentifierFor",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "recordIdentifierFor",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "setIdentifierForgetMethod",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "setIdentifierForgetMethod",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "setIdentifierGenerationMethod",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "setIdentifierGenerationMethod",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "setIdentifierResetMethod",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "setIdentifierResetMethod",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "setIdentifierUpdateMethod",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "setIdentifierUpdateMethod",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "setKeyInfoForResource",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "setKeyInfoForResource",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store",
-      "export": "storeFor",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core",
-        "export": "storeFor",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/store/-private",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store/configure",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/store/configure",
-      "export": "setupSignals",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/configure",
-        "export": "setupSignals",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "BaseFinderOptions",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "BaseFinderOptions",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "CacheCapabilitiesManager",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "CacheCapabilitiesManager",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "FindAllOptions",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "FindAllOptions",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "FindRecordOptions",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "FindRecordOptions",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "LegacyResourceQuery",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "LegacyResourceQuery",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "ModelSchema",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "ModelSchema",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "QueryOptions",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "QueryOptions",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/store/types",
-      "export": "SchemaService",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/types",
-        "export": "SchemaService",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@ember-data/tracking",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@ember-data/tracking",
-      "export": "buildSignalConfig",
-      "typeOnly": false,
-      "to": {
-        "module": "@ember-data/tracking",
-        "export": "buildSignalConfig",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config",
-      "export": "WarpDriveConfig",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/build-config",
-        "export": "WarpDriveConfig",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@warp-drive/build-config",
-      "export": "setConfig",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config",
-        "export": "setConfig",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/babel-macros",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/babel-macros",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/babel-macros",
-      "export": "macros",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/babel-macros",
-        "export": "macros",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/canary-features",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/canary-features",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/canary-features",
-      "export": "JSON_API_CACHE_VALIDATION_ERRORS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/canary-features",
-        "export": "JSON_API_CACHE_VALIDATION_ERRORS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/canary-features",
-      "export": "SAMPLE_FEATURE_FLAG",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/canary-features",
-        "export": "SAMPLE_FEATURE_FLAG",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "DEBUG_RELATIONSHIP_NOTIFICATIONS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "DEBUG_RELATIONSHIP_NOTIFICATIONS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_CACHE",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_CACHE",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_CACHE_POLICY",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_CACHE_POLICY",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_GRAPH",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_GRAPH",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_IDENTIFIERS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_IDENTIFIERS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_INSTANCE_CACHE",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_INSTANCE_CACHE",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_METRIC_COUNTS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_METRIC_COUNTS",
-        "typeOnly": false
-      }
     },
     {
       "module": "@warp-drive/build-config/debugging",
@@ -1553,16 +383,6 @@
       "to": {
         "module": "@warp-drive/build-config/debugging",
         "export": "LOG_MUTATIONS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_NOTIFICATIONS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_NOTIFICATIONS",
         "typeOnly": false
       }
     },
@@ -1583,266 +403,6 @@
       "to": {
         "module": "@warp-drive/build-config/debugging",
         "export": "LOG_PAYLOADS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_REQUESTS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_REQUESTS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "LOG_REQUEST_STATUS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "LOG_REQUEST_STATUS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/debugging",
-      "export": "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/debugging",
-        "export": "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_CATCH_ALL",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_CATCH_ALL",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_COMPUTED_CHAINS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_COMPUTED_CHAINS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_EMBER_INFLECTOR",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_EMBER_INFLECTOR",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_LEGACY_IMPORTS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_LEGACY_IMPORTS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_MANY_ARRAY_DUPLICATES",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_MANY_ARRAY_DUPLICATES",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_NON_STRICT_ID",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_NON_STRICT_ID",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_NON_STRICT_TYPES",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_NON_STRICT_TYPES",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_NON_UNIQUE_PAYLOADS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_NON_UNIQUE_PAYLOADS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DEPRECATE_TRACKING_PACKAGE",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DEPRECATE_TRACKING_PACKAGE",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "DISABLE_7X_DEPRECATIONS",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "DISABLE_7X_DEPRECATIONS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/deprecations",
-      "export": "ENABLE_LEGACY_SCHEMA_SERVICE",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/deprecations",
-        "export": "ENABLE_LEGACY_SCHEMA_SERVICE",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "DEBUG",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "DEBUG",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "IS_CI",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "IS_CI",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "IS_RECORDING",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "IS_RECORDING",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "PRODUCTION",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "PRODUCTION",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "SHOULD_RECORD",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "SHOULD_RECORD",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/env",
-      "export": "TESTING",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/env",
-        "export": "TESTING",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/macros",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/macros",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/build-config/macros",
-      "export": "assert",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/build-config/macros",
-        "export": "assert",
         "typeOnly": false
       }
     },
@@ -2047,16 +607,6 @@
       }
     },
     {
-      "module": "@warp-drive/core-types/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/-private",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@warp-drive/core-types/cache",
       "export": "*",
       "typeOnly": true,
@@ -2127,16 +677,6 @@
       }
     },
     {
-      "module": "@warp-drive/core-types/identifier",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/identifier",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@warp-drive/core-types/json/raw",
       "export": "*",
       "typeOnly": true,
@@ -2157,51 +697,11 @@
       }
     },
     {
-      "module": "@warp-drive/core-types/record",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/record",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/core-types/request",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/request",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/core-types/runtime",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/runtime",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@warp-drive/core-types/schema/concepts",
       "export": "*",
       "typeOnly": true,
       "to": {
         "module": "@warp-drive/core/types/schema/concepts",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/core-types/schema/fields",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/schema/fields",
         "export": "*",
         "typeOnly": false
       }
@@ -2232,16 +732,6 @@
       "typeOnly": true,
       "to": {
         "module": "@warp-drive/core/types/spec/json-api-raw",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/core-types/symbols",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/types/symbols",
         "export": "*",
         "typeOnly": false
       }
@@ -5481,218 +3971,6 @@
       }
     },
     {
-      "module": "@warp-drive/ember",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "Await",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "Await",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "Request",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "Request",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "RequestLoadingState",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "RequestLoadingState",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "Throw",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "Throw",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "getPromiseState",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "getPromiseState",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember",
-      "export": "getRequestState",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember",
-        "export": "getRequestState",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember/install",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember/install",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/ember/install",
-      "export": "buildSignalConfig",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/ember/install",
-        "export": "buildSignalConfig",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/data-worker",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/data-worker",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/data-worker",
-      "export": "CacheHandler",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/data-worker",
-        "export": "CacheHandler",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/data-worker",
-      "export": "DataWorker",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/data-worker",
-        "export": "DataWorker",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/document-storage",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/document-storage",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/document-storage",
-      "export": "DocumentStorage",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/document-storage",
-        "export": "DocumentStorage",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/image-fetch",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/image-fetch",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/image-fetch",
-      "export": "ImageFetch",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/image-fetch",
-        "export": "ImageFetch",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/image-worker",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/image-worker",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/image-worker",
-      "export": "ImageWorker",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/image-worker",
-        "export": "ImageWorker",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/persisted-cache",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@warp-drive/experiments/persisted-cache",
-      "export": "PersistedCache",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@warp-drive/experiments/worker-fetch",
-      "export": "*",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/worker-fetch",
-        "export": "*",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/experiments/worker-fetch",
-      "export": "WorkerFetch",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/experiments/worker-fetch",
-        "export": "WorkerFetch",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "@warp-drive/json-api",
       "export": "*",
       "typeOnly": false,
@@ -6883,108 +5161,6 @@
       }
     },
     {
-      "module": "@warp-drive/schema-record",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "Checkout",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "Checkout",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "SchemaRecord",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "ReactiveResource",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "SchemaService",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "SchemaService",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "Transformation",
-      "typeOnly": true,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "Transformation",
-        "typeOnly": true
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "fromIdentity",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "fromIdentity",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "instantiateRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "instantiateRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "registerDerivations",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "registerDerivations",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "teardownRecord",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "teardownRecord",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record",
-      "export": "withDefaults",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/reactive",
-        "export": "withDefaults",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "@warp-drive/schema-record/-private",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
       "module": "@warp-drive/schema-record/-private",
       "export": "Editable",
       "typeOnly": false,
@@ -7667,74 +5843,6 @@
       }
     },
     {
-      "module": "ember-data",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/core",
-        "export": "DS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/-private/core",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/core",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/core",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/-private/core",
-      "export": "DS",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/core",
-        "export": "DS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "DS",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/core",
-        "export": "DS",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "Errors",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model/-private",
-        "export": "Errors",
-        "typeOnly": false
-      }
-    },
-    {
       "module": "ember-data/-private/index",
       "export": "ManyArray",
       "typeOnly": false,
@@ -7743,432 +5851,6 @@
         "export": "ManyArray",
         "typeOnly": true
       }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "PromiseArray",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/index",
-        "export": "PromiseArray",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "PromiseManyArray",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model/-private",
-        "export": "PromiseManyArray",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "PromiseObject",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/-private/index",
-        "export": "PromiseObject",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "RecordArrayManager",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/store/-private",
-        "export": "RecordArrayManager",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "Snapshot",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat/-private",
-        "export": "Snapshot",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "SnapshotRecordArray",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/compat/-private",
-        "export": "SnapshotRecordArray",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "Store",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/store",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/-private/index",
-      "export": "coerceId",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/core/store/-private",
-        "export": "coerceId",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapter",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter",
-        "export": "Adapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapter",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "AbortError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "AbortError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "AdapterError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "AdapterError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "ConflictError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ConflictError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "ForbiddenError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ForbiddenError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "InvalidError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "InvalidError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "NotFoundError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "NotFoundError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "ServerError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "ServerError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "TimeoutError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "TimeoutError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/errors",
-      "export": "UnauthorizedError",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/error",
-        "export": "UnauthorizedError",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/json-api",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/json-api",
-        "export": "JSONAPIAdapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/json-api",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/adapters/rest",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/adapter/rest",
-        "export": "RESTAdapter",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/adapters/rest",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/attr",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "attr",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/attr",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/model",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/model",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/relationships",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/relationships",
-      "export": "belongsTo",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "belongsTo",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/relationships",
-      "export": "hasMany",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/model",
-        "export": "hasMany",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializer",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer",
-        "export": "Serializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializer",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/serializers/embedded-records-mixin",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/rest",
-        "export": "EmbeddedRecordsMixin",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializers/embedded-records-mixin",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/serializers/json",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/json",
-        "export": "JSONSerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializers/json",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/serializers/json-api",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/json-api",
-        "export": "JSONAPISerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializers/json-api",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/serializers/rest",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/rest",
-        "export": "RESTSerializer",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/serializers/rest",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/setup-container",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/setup-container",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/setup-container",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/store",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/store",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/store",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/transform",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "@warp-drive/legacy/serializer/transform",
-        "export": "Transform",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/transform",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
-    },
-    {
-      "module": "ember-data/version",
-      "export": "default",
-      "typeOnly": false,
-      "to": {
-        "module": "ember-data/version",
-        "export": "default",
-        "typeOnly": false
-      }
-    },
-    {
-      "module": "ember-data/version",
-      "export": "*",
-      "typeOnly": false,
-      "to": null
     }
   ]
 }
