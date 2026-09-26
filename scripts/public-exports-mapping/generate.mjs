@@ -3,6 +3,8 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 
+import { parseModule } from './exports.mjs';
+
 const STAR = '*';
 
 /**
@@ -38,10 +40,10 @@ export async function scan({ root, packagesDir, configName }) {
 
       const moduleSpecifier = buildModuleSpecifier(pkgJson.name, relFromSrc);
 
-      const source = await safeReadFile(absFile);
-      if (!source) continue;
-
-      for (const exp of extractExports(source)) {
+      const { named, stars } = parseModule(absFile);
+      const exports = [...named].map(([name, { typeOnly }]) => ({ name, typeOnly }));
+      if (stars.length) exports.push({ name: STAR, typeOnly: stars.every((star) => star.typeOnly) });
+      for (const exp of exports) {
         records.push({
           filePath: path.relative(root, absFile).replace(/\\/g, '/'),
           module: moduleSpecifier,
@@ -293,112 +295,6 @@ function buildModuleSpecifier(packageName, relFromSrc) {
   const noExt = relFromSrc.replace(/\.[^.]+$/, '');
   if (noExt === 'index') return packageName;
   return `${packageName}/${noExt}`;
-}
-
-/* ------------------------------------------------------------------------------------------------
- * Export Extraction
- * ------------------------------------------------------------------------------------------------ */
-
-/**
- * Extract exported symbol tokens (flat) from a single source file.
- *
- * Recognized:
- *   export default ...
- *   export * from '...'
- *   export { a, b as c, type X, default as Y } from '...'
- *   export { a, b as c, type X }
- *   export type { a, b as c } from '...'
- *   export type { a, b as c }
- *   export class|function|async function|const|let|var|enum Name ...
- *   export interface Name ...
- *   export type Name ...
- */
-function extractExports(source) {
-  // Strip comments to avoid false positives from documentation examples.
-  // Replace removed comment content with spaces to keep rough positional alignment.
-  const stripped = source.replace(/\/\*[\s\S]*?\*\//g, (m) => ' '.repeat(m.length)).replace(/(^|[^:])\/\/.*$/gm, '$1');
-
-  const exports = [];
-  const add = (name, typeOnly = false) => exports.push({ name, typeOnly });
-
-  // default
-  if (/export\s+default\b/.test(stripped)) {
-    add('default', false);
-  }
-
-  // star re-exports
-  if (/export\s+\*\s+from\s+['"][^'"]+['"]/.test(stripped)) {
-    add(STAR, false);
-  }
-  if (/export\s+type\s+\*\s+from\s+['"][^'"]+['"]/.test(stripped)) {
-    add(STAR, true);
-  }
-
-  // named grouped exports
-  {
-    const groupRegex = /export\s+(type\s+)?\{([^}]+)\}(\s+from\s+['"][^'"]+['"])?/g;
-    let m;
-    while ((m = groupRegex.exec(stripped))) {
-      const groupTypeOnly = Boolean(m[1]);
-      const body = m[2];
-      body
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean)
-        .forEach((item) => {
-          let typeOnly = groupTypeOnly;
-          let token = item;
-
-          if (token.startsWith('type ')) {
-            typeOnly = true;
-            token = token.slice(5).trim();
-          }
-
-          if (/^default\s+as\s+/.test(token)) {
-            const target = token.split(/\s+as\s+/)[1];
-            if (target) add(target.trim(), typeOnly);
-            return;
-          }
-
-          if (token.includes(' as ')) {
-            const [, alias] = token.split(/\s+as\s+/);
-            add(alias.trim(), typeOnly);
-            return;
-          }
-
-          add(token.trim(), typeOnly);
-        });
-    }
-  }
-
-  // declaration exports line-by-line
-  const declPatterns = [
-    { re: /export\s+(?:abstract\s+)?class\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+(?:async\s+)?function\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+const\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+let\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+var\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+enum\s+([A-Za-z0-9_$]+)/, type: false },
-    { re: /export\s+interface\s+([A-Za-z0-9_$]+)/, type: true },
-    { re: /export\s+type\s+([A-Za-z0-9_$]+)/, type: true },
-  ];
-
-  const lines = stripped.split(/\r?\n/);
-  for (const line of lines) {
-    for (const pat of declPatterns) {
-      const mm = pat.re.exec(line);
-      if (mm) add(mm[1], pat.type);
-    }
-  }
-
-  // De-dupe (keeping earliest)
-  const seen = new Set();
-  return exports.filter((e) => {
-    const key = `${e.name}:${e.typeOnly}`;
-    if (seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
 }
 
 /* ------------------------------------------------------------------------------------------------

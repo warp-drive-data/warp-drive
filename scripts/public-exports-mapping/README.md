@@ -18,7 +18,8 @@ files in `snapshots/` is the definition of "released".
 A step is where each token of one release went in the next. `steps/5.7-5.8.json` has one entry
 per token of the 5.7 snapshot, plus one `"*"` entry per module for the module's own move. It
 is derived by following the re-exports in the legacy shims of the 5.8 tree, plus
-`overrides/5.7-5.8.json` when that file exists. Steps between released tags never change.
+`overrides/5.7-5.8.json` when that file exists. A step between released tags changes only when
+the derivation changes, and then `archive` rewrites it from the tags.
 
 The live step, `steps/5.9-5.10.json` while the root `package.json` is on 5.10, goes from the
 last release to the working tree. It changes whenever a legacy package's exports change.
@@ -120,8 +121,8 @@ deliberate: the release step cannot be forgotten.
 
 `archive --check` rebuilds every released snapshot and step from tags and diffs them. The
 `Public Exports Archive` workflow runs it on every change under `scripts/public-exports-mapping/`
-and once a week, with the full history and tags fetched. It fails only when the scanner or the
-shim analysis changed, and then the diff is the review.
+and once a week, with the full history and tags fetched. It fails only when the discovery, the
+export parser or the shim resolution changed, and then the diff is the review.
 
 ## Reading a shipped map
 
@@ -204,9 +205,10 @@ The later files hold deltas. `5.7.json` lists the `module::export` keys the 5.6 
 ```
 scripts/public-exports-mapping/
   cli.mjs          update | archive | release, each with --check
-  generate.mjs     the scanner; scan() reads build configs and lists exports
+  generate.mjs     the scanner; scan() reads build configs and lists entry files
+  exports.mjs      parseModule(): what one source file exports, read from its AST
   surface.mjs      what a version exports; tags, working tree, legacy modules, snapshots
-  step.mjs         where a token goes next; shim analysis, the "*" rule, overrides
+  step.mjs         where a token goes next; shim resolution, the "*" rule, overrides
   merge.mjs        the fold, the residual-chain check, and the delta encoding
   artifacts.mjs    paths, byte-stable serialization, check mode
   token.mjs        Token, identity, ordering

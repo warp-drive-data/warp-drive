@@ -3656,10 +3656,7 @@
     },
     "@warp-drive/legacy/store": {
       "*": "keep",
-      "Store": [
-        "report type-only",
-        "keep"
-      ],
+      "Store": "keep",
       "restoreDeprecatedStoreBehaviors": "keep",
       "NameNoReleaseExported": "keep"
     },
@@ -4330,6 +4327,7 @@
       "setIdentifierUpdateMethod": "keep",
       "setKeyInfoForResource": "keep",
       "storeFor": "keep",
+      "ConfiguredStore": "keep",
       "StoreSetupOptions": "keep",
       "cacheKeyFor": "keep",
       "useRecommendedStore": "keep",
@@ -5064,10 +5062,7 @@
     },
     "@warp-drive/legacy/store": {
       "*": "keep",
-      "Store": [
-        "report type-only",
-        "keep"
-      ],
+      "Store": "keep",
       "restoreDeprecatedStoreBehaviors": "keep",
       "NameNoReleaseExported": "keep"
     },
@@ -5150,6 +5145,7 @@
     },
     "@warp-drive/legacy": {
       "*": "keep",
+      "ConfiguredStore": "keep",
       "LegacyModelAndNetworkAndRequestStoreSetupOptions": "keep",
       "LegacyModelAndNetworkStoreSetupOptions": "keep",
       "LegacyModelStoreSetupOptions": "keep",
@@ -5814,6 +5810,7 @@
       "setIdentifierUpdateMethod": "keep",
       "setKeyInfoForResource": "keep",
       "storeFor": "keep",
+      "ConfiguredStore": "keep",
       "StoreSetupOptions": "keep",
       "cacheKeyFor": "keep",
       "useRecommendedStore": "keep",
@@ -6670,6 +6667,7 @@
     },
     "@warp-drive/legacy": {
       "*": "keep",
+      "ConfiguredStore": "keep",
       "LegacyModelAndNetworkAndRequestStoreSetupOptions": "keep",
       "LegacyModelAndNetworkStoreSetupOptions": "keep",
       "LegacyModelStoreSetupOptions": "keep",
@@ -6763,14 +6761,12 @@
       "NameNoReleaseExported": "keep"
     },
     "warp-drive/-private/warp-drive/generators/adapter": {
-      "default": "keep",
       "*": "keep",
       "AdapterOptions": "keep",
       "generateAdapterSource": "keep",
       "NameNoReleaseExported": "keep"
     },
     "warp-drive/-private/warp-drive/generators/model": {
-      "default": "keep",
       "*": "keep",
       "generateModelSource": "keep",
       "NameNoReleaseExported": "keep"
@@ -6783,7 +6779,6 @@
       "NameNoReleaseExported": "keep"
     },
     "warp-drive/-private/warp-drive/generators/serializer": {
-      "default": "keep",
       "*": "keep",
       "SerializerOptions": "keep",
       "generateSerializerSource": "keep",
@@ -6815,7 +6810,6 @@
       "NameNoReleaseExported": "keep"
     },
     "warp-drive/-private/warp-drive/generators/transform": {
-      "default": "keep",
       "*": "keep",
       "generateTransformSource": "keep",
       "NameNoReleaseExported": "keep"

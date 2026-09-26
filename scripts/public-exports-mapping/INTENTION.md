@@ -49,10 +49,12 @@ fix.
 - Removed is `to: null`, and legacy is a target whose module appears in `legacyModules`. There
   is no `reason` field on an entry. Both facts are already in the data, and a second spelling of
   either would be a second thing to keep true.
-- Steps between released tags are immutable. `steps/5.7-5.8.json` describes two tagged trees, so
-  regenerating it can only confirm it. Only the live step, `steps/5.9-5.10.json` while the root
-  `package.json` is on 5.10, changes on an ordinary pull request. The set of files in
-  `snapshots/` is the definition of which releases exist.
+- Tagged trees are immutable, and the committed snapshots and archived steps must equal a fresh
+  derivation from them. `archive --check` enforces this. `steps/5.7-5.8.json` describes two
+  tagged trees, so it changes only when the derivation changes, and a pull request that improves
+  the derivation re-derives the archived files with it. Only the live step, `steps/5.9-5.10.json`
+  while the root `package.json` is on 5.10, changes on an ordinary pull request. The set of files
+  in `snapshots/` is the definition of which releases exist.
 - Every command has a `--check` mode. It regenerates the same files in memory, prints a unified
   diff for each file that would change, and exits 1.
 - Shipped maps are precomputed. `packages/eslint-plugin-warp-drive/src/legacy-import-mapping/5.5.json`
