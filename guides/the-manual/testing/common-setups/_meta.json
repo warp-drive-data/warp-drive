@@ -1,8 +1,4 @@
 {
   "title": "Common Setups",
-  "items": [
-    "vite",
-    "testem",
-    "caddy"
-  ]
+  "items": ["vite", "testem", "caddy"]
 }
