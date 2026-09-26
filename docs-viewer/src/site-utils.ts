@@ -1,4 +1,5 @@
 import fm from 'front-matter';
+import markdownTitle from 'markdown-title';
 import { existsSync, globSync, mkdirSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'path';
 
@@ -237,8 +238,8 @@ export const LEGACY_GUIDE_DIRS = ['guides', 'upgrading', 'blog'];
  * A non-draft legacy page is kept out of `llms.txt` and `llms-full.txt` and listed in
  * `llms-legacy.txt` and `llms-legacy-full.txt` instead, and gets a Legacy badge and callout (see
  * `markLegacyGuidePages`). A draft legacy page, such as an empty placeholder, is kept out of all
- * four files and gets no badge. A non-draft legacy page must set `title` in its frontmatter,
- * since that is its only title in `llms-legacy.txt`.
+ * four files and gets no badge. A non-draft legacy page must have a frontmatter `title` or an
+ * H1, since one of them is its title in `llms-legacy.txt`.
  */
 export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[] {
   const pages: LegacyGuidePage[] = [];
@@ -246,17 +247,20 @@ export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[
     globSync('**/*.md', { cwd: path.join(docsRoot, dir) }).map((file) => `${dir}/${normPath(file)}`)
   );
   for (const source of files) {
-    const { attributes } = fm<LegacyGuideFrontMatter>(readFileSync(path.join(docsRoot, source), 'utf-8'));
+    const { attributes, body } = fm<LegacyGuideFrontMatter>(readFileSync(path.join(docsRoot, source), 'utf-8'));
     if (attributes.legacy !== true) continue;
 
     const draft = attributes.draft === true;
-    if (!draft && !attributes.title) {
-      throw new Error(`${source} sets \`legacy: true\` but has no \`title\` in its frontmatter`);
+    // The same fallback vitepress-plugin-llms uses for a page's llms.txt title: frontmatter
+    // `title`, else the page's H1 as found by markdown-title, the library the plugin uses.
+    const title = attributes.title ?? markdownTitle(body);
+    if (!draft && !title) {
+      throw new Error(`${source} sets \`legacy: true\` but has neither a frontmatter \`title\` nor an H1`);
     }
     pages.push({
       source,
       published: source.endsWith('/index.md') ? `${source.slice(0, -'/index.md'.length)}.md` : source,
-      title: attributes.title,
+      title,
       description: attributes.description,
       draft,
     });
@@ -269,8 +273,7 @@ export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[
  * content directory whose frontmatter sets `legacy: true`, matching the badge and warning
  * `markLegacyPackagePage` puts on legacy API pages. The callout's second sentence is the page's
  * `legacyAdvice`, when set. Inserted right after the frontmatter block, which is left untouched,
- * so no heading needs to be found; the page's title comes from its frontmatter `title`, which
- * `legacyGuidePages` requires.
+ * so no heading needs to be found or rewritten.
  */
 export function markLegacyGuidePages(contentDirPath: string) {
   for (const file of globSync('**/*.md', { cwd: contentDirPath })) {

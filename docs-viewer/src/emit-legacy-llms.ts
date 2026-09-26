@@ -14,7 +14,7 @@ type PageMeta = { title?: string; description?: string };
  * `@warp-drive/legacy` and the legacy packages, one section per package.
  *
  * vitepress-plugin-llms writes only one index and one full-text file, so this builds the second
- * pair from what the build already knows: each legacy guide's frontmatter, the package list in
+ * pair from what the build already knows: each legacy guide's frontmatter and H1, the package list in
  * nav.json, the per-page title and description that typedoc-plugins/page-meta.mjs recorded, and
  * the `.md` twin the plugin wrote for every page. Each link targets that twin, named the way the
  * plugin names them (`foo/index.md` publishes as `foo.md`). The full text joins the twins, each
@@ -44,7 +44,7 @@ export function emitLegacyLlms(
     else missingTwins.push(published);
   };
 
-  // legacyGuidePages() guarantees every non-draft page has a title
+  // legacyGuidePages() guarantees every non-draft page has a title (frontmatter `title` or H1)
   const guides = legacyGuidePages().filter((page) => !page.draft);
   if (guides.length) {
     sections.push(

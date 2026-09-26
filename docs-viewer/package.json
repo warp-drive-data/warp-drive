@@ -29,6 +29,7 @@
     "@types/debug": "catalog:",
     "@vite-pwa/vitepress": "catalog:",
     "front-matter": "catalog:",
+    "markdown-title": "catalog:",
     "sharp": "catalog:",
     "svgo": "catalog:",
     "typedoc": "catalog:",
