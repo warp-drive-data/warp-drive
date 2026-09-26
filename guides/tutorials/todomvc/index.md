@@ -1,6 +1,6 @@
 ---
-title: Overview
-description: Build the data layer of a TodoMVC app with WarpDrive and Ember. You write the requests, builders, a handler and a few cache updates; the starter ships the UI and a local API.
+title: 0. Setup
+description: Build the data layer of a TodoMVC app with WarpDrive and Ember. Create the starter with npx @warp-drive/tutorials, run it, and see where you'll write WarpDrive code.
 ---
 
 # TodoMVC
@@ -18,7 +18,6 @@ chapter after that adds one operation.
 
 |     | Chapter                                             | You'll use                                 |
 | --- | --------------------------------------------------- | ------------------------------------------ |
-| 0   | [Setup](./setup.md)                                 | the starter                                |
 | 1   | [First request](./first-request.md)                 | `store.request` and `<Request>`            |
 | 2   | [Why that worked](./why-that-worked.md)             | the store, the request pipeline, a schema  |
 | 3   | [Request builders](./request-builders.md)           | builders and a handler                     |
@@ -34,3 +33,52 @@ You should know TypeScript and have built something with Ember. You don't need
 to know ***Warp*Drive**.
 
 You need Node.js and [pnpm](https://pnpm.io/).
+
+## Get the starter
+
+```sh
+npx @warp-drive/tutorials@canary todomvc-ember
+cd todomvc-ember
+pnpm install
+pnpm start
+```
+
+Open the URL Vite prints. You should see the TodoMVC header over an empty list.
+That's right: nothing requests todos until chapter 1.
+
+<img src="../../images/tutorials/todomvc/setup-empty.png" alt="The starter app: the todos header and the new-todo input over an empty list" width="100%">
+
+## What's in the starter
+
+```
+todomvc-ember/
+  api-worker/     the API, in a service worker; you won't touch it
+  app/
+    components/   the TodoMVC UI, finished
+    data/
+      builders/   you write these, next to a shipped utils.ts
+      schemas/    the todo schema, finished
+      store.ts    the store, finished
+    routes/       one per filter: all, active, completed
+```
+
+The Ember side is done. You write ***Warp*Drive** code in two places: new files
+in `app/data/builders/`, and short additions at `TODO` comments that name the
+chapter:
+
+```ts
+// TODO (chapter 1): request the todos from /api/todo
+```
+
+To find a chapter's `TODO`s:
+
+```sh
+grep -rn "chapter 1" app
+```
+
+## The API
+
+The app talks to a JSON:API server at `/api`. It runs in the browser as a
+service worker, so there's nothing to start, and it keeps your changes across
+reloads. It begins with three todos. To reset it, clear the site data in your
+browser's developer tools.
