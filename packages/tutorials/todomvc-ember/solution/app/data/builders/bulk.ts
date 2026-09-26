@@ -1,6 +1,5 @@
 // #omit-file-from-starter
-import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
-import { withReactiveResponse, withResponseType } from '@warp-drive/core/request';
+import { withResponseType } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';
 
@@ -34,9 +33,7 @@ export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<
  * matching cached list. Pass only the todos that actually changed.
  */
 export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: boolean): void {
-  // Each todo is added to the top of its new list, so go in reverse to keep
-  // them in their original order.
-  for (const todo of changed.toReversed()) {
+  for (const todo of changed) {
     store.cache.patch({ record: keyForSavedResource(todo), op: 'update', field: 'completed', value: completed });
     if (completed) patchCacheTodoCompleted(store, todo);
     else patchCacheTodoActivated(store, todo);
@@ -47,11 +44,11 @@ export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: bo
  * DELETE /api/todo/ops.bulk.deleteAll — used by "clear completed". Deletes
  * every completed todo; pass the completed todos so the cache can drop them.
  */
-export function bulkDeleteTodos(todos: Todo[]): RequestInfo<ReactiveDataDocument<null>> {
+export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
   const url = buildBaseURL({ resourcePath: 'todo' });
   const queryString = buildQueryParams({ 'filter[completed]': true });
 
-  return withReactiveResponse<null>({
+  return withResponseType<EmptyDocument>({
     method: 'DELETE',
     url: `${url}/ops.bulk.deleteAll?${queryString}`,
 

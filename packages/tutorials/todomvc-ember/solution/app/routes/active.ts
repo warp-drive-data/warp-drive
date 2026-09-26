@@ -14,7 +14,7 @@ export default class ActiveTodos extends Route {
 
   model(): { todos?: Future<TodosDocument> } {
     return {
-      // #replace-in-starter TODO (chapter 3): request the active todos
+      // #replace-in-starter TODO (chapter 1): request the active todos
       todos: this.store.request(getActiveTodos()),
       // #end-replace-in-starter
     };

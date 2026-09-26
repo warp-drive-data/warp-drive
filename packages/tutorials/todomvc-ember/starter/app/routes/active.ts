@@ -11,7 +11,7 @@ export default class ActiveTodos extends Route {
 
   model(): { todos?: Future<TodosDocument> } {
     return {
-      // TODO (chapter 3): request the active todos
+      // TODO (chapter 1): request the active todos
     };
   }
 }
