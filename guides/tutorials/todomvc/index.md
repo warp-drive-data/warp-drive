@@ -23,7 +23,8 @@ to Stun".
 1. [First request](./first-request.md): request the todos and render them
 2. [Why that worked](./why-that-worked.md): the store, the schema and the request
    pipeline
-3. Request builders
+3. [Request builders](./request-builders.md): write builders for each list, then
+   move the JSON:API headers into a handler
 4. Create
 5. Edit title
 6. Toggle
