@@ -1,5 +1,4 @@
 ---
-title: Universal
 legacy: true
 legacyAdvice: "New apps should follow [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md), which use `@warp-drive/core` instead of these packages."
 description: Configure the legacy multi-package setup with setConfig in ember-cli-build, unstable-preview-types in tsconfig, and a hand-built Store using RequestManager and JSONAPICache.

@@ -1,5 +1,4 @@
 ---
-title: Installation
 legacy: true
 legacyAdvice: "`@warp-drive/core` and the other current packages ship their own types, so new apps can skip this page and follow [Installation](/guides/installation/index.md) instead."
 description: Install WarpDrive's native types with `npx warp-drive retrofit types@canary` or by hand, replacing DefinitelyTyped @types packages with typed releases or -types packages.

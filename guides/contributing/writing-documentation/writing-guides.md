@@ -80,8 +80,8 @@ what those agents get:
   page moves out of `llms.txt` and `llms-full.txt` into `llms-legacy.txt` and
   `llms-legacy-full.txt`, and the website shows a Legacy badge and a warning at its top. The
   warning's second sentence defaults to pointing at the current guides; set `legacyAdvice` to
-  markdown naming the modern equivalent instead, with root-relative links. A legacy page must set
-  `title`, since `llms-legacy.txt` does not read its H1. A draft legacy page is left out of all
+  markdown naming the modern equivalent instead, with root-relative links. Its `llms-legacy.txt`
+  entry is titled the same way `llms.txt` would title it. A draft legacy page is left out of all
   four files and gets no badge. Don't flag a page that mixes modern and legacy content, or one
   about [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md), which is a current,
   recommended schema mode rather than a legacy setup.

@@ -1,5 +1,4 @@
 ---
-title: Typing Models
 legacy: true
 legacyAdvice: "New code should define its data with [ResourceSchemas](/guides/the-manual/schemas/resources/index.md) instead of Models."
 description: Brand legacy Model classes and Transforms with the `Type` symbol and add generics to `attr`, `belongsTo`, and `hasMany` so relationships and store calls infer types.

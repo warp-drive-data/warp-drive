@@ -1,5 +1,4 @@
 ---
-title: Ember
 legacy: true
 legacyAdvice: "New apps should follow [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md), which use `@warp-drive/core` instead of these packages."
 description: Configure a legacy Ember app to import @warp-drive/ember/install, drop @ember-data/tracking, and add LegacyNetworkHandler plus adapterFor and serializerFor hooks to the store.
