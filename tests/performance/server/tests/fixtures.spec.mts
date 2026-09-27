@@ -51,7 +51,11 @@ describe('performance-test-app fixtures generator', () => {
   });
 
   test('exits cleanly and reports what it generated', () => {
-    assert.equal(result.status, 0, `stderr:\n${result.stderr}`);
+    assert.equal(
+      result.status,
+      0,
+      `exit status ${result.status}, signal ${result.signal}, spawn error ${result.error?.message ?? 'none'}\nstderr:\n${result.stderr}`
+    );
     assert.match(String(result.stdout), /Regenerating Fixtures For Performance Benchmarks/);
     assert.match(String(result.stdout), /Generated fixtures for big-many-to-many: 100 primary, 1016 included/);
     assert.match(

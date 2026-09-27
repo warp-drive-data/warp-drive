@@ -8,17 +8,18 @@
  * checks whatever runtime that script uses.
  */
 import assert from 'node:assert/strict';
-import { type ChildProcess, spawn } from 'node:child_process';
+import { type ChildProcess, spawn, spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
-import { type AddressInfo, createServer } from 'node:net';
 import { tmpdir } from 'node:os';
-import { dirname, join, relative } from 'node:path';
+import { dirname, join } from 'node:path';
 import { after, before, describe, test } from 'node:test';
+import { stripVTControlCharacters } from 'node:util';
 import { brotliCompressSync, brotliDecompressSync } from 'node:zlib';
 
 const PACKAGE_DIR = join(import.meta.dirname, '../..');
 const FIXTURES_DIR = join(PACKAGE_DIR, 'fixtures/generated');
 const STARTUP_TIMEOUT = 30_000;
+const SHUTDOWN_GRACE = 5_000;
 
 const FILES = {
   'index.html': '<!doctype html><html><head><title>perf</title></head><body>perf app</body></html>',
@@ -36,21 +37,13 @@ function writeDist(): string {
   return dist;
 }
 
-function freePort(): Promise<number> {
-  return new Promise((resolve, reject) => {
-    const probe = createServer();
-    probe.on('error', reject);
-    probe.listen(0, () => {
-      const { port } = probe.address() as AddressInfo;
-      probe.close(() => resolve(port));
-    });
-  });
-}
+type RunningServer = { child: ChildProcess; port: number };
 
-function startServer(distArg: string, port: number): Promise<ChildProcess> {
+function startServer(distArg: string): Promise<RunningServer> {
   // `pnpm start` runs the server behind a shell, so start it in its own process
-  // group and signal the whole group when stopping it.
-  const child = spawn('pnpm', ['start', distArg, '-p', String(port)], {
+  // group and signal the whole group when stopping it. `-p 0` lets the server
+  // pick a free port, which it reports in its startup line.
+  const child = spawn('pnpm', ['start', distArg, '-p', '0'], {
     cwd: PACKAGE_DIR,
     detached: true,
     stdio: ['ignore', 'pipe', 'pipe'],
@@ -59,14 +52,17 @@ function startServer(distArg: string, port: number): Promise<ChildProcess> {
   return new Promise((resolve, reject) => {
     let output = '';
     const timer = setTimeout(() => {
-      stopServer(child);
+      void stopServer(child);
       reject(new Error(`server did not report it was running within ${STARTUP_TIMEOUT}ms:\n${output}`));
     }, STARTUP_TIMEOUT);
     const onData = (chunk: Buffer) => {
       output += chunk.toString();
-      if (output.includes('Application running')) {
+      const match = /Application running at http:\/\/localhost:(\d+)/.exec(stripVTControlCharacters(output));
+      if (match) {
         clearTimeout(timer);
-        resolve(child);
+        child.stdout!.off('data', onData);
+        child.stderr!.off('data', onData);
+        resolve({ child, port: Number(match[1]) });
       }
     };
     child.stdout!.on('data', onData);
@@ -78,15 +74,39 @@ function startServer(distArg: string, port: number): Promise<ChildProcess> {
   });
 }
 
-function stopServer(child: ChildProcess): Promise<void> {
-  if (child.exitCode !== null || child.signalCode !== null) return Promise.resolve();
-  const exited = new Promise<void>((resolve) => child.once('exit', () => resolve()));
+function signalServer(child: ChildProcess, signal: NodeJS.Signals): void {
   try {
-    process.kill(-child.pid!, 'SIGTERM');
+    process.kill(-child.pid!, signal);
   } catch {
-    child.kill('SIGTERM');
+    child.kill(signal);
   }
-  return exited;
+}
+
+function waitForExit(child: ChildProcess, ms: number): Promise<boolean> {
+  if (child.exitCode !== null || child.signalCode !== null) return Promise.resolve(true);
+  return new Promise((resolve) => {
+    const timer = setTimeout(() => {
+      child.off('exit', onExit);
+      resolve(false);
+    }, ms);
+    const onExit = () => {
+      clearTimeout(timer);
+      resolve(true);
+    };
+    child.once('exit', onExit);
+  });
+}
+
+/**
+ * Stops the server with SIGTERM, escalating to SIGKILL if it has not exited
+ * within the grace period, so a stuck child cannot hang the `after` hook.
+ */
+async function stopServer(child: ChildProcess): Promise<void> {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+  signalServer(child, 'SIGTERM');
+  if (await waitForExit(child, SHUTDOWN_GRACE)) return;
+  signalServer(child, 'SIGKILL');
+  await waitForExit(child, SHUTDOWN_GRACE);
 }
 
 describe('performance-test-app static server', () => {
@@ -96,10 +116,10 @@ describe('performance-test-app static server', () => {
 
   before(async () => {
     dist = writeDist();
-    const port = await freePort();
-    origin = `http://localhost:${port}`;
-    // the server resolves its first argument relative to the package directory
-    server = await startServer(relative(PACKAGE_DIR, dist), port);
+    // an absolute dist path is used as-is
+    const started = await startServer(dist);
+    server = started.child;
+    origin = `http://localhost:${started.port}`;
   });
 
   after(async () => {
@@ -154,11 +174,26 @@ describe('performance-test-app static server', () => {
     await assertServes('/some/route', join(dist, 'index.html.br'), 'text/html', FILES['index.html']);
   });
 
-  test('responds 404 for missing scripts and stylesheets', async () => {
-    for (const path of ['/missing.js', '/assets/missing.css']) {
+  test('responds 404 for missing scripts, stylesheets and fixtures', async () => {
+    for (const path of ['/missing.js', '/assets/missing.css', '/fixtures/missing.json']) {
       const response = await fetch(`${origin}${path}`);
       assert.equal(response.status, 404, `${path} status`);
       await response.arrayBuffer();
+    }
+  });
+
+  test('rejects an invalid port', () => {
+    for (const port of ['nope', '1.5', '70000']) {
+      const result = spawnSync('pnpm', ['start', dist, '-p', port], {
+        cwd: PACKAGE_DIR,
+        encoding: 'utf8',
+        timeout: STARTUP_TIMEOUT,
+      });
+      assert.notEqual(result.status, 0, `-p ${port} exit status`);
+      assert.match(
+        stripVTControlCharacters(result.stderr),
+        new RegExp(`Invalid port for -p: ${port.replace('.', '\\.')}`)
+      );
     }
   });
 });

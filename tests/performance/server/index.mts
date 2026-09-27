@@ -2,13 +2,28 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import { createServer, type OutgoingHttpHeaders } from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
+import { pipeline } from 'node:stream';
 import { styleText } from 'node:util';
 
 const FIXTURES_LOCATION = join(import.meta.dirname, '../fixtures/generated');
 
-const dist = join(import.meta.dirname, '../', process.argv[2] ?? 'dist');
-const port = process.argv[3] === '-p' && process.argv[4] ? Number(process.argv[4]) : 9999;
+// usage: index.mts [dist] [-p <port>]
+//   dist  directory holding the brotli-compressed build, resolved against the
+//         package directory unless absolute (default: dist)
+//   port  port to listen on; 0 picks a free one (default: 9999)
+const args = process.argv.slice(2);
+const portFlag = args.indexOf('-p');
+const positional = args.filter((_arg, index) => portFlag === -1 || (index !== portFlag && index !== portFlag + 1));
+const dist = resolve(import.meta.dirname, '..', positional[0] ?? 'dist');
+const rawPort = portFlag === -1 ? '9999' : args[portFlag + 1];
+const port = Number(rawPort);
+if (rawPort === undefined || rawPort.trim() === '' || !Number.isInteger(port) || port < 0 || port > 65535) {
+  console.error(
+    styleText('red', `Invalid port for -p: ${rawPort ?? '(missing)'}. Expected an integer from 0 to 65535.`)
+  );
+  process.exit(1);
+}
 
 /**
  * Resolves the size of a regular file, or null if there is no such file.
@@ -36,7 +51,9 @@ async function resolveFile(url: string): Promise<{ filePath: string; size: numbe
   }
 
   let size = await fileSize(filePath);
-  if (size === null && (fileName === '/' || fileName.endsWith('.js') || fileName.endsWith('.css'))) {
+  // Missing scripts, stylesheets and fixtures are errors, not app routes: falling
+  // back to index.html for them would let a benchmark measure a broken page.
+  if (size === null && (fileName === '/' || /\.(js|css|json)$/.test(fileName))) {
     return null;
   } else if (size === null) {
     filePath = join(dist, '/index.html.br');
@@ -80,9 +97,13 @@ const server = createServer(async (request, response) => {
 
     // console.log(styleText('green', `\tServing: ${filePath}`));
     response.writeHead(200, headers);
-    createReadStream(filePath)
-      .on('error', (error) => response.destroy(error))
-      .pipe(response);
+    // pipeline destroys the file stream when the client aborts, so aborted
+    // requests don't leak file descriptors over a long benchmark run.
+    pipeline(createReadStream(filePath), response, (error) => {
+      if (error && (error as NodeJS.ErrnoException).code !== 'ERR_STREAM_PREMATURE_CLOSE') {
+        console.error(styleText('red', `Failed to serve ${filePath}: ${error.message}`));
+      }
+    });
   } catch (error) {
     console.error(error);
     if (!response.headersSent) response.writeHead(500, { 'Content-Type': 'text/plain' });
