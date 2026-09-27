@@ -71,5 +71,7 @@ test('it exits with code 1 when the input directory has no declaration files', (
 
   assert.equal(status, 1);
   assert.match(stdout, /No \*\*\/\*\.d\.ts files found in src/);
+  assert.doesNotMatch(stdout, /Found \d+ files/);
+  assert.doesNotMatch(stdout, /Copied \d+ files/);
   assert.equal(existsSync(path.join(cwd, 'unstable-preview-types')), false);
 });

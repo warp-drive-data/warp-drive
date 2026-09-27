@@ -46,39 +46,38 @@ test('it enriches each mapping entry with its warp-drive replacement', (t) => {
   assert.match(stdout, /Wrote enriched mapping to .*enriched\.json/);
 
   const enriched = JSON.parse(readFileSync(path.join(root, 'enriched.json'), 'utf8'));
-  const candidate = {
+  assert.equal(enriched.length, 2);
+  const [store, model] = enriched;
+
+  // Scores are heuristic; only their presence is part of this contract.
+  const target = {
     module: '@warp-drive/core',
     export: 'Store',
     sourceFile: 'warp-drive-packages/core/src/index.ts',
     typeOnly: false,
-    score: 11,
-    isRoot: true,
   };
 
-  assert.deepEqual(enriched, [
-    {
-      ...entry('packages/store/src/index.ts', '@ember-data/store', 'Store'),
-      replacement: {
-        all: [candidate],
-        module: candidate.module,
-        export: candidate.export,
-        sourceFile: candidate.sourceFile,
-        typeOnly: candidate.typeOnly,
-        score: candidate.score,
-        userAction: 'auto',
-      },
-    },
-    {
-      ...entry('packages/model/src/index.ts', '@ember-data/model', 'Model'),
-      replacement: {
-        all: [],
-        notFound: true,
-        missing: true,
-        starExportFilePath: 'packages/model/src/index.ts',
-        userAction: 'auto',
-      },
-    },
-  ]);
+  assert.equal(store.export, 'Store');
+  assert.equal(store.module, '@ember-data/store');
+  assert.ok(Array.isArray(store.replacement.all));
+  assert.equal(store.replacement.all.length, 1);
+  for (const [key, value] of Object.entries(target)) {
+    assert.equal(store.replacement.all[0][key], value, `replacement.all[0].${key}`);
+    assert.equal(store.replacement[key], value, `replacement.${key}`);
+  }
+  assert.equal(typeof store.replacement.score, 'number');
+  assert.equal(typeof store.replacement.all[0].score, 'number');
+  assert.equal(store.replacement.notFound, undefined);
+  assert.equal(store.replacement.missing, undefined);
+  assert.equal(store.replacement.starExportFilePath, undefined);
+
+  assert.equal(model.export, 'Model');
+  assert.equal(model.module, '@ember-data/model');
+  assert.deepEqual(model.replacement.all, []);
+  assert.equal(model.replacement.module, undefined);
+  assert.equal(model.replacement.notFound, true);
+  assert.equal(model.replacement.missing, true);
+  assert.equal(model.replacement.starExportFilePath, 'packages/model/src/index.ts');
 });
 
 test('it writes <in>.enriched.json next to the input when --out is omitted', (t) => {

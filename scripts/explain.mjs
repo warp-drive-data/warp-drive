@@ -29,9 +29,19 @@ async function main() {
     cwd: process.cwd(),
     env: process.env,
     encoding: 'utf8',
+    // `pnpm why` on a large workspace can exceed the 1 MiB default
+    maxBuffer: Infinity,
+    // resolve `pnpm.cmd` on Windows
+    shell: process.platform === 'win32',
   });
   if (output.error) {
     throw output.error;
+  }
+  if (output.status !== 0) {
+    process.stderr.write(output.stderr);
+    console.error(styleText('red', `\`pnpm why ${pkgName}\` exited with code ${output.status}`));
+    process.exitCode = output.status ?? 1;
+    return;
   }
 
   const versions = {};

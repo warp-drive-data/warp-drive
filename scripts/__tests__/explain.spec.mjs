@@ -22,29 +22,30 @@ devDependencies:
 `;
 
 /**
- * Parse `console.log` output of `Record<string, Set<string>>` into plain
- * arrays. Node and Bun format a Set differently, so match both shapes.
+ * Parse Node's `console.log` output of `Record<string, Set<string>>`, e.g.
+ * `{ '@warp-drive/core': Set(2) { '5.8.0', '5.7.0' } }`, into plain arrays.
  */
 function parseVersionsMap(stdout) {
   const map = {};
-  const entry = /(?:'([^']+)'|"([^"]+)"|([\w$-]+)): Set\(\d+\) \{([^}]*)\}/g;
-  for (const match of stdout.matchAll(entry)) {
-    const name = match[1] ?? match[2] ?? match[3];
-    map[name] = [...match[4].matchAll(/'([^']*)'|"([^"]*)"/g)].map((m) => m[1] ?? m[2]);
+  for (const match of stdout.matchAll(/'([^']+)': Set\(\d+\) \{([^}]*)\}/g)) {
+    map[match[1]] = [...match[2].matchAll(/'([^']*)'/g)].map((m) => m[1]);
   }
   return map;
 }
 
-function installFakePnpm(t) {
+/**
+ * Put a fake `pnpm` first on PATH. By default it records its arguments and
+ * prints `PNPM_WHY_OUTPUT`; with `fail` it prints that message to stderr and
+ * exits 1 instead.
+ */
+function installFakePnpm(t, { fail } = {}) {
   const dir = tempDir(t);
   const bin = path.join(dir, 'bin');
   mkdirSync(bin);
   writeFileSync(path.join(dir, 'why.txt'), PNPM_WHY_OUTPUT);
   const fake = path.join(bin, 'pnpm');
-  writeFileSync(
-    fake,
-    `#!/bin/sh\nprintf '%s\\n' "$*" > "${path.join(dir, 'args.txt')}"\ncat "${path.join(dir, 'why.txt')}"\n`
-  );
+  const body = fail ? `printf '%s\\n' '${fail}' >&2\nexit 1\n` : `cat "${path.join(dir, 'why.txt')}"\n`;
+  writeFileSync(fake, `#!/bin/sh\nprintf '%s\\n' "$*" > "${path.join(dir, 'args.txt')}"\n${body}`);
   chmodSync(fake, 0o755);
   return { dir, bin };
 }
@@ -68,4 +69,20 @@ test('it runs `pnpm why <pkg>` and prints the versions found per package', (t) =
     '@warp-drive/legacy': ['5.7.0'],
     '@warp-drive/utilities': ['5.8.0'],
   });
+});
+
+test('it exits non-zero and surfaces stderr when `pnpm why` fails', (t) => {
+  const message = 'ERR_PNPM_NO_PKG  No package.json found in the current directory';
+  const { bin } = installFakePnpm(t, { fail: message });
+  const cwd = tempDir(t);
+
+  const { status, stdout, stderr } = runScript('explain.mjs', ['@warp-drive/core'], {
+    cwd,
+    env: { PATH: `${bin}${path.delimiter}${process.env.PATH}` },
+  });
+
+  assert.equal(status, 1);
+  assert.ok(stderr.includes(message), stderr);
+  assert.match(stderr, /`pnpm why @warp-drive\/core` exited with code 1/);
+  assert.doesNotMatch(stdout, /\{\s*\}/, 'no empty versions map is printed');
 });

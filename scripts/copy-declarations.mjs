@@ -56,6 +56,7 @@ async function main() {
   if (files.length === 0) {
     console.log(styleText('red', `\nNo **/*.d.ts files found in ${styleText('white', relativeInputPath)}\n`));
     process.exitCode = 1;
+    return;
   }
 
   console.log(styleText('grey', `\nFound ${styleText('cyan', String(files.length))} files\n`));
