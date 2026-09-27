@@ -17,7 +17,6 @@
     "ember-addon"
   ],
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependencies": {
@@ -54,6 +53,7 @@
     "@babel/preset-env": "catalog:",
     "@babel/preset-typescript": "catalog:",
     "@ember/test-waiters": "catalog:",
+    "@embroider/macros": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
     "tsdown": "catalog:",

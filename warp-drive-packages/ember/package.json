@@ -44,7 +44,6 @@
     "ember-provide-consume-context": "^0.10.0"
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependenciesMeta": {
@@ -61,6 +60,7 @@
     "@ember/test-helpers": "catalog:",
     "@ember/test-waiters": "catalog:",
     "@embroider/addon-dev": "catalog:",
+    "@embroider/macros": "catalog:",
     "@glimmer/component": "catalog:",
     "@glint/ember-tsc": "catalog:",
     "@glint/template": "catalog:",

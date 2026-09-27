@@ -16,7 +16,6 @@
     "ember-addon"
   ],
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/utilities": "workspace:*"
   },
@@ -50,6 +49,7 @@
     "@babel/plugin-transform-typescript": "catalog:",
     "@babel/preset-env": "catalog:",
     "@babel/preset-typescript": "catalog:",
+    "@embroider/macros": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "catalog:",
     "typescript-7": "catalog:"

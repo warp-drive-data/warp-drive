@@ -37,7 +37,6 @@
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependencies": {
@@ -59,6 +58,7 @@
     "@babel/preset-typescript": "catalog:",
     "@ember-data/tracking": "workspace:*",
     "@ember/test-waiters": "catalog:",
+    "@embroider/macros": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "ember-source": "catalog:",
     "tsdown": "catalog:",

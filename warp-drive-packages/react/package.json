@@ -42,7 +42,6 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/tc39-proposal-signals": "workspace:*",
     "react": "^19.3.0",
@@ -56,6 +55,7 @@
     "@babel/preset-react": "catalog:",
     "@babel/preset-typescript": "catalog:",
     "@babel/runtime": "catalog:",
+    "@embroider/macros": "catalog:",
     "@types/react": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",

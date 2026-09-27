@@ -33,7 +33,6 @@
     }
   },
   "dependencies": {
-    "@embroider/macros": "^1.21.1",
     "@warp-drive/core": "workspace:*",
     "signal-polyfill": "0.2.2"
   },
@@ -44,6 +43,7 @@
     "@babel/preset-env": "catalog:",
     "@babel/preset-typescript": "catalog:",
     "@babel/runtime": "catalog:",
+    "@embroider/macros": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
     "tsdown": "catalog:",
