@@ -1,8 +1,11 @@
 import { findWorkspaceDir } from '@pnpm/find-workspace-dir';
-import { findWorkspacePackages, type Project } from '@pnpm/find-workspace-packages';
-import type { BunFile } from 'bun';
+import { findWorkspacePackagesNoCheck, type Project } from '@pnpm/find-workspace-packages';
 import type { CommentObject } from 'comment-json';
-import path from 'path';
+import { spawn } from 'node:child_process';
+import { once } from 'node:events';
+import { existsSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 
 export async function getMonorepoRoot() {
   const workspaceDir = await findWorkspaceDir(process.cwd());
@@ -17,7 +20,7 @@ export async function getMonorepoRoot() {
   let depth = 0;
   while (depth < MAX_DEPTH) {
     const lockfileFile = path.join(currentDir, 'pnpm-lock.yaml');
-    if (await Bun.file(lockfileFile).exists()) {
+    if (existsSync(lockfileFile)) {
       return currentDir;
     }
     currentDir = path.join(currentDir, '../');
@@ -29,20 +32,19 @@ export async function getMonorepoRoot() {
 
 export async function getPackageJson({ packageDir, packagesDir }: { packageDir: string; packagesDir: string }) {
   const packageJsonPath = path.join(packagesDir, packageDir, 'package.json');
-  const packageJsonFile = Bun.file(packageJsonPath);
-  const pkg = await packageJsonFile.json();
-  return { file: packageJsonFile, pkg, path: packageJsonPath, nicePath: path.join(packageDir, 'package.json') };
+  const pkg = JSON.parse(await readFile(packageJsonPath, 'utf8'));
+  return { pkg, path: packageJsonPath, nicePath: path.join(packageDir, 'package.json') };
 }
 
 export async function runPrettier() {
   const root = await getMonorepoRoot();
-  const childProcess = Bun.spawn(['bun', 'lint:prettier:fix'], {
+  const childProcess = spawn('pnpm', ['lint:prettier:fix'], {
     env: process.env,
     cwd: root,
-    stdout: 'inherit',
-    stderr: 'inherit',
+    stdio: ['ignore', 'inherit', 'inherit'],
   });
-  await childProcess.exited;
+  // rejects if pnpm cannot be spawned; like before, a failing prettier run is not an error here
+  await once(childProcess, 'close');
 }
 
 type PkgJsonFile = {
@@ -98,8 +100,6 @@ export type TsConfigFile = {
 interface BaseProjectPackage {
   project: Project;
   packages: Map<string, Project>;
-  pkgFile: BunFile;
-  tsconfigFile: BunFile;
   pkgPath: string;
   tsconfigPath: string;
   isRoot: boolean;
@@ -124,7 +124,10 @@ interface ProjectPackageWithoutTsConfig extends BaseProjectPackage {
 export type ProjectPackage = ProjectPackageWithTsConfig | ProjectPackageWithoutTsConfig;
 
 async function collectAllPackages(dir: string) {
-  const packages = await findWorkspacePackages(dir);
+  // The NoCheck variant skips pnpm's `engines` check, which only reads the pnpm
+  // version from `npm_package_*` env vars that `pnpm <bin>` does not set, and so
+  // fails on the root's `engines.pnpm` even under the right pnpm.
+  const packages = await findWorkspacePackagesNoCheck(dir);
   const pkgMap = new Map<string, Project>();
   for (const pkg of packages) {
     if (!pkg.manifest.name) {
@@ -165,17 +168,15 @@ export async function walkPackages(
 
     const pkgPath = path.join(project.dir, 'package.json');
     const tsconfigPath = path.join(project.dir, 'tsconfig.json');
-    const pkgFile = Bun.file(pkgPath);
-    const tsconfigFile = Bun.file(tsconfigPath);
-    const pkg = (await pkgFile.json()) as PkgJsonFile;
-    const hasTsConfig = await tsconfigFile.exists();
-    const tsconfig = hasTsConfig ? (JSONC.parse(await tsconfigFile.text()) as CommentObject & TsConfigFile) : null;
+    const pkg = JSON.parse(await readFile(pkgPath, 'utf8')) as PkgJsonFile;
+    const hasTsConfig = existsSync(tsconfigPath);
+    const tsconfig = hasTsConfig
+      ? (JSONC.parse(await readFile(tsconfigPath, 'utf8')) as CommentObject & TsConfigFile)
+      : null;
 
     const pkgObj = {
       project,
       packages,
-      pkgFile,
-      tsconfigFile,
       pkgPath,
       hasTsConfig,
       tsconfigPath,
@@ -187,8 +188,8 @@ export async function walkPackages(
       pkg,
       tsconfig,
       save: async ({ pkgEdited, configEdited }: { pkgEdited: boolean; configEdited: Boolean }) => {
-        if (pkgEdited) await pkgFile.write(JSON.stringify(pkg, null, 2));
-        if (configEdited) await tsconfigFile.write(JSONC.stringify(tsconfig, null, 2));
+        if (pkgEdited) await writeFile(pkgPath, JSON.stringify(pkg, null, 2));
+        if (configEdited) await writeFile(tsconfigPath, JSONC.stringify(tsconfig, null, 2));
       },
     } as ProjectPackageWithTsConfig;
 

@@ -5,23 +5,25 @@
   "private": true,
   "type": "module",
   "files": [
+    "bin",
     "src"
   ],
   "scripts": {
-    "build:pkg": "bun run src/sync-logos.ts",
+    "build:pkg": "node src/sync-logos.ts",
+    "check:types": "tsc --noEmit",
     "prepack": "pnpm run build:pkg",
     "test": "node --test tests/*.spec.ts"
   },
   "bin": {
-    "sync-logos": "src/sync-logos.ts",
-    "sync-license": "src/sync-license.ts",
-    "sync-references": "src/sync-references.ts",
-    "sync-readme-tables": "src/sync-readme-tables.ts",
-    "sync-scripts": "src/sync-scripts.ts",
-    "sync-all": "src/sync-all.ts"
+    "sync-logos": "bin/sync-logos.mjs",
+    "sync-license": "bin/sync-license.mjs",
+    "sync-references": "bin/sync-references.mjs",
+    "sync-readme-tables": "bin/sync-readme-tables.mjs",
+    "sync-scripts": "bin/sync-scripts.mjs",
+    "sync-all": "bin/sync-all.mjs"
   },
   "dependencies": {
-    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
     "typescript": "catalog:",
     "debug": "catalog:",
     "@types/debug": "catalog:",

@@ -83,6 +83,10 @@ export const FIXTURE_FILES: Record<string, string> = {
     name: 'root',
     version: '0.0.0',
     private: true,
+    // like the real root; the pnpm engine must not stop the scripts from running
+    engines: {
+      pnpm: '12.6.0',
+    },
     scripts: {
       'lint:prettier:fix': 'node record-call.mjs lint:prettier:fix',
     },
@@ -225,7 +229,7 @@ export function createFixture(): Fixture {
       const walk = (dir: string) => {
         for (const entry of fs.readdirSync(dir, { withFileTypes: true }).sort((a, b) => (a.name < b.name ? -1 : 1))) {
           const full = path.join(dir, entry.name);
-          if (IGNORED.has(full)) continue;
+          if (IGNORED.has(full) || entry.isSymbolicLink() || entry.name === 'node_modules') continue;
           if (entry.isDirectory()) {
             files.set(path.relative(root, full) + '/', '');
             walk(full);
@@ -255,8 +259,12 @@ function resolveRunner(wrapper: string): string {
 
 const ANSI = /\u001b\[[0-9;]*m/g;
 
-export function runSync(script: SyncScript, fixture: Fixture, options: { cwd?: string } = {}): RunResult {
-  const wrapper = path.join(PACKAGE_DIR, 'src', `${script}.ts`);
+export function runSync(
+  script: SyncScript,
+  fixture: Fixture,
+  options: { cwd?: string; entry?: string } = {}
+): RunResult {
+  const wrapper = options.entry ?? path.join(PACKAGE_DIR, 'src', `${script}.ts`);
   const runner = resolveRunner(wrapper);
 
   const env: NodeJS.ProcessEnv = {
@@ -272,6 +280,9 @@ export function runSync(script: SyncScript, fixture: Fixture, options: { cwd?: s
   delete env.NPM_CONFIG_WORKSPACE_DIR;
   delete env.npm_config_workspace_dir;
   delete env.FORCE_COLOR;
+  // `pnpm run` exports these, `pnpm <bin>` from the root does not
+  delete env.npm_package_name;
+  delete env.npm_package_version;
 
   const result = spawnSync(runner, [wrapper], {
     cwd: options.cwd ?? fixture.root,

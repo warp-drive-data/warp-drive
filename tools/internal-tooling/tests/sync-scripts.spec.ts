@@ -13,8 +13,8 @@ const PUBLIC_PACKAGE_SCRIPTS = {
 
 const CLASSIC_TEST_APP_SCRIPTS = {
   'build:tests': 'IS_TESTING=true EMBER_CLI_TEST_COMMAND=true ember build --output-path=dist-test --suppress-sizes',
-  'build:production': 'bun run build:tests -e production',
-  start: 'bun run build:tests --watch',
+  'build:production': 'pnpm run build:tests -e production',
+  start: 'pnpm run build:tests --watch',
   'check:types': 'tsc --noEmit',
 };
 
@@ -22,16 +22,16 @@ const EXAM_TEST_APP_SCRIPTS = {
   ...CLASSIC_TEST_APP_SCRIPTS,
   examine:
     'export EXAM_PARALLEL_COUNT=$(./bin/calculate-test-jobs); ember exam --test-port=0 --path=dist-test --parallel=$EXAM_PARALLEL_COUNT --load-balance',
-  test: 'bun run examine',
-  'test:production': 'bun run examine',
-  'test:start': 'bun run ember test --test-port=0 --path=dist-test --serve --no-launch',
+  test: 'pnpm run examine',
+  'test:production': 'pnpm run examine',
+  'test:start': 'pnpm ember test --test-port=0 --path=dist-test --serve --no-launch',
 };
 
 const TESTEM_TEST_APP_SCRIPTS = {
   ...CLASSIC_TEST_APP_SCRIPTS,
   test: 'ember test --test-port=0 --path=dist-test',
   'test:production': 'ember test --test-port=0 --path=dist-test --environment=production',
-  'test:start': 'bun run test --serve --no-launch',
+  'test:start': 'pnpm run test --serve --no-launch',
 };
 
 describe('sync-scripts', () => {

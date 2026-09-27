@@ -3701,12 +3701,12 @@ importers:
       '@pnpm/logger':
         specifier: 'catalog:'
         version: 1100.0.0
-      '@types/bun':
-        specifier: 1.4.2
-        version: 1.4.2
       '@types/debug':
         specifier: 'catalog:'
         version: 4.1.13
+      '@types/node':
+        specifier: ^26.6.2
+        version: 26.6.2
       comment-json:
         specifier: 'catalog:'
         version: 5.0.0
@@ -17350,8 +17350,8 @@ snapshots:
       '@pnpm/find-workspace-dir': 1000.1.5
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/logger': 1100.0.0
-      '@types/bun': 1.4.2
       '@types/debug': 4.1.13
+      '@types/node': 26.6.2
       comment-json: 5.0.0
       debug: 4.4.3
       typescript: 6.0.3
