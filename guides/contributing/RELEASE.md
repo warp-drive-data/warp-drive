@@ -29,12 +29,12 @@ by automation.
 Publishing to npm requires npm's [Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)
 (OIDC), which is only available from within that GitHub Actions workflow -- there is no manual
 or local publish path, and no npm account, access token, or 2FA setup is needed to perform a
-release. For more information run `bun release about` in the repository.
+release. For more information run `pnpm release about` in the repository.
 
 If you want to run a release step locally for review (e.g. a `--dry-run`, or generating a
 release strategy) rather than actually publishing, you will additionally need:
 
-- `bun`, `pnpm` and `node` installed globally (or better, via `mise`)
+- `pnpm` and `node` installed globally (or better, via `mise`)
 - A `GITHUB_AUTH` token configured for `lerna-changelog`, to gather info for the release notes
 
 ## Release Order

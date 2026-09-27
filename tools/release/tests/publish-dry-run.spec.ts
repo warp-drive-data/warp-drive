@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { after, before, describe, it } from 'node:test';
 
-import { createStubBin, makeTempDir, readJson, runCli, writeFile, writeJson, type RunResult } from './helpers.ts';
+import { CLI, createStubBin, makeTempDir, readJson, run, writeFile, writeJson, type RunResult } from './helpers.ts';
 
 /**
  * A miniature WarpDrive monorepo, just big enough to walk every step of
@@ -25,6 +25,8 @@ function createFixture(root: string, gitConfig: string) {
     name: 'root',
     version: '1.2.0-alpha.3',
     private: true,
+    // the same wiring as the real root package.json
+    scripts: { release: CLI },
   });
   writeFile(path.join(root, 'pnpm-workspace.yaml'), `packages:\n  - 'packages/*'\n  - 'warp-drive-packages/*'\n`);
   writeFile(path.join(root, '.gitignore'), `node_modules\ntmp\nprepack.log\n`);
@@ -99,7 +101,7 @@ function readFromTarball(tarball: string, file: string): string {
   return execFileSync('tar', ['-xzOf', tarball, `package/${file}`], { encoding: 'utf8' });
 }
 
-describe('release publish canary --dry-run (fixture monorepo)', () => {
+describe('pnpm release publish canary --dry-run (fixture monorepo)', () => {
   let root: string;
   let stub: ReturnType<typeof createStubBin>;
   let result: RunResult;
@@ -123,7 +125,13 @@ describe('release publish canary --dry-run (fixture monorepo)', () => {
       npm_config_store_dir: path.join(base, 'pnpm-store'),
     });
     git = (...args: string[]) => execFileSync('git', args, { cwd: root, env, encoding: 'utf8' }).trim();
-    result = runCli(['publish', 'canary', '-i', 'patch', '--dry-run'], { cwd: root, env, timeout: 180_000 });
+    // the way release.yml invokes it, so the tool's own pnpm install/pack/publish
+    // calls run nested inside `pnpm run`
+    result = run('pnpm', ['release', 'publish', 'canary', '-i', 'patch', '--dry-run'], {
+      cwd: root,
+      env,
+      timeout: 180_000,
+    });
   });
 
   after(() => {
