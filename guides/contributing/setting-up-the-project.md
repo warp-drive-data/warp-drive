@@ -8,9 +8,9 @@ description: 'Set up a WarpDrive contributor checkout: install mise, pnpm, and m
 
 If you don't already have [mise](https://mise.jdx.dev/) you will want to begin by [installing it](https://mise.jdx.dev/getting-started.html) and adding its shell activation to your profile.
 
-For package management, the project uses [PNPM](https://pnpm.io/). The repo's `mise.toml` pins the `node`, `pnpm`, and `bun` versions we use; once mise is activated in your shell, run `mise install` from the project root to fetch them.
+For package management, the project uses [PNPM](https://pnpm.io/). The repo's `mise.toml` pins the `node` and `pnpm` versions we use; once mise is activated in your shell, run `mise install` from the project root to fetch them.
 
-> **Note** if you have previously installed pnpm, node, or bun globally via other means (including Volta or bun's own installer) you should uninstall them from all other locations first, as they can conflict with mise's shims.
+> **Note** if you have previously installed pnpm or node globally via other means (including Volta) you should uninstall them from all other locations first, as they can conflict with mise's shims.
 
 ## Install certificate packages
 

@@ -45,7 +45,6 @@
     "@warp-drive/internal-docs-viewer": "workspace:*",
     "@warp-drive/internal-tooling": "workspace:*",
     "badge-maker": "catalog:",
-    "bun-types": "catalog:",
     "comment-json": "catalog:",
     "debug": "catalog:",
     "ember-source": "catalog:",
@@ -77,10 +76,6 @@
       {
         "name": "node",
         "version": "26.8.1"
-      },
-      {
-        "name": "bun",
-        "version": "1.4.0"
       }
     ]
   },

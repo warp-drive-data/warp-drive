@@ -56,7 +56,7 @@ checkout's `HEAD` happens to be parked on.
    ```
 
    Two setup steps are *not* per-worktree and don't need repeating: `mise install` fetches the
-   pinned `node`/`pnpm`/`bun` toolchain globally, and `@warp-drive/holodeck`'s
+   pinned `node`/`pnpm` toolchain globally, and `@warp-drive/holodeck`'s
    `ensure-cert` writes `holodeck-localhost.pem` into your home directory. Only run those if
    you've never set the project up on this machine.
 5. Run every command from the worktree root for the rest of the session, and don't `cd` back into

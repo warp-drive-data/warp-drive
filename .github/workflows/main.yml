@@ -269,6 +269,10 @@ jobs:
         run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm npm
       - name: Smoke test (pnpm)
         run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm pnpm
+      # bun is installed here only to test consumers who install the codemods tarball with bun.
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: latest
       - name: Smoke test (bun)
         run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm bun
       # musl coverage: @ast-grep/napi must resolve its -musl platform package.
