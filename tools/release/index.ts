@@ -1,4 +1,4 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { styleText } from 'node:util';
 
 import { backfillReleaseNotes } from './core/backfill-release-notes/index.ts';
@@ -47,7 +47,7 @@ const COMMANDS = {
 };
 
 async function main() {
-  const args = Bun.argv.slice(2);
+  const args = process.argv.slice(2);
 
   const commandArg = args.length === 0 ? 'help' : normalizeFlag(args[0]);
   const commands = getCommands();
@@ -63,7 +63,7 @@ async function main() {
           'bold',
           styleText('greenBright', 'Warp') + styleText('magentaBright', 'Drive')
         )} | Automated Release\n\t==============================`
-      ) + styleText('gray', `\n\tengine: ${styleText('cyan', 'bun@' + Bun.version)}\n`)
+      ) + styleText('gray', `\n\tengine: ${styleText('cyan', 'node@' + process.version)}\n`)
     );
   }
 

@@ -16,6 +16,10 @@
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "noEmit": true,
-    "types": ["@types/bun", "@types/semver"]
+    // Node runs these files with type stripping: only erasable syntax, and
+    // type-only imports must be marked `type` so they are removed.
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "types": ["@types/node", "@types/semver"]
   }
 }

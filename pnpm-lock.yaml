@@ -3719,15 +3719,12 @@ importers:
 
   tools/release:
     dependencies:
-      '@types/bun':
-        specifier: 1.4.2
-        version: 1.4.2
+      '@types/node':
+        specifier: ^26.6.2
+        version: 26.6.2
       '@types/semver':
         specifier: 'catalog:'
         version: 7.8.0
-      bun-types:
-        specifier: 1.4.2
-        version: 1.4.2
       lerna-changelog:
         specifier: 'catalog:'
         version: 2.2.0

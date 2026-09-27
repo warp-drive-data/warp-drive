@@ -1,4 +1,3 @@
-import { Glob } from 'bun';
 import fs from 'fs';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -6,7 +5,8 @@ import { styleText } from 'node:util';
 import path from 'path';
 
 import { exec } from '../../../utils/cmd.ts';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
+import { scanFiles } from '../../../utils/glob.ts';
+import { type APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { amendFilesForUnpkg } from './amend-for-unpkg.ts';
 
 export const PROJECT_ROOT = process.cwd();
@@ -194,7 +194,7 @@ export async function generatePackageTarballs(
 
     try {
       if (pkg.pkgData.scripts?.['prepack']) {
-        await exec({ cwd: path.join(PROJECT_ROOT, path.dirname(pkg.filePath)), cmd: `bun run prepack` });
+        await exec({ cwd: path.join(PROJECT_ROOT, path.dirname(pkg.filePath)), cmd: `pnpm run prepack` });
         await printDirtyFiles(`After Prepack: ${pkg.pkgData.name}`, pkg.pkgData.name);
       }
     } catch (e) {
@@ -477,9 +477,8 @@ async function synthesizeTypesDirectoryFromDist(pkg: Package, subdir: 'unstable-
   // clear out anything stale from a previous run
   fs.rmSync(targetDir, { recursive: true, force: true });
 
-  const glob = new Glob('**/*.d.ts');
   let count = 0;
-  for await (const filePath of glob.scan(distDir)) {
+  for await (const filePath of scanFiles('**/*.d.ts', distDir)) {
     const src = path.join(distDir, filePath);
     const dest = path.join(targetDir, filePath);
     fs.mkdirSync(path.dirname(dest), { recursive: true });
@@ -494,9 +493,11 @@ async function synthesizeTypesDirectoryFromDist(pkg: Package, subdir: 'unstable-
   }
 }
 
-async function convertTypesToModules(pkg: Package, subdir: 'unstable-preview-types' | 'preview-types' | 'types') {
+export async function convertTypesToModules(
+  pkg: Package,
+  subdir: 'unstable-preview-types' | 'preview-types' | 'types'
+) {
   const typesDir = path.join(path.dirname(pkg.filePath), subdir);
-  const glob = new Glob('**/*.d.ts');
 
   // we will insert a reference to each file in the index.d.ts
   // so that all modules are available to consumers
@@ -504,28 +505,27 @@ async function convertTypesToModules(pkg: Package, subdir: 'unstable-preview-typ
   const references = new Set<string>();
 
   // convert each file to a module
-  for await (const filePath of glob.scan(typesDir)) {
+  for await (const filePath of scanFiles('**/*.d.ts', typesDir)) {
     const fullPath = path.join(typesDir, filePath);
-    const file = Bun.file(fullPath);
-    const fileData = await file.text();
+    const fileData = await fs.promises.readFile(fullPath, 'utf8');
     const updatedFileData = await convertFileToModule(fileData, filePath, pkg.pkgData.name);
 
     if (filePath !== 'index.d.ts') {
       references.add(`/// <reference path="./${filePath}" />`);
     }
 
-    await Bun.write(file, updatedFileData);
+    await fs.promises.writeFile(fullPath, updatedFileData);
   }
 
   // write the references into the index.d.ts
-  const indexFile = Bun.file(path.join(typesDir, 'index.d.ts'));
-  const exists = await indexFile.exists();
+  const indexFile = path.join(typesDir, 'index.d.ts');
+  const exists = fs.existsSync(indexFile);
   if (!exists) {
-    await Bun.write(indexFile, Array.from(references).join('\n'));
+    await fs.promises.writeFile(indexFile, Array.from(references).join('\n'));
   } else {
-    const fileData = await indexFile.text();
+    const fileData = await fs.promises.readFile(indexFile, 'utf8');
     const updatedFileData = Array.from(references).join('\n') + '\n' + fileData;
-    await Bun.write(indexFile, updatedFileData);
+    await fs.promises.writeFile(indexFile, updatedFileData);
   }
 }
 

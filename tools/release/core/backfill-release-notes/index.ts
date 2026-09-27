@@ -1,7 +1,7 @@
 import { printHelpDocs } from '../../help/docs.ts';
-import { SEMVER_VERSION } from '../../utils/channel.ts';
+import type { SEMVER_VERSION } from '../../utils/channel.ts';
 import { release_notes_flags_config } from '../../utils/flags-config.ts';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
+import { type GIT_TAG, getAllPackagesForGitTag, getGitState } from '../../utils/git.ts';
 import { gatherPackages, loadStrategy } from '../../utils/package.ts';
 import { parseRawFlags } from '../../utils/parse-args.ts';
 import { confirmStrategy } from '../publish/steps/confirm-strategy.ts';

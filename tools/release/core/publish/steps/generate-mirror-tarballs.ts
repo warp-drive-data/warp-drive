@@ -1,9 +1,9 @@
-import { Glob } from 'bun';
 import fs from 'fs';
 import path from 'path';
 
 import { exec } from '../../../utils/cmd.ts';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
+import { scanFiles } from '../../../utils/glob.ts';
+import { type APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs.ts';
 
 export async function generateMirrorTarballs(
@@ -61,37 +61,7 @@ export async function generateMirrorTarballs(
       await exec(`tar -xf ${mainTarballPath} -C ${unpackedDir}`);
 
       // replace any references to the original package names with the mirrored package names in every file
-      // to do this we scan every file in the unpacked directory and do a string replace
-      const glob = new Glob('**/*');
-
-      for await (const filePath of glob.scan(realUnpackedDir)) {
-        const fullPath = path.join(realUnpackedDir, filePath);
-        const file = Bun.file(fullPath);
-        const fileData = await file.text();
-
-        let newContents = fileData;
-        for (const [from, to] of toReplace) {
-          newContents = newContents.replace(new RegExp(from, 'g'), to);
-        }
-        for (const [from, to] of cautionReplace) {
-          newContents = newContents.replace(new RegExp(`'${from}`, 'g'), `'${to}`);
-          newContents = newContents.replace(new RegExp(`"${from}`, 'g'), `"${to}`);
-        }
-
-        // Both quote styles, because the emitted quote style is not ours to control:
-        //   macros.setGlobalConfig(import.meta.filename, "WarpDrive", finalizedConfig)
-        //   macros.globalConfig["WarpDrive"]
-        //   types.identifier("WarpDrive")  <- emitted by the babel-plugin-transform-* files
-        if (strat.name === '@warp-drive/build-config') {
-          newContents = newContents.replace(/(['"])WarpDrive\1/g, '$1WarpDriveMirror$1');
-        }
-
-        newContents = newContents.replace(/getGlobalConfig\(\)\.WarpDrive\./g, 'getGlobalConfig().WarpDriveMirror.');
-        newContents = newContents.replace(new RegExp(`'@ember-data/'`, 'g'), `'@ember-data-mirror/'`);
-        newContents = newContents.replace(new RegExp(`"@ember-data/"`, 'g'), `"@ember-data-mirror/"`);
-
-        await Bun.write(fullPath, newContents);
-      }
+      await rewriteForMirror(realUnpackedDir, strat.name, toReplace, cautionReplace);
 
       // pack the new package and put it in the tarballs directory
       const result = await exec({
@@ -103,5 +73,50 @@ export async function generateMirrorTarballs(
 
       pkg.mirrorTarballPath = mirrorTarballPath;
     }
+  }
+}
+
+/**
+ * Rewrites every file below `dir` (an unpacked tarball of `pkgName`) so that it
+ * references the mirror package names instead of the original ones.
+ *
+ * - `toReplace`: scoped names, replaced wherever they appear
+ * - `cautionReplace`: unscoped names, replaced only directly after a quote
+ *
+ * @internal
+ */
+export async function rewriteForMirror(
+  dir: string,
+  pkgName: string,
+  toReplace: Map<string, string>,
+  cautionReplace: Map<string, string>
+) {
+  // to do this we scan every file in the unpacked directory and do a string replace
+  for await (const filePath of scanFiles('**/*', dir)) {
+    const fullPath = path.join(dir, filePath);
+    const fileData = await fs.promises.readFile(fullPath, 'utf8');
+
+    let newContents = fileData;
+    for (const [from, to] of toReplace) {
+      newContents = newContents.replace(new RegExp(from, 'g'), to);
+    }
+    for (const [from, to] of cautionReplace) {
+      newContents = newContents.replace(new RegExp(`'${from}`, 'g'), `'${to}`);
+      newContents = newContents.replace(new RegExp(`"${from}`, 'g'), `"${to}`);
+    }
+
+    // Both quote styles, because the emitted quote style is not ours to control:
+    //   macros.setGlobalConfig(import.meta.filename, "WarpDrive", finalizedConfig)
+    //   macros.globalConfig["WarpDrive"]
+    //   types.identifier("WarpDrive")  <- emitted by the babel-plugin-transform-* files
+    if (pkgName === '@warp-drive/build-config') {
+      newContents = newContents.replace(/(['"])WarpDrive\1/g, '$1WarpDriveMirror$1');
+    }
+
+    newContents = newContents.replace(/getGlobalConfig\(\)\.WarpDrive\./g, 'getGlobalConfig().WarpDriveMirror.');
+    newContents = newContents.replace(new RegExp(`'@ember-data/'`, 'g'), `'@ember-data-mirror/'`);
+    newContents = newContents.replace(new RegExp(`"@ember-data/"`, 'g'), `"@ember-data-mirror/"`);
+
+    await fs.promises.writeFile(fullPath, newContents);
   }
 }

@@ -1,3 +1,5 @@
+import { spawn, type ChildProcessByStdio } from 'node:child_process';
+import { Readable } from 'node:stream';
 import { styleText } from 'node:util';
 import path from 'path';
 import * as readline from 'readline/promises';
@@ -15,7 +17,41 @@ type CMD = {
 //   await new Promise((resolve) => setTimeout(resolve, 10));
 // }
 
-const isCI = Boolean(Bun.env.CI);
+const isCI = Boolean(process.env.CI);
+
+type PipedProcess = ChildProcessByStdio<null, Readable, Readable>;
+
+function spawnPiped(args: string[], cwd: string, env: NodeJS.ProcessEnv | Record<string, string>): PipedProcess {
+  const [command, ...commandArgs] = args;
+  return spawn(command, commandArgs, { cwd, env, stdio: ['ignore', 'pipe', 'pipe'] });
+}
+
+/**
+ * Buffers everything a stream emits, so a pipe is always drained while the
+ * child runs. Read the result once the child has closed.
+ */
+function collect(stream: Readable): () => string {
+  const chunks: Buffer[] = [];
+  stream.on('data', (chunk: Buffer) => chunks.push(chunk));
+  return () => Buffer.concat(chunks).toString('utf8');
+}
+
+/**
+ * Resolves with the exit code once the child has exited and its stdio has
+ * closed. A child killed by a signal resolves with the signal name instead.
+ * Rejects if the child could not be spawned (e.g. the command does not exist).
+ */
+function exited(proc: PipedProcess): Promise<number | NodeJS.Signals> {
+  const result = new Promise<number | NodeJS.Signals>((resolve, reject) => {
+    proc.once('error', reject);
+    proc.once('close', (code, signal) => resolve(code ?? signal ?? 1));
+  });
+  // callers may still be reading stdout when a spawn error arrives; they
+  // observe the rejection when they await this promise
+  result.catch(() => {});
+  return result;
+}
+
 class CLICondenser {
   declare reader: ReadableStreamDefaultReader<Uint8Array>;
   declare cmd: string;
@@ -149,40 +185,34 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
 
   if (!dryRun) {
     if (isCmdWithConfig && cmd.condense) {
-      const proc = Bun.spawn(args, {
-        env: cmd.env || process.env,
-        cwd,
-        stderr: 'pipe',
-        stdout: 'pipe',
-      });
+      const proc = spawnPiped(args, cwd, cmd.env || process.env);
+      const readErr = collect(proc.stderr);
+      const exit = exited(proc);
 
-      const reader = proc.stdout.getReader() as ReadableStreamDefaultReader<Uint8Array>;
+      const reader = Readable.toWeb(proc.stdout).getReader() as ReadableStreamDefaultReader<Uint8Array>;
       const condenser = new CLICondenser(args.join(' '), reader, cmd);
       const result = await condenser.read();
 
-      await proc.exited;
-      if (proc.exitCode !== 0) {
+      const exitCode = await exit;
+      if (exitCode !== 0) {
         console.log(result);
-        const errText = await new Response(proc.stderr).text();
+        const errText = readErr();
         console.error('\t' + errText.split('\n').join('\n\t'));
-        throw proc.exitCode;
+        throw exitCode;
       }
       return result;
     } else {
-      const proc = Bun.spawn(args, {
-        env: isCmdWithConfig ? cmd.env || process.env : process.env,
-        cwd,
-        stderr: 'pipe',
-        stdout: 'pipe',
-      });
+      const proc = spawnPiped(args, cwd, isCmdWithConfig ? cmd.env || process.env : process.env);
+      const readLog = collect(proc.stdout);
+      const readErr = collect(proc.stderr);
 
-      await proc.exited;
-      if (proc.exitCode !== 0) {
-        const logText = await new Response(proc.stdout).text();
-        const errText = await new Response(proc.stderr).text();
+      const exitCode = await exited(proc);
+      if (exitCode !== 0) {
+        const logText = readLog();
+        const errText = readErr();
         console.error('\t' + errText.split('\n').join('\n\t'));
 
-        const error = new Error(`exit code: ${String(proc.exitCode)}`);
+        const error = new Error(`exit code: ${String(exitCode)}`);
         // @ts-expect-error - adding properties to custom Error
         error.logText = logText;
         // @ts-expect-error - adding properties to custom Error
@@ -191,7 +221,7 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
         throw error;
       }
 
-      return await new Response(proc.stdout).text();
+      return readLog();
     }
   } else {
     return '';

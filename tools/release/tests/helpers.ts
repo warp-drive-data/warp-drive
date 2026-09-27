@@ -38,7 +38,7 @@ function toResult(result: SpawnSyncReturns<string>): RunResult {
  * Runs the release CLI the way the root `release` script does: by executing
  * `tools/release/index.ts` directly, so its shebang picks the runtime.
  *
- * Set RELEASE_CLI_RUNTIME (e.g. `bun` or `node`) to force a runtime instead.
+ * Set RELEASE_CLI_RUNTIME (e.g. `node`) to force a runtime instead.
  */
 export function runCli(
   args: string[],

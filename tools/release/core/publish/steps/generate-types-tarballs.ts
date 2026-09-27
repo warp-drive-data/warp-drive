@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { exec } from '../../../utils/cmd.ts';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
+import { type APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 import { PROJECT_ROOT, TARBALL_DIR, toTarballName } from './generate-tarballs.ts';
 
 const TYPES_SUBDIR = 'unstable-preview-types';

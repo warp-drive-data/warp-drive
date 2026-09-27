@@ -1,11 +1,12 @@
-import { BunFile } from 'bun';
+import { existsSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
 import { styleText } from 'node:util';
 import path from 'path';
 
-import { Package, RawStrategyConfig } from '../../../utils/package.ts';
-import { Committers, Entry, LernaChangeset } from './get-changes.ts';
+import { Package, type RawStrategyConfig } from '../../../utils/package.ts';
+import { Committers, type Entry, type LernaChangeset } from './get-changes.ts';
 
-function findInsertionPoint(lines: string[], version: string) {
+export function findInsertionPoint(lines: string[], version: string) {
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].startsWith(`## ${version}`)) {
       return i;
@@ -14,7 +15,7 @@ function findInsertionPoint(lines: string[], version: string) {
   return 2;
 }
 
-function buildText(
+export function buildText(
   newTag: string,
   date: string,
   strategy: RawStrategyConfig,
@@ -74,14 +75,14 @@ export async function updateChangelogs(
   config: Map<string, string | number | boolean | null>,
   strategy: RawStrategyConfig,
   packages: Map<string, Package>
-): Promise<BunFile[]> {
-  const file = Bun.file('./CHANGELOG.md');
-  const mainChangelog = await file.text();
+): Promise<string[]> {
+  const file = './CHANGELOG.md';
+  const mainChangelog = await readFile(file, 'utf8');
   const lines = mainChangelog.split('\n');
   const newLines = buildText(toTag, date, strategy, newChanges.data, newChanges.data[Committers]);
   const insertionPoint = findInsertionPoint(lines, fromTag);
   lines.splice(insertionPoint, 0, ...newLines);
-  await Bun.write(file, lines.join('\n'));
+  await writeFile(file, lines.join('\n'));
   console.log(`\t✅ Updated Primary Changelog`);
   const changedFiles = [file];
 
@@ -94,8 +95,8 @@ export async function updateChangelogs(
     if (!pkg) {
       throw new Error(`Could not find package for name: ${pkgName}`);
     }
-    const changelogFile = Bun.file(path.join(path.dirname(pkg.filePath), 'CHANGELOG.md'));
-    const exists = await changelogFile.exists();
+    const changelogFile = path.join(path.dirname(pkg.filePath), 'CHANGELOG.md');
+    const exists = existsSync(changelogFile);
     const newLines = buildText(toTag, date, strategy, changes, newChanges.data[Committers]);
     changedFiles.push(changelogFile);
 
@@ -110,12 +111,12 @@ export async function updateChangelogs(
         '',
       ];
     } else {
-      changelogLines = (await changelogFile.text()).split('\n');
+      changelogLines = (await readFile(changelogFile, 'utf8')).split('\n');
       const insertionPoint = findInsertionPoint(changelogLines, fromTag);
       changelogLines.splice(insertionPoint, 0, ...newLines);
     }
 
-    await Bun.write(changelogFile, changelogLines.join('\n'));
+    await writeFile(changelogFile, changelogLines.join('\n'));
     console.log(
       exists
         ? `\t✅ Updated ${styleText('cyan', pkg.pkgData.name)} Changelog`
