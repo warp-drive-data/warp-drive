@@ -287,14 +287,14 @@ start({
 });
 ```
 
-Next, we will want to install `bun`. (We intend to pre-bundle the runner as an executable in the near future, but until then this is required).
+The launcher runs on Node, so CI needs nothing beyond the Node install you already use to build your app.
 
-For github-actions, [use the official bun action](https://github.com/oven-sh/setup-bun#readme)
+For github-actions, [use the official setup-node action](https://github.com/actions/setup-node#readme)
 
 ```yml
-- uses: oven-sh/setup-bun@v1
+- uses: actions/setup-node@v7
   with:
-    bun-version: latest
+    node-version: lts/*
 ```
 
 Finally, give your tests a run to make sure they still work as expected.
@@ -310,7 +310,7 @@ And update any necessary scripts in `package.json`
   "scripts": {
      "build" "vite build",
 -    "test": "ember test"
-+    "test": "pnpm run build && node ./diagnostic.js"
++    "test": "npm run build && node ./diagnostic.js"
   }
 }
 ```
