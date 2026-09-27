@@ -23,7 +23,8 @@
   "scripts": {
     "build:parse": "bun build src/parse.ts --compile --outfile parse",
     "build:scaffold": "bun build src/scaffold.ts --compile --outfile scaffold",
-    "build:cli": "bun run build:parse && bun run build:scaffold"
+    "build:cli": "bun run build:parse && bun run build:scaffold",
+    "test": "node --test tests/*.spec.ts"
   },
   "files": [
     "README.md",
