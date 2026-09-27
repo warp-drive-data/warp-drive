@@ -90,6 +90,31 @@ describe('utils/glob scanFiles', () => {
     assert.deepEqual(await scan('**/*.d.ts', cwd), ['index.d.ts', 'sub/deep/thing.d.ts']);
   });
 
+  it('follows symbolic links to files, skipping broken links and links to directories', async () => {
+    const base = makeTempDir('glob-links');
+    try {
+      writeFile(path.join(base, 'target/real.d.ts'), '');
+      fs.mkdirSync(path.join(base, 'target/dir'));
+      const tree = path.join(base, 'tree');
+      writeFile(path.join(tree, 'plain.d.ts'), '');
+      writeFile(path.join(tree, 'sub/nested.d.ts'), '');
+      fs.symlinkSync('../target/real.d.ts', path.join(tree, 'linked.d.ts'));
+      fs.symlinkSync('../../target/real.d.ts', path.join(tree, 'sub/linked-nested.d.ts'));
+      // a link to a directory is never yielded itself, even when its name matches
+      fs.symlinkSync('../target/dir', path.join(tree, 'linked-dir.d.ts'));
+      fs.symlinkSync('../target/missing.d.ts', path.join(tree, 'broken.d.ts'));
+
+      assert.deepEqual(await scan('**/*.d.ts', tree), [
+        'linked.d.ts',
+        'plain.d.ts',
+        'sub/linked-nested.d.ts',
+        'sub/nested.d.ts',
+      ]);
+    } finally {
+      fs.rmSync(base, { recursive: true, force: true });
+    }
+  });
+
   it('accepts a cwd relative to the process cwd', async () => {
     const relative = path.relative(process.cwd(), path.join(cwd, 'sub'));
     assert.deepEqual(await scan('**/*', relative), ['deep/thing.d.ts', 'file.js']);

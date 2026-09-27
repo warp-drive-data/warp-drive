@@ -117,6 +117,17 @@ describe('utils/cmd exec', () => {
       CI: 'true',
     });
     assert.equal(outcome.error?.message, 'spawn release-tool-command-that-does-not-exist ENOENT');
+    // nothing claims the step started or finished
+    assert.doesNotMatch(outcome.output, /🚀|☑️/);
+  });
+
+  it('rejects without success output when the cwd does not exist in condensed mode', () => {
+    const outcome = runExec(
+      `exec({ cmd: [${node}, '-e', '1'], cwd: ${JSON.stringify(path.join(tmp, 'missing-dir'))}, condense: true })`,
+      { CI: 'true' }
+    );
+    assert.match(outcome.error?.message ?? '', /ENOENT/);
+    assert.doesNotMatch(outcome.output, /🚀|☑️/);
   });
 
   describe('condensed', () => {

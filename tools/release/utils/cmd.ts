@@ -52,6 +52,16 @@ function exited(proc: PipedProcess): Promise<number | NodeJS.Signals> {
   return result;
 }
 
+/**
+ * Resolves once the child process has started, rejects if it could not be spawned.
+ */
+function spawned(proc: PipedProcess): Promise<void> {
+  return new Promise<void>((resolve, reject) => {
+    proc.once('spawn', resolve);
+    proc.once('error', reject);
+  });
+}
+
 class CLICondenser {
   declare reader: ReadableStreamDefaultReader<Uint8Array>;
   declare cmd: string;
@@ -188,6 +198,9 @@ export async function exec(cmd: string[] | string | CMD, dryRun: boolean = false
       const proc = spawnPiped(args, cwd, cmd.env || process.env);
       const readErr = collect(proc.stderr);
       const exit = exited(proc);
+      // a command that cannot start (missing binary, bad cwd) must reject before
+      // the condenser prints its header and its done line
+      await spawned(proc);
 
       const reader = Readable.toWeb(proc.stdout).getReader() as ReadableStreamDefaultReader<Uint8Array>;
       const condenser = new CLICondenser(args.join(' '), reader, cmd);
