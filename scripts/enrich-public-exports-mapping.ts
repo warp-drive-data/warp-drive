@@ -1,7 +1,7 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 /**
  * Enrich `public-exports-mapping.json` with replacement information from
- * the `warp-drive-packages` source tree (run with Bun or Node).
+ * the `warp-drive-packages` source tree.
  *
  * Added: Interactive Mode
  *  - Pass `--interactive` (or `-I`) to be prompted for each mapping entry.
@@ -54,7 +54,7 @@
  *  - Small penalty for extra unmatched segments in candidate.
  *
  * Usage:
- *   bun scripts/enrich-public-exports-mapping.ts
+ *   node scripts/enrich-public-exports-mapping.ts
  *     --in data/public-exports-mapping.json
  *     --out data/public-exports-mapping.enriched.json
  *     [--wd public-exports-mapping-wd.json]
