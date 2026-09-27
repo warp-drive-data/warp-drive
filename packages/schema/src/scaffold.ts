@@ -1,6 +1,8 @@
+#!/usr/bin/env node
+import fs from 'node:fs/promises';
+import os from 'node:os';
+import path from 'node:path';
 import { styleText } from 'node:util';
-import os from 'os';
-import path from 'path';
 
 function write($text: string) {
   console.log(styleText('gray', $text));
@@ -8,17 +10,22 @@ function write($text: string) {
 
 const Scaffolds = ['resource', 'trait', 'field', 'derivation', 'transform'];
 
+function fileExists($path: string): Promise<boolean> {
+  return fs.access($path).then(
+    () => true,
+    () => false
+  );
+}
+
 function getRelativePathToRoot($path: string) {
   return `~/${path.relative(os.homedir(), $path)}`;
 }
 
 async function loadOrCreateConfig(): Promise<Record<string, unknown> & { DID_GENERATE: boolean }> {
   const configPath = path.join(process.cwd(), './schema.json');
-  const filePointer = Bun.file(configPath);
-  const fileExists = await filePointer.exists();
 
-  if (fileExists) {
-    const config = await filePointer.json();
+  if (await fileExists(configPath)) {
+    const config = JSON.parse(await fs.readFile(configPath, 'utf8'));
     config.DID_GENERATE = false;
     return config;
   }
@@ -32,7 +39,7 @@ async function loadOrCreateConfig(): Promise<Record<string, unknown> & { DID_GEN
     `\n\t🔨 Generating new ${styleText('yellow', 'schema.json')} configuration file in ${styleText('cyan', getRelativePathToRoot(process.cwd()))}`
   );
 
-  await Bun.write(filePointer, JSON.stringify(config, null, 2));
+  await fs.writeFile(configPath, JSON.stringify(config, null, 2));
   config.DID_GENERATE = true;
   return config as Record<string, unknown> & { DID_GENERATE: true };
 }
@@ -116,8 +123,7 @@ export { ${className} };
 `;
 }
 
-async function main() {
-  const args = Bun.argv.slice(2);
+export async function main(args: string[]) {
   const [resource, name] = args;
 
   write(
@@ -141,10 +147,9 @@ async function main() {
   const relativeWritePath =
     resource === 'resource' ? `${config.schemas}/${name}.ts` : `${config.schemas}/-${resource}s/${name}.ts`;
 
-  const file = Bun.file(path.join(process.cwd(), relativeWritePath));
-  const fileExists = await file.exists();
+  const filePath = path.join(process.cwd(), relativeWritePath);
 
-  if (fileExists) {
+  if (await fileExists(filePath)) {
     write(
       `\n\t${styleText('bold', '💥 Error')} ${styleText('white', relativeWritePath)} already exists! Skipping Scaffold.\n`
     );
@@ -153,7 +158,8 @@ async function main() {
 
   switch (resource) {
     case 'resource':
-      await Bun.write(file, config.DID_GENERATE ? generateFirstResource(name) : generateResource(name));
+      await fs.mkdir(path.dirname(filePath), { recursive: true });
+      await fs.writeFile(filePath, config.DID_GENERATE ? generateFirstResource(name) : generateResource(name));
       break;
     default:
       break;
@@ -165,4 +171,6 @@ async function main() {
   console.log(args);
 }
 
-await main();
+if (import.meta.main) {
+  await main(process.argv.slice(2));
+}

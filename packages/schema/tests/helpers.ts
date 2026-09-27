@@ -41,7 +41,19 @@ export function setupProject(t: TestContext, files: Record<string, string> = {})
  * package root) with the given arguments from inside `cwd`.
  */
 export function runCli(entry: string, args: string[], cwd: string): CliResult {
-  const result = spawnSync(RUNNER, [path.join(PACKAGE_ROOT, entry), ...args], {
+  return spawnCli(RUNNER, [path.join(PACKAGE_ROOT, entry), ...args], cwd);
+}
+
+/**
+ * Executes one of the package's `bin` files directly, the way a package
+ * manager's bin link does, so its shebang picks the runtime.
+ */
+export function runBin(entry: string, args: string[], cwd: string): CliResult {
+  return spawnCli(path.join(PACKAGE_ROOT, entry), args, cwd);
+}
+
+function spawnCli(command: string, args: string[], cwd: string): CliResult {
+  const result = spawnSync(command, args, {
     cwd,
     encoding: 'utf8',
     env: { ...process.env, NO_COLOR: '1', FORCE_COLOR: '0' },

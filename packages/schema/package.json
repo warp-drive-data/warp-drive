@@ -20,20 +20,20 @@
   },
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
+  "type": "module",
   "scripts": {
-    "build:parse": "bun build src/parse.ts --compile --outfile parse",
-    "build:scaffold": "bun build src/scaffold.ts --compile --outfile scaffold",
-    "build:cli": "bun run build:parse && bun run build:scaffold",
+    "check:types": "tsc --noEmit",
     "test": "node --test tests/*.spec.ts"
   },
   "files": [
     "README.md",
+    "src",
     "LICENSE.md",
     "unstable-preview-types"
   ],
   "bin": {
-    "parse": "./parse",
-    "resource": "./scaffold resource"
+    "parse": "./src/parse.ts",
+    "resource": "./src/scaffold-resource.ts"
   },
   "main": "src/index.ts",
   "peerDependencies": {},
@@ -42,6 +42,9 @@
     "@babel/traverse": "catalog:"
   },
   "devDependencies": {
-    "bun-types": "catalog:"
+    "@babel/types": "^7.29.8",
+    "@types/babel__traverse": "^7.28.0",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   }
 }

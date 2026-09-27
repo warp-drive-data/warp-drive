@@ -1,4 +1,4 @@
-import { ObjectValue, PrimitiveValue } from '../utils/extract-json';
+import type { ObjectValue, PrimitiveValue } from '../utils/extract-json.ts';
 
 /**
  * A generic "field" that can be used to define

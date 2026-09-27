@@ -1,8 +1,8 @@
 import { styleText } from 'node:util';
 
-import { SchemaModule } from '../utils/process-file';
-import { write } from '../utils/utils';
-import { Schema } from './json-schema-spec';
+import type { SchemaModule } from '../utils/process-file.ts';
+import { write } from '../utils/utils.ts';
+import type { Schema } from './json-schema-spec.ts';
 
 export async function compileJSONSchemas(modules: Map<string, SchemaModule>) {
   const compiled: Schema[] = [];

@@ -1,22 +1,20 @@
-import { Glob } from 'bun';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { styleText } from 'node:util';
-import path from 'path';
 
-import { SchemaModule, parseSchemaFile } from '../utils/process-file';
-import { write } from '../utils/utils';
-import { SchemaConfig } from './get-config';
+import { type SchemaModule, parseSchemaFile } from '../utils/process-file.ts';
+import { write } from '../utils/utils.ts';
+import type { SchemaConfig } from './get-config.ts';
 
 export async function gatherSchemaFiles(config: SchemaConfig) {
   const { fullSchemaDirectory, relativeSchemaDirectory } = config;
   write(`\n\t\tParsing schema files from ${styleText('bold', styleText('cyan', relativeSchemaDirectory))}`);
   const modules = new Map<string, SchemaModule>();
 
-  const glob = new Glob(`**/*.ts`);
-  for await (const filePath of glob.scan(fullSchemaDirectory)) {
+  for await (const filePath of fs.glob('**/*.ts', { cwd: fullSchemaDirectory })) {
     write(`\n\t\tParsing ${styleText('bold', styleText('cyan', filePath))}`);
     const fullPath = path.join(fullSchemaDirectory, filePath);
-    const file = Bun.file(fullPath);
-    const contents = await file.text();
+    const contents = await fs.readFile(fullPath, 'utf8');
     const schemaModule = await parseSchemaFile(filePath, contents);
     modules.set(filePath, schemaModule);
   }

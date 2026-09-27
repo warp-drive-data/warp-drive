@@ -1,12 +1,13 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { styleText } from 'node:util';
-import path from 'path';
 
-import { write } from '../utils/utils';
+import { write } from '../utils/utils.ts';
 
 export type SchemaConfig = Awaited<ReturnType<typeof getSchemaConfig>>;
 
 export async function getSchemaConfig() {
-  const args = Bun.argv.slice(2);
+  const args = process.argv.slice(2);
   const [schemaPath] = args;
 
   write(
@@ -18,15 +19,17 @@ export async function getSchemaConfig() {
     process.exit(1);
   }
 
-  const schemaFile = Bun.file(schemaPath);
-  const schemaFileExists = await schemaFile.exists();
+  const schemaFileExists = await fs.access(schemaPath).then(
+    () => true,
+    () => false
+  );
 
   if (!schemaFileExists) {
     write(`\n\t${styleText('bold', '💥 Error')} ${styleText('white', schemaPath)} does not exist!`);
     process.exit(1);
   }
 
-  const config = await schemaFile.json();
+  const config = JSON.parse(await fs.readFile(schemaPath, 'utf8'));
   const schemaDirectory = path.join(process.cwd(), path.dirname(schemaPath), config.schemas);
   const schemaDestination = path.join(process.cwd(), path.dirname(schemaPath), config.dest);
 
