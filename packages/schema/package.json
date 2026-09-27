@@ -36,7 +36,10 @@
   },
   "main": "src/index.ts",
   "peerDependencies": {},
-  "dependencies": {},
+  "dependencies": {
+    "@babel/parser": "catalog:",
+    "@babel/traverse": "catalog:"
+  },
   "devDependencies": {
     "bun-types": "catalog:"
   }
