@@ -369,7 +369,17 @@
     // means a cache hit restores the same files a real run would have
     // produced, instead of leaving them stale/missing for those upload steps.
     "test": {
-      "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
+      // $TURBO_DEFAULT$ is required here or these `inputs` REPLACE (rather
+      // than add to) turbo's default file-hashing. Packages whose `test` has
+      // no `build:tests` step to hash their sources through (e.g. the node
+      // --test specs in tools/internal-tooling) would otherwise be served a
+      // cached "test passed" after their source files changed.
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "../../packages/diagnostic/server/**",
+        "../../packages/holodeck/**",
+        ".mock-cache/**"
+      ],
       "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:tests"]
     },

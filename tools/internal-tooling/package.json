@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "build:pkg": "bun run src/sync-logos.ts",
-    "prepack": "pnpm run build:pkg"
+    "prepack": "pnpm run build:pkg",
+    "test": "node --test tests/*.spec.ts"
   },
   "bin": {
     "sync-logos": "src/sync-logos.ts",
