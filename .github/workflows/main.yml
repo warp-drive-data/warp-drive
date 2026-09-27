@@ -272,7 +272,9 @@ jobs:
       # bun is installed here only to test consumers who install the codemods tarball with bun.
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: latest
+          # Pinned by hand: renovate no longer tracks bun. 1.4.2 is the version mise.toml
+          # pinned before it left the toolchain; pinning keeps this smoke test reproducible.
+          bun-version: 1.4.2
       - name: Smoke test (bun)
         run: node tests/codemods/scripts/verify-tarball.mjs --tarball "$TARBALL" --pm bun
       # musl coverage: @ast-grep/napi must resolve its -musl platform package.

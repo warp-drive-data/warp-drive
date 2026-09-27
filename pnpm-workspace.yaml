@@ -298,7 +298,6 @@ catalog:
   "@babel/preset-typescript": ^7.29.7
   "@babel/runtime": ^7.29.7
   "@babel/traverse": ^7.29.8
-  "@babel/types": ^7.29.8
   "@ember/app-tsconfig": ^2.0.0
   "@ember/edition-utils": ^1.2.0
   "@ember/optional-features": ^3.0.0
@@ -331,7 +330,6 @@ catalog:
   "@sveltejs/package": ^2.5.8
   "@sveltejs/vite-plugin-svelte": ^7.3.1
   "@types/babel__core": ^7.20.5
-  "@types/babel__traverse": ^7.28.0
   "@types/debug": ^4.1.13
   "@types/jquery": ^4.0.1
   "@types/jscodeshift": ^17.3.0

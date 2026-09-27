@@ -6,7 +6,11 @@
       "request": "launch",
       "name": "Debug Current File (Node)",
 
-      // The path to a JavaScript or TypeScript file to run. Node runs `.ts` files directly.
+      // The path to a JavaScript or TypeScript file to run. Node runs the repo's own
+      // node scripts directly, `.ts` included: scripts/*.mjs, tools/internal-tooling/src,
+      // tools/release, docs-viewer/src and packages/schema/src. Package sources under
+      // packages/* and warp-drive-packages/* use extensionless imports and TS-only syntax
+      // that node cannot run; debug those through their test apps instead.
       "program": "${file}",
 
       // The arguments to pass to the program, if any.

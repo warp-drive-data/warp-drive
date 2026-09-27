@@ -7,11 +7,11 @@ import { test } from 'node:test';
  * Grep gate: bun is no longer part of this repo's own toolchain. Every script
  * runs under node, CI installs only node and pnpm, and mise pins only those.
  *
- * This spec greps the tracked tree for `bun` as a word, or `Bun.`, and fails on
- * any hit that the allowlist below does not explain. If it fails on a change you
- * made, prefer the node/pnpm form (`pnpm <bin>`, `node <file>`) over adding an
- * entry. Add an entry only for something that is about *consumers* of the
- * published packages, who may well use bun, and say why in `why`.
+ * This spec greps the tracked tree, file contents and file paths, for bun and
+ * fails on any hit that the allowlists below do not explain. If it fails on a
+ * change you made, prefer the node/pnpm form (`pnpm <bin>`, `node <file>`) over
+ * adding an entry. Add an entry only for something that is about *consumers* of
+ * the published packages, who may well use bun, and say why in `why`.
  *
  * `bunx` does not match the pattern, so consumer docs mentioning it
  * (e.g. `upgrading/v5/codemods.md`) need no entry.
@@ -19,11 +19,13 @@ import { test } from 'node:test';
 
 const REPO_ROOT = path.resolve(import.meta.dirname, '../..');
 
-// `git grep` is case-insensitive and substring-based so the pattern works with
-// every platform's regex engine; the precise match happens in JS below.
-const PATTERN = /\bbun\b|bun\./i;
+// `bun` not touching another letter, so `bun-types`, `@types/bun`, `Bun.serve`,
+// `BUN_INSTALL` and `bun.lock` match while `bundle` and `ubuntu` do not; plus
+// `bunfig`, bun's config file. `git grep` only prefilters on the substring
+// `bun` so the pattern does not depend on the platform's regex engine.
+const PATTERN = /(?<![A-Za-z])bun(?![A-Za-z])|bunfig/i;
 
-// Excluded from the grep itself rather than allowlisted, because their hits are
+// Excluded from the content grep rather than allowlisted, because their hits are
 // not prose or config. Binary files are skipped by `-I`.
 const EXCLUDED_PATHSPECS = [
   // Resolved package names and tarball URLs of third-party dependencies.
@@ -33,13 +35,15 @@ const EXCLUDED_PATHSPECS = [
 ];
 
 /**
- * Every allowed hit. A hit is allowed when its path matches `path` and, if
- * `lines` is given, its text matches one of `lines`. Entries that no longer
- * match anything fail the spec too, so this list cannot outlive what it covers.
+ * @typedef {{ path: RegExp, lines?: RegExp[], why: string }} AllowlistEntry
  *
- * @type {Array<{ path: RegExp, lines?: RegExp[], why: string }>}
+ * A hit is allowed when its path matches `path` and, if `lines` is given, its
+ * text matches one of `lines`. Every entry, and every regex in `lines`, must
+ * still match at least one hit, so this list cannot outlive what it covers.
  */
-const ALLOWLIST = [
+
+/** Allowed mentions of bun inside tracked files. @type {AllowlistEntry[]} */
+const CONTENT_ALLOWLIST = [
   // ---- History -------------------------------------------------------------
   {
     path: /(^|\/)CHANGELOG\.md$/,
@@ -76,25 +80,15 @@ const ALLOWLIST = [
     lines: [
       // the codemods-packaging job's bun consumer smoke test and its setup step
       /^\s*# bun is installed here only to test consumers who install the codemods tarball with bun\.$/,
+      /^\s*# Pinned by hand: renovate no longer tracks bun\./,
       /^\s*- uses: oven-sh\/setup-bun@[0-9a-f]{40} # v\d/,
-      /^\s*bun-version: /,
+      /^\s*bun-version: \d+\.\d+\.\d+$/,
       /^\s*- name: Smoke test \(bun\)$/,
       /verify-tarball\.mjs --tarball "\$TARBALL" --pm bun$/,
       // the comment explaining why yarn dlx is not covered by the smoke tests
       /# directly rather than via the shebang, so npm\/pnpm\/bun already cover$/,
     ],
     why: 'Only the codemods consumer smoke test installs and runs bun in CI.',
-  },
-
-  // ---- Leftovers owned by the node conversion PRs --------------------------
-  // Remove each entry once the file stops mentioning bun.
-  {
-    path: /^packages\/diagnostic\/README\.md$/,
-    why: 'Consumer setup section still says the diagnostic runner needs bun installed.',
-  },
-  {
-    path: /^(scripts\/__tests__\/(-run-script|explain\.spec)\.mjs|tools\/internal-tooling\/tests\/(-fixture|run-prettier\.spec)\.ts|packages\/schema\/tests\/helpers\.ts)$/,
-    why: 'Spec harness comments from the conversion, when the specs also had to pass under bun.',
   },
 
   // ---- This file -----------------------------------------------------------
@@ -104,12 +98,26 @@ const ALLOWLIST = [
   },
 ];
 
-function grepBun() {
-  const result = spawnSync(
-    'git',
-    ['grep', '-I', '-n', '-i', '--full-name', '-e', 'bun', '--', '.', ...EXCLUDED_PATHSPECS],
-    { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 }
-  );
+/** Allowed tracked files whose path mentions bun. @type {AllowlistEntry[]} */
+const PATH_ALLOWLIST = [
+  {
+    path: /^scripts\/__tests__\/no-bun-toolchain\.spec\.mjs$/,
+    why: 'This file. Anything else, such as a bun.lock or bunfig.toml, means bun crept back in.',
+  },
+];
+
+function git(args) {
+  const result = spawnSync('git', args, { cwd: REPO_ROOT, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (result.error) throw result.error;
+  return result;
+}
+
+/**
+ * Content hits. `-z` separates path, line number and text with NUL, so paths
+ * containing `:` parse correctly.
+ */
+function grepContents() {
+  const result = git(['grep', '-z', '-I', '-n', '-i', '--full-name', '-e', 'bun', '--', '.', ...EXCLUDED_PATHSPECS]);
   // exit 1 means "no matches"
   if (result.status === 1) return [];
   assert.equal(result.status, 0, `git grep failed: ${result.stderr}`);
@@ -117,35 +125,70 @@ function grepBun() {
   return result.stdout
     .split('\n')
     .filter(Boolean)
-    .map((line) => {
-      const [, file, lineNo, text] = /^(.*?):(\d+):(.*)$/.exec(line);
-      return { file, lineNo: Number(lineNo), text };
+    .map((record) => {
+      const [file, lineNo, ...rest] = record.split('\0');
+      return { file, lineNo: Number(lineNo), text: rest.join('\0') };
     })
     .filter((hit) => PATTERN.test(hit.text));
 }
+
+/** Tracked files whose path mentions bun. */
+function grepPaths() {
+  const result = git(['ls-files', '-z']);
+  assert.equal(result.status, 0, `git ls-files failed: ${result.stderr}`);
+  return result.stdout
+    .split('\0')
+    .filter((file) => file && PATTERN.test(file))
+    .map((file) => ({ file, text: file }));
+}
+
+const CONTENT_HITS = grepContents();
+const PATH_HITS = grepPaths();
 
 function allows(entry, hit) {
   return entry.path.test(hit.file) && (!entry.lines || entry.lines.some((re) => re.test(hit.text)));
 }
 
-test('bun is mentioned only where the allowlist explains why', () => {
-  const hits = grepBun();
-  const unexplained = hits.filter((hit) => !ALLOWLIST.some((entry) => allows(entry, hit)));
+function unexplained(hits, allowlist) {
+  return hits.filter((hit) => !allowlist.some((entry) => allows(entry, hit)));
+}
 
+/** Entries, or individual `lines` regexes, that no hit uses any more. */
+function stale(hits, allowlist) {
+  const unused = [];
+  for (const entry of allowlist) {
+    const inPath = hits.filter((hit) => entry.path.test(hit.file));
+    if (inPath.length === 0) {
+      unused.push(`${entry.path} (${entry.why})`);
+      continue;
+    }
+    for (const re of entry.lines ?? []) {
+      if (!inPath.some((hit) => re.test(hit.text))) unused.push(`${entry.path} lines ${re} (${entry.why})`);
+    }
+  }
+  return unused;
+}
+
+test('bun is mentioned only where the allowlist explains why', () => {
   assert.deepEqual(
-    unexplained.map((hit) => `${hit.file}:${hit.lineNo}: ${hit.text.trim()}`),
+    unexplained(CONTENT_HITS, CONTENT_ALLOWLIST).map((hit) => `${hit.file}:${hit.lineNo}: ${hit.text.trim()}`),
     [],
     'Replace these with the node/pnpm form, or add an allowlist entry that explains why bun belongs there.'
   );
 });
 
-test('every allowlist entry still matches something', () => {
-  const hits = grepBun();
-  const unused = ALLOWLIST.filter((entry) => !hits.some((hit) => allows(entry, hit)));
-
+test('no tracked file is named after bun', () => {
   assert.deepEqual(
-    unused.map((entry) => `${entry.path} (${entry.why})`),
+    unexplained(PATH_HITS, PATH_ALLOWLIST).map((hit) => hit.file),
     [],
-    'Remove allowlist entries that no longer match any file.'
+    'bun lockfiles and config (bun.lock, bunfig.toml) do not belong in this repo.'
+  );
+});
+
+test('every allowlist entry and line pattern still matches something', () => {
+  assert.deepEqual(
+    [...stale(CONTENT_HITS, CONTENT_ALLOWLIST), ...stale(PATH_HITS, PATH_ALLOWLIST)],
+    [],
+    'Remove allowlist entries, or `lines` patterns, that no longer match anything.'
   );
 });
