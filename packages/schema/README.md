@@ -46,26 +46,20 @@ pnpm install @warp-drive/schema
 
 #### 🔜 Soon 
 
+The CLIs are TypeScript sources that Node runs directly (Node 26+, no build step), so for
+now they run from a checkout of this repository. Node does not strip types inside
+`node_modules`, so `npx -p @warp-drive/schema ...` usage returns once the package ships
+compiled output in `dist/`.
+
 Scaffold the schema for a `User` resource
 
 ```sh
-npx -p @warp-drive/schema resource user
+node packages/schema/src/scaffold-resource.ts user
 ```
 
 Parse Schemas
 
 ```sh
-npx -p @warp-drive/schema parse <path/to/schema.json>
-```
-
-**Running from this repository**
-
-Both commands are TypeScript sources that Node runs directly (Node 26+, no build step),
-so until the package ships compiled output they only run from a checkout, not from a
-copy installed into `node_modules` (Node does not strip types there).
-
-```sh
-node packages/schema/src/scaffold-resource.ts user
 node packages/schema/src/parse.ts <path/to/schema.json>
 ```
 

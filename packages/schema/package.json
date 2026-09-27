@@ -35,7 +35,6 @@
     "parse": "./src/parse.ts",
     "resource": "./src/scaffold-resource.ts"
   },
-  "main": "src/index.ts",
   "peerDependencies": {},
   "dependencies": {
     "@babel/parser": "catalog:",

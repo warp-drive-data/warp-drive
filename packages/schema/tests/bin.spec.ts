@@ -56,6 +56,6 @@ test('the resource bin reports a missing name', { skip: !canExecuteDirectly }, (
 
   const result = runBin(pkg.bin.resource, [], dir);
 
-  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.status, 1, result.stderr);
   assert.match(result.stdout, /Error Please supply a name for the resource to scaffold!/);
 });

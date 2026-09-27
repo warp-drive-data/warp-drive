@@ -39,6 +39,50 @@ test('parse resolves the schema directory relative to the config file', (t) => {
   assert.deepEqual(JSON.parse(result.stdout.slice(result.stdout.lastIndexOf('['))), []);
 });
 
+test('parse skips directories whose name ends in .ts', (t) => {
+  const dir = setupProject(t, {
+    'schema.json': CONFIG,
+    'schemas/something.ts/README.md': '# a directory, not a schema\n',
+  });
+
+  const result = runCli(PARSE, ['schema.json'], dir);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.doesNotMatch(result.stdout, /Parsing something\.ts/);
+  assert.deepEqual(JSON.parse(result.stdout.slice(result.stdout.lastIndexOf('['))), []);
+});
+
+test('parse accepts an absolute path to the schema config', (t) => {
+  const dir = setupProject(t, {
+    'app/schema.json': CONFIG,
+    'app/schemas/.gitkeep': '',
+  });
+  const cwd = setupProject(t);
+
+  const result = runCli(PARSE, [path.join(dir, 'app', 'schema.json')], cwd);
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok(
+    result.stdout.includes(`Parsing schema files from ${path.relative(cwd, path.join(dir, 'app', 'schemas'))}`),
+    `unexpected output:\n${result.stdout}`
+  );
+  assert.deepEqual(JSON.parse(result.stdout.slice(result.stdout.lastIndexOf('['))), []);
+});
+
+for (const key of ['schemas', 'dest']) {
+  test(`parse exits 1 when the schema config has no string "${key}"`, (t) => {
+    const config: Record<string, unknown> = { schemas: './schemas', dest: './dist' };
+    config[key] = 42;
+    const dir = setupProject(t, { 'schema.json': JSON.stringify(config) });
+
+    const result = runCli(PARSE, ['schema.json'], dir);
+
+    assert.equal(result.status, 1);
+    assert.match(result.stdout, new RegExp(`Error schema\\.json must set "${key}" to a path string!`));
+    assert.doesNotMatch(result.stderr, /TypeError/);
+  });
+}
+
 test('parse exits 1 when no schema config path is given', (t) => {
   const dir = setupProject(t);
 

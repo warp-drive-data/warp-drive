@@ -29,9 +29,19 @@ export async function getSchemaConfig() {
     process.exit(1);
   }
 
-  const config = JSON.parse(await fs.readFile(schemaPath, 'utf8'));
-  const schemaDirectory = path.join(process.cwd(), path.dirname(schemaPath), config.schemas);
-  const schemaDestination = path.join(process.cwd(), path.dirname(schemaPath), config.dest);
+  const config = JSON.parse(await fs.readFile(schemaPath, 'utf8')) as Record<string, unknown>;
+
+  for (const key of ['schemas', 'dest'] as const) {
+    if (typeof config[key] !== 'string') {
+      write(
+        `\n\t${styleText('bold', '💥 Error')} ${styleText('white', schemaPath)} must set ${styleText('white', `"${key}"`)} to a path string!\n`
+      );
+      process.exit(1);
+    }
+  }
+
+  const schemaDirectory = path.resolve(path.dirname(schemaPath), config.schemas as string);
+  const schemaDestination = path.resolve(path.dirname(schemaPath), config.dest as string);
 
   return {
     _config: config,

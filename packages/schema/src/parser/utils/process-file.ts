@@ -8,7 +8,7 @@ import { extractJSONObject } from './extract-json.ts';
 
 // @babel/traverse is CommonJS with its function on `exports.default`,
 // and Node's ESM default import hands us the whole `module.exports`
-const traverse = (_traverse as unknown as { default: typeof _traverse }).default;
+const traverse = _traverse.default;
 
 function normalizeResourceType(fileName: string) {
   const dirname = path.dirname(fileName);

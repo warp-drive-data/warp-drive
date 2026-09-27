@@ -7,12 +7,6 @@ import { stripVTControlCharacters } from 'node:util';
 
 export const PACKAGE_ROOT = path.resolve(import.meta.dirname, '..');
 
-/**
- * The runtime used to execute the CLI entry points. Defaults to `node`;
- * set `SCHEMA_CLI_RUNNER=bun` to run the same specs against bun.
- */
-const RUNNER = process.env.SCHEMA_CLI_RUNNER || 'node';
-
 export interface CliResult {
   status: number | null;
   stdout: string;
@@ -41,7 +35,7 @@ export function setupProject(t: TestContext, files: Record<string, string> = {})
  * package root) with the given arguments from inside `cwd`.
  */
 export function runCli(entry: string, args: string[], cwd: string): CliResult {
-  return spawnCli(RUNNER, [path.join(PACKAGE_ROOT, entry), ...args], cwd);
+  return spawnCli(process.execPath, [path.join(PACKAGE_ROOT, entry), ...args], cwd);
 }
 
 /**

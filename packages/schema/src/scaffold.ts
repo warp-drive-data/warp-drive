@@ -130,9 +130,12 @@ export async function main(args: string[]) {
     `\n\t $ ${styleText('bold', styleText('greenBright', '@warp-drive/') + styleText('magentaBright', 'schema'))} ${styleText('bold', 'scaffold')} ${resource ?? styleText('red', '<mising type>')} ${name ?? styleText('red', '<missing name>')}`
   );
 
-  if (!Scaffolds.includes(resource)) {
-    write(`\n\t${styleText('bold', '💥 Error')} ${styleText('white', resource)} is not a valid scaffold.`);
+  if (!resource || !Scaffolds.includes(resource)) {
+    write(
+      `\n\t${styleText('bold', '💥 Error')} ${styleText('white', resource ?? '<missing type>')} is not a valid scaffold.`
+    );
     write(`\n\t${styleText('bold', 'Available Scaffolds')}\n\t\t◆ ${Scaffolds.join(',\n\t\t◆ ')}\n`);
+    process.exitCode = 1;
     return;
   }
 
@@ -140,30 +143,32 @@ export async function main(args: string[]) {
     write(
       `\n\t${styleText('bold', '💥 Error')} Please supply a name for the ${styleText('white', resource)} to scaffold!\n`
     );
+    process.exitCode = 1;
+    return;
+  }
+
+  if (resource !== 'resource') {
+    write(
+      `\n\t${styleText('bold', '💥 Error')} The ${styleText('white', resource)} scaffold is not implemented yet. Only ${styleText('white', 'resource')} is available.\n`
+    );
+    process.exitCode = 1;
     return;
   }
 
   const config = await loadOrCreateConfig();
-  const relativeWritePath =
-    resource === 'resource' ? `${config.schemas}/${name}.ts` : `${config.schemas}/-${resource}s/${name}.ts`;
-
+  const relativeWritePath = `${config.schemas}/${name}.ts`;
   const filePath = path.join(process.cwd(), relativeWritePath);
 
   if (await fileExists(filePath)) {
     write(
       `\n\t${styleText('bold', '💥 Error')} ${styleText('white', relativeWritePath)} already exists! Skipping Scaffold.\n`
     );
+    process.exitCode = 1;
     return;
   }
 
-  switch (resource) {
-    case 'resource':
-      await fs.mkdir(path.dirname(filePath), { recursive: true });
-      await fs.writeFile(filePath, config.DID_GENERATE ? generateFirstResource(name) : generateResource(name));
-      break;
-    default:
-      break;
-  }
+  await fs.mkdir(path.dirname(filePath), { recursive: true });
+  await fs.writeFile(filePath, config.DID_GENERATE ? generateFirstResource(name) : generateResource(name));
 
   write(
     `\n\t🔨 Scaffolding new ${styleText('bold', styleText('cyan', name))} ${styleText('bold', styleText('white', resource))} in ${relativeWritePath}...`

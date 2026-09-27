@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { test } from 'node:test';
 
 import { fileExists, readFile, runCli, setupProject } from './helpers.ts';
@@ -72,8 +73,7 @@ test('scaffold resource skips a resource that already exists', (t) => {
 
   const result = runCli(SCAFFOLD, ['resource', 'user'], dir);
 
-  // usage errors are reported on stdout and the CLI still exits 0
-  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.status, 1, result.stderr);
   assert.match(result.stdout, /Error \.\/schemas\/user\.ts already exists! Skipping Scaffold\./);
   assert.doesNotMatch(result.stdout, /Scaffolding new/);
   assert.equal(readFile(dir, 'schemas/user.ts'), before);
@@ -84,7 +84,7 @@ test('scaffold rejects an unknown scaffold type', (t) => {
 
   const result = runCli(SCAFFOLD, ['widget', 'foo'], dir);
 
-  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.status, 1, result.stderr);
   assert.match(result.stdout, /Error widget is not a valid scaffold\./);
   assert.match(result.stdout, /Available Scaffolds/);
   for (const scaffold of ['resource', 'trait', 'field', 'derivation', 'transform']) {
@@ -93,12 +93,35 @@ test('scaffold rejects an unknown scaffold type', (t) => {
   assert.equal(fileExists(dir, 'schema.json'), false);
 });
 
+test('scaffold rejects a missing scaffold type', (t) => {
+  const dir = setupProject(t);
+
+  const result = runCli(SCAFFOLD, [], dir);
+
+  assert.equal(result.status, 1, result.stderr);
+  assert.match(result.stdout, /Error <missing type> is not a valid scaffold\./);
+  assert.equal(fileExists(dir, 'schema.json'), false);
+});
+
+test('scaffold exits 1 for scaffold types that are not implemented yet', (t) => {
+  const dir = setupProject(t);
+
+  for (const scaffold of ['trait', 'field', 'derivation', 'transform']) {
+    const result = runCli(SCAFFOLD, [scaffold, 'foo'], dir);
+
+    assert.equal(result.status, 1, result.stderr);
+    assert.match(result.stdout, new RegExp(`Error The ${scaffold} scaffold is not implemented yet\\.`));
+    assert.doesNotMatch(result.stdout, /Scaffolding new/);
+  }
+  assert.deepEqual(fs.readdirSync(dir), []);
+});
+
 test('scaffold resource requires a name', (t) => {
   const dir = setupProject(t);
 
   const result = runCli(SCAFFOLD, ['resource'], dir);
 
-  assert.equal(result.status, 0, result.stderr);
+  assert.equal(result.status, 1, result.stderr);
   assert.match(result.stdout, /scaffold resource <missing name>/);
   assert.match(result.stdout, /Error Please supply a name for the resource to scaffold!/);
   assert.equal(fileExists(dir, 'schema.json'), false);
