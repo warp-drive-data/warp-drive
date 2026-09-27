@@ -110,8 +110,8 @@ function createFixtureRepo(): { repo: string; docsViewer: string; stubLog: strin
 function readStubLog(stubLog: string): string[][] {
   if (!existsSync(stubLog)) return [];
   return readFileSync(stubLog, 'utf8')
-    .trim()
     .split('\n')
+    .filter(Boolean)
     .map((line) => line.split('\t'));
 }
 
@@ -216,5 +216,20 @@ describe('pnpm start', () => {
       () => touch('warp-drive-packages/core/src/index.ts')
     );
     assert.equal(changed('packages/no-docs/src'), false, output);
+
+    // those edits, and a burst more, land well inside the 1s debounce, so they rebuild the API docs once
+    for (let i = 0; i < 5; i++) {
+      touch('packages/store/src/index.ts');
+      touch('warp-drive-packages/core/src/index.ts');
+    }
+    const typedocRuns = () => readStubLog(stubLog).filter(([name]) => name === 'typedoc');
+    await waitFor(() => typedocRuns().length > 0, 'the debounced typedoc run');
+    await waitFor(
+      () => existsSync(join(docsViewer, 'docs.warp-drive.io/api/index.md')),
+      'the API docs post-processing'
+    );
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    assert.deepEqual(typedocRuns(), [['typedoc', docsViewer, '']], output);
+    assert.doesNotMatch(output, /failed:/);
   });
 });

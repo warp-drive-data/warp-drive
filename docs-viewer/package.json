@@ -26,7 +26,6 @@
     "typescript": "catalog:",
     "debug": "catalog:",
     "@mdit/plugin-footnote": "catalog:",
-    "@pnpm/find-workspace-dir": "catalog:",
     "@pnpm/find-workspace-packages": "catalog:",
     "@pnpm/logger": "catalog:",
     "@jridgewell/trace-mapping": "catalog:",

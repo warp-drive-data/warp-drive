@@ -709,9 +709,6 @@ importers:
       '@mdit/plugin-footnote':
         specifier: 'catalog:'
         version: 1.1.2
-      '@pnpm/find-workspace-dir':
-        specifier: 'catalog:'
-        version: 1000.1.5
       '@pnpm/find-workspace-packages':
         specifier: 'catalog:'
         version: 6.0.9(@pnpm/logger@1100.0.0)
@@ -17231,7 +17228,6 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@mdit/plugin-footnote': 1.1.2
-      '@pnpm/find-workspace-dir': 1000.1.5
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/logger': 1100.0.0
       '@types/debug': 4.1.13

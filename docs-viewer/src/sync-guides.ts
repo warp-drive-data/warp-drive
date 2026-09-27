@@ -27,7 +27,13 @@ async function run(bin: string, args: string[]) {
 
 async function updateApiDocs() {
   await run('typedoc', []);
-  postProcessApiDocs();
+  await postProcessApiDocs();
+}
+
+/** runs a rebuild from a watcher callback, reporting its failure without taking down the dev server */
+function rebuild(stage: string, task: () => Promise<unknown>) {
+  console.log('rebuilding');
+  void task().catch((error: unknown) => console.error(`${stage} failed:`, error));
 }
 
 const build = process.argv.slice().includes('--build');
@@ -67,10 +73,9 @@ if (!build) {
           console.log('debounced');
           clearTimeout(packageDebounce);
         }
-        debounce = setTimeout(() => {
-          console.log('rebuilding');
-          updateApiDocs();
-          debounce = null;
+        packageDebounce = setTimeout(() => {
+          packageDebounce = null;
+          rebuild('API docs rebuild', updateApiDocs);
         }, 1000);
       }
     );
@@ -83,9 +88,8 @@ if (!build) {
       clearTimeout(debounce);
     }
     debounce = setTimeout(() => {
-      console.log('rebuilding');
-      main();
       debounce = null;
+      rebuild('content sync', main);
     }, 100);
   };
 
