@@ -30,18 +30,14 @@ export async function getMonorepoRoot() {
   throw new Error(`Could not find monorepo root from cwd ${process.cwd()}`);
 }
 
-export async function getPackageJson({ packageDir, packagesDir }: { packageDir: string; packagesDir: string }) {
-  const packageJsonPath = path.join(packagesDir, packageDir, 'package.json');
-  const pkg = JSON.parse(await readFile(packageJsonPath, 'utf8'));
-  return { pkg, path: packageJsonPath, nicePath: path.join(packageDir, 'package.json') };
-}
-
 export async function runPrettier() {
   const root = await getMonorepoRoot();
   const childProcess = spawn('pnpm', ['lint:prettier:fix'], {
     env: process.env,
     cwd: root,
     stdio: ['ignore', 'inherit', 'inherit'],
+    // resolves pnpm.cmd on Windows
+    shell: process.platform === 'win32',
   });
   // rejects if pnpm cannot be spawned; like before, a failing prettier run is not an error here
   await once(childProcess, 'close');

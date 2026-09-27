@@ -2,13 +2,13 @@
  * Shared helpers for the black-box specs of the sync-* scripts.
  *
  * Each spec builds a throwaway monorepo in a temp directory and runs one of
- * the `src/sync-*.ts` bin wrappers against it with `cwd` set to that
+ * the `src/sync-*.ts` wrappers against it with node, with `cwd` set to that
  * monorepo, exactly as `pnpm sync-*` does from the real repo root.
  *
- * The runtime used to execute a wrapper is taken from the
- * `INTERNAL_TOOLING_RUNNER` env var when it is set (e.g. `node` or a path to
- * a `bun` binary), and otherwise from the wrapper's own shebang.
+ * A `pnpm` stub on `PATH` records every call instead of running anything, so
+ * no spec ever runs the real prettier against the fixture.
  */
+import { parse as parseJsonc } from 'comment-json';
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -31,6 +31,8 @@ export interface Fixture {
   path: (...segments: string[]) => string;
   read: (...segments: string[]) => string;
   readJson: <T = Record<string, unknown>>(...segments: string[]) => T;
+  /** Reads a JSON-with-comments file (tsconfig.json) as plain data, dropping comments. */
+  readJsonc: <T = Record<string, unknown>>(...segments: string[]) => T;
   exists: (...segments: string[]) => boolean;
   write: (file: string, content: string) => void;
   snapshot: () => Map<string, string>;
@@ -88,15 +90,9 @@ export const FIXTURE_FILES: Record<string, string> = {
       pnpm: '12.6.0',
     },
     scripts: {
-      'lint:prettier:fix': 'node record-call.mjs lint:prettier:fix',
+      'lint:prettier:fix': 'prettier --write .',
     },
   }),
-  // records that the root `lint:prettier:fix` script ran, whichever runner started it
-  'record-call.mjs': [
-    `import fs from 'node:fs';`,
-    `fs.appendFileSync(process.env.FIXTURE_CALLS_LOG, \`script \${process.argv[2]}\\t\${process.cwd()}\\n\`);`,
-    '',
-  ].join('\n'),
   'LICENSE.md': 'The Fixture License\n\nCopyright fixture authors.\n',
   'README.md': README,
   'logos/synced/logo.svg': '<svg id="logo"></svg>\n',
@@ -223,6 +219,10 @@ export function createFixture(): Fixture {
     path: (...segments) => path.join(root, ...segments),
     read: (...segments) => fs.readFileSync(path.join(root, ...segments), 'utf8'),
     readJson: (...segments) => JSON.parse(fs.readFileSync(path.join(root, ...segments), 'utf8')),
+    // round-trip through JSON so the result holds plain objects and arrays, without
+    // comment-json's comment symbols and CommentArray prototype
+    readJsonc: (...segments) =>
+      JSON.parse(JSON.stringify(parseJsonc(fs.readFileSync(path.join(root, ...segments), 'utf8'), null, true))),
     exists: (...segments) => fs.existsSync(path.join(root, ...segments)),
     snapshot() {
       const files = new Map<string, string>();
@@ -247,16 +247,6 @@ export function createFixture(): Fixture {
   };
 }
 
-function resolveRunner(wrapper: string): string {
-  const fromEnv = process.env.INTERNAL_TOOLING_RUNNER;
-  if (fromEnv) return fromEnv === 'node' ? process.execPath : fromEnv;
-
-  const firstLine = fs.readFileSync(wrapper, 'utf8').split('\n', 1)[0];
-  const match = /^#!\s*\/usr\/bin\/env\s+(\S+)/.exec(firstLine);
-  if (!match) throw new Error(`Unable to determine the runtime for ${wrapper} from its shebang: ${firstLine}`);
-  return match[1] === 'node' ? process.execPath : match[1];
-}
-
 const ANSI = /\u001b\[[0-9;]*m/g;
 
 export function runSync(
@@ -264,8 +254,7 @@ export function runSync(
   fixture: Fixture,
   options: { cwd?: string; entry?: string } = {}
 ): RunResult {
-  const wrapper = options.entry ?? path.join(PACKAGE_DIR, 'src', `${script}.ts`);
-  const runner = resolveRunner(wrapper);
+  const entry = options.entry ?? path.join(PACKAGE_DIR, 'src', `${script}.ts`);
 
   const env: NodeJS.ProcessEnv = {
     ...process.env,
@@ -284,7 +273,7 @@ export function runSync(
   delete env.npm_package_name;
   delete env.npm_package_version;
 
-  const result = spawnSync(runner, [wrapper], {
+  const result = spawnSync(process.execPath, [entry], {
     cwd: options.cwd ?? fixture.root,
     env,
     encoding: 'utf8',
@@ -299,38 +288,12 @@ export function runSync(
   };
 }
 
-/**
- * Parses the JSONC the scripts write for tsconfig.json files. Comments are dropped;
- * strings (which may contain `//` or `/*`) are left intact.
- */
-export function parseJsonc<T = Record<string, unknown>>(text: string): T {
-  let out = '';
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    if (char === '"') {
-      const start = i;
-      for (i++; i < text.length && text[i] !== '"'; i++) {
-        if (text[i] === '\\') i++;
-      }
-      out += text.slice(start, i + 1);
-    } else if (char === '/' && text[i + 1] === '/') {
-      while (i < text.length && text[i] !== '\n') i++;
-      out += '\n';
-    } else if (char === '/' && text[i + 1] === '*') {
-      i = text.indexOf('*/', i + 2) + 1;
-    } else {
-      out += char;
-    }
-  }
-  return JSON.parse(out.replace(/,(\s*[}\]])/g, '$1')) as T;
-}
-
 export interface RecordedCall {
   command: string;
   cwd: string;
 }
 
-/** The invocations of the root `lint:prettier:fix` script (or of the `pnpm` stub) so far. */
+/** The calls to the `pnpm` stub so far. */
 export function readCalls(fixture: Fixture): RecordedCall[] {
   return fs
     .readFileSync(fixture.callsLog, 'utf8')
@@ -343,11 +306,9 @@ export function readCalls(fixture: Fixture): RecordedCall[] {
 }
 
 /**
- * Whether a recorded call is the root `lint:prettier:fix` script being run, either
- * because a runner executed the root script itself (`script lint:prettier:fix`) or
- * because the `pnpm` stub was asked to run it (`pnpm lint:prettier:fix` or
- * `pnpm run lint:prettier:fix`).
+ * Whether a recorded call asked pnpm to run the root `lint:prettier:fix` script
+ * (`pnpm lint:prettier:fix` or `pnpm run lint:prettier:fix`).
  */
 export function isPrettierFixCall(call: RecordedCall): boolean {
-  return /^(script|pnpm( run)?) lint:prettier:fix$/.test(call.command);
+  return /^pnpm( run)? lint:prettier:fix$/.test(call.command);
 }

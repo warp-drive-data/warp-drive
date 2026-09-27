@@ -3,8 +3,7 @@
  * call after editing files. It must run the monorepo root's `lint:prettier:fix`
  * script from the monorepo root, whichever directory the sync script started in.
  *
- * The fixture's root script and its `pnpm` stub both record their invocations,
- * so this passes whether the script is started by bun or by pnpm.
+ * The fixture's `pnpm` stub records each call along with the directory it ran in.
  */
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';

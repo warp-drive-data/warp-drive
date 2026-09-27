@@ -25,9 +25,11 @@ const SCRIPTS: SyncScript[] = [
  * this package at `tools/internal-tooling`, and an injected copy of it under
  * the root's `node_modules/.pnpm`. Returns the injected copy's directory.
  */
-function installInjectedCopy(fixture: Fixture) {
-  fs.mkdirSync(fixture.path('tools'), { recursive: true });
-  fs.symlinkSync(PACKAGE_DIR, fixture.path('tools/internal-tooling'), 'dir');
+function installInjectedCopy(fixture: Fixture, { withWorkspacePackage = true } = {}) {
+  if (withWorkspacePackage) {
+    fs.mkdirSync(fixture.path('tools'), { recursive: true });
+    fs.symlinkSync(PACKAGE_DIR, fixture.path('tools/internal-tooling'), 'dir');
+  }
 
   const injected = fixture.path(
     'node_modules/.pnpm/@warp-drive+internal-tooling@file+tools+internal-tooling/node_modules/@warp-drive/internal-tooling'
@@ -67,6 +69,15 @@ describe('bin', () => {
       fixture.readJson<{ scripts: Record<string, string> }>('packages/alpha/package.json').scripts.start,
       'vite'
     );
+  });
+
+  it('explains where it looked when an injected copy has no workspace package to load', () => {
+    const injected = installInjectedCopy(fixture, { withWorkspacePackage: false });
+
+    const result = runSync('sync-scripts', fixture, { entry: path.join(injected, 'bin/sync-scripts.mjs') });
+    assert.notEqual(result.code, 0);
+    assert.match(result.stderr, /expected its workspace package at tools[\\/]internal-tooling/);
+    assert.doesNotMatch(result.stderr, /ERR_MODULE_NOT_FOUND/);
   });
 
   it('runs from the workspace checkout', () => {

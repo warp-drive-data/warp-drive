@@ -8,6 +8,7 @@
  * copy, it loads the TypeScript sources from the workspace checkout of this
  * package instead, which is also what keeps a bin in sync with local edits.
  */
+import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -21,7 +22,17 @@ export function getSourceDir() {
     return path.join(PACKAGE_DIR, 'src');
   }
   // pnpm keeps its virtual store in the node_modules of the workspace root
-  return path.join(PACKAGE_DIR.slice(0, index), WORKSPACE_LOCATION, 'src');
+  const workspaceRoot = PACKAGE_DIR.slice(0, index);
+  const sourceDir = path.join(workspaceRoot, WORKSPACE_LOCATION, 'src');
+  if (!existsSync(sourceDir)) {
+    throw new Error(
+      `@warp-drive/internal-tooling is running from an installed copy at ${PACKAGE_DIR}, and expected its ` +
+        `workspace package at ${WORKSPACE_LOCATION} relative to the directory holding that node_modules ` +
+        `(${workspaceRoot}), but ${sourceDir} does not exist. Node cannot strip types from files under ` +
+        `node_modules, so the sync scripts must run from the workspace sources.`
+    );
+  }
+  return sourceDir;
 }
 
 /**

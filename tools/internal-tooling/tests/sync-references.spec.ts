@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { createFixture, isPrettierFixCall, parseJsonc, readCalls, runSync, type Fixture } from './-fixture.ts';
+import { createFixture, isPrettierFixCall, readCalls, runSync, type Fixture } from './-fixture.ts';
 
 interface TsConfig {
   compilerOptions: Record<string, unknown>;
@@ -22,11 +22,9 @@ describe('sync-references', () => {
     const result = runSync('sync-references', fixture);
     assert.equal(result.code, 0, result.stderr);
 
-    assert.deepEqual(parseJsonc<TsConfig>(fixture.read('packages/alpha/tsconfig.json')).references, []);
-    assert.deepEqual(parseJsonc<TsConfig>(fixture.read('packages/beta/tsconfig.json')).references, [
-      { path: '../alpha' },
-    ]);
-    assert.deepEqual(parseJsonc<TsConfig>(fixture.read('tests/exam-app/tsconfig.json')).references, [
+    assert.deepEqual(fixture.readJsonc<TsConfig>('packages/alpha/tsconfig.json').references, []);
+    assert.deepEqual(fixture.readJsonc<TsConfig>('packages/beta/tsconfig.json').references, [{ path: '../alpha' }]);
+    assert.deepEqual(fixture.readJsonc<TsConfig>('tests/exam-app/tsconfig.json').references, [
       { path: '../../packages/beta' },
     ]);
   });
@@ -35,7 +33,7 @@ describe('sync-references', () => {
     const result = runSync('sync-references', fixture);
     assert.equal(result.code, 0, result.stderr);
 
-    const alpha = parseJsonc<TsConfig>(fixture.read('packages/alpha/tsconfig.json'));
+    const alpha = fixture.readJsonc<TsConfig>('packages/alpha/tsconfig.json');
     // booleans are forced to the default
     assert.equal(alpha.compilerOptions.composite, true);
     assert.equal(alpha.compilerOptions.declaration, true);
@@ -49,10 +47,10 @@ describe('sync-references', () => {
     assert.deepEqual(alpha.compilerOptions.lib, ['ESNext', 'DOM']);
     assert.deepEqual(alpha.include, ['src/**/*']);
 
-    const beta = parseJsonc<TsConfig>(fixture.read('packages/beta/tsconfig.json'));
+    const beta = fixture.readJsonc<TsConfig>('packages/beta/tsconfig.json');
     assert.equal(beta.compilerOptions.strict, true);
 
-    const examApp = parseJsonc<TsConfig>(fixture.read('tests/exam-app/tsconfig.json'));
+    const examApp = fixture.readJsonc<TsConfig>('tests/exam-app/tsconfig.json');
     assert.equal(examApp.compilerOptions.rootDir, '.');
     assert.equal(examApp.compilerOptions.noEmit, undefined);
   });

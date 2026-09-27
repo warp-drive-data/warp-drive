@@ -384,7 +384,13 @@
       "dependsOn": ["build:tests"]
     },
     "test:production": {
-      "inputs": ["../../packages/diagnostic/server/**", "../../packages/holodeck/**", ".mock-cache/**"],
+      // $TURBO_DEFAULT$: see the comment on `test` above.
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "../../packages/diagnostic/server/**",
+        "../../packages/holodeck/**",
+        ".mock-cache/**"
+      ],
       "outputs": ["testem.log", "test-execution-*.json"],
       "dependsOn": ["build:production"]
     }

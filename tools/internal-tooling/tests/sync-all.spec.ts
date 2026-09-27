@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 
-import { createFixture, isPrettierFixCall, parseJsonc, readCalls, runSync, type Fixture } from './-fixture.ts';
+import { createFixture, isPrettierFixCall, readCalls, runSync, type Fixture } from './-fixture.ts';
 
 describe('sync-all', () => {
   let fixture: Fixture;
@@ -40,7 +40,7 @@ describe('sync-all', () => {
     assert.equal(alpha.license, 'MIT');
     assert.deepEqual(alpha.files, ['dist', 'logos', 'LICENSE.md']);
     // references
-    assert.deepEqual(parseJsonc<{ references: unknown[] }>(fixture.read('packages/beta/tsconfig.json')).references, [
+    assert.deepEqual(fixture.readJsonc<{ references: unknown[] }>('packages/beta/tsconfig.json').references, [
       { path: '../alpha' },
     ]);
     // scripts
