@@ -18,7 +18,8 @@
     "sync": "echo \"syncing\"",
     "build": "vite build",
     "start": "bun ./server/index.ts",
-    "fixtures": "bun run ./fixtures/index.js"
+    "fixtures": "bun run ./fixtures/index.js",
+    "test": "node --test server/tests/*.spec.mts"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
