@@ -3,6 +3,9 @@
   "version": "5.10.0-alpha.12",
   "private": true,
   "type": "module",
+  "scripts": {
+    "test": "node --test tests/*.spec.ts"
+  },
   "dependencies": {
     "semver": "catalog:",
     "@types/semver": "catalog:",
