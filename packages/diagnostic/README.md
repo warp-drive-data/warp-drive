@@ -310,7 +310,7 @@ And update any necessary scripts in `package.json`
   "scripts": {
      "build" "vite build",
 -    "test": "ember test"
-+    "test": "bun run build && node ./diagnostic.js"
++    "test": "pnpm run build && node ./diagnostic.js"
   }
 }
 ```
