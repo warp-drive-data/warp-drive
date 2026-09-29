@@ -295,20 +295,20 @@ store.schema.registerResources([
 ]);
 ```
 
-Additionally, `@warp-drive/core-types` provides several utilities for type-checking and narrowing schemas.
+Additionally, `@warp-drive/core/types/schema/fields` provides several utilities for type-checking and narrowing schemas.
 
-- (type) [PolarisResourceSchema]()
-- (type) [LegacyResourceSchema]()
-- (type) [ObjectSchema]()
-- [resourceSchema]()
-- [objectSchema]()
-- [isResourceSchema]()
-- [isLegacyResourceSchema]()
+- (type) `PolarisResourceSchema`
+- (type) `LegacyResourceSchema`
+- (type) `ObjectSchema`
+- [resourceSchema](https://warp-drive.io/api/@warp-drive/core/types/schema/fields/functions/resourceSchema)
+- [objectSchema](https://warp-drive.io/api/@warp-drive/core/types/schema/fields/functions/objectSchema)
+- [isResourceSchema](https://warp-drive.io/api/@warp-drive/core/types/schema/fields/functions/isResourceSchema)
+- [isLegacyResourceSchema](https://warp-drive.io/api/@warp-drive/core/types/schema/fields/functions/isLegacyResourceSchema)
 
 
 ### Field Schemas
 
-For the full range of available schema capabilities, see [Field Schemas](../core-types/src/schema/fields.ts)
+For the full range of available schema capabilities, see [Field Schemas](https://warp-drive.io/api/@warp-drive/core/types/schema/fields/)
 
 ## Documentation
 
