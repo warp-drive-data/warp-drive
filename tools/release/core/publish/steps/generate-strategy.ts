@@ -2,8 +2,8 @@ import { styleText } from 'node:util';
 import path from 'path';
 import semver from 'semver';
 
-import { CHANNEL, npmDistTagForChannelAndVersion, VALID_TRAINS } from '../../../utils/channel.ts';
-import { APPLIED_STRATEGY, Package, STRATEGY } from '../../../utils/package.ts';
+import { type CHANNEL, npmDistTagForChannelAndVersion, type VALID_TRAINS } from '../../../utils/channel.ts';
+import { type APPLIED_STRATEGY, Package, type STRATEGY } from '../../../utils/package.ts';
 import { getNextVersion } from '../../utils/next-version.ts';
 
 const PROJECT_ROOT = process.cwd();

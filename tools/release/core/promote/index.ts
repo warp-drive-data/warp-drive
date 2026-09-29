@@ -1,10 +1,10 @@
 import { styleText } from 'node:util';
 
 import { printHelpDocs } from '../../help/docs.ts';
-import { SEMVER_VERSION } from '../../utils/channel.ts';
+import type { SEMVER_VERSION } from '../../utils/channel.ts';
 import { exec } from '../../utils/cmd.ts';
 import { promote_flags_config } from '../../utils/flags-config.ts';
-import { GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
+import { type GIT_TAG, getAllPackagesForGitTag, getGitState, pushLTSTagToRemoteBranch } from '../../utils/git.ts';
 import { Package } from '../../utils/package.ts';
 import { parseRawFlags } from '../../utils/parse-args.ts';
 import { colorName } from '../publish/steps/print-strategy.ts';

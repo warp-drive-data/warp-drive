@@ -48,7 +48,7 @@ jobs:
           skip-addon-build: true
           DISABLE_TURBO_CACHE: true
       - name: Bootstrap new packages
-        run: bun release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
+        run: pnpm release exec bootstrap --dry_run=${{ github.event.inputs.dryRun }} --otp=${{ github.event.inputs.otp }}
         env:
           FORCE_COLOR: 2
           CI: true

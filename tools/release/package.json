@@ -3,12 +3,15 @@
   "version": "5.10.0-alpha.12",
   "private": true,
   "type": "module",
+  "scripts": {
+    "check:types": "tsc --noEmit",
+    "test": "node --test tests/*.spec.ts"
+  },
   "dependencies": {
     "semver": "catalog:",
     "@types/semver": "catalog:",
-    "@types/bun": "catalog:",
     "lerna-changelog": "catalog:",
     "typescript": "catalog:",
-    "bun-types": "catalog:"
+    "@types/node": "catalog:"
   }
 }
