@@ -467,6 +467,13 @@ packageExtensions:
   ember-source:
     peerDependencies:
       "@glimmer/component": "*"
+  ## The ember-rolldown patch in `patchedDependencies` applies two unreleased upstream fixes
+  ## that import these at runtime: NullVoxPopuli/ember.nvp#140 (`@jridgewell/remapping`) and
+  ## NullVoxPopuli/ember.nvp#143 (`magic-string`). Drop this with the patch.
+  "@nullvoxpopuli/ember-rolldown@2.9.0":
+    dependencies:
+      "@jridgewell/remapping": ^2.3.5
+      magic-string: ^1.4.2
 
 overrides:
   "@embroider/macros": ^1.21.1
@@ -540,6 +547,7 @@ patchedDependencies:
   ember-source@4.4.5: patches/ember-source@4.4.5.patch
   ember-source@3.28.12: patches/ember-source@3.28.12.patch
   "@ember/test-helpers@>=5.5.0 <6": patches/@ember__test-helpers@5.5.patch
+  "@nullvoxpopuli/ember-rolldown@2.9.0": patches/@nullvoxpopuli__ember-rolldown@2.9.0.patch
 
 ## pnpm 11 requires explicit opt-in for dependency postinstall/build scripts.
 ## unrs-resolver (native resolver used transitively by eslint-import-context)
