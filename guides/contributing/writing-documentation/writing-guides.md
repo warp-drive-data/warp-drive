@@ -53,6 +53,16 @@ It leaves signatures and per-member details to the generated [API Docs](/api/) a
 rather than restating them. Use it when the reader already knows what they want and needs the
 details.
 
+## Linking to the API Docs
+
+The first time a guide names an exported API in prose, such as `useRecommendedStore`, `findRecord`
+or `CachePolicy`, link its page in the [API Docs](/api/) with a root-relative URL copied from the
+rendered page, such as `[findRecord](/api/@warp-drive/utilities/json-api/functions/findRecord)`.
+Code blocks don't need links, but a symbol a reader needs to look up should be linked in the prose
+around them. The API docs link back: each symbol's doc comment links the guide that teaches it,
+and each package's landing page lists its guides, as
+[Link the Guide That Teaches It](./writing-api-docs.md#link-the-guide-that-teaches-it) describes.
+
 ## Where Files Live
 
 Guides are markdown files under `guides/`. Add a new page's slug to the `items` list in its

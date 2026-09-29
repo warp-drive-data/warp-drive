@@ -42,3 +42,8 @@ module.exports = [
 ];
 ```
 
+## Guides
+
+- [Linting](/guides/linting/): install the plugin and enable its recommended, template and React
+  configs.
+
