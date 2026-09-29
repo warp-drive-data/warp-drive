@@ -8,9 +8,9 @@ description: Where to find llms.txt, llms-full.txt, their legacy counterparts, a
 Every page on this site is also published as plain Markdown, for coding agents and for anyone who
 wants to paste a page into a chat.
 
-- [llms.txt](/llms.txt) is the table of contents: one absolute link per page, grouped by section,
-  following the [llms.txt](https://llmstxt.org/) convention.
-- [llms-full.txt](/llms-full.txt) is every page concatenated into one file. It is a few megabytes;
+- [llms.txt](/llms.txt) is the table of contents: one absolute link per page except drafts,
+  grouped by section, following the [llms.txt](https://llmstxt.org/) convention.
+- [llms-full.txt](/llms-full.txt) is those pages concatenated into one file. It is a few megabytes;
   prefer `llms.txt` plus the one page you need.
 - [llms-legacy.txt](/llms-legacy.txt) is the same kind of index for the legacy documentation,
   which the two files above leave out: the guides that only cover a legacy setup, each marked
