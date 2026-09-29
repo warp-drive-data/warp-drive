@@ -61,9 +61,9 @@ preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site
 
 ## Frontmatter and Agent-Only Content
 
-Every page is also published as plain Markdown for coding agents and indexed in `llms.txt` (see
-[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Four things in the source affect
-what those agents get:
+Every page is also published as plain Markdown for coding agents and, unless it is a draft,
+indexed in `llms.txt` (see [LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Four
+things in the source affect what those agents get:
 
 - **An `#` heading at the top.** Start every page with one H1 naming it. It is the page's title in
   the browser tab, the outline, and `llms.txt`; a page that opens with `##`, prose, or a `:::`
@@ -81,9 +81,9 @@ what those agents get:
   `llms-legacy-full.txt`, and the website shows a Legacy badge and a warning at its top. The
   warning's second sentence defaults to pointing at the current guides; set `legacyAdvice` to
   markdown naming the modern equivalent instead, with root-relative links. Its `llms-legacy.txt`
-  entry is titled the same way `llms.txt` would title it. A draft legacy page is left out of all
-  four files and gets no badge. Don't flag a page that mixes modern and legacy content, or one
-  about [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md), which is a current,
+  entry is titled the same way `llms.txt` would title it. A draft legacy page gets no badge. Don't
+  flag a page that mixes modern and legacy content, or one about
+  [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md), which is a current,
   recommended schema mode rather than a legacy setup.
 - **`<llm-only>` and `<llm-exclude>` tags.** Content wrapped in `<llm-only>` appears only in the
   Markdown outputs, never on the website; `<llm-exclude>` is the reverse. Use `<llm-only>` for an
@@ -125,7 +125,8 @@ factually wrong, etc.), don't delete or move it. Instead:
 
 2. Add `draft: true` to its frontmatter. This hides the page from the sidebar and nav while
    leaving it published at its original URL (see
-   [Sidebar and `_meta.json`](./index.md#sidebar-and-meta-json)).
+   [Sidebar and `_meta.json`](./index.md#sidebar-and-meta-json)). Drafts, including a page in a
+   `draft` directory, stay out of the llms files, though each keeps its `.md` twin.
 
 ### Every page is dated and versioned
 

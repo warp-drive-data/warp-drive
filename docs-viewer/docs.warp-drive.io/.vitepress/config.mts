@@ -6,6 +6,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 
 import {
+  draftPages,
   getBlogStructure,
   getGuidesStructure,
   getRfcsStructure,
@@ -23,9 +24,10 @@ import {
 // The plugin matches the path it publishes a page to, and it publishes a package's `index.md`
 // landing page as `api/<name>.md`, so that form is listed alongside the pages under it.
 const LEGACY_API_PAGES = legacyDocsPackageNames().flatMap((name) => [`api/${name}.md`, `api/${name}/**`]);
-// Guides whose frontmatter sets `legacy: true` follow the same route, matched by the path the
-// plugin publishes them to. A draft one (an empty placeholder) is left out of the legacy files too.
-const LEGACY_PAGES = [...LEGACY_API_PAGES, ...legacyGuidePages().map((page) => page.published)];
+// Guides whose frontmatter sets `legacy: true` follow the same route, and draft pages stay out of
+// every llms file while keeping their page and `.md` twin. Both are matched by the path the plugin
+// publishes them to.
+const LLMS_TXT_IGNORED = [...LEGACY_API_PAGES, ...legacyGuidePages().map((page) => page.published), ...draftPages()];
 const LEGACY_PACKAGE_LIST = legacyDocsPackageNames()
   .map((name) => `\`${name}\``)
   .join(', ');
@@ -249,8 +251,8 @@ export default withPwa(
             // `dedupeSidebarForLlms` above) list that child's page twice in llms.txt.
             sidebar: dedupeSidebarForLlms,
             ignoreFilesPerOutput: {
-              llmsTxt: LEGACY_PAGES,
-              llmsFullTxt: LEGACY_PAGES,
+              llmsTxt: LLMS_TXT_IGNORED,
+              llmsFullTxt: LLMS_TXT_IGNORED,
             },
           }),
           plugin,
