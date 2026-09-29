@@ -30,7 +30,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
 <br>
 
@@ -73,9 +73,15 @@ export function App() {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
-API docs for this package → [@warp-drive/react](https://warp-drive.io/api/@warp-drive/react/)
+API docs for this package → [@warp-drive/react](https://canary.warp-drive.io/api/@warp-drive/react/)
+
+- [Installation](https://canary.warp-drive.io/guides/installation/#react): install `@warp-drive/react` and add the `@warp-drive/react/install` import to your app.
+- [Configuration](https://canary.warp-drive.io/guides/configuration/): configure the build plugin and create a Store.
+- [Reactivity](https://canary.warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Making Requests](https://canary.warp-drive.io/guides/the-manual/requests/): make a request with `<Request />`, or with `getRequestState` inside a `<ReactiveContext />`.
+- [Reactive Control Flow](https://canary.warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's loading, error and content states.
 
 <br>
 

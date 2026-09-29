@@ -60,7 +60,7 @@ let app = new EmberApp(defaults, {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
 <br>
 

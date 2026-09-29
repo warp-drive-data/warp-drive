@@ -30,7 +30,7 @@
 <p align="center">Enables providing a build config to optimize application assets</p>
 
 > [!WARNING]
-> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
+> **⚠️ This package** has been merged into [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 **Tagged Releases**
 
@@ -73,9 +73,9 @@ module.exports = async function (defaults) {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@warp-drive/build-config](https://warp-drive.io/api/@warp-drive/build-config/)
+API docs for this package → [@warp-drive/build-config](https://canary.warp-drive.io/api/@warp-drive/build-config/)
 
 <br>
 

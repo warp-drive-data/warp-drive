@@ -32,8 +32,8 @@
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
 > **This is LEGACY documentation** for a feature that is no longer encouraged to be used.
-> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://warp-drive.io/api/@warp-drive/core/request/types/Handler)
-> instead to be used with the [RequestManager](https://warp-drive.io/api/@warp-drive/core/classes/RequestManager)
+> If starting a new app or thinking of implementing a new serializer, consider writing a [Handler](https://canary.warp-drive.io/api/@warp-drive/core/request/types/Handler)
+> instead to be used with the [RequestManager](https://canary.warp-drive.io/api/@warp-drive/core/classes/RequestManager)
 
 ## Installation
 
@@ -86,9 +86,9 @@ The store also needs a cache; the [@ember-data/store](https://github.com/warp-dr
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/serializer](https://warp-drive.io/api/@ember-data/serializer/)
+API docs for this package → [@ember-data/serializer](https://canary.warp-drive.io/api/@ember-data/serializer/)
 
 <br>
 

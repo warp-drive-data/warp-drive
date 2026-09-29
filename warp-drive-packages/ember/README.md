@@ -30,7 +30,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
 <br>
 
@@ -1171,10 +1171,10 @@ if (adopted === null) {
 
 ## Testing
 
-Mock requests in tests with [holodeck](https://warp-drive.io/guides/the-manual/testing/).
+Mock requests in tests with [holodeck](https://canary.warp-drive.io/guides/the-manual/testing/).
 Testem launches it only when it runs the suite, so running your tests from the dev server at
 `/tests` needs holodeck started separately. See
-[Holodeck in dev mode](https://warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode).
+[Holodeck in dev mode](https://canary.warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode).
 
 ## Using .hbs
 
@@ -1204,6 +1204,18 @@ export { Await as default } from '@warp-drive/ember';
 ```
 
 ---
+
+## Documentation
+
+API docs for this package → [@warp-drive/ember](https://canary.warp-drive.io/api/@warp-drive/ember/)
+
+- [Installation](https://canary.warp-drive.io/guides/installation/#ember): install `@warp-drive/ember` and add the `@warp-drive/ember/install` import to your app and tests.
+- [Setup](https://canary.warp-drive.io/guides/configuration/): configure the build plugin in `ember-cli-build` and create a Store.
+- [Reactivity](https://canary.warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses your framework's signals.
+- [Making Requests](https://canary.warp-drive.io/guides/the-manual/requests/): make a request with `<Request />` or `getRequestState`.
+- [Reactive Control Flow](https://canary.warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's loading, error and content states.
+- [Async as Reactive State](https://canary.warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState` and `<Await />`.
+- [Pagination](https://canary.warp-drive.io/guides/the-manual/experiments/pagination): the experimental `<Paginate />` and `<EachLink />` components.
 
 ### ♥️ Credits
 

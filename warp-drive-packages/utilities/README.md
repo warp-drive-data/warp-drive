@@ -45,8 +45,17 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
+API docs for this package → [@warp-drive/utilities](https://canary.warp-drive.io/api/@warp-drive/utilities/)
+
+- [Installation](https://canary.warp-drive.io/guides/installation/#other-packages): install `@warp-drive/utilities` at the same version as `@warp-drive/core`.
+- [Builders](https://canary.warp-drive.io/guides/the-manual/requests/builders): write request builders, and keep cache keys stable with `sortQueryParams`, `buildQueryParams` and `filterEmpty`.
+- [Making Requests](https://canary.warp-drive.io/guides/the-manual/requests/): make a request with the `findRecord` builder, and the `AutoCompress` and `Gate` handlers.
+- [Handlers](https://canary.warp-drive.io/guides/the-manual/requests/handlers): normalize a response with `dasherize` and `singularize` from `@warp-drive/utilities/string`.
+- [Typing Requests](https://canary.warp-drive.io/guides/the-manual/requests/typing-requests): pass a response's meta type to the builders.
+- [Basic Usage](https://canary.warp-drive.io/guides/the-manual/cookbook/basic-usage): configure `setBuildURLConfig` and page through results with the `query` builder.
+- [Naming Conventions](https://canary.warp-drive.io/guides/the-manual/cookbook/naming-conventions): how `findRecord` turns a resource type into a URL path.
 
 <br>
 

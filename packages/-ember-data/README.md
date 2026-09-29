@@ -49,7 +49,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 >
 > **When to use this package:** Only use `ember-data` if you're maintaining an existing Ember application that hasn't migrated to modern WarpDrive patterns. For new projects or modern WarpDrive apps, install packages from `@warp-drive/*` directly.
 >
-> **Migration path:** See the [Guides](https://warp-drive.io/guides/) for migration strategies.
+> **Migration path:** See the [Guides](https://canary.warp-drive.io/guides/) for migration strategies.
 
 <br>
 
@@ -65,6 +65,9 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 - ![NPM LTS Version](https://img.shields.io/npm/v/ember-data/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/ember-data/lts-4-12?label=%40lts-4-12&color=bbbbbb)
 
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
 ### License
 

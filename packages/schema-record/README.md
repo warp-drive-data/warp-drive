@@ -27,7 +27,7 @@
 # @warp-drive/schema-record
 
 > [!WARNING]
-> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
+> **⚠️ This package** has been merged into [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 <h3 align="center">Your Data, Managed.</h3>
 <p align="center">🌲 Get back to Nature 🐿️ Or shipping 💚</p>
@@ -310,6 +310,11 @@ Additionally, `@warp-drive/core-types` provides several utilities for type-check
 
 For the full range of available schema capabilities, see [Field Schemas](../core-types/src/schema/fields.ts)
 
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+
+API docs for this package → [@warp-drive/schema-record](https://canary.warp-drive.io/api/@warp-drive/schema-record/)
 
 ### ♥️ Credits
 

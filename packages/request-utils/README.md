@@ -31,7 +31,7 @@
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
+> Newer apps should use [@warp-drive/utilities](https://canary.warp-drive.io/api/@warp-drive/utilities/)
 
 
 This package provides simple utility functions to assist in url building, query params, and other common request operations.
@@ -86,9 +86,9 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/request-utils](https://warp-drive.io/api/@ember-data/request-utils/)
+API docs for this package → [@ember-data/request-utils](https://canary.warp-drive.io/api/@ember-data/request-utils/)
 
 <br>
 

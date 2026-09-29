@@ -31,7 +31,7 @@
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
+> Newer apps should use [@warp-drive/utilities](https://canary.warp-drive.io/api/@warp-drive/utilities/)
 
 
 This package provides utilities for working with **REST**ful APIs with [*Ember***Data**](https://github.com/warp-drive-data/warp-drive/).
@@ -87,15 +87,15 @@ the query or values in an array changes.
 
 URLs follow the most common REST format (camelCase pluralized resource types).
 
-The available builders are `createRecord`, `deleteRecord`, `findRecord`, `query` and `updateRecord`; see the [API docs](https://warp-drive.io/api/@ember-data/rest/request/) for each.
+The available builders are `createRecord`, `deleteRecord`, `findRecord`, `query` and `updateRecord`; see the [API docs](https://canary.warp-drive.io/api/@ember-data/rest/request/) for each.
 
 <br>
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/rest](https://warp-drive.io/api/@ember-data/rest/)
+API docs for this package → [@ember-data/rest](https://canary.warp-drive.io/api/@ember-data/rest/)
 
 <br>
 

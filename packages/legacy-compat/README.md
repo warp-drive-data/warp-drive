@@ -29,7 +29,7 @@
 > [!CAUTION]
 > **⚠️ This is a legacy compatibility package** not recommended for new applications.
 >
-> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+> Use [Handlers](https://canary.warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) instead.
 
 This package provides **compatibility shims** to bridge legacy EmberData patterns (Models, Adapters, Serializers) with modern WarpDrive infrastructure (RequestManager, Handlers, Cache).
 
@@ -61,9 +61,9 @@ export default class extends Store {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/legacy-compat](https://warp-drive.io/api/@ember-data/legacy-compat/)
+API docs for this package → [@ember-data/legacy-compat](https://canary.warp-drive.io/api/@ember-data/legacy-compat/)
 
 <br>
 

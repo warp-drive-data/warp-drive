@@ -43,3 +43,9 @@ your `app.ts` file.
 ```ts
 import '@warp-drive/ember/install';
 ```
+
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+
+API docs for this package → [@ember-data/tracking](https://canary.warp-drive.io/api/@ember-data/tracking/)

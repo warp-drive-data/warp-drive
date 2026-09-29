@@ -33,7 +33,7 @@ Codemods for migrating EmberData apps to WarpDrive.
 | `legacy-compat-builders` | Updates legacy store methods to use `store.request` and builders |
 
 Full usage, configuration, generated output, and caveats for each codemod are in the
-[Using Codemods](https://warp-drive.io/upgrading/v5/codemods) guide.
+[Using Codemods](https://canary.warp-drive.io/upgrading/v5/codemods) guide.
 
 ## Quick start
 
@@ -49,3 +49,7 @@ npx @ember-data/codemods apply <codemod-name> [options] <target...>
 > [!TIP]
 > Quote glob patterns so the codemod expands them rather than your shell.
 > Unquoted `**` behaves differently across shells.
+
+## Documentation
+
+*Get Started* → [Using Codemods](https://canary.warp-drive.io/upgrading/v5/codemods)

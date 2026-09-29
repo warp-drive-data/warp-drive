@@ -30,7 +30,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-**Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
 <br>
 
@@ -42,6 +42,9 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 
 ---
 
+## Documentation
+
+- [Reactivity](https://canary.warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI, the concept this package implements for the prototype TC39 Signals API.
 
 ### ♥️ Credits
 

@@ -98,7 +98,7 @@ Structure and per-file metadata instead live in a single `_meta.json` per direct
   `index.md` on the docs website in place of the real one. `skills/index.md` is the agent
   routing table above and is marked `draft` so it's excluded from the website entirely;
   [`skills/overview.md`](./skills/overview.md) is the human-facing landing page and is what
-  `webIndex: "overview"` publishes at [warp-drive.io/skills](https://warp-drive.io/skills)
+  `webIndex: "overview"` publishes at [warp-drive.io/skills](https://canary.warp-drive.io/skills)
   instead. Only the docs site's synced copy is affected — the npm package always ships both files.
 
 ```json
@@ -111,9 +111,9 @@ Structure and per-file metadata instead live in a single `_meta.json` per direct
 }
 ```
 
-This same `skills` directory is synced into [the WarpDrive docs site](https://warp-drive.io/skills)
+This same `skills` directory is synced into [the WarpDrive docs site](https://canary.warp-drive.io/skills)
 under the "Skills" section, using the same markdown-plus-JSON compilation tooling as the
-[Guides](https://warp-drive.io/guides) section.
+[Guides](https://canary.warp-drive.io/guides) section.
 
 ## Usage
 
@@ -134,6 +134,12 @@ const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/defin
 
 Or point an MCP filesystem/docs server, a Claude Code skill, or any other agent tooling at the
 installed package's `skills` directory.
+
+## Documentation
+
+API docs for this package → [@warp-drive/memory-alpha](https://canary.warp-drive.io/api/@warp-drive/memory-alpha/)
+
+- [Writing Agent Skills](https://canary.warp-drive.io/guides/contributing/writing-documentation/writing-agent-skills): for contributors adding or changing a skill in this package.
 
 ### ♥️ Credits
 

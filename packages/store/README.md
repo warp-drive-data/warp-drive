@@ -29,7 +29,7 @@
 > [!WARNING]
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
-> Use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
+> Use [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) instead.
 
 <p align="center">⚡️ The lightweight reactive data library for JavaScript applications</p>
 
@@ -69,7 +69,7 @@ Install using your javascript package manager of choice. For instance with [pnpm
 pnpm add @ember-data/store
 ```
 
-After installing you will want to configure your first `Store`: add a cache, add a request handler, and tell the store how to present records. The [API docs landing page](https://warp-drive.io/api/@ember-data/store/) walks through each step.
+After installing you will want to configure your first `Store`: add a cache, add a request handler, and tell the store how to present records. The [API docs landing page](https://canary.warp-drive.io/api/@ember-data/store/) walks through each step.
 
 **Tagged Releases**
 
@@ -99,15 +99,15 @@ export default class extends Store {
 ```
 
 Apps on the `ember-data` meta package get this configuration for free. The
-[API docs](https://warp-drive.io/api/@ember-data/store/) walk through each piece and how records are presented.
+[API docs](https://canary.warp-drive.io/api/@ember-data/store/) walk through each piece and how records are presented.
 
 <br>
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/store](https://warp-drive.io/api/@ember-data/store/)
+API docs for this package → [@ember-data/store](https://canary.warp-drive.io/api/@ember-data/store/)
 
 <br>
 

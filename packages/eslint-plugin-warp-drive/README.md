@@ -152,3 +152,11 @@ module.exports = [
   ...WarpDriveInternalRecommended,
 ];
 ```
+
+## Documentation
+
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
+
+API docs for this package → [eslint-plugin-warp-drive](https://canary.warp-drive.io/api/eslint-plugin-warp-drive/)
+
+- [Linting](https://canary.warp-drive.io/guides/linting/): install the plugin and enable its recommended, template and React configs.

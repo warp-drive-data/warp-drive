@@ -36,7 +36,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
 
 <br>
 
@@ -68,7 +68,9 @@ Each retrofit has the ability to update to the configuration required for a spec
 - `types`
 - `channel`
 
+## Documentation
 
+- [Native Types Retrofit](https://canary.warp-drive.io/guides/the-manual/typescript/installation): what `npx warp-drive retrofit types` uninstalls, installs and configures.
 
 ### ♥️ Credits
 
