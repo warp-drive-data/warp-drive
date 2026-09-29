@@ -596,7 +596,7 @@ notifications. The `<Request />` component subscribes to these notifications and
 trigger a reload if necessary if an invalidated request is in active use, letting you
 craft advanced policies that meet your product's needs.
 
-***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy) with a number of great defaults that
+***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy), [`DefaultCachePolicy`](/api/@warp-drive/core/store/classes/DefaultCachePolicy), with a number of great defaults that
 is a great starting point for most applications. We configure this basic policy
 below.
 
