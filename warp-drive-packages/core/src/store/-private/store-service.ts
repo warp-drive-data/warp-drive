@@ -19,11 +19,17 @@ import type { CacheCapabilitiesManager } from '../-types/q/cache-capabilities-ma
 import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 import type { Graph } from '../../graph/-private.ts';
 // oxlint-disable-next-line no-unused-vars
-import { ReactiveResource } from '../../reactive.ts';
+import { getRequestState, ReactiveResource } from '../../reactive.ts';
 // oxlint-disable-next-line no-unused-vars
-import type { ReactiveDocument } from '../../reactive/-private/document.ts';
+import type {
+  ReactiveDataDocument,
+  ReactiveDocument,
+  ReactiveErrorDocument,
+} from '../../reactive/-private/document.ts';
 // oxlint-disable-next-line no-unused-vars
 import type { CacheHandler as CacheHandlerInterface, Future } from '../../request.ts';
+// oxlint-disable-next-line no-unused-vars
+import { withReactiveResponse, withResponseType } from '../../request.ts';
 // oxlint-disable-next-line no-unused-vars
 import type { Fetch } from '../../request/-private/fetch.ts';
 import type { PrivateRequestManager, RequestManager } from '../../request/-private/manager.ts';
@@ -31,7 +37,7 @@ import type { Cache } from '../../types/cache.ts';
 import type { PersistedResourceKey, ResourceKey } from '../../types/identifier.ts';
 import type { TypedRecordInstance, TypeFromInstance } from '../../types/record.ts';
 // oxlint-disable-next-line no-unused-vars
-import type { CacheOptions, RequestInfo } from '../../types/request.ts';
+import type { CacheOptions, RequestInfo, StructuredDocument } from '../../types/request.ts';
 import { EnableHydration } from '../../types/request.ts';
 import { getRuntimeConfig, setLogging } from '../../types/runtime.ts';
 import type { SchemaService } from '../../types/schema/schema-service.ts';
@@ -1693,7 +1699,20 @@ export class Store extends BaseClass {
    *
    * Issue a request via the configured {@link RequestManager},
    * inserting the response into the {@link Store.cache | cache} and handing
-   * back a {@link Future} which resolves to a {@link ReactiveDocument | ReactiveDocument}
+   * back a {@link Future} which resolves to a {@link ReactiveDocument | ReactiveDocument}.
+   * Use `store.request` for anything the Store's cache should own, which is nearly all app
+   * code; reach for {@link RequestManager.request | requestManager.request} directly only when
+   * there is no `Store` involved, or you specifically want the unprocessed
+   * {@link StructuredDocument}.
+   *
+   * #### Building Requests
+   *
+   * `requestConfig` can be written by hand, but for anything reused more than once prefer a
+   * request builder — a plain function that returns the right shape for `store.request`. This
+   * repo ships builders for common operations (`findRecord`, `query`, `createRecord`, and more)
+   * for {json:api}, REST, and ActiveRecord-style APIs in `@warp-drive/utilities`; each builder's
+   * return value also carries its own response type, so `RT` below is inferred automatically
+   * instead of being written by hand. See [Builders](/guides/the-manual/requests/builders.md).
    *
    * #### Request Cache Keys
    *
@@ -1737,6 +1756,29 @@ export class Store extends BaseClass {
    * The primary difference between {@link RequestManager.request} and `store.request`
    * is that `store.request` will convert the response into a {@link ReactiveDocument}
    * containing {@link Store.instantiateRecord | ReactiveResources}.
+   *
+   * A {@link ReactiveDocument} is either a {@link ReactiveDataDocument} (`content.data` holds
+   * the resource(s)) or a {@link ReactiveErrorDocument} (`content.errors` holds the API's error
+   * objects), depending on whether the `Future` resolves or rejects; both carry the response's
+   * `content.meta`. Read either state reactively with {@link getRequestState} or the
+   * `<Request />` component instead of always `await`-ing the `Future` directly — see
+   * [Using the Response](/guides/the-manual/requests/using-the-response.md).
+   *
+   * #### Typing The Response
+   *
+   * `request<RT>` accepts an explicit type argument, but the more common path is to let it be
+   * inferred: build the request with {@link withResponseType} (or {@link withReactiveResponse}
+   * for the common reactive-document case), or with a builder from `@warp-drive/utilities` as
+   * described above, and `RT` is inferred from the request object itself. See
+   * [Typing Requests](/guides/the-manual/requests/typing-requests.md) for the full mechanism.
+   *
+   * @example
+   * ```ts
+   * import { findRecord } from '@warp-drive/utilities/json-api';
+   *
+   * const { content } = await store.request(findRecord('user', '1'));
+   * content.data; // ReactiveResource, typed from the builder's response type
+   * ```
    *
    * @public
    */
