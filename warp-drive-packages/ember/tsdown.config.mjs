@@ -1,3 +1,7 @@
+import { readFileSync } from 'node:fs';
+import { basename } from 'node:path';
+import ts from 'typescript';
+
 import { createConfig } from '@warp-drive/internal-config/tsdown/config.js';
 
 export const externals = [
@@ -18,21 +22,44 @@ export const externals = [
 export const entryPoints = ['./src/index.ts', './src/install.ts', './src/experiments.ts'];
 
 /**
+ * The doc comment carrying the `@module` tag at the top of an entry point, as
+ * TypeScript parses it, or undefined if the entry has none.
+ *
+ * @param {string} entry a path from `entryPoints`
+ * @returns {string | undefined}
+ */
+function moduleDocComment(entry) {
+  const text = readFileSync(new URL(entry, import.meta.url), 'utf-8');
+  const [firstStatement] = ts.createSourceFile(entry, text, ts.ScriptTarget.Latest, true).statements;
+  if (!firstStatement) return undefined;
+  const moduleDoc = ts
+    .getJSDocCommentsAndTags(firstStatement)
+    .filter(ts.isJSDoc)
+    .find((doc) => doc.tags?.some((tag) => tag.tagName.text === 'module'));
+  return moduleDoc && text.slice(moduleDoc.pos, moduleDoc.end);
+}
+
+/**
  * TypeDoc cannot parse the `.gts` components this package re-exports, so
  * `typedoc.config.mjs` points it at `dist/*.d.ts` instead of `src`. The d.ts
- * bundler drops the file-level `@module` / `@mergeModuleWith <project>` comment
- * from `src/index.ts`, and without it TypeDoc renders `index` as a stray
- * sub-module instead of folding it into the package root. Re-add that comment
- * to the one chunk TypeDoc reads as the package root.
+ * bundler keeps only the comments attached to declarations, so it drops each
+ * entry's file-level `@module` comment, which is attached to the file's first
+ * `import` or `export ... from` statement. Without that comment TypeDoc renders
+ * the entry's API page with no summary or text, and renders `index` as a stray
+ * sub-module instead of folding it into the package root via
+ * `@mergeModuleWith <project>`. Copy each entry's comment back onto the top of
+ * its declaration chunk.
  */
-const ROOT_MODULE_DOC = '/**\n * @module\n * @mergeModuleWith <project>\n */';
+const moduleDocs = new Map(
+  entryPoints.map((entry) => [basename(entry).replace(/\.ts$/, '.d.ts'), moduleDocComment(entry)])
+);
 
 export default createConfig(
   {
     entryPoints,
     externals,
     compileTypes: process.env.IS_UNPKG_BUILD !== 'true',
-    banner: ({ fileName }) => (fileName === 'index.d.ts' ? ROOT_MODULE_DOC : undefined),
+    banner: ({ fileName }) => moduleDocs.get(fileName),
   },
   import.meta.resolve
 );

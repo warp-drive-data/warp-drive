@@ -172,7 +172,7 @@ export function createConfig(options, resolve) {
     // `fileName`, so a package can prepend text to one chunk only -- the case
     // this exists for is a package whose TypeDoc entry is its built `.d.ts`
     // (see `warp-drive-packages/ember/tsdown.config.mjs`), since the d.ts
-    // bundler drops the file-level doc comment TypeDoc needs from `src/index.ts`.
+    // bundler drops each entry's file-level `@module` comment that TypeDoc needs.
     banner: options.banner,
     // Substituted as literal string constants at build time so source
     // consumers (e.g. `warp-drive-packages/core/src/types/-private.ts`) can
