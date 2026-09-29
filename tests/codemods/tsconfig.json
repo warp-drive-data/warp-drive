@@ -21,7 +21,7 @@
     "rootDir": "tests",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "types": ["bun"],
+    "types": ["node"],
     "allowImportingTsExtensions": true,
     "composite": true,
     "declaration": true,

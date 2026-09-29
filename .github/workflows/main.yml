@@ -259,7 +259,7 @@ jobs:
       - name: Pack tarball (runs prepack, mirroring the release tool)
         run: |
           cd packages/codemods
-          bun run prepack
+          pnpm run prepack
           mkdir -p "$RUNNER_TEMP/codemods-smoke"
           pnpm pack --pack-destination "$RUNNER_TEMP/codemods-smoke"
           echo "TARBALL=$(ls $RUNNER_TEMP/codemods-smoke/*.tgz)" >> "$GITHUB_ENV"

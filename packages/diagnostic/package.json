@@ -108,7 +108,6 @@
     "@warp-drive/internal-config": "workspace:*",
     "@types/debug": "catalog:",
     "@types/node": "catalog:",
-    "bun-types": "catalog:",
     "ember-source": "catalog:",
     "tsdown": "catalog:",
     "typescript": "catalog:"

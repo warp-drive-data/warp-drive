@@ -18,9 +18,7 @@
     "check:types": "",
     "test": "pnpm test:fixtures && pnpm test:unit",
     "test:fixtures": "node --test tests/index.spec.ts",
-    "test:unit": "vitest run tests/",
-    "fixme": "node --test tests/index.spec.ts",
-    "_syncPnpm": "bun run sync-dependencies-meta-injected"
+    "test:unit": "vitest run tests/"
   },
   "files": [
     "bin",
@@ -35,8 +33,8 @@
   },
   "devDependencies": {
     "@ember-data/codemods": "workspace:*",
-    "@types/bun": "catalog:",
     "@types/jscodeshift": "catalog:",
+    "@types/node": "catalog:",
     "@warp-drive/internal-config": "workspace:*",
     "eslint": "catalog:",
     "qunit": "catalog:",
