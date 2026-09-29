@@ -29,7 +29,7 @@ request.
 
 3. [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument), which is a reactive wrapper providing immutable access to the cache data for a ResourceDocument. Not all requests have a ReactiveDocument for their response.
 
-What's the common thread? All three are representations of a request and its result each with a distinct purpose. For this reason when cacheable they share a CacheKey (the `RequestKey`).
+What's the common thread? All three are representations of a request and its result each with a distinct purpose. For this reason when cacheable they share a CacheKey (the [`RequestKey`](/api/@warp-drive/core/types/identifier/types/RequestKey)).
 
 For requests that don't use the cache, this is about as much as you need to know. But for requests that do use the cache (most requests) there's one final important nuance: Documents don't store any resource data. When the cache receives the request response, [it will separate out resource data from the rest of the document](./index.md#resource-extraction). Wait ... what's a Resource? Read on.
 
@@ -49,10 +49,10 @@ But resources need not map to rows in a database - any named concept with a uniq
 ***Warp*Drive** distinguishes between documents and resources both because responses can contain zero, one, or many resources and because the same resource may be present in more than one response
 document.
 
-A `Resource` has a `ResourceType` (its name, a string), `ResourceKey` (see [caching](./index.md)), a `ResourceSchema` (defining it's [fields](../schemas/index.md)), and its reactive wrapper - a `ReactiveResource`.
+A `Resource` has a `ResourceType` (its name, a string), [`ResourceKey`](/api/@warp-drive/core/types/identifier/types/ResourceKey) (see [caching](./index.md)), a [`ResourceSchema`](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema) (defining it's [fields](../schemas/index.md)), and its reactive wrapper - a [`ReactiveResource`](/api/@warp-drive/core/reactive/types/ReactiveResource).
 
 - The `ResourceType` is the name of the `ResourceSchema`
 - An array of resources is a `ResourceArray`
-- The reactive wrapper for a `ResourceArray` is a `ReactiveResourceArray`
+- The reactive wrapper for a `ResourceArray` is a [`ReactiveResourceArray`](/api/@warp-drive/core/reactive/types/ReactiveResourceArray)
 
 In a few cases you will see the term `Collection`. Generally a collection is just a list (array) of resources. We tend to use this term when the list is part of a `Many` relationship or has a similar `unique` (no repeat/duplicate values) constraint.
