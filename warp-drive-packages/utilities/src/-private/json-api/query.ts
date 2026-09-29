@@ -18,6 +18,9 @@ import { ACCEPT_HEADER_VALUE } from './-utils.ts';
  * Builds request options to query for resources, usually by a primary
  * type, configured for the url and header expectations of most JSON:API APIs.
  *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
+ *
  * The key difference between this and `postQuery` is that this method will send the query
  * as query params in the url of a "GET" request instead of as the JSON body of a "POST"
  * request.
@@ -110,6 +113,9 @@ export function query(
 /**
  * Builds request options to query for resources, usually by a primary
  * type, configured for the url and header expectations of most JSON:API APIs.
+ *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
  *
  * The key difference between this and `query` is that this method will send the query
  * as the JSON body of a "POST" request instead of as query params in the url of a "GET"

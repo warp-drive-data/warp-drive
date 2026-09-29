@@ -42,6 +42,10 @@ const CONFIG: BuildURLConfig = getOrSetGlobal('CONFIG', {
  * These values may still be overridden by passing
  * them to buildBaseURL directly.
  *
+ * The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+ * guide sets these defaults through the `@warp-drive/utilities/json-api` version of this function,
+ * which also sets this global configuration.
+ *
  * This method may be called as many times as needed.
  * host values of `''` or `'/'` are equivalent.
  *
@@ -486,6 +490,9 @@ function resourcePathForType(options: UrlOptions): string {
  * Does not include support for building query params (see `buildQueryParams`)
  * so that it may be composed cleanly with other query-params strategies.
  *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for writing your own request
+ * builders.
+ *
  * Usage:
  *
  * ```ts
@@ -638,6 +645,9 @@ function handleInclude(include: string | string[]): string[] {
  * filter out keys of an object that have falsy values or point to empty arrays
  * returning a new object with only those keys that have truthy values / non-empty arrays
  *
+ * See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+ * why builders need stable query params.
+ *
  * @summary Returns a copy of an object without keys whose values are `undefined`, `null`, empty strings, or empty
  * arrays.
  * @public
@@ -661,6 +671,9 @@ export function filterEmpty(source: Record<string, Serializable>): Record<string
 /**
  * Sorts query params by both key and value returning a new URLSearchParams
  * object with the keys inserted in sorted order.
+ *
+ * See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+ * why builders need stable query params.
  *
  * Treats `included` specially, splicing it into an array if it is a string and sorting the array.
  *
@@ -746,6 +759,9 @@ export function sortQueryParams(params: QueryParamsSource, options?: QueryParams
 
 /**
  * Sorts query params by both key and value, returning a query params string
+ *
+ * See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+ * why builders need stable query params.
  *
  * Treats `included` specially, splicing it into an array if it is a string and sorting the array.
  *

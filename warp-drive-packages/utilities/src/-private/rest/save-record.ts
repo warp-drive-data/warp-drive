@@ -28,6 +28,9 @@ function isExisting(identifier: ResourceKey): identifier is PersistedResourceKey
  * Builds request options to delete record for resources,
  * configured for the url, method and header expectations of REST APIs.
  *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
+ *
  * **Basic Usage**
  *
  * ```ts
@@ -109,6 +112,9 @@ export function deleteRecord(record: unknown, options: ConstrainedRequestOptions
  * Builds request options to create new record for resources,
  * configured for the url, method and header expectations of most REST APIs.
  *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
+ *
  * **Basic Usage**
  *
  * ```ts
@@ -178,6 +184,9 @@ export function createRecord(record: unknown, options: ConstrainedRequestOptions
 /**
  * Builds request options to update existing record for resources,
  * configured for the url, method and header expectations of most REST APIs.
+ *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
  *
  * **Basic Usage**
  *
