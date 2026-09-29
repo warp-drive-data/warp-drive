@@ -81,7 +81,7 @@ the state of the request, which
 [`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) returns.
 
 In React, [`useStore`](/api/@warp-drive/react/functions/useStore) returns the store your app
-provides (see [Provide the Store in React](/guides/configuration/#provide-the-store-in-react)),
+provides (see [Provide the Store in React](/guides/installation/#provide-the-store-in-react)),
 and a [`<ReactiveContext />`](/api/@warp-drive/react/functions/ReactiveContext) re-renders the
 component inside it when the request state it reads changes.
 

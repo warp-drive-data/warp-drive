@@ -14,7 +14,7 @@ const StoreContext = createContext<Store | null>(null);
  * builds, calling it outside a `<StoreProvider />` throws an error.
  *
  * For how to set up the provider, see
- * [Provide the Store in React](/guides/configuration/#provide-the-store-in-react).
+ * [Provide the Store in React](/guides/installation/#provide-the-store-in-react).
  *
  * @example
  * ```tsx
@@ -84,7 +84,7 @@ export type StoreProviderProps =
  * the provider creates an instance of for you. See {@link StoreProviderProps}.
  *
  * For where this fits in app setup, see
- * [Provide the Store in React](/guides/configuration/#provide-the-store-in-react).
+ * [Provide the Store in React](/guides/installation/#provide-the-store-in-react).
  *
  * @example
  * ```tsx
