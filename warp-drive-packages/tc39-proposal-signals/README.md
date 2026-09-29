@@ -40,10 +40,31 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 
 # @warp-drive/tc39-proposal-signals
 
+The reactivity integration for apps built on the
+[TC39 Signals proposal](https://github.com/tc39/proposal-signals) instead of a framework
+integration such as `@warp-drive/ember` or `@warp-drive/react`. It backs ***Warp*Drive**'s
+reactive data with the `Signal.State` and `Signal.Computed` classes from
+[`signal-polyfill`](https://github.com/proposal-signals/signal-polyfill), the proposal's
+prototype implementation.
+
+## Installation
+
+```sh
+pnpm add -E @warp-drive/tc39-proposal-signals
+```
+
+Import it once at the top of your app, and in any test setup that doesn't boot your app. The
+import calls `setupSignals` from `@warp-drive/core/configure`:
+
+```ts
+import '@warp-drive/tc39-proposal-signals/install';
+```
+
 ---
 
 ## Documentation
 
+- [Installation](https://warp-drive.io/guides/installation/#tc39-signals): install this package alongside `@warp-drive/core` and a cache, pinned to the same version.
 - [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI, the concept this package implements for the prototype TC39 Signals API.
 
 ### ♥️ Credits
