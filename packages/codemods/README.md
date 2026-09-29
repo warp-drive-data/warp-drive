@@ -37,7 +37,7 @@ Full usage, configuration, generated output, and caveats for each codemod are in
 
 ## Quick start
 
-Node.js `>= 22.2` is required. The CLI runs on macOS, Linux (glibc and musl/Alpine), and
+Node.js `>= 24.21` is required. The CLI runs on macOS, Linux (glibc and musl/Alpine), and
 Windows, on both x64 and arm64.
 
 ```sh
