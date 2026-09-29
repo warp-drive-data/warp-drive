@@ -113,6 +113,9 @@ interface ReactiveResourceArrayContext extends ReactiveResourceArrayCreateOption
  * as the base for relationship and legacy record-array types such as
  * {@link LegacyLiveArray}, {@link LegacyQueryArray} and {@link LegacyManyArray}.
  *
+ * The [Key Terminology](/guides/the-manual/caching/key-terms#resources) guide explains
+ * how it relates to resources.
+ *
  * Behaves like a native Array: `Array.isArray(arr)` and `arr instanceof Array`
  * both report `true`. The array stays in sync with the cache, updating
  * reactively as the underlying {@link ResourceKey}s change.

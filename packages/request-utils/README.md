@@ -86,7 +86,7 @@ const url = `${baseURL}?${buildQueryParams({ name: 'Chris', include:['pets'] })}
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/request-utils](https://warp-drive.io/api/@ember-data/request-utils/)
 

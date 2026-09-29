@@ -299,6 +299,9 @@ function makeCache(): CachedResource {
  *
  * A {@link Cache} implementation tuned for [{json:api}](https://jsonapi.org/)
  *
+ * See [How The Cache Works](/guides/the-manual/caching/#how-the-cache-works) for the caching
+ * strategy it uses.
+ *
  * @summary The JSON:API cache implementation: stores documents and normalized resources, tracks local, in-flight, and
  * remote state, and manages relationships through the graph.
  * @categoryDescription Cache Management

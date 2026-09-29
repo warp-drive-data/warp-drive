@@ -3,12 +3,12 @@ import path from 'path';
 
 import {
   branchForChannelAndVersion,
-  CHANNEL,
+  type CHANNEL,
   channelForBranch,
   npmDistTagForChannelAndVersion,
-  SEMVER_VERSION,
-  VALID_BRANCHES,
-  VALID_TRAINS,
+  type SEMVER_VERSION,
+  type VALID_BRANCHES,
+  type VALID_TRAINS,
 } from './channel.ts';
 import { exec } from './cmd.ts';
 import { getFile } from './json-file.ts';

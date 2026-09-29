@@ -648,7 +648,7 @@ export const TimestampedExtensionSchema = {
 
 Step by step, this is how the Model decomposes into those files.
 
-1. The file-path based convention for defining the ResourceType is replaced with specifying a ResourceType on a ResourceSchema. File paths are now purely organizational and discretionary.
+1. The file-path based convention for defining the ResourceType is replaced with specifying a ResourceType on a [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema). File paths are now purely organizational and discretionary.
 
 ```ts [app/data/user/schema.ts]
 // The ResourceSchema in this example is intentionally
@@ -660,7 +660,7 @@ const UserSchema = {
 ```
 
 2. We differentiate between schemas for embedded objects (which have no identity of their own) and
-schemas for resources (which do have their own identity) by specifying a primaryKey. On `Model` this
+schemas for resources (which do have their own identity) by specifying a primaryKey. On [`Model`](/api/@warp-drive/legacy/model/classes/Model) this
 was `id` (this is also added by `withDefaults` which we'll see next).
 
 ```ts [app/data/user/schema.ts]
@@ -752,7 +752,7 @@ const UserSchema = withDefaults({
 })
 ```
 
-8. The Model's TypeScript shape becomes a plain interface, wrapped in `WithLegacy` to pick up the fields `withDefaults` added and intersected with any extension interfaces so `user.fullName` still type-checks.
+8. The Model's TypeScript shape becomes a plain interface, wrapped in [`WithLegacy`](/api/@warp-drive/legacy/model/migration-support/types/WithLegacy) to pick up the fields `withDefaults` added and intersected with any extension interfaces so `user.fullName` still type-checks.
 
 ## Post Migration
 

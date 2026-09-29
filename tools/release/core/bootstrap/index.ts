@@ -6,7 +6,7 @@ import { styleText } from 'node:util';
 import { printHelpDocs } from '../../help/docs.ts';
 import { exec } from '../../utils/cmd.ts';
 import { bootstrap_flags_config } from '../../utils/flags-config.ts';
-import { gatherPackages, loadStrategy, Package, STRATEGY } from '../../utils/package.ts';
+import { gatherPackages, loadStrategy, Package, type STRATEGY } from '../../utils/package.ts';
 import { parseRawFlags } from '../../utils/parse-args.ts';
 import {
   getMirrorAndTypesFlags,

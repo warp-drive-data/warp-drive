@@ -67,6 +67,9 @@ export type DeferredStream = {
  * while providing the ability to {@link Future.abort | abort} the underlying request, and
  * {@link Future.getStream | access the response stream} before the outer promise resolves;
  *
+ * The [Using The Response](/guides/the-manual/requests/using-the-response) guide shows
+ * how to work with one.
+ *
  * @summary The promise returned for every request, resolving with the response document and able to
  * abort the request or expose its response stream early.
  * @public
@@ -139,6 +142,8 @@ export type DeferredFuture<T> = {
  * used to forward a request to the next handler in the chain. Resolves to a
  * {@link Future} carrying the downstream response.
  *
+ * The [Handlers](/guides/the-manual/requests/handlers) guide shows a handler calling it.
+ *
  * @summary The function a request handler calls to pass a request to the next handler in the chain,
  * returning a `Future` for its response.
  * @public
@@ -149,6 +154,8 @@ export type NextFn<P = unknown> = (req: RequestInfo) => Future<P>;
  * Requests are fulfilled by handlers. A handler receives the request context
 as well as a `next` function with which to pass along a request to the next
 handler if it so chooses.
+
+The [Handlers](/guides/the-manual/requests/handlers) guide walks through writing one.
 
 A handler may be any object with a `request` method. This allows both stateful and non-stateful
 handlers to be utilized.

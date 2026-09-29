@@ -71,6 +71,8 @@ pnpm add -E @warp-drive/holodeck@canary
 
 ## Documentation
 
+API docs for this package → [@warp-drive/holodeck](https://warp-drive.io/api/@warp-drive/holodeck/)
+
 - [Testing Overview](https://warp-drive.io/guides/the-manual/testing/) why a real server, and how record and replay works
 - [Server Setup](https://warp-drive.io/guides/the-manual/testing/server-setup) certificates, and launching with Diagnostic or Testem
 - [Client Setup](https://warp-drive.io/guides/the-manual/testing/client-setup) adding `MockServerHandler` to the request chain

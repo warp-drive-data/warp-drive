@@ -25,6 +25,9 @@ export let ACCEPT_HEADER_VALUE = 'application/vnd.api+json';
  * Extensions and profiles are keyed by their namespace with the value being
  * their URI.
  *
+ * The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+ * guide uses it to configure a host, a namespace and a pagination profile.
+ *
  * Example:
  *
  * ```ts

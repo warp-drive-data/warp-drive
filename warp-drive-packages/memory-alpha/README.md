@@ -94,9 +94,10 @@ Structure and per-file metadata instead live in a single `_meta.json` per direct
   Unlisted items sort alphabetically after listed ones.
 - `files` — per-file metadata, keyed by filename without `.md` (e.g. `"title"`/`"draft"` for
   that file).
-- `webIndex` — (root directory only, currently) the filename (without `.md`) to publish as
-  `index.md` on the docs website in place of the real one. `skills/index.md` is the agent
-  routing table above and is marked `draft` so it's excluded from the website entirely;
+- `webIndex` — the filename (without `.md`) to publish as `index.md` on the docs website in place
+  of the real one, in the directory whose `_meta.json` sets it. The root and `skills/contributors/`
+  both set it. At the root, `skills/index.md` is the agent routing table above and is marked
+  `draft` so it's excluded from the website entirely;
   [`skills/overview.md`](./skills/overview.md) is the human-facing landing page and is what
   `webIndex: "overview"` publishes at [warp-drive.io/skills](https://warp-drive.io/skills)
   instead. Only the docs site's synced copy is affected — the npm package always ships both files.
@@ -134,6 +135,10 @@ const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/defin
 
 Or point an MCP filesystem/docs server, a Claude Code skill, or any other agent tooling at the
 installed package's `skills` directory.
+
+## Documentation
+
+API docs for this package → [@warp-drive/memory-alpha](https://warp-drive.io/api/@warp-drive/memory-alpha/)
 
 ### ♥️ Credits
 

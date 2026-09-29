@@ -31,6 +31,9 @@ interface EachLinkSignature<RT, E> {
  * collection, derived from the {@link PagedPaginationState} a `<Paginate />`
  * component yields to its `content` block.
  *
+ * See the [Pagination guide](/guides/the-manual/experiments/pagination) for how
+ * paged and infinite pagination work.
+ *
  * It renders no markup of its own: it yields a single {@link PaginationLinks}
  * object, and the consumer decides which links to render, with what markup,
  * and in what order.

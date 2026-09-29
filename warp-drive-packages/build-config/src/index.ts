@@ -20,6 +20,9 @@ import type * as DEPRECATIONS from './deprecations.ts';
 /**
  * Create the Babel plugin for WarpDrive
  *
+ * The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+ * configure it.
+ *
  * Note: If your project already uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
  * then you should use {@link setConfig} instead of this function.
  *
@@ -204,6 +207,9 @@ function recastMacrosConfig(macros: object): MacrosWithGlobalConfig {
  * and enables adjusting log instrumentation, removing code
  * that supports deprecated features, enabling canary features
  * and enabling/disabling optional features.
+ *
+ * The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+ * configure it.
  *
  * The library uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
  * to perform this final configuration code transform.

@@ -4,7 +4,7 @@ description: Declare primitive string, number, boolean, or date attributes on a 
 
 # SimpleFields
 
-SimpleFields represent primitive values on a ResourceSchema or ObjectSchema. They are the most common type of field and map directly to the values your API sends and receives.
+SimpleFields represent primitive values on a [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema) or [ObjectSchema](/api/@warp-drive/core/types/schema/fields/types/ObjectSchema). They are the most common type of field and map directly to the values your API sends and receives.
 
 ## What SimpleFields Are
 

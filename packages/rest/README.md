@@ -93,7 +93,7 @@ The available builders are `createRecord`, `deleteRecord`, `findRecord`, `query`
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/rest](https://warp-drive.io/api/@ember-data/rest/)
 

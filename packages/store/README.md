@@ -105,7 +105,7 @@ Apps on the `ember-data` meta package get this configuration for free. The
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/store](https://warp-drive.io/api/@ember-data/store/)
 

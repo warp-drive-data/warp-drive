@@ -118,6 +118,9 @@ interface PaginateSignature<RT, E, M extends PaginateMode = 'paged'> {
  * collection's entry page and yields a pagination state for navigating and
  * rendering the collection's pages.
  *
+ * See the [Pagination guide](/guides/the-manual/experiments/pagination) for how
+ * paged and infinite pagination work.
+ *
  * ## Blocks
  *
  * Five states, only one of which renders at a time:

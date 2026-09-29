@@ -7,6 +7,10 @@ import type { Store } from '../store-service';
  * the store's `lifetimes` property to configure the behavior
  * of the CacheHandler.
  *
+ * The [Advanced Store Configuration](/guides/configuration/advanced#decide-how-long-requests-are-valid-for-with-a-cachepolicy)
+ * guide shows how to configure one, and [Caching](/guides/the-manual/caching/) explains
+ * where the CacheHandler consults it.
+ *
  * The default behavior for request lifetimes is to never expire
  * unless manually refreshed via `cacheOptions.reload` or `cacheOptions.backgroundReload`.
  *

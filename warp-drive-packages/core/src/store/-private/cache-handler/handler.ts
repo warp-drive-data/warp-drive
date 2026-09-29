@@ -59,6 +59,9 @@ export interface StoreRequestContext extends RequestContext {
 /**
  * A CacheHandler that adds support for using an WarpDrive Cache with a RequestManager.
  *
+ * The [Caching](/guides/the-manual/caching/) guide explains how it decides whether a
+ * request can use the cache.
+ *
  * This handler will only run when a request has supplied a `store` instance. Requests
  * issued by the store via `store.request()` will automatically have the `store` instance
  * attached to the request.

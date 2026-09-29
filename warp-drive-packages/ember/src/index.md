@@ -135,5 +135,6 @@ export { Await as default } from '@warp-drive/ember';
   loading, error and content states.
 - [Async as Reactive State](/guides/the-manual/reactivity/derivation.md): derive a promise's state
   with `getPromiseState` and `<Await />`.
+- [Testing](/guides/the-manual/testing/): mock your app's requests in tests with holodeck.
 - [Pagination](/guides/the-manual/experiments/pagination.md): the experimental `<Paginate />` and
   `<EachLink />` components.

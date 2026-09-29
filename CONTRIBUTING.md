@@ -3,7 +3,7 @@
 ## Welcome!
 
 > [!TIP]
-> This guide is available in published form at [https://docs.warp-drive.io/guides](https://docs.warp-drive.io/guides/contributing/become-a-contributor)
+> This guide is available in published form at [https://warp-drive.io/guides](https://warp-drive.io/guides/contributing/become-a-contributor)
 
 We are so glad you are considering contributing to `WarpDrive`. Before that, kindly take a minute to read the [Code of Conduct](./CODE_OF_CONDUCT.md). Below you'll find links to topics
 detailing how to become involved to best ensure your contributions are successful!

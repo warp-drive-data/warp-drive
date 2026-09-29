@@ -102,6 +102,9 @@ interface AwaitSignature<T, E = Error | string | object> {
  * Await is ideal for handling "boundaries", outside which some state is
  * still allowed to be unresolved and within which it MUST be resolved.
  *
+ * See [Async as Reactive State](/guides/the-manual/reactivity/derivation) for
+ * the pattern it supports: store the promise and derive its state.
+ *
  * ```gts
  * import { Await } from '@warp-drive/ember';
  *

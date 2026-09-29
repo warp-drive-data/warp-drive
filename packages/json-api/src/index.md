@@ -13,7 +13,7 @@ This package provides an in-memory [{json:api}](https://jsonapi.org/) document a
 
 **When you still need this:** Only use this package if you're maintaining an existing Ember application that hasn't migrated to the modern WarpDrive packages.
 
-For guidance on migration, see the [Migration Guide](/guides/migrating/).
+For guidance on migration, see the [Migration Guide](/upgrading/v5/).
 
 ## Installation
 

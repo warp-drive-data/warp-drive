@@ -182,8 +182,8 @@ directionality or ownership over their inverse.
 [ReactiveResource](../../schemas/index.md) reads these same field definitions from a
 [ResourceSchema](../../schemas/resources/index.md). Define one in
 [LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
-`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
-derived and local fields that emulate `Model`. The relationship field is the JSON above,
+[`withDefaults`](/api/@warp-drive/legacy/model/migration-support/functions/withDefaults) helper sets `legacy: true`, adds the `id` identity field, and appends the
+derived and local fields that emulate [`Model`](/api/@warp-drive/legacy/model/classes/Model). The relationship field is the JSON above,
 unchanged.
 
 🏃🏾‍♀️ *ActivityData*
@@ -222,7 +222,7 @@ export const TrailRunnerSchema = withDefaults({
 });
 ```
 
-If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
+If you did not create the store with [`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore), call [`registerDerivations`](/api/@warp-drive/legacy/model/migration-support/functions/registerDerivations) once on the
 schema service, as shown in
 [Configuration](../../schemas/resources/legacy-mode.md#configuration).
 [Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
@@ -231,6 +231,8 @@ shows how to type the records these schemas produce.
 ---
 
 ## Using `@warp-drive/schema-record` (🚧 Coming Soon)
+
+> **Note** The samples below import from `@warp-drive/schema`, a private package in this repository that has not been published to npm. It does not export these decorators yet, so the samples do not run today.
 
 Working with schemas in a raw json format is far more flexible, lightweight and
 performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.

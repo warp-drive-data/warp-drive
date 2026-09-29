@@ -496,3 +496,9 @@ though the store will still register the CacheHandler.
 
 For usage of the store's `requestManager` via `store.request(<req>)` see the
 [Store](https://api.emberjs.com/ember-data/release/modules/@ember-data%2Fstore) documentation.
+
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
+
+API docs for this package → [@ember-data/request](https://warp-drive.io/api/@ember-data/request/)

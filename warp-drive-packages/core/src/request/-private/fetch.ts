@@ -121,6 +121,9 @@ const ERROR_STATUS_CODE_FOR = new Map([
  * A basic Fetch Handler which converts a request into a
  * `fetch` call presuming the response to be `json`.
  *
+ * The [Making Requests](/guides/the-manual/requests/#requests-do-not-need-to-use-fetch)
+ * guide shows where it sits in the handler chain.
+ *
  * ```ts
  * import { RequestManager, Fetch } from '@warp-drive/core';
  *

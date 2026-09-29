@@ -1,7 +1,7 @@
-import { Glob } from 'bun';
 import path from 'path';
 
-import { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel.ts';
+import type { NPM_DIST_TAG, SEMVER_VERSION, STRATEGY_TYPE, TYPE_STRATEGY } from './channel.ts';
+import { scanFiles } from './glob.ts';
 import { JSONFile, getFile } from './json-file.ts';
 export class Package {
   declare projectPath: string;
@@ -181,10 +181,9 @@ export async function gatherPackages(config: STRATEGY['config'], cwd: string = p
 
   // add other packages
   for (const dirPath of config.packageRoots) {
-    const glob = new Glob(buildGlob(dirPath));
-
-    // Scans the current working directory and each of its sub-directories recursively
-    for await (const filePath of glob.scan(cwd)) {
+    // Scans the current working directory and each of its sub-directories recursively,
+    // yielding paths relative to cwd
+    for await (const filePath of scanFiles(buildGlob(dirPath), cwd)) {
       const file = getFile<PACKAGEJSON>(path.join(cwd, filePath));
       const pkgData = await file.read();
       packages.set(pkgData.name, new Package(filePath, file, pkgData));

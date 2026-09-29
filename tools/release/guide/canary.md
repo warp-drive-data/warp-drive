@@ -16,13 +16,11 @@ Subsequent pre-release versions will be auto-released on a chron schedule.
 Publishing itself requires npm's Trusted Publishing (OIDC), which is only available from within
 the GitHub Actions release workflow above -- there is no local/manual publish path.
 
-You can still preview what a release would do with a local dry run. Ensure you have bun, node
-and pnpm configured correctly (mise is preferred for managing node and pnpm versions; for bun,
-any `1.x` version should work but minimum version should ideally match the installed
-`bun-types` dependency in `package.json`), then run:
+You can still preview what a release would do with a local dry run. Ensure you have node and
+pnpm configured correctly (mise is preferred for managing their versions), then run:
 
-```ts
-bun release publish canary -i <patch|major|minor> --dry-run
+```sh
+pnpm release publish canary -i <patch|major|minor> --dry-run
 ```
 
-Run `bun release help` for additional options.
+Run `pnpm release help` for additional options.

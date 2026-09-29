@@ -92,6 +92,9 @@ export type RelationshipDiff =
  * A Cache handles in-memory storage of Document and Resource
  * data.
  *
+ * The [Caching](/guides/the-manual/caching/#how-the-cache-works) guide explains how
+ * the cache stores that data.
+ *
  * @summary Contract a Cache implementation fulfills to store, patch, mutate, and read document and resource data
  * for the Store, including local changes, errors, and SSR hydration.
  * @public

@@ -9,8 +9,8 @@ description: Understand how the CacheHandler resolves a RequestKey, applies Cach
 
 When a Store makes a Request, the Response is inserted into the Store's Cache.
 
-When the same Request is made again, the CacheHandler checks the Request's options
-as well as the Store's CachePolicy to decide if the version in the Store's Cache can
+When the same Request is made again, the [CacheHandler](/api/@warp-drive/core/variables/CacheHandler) checks the Request's options
+as well as the Store's [CachePolicy](/api/@warp-drive/core/types/CachePolicy) to decide if the version in the Store's Cache can
 be reused, or if updated data should be fetched.
 
 <br>
@@ -20,7 +20,7 @@ be reused, or if updated data should be fetched.
 
 ## Determining If A Request Can Use The Cache
 
-- `store.request` decorates the request with the store instance in use, and passes the request to the RequestManager
+- `store.request` decorates the request with the store instance in use, and passes the request to the [RequestManager](/api/@warp-drive/core/classes/RequestManager)
 - The RequestManager invokes its handler chain, starting with the CacheHandler
 - If the request has no Store or `cacheOptions[SkipCache] === true`, the CacheHandler passes along the request to the
   handler chain and will not attempt to handle the request or the response.
@@ -48,7 +48,7 @@ be reused, or if updated data should be fetched.
 
 The Store's cache is an in-memory cache that handles the concerns needed to support the rich, reactive layer. By default, it does not persist into any form of more permanent storage, though implementations can do so and `@warp-drive/experiments` contains several primitives through which we've been exploring a persisted cache by-default design.
 
-The internal specifics of how a Cache chooses to store data are up to it. The below guide will be *generally* true of any implementation given the requirements a cache must fulfill. Since most applications will use the `JSONAPICache`, we describe the specific caching strategy it uses in detail.
+The internal specifics of how a Cache chooses to store data are up to it. The below guide will be *generally* true of any implementation given the requirements a cache must fulfill. Since most applications will use the [`JSONAPICache`](/api/@warp-drive/json-api/classes/JSONAPICache), we describe the specific caching strategy it uses in detail.
 
 Caching is tiered by the kind of data being stored. Depending on how you look at it,
 there are either 3 or 4 tiers. Each tier operates on either `replace semantics` or `upsert semantics`.
@@ -66,7 +66,7 @@ Read on to understand what this means.
 When a response has a CacheKey, the Cache stores it using that CacheKey. If an entry was already present for that CacheKey, it is entirely overwritten.
 
 The same CacheKey applies to a request, its response, and its parsed content. We refer to
-this as a `RequestKey`. In ***Warp*Drive** CacheKeys are objects with a string `lid`
+this as a [`RequestKey`](/api/@warp-drive/core/types/identifier/types/RequestKey). In ***Warp*Drive** CacheKeys are objects with a string `lid`
 property and either the object or the string can be used as a unique key (the store's `cacheKeyManager` is what provides cache keys and guarantees these properties).
 
 ::: code-group
@@ -85,7 +85,7 @@ interface RequestKey {
 
 :::
 
-The response supplied to the Cache is a StructuredDocument (an object containing the original `Request`, `Response` and variably the processed `content` or `error`).
+The response supplied to the Cache is a [StructuredDocument](/api/@warp-drive/core/types/request/types/StructuredDocument) (an object containing the original `Request`, `Response` and variably the processed `content` or `error`).
 
 ```ts
 interface Result {
@@ -106,7 +106,7 @@ type StructuredDocument = SuccessResult | ErrorResult;
 
 The Cache expects that the data within `content` or `error` is in a format that it understands how to process. For the JSONAPICache implementation, this is [{json:api}](https://jsonapi.org).
 
-The `content` (or respectively `error`) property of the StructuredDocument will be processed by the Cache and replaced with a `ResourceDocument`. This data structure is similar to the top-level document structured defined by JSON:API for convenience.
+The `content` (or respectively `error`) property of the StructuredDocument will be processed by the Cache and replaced with a [`ResourceDocument`](/api/@warp-drive/core/types/spec/document/types/ResourceDocument). This data structure is similar to the top-level document structured defined by JSON:API for convenience.
 
 ```ts
 interface ResourceDocument {
@@ -122,7 +122,7 @@ interface ResourceDocument {
 
 During content processing, the cache extracts any resources it finds in the payload. The returned response document includes a list of the Resource CacheKeys representing resources extracted.
 
-Like RequestKey, a ResourceKey is a stable object with a string `lid` property. ResourceKey also encodes the `ResourceType` and the primary key of the resource.
+Like RequestKey, a [ResourceKey](/api/@warp-drive/core/types/identifier/types/ResourceKey) is a stable object with a string `lid` property. ResourceKey also encodes the `ResourceType` and the primary key of the resource.
 
 ::: code-group
 

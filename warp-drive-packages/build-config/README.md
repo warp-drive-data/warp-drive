@@ -73,7 +73,7 @@ module.exports = async function (defaults) {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@warp-drive/build-config](https://warp-drive.io/api/@warp-drive/build-config/)
 

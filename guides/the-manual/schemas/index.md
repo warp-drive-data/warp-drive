@@ -44,7 +44,7 @@ Take for instance the following resource data for a user.
 }
 ```
 
-The above resource is using the [{json:api} format](https://jsonapi.org/format/#document-resource-objects) which matches the format for resources expected by the [JSONAPICache](/api/@warp-drive/json-api/) we provided earlier to the store created.
+The above resource is using the [{json:api} format](https://jsonapi.org/format/#document-resource-objects) which matches the format for resources expected by the [JSONAPICache](/api/@warp-drive/json-api/classes/JSONAPICache) we provided earlier to the store created.
 
 :::tip 💡 TIP
 Dasherized keys is just a preference some APIs have, the JSONAPICache doesn't care what
@@ -102,7 +102,7 @@ Something you'll maybe note right away: schemas are JSON, which ensures a high d
 ***Warp*Drive** offers several categories of schema:
 
 - ResourceSchema
-- ObjectSchema
+- [ObjectSchema](/api/@warp-drive/core/types/schema/fields/types/ObjectSchema)
 - Traits
 
 ## Modes {#modes}
