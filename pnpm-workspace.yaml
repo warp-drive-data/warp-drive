@@ -314,6 +314,7 @@ catalog:
   "@hono/node-server": ^2.1.1
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
+  "@jridgewell/remapping": ^2.3.5
   "@jridgewell/trace-mapping": ^0.3.31
   "@mdit/plugin-footnote": ^1.1.2
   "@nullvoxpopuli/ember-rolldown": ^2.9.0
