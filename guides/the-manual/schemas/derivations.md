@@ -46,7 +46,7 @@ APIs commonly return different field sets depending on the request (sparse field
 
 ### What To Do Instead
 
-**Use a `<Request />` boundary.** Calculations that require a particular "view" of the data — a specific set of relationships loaded, a specific set of fields included — belong inside a component or utility that makes an explicit request for that data. A `<Request />` component (or equivalent data-fetching boundary) guarantees what was loaded and makes it safe to derive values from that data within its scope. This keeps correctness coupled to the data contract of the request rather than silently relying on ambient cache state.
+**Use a `<Request />` boundary.** Calculations that require a particular "view" of the data — a specific set of relationships loaded, a specific set of fields included — belong inside a component or utility that makes an explicit request for that data. A `<Request />` component ([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)) or equivalent data-fetching boundary guarantees what was loaded and makes it safe to derive values from that data within its scope. This keeps correctness coupled to the data contract of the request rather than silently relying on ambient cache state.
 
 In short: if you would need to say *"this derivation is only correct after calling X endpoint"*, it should not be a derivation — it should be a computed value defined inside the boundary that makes that request.
 
@@ -128,7 +128,7 @@ user.fullName; // → 'Finn Skybarker' (recomputed because firstName changed)
 
 :::
 
-The `type` field in the schema entry is how the runtime looks up the registered function. The `[Type]` symbol property on the function is what `registerDerivation` uses as the lookup key — they must match.
+The `type` field in the schema entry is how the runtime looks up the registered function. The `[Type]` symbol property on the function is what [`registerDerivation`](/api/@warp-drive/core/reactive/classes/SchemaService#registerderivation) uses as the lookup key — they must match.
 
 ## Read-Only by Design
 
