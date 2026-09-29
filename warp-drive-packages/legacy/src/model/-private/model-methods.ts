@@ -82,7 +82,7 @@ export function reload<T extends MinimalLegacyRecord>(this: T, options: Record<s
       id: 'warp-drive:deprecate-legacy-request-methods',
       until: '6.0',
       for: '@warp-drive/core',
-      url: 'https://docs.warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
+      url: 'https://warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
       since: {
         enabled: '5.7',
         available: '5.7',
@@ -144,7 +144,7 @@ export function save<T extends MinimalLegacyRecord>(this: T, options?: Record<st
       id: 'warp-drive:deprecate-legacy-request-methods',
       until: '6.0',
       for: '@warp-drive/core',
-      url: 'https://docs.warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
+      url: 'https://warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
       since: {
         enabled: '5.7',
         available: '5.7',
@@ -178,7 +178,7 @@ export function destroyRecord<T extends MinimalLegacyRecord>(this: T, options?: 
       id: 'warp-drive:deprecate-legacy-request-methods',
       until: '6.0',
       for: '@warp-drive/core',
-      url: 'https://docs.warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
+      url: 'https://warp-drive.io/api/@warp-drive/core/build-config/deprecations/variables/ENABLE_LEGACY_REQUEST_METHODS',
       since: {
         enabled: '5.7',
         available: '5.7',

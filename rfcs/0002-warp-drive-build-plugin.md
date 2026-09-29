@@ -307,7 +307,7 @@ of passing options to the plugin):
      plugins: [...ember(), warpDrive.vite({ compatWith: '5.7' })]
 
    Then remove the WarpDrive entries from your babel config.
-   Migration guide: https://docs.warp-drive.io/guides/build-plugin-migration
+   Migration guide: https://warp-drive.io/guides/build-plugin-migration
    [deprecation id: warp-drive.legacy-babel-config, since: 6.0, until: 7.0]
    ```
 
