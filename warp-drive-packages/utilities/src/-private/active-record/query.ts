@@ -12,6 +12,9 @@ import { copyForwardUrlOptions, extractCacheOptions } from '../builder-utils.ts'
  * Builds request options to query for resources, usually by a primary
  * type, configured for the url and header expectations of most ActiveRecord APIs.
  *
+ * See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+ * when to use one.
+ *
  * **Basic Usage**
  *
  * ```ts

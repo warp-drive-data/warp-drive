@@ -182,6 +182,10 @@ export declare class ConfiguredStore<
 /**
  * Use the legacy store with the given options.
  *
+ * See [Configure The Store](/guides/configuration/#configure-the-store) for where it fits in an
+ * app's setup, and [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode) for the schemas
+ * it supports.
+ *
  * See {@link LegacyStoreSetupOptions} for details on the available options.
  *
  * ```ts
