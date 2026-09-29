@@ -392,8 +392,8 @@ catalogs:
       specifier: ^12.0.2
       version: 12.0.2
     eslint-plugin-n:
-      specifier: ^18.3.0
-      version: 18.3.0
+      specifier: ^18.4.0
+      version: 18.4.0
     eslint-plugin-qunit:
       specifier: ^8.2.6
       version: 8.2.6
@@ -3667,7 +3667,7 @@ importers:
         version: 12.0.2(eslint@10.11.0)
       eslint-plugin-n:
         specifier: 'catalog:'
-        version: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+        version: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit:
         specifier: 'catalog:'
         version: 8.2.6(eslint@10.11.0)
@@ -9028,8 +9028,8 @@ packages:
     peerDependencies:
       eslint: '>=10.2.0'
 
-  eslint-plugin-n@18.3.0:
-    resolution: {integrity: sha512-cPVguuDe6DrIPb/qUXHf8P89MaVTUmiYWwpt5gX5AILsvRIiZAxMFXcFR6QHYBksqKJpjfUBlL/RleCJUWcD7w==}
+  eslint-plugin-n@18.4.0:
+    resolution: {integrity: sha512-TEm6Nqn9+l7EWfJXOL6pmrEdpiM2ZTgo4fNMRDvBTM70jeQ7x3X3Akcx+sRCIRfpcSVwMypH3ZAA33PLyNKmYw==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: '>=8.57.1'
@@ -16594,7 +16594,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -16648,7 +16648,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -16702,7 +16702,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(9b6222f12abd3ea9381e23b13ce000f2)
@@ -16756,7 +16756,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -16810,7 +16810,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -16864,7 +16864,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -16918,7 +16918,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(9b6222f12abd3ea9381e23b13ce000f2)
@@ -16972,7 +16972,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -17026,7 +17026,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -17080,7 +17080,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -17134,7 +17134,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -17188,7 +17188,7 @@ snapshots:
       eslint-config-prettier: 10.1.8(eslint@10.11.0)
       eslint-plugin-import-x: 4.17.1(eslint@10.11.0)
       eslint-plugin-mocha: 12.0.2(eslint@10.11.0)
-      eslint-plugin-n: 18.3.0(eslint@10.11.0)(typescript@6.0.3)
+      eslint-plugin-n: 18.4.0(eslint@10.11.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.11.0)
       globals: 17.12.0
       tsdown: 0.23.0(typescript@6.0.3)
@@ -19044,7 +19044,7 @@ snapshots:
       json-schema-to-ts: 3.1.1
       type-fest: 5.8.0
 
-  eslint-plugin-n@18.3.0(eslint@10.11.0)(typescript@6.0.3):
+  eslint-plugin-n@18.4.0(eslint@10.11.0)(typescript@6.0.3):
     dependencies:
       '@eslint-community/eslint-utils': 4.10.1(eslint@10.11.0)
       enhanced-resolve: 5.25.1
@@ -19054,6 +19054,7 @@ snapshots:
       globals: 15.15.0
       globrex: 0.1.2
       ignore: 5.3.2
+      js-yaml: 5.4.2
       semver: 7.8.5
     optionalDependencies:
       typescript: 6.0.3
