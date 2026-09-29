@@ -69,7 +69,7 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    | `:label: test`         | new tests, or a refactor of existing tests                                                             |
    | `:label: chore`        | internal refactoring, or a fix scoped only to build tooling, lint/CI config, or other dev-experience-only code, with no public API or runtime-behavior change worth calling out |
    | `:label: rfc`          | a new RFC, or a change to one; see [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md) |
-   | `:label: dependencies` | a dependency bump on `main`                                                                            |
+   | `:label: dependencies` | a dependency bump on `main`; passes the check but is left out of release notes on purpose             |
 
    `:label: bug` is for a fix a consumer of the published packages could actually hit — a runtime
    behavior change. A PR that only touches build/lint/infra/DX surfaces (a broken `turbo` task, a
