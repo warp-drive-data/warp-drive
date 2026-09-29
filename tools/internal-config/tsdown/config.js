@@ -228,6 +228,8 @@ export function createConfig(options, resolve) {
     // (see `warp-drive-packages/ember/tsdown.config.mjs`), since the d.ts
     // bundler drops each entry's file-level `@module` comment that TypeDoc needs.
     banner: options.banner,
+    // Same pass-through, appended to the chunk instead (see the ember config again).
+    footer: options.footer,
     // Substituted as literal string constants at build time so source
     // consumers (e.g. `warp-drive-packages/core/src/types/-private.ts`) can
     // read their own package's name/version without a static `import ...

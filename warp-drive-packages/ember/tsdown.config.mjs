@@ -54,12 +54,22 @@ const moduleDocs = new Map(
   entryPoints.map((entry) => [basename(entry).replace(/\.ts$/, '.d.ts'), moduleDocComment(entry)])
 );
 
+/**
+ * TypeScript treats every top-level declaration in a `.d.ts` module as exported unless the
+ * file has an `export` declaration or assignment; an `export` modifier doesn't count. The
+ * d.ts bundler writes `install.d.ts` with only modifiers, so its unexported `type Tag` became
+ * an export and TypeDoc gave it an API page. An empty `export {}` restores the source's own
+ * exports and nothing else.
+ */
+const EXPLICIT_EXPORTS_ONLY = 'export {};';
+
 export default createConfig(
   {
     entryPoints,
     externals,
     compileTypes: process.env.IS_UNPKG_BUILD !== 'true',
     banner: ({ fileName }) => moduleDocs.get(fileName),
+    footer: ({ fileName }) => (fileName.endsWith('.d.ts') ? EXPLICIT_EXPORTS_ONLY : undefined),
   },
   import.meta.resolve
 );
