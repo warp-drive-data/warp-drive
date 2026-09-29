@@ -199,19 +199,19 @@ function updateSiteTheme(mode: 'light' | 'dark') {
 
 But this involves manually wiring up the effect in a different file, which may not be ideal.
 
-Instead, we can change our field into an `effect`.
+Instead, we can change our field into an [`effect`](/api/@warp-drive/experiments/storage/functions/effect).
 
 ```ts
-import { LocalResource, field } from '@warp-drive/experiments/storage';
+import { LocalResource, effect, type ValueTransition } from '@warp-drive/experiments/storage';
 
 @LocalResource('settings')
-export class HomePage {
+export class SiteTheme {
   @effect(syncThemeToDOM)
   mode: 'light' | 'dark' = 'light';
 }
 
-function syncThemeToDOM(this: SiteTheme): void {
-  const { mode } = this;
+function syncThemeToDOM(update: ValueTransition<'light' | 'dark' | null>): void {
+  const mode = update.to ?? 'light';
   document.body.classList.add(mode);
   document.body.classList.remove(mode === 'light' ? 'dark' : 'light');
 }
@@ -267,7 +267,8 @@ export class HistoryService extends Service {
 ### Using `@param` to turn Storage Resources into URL param sources
 
 Any Storage Resource's fields can be used as the backing source of state for 
-URL query params by decorating the field with additional meta information using `@param`.
+URL query params by decorating the field with additional meta information using
+[`@param`](/api/@warp-drive/experiments/storage/functions/param).
 
 ::: code-group
 
