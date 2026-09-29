@@ -163,6 +163,8 @@ export const WatcherContext: Context<{
 } | null>(null);
 
 /**
+ * The JS API example in [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) wraps a
+ * component in `<ReactiveContext>` so that reading request state with `getRequestState` re-renders it.
  *
  * @summary Component that re-renders its children when WarpDrive signals they read change, by providing a signal
  * watcher through `WatcherContext`.

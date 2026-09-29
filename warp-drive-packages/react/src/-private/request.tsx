@@ -123,6 +123,9 @@ export function Throw({ error }: { error: Error }): never {
  * The `<Request />` component is ideal for handling "boundaries", outside which some
  * state is still allowed to be unresolved and within which it MUST be resolved.
  *
+ * See [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) for how it
+ * works together with the JS API.
+ *
  * ## Request States
  *
  * `<Request />` has five states, only one of which will be active and rendered at a time.
