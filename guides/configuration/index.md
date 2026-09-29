@@ -159,17 +159,12 @@ export default useLegacyStore({
 
 :::
 
-**That's it!** It's time to start working with your data.
+### Provide the Store in React
 
-Alternatively, to understand more about what the above setup does, you can
-read about manually configuring the store in the [Advanced Guide](./advanced.md)
-
-## Provide the Store in React
-
-A React app has one more step: its components get the store through React context. Wrap the app
-in [`<StoreProvider />`](/api/@warp-drive/react/functions/StoreProvider) and give it the store
-class from [Configure The Store](#configure-the-store) as its `Store` prop, and it creates the
-instance for you. To share a store you have already created, pass the instance as `store` instead.
+If your app uses React, there is one more step: its components get the store through React
+context. Wrap the app in [`<StoreProvider />`](/api/@warp-drive/react/functions/StoreProvider)
+and give it the store class from above as its `Store` prop, and it creates the instance for you.
+To share a store you have already created, pass the instance as `store` instead.
 
 ```tsx [src/app.tsx]
 import { StoreProvider } from '@warp-drive/react';
@@ -211,3 +206,8 @@ component when its data changes; a
 [`<ReactiveContext />`](/api/@warp-drive/react/functions/ReactiveContext) does that, and
 `<Request />` already wraps its content in one. To render a request's loading, error and content
 states, see [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md).
+
+**That's it!** It's time to start working with your data.
+
+Alternatively, to understand more about what the above setup does, you can
+read about manually configuring the store in the [Advanced Guide](./advanced.md)
