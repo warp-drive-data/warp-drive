@@ -41,11 +41,28 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * ```ts [Setup.ts]
  * import { RequestManager, Fetch } from '@warp-drive/core';
  * import { AutoCompress } from '@warp-drive/utilities/handlers';
- * import Auth from 'ember-simple-auth/handler';
+ * import { AuthHandler } from './auth-handler';
  *
  * // ... create manager
  * const manager = new RequestManager()
- *    .use([Auth, new AutoCompress(), Fetch]); // [!code focus]
+ *    .use([AuthHandler, new AutoCompress(), Fetch]); // [!code focus]
+ * ```
+ *
+ * ```ts [auth-handler.ts]
+ * import type { Handler, NextFn } from '@warp-drive/core/request';
+ * import type { RequestContext } from '@warp-drive/core/types/request';
+ *
+ * const token = '<token>';
+ *
+ * // adds a bearer token to every request, then passes it along
+ * export const AuthHandler: Handler = {
+ *   request<T>(context: RequestContext, next: NextFn<T>) {
+ *     const headers = new Headers(context.request.headers);
+ *     headers.append('Authorization', `Bearer ${token}`);
+ *
+ *     return next(Object.assign({}, context.request, { headers }));
+ *   },
+ * };
  * ```
  *
  * ```ts [Usage.ts]
