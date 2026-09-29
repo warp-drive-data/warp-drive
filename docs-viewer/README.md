@@ -1,6 +1,6 @@
 # Internal Docs Viewer
 
-## docs.warp-drive.io
+## warp-drive.io
 
 ### Development
 
@@ -38,8 +38,9 @@ brackets in code spans.
 
 It skips `/api/` links, because the API pages only exist once TypeDoc has run. After a build, run
 `pnpm check:links --api` from this directory to also check the generated API pages in
-`docs.warp-drive.io/api/` and every `/api/` link. The build's own dead-link check does not cover
-that: it never checks an `#anchor`, and it misses any link in a `::: tip <title>` container title.
+`./docs.warp-drive.io/api/` (the site directory, not a URL) and every `/api/` link. The build's
+own dead-link check does not cover that: it never checks an `#anchor`, and it misses any link in
+a `::: tip <title>` container title.
 
 ### Testing The Scripts
 
@@ -107,6 +108,6 @@ push, and is removed when the label is removed or the PR closes. See
 
 ### Deploying
 
-The latest commit on main can be deployed to [docs.warp-drive.io](https://docs.warp-drive.io)
+The latest commit on main can be deployed to [warp-drive.io](https://warp-drive.io)
 by manually triggering the GithubAction in [github.com/warp-drive-data/docs](https://github.com/warp-drive-data/docs/actions/workflows/deploy.yml)
 
