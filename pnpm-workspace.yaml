@@ -413,7 +413,7 @@ catalog:
   typescript-eslint: ^8.70.1
   typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0
-  vite: ^8.3.0
+  vite: ^8.3.1
   vite-bundle-analyzer: ^1.3.9
   vite-plugin-compression2: ^2.5.3
   vite-plugin-image-optimizer: ^2.0.3
@@ -423,7 +423,7 @@ catalog:
   vitepress-plugin-mermaid: ^2.0.17
   vitepress-plugin-llms: ^1.14.0
   vitepress-plugin-tabs: ^0.9.1
-  vitest: ^5.0.1
+  vitest: ^5.0.2
   vue: ^3.5.43
   vue-tsc: ^3.3.11
   winston: ^3.19.0
@@ -494,7 +494,7 @@ overrides:
   bun-types: 1.4.2
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001812
-  rollup: ^4.63.4
+  rollup: ^4.63.5
   "@babel/types": ^7.29.8
   "@babel/parser": ^7.29.9
   "@babel/traverse": ^7.29.8
