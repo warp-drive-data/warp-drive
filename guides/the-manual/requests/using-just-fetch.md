@@ -86,6 +86,22 @@ Without a `Store` there is no cache, so:
 - `content` is whatever the last handler in the chain returns. For `Fetch` that is the response
   body parsed as JSON, not a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument).
 - Requests are never deduplicated or resolved from the cache, however often you make them.
+- The same resource in two responses is two separate objects, not one shared record.
+  [Resource caching](../caching/index.md#resource-caching) is what merges them.
+- Relationships between resources in different responses are not connected, since there is no
+  [relationship graph](../relational-data/index.md) to connect them.
+- Content never updates itself. A later request, or a change your app makes, does not change the
+  objects an earlier request returned, because nothing is
+  [reactive](../reactivity/index.md) without the cache.
+- There is no [CachePolicy](../caching/index.md#determining-the-cachekey-and-checking-if-the-response-is-stale),
+  so nothing checks whether a response is stale or reloads it in the background, and
+  `cacheOptions` such as `reload` and `backgroundReload` have no effect.
+- Local changes are not tracked. The cache keeps
+  [edits separate from the data the server sent](../caching/index.md#what-about-mutation) so they
+  can be committed or discarded; a plain object just holds whatever you assign to it.
+
+The `Future` still works as described above: you can `abort()` it, read its stream and pass it
+to `getRequestState`, which accepts any `Future`, not only one from `store.request`.
 
 This also applies when the same `RequestManager` is shared with a `Store`, including calling
 `store.requestManager.request` directly. The [`CacheHandler`](/api/@warp-drive/core/variables/CacheHandler) only handles requests that carry a
