@@ -186,6 +186,12 @@ module<LocalTestContext>('Integration | get-request-state', function (hooks) {
     assert.false(requestState.isLoading, 'The request state is no longer loading');
     assert.true(requestState.isCancelled, 'The request state is cancelled');
     assert.true(requestState.isError, 'The request state is an error');
+    assert.equal(requestState.status, 'rejected', 'A cancelled request settles as rejected');
+    if (requestState.isCancelled) {
+      // narrowing to CancelledRequest must type `status` as what the runtime reports
+      const status: 'rejected' = requestState.status;
+      assert.equal(status, 'rejected');
+    }
     assert.equal(requestState.result, null);
     assert.satisfies(
       requestState.error,

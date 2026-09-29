@@ -484,9 +484,12 @@ export interface RejectedRequest<
   response: Response | ResponseInfo | null;
 }
 /**
- * The state of a request in the "cancelled" state.
- * This is the state of a promise that has been
- * cancelled.
+ * The state of a request that was aborted before it settled.
+ *
+ * A cancelled request is a rejected request whose `reason` is an
+ * `AbortError`: `status` is `'rejected'` and `isError` is `true`, the
+ * same as a {@link RejectedRequest}. Check `isCancelled` to tell the
+ * two apart.
  *
  */
 export interface CancelledRequest<RT, E extends StructuredErrorDocument = StructuredErrorDocument> {
@@ -528,10 +531,12 @@ export interface CancelledRequest<RT, E extends StructuredErrorDocument = Struct
   refresh(usePolicy?: boolean): Future<RT>;
 
   /**
-   * The status of the request.
+   * The status of the request. A cancelled request settles as
+   * `'rejected'`; use `isCancelled` to distinguish it from a
+   * {@link RejectedRequest}.
    *
    */
-  status: 'cancelled';
+  status: 'rejected';
 
   /**
    * Whether the request is pending.
