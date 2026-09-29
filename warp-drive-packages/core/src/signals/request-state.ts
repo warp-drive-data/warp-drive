@@ -486,10 +486,9 @@ export interface RejectedRequest<
 /**
  * The state of a request that was aborted before it settled.
  *
- * A cancelled request is a rejected request whose `reason` is an
- * `AbortError`: `status` is `'rejected'` and `isError` is `true`, the
- * same as a {@link RejectedRequest}. Check `isCancelled` to tell the
- * two apart.
+ * A cancelled request has `status: 'cancelled'` and its `reason` is an
+ * `AbortError`. `isError` is also `true`, as for a {@link RejectedRequest},
+ * so check `status` or `isCancelled` to tell the two apart.
  *
  */
 export interface CancelledRequest<RT, E extends StructuredErrorDocument = StructuredErrorDocument> {
@@ -531,12 +530,10 @@ export interface CancelledRequest<RT, E extends StructuredErrorDocument = Struct
   refresh(usePolicy?: boolean): Future<RT>;
 
   /**
-   * The status of the request. A cancelled request settles as
-   * `'rejected'`; use `isCancelled` to distinguish it from a
-   * {@link RejectedRequest}.
+   * The status of the request.
    *
    */
-  status: 'rejected';
+  status: 'cancelled';
 
   /**
    * Whether the request is pending.
@@ -735,7 +732,7 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
     if (state.isError) {
       promiseState.error = state.result;
       promiseState.reason = state.result;
-      promiseState.status = 'rejected';
+      promiseState.status = isAbortError(state.result) ? 'cancelled' : 'rejected';
       promiseState.isError = true;
       promiseState.isPending = false;
       promiseState.isLoading = false;
@@ -768,7 +765,7 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
         setPromiseResult(future, { isError: true, result: error });
         promiseState.error = error;
         promiseState.reason = error;
-        promiseState.status = 'rejected';
+        promiseState.status = isAbortError(error) ? 'cancelled' : 'rejected';
         promiseState.isError = true;
         promiseState.isPending = false;
         promiseState.isLoading = false;
@@ -786,15 +783,15 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
  *
  * It returns a {@link RequestState}: a reactive object that updates as the
  * request advances. Calling it again with the same {@link Future} returns the
- * same object. Check its flags to narrow it to one of four states:
+ * same object. Check `status` to narrow it to one of four states:
  *
- * - {@link PendingRequest} (`isPending`) is the initial state, before the
+ * - {@link PendingRequest} (`'pending'`) is the initial state, before the
  *   request settles.
- * - {@link ResolvedRequest} (`isSuccess`) holds the response content on `value`.
- * - {@link RejectedRequest} (`isError`) holds the error on `reason`.
- * - {@link CancelledRequest} (`isCancelled`) is a request that was aborted.
- *   `isError` is also `true` for a cancelled request, so check `isCancelled`
- *   first if you handle it differently.
+ * - {@link ResolvedRequest} (`'fulfilled'`) holds the response content on `value`.
+ * - {@link RejectedRequest} (`'rejected'`) holds the error on `reason`.
+ * - {@link CancelledRequest} (`'cancelled'`) is a request that was aborted.
+ *   `isError` is also `true` for a cancelled request, so check `status` or
+ *   `isCancelled` rather than `isError` if you handle it differently.
  *
  * Every state also exposes a {@link RequestLoadingState} on `loadingState`
  * for tracking the progress of the response stream.
