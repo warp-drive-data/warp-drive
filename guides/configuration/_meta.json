@@ -2,8 +2,8 @@
   "title": "Configuration",
   "items": [
     "advanced",
-    "react",
     "ember",
+    "react",
     "legacy-package-setup"
   ]
 }
