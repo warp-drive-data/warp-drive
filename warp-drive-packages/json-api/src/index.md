@@ -51,7 +51,7 @@ export class AppStore extends Store {
 - [Advanced Store Configuration](/guides/configuration/advanced.md#add-a-cache): add the cache to
   a Store you build by hand.
 - [Caching](/guides/the-manual/caching/): how the `JSONAPICache` stores responses, resources,
-  fields and relationships.
+  fields and relationships, and which of them a new value replaces rather than merges into.
 - [Schemas](/guides/the-manual/schemas/): how a resource in the `{json:api}` format maps onto a
   schema.
 - [Handlers](/guides/the-manual/requests/handlers.md): normalize a REST response into a

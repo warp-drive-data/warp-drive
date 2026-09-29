@@ -11,7 +11,7 @@ be installed yet.
 :::
 
 `@warp-drive/schema-dsl` lets you author the resource, object and trait [schemas](./index.md) a
-Store uses as TypeScript classes, with decorators such as `@Resource` and `@field`, instead of
+[Store](/guides/configuration/#configure-the-store) uses as TypeScript classes, with decorators such as `@Resource` and `@field`, instead of
 hand-writing them as `JSON`. A Vite plugin compiles those classes into plain `JSON` schemas at
 build time. The decorators do nothing at runtime, so schema files are read by the build and never
 imported by application code.
