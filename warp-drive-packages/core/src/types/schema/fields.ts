@@ -1057,11 +1057,13 @@ export interface DerivedField {
  * Represents a field that is a reference to
  * another resource.
  *
- * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
- * sits in a schema.
- *
- * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
- * BY ReactiveResource
+ * SUPPORT FOR THIS FEATURE IS NOT YET COMPLETE
+ * IN ReactiveResource. It is not yet part of
+ * {@link PolarisModeFieldSchema} or {@link LegacyModeFieldSchema}.
+ * Reading the field returns an object with the related
+ * record as `data`, plus `links`, `meta` and a `fetch()`
+ * method, but it does not yet update when the
+ * relationship changes, and setting it is not supported.
  *
  * @summary Field schema of kind `resource` for a reference to another resource; not yet implemented by
  * `ReactiveResource`.
@@ -1175,11 +1177,11 @@ export interface ResourceField {
  * a collection of other resources, potentially
  * paginate.
  *
- * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
- * sits in a schema.
- *
  * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
- * BY ReactiveResource
+ * BY ReactiveResource. It is not yet part of
+ * {@link PolarisModeFieldSchema} or {@link LegacyModeFieldSchema},
+ * and reading or setting the field fails an assertion
+ * in development builds.
  *
  * @summary Field schema of kind `collection` for a possibly paginated reference to other resources; not yet implemented
  * by `ReactiveResource`.
