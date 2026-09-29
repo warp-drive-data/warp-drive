@@ -101,10 +101,10 @@ is the recommended mode today. The resource type rules are the same in [PolarisM
 and for apps still defining [`Model`](/api/@warp-drive/legacy/model/classes/Model) classes.
 
 :::tip 💡 The type and the URL are separate
-The `findRecord` builder from `@warp-drive/utilities/json-api` builds the URL path by pluralizing
-the type you pass. If your endpoint uses a different path, keep the type as it is and pass the
-`resourcePath` option to [findRecord](/api/@warp-drive/utilities/json-api/functions/findRecord)
-instead.
+The [`findRecord`](/api/@warp-drive/utilities/json-api/functions/findRecord) builder from
+`@warp-drive/utilities/json-api` builds the URL path by pluralizing the type you pass. If your
+endpoint uses a different path, keep the type as it is and pass the `resourcePath` option to
+`findRecord` instead.
 :::
 
 ## But what about the JSON:API spec?
