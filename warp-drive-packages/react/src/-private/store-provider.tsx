@@ -41,7 +41,7 @@ export function useStore(): Store {
 /**
  * The props accepted by {@link StoreProvider | `<StoreProvider />`}: `children`,
  * and either `store`, an existing Store instance to provide, or `Store`, a
- * Store class the provider instantiates once and provides.
+ * Store class the provider creates an instance of for you.
  *
  * @example
  * ```tsx
@@ -67,7 +67,7 @@ export type StoreProviderProps =
     }
   | {
       /**
-       * A Store class to instantiate once and provide.
+       * A Store class the provider creates an instance of for you and provides.
        */
       Store: typeof Store;
       /**
@@ -81,7 +81,7 @@ export type StoreProviderProps =
  * `<Request />` uses it when no `store` prop is given.
  *
  * Pass either `store`, an existing Store instance, or `Store`, a Store class
- * the provider instantiates once. See {@link StoreProviderProps}.
+ * the provider creates an instance of for you. See {@link StoreProviderProps}.
  *
  * For where this fits in app setup, see
  * [Provide the Store in React](/guides/configuration/#provide-the-store-in-react).
