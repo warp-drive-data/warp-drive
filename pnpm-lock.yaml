@@ -245,8 +245,8 @@ catalogs:
       specifier: ^0.3.31
       version: 0.3.31
     '@mdit/plugin-footnote':
-      specifier: ^1.1.1
-      version: 1.1.1
+      specifier: ^1.1.2
+      version: 1.1.2
     '@nullvoxpopuli/ember-rolldown':
       specifier: ^2.9.0
       version: 2.9.0
@@ -708,7 +708,7 @@ importers:
         version: 0.3.31
       '@mdit/plugin-footnote':
         specifier: 'catalog:'
-        version: 1.1.1
+        version: 1.1.2
       '@pnpm/find-workspace-dir':
         specifier: 'catalog:'
         version: 1000.1.5
@@ -5665,20 +5665,20 @@ packages:
     resolution: {integrity: sha512-6QEf6yqFbETdwGITKq57aYoPfX/3K8XFNwsAlx0C1M7o8cb79sv1M3w+tWuWvIcSbNqrLF7OD7YpZMVVz335hQ==}
     engines: {node: '>=20.0.0'}
 
-  '@mdit/helper@1.1.1':
-    resolution: {integrity: sha512-Rrl14ZjFerzfAqCt0zxAWbPgRpsumgm9iBLrCVE05WS8dM6v/LnF1ppPFVnRz1F7fAaxn0kTFOlYwzcY+kRsHQ==}
+  '@mdit/helper@1.1.2':
+    resolution: {integrity: sha512-xZywQ7aXrmkRCuGvFXguXVKeiQ7kHCxPkjtR+nK/n31YiSPPi/Rmb/ll+CYt0LdyeXR0Y1I16da7gxDT4/VXWg==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^15.0.1
+      markdown-it: ^15.0.2
     peerDependenciesMeta:
       markdown-it:
         optional: true
 
-  '@mdit/plugin-footnote@1.1.1':
-    resolution: {integrity: sha512-0VV4rhegFSX8mp4/nG1rO3fgoDLofjnXIsAwRDK6Ajs9aj3NqSBB8HyYPnT7Ti0yPNn7XHHtqgrgJzYsbcDfyA==}
+  '@mdit/plugin-footnote@1.1.2':
+    resolution: {integrity: sha512-pFn0+6oqPaX/YUGR6ITwreFiFW5hyPPLj2vJCkuyEmo1kCjnOOWaRl48tD4O03Fq6Cl9YROaHzcyQIUrAthQ8A==}
     engines: {node: '>=22'}
     peerDependencies:
-      markdown-it: ^15.0.1
+      markdown-it: ^15.0.2
 
   '@mermaid-js/mermaid-mindmap@9.3.0':
     resolution: {integrity: sha512-IhtYSVBBRYviH1Ehu8gk69pMDF8DSRqXBRDMWrEfHoaMruHeaP2DXA3PBnuwsMaCdPQhlUUcy/7DBLAEIXvCAw==}
@@ -14502,11 +14502,11 @@ snapshots:
       tinyglobby: 0.2.17
       yaml: 2.9.1
 
-  '@mdit/helper@1.1.1': {}
+  '@mdit/helper@1.1.2': {}
 
-  '@mdit/plugin-footnote@1.1.1':
+  '@mdit/plugin-footnote@1.1.2':
     dependencies:
-      '@mdit/helper': 1.1.1
+      '@mdit/helper': 1.1.2
 
   '@mermaid-js/mermaid-mindmap@9.3.0':
     dependencies:
@@ -17178,7 +17178,7 @@ snapshots:
   '@warp-drive/internal-docs-viewer@file:docs-viewer':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
-      '@mdit/plugin-footnote': 1.1.1
+      '@mdit/plugin-footnote': 1.1.2
       '@pnpm/find-workspace-dir': 1000.1.5
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/logger': 1100.0.0
