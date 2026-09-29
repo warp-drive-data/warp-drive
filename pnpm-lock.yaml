@@ -3705,8 +3705,8 @@ importers:
         specifier: 'catalog:'
         version: 4.1.13
       '@types/node':
-        specifier: ^26.6.2
-        version: 26.6.2
+        specifier: ^26.6.3
+        version: 26.6.3
       comment-json:
         specifier: 'catalog:'
         version: 5.0.0
@@ -17367,7 +17367,7 @@ snapshots:
       '@pnpm/find-workspace-packages': 6.0.9(@pnpm/logger@1100.0.0)
       '@pnpm/logger': 1100.0.0
       '@types/debug': 4.1.13
-      '@types/node': 26.6.2
+      '@types/node': 26.6.3
       comment-json: 5.0.0
       debug: 4.4.3
       typescript: 6.0.3
