@@ -356,8 +356,8 @@ catalogs:
       specifier: ^7.0.0
       version: 7.0.0
     ember-modifier:
-      specifier: ~4.2.2
-      version: 4.2.2
+      specifier: ~4.3.0
+      version: 4.3.0
     ember-page-title:
       specifier: ^9.0.3
       version: 9.0.3
@@ -1753,7 +1753,7 @@ importers:
         version: 2.1.1
       '@glint/ember-tsc':
         specifier: 1.11.6
-        version: 1.11.6(f986a23f314a177107514e90b89c8ec9)
+        version: 1.11.6(3e421dd34d42f0b95dc307bc5ca3dc97)
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
@@ -1783,10 +1783,10 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.3.1(f986a23f314a177107514e90b89c8ec9)
+        version: 0.3.1(3e421dd34d42f0b95dc307bc5ca3dc97)
       ember-modifier:
         specifier: 'catalog:'
-        version: 4.2.2(@babel/core@7.29.7)
+        version: 4.3.0(@babel/core@7.29.7)
       ember-page-title:
         specifier: 'catalog:'
         version: 9.0.3(d288926beed7c17909b8497cf18e0738)
@@ -1858,7 +1858,7 @@ importers:
         version: 2.1.1
       '@glint/ember-tsc':
         specifier: 1.11.6
-        version: 1.11.6(f986a23f314a177107514e90b89c8ec9)
+        version: 1.11.6(3e421dd34d42f0b95dc307bc5ca3dc97)
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
@@ -1888,10 +1888,10 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.3.1(f986a23f314a177107514e90b89c8ec9)
+        version: 0.3.1(3e421dd34d42f0b95dc307bc5ca3dc97)
       ember-modifier:
         specifier: 'catalog:'
-        version: 4.2.2(@babel/core@7.29.7)
+        version: 4.3.0(@babel/core@7.29.7)
       ember-page-title:
         specifier: 'catalog:'
         version: 9.0.3(d288926beed7c17909b8497cf18e0738)
@@ -8814,8 +8814,8 @@ packages:
   ember-inflector@7.0.0:
     resolution: {integrity: sha512-dHnlYfxBnpiRMZUgrYpdcQ/kGGMCuVh3KhHhJ0TU2PPJY7TB+3XqUWCf7ihppxkbRf1igLVRietYK2v0OXzm8Q==}
 
-  ember-modifier@4.2.2:
-    resolution: {integrity: sha512-pPYBAGyczX0hedGWQFQOEiL9s45KS9efKxJxUQkMLjQyh+1Uef1mcmAGsdw2KmvNupITkE/nXxmVO1kZ9tt3ag==}
+  ember-modifier@4.3.0:
+    resolution: {integrity: sha512-O0rirSLQbGg0VJ/NqoQ4uN1bh2iAekZC/Ykma+FkjCM2ofrO38u+d8n3+AK6uVWeMJmogGX2KL+Is5fofoInJg==}
 
   ember-page-title@9.0.3:
     resolution: {integrity: sha512-fedRHUsvq8tIZgOii8jTrfAyeq+la/9H5eAzhNNwEyzo7nDMmqK2SxsyBUGXprd8fOacsPabLlzlucMi/4mUpA==}
@@ -14103,6 +14103,32 @@ snapshots:
     dependencies:
       '@glimmer/interfaces': 0.94.6
 
+  '@glint/ember-tsc@1.11.6(3e421dd34d42f0b95dc307bc5ca3dc97)':
+    dependencies:
+      '@glimmer/syntax': 0.95.0
+      '@glint/template': 1.9.0
+      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260926.1)
+      '@volar/language-core': 2.4.28
+      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260926.1)
+      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260926.1)
+      '@volar/source-map': 2.4.28
+      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260926.1)
+      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260926.1)
+      content-tag: 4.2.0
+      ember-estree: 0.8.1
+      silent-error: 1.1.1
+      typescript: 7.1.0-dev.20260926.1
+      volar-service-html: 0.0.71(9fac1d06bbafc4c41dc5710b0904e61b)
+      volar-service-typescript: 0.0.71(cabe4d4b6236ce20e7ad75fef667a9bd)
+      vscode-languageserver-protocol: 3.18.4
+      vscode-languageserver-textdocument: 1.0.15
+      vscode-uri: 3.2.0
+    optionalDependencies:
+      ember-modifier: 4.3.0(@babel/core@7.29.7)
+      ember-source: 7.3.0(@glimmer/component@2.1.1)
+    transitivePeerDependencies:
+      - supports-color
+
   '@glint/ember-tsc@1.11.6(b92c122490c5d6e72c30aca282d203ec)':
     dependencies:
       '@glimmer/syntax': 0.95.0
@@ -14149,32 +14175,6 @@ snapshots:
       vscode-languageserver-textdocument: 1.0.15
       vscode-uri: 3.2.0
     optionalDependencies:
-      ember-source: 7.3.0(@glimmer/component@2.1.1)
-    transitivePeerDependencies:
-      - supports-color
-
-  '@glint/ember-tsc@1.11.6(f986a23f314a177107514e90b89c8ec9)':
-    dependencies:
-      '@glimmer/syntax': 0.95.0
-      '@glint/template': 1.9.0
-      '@volar/kit': 2.4.28(typescript@7.1.0-dev.20260926.1)
-      '@volar/language-core': 2.4.28
-      '@volar/language-server': 2.4.28(typescript@7.1.0-dev.20260926.1)
-      '@volar/language-service': 2.4.28(typescript@7.1.0-dev.20260926.1)
-      '@volar/source-map': 2.4.28
-      '@volar/test-utils': 2.4.28(typescript@7.1.0-dev.20260926.1)
-      '@volar/typescript': 2.4.28(typescript@7.1.0-dev.20260926.1)
-      content-tag: 4.2.0
-      ember-estree: 0.8.1
-      silent-error: 1.1.1
-      typescript: 7.1.0-dev.20260926.1
-      volar-service-html: 0.0.71(9fac1d06bbafc4c41dc5710b0904e61b)
-      volar-service-typescript: 0.0.71(cabe4d4b6236ce20e7ad75fef667a9bd)
-      vscode-languageserver-protocol: 3.18.4
-      vscode-languageserver-textdocument: 1.0.15
-      vscode-uri: 3.2.0
-    optionalDependencies:
-      ember-modifier: 4.2.2(@babel/core@7.29.7)
       ember-source: 7.3.0(@glimmer/component@2.1.1)
     transitivePeerDependencies:
       - supports-color
@@ -18640,6 +18640,17 @@ snapshots:
 
   ember-cli-string-utils@1.1.0: {}
 
+  ember-content-mapper@0.3.1(3e421dd34d42f0b95dc307bc5ca3dc97):
+    dependencies:
+      '@glint/ember-tsc': 1.11.6(3e421dd34d42f0b95dc307bc5ca3dc97)
+      tinypool: 2.1.2
+      vscode-jsonrpc: 9.0.3
+    transitivePeerDependencies:
+      - ember-modifier
+      - ember-source
+      - supports-color
+      - typescript
+
   ember-content-mapper@0.3.1(b92c122490c5d6e72c30aca282d203ec):
     dependencies:
       '@glint/ember-tsc': 1.11.6(b92c122490c5d6e72c30aca282d203ec)
@@ -18654,17 +18665,6 @@ snapshots:
   ember-content-mapper@0.3.1(d81154f88b4fb747cbb93ddef4e52610):
     dependencies:
       '@glint/ember-tsc': 1.11.6(d81154f88b4fb747cbb93ddef4e52610)
-      tinypool: 2.1.2
-      vscode-jsonrpc: 9.0.3
-    transitivePeerDependencies:
-      - ember-modifier
-      - ember-source
-      - supports-color
-      - typescript
-
-  ember-content-mapper@0.3.1(f986a23f314a177107514e90b89c8ec9):
-    dependencies:
-      '@glint/ember-tsc': 1.11.6(f986a23f314a177107514e90b89c8ec9)
       tinypool: 2.1.2
       vscode-jsonrpc: 9.0.3
     transitivePeerDependencies:
@@ -18799,12 +18799,10 @@ snapshots:
       - '@babel/core'
       - supports-color
 
-  ember-modifier@4.2.2(@babel/core@7.29.7):
+  ember-modifier@4.3.0(@babel/core@7.29.7):
     dependencies:
       '@embroider/addon-shim': 1.10.3
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
-      ember-cli-normalize-entity-name: 1.0.0
-      ember-cli-string-utils: 1.1.0
     transitivePeerDependencies:
       - '@babel/core'
       - supports-color
