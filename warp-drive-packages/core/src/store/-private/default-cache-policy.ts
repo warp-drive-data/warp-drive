@@ -378,6 +378,9 @@ export interface PolicyConfigConstraints {
 /**
  * The configuration options for the {@link DefaultCachePolicy}
  *
+ * The [Advanced Store Configuration](/guides/configuration/advanced#decide-how-long-requests-are-valid-for-with-a-cachepolicy)
+ * guide shows a policy configured with them.
+ *
  * ```ts [app/services/store.ts]
  * import { Store } from '@warp-drive/core';
  * import { DefaultCachePolicy } from '@warp-drive/core/store'; // [!code focus]
@@ -472,6 +475,9 @@ export interface PolicyConfig {
 
 /**
  * A basic {@link CachePolicy} that can be added to the Store service.
+ *
+ * The [Advanced Store Configuration](/guides/configuration/advanced#decide-how-long-requests-are-valid-for-with-a-cachepolicy)
+ * guide shows how to configure it.
  *
  * ```ts [app/services/store.ts]
  * import { Store } from '@warp-drive/core';

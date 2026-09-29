@@ -1,6 +1,8 @@
 /**
  * {@include ./install.md}
  *
+ * See the [React section of Installation](/guides/installation/#react) for the full setup.
+ *
  * @summary Side-effect import that configures WarpDrive to use Signal polyfill based reactivity so its data updates
  * re-render React components.
  * @module

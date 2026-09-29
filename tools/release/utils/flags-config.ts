@@ -3,7 +3,7 @@ import semver from 'semver';
 
 import { ABOUT } from '../help/sections/about.ts';
 import { HELP } from '../help/sections/manual.ts';
-import { CHANNEL, SEMVER_VERSION, VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
+import { type CHANNEL, type SEMVER_VERSION, type VALID_TRAINS, npmDistTagForChannelAndVersion } from './channel.ts';
 import { getGitState, getPublishedChannelInfo } from './git.ts';
 import { normalizeFlag, type CommandConfig, type FlagConfig } from './parse-args.ts';
 
@@ -445,7 +445,7 @@ export const command_config: CommandConfig = {
     cmd: 'help',
     description: 'Output This Manual',
     alt: Array.from(HELP),
-    example: '$ bun release help',
+    example: '$ pnpm release help',
   },
   exec: {
     name: 'Execute Command',
@@ -453,14 +453,14 @@ export const command_config: CommandConfig = {
     description:
       'Executes another release command with the provided arguments, filtering out any args with undefined values.',
     alt: [],
-    example: '$ bun release exec promote --version=5.3.0 --tag=lts',
+    example: '$ pnpm release exec promote --version=5.3.0 --tag=lts',
   },
   about: {
     name: 'About',
     cmd: 'about',
     description: 'Print Information About This Script',
     alt: Array.from(ABOUT),
-    example: '$ bun release about',
+    example: '$ pnpm release about',
   },
   release_notes: {
     name: 'Release Notes',
@@ -468,7 +468,7 @@ export const command_config: CommandConfig = {
     alt: ['cl', 'changes', 'history', 'notes', 'releasenotes', 'changelog', 'log'],
     description: `Generate release notes for the next release.`,
     options: release_notes_flags_config,
-    example: '$ bun release cl',
+    example: '$ pnpm release cl',
   },
   backfill_release_notes: {
     name: 'Backfill Release Notes',
@@ -485,14 +485,14 @@ export const command_config: CommandConfig = {
     ],
     description: `Backfill release notes for a prior release.`,
     options: backfill_flags_config,
-    example: '$ bun release backfill --from=5.2.0',
+    example: '$ pnpm release backfill --from=5.2.0',
   },
   latest_for: {
     name: 'Latest For',
     cmd: 'latest-for',
     description: 'Print the latest version for a given channel',
     alt: ['latest'],
-    example: '$ bun release latest-for beta',
+    example: '$ pnpm release latest-for beta',
   },
   promote: {
     name: 'Promote to LTS',
@@ -502,9 +502,9 @@ export const command_config: CommandConfig = {
     alt: ['retag', 'lts', 'lts-promote'],
     options: promote_flags_config,
     example: [
-      '$ bun release promote',
-      '$ bun release promote --version=5.3.0 --tag=lts',
-      '$ bun release promote 4.12.5 --tag=lts-4-12',
+      '$ pnpm release promote',
+      '$ pnpm release promote --version=5.3.0 --tag=lts',
+      '$ pnpm release promote 4.12.5 --tag=lts-4-12',
     ],
   },
   bootstrap: {
@@ -514,7 +514,7 @@ export const command_config: CommandConfig = {
       'Reserve npm names for any public package in the monorepo that has never been published, by publishing a 0.0.0 placeholder with a classic npm token.\nOnly needed because npm Trusted Publishing cannot be configured for a package that does not exist yet -- this exists so that step does not require a manual local publish.',
     alt: ['bootstrap', 'reserve', 'reserve-packages', 'bootstrap-new-packages'],
     options: bootstrap_flags_config,
-    example: ['$ bun release bootstrap-packages', '$ bun release bootstrap-packages --dry_run'],
+    example: ['$ pnpm release bootstrap-packages', '$ pnpm release bootstrap-packages --dry_run'],
   },
   default: {
     name: 'Publish',
@@ -523,7 +523,7 @@ export const command_config: CommandConfig = {
     description:
       'Publish a new version of WarpDrive to the specified channel.\nRequires npm Trusted Publishing (OIDC) -- only runnable from the configured GitHub Actions release workflow.',
     options: publish_flags_config,
-    example: ['$ bun release', '$ bun release publish'],
+    example: ['$ pnpm release', '$ pnpm release publish'],
   },
 };
 

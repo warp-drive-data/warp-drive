@@ -167,6 +167,9 @@ export const WatcherContext: Context<{
  * `<Request />` already wraps its content in one; wrap any other component
  * that reads reactive WarpDrive data, such as a record's fields.
  *
+ * The JS API example in [Reactive Control Flow](/guides/the-manual/reactivity/control-flow)
+ * shows it wrapping a component that reads request state with `getRequestState`.
+ *
  * It accepts a single prop, `children`.
  *
  * @example

@@ -1,7 +1,7 @@
 import { styleText } from 'node:util';
 
 import { command_config } from '../utils/flags-config.ts';
-import { Command, Flag } from '../utils/parse-args.ts';
+import type { Command, Flag } from '../utils/parse-args.ts';
 import { color, getNumTabs, getPadding, indent } from './-utils.ts';
 
 function getDefaultValueDescriptor(value: unknown) {

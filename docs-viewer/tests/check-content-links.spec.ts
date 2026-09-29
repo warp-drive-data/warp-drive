@@ -23,6 +23,11 @@ const cleanTree: Record<string, string> = {
     '- [a heading on a page](./other.md#details)',
     '- [a skill](/skills/some-skill.md)',
     '- [a heading on this page](#setup)',
+    '- [a heading, written as it reads](#Setup)',
+    '- ![a public image](/images/logo.png)',
+    '',
+    '::: tip [a page in a container title](./other.md)',
+    ':::',
     '',
   ].join('\n'),
   'guides/other.md': '# Other\n\n## Details\n',
@@ -30,6 +35,13 @@ const cleanTree: Record<string, string> = {
   'blog/index.md': '# Blog\n',
   'rfcs/index.md': '# RFCs\n',
   'warp-drive-packages/memory-alpha/skills/some-skill.md': '# Some Skill\n\nBack to [setup](/guides/index.md#setup).\n',
+  'docs-viewer/docs.warp-drive.io/public/images/logo.png': '',
+};
+
+/** a generated API page, which only `--api` checks, and a guide that links into the API pages */
+const apiTree: Record<string, string> = {
+  'docs-viewer/docs.warp-drive.io/api/index.md': '# API\n\n- [a missing API page](./missing.md)\n',
+  'guides/api-links.md': '# API Links\n\n- [an API page](/api/index.md)\n- [a missing API page](/api/missing.md)\n',
 };
 
 const brokenPage = [
@@ -39,6 +51,16 @@ const brokenPage = [
   '- [a missing heading](./other.md#nowhere)',
   '- [a missing skill](/skills/missing-skill.md)',
   '- [a missing heading on a skill](/skills/some-skill.md#nope)',
+  '',
+  '::: warning [a missing page in a container title](./missing-title.md)',
+  ':::',
+  '',
+  '> [!TIP] [not rendered as a link](./missing-alert.md)',
+  '> VitePress renders a GitHub alert title as plain text.',
+  '',
+  '## 5x Series {#5x-series}',
+  '',
+  'VitePress renders [this link](#5x-series) as `#_5x-series`, which is not the heading id.',
   '',
 ].join('\n');
 
@@ -57,8 +79,8 @@ function createContentRoot(files: Record<string, string>): string {
   return root;
 }
 
-function checkLinks(root: string) {
-  const result = spawnSync('pnpm', ['--silent', 'run', 'check:links', '--root', root], {
+function checkLinks(root: string, flags: string[] = []) {
+  const result = spawnSync('pnpm', ['--silent', 'run', 'check:links', '--root', root, ...flags], {
     cwd: docsViewerRoot,
     encoding: 'utf8',
   });
@@ -88,7 +110,31 @@ describe('check:links', () => {
         'guides/broken.md:4\tmissing anchor\t./other.md#nowhere',
         'guides/broken.md:5\tmissing page\t/skills/missing-skill.md',
         'guides/broken.md:6\tmissing anchor\t/skills/some-skill.md#nope',
-        'checked 7 pages, 4 broken link(s)',
+        'guides/broken.md:8\tmissing page\t./missing-title.md',
+        'guides/broken.md:16\tmissing anchor\t#5x-series',
+        'checked 7 pages, 6 broken link(s)',
+      ],
+      stderr
+    );
+    assert.equal(status, 1, stderr);
+  });
+
+  test('skips the API pages and /api/ links without --api', () => {
+    const { status, lines, stderr } = checkLinks(createContentRoot({ ...cleanTree, ...apiTree }));
+
+    assert.deepEqual(lines, ['checked 7 pages, 0 broken link(s)'], stderr);
+    assert.equal(status, 0, stderr);
+  });
+
+  test('checks the API pages and /api/ links with --api', () => {
+    const { status, lines, stderr } = checkLinks(createContentRoot({ ...cleanTree, ...apiTree }), ['--api']);
+
+    assert.deepEqual(
+      lines,
+      [
+        'guides/api-links.md:4\tmissing page\t/api/missing.md',
+        'docs-viewer/docs.warp-drive.io/api/index.md:3\tmissing page\t./missing.md',
+        'checked 8 pages, 2 broken link(s)',
       ],
       stderr
     );

@@ -46,6 +46,9 @@ export type CacheKeyType = 'record' | 'document';
  * Only requests that are assigned a RequestKey are retrievable/replayable from
  * the cache, though requests without RequestKeys may still update cache state.
  *
+ * The [Key Terminology](/guides/the-manual/caching/key-terms#documents) guide explains
+ * the documents it identifies.
+ *
  * @summary Stable object with a unique `lid` that references a cached request document, letting that request's
  * result be retrieved or replayed.
  * @public
@@ -148,6 +151,9 @@ export interface NewResourceKey<T extends string = string> extends ResourceKeyBa
  *
  * Every resource has a unique ResourceKey, and ResourceKeys may refer
  * to data that has never been loaded (for instance, in an async relationship).
+ *
+ * The [Key Terminology](/guides/the-manual/caching/key-terms#resources) guide explains
+ * the resources it identifies.
  *
  * @summary Stable object with a unique `lid` plus `type` and `id` that uniquely references one resource's data in
  * the cache, loaded or not.

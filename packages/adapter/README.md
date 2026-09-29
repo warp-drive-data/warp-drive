@@ -56,7 +56,7 @@ export { default } from '@ember-data/adapter/json-api';
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/adapter](https://warp-drive.io/api/@ember-data/adapter/)
 

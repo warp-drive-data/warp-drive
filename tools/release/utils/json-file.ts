@@ -1,11 +1,12 @@
-import { BunFile } from 'bun';
+import { access, readFile, writeFile } from 'node:fs/promises';
 import { styleText } from 'node:util';
 
 const EOL = '\n';
 export class JSONFile<T extends object = Record<string, unknown>> {
   declare contents: T | null;
   declare filePath: string;
-  declare handle: BunFile;
+  /** the file path, once it has been confirmed to exist */
+  declare handle: string;
 
   #lastKnown: string | null = null;
 
@@ -16,8 +17,11 @@ export class JSONFile<T extends object = Record<string, unknown>> {
 
   async #getHandle() {
     if (!this.handle) {
-      const fileHandle = Bun.file(this.filePath, { type: 'application/json' });
-      const exists = await fileHandle.exists();
+      const fileHandle = this.filePath;
+      const exists = await access(fileHandle).then(
+        () => true,
+        () => false
+      );
 
       if (!exists) {
         throw new Error(`The file ${styleText('white', this.filePath)} does not exist!`);
@@ -36,12 +40,15 @@ export class JSONFile<T extends object = Record<string, unknown>> {
   async read(logRaw: boolean = false): Promise<T> {
     if (this.contents === null) {
       const fileHandle = await this.#getHandle();
-      const data = await fileHandle.json().catch(async (e) => {
+      const strData = await readFile(fileHandle, 'utf8');
+      let data: T;
+      try {
+        data = JSON.parse(strData) as T;
+      } catch (e) {
         console.log(e);
-        const strData = await fileHandle.text();
         console.log(strData);
         throw e;
-      });
+      }
       this.contents = data;
       this.#lastKnown = JSON.stringify(data, null, 2);
     }
@@ -63,7 +70,7 @@ export class JSONFile<T extends object = Record<string, unknown>> {
     }
     this.#lastKnown = strData;
     const fileHandle = await this.#getHandle();
-    await Bun.write(fileHandle, strData);
+    await writeFile(fileHandle, strData);
   }
 }
 

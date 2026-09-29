@@ -313,6 +313,9 @@ function getPromise<T, E>(promise: Promise<T> | Awaitable<T, E> | LegacyAwaitabl
 /**
  * Returns a reactive state-machine for the provided promise or awaitable.
  *
+ * The [Async as Reactive State](/guides/the-manual/reactivity/derivation) guide shows
+ * how to use it in place of tracked loading and error state.
+ *
  * Repeat calls to `getPromiseState` with the same promise will return the same state object
  * making is safe and easy to use in templates and JavaScript code to produce reactive
  * behaviors around promises.

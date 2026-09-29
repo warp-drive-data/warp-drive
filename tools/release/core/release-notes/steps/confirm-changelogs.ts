@@ -1,11 +1,10 @@
-import { BunFile } from 'bun';
 import { styleText } from 'node:util';
 
 import { exec } from '../../../utils/cmd.ts';
 import { confirm } from '../../publish/steps/confirm-strategy.ts';
 
 export async function confirmCommitChangelogs(
-  _changedFiles: BunFile[],
+  _changedFiles: string[],
   config: Map<string, string | number | boolean | null>,
   versions: Map<string, string>
 ) {

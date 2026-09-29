@@ -95,7 +95,7 @@ document.body.appendChild(img);
 
 Registering `ImageFetch` as a service makes it easy to inject anywhere you
 need to load or preload an image, and to pair with
-[`getPromiseState`](https://docs.warp-drive.io/guides/the-manual/reactivity/derivation)
+[`getPromiseState`](https://warp-drive.io/guides/the-manual/reactivity/derivation)
 from `@warp-drive/ember` to render its result reactively.
 
 ```ts

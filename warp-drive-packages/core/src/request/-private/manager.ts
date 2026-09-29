@@ -1,9 +1,22 @@
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 
+// oxlint-disable-next-line no-unused-vars
+import type { Store } from '../../index';
+// oxlint-disable-next-line no-unused-vars
+import type { ReactiveDocument } from '../../reactive/-private/document';
+// oxlint-disable-next-line no-unused-vars
+import { withReactiveResponse, withResponseType } from '../../request';
 import { waitFor } from '../../signals/-private';
 import { peekUniversalTransient, setUniversalTransient } from '../../types/-private';
 import type { RequestKey } from '../../types/identifier';
-import { EnableHydration, type RequestInfo, type StructuredErrorDocument } from '../../types/request';
+/* oxlint-disable no-unused-vars */
+import {
+  EnableHydration,
+  type RequestInfo,
+  type StructuredDocument,
+  type StructuredErrorDocument,
+} from '../../types/request';
+/* oxlint-enable no-unused-vars */
 import { assertValidRequest } from './debug';
 import { upgradePromise } from './future';
 import { clearRequestResult, getRequestResult, setPromiseResult } from './promise-cache';
@@ -17,7 +30,8 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * import { RequestManager } from '@warp-drive/core';
  * ```
  *
- * For complete usage guide see the [RequestManager Documentation](/guides/).
+ * For a complete usage guide see [Making Requests](/guides/the-manual/requests/), and
+ * [Handlers](/guides/the-manual/requests/handlers) for writing the handlers it runs.
  *
  * ## How It Works
  *
@@ -40,11 +54,28 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * ```ts [Setup.ts]
  * import { RequestManager, Fetch } from '@warp-drive/core';
  * import { AutoCompress } from '@warp-drive/utilities/handlers';
- * import Auth from 'ember-simple-auth/handler';
+ * import { AuthHandler } from './auth-handler';
  *
  * // ... create manager
  * const manager = new RequestManager()
- *    .use([Auth, new AutoCompress(), Fetch]); // [!code focus]
+ *    .use([AuthHandler, new AutoCompress(), Fetch]); // [!code focus]
+ * ```
+ *
+ * ```ts [auth-handler.ts]
+ * import type { Handler, NextFn } from '@warp-drive/core/request';
+ * import type { RequestContext } from '@warp-drive/core/types/request';
+ *
+ * const token = '<token>';
+ *
+ * // adds a bearer token to every request, then passes it along
+ * export const AuthHandler: Handler = {
+ *   request<T>(context: RequestContext, next: NextFn<T>) {
+ *     const headers = new Headers(context.request.headers);
+ *     headers.append('Authorization', `Bearer ${token}`);
+ *
+ *     return next(Object.assign({}, context.request, { headers }));
+ *   },
+ * };
  * ```
  *
  * ```ts [Usage.ts]
@@ -59,6 +90,20 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * ```
  *
  * :::
+ *
+ * ### RequestManager vs {@link Store.request}
+ *
+ * A bare `RequestManager` is the low-level primitive: it runs a request through the configured
+ * {@link Handler | handler chain} and settles with the raw {@link StructuredDocument}. It has no
+ * cache and does not hydrate {@link ReactiveDocument | ReactiveDocuments} unless you register a
+ * cache handler yourself via {@link RequestManager.useCache} and the request opts in.
+ *
+ * {@link Store.request} issues requests through this same `RequestManager`, but with the Store's
+ * cache handler and hydration already wired up — inserting the response into the Store's cache
+ * and resolving with a `ReactiveDocument` instead. Use `store.request` for anything the Store's
+ * cache should own, which is nearly all app code. Reach for `requestManager.request` directly
+ * only when there is no {@link Store} involved, or you specifically want the unprocessed
+ * `StructuredDocument`.
  *
  * ### Futures
  *
@@ -190,7 +235,23 @@ export class RequestManager {
   /**
    * Issue a Request.
    *
-   * Returns a Future that fulfills with a StructuredDocument
+   * Runs `request` through the configured {@link Handler | handler chain} and settles with the
+   * {@link StructuredDocument} the chain produces — a plain `{ request, response, content }`
+   * object, not a {@link ReactiveDocument}. Caching and hydration only happen if a cache handler
+   * has been registered via {@link RequestManager.useCache} and the request opts in; a
+   * `RequestManager` created on its own has neither.
+   *
+   * Most app code should use {@link Store.request} instead, which calls this same method with
+   * the Store's cache handler and hydration already configured. Reach for `requestManager.request`
+   * directly when there is no {@link Store} involved, or when you want the unprocessed
+   * `StructuredDocument`. The `<RT>` generic can be set explicitly or inferred from a request
+   * built with {@link withResponseType} or {@link withReactiveResponse} — see
+   * [Typing Requests](/guides/the-manual/requests/typing-requests.md).
+   *
+   * @example
+   * ```ts
+   * const { content } = await requestManager.request({ url: '/users' });
+   * ```
    *
    * @public
    */

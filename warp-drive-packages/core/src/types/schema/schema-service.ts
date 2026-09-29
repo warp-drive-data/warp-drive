@@ -53,6 +53,10 @@ interface ObjectWithStringTypeProperty {
  * The SchemaService provides the ability to query for information about the structure
  * of any resource type.
  *
+ * The [Schemas](/guides/the-manual/schemas/) guide shows how to register schemas
+ * with it, and [Advanced Store Configuration](/guides/configuration/advanced#add-a-source-for-schema-for-your-data)
+ * shows how to give a store one.
+ *
  * Applications can provide any implementation of the SchemaService they please so long
  * as it conforms to this interface.
  *

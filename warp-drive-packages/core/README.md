@@ -64,6 +64,38 @@ This package is framework-agnostic; the bindings live in `@warp-drive/ember`, `@
 
 <br>
 
+## Documentation
+
+API docs for this package → [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/)
+
+- [Installation](https://warp-drive.io/guides/installation/): install `@warp-drive/core`, a cache and the reactivity package for your framework.
+- [Setup](https://warp-drive.io/guides/configuration/): configure the build plugin and create a Store with `useRecommendedStore`.
+- [Advanced Store Configuration](https://warp-drive.io/guides/configuration/advanced): build a Store class by hand, one piece at a time.
+- [Making Requests](https://warp-drive.io/guides/the-manual/requests/): `store.request`, request options and the handler chain.
+- [Builders](https://warp-drive.io/guides/the-manual/requests/builders): functions that return a request and a stable cache key.
+- [Handlers](https://warp-drive.io/guides/the-manual/requests/handlers): write a handler that transforms a response.
+- [Auth Handler](https://warp-drive.io/guides/the-manual/cookbook/auth-handlers): add JWT or CSRF tokens to outgoing requests with a handler.
+- [Typing Requests](https://warp-drive.io/guides/the-manual/requests/typing-requests): `withResponseType` and `withReactiveResponse`.
+- [Using the Response](https://warp-drive.io/guides/the-manual/requests/using-the-response): the `Future` a request returns, its errors and its content.
+- [Schemas](https://warp-drive.io/guides/the-manual/schemas/): how a schema turns cached data into reactive properties.
+- [ResourceSchemas](https://warp-drive.io/guides/the-manual/schemas/resources/): define a resource with `withDefaults`, choose its field kinds and register it.
+- [SimpleFields](https://warp-drive.io/guides/the-manual/schemas/simple-fields): declare primitive attributes as `field` kinds.
+- [Complex Fields](https://warp-drive.io/guides/the-manual/schemas/complex-fields): embed nested objects and lists with `schema-object` and `schema-array` fields.
+- [ObjectSchemas](https://warp-drive.io/guides/the-manual/schemas/object-schemas): define the identity-less schema a `schema-object` field points at.
+- [Traits](https://warp-drive.io/guides/the-manual/schemas/traits): share a group of fields across resources.
+- [Transformations](https://warp-drive.io/guides/the-manual/schemas/transformations): convert a field between its cache and app shapes.
+- [Derivations](https://warp-drive.io/guides/the-manual/schemas/derivations): define memoized, read-only `derived` fields.
+- [Caching](https://warp-drive.io/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what to fetch and what to keep.
+- [Key Terminology](https://warp-drive.io/guides/the-manual/caching/key-terms): documents, resources and the names of their types.
+- [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Reactive Control Flow](https://warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's states with `getRequestState`.
+- [Async as Reactive State](https://warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState`.
+- [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): configure each kind of relationship.
+- [Debugging](https://warp-drive.io/guides/the-manual/debugging/): turn on debug logging at runtime or in the build config.
+- [TypeScript](https://warp-drive.io/guides/the-manual/typescript/): opt in to the alpha types, then follow the setup pages in order.
+
+<br>
+
 ## Code of Conduct
 
 Refer to the [Code of Conduct](https://github.com/warp-drive-data/warp-drive/blob/main/CODE_OF_CONDUCT.md) for community guidelines and inclusivity.

@@ -46,13 +46,13 @@ Lint rules for helping to ensure best practices and hygiene when using ***Warp*D
 
 | Rule | Description | 🏷️ | ✨ |
 | ---- | ----------- | -- | -- |
-| [no-create-record-rerender](./docs/no-create-record-rerender.md) | Helps avoid patterns that often lead to excess or broken renders | 🐞⚡️ | ✅ |
-| [no-invalid-relationships](./docs/no-invalid-relationships.md) | Ensures the basic part of relationship configuration is setup appropriately | 🏆 | ✅ |
-| [no-legacy-request-patterns](./docs/no-legacy-request-patterns.md) | Restricts usage of deprecated or discouraged request patterns | 🏆 | ✅ |
-| [no-external-request-patterns](./docs/no-external-request-patterns.md) | Restricts usage of discouraged non-warp-drive request patterns | 🏆 | ✅ |
-| [no-invalid-resource-types](./docs/no-invalid-resource-types.md) | Ensures resource types follow a conventional pattern when used in common APIs | 🏆 | ✅🛠️ |
-| [no-invalid-resource-ids](./docs/no-invalid-resource-ids.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
-| [no-legacy-imports](./docs/no-legacy-imports.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
+| [no-create-record-rerender](./src/rules/no-create-record-rerender.md) | Helps avoid patterns that often lead to excess or broken renders | 🐞⚡️ | ✅ |
+| [no-invalid-relationships](./src/rules/no-invalid-relationships.md) | Ensures the basic part of relationship configuration is setup appropriately | 🏆 | ✅ |
+| [no-legacy-request-patterns](./src/rules/no-legacy-request-patterns.md) | Restricts usage of deprecated or discouraged request patterns | 🏆 | ✅ |
+| [no-external-request-patterns](./src/rules/no-external-request-patterns.md) | Restricts usage of discouraged non-warp-drive request patterns | 🏆 | ✅ |
+| [no-invalid-resource-types](./src/rules/no-invalid-resource-types.md) | Ensures resource types follow a conventional pattern when used in common APIs | 🏆 | ✅🛠️ |
+| [no-invalid-resource-ids](./src/rules/no-invalid-resource-ids.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
+| [no-legacy-imports](./src/rules/no-legacy-imports.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
 
 ## Internal Rules
 
@@ -63,7 +63,7 @@ config for any consumer whose test suite could benefit from the same conventions
 
 | Rule | Description | 🏷️ | ✨ |
 | ---- | ----------- | -- | -- |
-| [no-test-module-hooks](./docs/no-test-module-hooks.md) | Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly | ⚡️ | |
+| [no-test-module-hooks](./src/rules/no-test-module-hooks.md) | Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly | ⚡️ | |
 
 ## Template Rules
 
@@ -79,8 +79,8 @@ for integrating template linting into ESLint.
 
 | Rule | Description | 🏷️ | ✨ |
 | ---- | ----------- | -- | -- |
-| [template-always-use-request-content](./docs/template-always-use-request-content.md) | Ensures the result of a `<Request>` is actually consumed | 🐞 | |
-| [template-require-request-error-block](./docs/template-require-request-error-block.md) | Ensures `<Request>`/`<Await>` always provide an `:error` block | 🐞 | |
+| [template-always-use-request-content](./src/rules/template-always-use-request-content.md) | Ensures the result of a `<Request>` is actually consumed | 🐞 | |
+| [template-require-request-error-block](./src/rules/template-require-request-error-block.md) | Ensures `<Request>`/`<Await>` always provide an `:error` block | 🐞 | |
 
 ## React Rules
 
@@ -92,7 +92,7 @@ is enabled.
 
 | Rule | Description | 🏷️ | ✨ |
 | ---- | ----------- | -- | -- |
-| [require-request-error-block](./docs/require-request-error-block.md) | Ensures `<Request>` is always given a `states.error` handler | 🐞 | |
+| [require-request-error-block](./src/rules/require-request-error-block.md) | Ensures `<Request>` is always given a `states.error` handler | 🐞 | |
 
 ## Usage
 
@@ -152,3 +152,11 @@ module.exports = [
   ...WarpDriveInternalRecommended,
 ];
 ```
+
+## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
+API docs for this package → [eslint-plugin-warp-drive](https://warp-drive.io/api/eslint-plugin-warp-drive/)
+
+- [Linting](https://warp-drive.io/guides/linting/): install the plugin and enable its recommended, template and React configs.

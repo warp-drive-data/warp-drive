@@ -32,7 +32,7 @@ strings could result in significant application bugs. And, where possible, autoc
 typing these strings can help a developer better learn and explore the graph of data available to be loaded.
 
 WarpDrive offers several type utilities to assist with strictly typing strings that represent relationship
-paths: `Includes` and `StringSatisfiesIncludes`
+paths: [`Includes`](/api/@warp-drive/core/types/record/types/Includes) and [`StringSatisfiesIncludes`](/api/@warp-drive/core/types/record/types/StringSatisfiesIncludes)
 
 
 ## The `Includes` Type Util
@@ -106,7 +106,7 @@ builderThatAcceptsIncludes<User>({
 
 ### Using the Type Util Directly
 
-The type util that powers `createIncludeValidator` can be used directly; however, we only
+The type util that powers [`createIncludeValidator`](/api/@warp-drive/core/types/record/functions/createIncludeValidator) can be used directly; however, we only
 recommend doing so if writing a wrapper utility similar to `createIncludeValidator` as
 otherwise it results in needing to type out the string twice.
 

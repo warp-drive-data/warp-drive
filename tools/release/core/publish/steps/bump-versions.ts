@@ -1,7 +1,7 @@
 import { styleText } from 'node:util';
 
 import { exec } from '../../../utils/cmd.ts';
-import { APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
+import { type APPLIED_STRATEGY, Package } from '../../../utils/package.ts';
 
 /**
  * This function will consume the strategy, bump the versions of all packages,

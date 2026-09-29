@@ -50,6 +50,21 @@ This package provides commandline utilities for use with WarpDrive.
 
 ## Available Commands
 
+The CLI is also installed as `warpdrive` and `wd`, so `npx wd <command>` works too.
+
+### Help
+
+- `npx warp-drive help`
+
+Prints the usage manual for every command and its options. Running `npx warp-drive` with no
+command does the same.
+
+### About
+
+- `npx warp-drive about`
+
+Prints a short description of what the CLI is for.
+
 ### Retrofit
 
 - `npx warp-drive retrofit <fit>@<distTag>`
@@ -60,15 +75,48 @@ Retrofits can be used both to adopt a new feature initially and upgrade the conf
 
 #### Retrofitting to a specific version
 
-Each retrofit has the ability to update to the configuration required for a specific npm `distTag`
-(`latest`|`canary`|`beta`|`lts`).
+Each retrofit updates to the configuration required for a specific npm `distTag`. For `types`, it
+must be a dist-tag that `ember-data-types` publishes: currently `latest`, `beta`, `canary` or
+`v4-canary`. There is no `lts` types release.
 
 #### Available Fits
 
-- `types`
-- `channel`
+- `types`: switches an app from the DefinitelyTyped `@types/*` packages to the types packages
+  ***Warp*Drive** publishes, and adds them to `tsconfig.json`.
+- `mirror`: not yet available. The CLI accepts it but it throws `Not Implemented`.
 
+#### Monorepos
 
+Pass `--monorepo` (or `-m`) to retrofit every package in a workspace, then the workspace root,
+followed by one install at the root:
+
+```sh
+npx warp-drive retrofit types@latest --monorepo
+```
+
+### Generate
+
+- `npx warp-drive generate <type> <name> [...args]` (or `g`, `gen`)
+
+Generates a legacy EmberData class, as JavaScript, at the path ember-cli's blueprints used, such as
+`app/models/<name>.js`. The types are `model`, `adapter`, `serializer` and `transform`, plus a
+unit test for each: `model-test`, `adapter-test`, `serializer-test` and `transform-test`, which
+write to `tests/unit/`.
+
+```sh
+npx warp-drive generate model taco filling:belongs-to:protein toppings:has-many:topping name:string
+```
+
+- `model` takes attributes as `name:type`, and relationships as `name:belongs-to:<model>` or
+  `name:has-many:<model>`.
+- In an app, `adapter` and `serializer` extend your `application` adapter or serializer when
+  `app/adapters/application.js` or `app/serializers/application.js` exists, and `JSONAPIAdapter`
+  or `JSONAPISerializer` otherwise. Pass `--base-class=<name>` to extend a different one of yours.
+- Pass `--force` to overwrite a file that already exists.
+
+## Documentation
+
+- [Native Types Retrofit](https://warp-drive.io/guides/the-manual/typescript/installation): what `npx warp-drive retrofit types` uninstalls, installs and configures.
 
 ### ♥️ Credits
 

@@ -68,7 +68,7 @@ label the PR for you prior to it being accepted and merged.
 
 Labels used for the changelog include any labels listed in the changelog config in the [root package.json](https://github.com/warp-drive-data/warp-drive/blob/main/package.json).
 
-These labels are prefixed with `changelog:` and currently the options are:
+The options are:
 
 - `:label: breaking` which should be used to signify a breaking change
 - `:label: feat` which should be used to signify an addition of a new public feature or behavior. Like `:label: doc` and `:label: rfc`, this label triggers a docs-site PR preview.
@@ -79,7 +79,7 @@ These labels are prefixed with `changelog:` and currently the options are:
 - `:label: doc` which should be used to signify a fix or improvement to documentation: guides, API docs, upgrade and blog pages, or agent skills. This label also triggers a docs-site PR preview — see [Writing Documentation](./writing-documentation/index.md#previewing-your-changes).
 - `:label: test` which should be used to signify addition of new tests or refactoring of existing tests
 - `:label: chore` which should be used to signify refactoring of internal code that should not have an affect on public APIs or behaviors but which we may want to call out for potentially unintended consequences. This also covers a fix scoped only to build tooling, lint/CI config, or other dev-experience-only code: if the PR doesn't touch anything a consumer of the published packages could hit, it's a chore, not a bug, even though it "fixes" something. Title such PRs `chore: ...` rather than `fix: ...`, since a `fix:`-typed title auto-labels as `:label: bug` (see the type-to-label mapping above).
-- `:label: dependencies` which should be used when bumping dependencies on `main`. Bumps on other branches should use other labels as this implies a more substantive change.
+- `:label: dependencies` which should be used when bumping dependencies on `main`. Bumps on other branches should use other labels as this implies a more substantive change. This label satisfies the changelog label check, but it is deliberately absent from the changelog config, so these PRs are left out of release notes -- most of them are automated Renovate bumps.
 - `:label: rfc` which should be used for PRs that draft, update, or advance a WarpDrive RFC in [`rfcs/`](/rfcs/index.md). This label also triggers a docs-site PR preview — see [The RFC Process](./rfc-process.md).
 
 #### Backporting Labels
@@ -87,7 +87,7 @@ These labels are prefixed with `changelog:` and currently the options are:
 We use one set of labels to indicate that a PR needs to be backported and where it needs to be backported to, and a second set of labels to indicate that a PR **is** the backport PR.
 
 A PR targeting `main` with none of the labels below is presumed to need no backporting -- there
-is no label to apply for that case. Add a target label, all prefixed with `target:`, only when
+is no label to apply for that case. Add a target label, all prefixed with `:dart:`, only when
 the PR _does_ need to be backported:
 
 - `:dart: beta` indicates the PR requires being backported to the current beta release.
@@ -97,7 +97,7 @@ the PR _does_ need to be backported:
 
 Note: a PR should add the individual label for _every_ backport target required. We use this while releasing to search
 for any commits still requiring backport to include, and will eventually automate opening backport PRs via a bot when
-these labels are present. We remove the `target:` label from merged PRs only once the backport PR has been opened.
+these labels are present. We remove the `:dart:` label from merged PRs only once the backport PR has been opened.
 
 To indicate that a PR **is** the backport PR, the following labels, all prefixed with `backport-` are available:
 

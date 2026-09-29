@@ -1,6 +1,6 @@
 {
   "name": "root",
-  "version": "5.10.0-alpha.12",
+  "version": "5.10.0-alpha.13",
   "private": true,
   "license": "MIT",
   "repository": {
@@ -90,7 +90,7 @@
       ":label: breaking": ":boom: Breaking Change",
       ":label: feat": ":rocket: Enhancement",
       ":label: bug": ":bug: Bug Fix",
-      ":label: perf:": ":zap: Performance",
+      ":label: perf": ":zap: Performance",
       ":label: cleanup": ":shower: Deprecation Removal",
       ":label: deprecation": ":evergreen_tree: New Deprecation",
       ":label: doc": ":memo: Documentation",

@@ -44,3 +44,9 @@ We intend to make this Graph public API after some additional iteration during t
 - ![NPM Stable Version](https://img.shields.io/npm/v/%40ember-data/graph/latest?label=%40latest&color=90EE90)
 - ![NPM LTS Version](https://img.shields.io/npm/v/%40ember-data/graph/lts?label=%40lts&color=0096FF)
 - ![NPM LTS 4.12 Version](https://img.shields.io/npm/v/%40ember-data/graph/lts-4-12?label=%40lts-4-12&color=bbbbbb)
+
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
+
+API docs for this package → [@ember-data/graph](https://warp-drive.io/api/@ember-data/graph/)
