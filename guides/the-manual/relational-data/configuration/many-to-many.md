@@ -203,6 +203,8 @@ shows how to type the records these schemas produce.
 
 ## Using `@warp-drive/schema-record` (🚧 Coming Soon)
 
+> **Note** The samples below import from `@warp-drive/schema`, a private package in this repository that has not been published to npm. It does not export these decorators yet, so the samples do not run today.
+
 Working with schemas in a raw json format is far more flexible, lightweight and
 performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
 
