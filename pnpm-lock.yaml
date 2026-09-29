@@ -241,9 +241,6 @@ catalogs:
     '@html-next/vertical-collection':
       specifier: ^5.0.5
       version: 5.0.5
-    '@jridgewell/remapping':
-      specifier: ^2.3.5
-      version: 2.3.5
     '@jridgewell/trace-mapping':
       specifier: ^0.3.31
       version: 0.3.31
@@ -3631,9 +3628,6 @@ importers:
       '@eslint/js':
         specifier: 'catalog:'
         version: 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping':
-        specifier: 'catalog:'
-        version: 2.3.5
       '@nullvoxpopuli/ember-rolldown':
         specifier: 'catalog:'
         version: 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
@@ -16549,7 +16543,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16604,7 +16597,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(d0e49aa56ab669e5956e3ac46ba8f873)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16659,7 +16651,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(2a57dc8c5879e11b0ffb03d1a828f436)
       '@rolldown/plugin-babel': 0.2.4(1e19d2851458e9b2fba7928be020132a)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16714,7 +16705,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16769,7 +16759,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(1e19d2851458e9b2fba7928be020132a)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16824,7 +16813,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(3e5691921da8db4b990c95acff33329d)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
@@ -16879,7 +16867,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(2a57dc8c5879e11b0ffb03d1a828f436)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16934,7 +16921,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -16989,7 +16975,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(05ae5575698c3d347cc1c72296e5ff13)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -17044,7 +17029,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(efc39813b1bedc3713635ece1511044f)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -17099,7 +17083,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(efc39813b1bedc3713635ece1511044f)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -17154,7 +17137,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(134f395caa23f5be4eb62d8f162b3038)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
@@ -17209,7 +17191,6 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-rolldown': 2.9.0(patch_hash=1b2fd38cbf4cd5451e75346a77857a3d6e643d2a38b9b04e2cb2a2693404d5dc)(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)(vite@8.3.1)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)

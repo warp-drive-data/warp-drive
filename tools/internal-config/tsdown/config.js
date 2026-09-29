@@ -1,4 +1,3 @@
-import remapping from '@jridgewell/remapping';
 import { ember } from '@nullvoxpopuli/ember-rolldown';
 import babelPlugin from '@rolldown/plugin-babel';
 import fs from 'fs';
@@ -150,59 +149,6 @@ async function jsxBabel(babelConfig) {
   return { ...plugin, enforce: 'pre', name: 'warp-drive:jsx-babel' };
 }
 
-/**
- * `ember()` loads a `.gts`/`.gjs` module under a `.ts`/`.js` id, with its `<template>`
- * tags already compiled by content-tag, which shifts every line after the first
- * template. The JS sourcemaps chain back through that step, but the declaration maps
- * the d.ts bundler emits map only to the content-tag output: they name a
- * `src/**\/*.ts` file that doesn't exist, at a line that doesn't match the `.gts`.
- *
- * This records the sourcemap of each such module as loaded, which is content-tag's own,
- * and chains every `.d.ts.map` through it, so the declaration maps point at the real
- * `.gts` file and line. It must run ahead of `ember()`'s transforms: the one that
- * rewrites `.gts` import specifiers maps each line to its first column only, and
- * chaining through that lands a declaration on the doc comment above it.
- */
-function templateTagDeclarationMaps() {
-  const templateTagMaps = new Map();
-
-  return {
-    name: 'warp-drive:template-tag-declaration-maps',
-    transform: {
-      order: 'pre',
-      filter: { id: /\.(ts|js)$/ },
-      handler(_code, id) {
-        const original = id.replace(/\.ts$/, '.gts').replace(/\.js$/, '.gjs');
-        if (!fs.existsSync(id) && fs.existsSync(original)) {
-          templateTagMaps.set(id, this.getCombinedSourcemap());
-        }
-        return null;
-      },
-    },
-    generateBundle: {
-      order: 'post',
-      handler(outputOptions, bundle) {
-        if (templateTagMaps.size === 0) return;
-        const outDir = path.resolve(outputOptions.dir);
-        for (const asset of Object.values(bundle)) {
-          if (asset.type !== 'asset' || !asset.fileName.endsWith('.d.ts.map')) continue;
-          const mapDir = path.dirname(path.join(outDir, asset.fileName));
-          const map = JSON.parse(asset.source);
-          if (!map.sources.some((source) => templateTagMaps.has(path.resolve(mapDir, source)))) continue;
-
-          const chained = remapping(map, (source) => templateTagMaps.get(path.resolve(mapDir, source)) ?? null);
-          chained.sources = chained.sources.map((source) =>
-            path.isAbsolute(source) ? path.relative(mapDir, source).split(path.sep).join('/') : source
-          );
-          // the d.ts bundler strips sourcesContent from these maps; keep them that way
-          chained.sourcesContent = undefined;
-          asset.source = chained.toString();
-        }
-      },
-    },
-  };
-}
-
 export function createConfig(options, resolve) {
   options.srcDir = options.srcDir ?? './src';
   options.compileTypes = options.compileTypes ?? true;
@@ -222,14 +168,6 @@ export function createConfig(options, resolve) {
     minify: false,
     report: false,
     dts: options.compileTypes ? { sourcemap: true } : false,
-    // Passed straight through to tsdown. Its function form receives the output
-    // `fileName`, so a package can prepend text to one chunk only -- the case
-    // this exists for is a package whose TypeDoc entry is its built `.d.ts`
-    // (see `warp-drive-packages/ember/tsdown.config.mjs`), since the d.ts
-    // bundler drops each entry's file-level `@module` comment that TypeDoc needs.
-    banner: options.banner,
-    // Same pass-through, appended to the chunk instead (see the ember config again).
-    footer: options.footer,
     // Substituted as literal string constants at build time so source
     // consumers (e.g. `warp-drive-packages/core/src/types/-private.ts`) can
     // read their own package's name/version without a static `import ...
@@ -263,7 +201,6 @@ export function createConfig(options, resolve) {
       onlyBundle: options.explicitExternalsOnly ? false : undefined,
     },
     plugins: [
-      options.compileTypes ? templateTagDeclarationMaps() : null,
       selfReferenceEntries(entryMap, pkg),
       forceBundleOverEmberExternals(options),
       ...ember(withMacroImportsAlwaysBabeled(options.ember)),
