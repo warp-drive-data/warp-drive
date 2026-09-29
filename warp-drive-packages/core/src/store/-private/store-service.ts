@@ -371,6 +371,26 @@ export interface Store {
    * mechanism of presenting cache data to the ui for access
    * mutation, and interaction.
    *
+   * The Store treats whatever this hook returns as opaque, so a record can be
+   * anything from a fairly simple object to a robust proxy that links together
+   * associated records through relationships.
+   *
+   * That also lets a record implementation separate edit flows from create flows
+   * entirely. A [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource)
+   * is not editable by default; calling
+   * [checkout](/api/@warp-drive/core/reactive/functions/checkout) on it gives access to
+   * an editable copy while the original stays read-only.
+   *
+   * Because records are created here and read their data from the {@link Store.cache | cache},
+   * record implementations should be able to interoperate both with each other and with
+   * any Cache. An app can therefore use more than one record implementation, either to give
+   * only some resource types enhanced features or to migrate from one implementation to
+   * another incrementally. The Store that
+   * [useLegacyStore](/api/@warp-drive/legacy/functions/useLegacyStore) produces does this:
+   * its hook creates a legacy `Model` for each resource type that only has a Model schema,
+   * and a ReactiveResource for every other type. Each Store creates one Cache, so an
+   * app that needs more than one Cache implementation uses more than one Store.
+   *
    * @param identifier - The Resource CacheKey
    * @param createRecordArgs - An object containing any properties passed to `store.createRecord`
    * @return A record instance
