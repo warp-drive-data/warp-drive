@@ -55,8 +55,10 @@ this at build time, and getting it wrong produces
 ## In your application's chain
 
 If your app builds one chain and your tests reuse it, include the handler only in test builds.
-`TESTING` is a build-time flag, so the handler and its import drop out of a production bundle
-entirely.
+`TESTING`, imported from `@warp-drive/core/build-config/env`, is a build-time flag. It is `true`
+in every development build, and in a production build run with `EMBER_ENV=test`, `IS_TESTING` or
+`EMBER_CLI_TEST_COMMAND` set. In any other production build it is `false`, and the build strips
+the branch that constructs the handler.
 
 ```ts
 import { Fetch, RequestManager } from '@warp-drive/core';
