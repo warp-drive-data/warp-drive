@@ -8,5 +8,7 @@ See [the manual](/skills/index.md) for the full set of skills.
 
 ## Guides
 
+- [AI Coding Agents](/guides/installation/ai-coding-agents.md): install this package and point your
+  coding agent's instructions file at its skills.
 - [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md): for
   contributors adding or changing a skill in this package.
