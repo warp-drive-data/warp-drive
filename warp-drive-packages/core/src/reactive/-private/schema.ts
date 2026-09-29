@@ -429,6 +429,9 @@ function processExtensions(
  * Utility for constructing a ResourceSchema with the recommended
  * fields for the PolarisMode experience.
  *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows how to
+ * create a schema with it.
+ *
  * Using this requires registering the PolarisMode derivations
  *
  * ```ts
@@ -515,6 +518,9 @@ fromIdentity[Type] = '@identity';
  * ```ts
  * import { withDefaults } from '@warp-drive/schema-record';
  * ```
+ *
+ * The [Derivations](/guides/the-manual/schemas/derivations#about-built-in-derivations)
+ * guide explains when you need to call it.
  *
  * @summary Registers the `@identity` and `@constructor` derivations that schemas built with
  * `withDefaults` depend on.
@@ -710,6 +716,9 @@ interface InternalTrait {
 
 /**
  * A SchemaService designed to work with dynamically registered schemas.
+ *
+ * The [Schemas](/guides/the-manual/schemas/) guide shows how to register schemas
+ * with it.
  *
  * @summary The default schema service, which stores resource and object schemas, traits, derivations,
  * transformations, hash functions and extensions registered at runtime.

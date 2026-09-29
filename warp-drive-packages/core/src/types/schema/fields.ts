@@ -1,4 +1,7 @@
 /**
+ * The [Schemas](/guides/the-manual/schemas/) guide teaches how these schemas and
+ * fields fit together.
+ *
  * @module
  * @summary Types for every field schema kind and for PolarisMode and LegacyMode resource, object and trait schemas,
  * plus the `resourceSchema` and `objectSchema` helpers and type guards.
@@ -27,6 +30,9 @@ export interface AttrOptions {
 /**
  * A generic "field" that can be used to define
  * primitive value fields.
+ *
+ * The [SimpleFields](/guides/the-manual/schemas/simple-fields) guide shows how to
+ * define them.
  *
  * Replaces "attribute" for primitive value fields.
  * Can also be used to eject from deep-tracking of
@@ -302,6 +308,9 @@ export interface ObjectAliasField {
  * Represents a field whose value is the primary
  * key of the resource.
  *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
+ * sits in a schema.
+ *
  * This allows any field to serve as the primary
  * key while still being able to drive identity
  * needs within the system.
@@ -575,6 +584,9 @@ export interface ObjectField {
  * with a well-defined structure described by
  * a schema-object (a non-resource schema).
  *
+ * The [Complex Fields](/guides/the-manual/schemas/complex-fields#schema-objects) guide
+ * shows how to use it.
+ *
  * If the object's structure is not well-defined,
  * use 'object' instead.
  *
@@ -793,6 +805,9 @@ export interface ArrayField {
  * of objects with a well-defined structure
  * described by a non-resource schema.
  *
+ * The [Complex Fields](/guides/the-manual/schemas/complex-fields#schema-arrays) guide
+ * shows how to use it.
+ *
  * If the array's elements are not well-defined,
  * use 'array' instead.
  *
@@ -974,6 +989,9 @@ export interface SchemaArrayField {
  * Represents a field whose value is derived
  * from other fields in the schema.
  *
+ * The [Derivations](/guides/the-manual/schemas/derivations) guide explains when to
+ * use one and how to register its derivation.
+ *
  * The value is read-only, and is not stored
  * in the cache, nor is it sent to the server.
  *
@@ -1038,6 +1056,9 @@ export interface DerivedField {
 /**
  * Represents a field that is a reference to
  * another resource.
+ *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
+ * sits in a schema.
  *
  * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
  * BY ReactiveResource
@@ -1153,6 +1174,9 @@ export interface ResourceField {
  * Represents a field that is a reference to
  * a collection of other resources, potentially
  * paginate.
+ *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
+ * sits in a schema.
  *
  * SUPPORT FOR THIS FEATURE IS NOT YET IMPLEMENTED
  * BY ReactiveResource
@@ -1286,6 +1310,9 @@ export interface CollectionField {
  * If the field points to an object or array,
  * it will not be deep-tracked.
  *
+ * The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+ * guide shows how to use it.
+ *
  * Transforms when defined are legacy transforms
  * that a serializer *might* use, but their usage
  * is not guaranteed.
@@ -1358,6 +1385,9 @@ export interface LegacyAttributeField {
  * another resource.
  *
  * This is the legacy version of the `ResourceField`.
+ *
+ * The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+ * guide shows how to use it.
  *
  * @summary Legacy field schema of kind `belongsTo` for a reference to one related resource, with required `async` and
  * `inverse` options and optional `linksMode`.
@@ -1703,6 +1733,9 @@ export interface LinksModeBelongsToField {
  * a collection of other resources.
  *
  * This is the legacy version of the `CollectionField`.
+ *
+ * The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+ * guide shows how to use it.
  *
  * @summary Legacy field schema of kind `hasMany` for a reference to many related resources, with required `async` and
  * `inverse` options and optional `linksMode`.
@@ -2312,6 +2345,9 @@ export interface PolarisResourceSchema {
 /**
  * Represents a schema for a primary resource in LegacyMode
  *
+ * The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+ * guide shows how to define one.
+ *
  * Primary resources are objects with a unique identity of their
  * own which may allow them to appear in relationships, or in multiple
  * response documents.
@@ -2399,6 +2435,9 @@ export interface LegacyResourceSchema {
  * definition for either a PolarisMode or a
  * LegacyMode resource.
  *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows how to
+ * create and register one.
+ *
  * Note, this is separate from the type returned
  * by the SchemaService which provides fields as a Map
  * instead of as an Array.
@@ -2412,6 +2451,9 @@ export type ResourceSchema = PolarisResourceSchema | LegacyResourceSchema;
 /**
  * Represents a schema for an object that is not
  * a primary resource (has no unique identity of its own).
+ *
+ * The [ObjectSchemas](/guides/the-manual/schemas/object-schemas) guide shows how to
+ * define and register one.
  *
  * ObjectSchemas may not currently contain relationships.
  *
@@ -2569,6 +2611,9 @@ export interface LegacyTrait {
  * A union of
  * - {@link LegacyTrait}
  * - {@link PolarisTrait}
+ *
+ * The [Traits](/guides/the-manual/schemas/traits) guide shows how to create, register
+ * and use one.
  *
  * @summary Union of the LegacyMode and PolarisMode trait definitions that can be registered with the schema service.
  */
