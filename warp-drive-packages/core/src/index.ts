@@ -168,6 +168,9 @@ export declare class ConfiguredStore<
  * Creates a configured Store class with recommended defaults
  * for schema handling, reactivity, caching, and request management.
  *
+ * The [Setup](/guides/configuration/#configure-the-store) guide walks through
+ * configuring the store with it.
+ *
  * ```ts
  * import { useRecommendedStore } from '@warp-drive/core';
  * import { JSONAPICache } from '@warp-drive/json-api';

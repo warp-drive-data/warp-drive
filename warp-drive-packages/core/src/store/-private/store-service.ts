@@ -1407,6 +1407,10 @@ export interface Store {
  * The `Store` is the central piece of the ***Warp*Drive** experience. It connects
  * requests for data with schemas, caching and reactivity.
  *
+ * The [Setup](/guides/configuration/#configure-the-store) guide shows how to configure
+ * one, and [Making Requests](/guides/the-manual/requests/) shows how to request data
+ * through it.
+ *
  * While it's easy to use ***just*** ***Warp*Drive**'s request management, most projects will find they
  * require far more than basic fetch management. For this reason it's often best to start with a `Store`
  * even when you aren't sure yet.

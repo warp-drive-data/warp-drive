@@ -1,4 +1,7 @@
 /**
+ * The [Making Requests](/guides/the-manual/requests/) guide teaches the request layer
+ * these types and helpers belong to.
+ *
  * @module
  * @summary Request-layer types such as `Future`, `Handler` and `Context`, plus `withResponseType` and
  * `withReactiveResponse` for typing the response a request resolves with.
@@ -24,6 +27,9 @@ export type { Context } from './request/-private/context.ts';
 
 /**
  * Brands the supplied object with the supplied response type.
+ *
+ * The [Typing Requests](/guides/the-manual/requests/typing-requests) guide shows how
+ * to use it.
  *
  * ```ts
  * import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
@@ -53,6 +59,9 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  * Brands the supplied object with the supplied response type
  * wrapped in {@link ReactiveDataDocument}. This is a convenience for
  * the common case of using {@link withResponseType} with `ReactiveDataDocument`.
+ *
+ * The [Typing Requests](/guides/the-manual/requests/typing-requests#typing-reactive-responses)
+ * guide shows how to use it.
  *
  * ```ts
  * import { withReactiveResponse } from '@warp-drive/core/request';

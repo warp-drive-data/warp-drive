@@ -115,6 +115,9 @@ export interface PrivateReactiveResource extends ReactiveResource {
  * and a ResourceKey to transform data from the cache into a rich, reactive
  * object.
  *
+ * The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows how to
+ * define the schema it reads.
+ *
  * This class is not directly instantiable. To use it, you should
  * configure the store's `instantiateRecord` and `teardownRecord` hooks
  * with the matching hooks provided by this package.

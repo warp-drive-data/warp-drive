@@ -253,6 +253,9 @@ function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
  * returned by `Cache.put` or `Cache.peek`, converting ResourceKeys into
  * ReactiveResource instances.
  *
+ * The [Using The Response](/guides/the-manual/requests/using-the-response) guide
+ * shows when a request's content is a ReactiveDocument.
+ *
  * It is not directly instantiated by the user, and its properties should not
  * be directly modified. Whether individual properties are mutable or not is
  * determined by the record instance itself.

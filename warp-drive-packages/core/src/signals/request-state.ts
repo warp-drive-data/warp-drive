@@ -796,6 +796,11 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
  * Every state also exposes a {@link RequestLoadingState} on `loadingState`
  * for tracking the progress of the response stream.
  *
+ * The [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) guide shows
+ * how to render request states with it, and
+ * [Using The Response](/guides/the-manual/requests/using-the-response) covers the
+ * `Future` it reads.
+ *
  * ```ts
  * import { getRequestState } from '@warp-drive/ember';
  *

@@ -4,6 +4,8 @@
  * Many portions of the internals are helpfully instrumented with logging.
  * This instrumentation is always removed from production builds.
  *
+ * The [Debugging](/guides/the-manual/debugging/) guide explains what each flag logs.
+ *
  * Log instrumentation is "regionalized" to specific concepts and concerns
  * to enable you to enable/disable just the areas you are interested in.
  *

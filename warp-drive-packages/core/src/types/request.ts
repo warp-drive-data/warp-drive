@@ -555,6 +555,9 @@ export interface StructuredErrorDocument<T = unknown> extends Error {
  * A union of the resolve/reject data types for the {@link Future}
  * returned by {@link Store.request | request}
  *
+ * The [Using The Response](/guides/the-manual/requests/using-the-response) guide shows
+ * how to read one.
+ *
  * See also the docs for:
  *
  * - {@link Future}
@@ -661,6 +664,9 @@ export interface ImmutableHeaders extends Headers {
  *
  * This interface is used to define the shape of a request that can be made via
  * either the {@link RequestManager.request} or {@link Store.request} methods.
+ *
+ * The [Making Requests](/guides/the-manual/requests/#request-options) guide explains
+ * its options.
  *
  * @summary Describes a request for `store.request` or `RequestManager.request`: native fetch options plus cache
  * options, operation name, records, data, and the store.
@@ -830,6 +836,8 @@ export interface ResponseInfo {
  * The object a {@link Handler} uses to fulfill a request: it provides a
  * readonly view of the {@link RequestContext.request | request} and methods
  * for supplying the {@link Future}'s stream and final response.
+ *
+ * The [Handlers](/guides/the-manual/requests/handlers) guide shows a handler using it.
  *
  * @summary Object passed to each request handler with the immutable request, a request id, and methods for setting the
  * response stream and the response.
