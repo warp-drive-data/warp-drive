@@ -92,7 +92,5 @@ documentation below for its exact compiled output.
 
 ## Guides
 
-- [Schema DSL](/guides/the-manual/schemas/schema-dsl.md): what this package is for, and its
-  status. It is not published to npm yet.
 - [Schemas](/guides/the-manual/schemas/): the `JSON` schemas this package compiles to, and how a
   Store uses them.

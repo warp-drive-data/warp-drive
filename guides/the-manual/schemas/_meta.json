@@ -9,7 +9,6 @@
     "traits",
     "derivations",
     "transformations",
-    "extensions",
-    "schema-dsl"
+    "extensions"
   ]
 }
