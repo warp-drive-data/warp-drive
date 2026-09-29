@@ -60,7 +60,7 @@ export default <template>
 ```
 
 ```tsx:line-numbers [React]
-import { Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/react';
 import { findRecord } from '@warp-drive/utilities/json-api';
 import { Spinner } from './spinner';
 
