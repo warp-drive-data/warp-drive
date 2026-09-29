@@ -17,7 +17,8 @@ import { executeNextHandler, IS_CACHE_HANDLER } from './utils';
  * import { RequestManager } from '@warp-drive/core';
  * ```
  *
- * For complete usage guide see the [RequestManager Documentation](/guides/).
+ * For a complete usage guide see [Making Requests](/guides/the-manual/requests/), and
+ * [Handlers](/guides/the-manual/requests/handlers) for writing the handlers it runs.
  *
  * ## How It Works
  *
