@@ -41,8 +41,8 @@
     "@babel/traverse": "catalog:"
   },
   "devDependencies": {
-    "@babel/types": "^7.29.8",
-    "@types/babel__traverse": "^7.28.0",
+    "@babel/types": "7.29.8",
+    "@types/babel__traverse": "7.28.0",
     "@types/node": "catalog:",
     "typescript": "catalog:"
   }
