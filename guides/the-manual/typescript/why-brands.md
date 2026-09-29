@@ -53,7 +53,7 @@ optimize while code-splitting.
 
 ### Ok, so then why not objects?
 
-A common alternative to registries is to pass classes as tokens into an API. For instance, we could have redesigned WarpDrive to take a class instead of a string in the call to `findRecord` below.
+A common alternative to registries is to pass classes as tokens into an API. For instance, we could have redesigned WarpDrive to take a class instead of a string in the call to [`findRecord`](/api/@warp-drive/core/classes/Store#findrecord) below.
 
 ```ts
 import type User from 'my-app/models/user';
