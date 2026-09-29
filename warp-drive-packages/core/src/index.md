@@ -93,12 +93,27 @@ writing them.
 - [Builders](/guides/the-manual/requests/builders.md): functions that return a request and a
   stable cache key.
 - [Handlers](/guides/the-manual/requests/handlers.md): write a handler that transforms a response.
+- [Auth Handler](/guides/the-manual/cookbook/auth-handlers.md): add JWT or CSRF tokens to outgoing
+  requests with a handler.
 - [Typing Requests](/guides/the-manual/requests/typing-requests.md): `withResponseType` and
   `withReactiveResponse`.
 - [Using the Response](/guides/the-manual/requests/using-the-response.md): the `Future` a request
   returns, its errors and its content.
 - [Schemas](/guides/the-manual/schemas/): how a schema turns cached data into reactive
   properties.
+- [ResourceSchemas](/guides/the-manual/schemas/resources/): define a resource with `withDefaults`,
+  choose its field kinds and register it.
+- [SimpleFields](/guides/the-manual/schemas/simple-fields.md): declare primitive attributes as
+  `field` kinds.
+- [Complex Fields](/guides/the-manual/schemas/complex-fields.md): embed nested objects and lists
+  with `schema-object` and `schema-array` fields.
+- [ObjectSchemas](/guides/the-manual/schemas/object-schemas.md): define the identity-less schema
+  a `schema-object` field points at.
+- [Traits](/guides/the-manual/schemas/traits.md): share a group of fields across resources.
+- [Transformations](/guides/the-manual/schemas/transformations.md): convert a field between its
+  cache and app shapes.
+- [Derivations](/guides/the-manual/schemas/derivations.md): define memoized, read-only `derived`
+  fields.
 - [Caching](/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what
   to fetch and what to keep.
 - [Key Terminology](/guides/the-manual/caching/key-terms.md): documents, resources and the names
@@ -111,3 +126,5 @@ writing them.
 - [Relationships](/guides/the-manual/relational-data/): configure each kind of relationship.
 - [Debugging](/guides/the-manual/debugging/): turn on debug logging at runtime or in the build
   config.
+- [TypeScript](/guides/the-manual/typescript/): opt in to the alpha types, then follow the setup
+  pages in order.
