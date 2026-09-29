@@ -79,7 +79,7 @@ it does become necessary to break compatibility with an older, unsupported relea
 consider it a breaking change.
 
 The table is generated from [this data](./tools/internal-tooling/src/tasks/-data/compatibility.ts) using the
-command `bun sync-readme-tables`.
+command `pnpm sync-readme-tables`.
 
 <!-- START-COMPATIBILITY-TABLE-PLACEHOLDER -->
 |  | Status | WarpDrive | Lockstep | Supported | Tested | Range |
@@ -106,7 +106,7 @@ command `bun sync-readme-tables`.
 
 ## The Big List of Versions
 
-The table below is generated using the command `bun sync-readme-tables`.
+The table below is generated using the command `pnpm sync-readme-tables`.
 
 <!-- START-VERSIONS-TABLE-PLACEHOLDER -->
 | Package | Audience | Canary | Beta | Stable | LTS | V4-Canary | LTS-4-12 |

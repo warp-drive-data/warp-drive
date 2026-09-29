@@ -1,5 +1,5 @@
-import type { BunFile } from 'bun';
 import debug from 'debug';
+import { readFile, writeFile } from 'node:fs/promises';
 /**
  * Performs various README-related maintenance tasks.
  *
@@ -12,9 +12,9 @@ import debug from 'debug';
 import { styleText } from 'node:util';
 import path from 'path';
 
-import { Compatibility } from './-data/compatibility';
-import { Versions, type Version } from './-data/versions';
-import { getMonorepoRoot, walkPackages } from './-utils';
+import { Compatibility } from './-data/compatibility.ts';
+import { Versions, type Version } from './-data/versions.ts';
+import { getMonorepoRoot, walkPackages } from './-utils.ts';
 
 const log = debug('wd:sync-readme-infos');
 const COMPATIBILITY_START_PLACEHOLDER = '<!-- START-COMPATIBILITY-TABLE-PLACEHOLDER -->';
@@ -22,8 +22,8 @@ const COMPATIBILITY_END_PLACEHOLDER = '<!-- END-COMPATIBILITY-TABLE-PLACEHOLDER 
 const VERSIONS_TABLE_START_PLACEHOLDER = '<!-- START-VERSIONS-TABLE-PLACEHOLDER -->';
 const VERSIONS_TABLE_END_PLACEHOLDER = '<!-- END-VERSIONS-TABLE-PLACEHOLDER -->';
 
-async function updateCompatibilityTable(file: BunFile) {
-  const text = await file.text();
+async function updateCompatibilityTable(file: string) {
+  const text = await readFile(file, 'utf8');
 
   let tableStr = '\n|  | Status | WarpDrive | Lockstep | Supported | Tested | Range |';
   tableStr += '\n| --- | --- | --- | --- | --- | --- | --- |';
@@ -55,7 +55,7 @@ async function updateCompatibilityTable(file: BunFile) {
   if (newReadme !== text) {
     log(`\t\t🔧 Updating Compatibility Table`);
 
-    await Bun.write(file, newReadme);
+    await writeFile(file, newReadme);
   } else {
     log(`\t\t✅ Compatibility Table is already up to date`);
   }
@@ -65,8 +65,8 @@ interface VersionWithPath extends Version {
   directory: string;
 }
 
-async function updateVersionsTable(file: BunFile) {
-  const text = await file.text();
+async function updateVersionsTable(file: string) {
+  const text = await readFile(file, 'utf8');
   const publicPackages = new Map<string, VersionWithPath>();
   const privatePackages = new Set<string>();
   Versions.sort((a, b) => (a.name > b.name ? -1 : 1));
@@ -134,7 +134,7 @@ async function updateVersionsTable(file: BunFile) {
   if (newReadme !== text) {
     log(`\t\t🔧 Updating Versions Table`);
 
-    await Bun.write(file, newReadme);
+    await writeFile(file, newReadme);
   } else {
     log(`\t\t✅ Versions Table is already up to date`);
   }
@@ -146,8 +146,7 @@ export async function main() {
   );
   const monorepoRoot = await getMonorepoRoot();
   const READMEPath = path.join(monorepoRoot, 'README.md');
-  const file = Bun.file(READMEPath);
 
-  await updateCompatibilityTable(file);
-  await updateVersionsTable(file);
+  await updateCompatibilityTable(READMEPath);
+  await updateVersionsTable(READMEPath);
 }
