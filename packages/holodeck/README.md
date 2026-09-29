@@ -71,6 +71,8 @@ pnpm add -E @warp-drive/holodeck@canary
 
 ## Documentation
 
+*Get Started* → [Guides](https://warp-drive.io/guides/)
+
 API docs for this package → [@warp-drive/holodeck](https://warp-drive.io/api/@warp-drive/holodeck/)
 
 - [Testing Overview](https://warp-drive.io/guides/the-manual/testing/) why a real server, and how record and replay works
