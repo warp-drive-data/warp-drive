@@ -44,6 +44,7 @@ Prefer the `<Request />` component (Ember) or `useQuery`-style hooks (React) ove
 unmount for free:
 
 ```gts
+import { on } from '@ember/modifier';
 import { Request } from '@warp-drive/ember';
 import { findRecord } from '@warp-drive/utilities/json-api';
 
@@ -58,6 +59,30 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 </template>
 ```
 
+To read the request's state in JavaScript instead, pass the `Future` that `store.request` returns
+to `getRequestState` from `@warp-drive/ember`. Cache the request with `@cached`: a plain getter
+calls `store.request` again on every read.
+
+```ts
+import { cached } from '@glimmer/tracking';
+import { getRequestState } from '@warp-drive/ember';
+import { findRecord } from '@warp-drive/utilities/json-api';
+
+// inside a component with `@service declare store: Store;`
+@cached
+get userRequest() {
+  return this.store.request(findRecord('user', this.args.userId));
+}
+
+get user() {
+  return getRequestState(this.userRequest).value?.data;
+}
+```
+
+For a promise that doesn't come from `store.request`, use `getPromiseState` or the `<Await />`
+component from `@warp-drive/ember` instead. Both take any promise. See
+[Async as Reactive State](/guides/the-manual/reactivity/derivation.md).
+
 ## Notes
 
 - `store.request` works with any resource type, not just ones with schemas registered — for
@@ -68,4 +93,5 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 ## Related
 
 - Full guide: [Making Requests](/guides/the-manual/requests/index.md)
+- Reactive state for requests: [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md)
 - Related skill: [Define a Resource Schema](/skills/schemas/define-a-resource-schema)
