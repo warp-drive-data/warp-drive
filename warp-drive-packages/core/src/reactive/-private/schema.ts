@@ -718,7 +718,8 @@ interface InternalTrait {
  * A SchemaService designed to work with dynamically registered schemas.
  *
  * The [Schemas](/guides/the-manual/schemas/) guide shows how to register schemas
- * with it.
+ * with it, and [Advanced Store Configuration](/guides/configuration/advanced#add-a-source-for-schema-for-your-data)
+ * shows how to give a store one.
  *
  * @summary The default schema service, which stores resource and object schemas, traits, derivations,
  * transformations, hash functions and extensions registered at runtime.
