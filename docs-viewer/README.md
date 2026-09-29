@@ -11,7 +11,7 @@ From this directory (`docs-viewer/`), with the repo's toolchain installed per
 pnpm start
 ```
 
-This runs `bun ./src/sync-guides.ts`, which:
+This runs `node ./src/sync-guides.ts`, which:
 
 - builds the API docs with TypeDoc
 - watches every package `src/` directory plus `guides/`, `upgrading/`, `blog/`, and
@@ -35,6 +35,16 @@ package `README.md` files, which are rendered by GitHub and npm rather than by t
 does not catch markdown that fails to compile; only `pnpm build` does that. The most common
 compile failure is a bare `<thing>` in prose, which VitePress parses as a Vue element. Put angle
 brackets in code spans.
+
+### Testing The Scripts
+
+```bash
+# from this directory
+pnpm test
+```
+
+This runs the `node:test` specs in `tests/`, which drive `pnpm check:links`, `pnpm build`, and
+`pnpm start` against fixture trees, with stub `typedoc` and `vitepress` bins for the latter two.
 
 ### Static Preview
 

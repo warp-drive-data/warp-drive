@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-import { legacyDocsPackageNames, legacyGuidePages } from './site-utils';
+import { legacyDocsPackageNames, legacyGuidePages } from './site-utils.ts';
 
 type PageMeta = { title?: string; description?: string };
 

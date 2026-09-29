@@ -224,7 +224,7 @@ export interface LegacyGuidePage {
   draft: boolean;
 }
 
-const DOCS_ROOT = path.join(__dirname, '../docs.warp-drive.io');
+const DOCS_ROOT = path.join(import.meta.dirname, '../docs.warp-drive.io');
 /**
  * The synced directories under `docs.warp-drive.io/` whose pages may set `legacy: true`.
  * `prepare-website.ts` runs `markLegacyGuidePages` on each of them.
@@ -319,7 +319,7 @@ interface ContentStructureOptions {
 
 export async function getContentStructure(options: ContentStructureOptions) {
   const { dirName, rootIndexGroup } = options;
-  const ContentDirectoryPath = path.join(__dirname, `../docs.warp-drive.io/${dirName}`);
+  const ContentDirectoryPath = path.join(import.meta.dirname, `../docs.warp-drive.io/${dirName}`);
 
   const dirMeta = loadDirMeta(ContentDirectoryPath);
 
@@ -520,7 +520,7 @@ export async function getBlogStructure() {
  */
 export async function getRfcsStructure() {
   const dirName = 'rfcs';
-  const ContentDirectoryPath = path.join(__dirname, `../docs.warp-drive.io/${dirName}`);
+  const ContentDirectoryPath = path.join(import.meta.dirname, `../docs.warp-drive.io/${dirName}`);
 
   const entries: { number: number; item: { text: string; link: string } }[] = [];
 
@@ -641,7 +641,7 @@ interface ApiNavGroup {
 }
 
 const API_NAV_GROUPS = (
-  JSON.parse(readFileSync(path.join(__dirname, 'nav.json'), 'utf-8')) as { groups: ApiNavGroup[] }
+  JSON.parse(readFileSync(path.join(import.meta.dirname, 'nav.json'), 'utf-8')) as { groups: ApiNavGroup[] }
 ).groups;
 
 function findApiNavGroup(text: string): ApiNavGroup {
@@ -1302,8 +1302,8 @@ function markLegacyPackagePage(content: string, file: string): string {
 }
 
 export async function postProcessApiDocs() {
-  const dir = path.join(__dirname, '../tmp/api');
-  const outDir = path.join(__dirname, '../docs.warp-drive.io/api');
+  const dir = path.join(import.meta.dirname, '../tmp/api');
+  const outDir = path.join(import.meta.dirname, '../docs.warp-drive.io/api');
   mkdirSync(outDir, { recursive: true });
 
   // remove the `_media` directory that typedoc generates
@@ -1343,7 +1343,7 @@ export async function postProcessApiDocs() {
   const apiDocumentation = `${ApiDocumentation}\n\n## Universal Packages\n\n${MainPackages.join('\n')}\n\n## Framework Packages\n\n${FrameworkPackages.join('\n')}\n\n## Tooling Packages\n\n${ToolingPackages.join('\n')}\n\n## Legacy Packages\n\n${OldPackages.join('\n')}\n\n`;
 
   // copy the rest of the files
-  const files = globSync('**/*.md', { cwd: dir, nodir: true });
+  const files = globSync('**/*.md', { cwd: dir });
   for (const file of files) {
     if (file === 'index.md') {
       // Generate a custom index.md file

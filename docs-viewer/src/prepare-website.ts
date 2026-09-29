@@ -10,7 +10,7 @@ import { existsSync, rmSync } from 'fs';
 */
 import { join } from 'path';
 
-import { finalizeSyncedContent, injectRfcStatusBadges, LEGACY_GUIDE_DIRS, markLegacyGuidePages } from './site-utils';
+import { finalizeSyncedContent, injectRfcStatusBadges, LEGACY_GUIDE_DIRS, markLegacyGuidePages } from './site-utils.ts';
 
 function sync(sourcePath: string, destPath: string) {
   if (existsSync(destPath)) {
@@ -20,7 +20,7 @@ function sync(sourcePath: string, destPath: string) {
   try {
     spawnSync('cp', ['-r', sourcePath, destPath], {
       stdio: 'inherit',
-      cwd: __dirname,
+      cwd: import.meta.dirname,
     });
     console.log(`Copied: ${sourcePath} -> ${destPath}`);
   } catch (error) {
@@ -34,16 +34,16 @@ export async function main() {
   // `draft: true` page here is hidden from nav but its page stays published, so it is
   // intentionally not passed through finalizeSyncedContent below.
   for (const dir of LEGACY_GUIDE_DIRS) {
-    const destPath = join(__dirname, `../docs.warp-drive.io/${dir}`);
-    sync(join(__dirname, `../../${dir}`), destPath);
+    const destPath = join(import.meta.dirname, `../docs.warp-drive.io/${dir}`);
+    sync(join(import.meta.dirname, `../../${dir}`), destPath);
     markLegacyGuidePages(destPath);
   }
-  const rfcsDestPath = join(__dirname, '../docs.warp-drive.io/rfcs');
-  sync(join(__dirname, '../../rfcs'), rfcsDestPath);
+  const rfcsDestPath = join(import.meta.dirname, '../docs.warp-drive.io/rfcs');
+  sync(join(import.meta.dirname, '../../rfcs'), rfcsDestPath);
   injectRfcStatusBadges(rfcsDestPath);
 
-  const skillsDestPath = join(__dirname, '../docs.warp-drive.io/skills');
-  sync(join(__dirname, '../../warp-drive-packages/memory-alpha/skills'), skillsDestPath);
+  const skillsDestPath = join(import.meta.dirname, '../docs.warp-drive.io/skills');
+  sync(join(import.meta.dirname, '../../warp-drive-packages/memory-alpha/skills'), skillsDestPath);
   finalizeSyncedContent(skillsDestPath);
 }
 

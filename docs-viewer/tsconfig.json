@@ -1,5 +1,10 @@
 {
-  "include": ["src/**/*", "docs.warp-drive.io/.vitepress/config.mts", "docs.warp-drive.io/.vitepress/theme/**/*"],
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "docs.warp-drive.io/.vitepress/config.mts",
+    "docs.warp-drive.io/.vitepress/theme/**/*"
+  ],
   "compilerOptions": {
     // Enable latest features
     "lib": ["ESNext"],
@@ -8,7 +13,7 @@
     "moduleDetection": "force",
     "allowJs": false,
     "checkJs": false,
-    "types": ["@types/bun"],
+    "types": ["@types/node"],
 
     // Bundler mode
     "moduleResolution": "bundler",

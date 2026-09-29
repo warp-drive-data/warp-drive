@@ -1,26 +1,39 @@
-#! /usr/bin/env bun
+#!/usr/bin/env node
 
-import { $ } from 'bun';
+import { execa } from 'execa';
 import { watch, existsSync, readdirSync } from 'fs';
 import { join } from 'path';
 
-import { emitIndexMarkdown } from './emit-index-markdown';
-import { emitLegacyLlms } from './emit-legacy-llms';
-import { main } from './prepare-website';
-import { postProcessApiDocs } from './site-utils';
+import { emitIndexMarkdown } from './emit-index-markdown.ts';
+import { emitLegacyLlms } from './emit-legacy-llms.ts';
+import { main } from './prepare-website.ts';
+import { postProcessApiDocs } from './site-utils.ts';
 
-const guidesPath = join(__dirname, '../../guides');
-const upgradingPath = join(__dirname, '../../upgrading');
-const blogPath = join(__dirname, '../../blog');
-const rfcsPath = join(__dirname, '../../rfcs');
-const skillsPath = join(__dirname, '../../warp-drive-packages/memory-alpha/skills');
-const apiDocsPath = join(__dirname, '../tmp/api');
-const oldPackages = join(__dirname, '../../packages');
-const newPackages = join(__dirname, '../../warp-drive-packages');
+const docsViewerRoot = join(import.meta.dirname, '..');
+
+const guidesPath = join(import.meta.dirname, '../../guides');
+const upgradingPath = join(import.meta.dirname, '../../upgrading');
+const blogPath = join(import.meta.dirname, '../../blog');
+const rfcsPath = join(import.meta.dirname, '../../rfcs');
+const skillsPath = join(import.meta.dirname, '../../warp-drive-packages/memory-alpha/skills');
+const apiDocsPath = join(import.meta.dirname, '../tmp/api');
+const oldPackages = join(import.meta.dirname, '../../packages');
+const newPackages = join(import.meta.dirname, '../../warp-drive-packages');
+
+/** runs a bin from this package's node_modules/.bin in the docs-viewer root, streaming its output */
+async function run(bin: string, args: string[]) {
+  await execa(bin, args, { cwd: docsViewerRoot, preferLocal: true, stdio: 'inherit' });
+}
 
 async function updateApiDocs() {
-  await $`typedoc`;
-  postProcessApiDocs();
+  await run('typedoc', []);
+  await postProcessApiDocs();
+}
+
+/** runs a rebuild from a watcher callback, reporting its failure without taking down the dev server */
+function rebuild(stage: string, task: () => Promise<unknown>) {
+  console.log('rebuilding');
+  void task().catch((error: unknown) => console.error(`${stage} failed:`, error));
 }
 
 const build = process.argv.slice().includes('--build');
@@ -60,45 +73,38 @@ if (!build) {
           console.log('debounced');
           clearTimeout(packageDebounce);
         }
-        debounce = setTimeout(() => {
-          console.log('rebuilding');
-          updateApiDocs();
-          debounce = null;
+        packageDebounce = setTimeout(() => {
+          packageDebounce = null;
+          rebuild('API docs rebuild', updateApiDocs);
         }, 1000);
       }
     );
   }
 
-  const onContentChange = (eventName: 'rename' | 'change', fileName: string) => {
+  const onContentChange = (eventName: string, fileName: string | null) => {
     console.log('triggered', eventName, fileName);
     if (debounce) {
       console.log('debounced');
       clearTimeout(debounce);
     }
     debounce = setTimeout(() => {
-      console.log('rebuilding');
-      main();
       debounce = null;
+      rebuild('content sync', main);
     }, 100);
   };
 
-  // @ts-expect-error missing from Bun types
   watch(guidesPath, { recursive: true }, onContentChange);
-  // @ts-expect-error missing from Bun types
   watch(upgradingPath, { recursive: true }, onContentChange);
-  // @ts-expect-error missing from Bun types
   watch(blogPath, { recursive: true }, onContentChange);
-  // @ts-expect-error missing from Bun types
   watch(rfcsPath, { recursive: true }, onContentChange);
-  // @ts-expect-error missing from Bun types
   watch(skillsPath, { recursive: true }, onContentChange);
 }
 
 if (build) {
-  await $`vitepress build docs.warp-drive.io`;
-  const copied = emitIndexMarkdown(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'));
+  await run('vitepress', ['build', 'docs.warp-drive.io']);
+  const copied = emitIndexMarkdown(join(import.meta.dirname, '../docs.warp-drive.io/.vitepress/dist'));
   console.log(`emitted ${copied} index.md twins for directory-index pages`);
-  const legacy = emitLegacyLlms(join(__dirname, '../docs.warp-drive.io/.vitepress/dist'), apiDocsPath);
+  const legacy = emitLegacyLlms(join(import.meta.dirname, '../docs.warp-drive.io/.vitepress/dist'), apiDocsPath);
   console.log(
     `emitted llms-legacy.txt and llms-legacy-full.txt with ${legacy.guides} legacy guides and ${legacy.pages} legacy API pages`
   );
@@ -108,5 +114,5 @@ if (build) {
     );
   }
 } else {
-  await $`vitepress dev docs.warp-drive.io`;
+  await run('vitepress', ['dev', 'docs.warp-drive.io']);
 }

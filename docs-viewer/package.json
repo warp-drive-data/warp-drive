@@ -8,24 +8,24 @@
     "src"
   ],
   "bin": {
-    "sync-guides": "./src/sync-guides.ts",
-    "_tsc": "./src/tsc.ts"
+    "sync-guides": "./src/sync-guides.ts"
   },
   "scripts": {
-    "start": "bun ./src/sync-guides.ts",
-    "build": "bun ./src/sync-guides.ts --build --force",
-    "check:links": "bun ./src/check-content-links.ts",
-    "preview": "vitepress preview docs.warp-drive.io"
+    "start": "node ./src/sync-guides.ts",
+    "build": "node ./src/sync-guides.ts --build --force",
+    "check:links": "node ./src/check-content-links.ts",
+    "preview": "vitepress preview docs.warp-drive.io",
+    "test": "node --test tests/*.spec.ts",
+    "check:types": "tsc --noEmit"
   },
   "dependencies": {
     "vitepress": "catalog:",
     "vitepress-plugin-mermaid": "catalog:",
     "mermaid": "catalog:",
-    "@types/bun": "catalog:",
+    "@types/node": "catalog:",
     "typescript": "catalog:",
     "debug": "catalog:",
     "@mdit/plugin-footnote": "catalog:",
-    "@pnpm/find-workspace-dir": "catalog:",
     "@pnpm/find-workspace-packages": "catalog:",
     "@pnpm/logger": "catalog:",
     "@jridgewell/trace-mapping": "catalog:",
@@ -46,6 +46,7 @@
     "vite-plugin-image-optimizer": "catalog:",
     "vite-plugin-pwa": "catalog:",
     "vue": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "execa": "catalog:"
   }
 }
