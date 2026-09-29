@@ -48,7 +48,7 @@ setConfig(__dirname, app, {
 });
 ```
 
-All flags default to `false`. Runtime activation via `setWarpDriveLogging` overrides build-time values for the current tab.
+All flags default to `false`. Runtime activation via [`setWarpDriveLogging`](/api/@warp-drive/core/build-config/debugging/#runtime-activation) overrides build-time values for the current tab.
 
 ## Log Flags
 
