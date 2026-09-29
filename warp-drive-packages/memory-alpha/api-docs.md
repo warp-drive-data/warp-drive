@@ -8,7 +8,7 @@ See [the manual](/skills/index.md) for the full set of skills.
 
 ## Guides
 
-- [AI Coding Agents](/guides/installation/ai-coding-agents.md): install this package and point your
-  coding agent's instructions file at its skills.
+- [Using It in Your App](https://github.com/warp-drive-data/warp-drive/blob/main/warp-drive-packages/memory-alpha/README.md#using-it-in-your-app):
+  install this package and point your coding agent's instructions file at its skills.
 - [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md): for
   contributors adding or changing a skill in this package.
