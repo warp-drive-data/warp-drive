@@ -12,5 +12,6 @@ Experiments are unstable features we are developing for potential inclusion in W
 
 - [Storage Resources](./storage-resources.md): reactive class fields persisted to `localStorage`
   or `sessionStorage`.
-- [Pagination](./pagination.md): reactive state for paginated collections, and the `<Paginate />`
-  and `<EachLink />` components.
+- [Pagination](./pagination.md): reactive state for paginated collections, and the
+  [`<Paginate />`](/api/@warp-drive/ember/experiments/classes/Paginate) and
+  [`<EachLink />`](/api/@warp-drive/ember/experiments/classes/EachLink) components.
