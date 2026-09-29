@@ -22,15 +22,71 @@ export function useStore(): Store {
   return store;
 }
 
-type WithExistingStore = { store: Store; children: ReactNode };
-type WithNewStore = { Store: typeof Store; children: ReactNode };
+/**
+ * The props accepted by {@link StoreProvider | `<StoreProvider />`}: `children`,
+ * and either `store`, an existing Store instance to provide, or `Store`, a
+ * Store class the provider instantiates once and provides.
+ *
+ * @example
+ * ```tsx
+ * import type { StoreProviderProps } from "@warp-drive/react";
+ *
+ * const props: StoreProviderProps = { store, children: <App /> };
+ * ```
+ *
+ * @summary The props of the React `<StoreProvider />` component: its children plus either a Store instance or a
+ * Store class to instantiate.
+ * @public
+ */
+export type StoreProviderProps =
+  | {
+      /**
+       * The Store instance to provide.
+       */
+      store: Store;
+      /**
+       * The components that can read the store with {@link useStore}.
+       */
+      children: ReactNode;
+    }
+  | {
+      /**
+       * A Store class to instantiate once and provide.
+       */
+      Store: typeof Store;
+      /**
+       * The components that can read the store with {@link useStore}.
+       */
+      children: ReactNode;
+    };
 
 /**
+ * Provides a Store to its children, which read it with {@link useStore}.
+ * `<Request />` uses it when no `store` prop is given.
+ *
+ * Pass either `store`, an existing Store instance, or `Store`, a Store class
+ * the provider instantiates once. See {@link StoreProviderProps}.
+ *
+ * @example
+ * ```tsx
+ * import { StoreProvider } from "@warp-drive/react";
+ * import AppStore from "./services/store";
+ *
+ * export function App() {
+ *   return (
+ *     <StoreProvider Store={AppStore}>
+ *       <UserPreview id="1" />
+ *     </StoreProvider>
+ *   );
+ * }
+ * ```
+ *
  * @summary Component that provides a Store to its children, either the instance passed in or a new instance of the
  * Store class passed in.
  * @category Components
+ * @public
  */
-export function StoreProvider($props: WithExistingStore | WithNewStore): JSX.Element {
+export function StoreProvider($props: StoreProviderProps): JSX.Element {
   const store = useMemo(
     () => ("store" in $props ? $props.store : new $props.Store()),
     ["store" in $props ? $props.store : $props.Store]
