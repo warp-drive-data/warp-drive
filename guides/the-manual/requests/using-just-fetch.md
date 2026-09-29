@@ -101,7 +101,6 @@ Any handler you register with `use` runs for a standalone manager just as it doe
 - [Handlers](./handlers.md) shows how to write one that transforms a response.
 - [Auth Handlers](../cookbook/auth-handlers.md) shows how to add an auth header to every
   request.
-- [Advanced Handlers](./handlers-advanced.md) shows how to handle and retry errors and how to
-  handle an abort, and points to the API docs for the rest of the handler contract, such as
-  [RequestContext](/api/@warp-drive/core/types/request/types/RequestContext) and passing streams
-  along the chain.
+- [Advanced Handlers](./handlers-advanced.md) explains what a handler receives and returns,
+  handler order, passing responses and streams along the chain, retrying errors and handling
+  abort.
