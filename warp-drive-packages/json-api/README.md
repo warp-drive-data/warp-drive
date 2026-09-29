@@ -42,18 +42,18 @@ export const AppStore = useRecommendedStore({
 
 ## Documentation
 
-*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
-API docs for this package → [@warp-drive/json-api](https://canary.warp-drive.io/api/@warp-drive/json-api/)
+API docs for this package → [@warp-drive/json-api](https://warp-drive.io/api/@warp-drive/json-api/)
 
-- [Installation](https://canary.warp-drive.io/guides/installation/): install `@warp-drive/json-api` alongside `@warp-drive/core`.
-- [Setup](https://canary.warp-drive.io/guides/configuration/#configure-the-store): pass `JSONAPICache` to the Store.
-- [Advanced Store Configuration](https://canary.warp-drive.io/guides/configuration/advanced#add-a-cache): add the cache to a Store you build by hand.
-- [Caching](https://canary.warp-drive.io/guides/the-manual/caching/): how the `JSONAPICache` stores responses, resources, fields and relationships, and which of them a new value replaces rather than merges into.
-- [Schemas](https://canary.warp-drive.io/guides/the-manual/schemas/): how a resource in the `{json:api}` format maps onto a schema.
-- [Handlers](https://canary.warp-drive.io/guides/the-manual/requests/handlers): normalize a REST response into a `{json:api}` document the cache can consume.
-- [Relationships](https://canary.warp-drive.io/guides/the-manual/relational-data/): configure the relationships the cache keeps consistent.
-- [Polymorphism](https://canary.warp-drive.io/guides/the-manual/relational-data/features/polymorphism): polymorphic relationships and resolving an abstract type to a concrete one.
+- [Installation](https://warp-drive.io/guides/installation/): install `@warp-drive/json-api` alongside `@warp-drive/core`.
+- [Setup](https://warp-drive.io/guides/configuration/#configure-the-store): pass `JSONAPICache` to the Store.
+- [Advanced Store Configuration](https://warp-drive.io/guides/configuration/advanced#add-a-cache): add the cache to a Store you build by hand.
+- [Caching](https://warp-drive.io/guides/the-manual/caching/): how the `JSONAPICache` stores responses, resources, fields and relationships, and which of them a new value replaces rather than merges into.
+- [Schemas](https://warp-drive.io/guides/the-manual/schemas/): how a resource in the `{json:api}` format maps onto a schema.
+- [Handlers](https://warp-drive.io/guides/the-manual/requests/handlers): normalize a REST response into a `{json:api}` document the cache can consume.
+- [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): configure the relationships the cache keeps consistent.
+- [Polymorphism](https://warp-drive.io/guides/the-manual/relational-data/features/polymorphism): polymorphic relationships and resolving an abstract type to a concrete one.
 
 <br>
 

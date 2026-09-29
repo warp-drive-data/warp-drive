@@ -31,11 +31,11 @@
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/json-api](https://canary.warp-drive.io/api/@warp-drive/json-api/) for the cache and [@warp-drive/utilities](https://canary.warp-drive.io/api/@warp-drive/utilities/)
+> Newer apps should use [@warp-drive/json-api](https://warp-drive.io/api/@warp-drive/json-api/) for the cache and [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 > for the builders it provided.
 
 
-This package provides an in-memory document and resource [Cache](https://canary.warp-drive.io/api/@warp-drive/core/types/cache/types/Cache) and associated utilities for use with [***Warp*Drive**](https://warp-drive.io) and [{json:api}](https://jsonapi.org/).
+This package provides an in-memory document and resource [Cache](https://warp-drive.io/api/@warp-drive/core/types/cache/types/Cache) and associated utilities for use with [***Warp*Drive**](https://warp-drive.io) and [{json:api}](https://jsonapi.org/).
 
 This package is intended for use with the older EmberData package setup, for use with more recent versions of WarpDrive see [@warp-drive/json-api](https://www.npmjs.com/package/@warp-drive/json-api) for the Cache and  [@warp-drive/utilities](https://www.npmjs.com/package/@warp-drive/utilities) for the builders.
 
@@ -70,9 +70,9 @@ Apps on the `ember-data` meta package get this configuration for free.
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/json-api](https://canary.warp-drive.io/api/@ember-data/json-api/)
+API docs for this package → [@ember-data/json-api](https://warp-drive.io/api/@ember-data/json-api/)
 
 <br>
 

@@ -29,7 +29,7 @@
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/utilities](https://canary.warp-drive.io/api/@warp-drive/utilities/)
+> Newer apps should use [@warp-drive/utilities](https://warp-drive.io/api/@warp-drive/utilities/)
 
 
 This package provides utilities for working with **Active**Record APIs with [***Warp*Drive**](https://warp-drive.io/) when using the older package configuration.
@@ -57,9 +57,9 @@ const { content } = await store.request(options);
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/active-record](https://canary.warp-drive.io/api/@ember-data/active-record/)
+API docs for this package → [@ember-data/active-record](https://warp-drive.io/api/@ember-data/active-record/)
 
 <br>
 

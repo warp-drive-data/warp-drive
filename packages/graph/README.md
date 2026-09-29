@@ -47,6 +47,6 @@ We intend to make this Graph public API after some additional iteration during t
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/graph](https://canary.warp-drive.io/api/@ember-data/graph/)
+API docs for this package → [@ember-data/graph](https://warp-drive.io/api/@ember-data/graph/)

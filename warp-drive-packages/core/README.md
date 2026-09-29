@@ -36,13 +36,13 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 <br>
 <br>
 
-*Get Started* → [Guides](https://canary.warp-drive.io/guides/)
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
 <br>
 
 ## Usage
 
-`useRecommendedStore` produces a Store class with the recommended defaults; pair it with a cache such as [@warp-drive/json-api](https://canary.warp-drive.io/api/@warp-drive/json-api/).
+`useRecommendedStore` produces a Store class with the recommended defaults; pair it with a cache such as [@warp-drive/json-api](https://warp-drive.io/api/@warp-drive/json-api/).
 
 ```ts
 import { useRecommendedStore } from '@warp-drive/core';
@@ -51,12 +51,12 @@ import { JSONAPICache } from '@warp-drive/json-api';
 export const AppStore = useRecommendedStore({
   cache: JSONAPICache,
   schemas: [
-    // resource schemas, see https://canary.warp-drive.io/guides/the-manual/schemas/
+    // resource schemas, see https://warp-drive.io/guides/the-manual/schemas/
   ],
 });
 ```
 
-This package is framework-agnostic; the bindings live in `@warp-drive/ember`, `@warp-drive/react` and `@warp-drive/vue`. Schemas describe the shape of your resources; the [Schemas guide](https://canary.warp-drive.io/guides/the-manual/schemas/) covers writing them, and the [Setup guide](https://canary.warp-drive.io/guides/configuration/) shows how each framework provides the Store to components.
+This package is framework-agnostic; the bindings live in `@warp-drive/ember`, `@warp-drive/react` and `@warp-drive/vue`. Schemas describe the shape of your resources; the [Schemas guide](https://warp-drive.io/guides/the-manual/schemas/) covers writing them, and the [Setup guide](https://warp-drive.io/guides/configuration/) shows how each framework provides the Store to components.
 
 <br>
 
@@ -66,24 +66,24 @@ This package is framework-agnostic; the bindings live in `@warp-drive/ember`, `@
 
 ## Documentation
 
-API docs for this package → [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/)
+API docs for this package → [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/)
 
-- [Installation](https://canary.warp-drive.io/guides/installation/): install `@warp-drive/core`, a cache and the reactivity package for your framework.
-- [Setup](https://canary.warp-drive.io/guides/configuration/): configure the build plugin and create a Store with `useRecommendedStore`.
-- [Advanced Store Configuration](https://canary.warp-drive.io/guides/configuration/advanced): build a Store class by hand, one piece at a time.
-- [Making Requests](https://canary.warp-drive.io/guides/the-manual/requests/): `store.request`, request options and the handler chain.
-- [Builders](https://canary.warp-drive.io/guides/the-manual/requests/builders): functions that return a request and a stable cache key.
-- [Handlers](https://canary.warp-drive.io/guides/the-manual/requests/handlers): write a handler that transforms a response.
-- [Typing Requests](https://canary.warp-drive.io/guides/the-manual/requests/typing-requests): `withResponseType` and `withReactiveResponse`.
-- [Using the Response](https://canary.warp-drive.io/guides/the-manual/requests/using-the-response): the `Future` a request returns, its errors and its content.
-- [Schemas](https://canary.warp-drive.io/guides/the-manual/schemas/): how a schema turns cached data into reactive properties.
-- [Caching](https://canary.warp-drive.io/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what to fetch and what to keep.
-- [Key Terminology](https://canary.warp-drive.io/guides/the-manual/caching/key-terms): documents, resources and the names of their types.
-- [Reactivity](https://canary.warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
-- [Reactive Control Flow](https://canary.warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's states with `getRequestState`.
-- [Async as Reactive State](https://canary.warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState`.
-- [Relationships](https://canary.warp-drive.io/guides/the-manual/relational-data/): configure each kind of relationship.
-- [Debugging](https://canary.warp-drive.io/guides/the-manual/debugging/): turn on debug logging at runtime or in the build config.
+- [Installation](https://warp-drive.io/guides/installation/): install `@warp-drive/core`, a cache and the reactivity package for your framework.
+- [Setup](https://warp-drive.io/guides/configuration/): configure the build plugin and create a Store with `useRecommendedStore`.
+- [Advanced Store Configuration](https://warp-drive.io/guides/configuration/advanced): build a Store class by hand, one piece at a time.
+- [Making Requests](https://warp-drive.io/guides/the-manual/requests/): `store.request`, request options and the handler chain.
+- [Builders](https://warp-drive.io/guides/the-manual/requests/builders): functions that return a request and a stable cache key.
+- [Handlers](https://warp-drive.io/guides/the-manual/requests/handlers): write a handler that transforms a response.
+- [Typing Requests](https://warp-drive.io/guides/the-manual/requests/typing-requests): `withResponseType` and `withReactiveResponse`.
+- [Using the Response](https://warp-drive.io/guides/the-manual/requests/using-the-response): the `Future` a request returns, its errors and its content.
+- [Schemas](https://warp-drive.io/guides/the-manual/schemas/): how a schema turns cached data into reactive properties.
+- [Caching](https://warp-drive.io/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what to fetch and what to keep.
+- [Key Terminology](https://warp-drive.io/guides/the-manual/caching/key-terms): documents, resources and the names of their types.
+- [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Reactive Control Flow](https://warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's states with `getRequestState`.
+- [Async as Reactive State](https://warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState`.
+- [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): configure each kind of relationship.
+- [Debugging](https://warp-drive.io/guides/the-manual/debugging/): turn on debug logging at runtime or in the build config.
 
 <br>
 

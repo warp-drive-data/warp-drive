@@ -29,7 +29,7 @@
 > [!WARNING]
 > **⚠️ This is a legacy package** not recommended for new applications.
 >
-> Use schema objects from [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) instead.
+> Use schema objects from [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
 Runtime classes for use as a source of ResourceSchema and as a ReactiveResource for older "legacy" EmberData/WarpDrive configurations.
 
@@ -80,9 +80,9 @@ export default class PersonModel extends Model {
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/model](https://canary.warp-drive.io/api/@ember-data/model/)
+API docs for this package → [@ember-data/model](https://warp-drive.io/api/@ember-data/model/)
 
 <br>
 

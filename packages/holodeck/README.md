@@ -71,18 +71,18 @@ pnpm add -E @warp-drive/holodeck@canary
 
 ## Documentation
 
-API docs for this package → [@warp-drive/holodeck](https://canary.warp-drive.io/api/@warp-drive/holodeck/)
+API docs for this package → [@warp-drive/holodeck](https://warp-drive.io/api/@warp-drive/holodeck/)
 
-- [Testing Overview](https://canary.warp-drive.io/guides/the-manual/testing/): why a real server, and how record and replay works.
-- [Server Setup](https://canary.warp-drive.io/guides/the-manual/testing/server-setup): certificates, and launching with Diagnostic or Testem.
-- [Client Setup](https://canary.warp-drive.io/guides/the-manual/testing/client-setup): adding `MockServerHandler` to the request chain.
-- [Test Framework Integration](https://canary.warp-drive.io/guides/the-manual/testing/test-framework-integration): test ids and the mock host.
-- [Common Setups](https://canary.warp-drive.io/guides/the-manual/testing/common-setups/): one origin for the page and the mock server, from Vite, testem or Caddy.
-- [Writing Mocks](https://canary.warp-drive.io/guides/the-manual/testing/writing-mocks): the mock helpers and the matching rules.
-- [Recording and Replaying](https://canary.warp-drive.io/guides/the-manual/testing/record-and-replay): modes, fixtures and CI.
-- [Troubleshooting](https://canary.warp-drive.io/guides/the-manual/testing/troubleshooting): indexed by the errors holodeck prints.
-- [HoloPrograms](https://canary.warp-drive.io/guides/the-manual/testing/holo-programs): a proposed, not yet implemented, way to set up a test's whole API state in one call.
-- [Holodeck in Dev Mode](https://canary.warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode): run holodeck next to your dev server so the test page in the browser works too.
+- [Testing Overview](https://warp-drive.io/guides/the-manual/testing/): why a real server, and how record and replay works.
+- [Server Setup](https://warp-drive.io/guides/the-manual/testing/server-setup): certificates, and launching with Diagnostic or Testem.
+- [Client Setup](https://warp-drive.io/guides/the-manual/testing/client-setup): adding `MockServerHandler` to the request chain.
+- [Test Framework Integration](https://warp-drive.io/guides/the-manual/testing/test-framework-integration): test ids and the mock host.
+- [Common Setups](https://warp-drive.io/guides/the-manual/testing/common-setups/): one origin for the page and the mock server, from Vite, testem or Caddy.
+- [Writing Mocks](https://warp-drive.io/guides/the-manual/testing/writing-mocks): the mock helpers and the matching rules.
+- [Recording and Replaying](https://warp-drive.io/guides/the-manual/testing/record-and-replay): modes, fixtures and CI.
+- [Troubleshooting](https://warp-drive.io/guides/the-manual/testing/troubleshooting): indexed by the errors holodeck prints.
+- [HoloPrograms](https://warp-drive.io/guides/the-manual/testing/holo-programs): a proposed, not yet implemented, way to set up a test's whole API state in one call.
+- [Holodeck in Dev Mode](https://warp-drive.io/guides/the-manual/cookbook/holodeck-in-dev-mode): run holodeck next to your dev server so the test page in the browser works too.
 
 ### ♥️ Credits
 

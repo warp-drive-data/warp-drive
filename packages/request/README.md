@@ -29,7 +29,7 @@
 > [!WARNING]
 > **⚠️ This package only exists for backwards compatibility**
 >
-> Newer apps should use [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/)
+> Newer apps should use [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/)
 
 <p align="center">⚡️ a simple abstraction over fetch to enable easy management of request/response flows</p>
 
@@ -499,6 +499,6 @@ For usage of the store's `requestManager` via `store.request(<req>)` see the
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/request](https://canary.warp-drive.io/api/@ember-data/request/)
+API docs for this package → [@ember-data/request](https://warp-drive.io/api/@ember-data/request/)

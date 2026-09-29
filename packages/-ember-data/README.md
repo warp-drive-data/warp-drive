@@ -49,7 +49,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 >
 > **When to use this package:** Only use `ember-data` if you're maintaining an existing Ember application that hasn't migrated to modern WarpDrive patterns. For new projects or modern WarpDrive apps, install packages from `@warp-drive/*` directly.
 >
-> **Migration path:** See the [Guides](https://canary.warp-drive.io/guides/) for migration strategies.
+> **Migration path:** See the [Guides](https://warp-drive.io/guides/) for migration strategies.
 
 <br>
 
@@ -67,7 +67,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 ### License
 

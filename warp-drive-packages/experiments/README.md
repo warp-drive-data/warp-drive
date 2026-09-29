@@ -30,11 +30,11 @@
 
 ## Documentation
 
-API docs for this package → [@warp-drive/experiments](https://canary.warp-drive.io/api/@warp-drive/experiments/)
+API docs for this package → [@warp-drive/experiments](https://warp-drive.io/api/@warp-drive/experiments/)
 
-- [Experiments](https://canary.warp-drive.io/guides/the-manual/experiments/): what "experimental" means here, and the list of experiments that have a guide.
-- [Storage Resources](https://canary.warp-drive.io/guides/the-manual/experiments/storage-resources): persist reactive class fields with the `storage` entry point.
-- [Pagination](https://canary.warp-drive.io/guides/the-manual/experiments/pagination): paginate a collection with the `pagination` entry point, in paged or infinite mode.
+- [Experiments](https://warp-drive.io/guides/the-manual/experiments/): what "experimental" means here, and the list of experiments that have a guide.
+- [Storage Resources](https://warp-drive.io/guides/the-manual/experiments/storage-resources): persist reactive class fields with the `storage` entry point.
+- [Pagination](https://warp-drive.io/guides/the-manual/experiments/pagination): paginate a collection with the `pagination` entry point, in paged or infinite mode.
 
 ### ♥️ Credits
 

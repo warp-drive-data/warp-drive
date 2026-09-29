@@ -29,7 +29,7 @@
 This package provides types, type utils and symbols for apps still installing the older ember-data packages.
 
 > [!WARNING]
-> **⚠️ This package** has been merged into [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
+> **⚠️ This package** has been merged into [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) and is not recommended for new applications.
 
 **Tagged Releases**
 
@@ -45,15 +45,15 @@ This package provides types, type utils and symbols for apps still installing th
 import type { ResourceKey } from '@warp-drive/core-types';
 ```
 
-Every type here is re-exported from [@warp-drive/core/types](https://canary.warp-drive.io/api/@warp-drive/core/types/), which is where new code should import it from.
+Every type here is re-exported from [@warp-drive/core/types](https://warp-drive.io/api/@warp-drive/core/types/), which is where new code should import it from.
 
 <br>
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@warp-drive/core-types](https://canary.warp-drive.io/api/@warp-drive/core-types/)
+API docs for this package → [@warp-drive/core-types](https://warp-drive.io/api/@warp-drive/core-types/)
 
 <br>
 

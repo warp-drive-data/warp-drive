@@ -29,9 +29,9 @@
 > [!WARNING]
 > **⚠️ This is a legacy package** not recommended for new applications and **Adapters are a LEGACY feature** that is no longer encouraged.
 >
-> Use [Handlers](https://canary.warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://canary.warp-drive.io/api/@warp-drive/core/) instead.
+> Use [Handlers](https://warp-drive.io/api/@warp-drive/core/request/types/Handler) with [@warp-drive/core](https://warp-drive.io/api/@warp-drive/core/) instead.
 
-This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://canary.warp-drive.io/api/@warp-drive/legacy/compat/types/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
+This package provides REST and [{json:api}](https://jsonapi.org) Implementations of the legacy <a href="https://warp-drive.io/api/@warp-drive/legacy/compat/types/MinimumAdapterInterface">Adapter Interface</a> when using the older packages.
 
 For more recent installations, see [@warp-drive/legacy](https://www.npmjs.com/package/@warp-drive/legacy).
 
@@ -56,9 +56,9 @@ export { default } from '@ember-data/adapter/json-api';
 
 ## Documentation
 
-*Get Started* → [Legacy Package Setup](https://canary.warp-drive.io/guides/configuration/legacy-package-setup/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
-API docs for this package → [@ember-data/adapter](https://canary.warp-drive.io/api/@ember-data/adapter/)
+API docs for this package → [@ember-data/adapter](https://warp-drive.io/api/@ember-data/adapter/)
 
 <br>
 
