@@ -435,7 +435,7 @@ function processExtensions(
  * Using this requires registering the PolarisMode derivations
  *
  * ```ts
- * import { registerDerivations } from '@warp-drive/schema-record';
+ * import { registerDerivations } from '@warp-drive/core/reactive';
  *
  * registerDerivations(schema);
  * ```
@@ -516,7 +516,7 @@ fromIdentity[Type] = '@identity';
  * to use the PolarisMode defaults provided by
  *
  * ```ts
- * import { withDefaults } from '@warp-drive/schema-record';
+ * import { withDefaults } from '@warp-drive/core/reactive';
  * ```
  *
  * The [Derivations](/guides/the-manual/schemas/derivations#about-built-in-derivations)
