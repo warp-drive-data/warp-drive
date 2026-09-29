@@ -95,8 +95,8 @@ import { CachePolicy } from '@ember-data/request-utils';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 
 import type Model from '@ember-data/model';
 import {
@@ -156,12 +156,12 @@ import type { CacheCapabilitiesManager, ModelSchema } from '@ember-data/store/ty
 
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import { DefaultCachePolicy } from '@ember-data/request-utils';
+import { CachePolicy } from '@ember-data/request-utils';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import type Model from '@ember-data/model';
@@ -175,7 +175,7 @@ import {
   registerDerivations,
   SchemaService,
   teardownRecord
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
 
@@ -183,7 +183,7 @@ export default class AppStore extends Store {
     .use([Fetch])
     .useCache(CacheHandler);
 
-  lifetimes = new DefaultCachePolicy({
+  lifetimes = new CachePolicy({
     apiCacheHardExpires: 15 * 60 * 1000, // 15 minutes
     apiCacheSoftExpires: 1 * 30 * 1000, // 30 seconds
     constraints: {
@@ -307,12 +307,12 @@ import type { ModelSchema, SchemaService } from '@ember-data/store/types'; // [!
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
-import type { TypeFromInstance } from '@warp-drive/core-types/record'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record'; // [!code focus]
 
 import {  // [!code focus:4]
   buildSchema,
   modelFor,
-} from '@warp-drive/schema-record';
+} from '@ember-data/model';
 
 export default class AppStore extends Store {
   requestManager = new RequestManager()
@@ -339,16 +339,16 @@ import type { ModelSchema } from '@ember-data/store/types'; // [!code focus]
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
-import type { TypeFromInstance } from '@warp-drive/core-types/record'; // [!code focus:2]
+import type { TypeFromInstance } from '@warp-drive/core/types/record'; // [!code focus:2]
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import {  // [!code focus:3]
   modelFor,
-} from '@warp-drive/schema-record';
+} from '@ember-data/model';
 import { // [!code focus:4]
   registerDerivations,
   SchemaService,
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
   requestManager = new RequestManager()
@@ -473,8 +473,8 @@ import Fetch from '@ember-data/request/fetch';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types'; // [!code focus]
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 
 import type Model from '@ember-data/model'; // [!code focus]
 import {
@@ -525,8 +525,8 @@ import Fetch from '@ember-data/request/fetch';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types'; // [!code focus]
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import type Model from '@ember-data/model'; // [!code focus]
@@ -540,7 +540,7 @@ import {
   registerDerivations,
   SchemaService,
   teardownRecord // [!code focus]
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
 
