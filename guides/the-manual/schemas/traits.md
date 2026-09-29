@@ -4,7 +4,7 @@ description: Group reusable fields such as timestamps into a Trait, register it 
 
 # Traits
 
-Traits are reusable groups of fields that you can include in multiple ResourceSchemas.  
+Traits are reusable groups of fields that you can include in multiple [ResourceSchemas](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema).  
 They help keep schemas consistent and reduce duplication.
 
 A Trait is defined as a plain object with fields, and then registered so it can be reused anywhere.
@@ -24,7 +24,7 @@ export const Timestamps = {
 
 ## Registering a Trait
 
-Register the Trait with the SchemaService using [`registerTrait`](https://canary.warp-drive.io/api/@warp-drive/core/reactive/classes/SchemaService#registertrait).
+Register the Trait with the SchemaService using [`registerTrait`](/api/@warp-drive/core/reactive/classes/SchemaService#registertrait).
 
 ```ts [store/index.ts]
 import { store } from './store';

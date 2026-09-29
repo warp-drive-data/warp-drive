@@ -120,14 +120,14 @@ user.netWorth = 2_500_000.005;
 The `type` field in the schema entry matches the `[Type]` symbol on the transformation object — just as with derivations.
 
 ::: tip Registering without `useRecommendedStore`
-If you're not using `useRecommendedStore`, register transformations imperatively before any schema that references them is registered:
+If you're not using [`useRecommendedStore`](/api/@warp-drive/core/functions/useRecommendedStore), register transformations imperatively before any schema that references them is registered:
 
 ```ts
 import { PriceTransform } from './transformations/price';
 store.schema.registerTransformation(PriceTransform);
 ```
 
-See [`SchemaService.registerTransformation`](https://api.warp-drive.io/interfaces/SchemaService.html#registertransformation) in the API reference.
+See [`SchemaService.registerTransformation`](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService#registertransformation) in the API reference.
 :::
 
 ## Two-Way Conversion
