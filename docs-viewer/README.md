@@ -36,6 +36,11 @@ does not catch markdown that fails to compile; only `pnpm build` does that. The 
 compile failure is a bare `<thing>` in prose, which VitePress parses as a Vue element. Put angle
 brackets in code spans.
 
+It skips `/api/` links, because the API pages only exist once TypeDoc has run. After a build, run
+`pnpm check:links --api` from this directory to also check the generated API pages in
+`docs.warp-drive.io/api/` and every `/api/` link. The build's own dead-link check does not cover
+that: it never checks an `#anchor`, and it misses any link in a `::: tip <title>` container title.
+
 ### Testing The Scripts
 
 ```bash
