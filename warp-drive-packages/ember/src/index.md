@@ -1,5 +1,5 @@
- # @warp-drive/ember
- 
+# @warp-drive/ember
+
 This library provides reactive utilities for working with promises
 and requests, building over these primitives to provide functions
 and components that enable you to build robust performant apps with
