@@ -6,5 +6,11 @@
  */
 
 export { ReactiveContext, WatcherContext } from './-private/reactive-context.tsx';
-export { StoreProvider, useStore } from './-private/store-provider.tsx';
-export { Request, Throw } from './-private/request.tsx';
+export { StoreProvider, useStore, type StoreProviderProps } from './-private/store-provider.tsx';
+export {
+  Request,
+  Throw,
+  type RequestProps,
+  type RequestStates,
+  type ChromeComponentProps,
+} from './-private/request.tsx';
