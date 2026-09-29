@@ -318,7 +318,7 @@ interface Store {
 }
 ```
 
-The `requestInit` param shares use of this generic, and its `RequestInfo`
+The `requestInit` param shares use of this generic, and its [`RequestInfo`](/api/@warp-drive/core/types/request/types/RequestInfo)
 type assigns its generic own arg to a special brand:
 
 ```ts

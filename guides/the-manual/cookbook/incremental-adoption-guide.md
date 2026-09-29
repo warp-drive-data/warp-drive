@@ -35,9 +35,9 @@ Notice we still want to import the `Store` class from `ember-data/store` package
 
 ## Step 3: Add `RequestManager` to your application
 
-Now let's configure a `RequestManager` for our store. The RequestManager is responsible for sending requests to the server. It fulfills requests using a chain-of-responsibility pipeline, which means you can add your own request handlers to it.
+Now let's configure a [`RequestManager`](/api/@warp-drive/core/classes/RequestManager) for our store. The RequestManager is responsible for sending requests to the server. It fulfills requests using a chain-of-responsibility pipeline, which means you can add your own request handlers to it.
 
-First you need to install [`@ember-data/request`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request) and [`@ember-data/legacy-compat`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/legacy-compat) packages. The first contains the `RequestManager` service and a few request handlers, while the second has `LegacyNetworkHandler` that will handle all old-style `this.store.*` calls.
+First you need to install [`@ember-data/request`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/request) and [`@ember-data/legacy-compat`](https://github.com/warp-drive-data/warp-drive/tree/main/packages/legacy-compat) packages. The first contains the `RequestManager` service and a few request handlers, while the second has [`LegacyNetworkHandler`](/api/@warp-drive/legacy/compat/variables/LegacyNetworkHandler) that will handle all old-style `this.store.*` calls.
 
 Here is how your own `RequestManager` service may look like:
 
@@ -75,9 +75,9 @@ Let's go over the code above:
 
 2. Next is `TestHandler`. It is a handler that is responsible for logging requests. It is a quick example of how you can add your own handlers to the request manager. We will take a look at more useful examples later.
 
-3. Lastly `Fetch`. It is a handler that sends requests to the server using the `fetch` API. It expects responses to be JSON and when in use it should be the last handler you put in the chain. After finishing each request it will convert the response into json and pass it back to the handlers chain in reverse order as the request context's response. So `TestHandler` will receive `response` property first, and so on if we would have any.
+3. Lastly [`Fetch`](/api/@warp-drive/core/variables/Fetch). It is a handler that sends requests to the server using the `fetch` API. It expects responses to be JSON and when in use it should be the last handler you put in the chain. After finishing each request it will convert the response into json and pass it back to the handlers chain in reverse order as the request context's response. So `TestHandler` will receive `response` property first, and so on if we would have any.
 
-The CacheHandler is a special handler that enables requests to fulfill from and update the cache associated to this store.
+The [CacheHandler](/api/@warp-drive/core/variables/CacheHandler) is a special handler that enables requests to fulfill from and update the cache associated to this store.
 
 You can read more about request manager in the [request manager guide](../requests/index.md).
 
@@ -127,7 +127,7 @@ export default class AuthHandler {
 
 You can read more about auth topic [here](./auth-handlers.md).
 
-Another good thing to do is to configure default host and namespace for your requests. There is an utility for that out of the box of `@ember-data/request-utils` called [`setBuildURLConfig`](https://github.com/warp-drive-data/warp-drive/blob/main/packages/request-utils/src/index.ts#L67). You can do it anywhere in your app theoretically, but we recommend doing it in the `app/app.js` file. Here is how you can do it:
+Another good thing to do is to configure default host and namespace for your requests. There is an utility for that out of the box of `@ember-data/request-utils` called [`setBuildURLConfig`](/api/@warp-drive/utilities/functions/setBuildURLConfig). You can do it anywhere in your app theoretically, but we recommend doing it in the `app/app.js` file. Here is how you can do it:
 
 ```diff app/app.js
 import Application from '@ember/application';

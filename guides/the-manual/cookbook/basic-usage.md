@@ -76,7 +76,7 @@ export default fetch;
 Our API is a simple HTTP api and all we really need is the
 ability to interact with it via `fetch`. While you might be
 tempted to just make a fetch request and move on, there's a
-few advantages to using a RequestManager here instead.
+few advantages to using a [RequestManager](/api/@warp-drive/core/classes/RequestManager) here instead.
 
 First, the manager takes care of a few things for us right away
 even in this simple form.
@@ -126,7 +126,7 @@ GET /api/companies?fields[company]=name&fields[employee]=name,profileImage&inclu
 Accept: application/vnd.api+json; profile="https://jsonapi.org/profiles/ethanresnick/cursor-pagination"
 ```
 
-The `query` builder from `@warp-drive/utilities/json-api` will do most of the heavy lifting for us,
+The [`query`](/api/@warp-drive/utilities/json-api/functions/query) builder from `@warp-drive/utilities/json-api` will do most of the heavy lifting for us,
 constructing the url, and making sure headers are attached appropriately.
 
 *app/page.ts*
@@ -172,9 +172,9 @@ so for instance if your API stores valuable information as `headers` then `resul
 
 Requests issued against the store differ in three ways from raw requests.
 
-1. The store's `CacheHandler` will resolve from cache if the request is not stale
+1. The store's [`CacheHandler`](/api/@warp-drive/core/variables/CacheHandler) will resolve from cache if the request is not stale
 2. The store's `CacheHandler` will update the cache if a new request is made
-3. The result's `content` will be a `StructuredDocument` whose data property is a list of records instead of raw data.
+3. The result's `content` will be a [`ReactiveDocument`](/api/@warp-drive/core/reactive/types/ReactiveDocument) whose data property is a list of records instead of raw data.
 
 ```ts
 import { query } from '@warp-drive/utilities/json-api';

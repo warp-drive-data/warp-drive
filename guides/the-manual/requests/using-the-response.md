@@ -34,7 +34,7 @@ the error will be a [FetchError](/api/@warp-drive/core/types/request/types/Fetch
 On their own, `Futures` may appear to have an overly verbose return shape and the value of the features they enhance promises with may not be immediately clear. But this is because in the
 general case it is expected that you **won't** resolve the future yourself with `await`, but instead will pass it around your app as a value.
 
-Maintaining access to the `Future's` reference allows you to use it with declarative reactive paradigms using utilities such as `getRequestState` or components like `<Request />`.
+Maintaining access to the `Future's` reference allows you to use it with declarative reactive paradigms using utilities such as [`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) or components like `<Request />` ([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)).
 
 We call this `Reactive Control Flow`, you may want to [watch the talk where we introduced this feature](https://youtu.be/HQiKFaTAahM?si=Ng8lCpSQkwrHzGd5&t=312).
 
