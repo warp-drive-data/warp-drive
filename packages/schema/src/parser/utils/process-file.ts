@@ -1,14 +1,14 @@
 import babel from '@babel/parser';
-import { type TraverseOptions } from '@babel/traverse';
+import type { TraverseOptions } from '@babel/traverse';
 import _traverse from '@babel/traverse';
-import { type ClassProperty, type Node } from '@babel/types';
-import path from 'path';
+import type { ClassProperty, Node } from '@babel/types';
+import path from 'node:path';
 
-import { extractJSONObject } from './extract-json';
+import { extractJSONObject } from './extract-json.ts';
 
-// bun compile has a bug where traverse gets unwrapped improperly
-// so we have to manually grab the default export
-const traverse = (_traverse as unknown as { default: typeof _traverse }).default;
+// @babel/traverse is CommonJS with its function on `exports.default`,
+// and Node's ESM default import hands us the whole `module.exports`
+const traverse = _traverse.default;
 
 function normalizeResourceType(fileName: string) {
   const dirname = path.dirname(fileName);

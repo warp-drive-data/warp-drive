@@ -1554,10 +1554,26 @@ importers:
         version: typescript@7.1.0-dev.20260926.1
 
   packages/schema:
+    dependencies:
+      '@babel/parser':
+        specifier: ^7.29.9
+        version: 7.29.9
+      '@babel/traverse':
+        specifier: ^7.29.8
+        version: 7.29.8
     devDependencies:
-      bun-types:
-        specifier: 1.4.2
-        version: 1.4.2
+      '@babel/types':
+        specifier: ^7.29.8
+        version: 7.29.8
+      '@types/babel__traverse':
+        specifier: ^7.28.0
+        version: 7.28.0
+      '@types/node':
+        specifier: ^26.6.2
+        version: 26.6.2
+      typescript:
+        specifier: 6.0.3
+        version: 6.0.3
 
   packages/schema-record:
     dependencies:
