@@ -139,8 +139,6 @@ installed package's `skills` directory.
 
 API docs for this package → [@warp-drive/memory-alpha](https://warp-drive.io/api/@warp-drive/memory-alpha/)
 
-- [Writing Agent Skills](https://warp-drive.io/guides/contributing/writing-documentation/writing-agent-skills): for contributors adding or changing a skill in this package.
-
 ### ♥️ Credits
 
  <details>

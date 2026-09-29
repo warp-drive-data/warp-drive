@@ -59,8 +59,6 @@ API docs for this package → [@warp-drive/legacy](https://warp-drive.io/api/@wa
 - [LegacyMode](https://warp-drive.io/guides/the-manual/schemas/resources/legacy-mode): emulate `Model` with a schema, using `withDefaults` and `registerDerivations` from this package.
 - [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): the relationship configuration pages show each relationship defined with `@warp-drive/legacy/model` as well as with schemas.
 - [Typing Models & Transforms](https://warp-drive.io/guides/the-manual/typescript/typing-models): type `Model` classes, their fields and their transforms.
-- [Migrating 4.x to 5.x](https://warp-drive.io/upgrading/v5/): move an EmberData 4.x app to 5.x with `useLegacyStore`.
-- [Using Codemods](https://warp-drive.io/upgrading/v5/codemods): convert Models into schemas that use `withDefaults` from this package.
 
 <br>
 

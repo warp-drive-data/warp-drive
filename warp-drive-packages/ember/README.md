@@ -1215,7 +1215,6 @@ API docs for this package → [@warp-drive/ember](https://warp-drive.io/api/@war
 - [Making Requests](https://warp-drive.io/guides/the-manual/requests/): make a request with `<Request />` or `getRequestState`.
 - [Reactive Control Flow](https://warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's loading, error and content states.
 - [Async as Reactive State](https://warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState` and `<Await />`.
-- [Pagination](https://warp-drive.io/guides/the-manual/experiments/pagination): the experimental `<Paginate />` and `<EachLink />` components.
 
 ### ♥️ Credits
 

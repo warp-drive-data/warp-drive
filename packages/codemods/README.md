@@ -49,7 +49,3 @@ npx @ember-data/codemods apply <codemod-name> [options] <target...>
 > [!TIP]
 > Quote glob patterns so the codemod expands them rather than your shell.
 > Unquoted `**` behaves differently across shells.
-
-## Documentation
-
-*Get Started* → [Using Codemods](https://warp-drive.io/upgrading/v5/codemods)
