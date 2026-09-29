@@ -167,7 +167,7 @@ bun add --exact @ember-data/debug@latest
 
 :::
 
-Optionally, to use the legacy `@ember-data/model` experience (via Model or via ReactiveResource) install the following packages:
+Optionally, to use the legacy `@ember-data/model` experience (via Model or via [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource)) install the following packages:
 
 ::: code-group
 

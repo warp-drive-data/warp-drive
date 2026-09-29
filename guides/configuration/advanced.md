@@ -10,7 +10,7 @@ description: Build a Store class by hand, adding RequestManager, SchemaService, 
 clear interface-driven boundaries between each other and brought together by
 configuration.
 
-The `Store` is the central piece of the ***Warp*Drive** experience, linking
+The [`Store`](/api/@warp-drive/core/classes/Store) is the central piece of the ***Warp*Drive** experience, linking
 together how we handle requests, the schemas for what our data looks like,
 how to cache it, and what sort of reactive objects to create for that data.
 
@@ -246,7 +246,7 @@ export default class AppStore extends Store {}
 
 ## Add Basic Request Management
 
-`RequestManager` provides a chain-of-responsibility style pipeline for helping
+[`RequestManager`](/api/@warp-drive/core/classes/RequestManager) provides a chain-of-responsibility style pipeline for helping
 you handle centralized concerns around requesting and updating data from your
 backend.
 
@@ -596,7 +596,7 @@ notifications. The `<Request />` component subscribes to these notifications and
 trigger a reload if necessary if an invalidated request is in active use, letting you
 craft advanced policies that meet your product's needs.
 
-***Warp*Drive** provides a basic CachePolicy with a number of great defaults that
+***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy) with a number of great defaults that
 is a great starting point for most applications. We configure this basic policy
 below.
 

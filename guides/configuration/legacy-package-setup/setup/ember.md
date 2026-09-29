@@ -64,7 +64,7 @@ that apply to all applications](./universal.md)
 "Legacy" is a term that applies to a fairly broad set of patterns that
 ***Warp*Drive**/***Ember*Data** is migrating away from. The previous
 guide showed how to configure schemas and reactivity to work with the
-legacy `Model` approach. You may also wish to configure legacy support
+legacy [`Model`](/api/@warp-drive/legacy/model/classes/Model) approach. You may also wish to configure legacy support
 for `Adapters` and `Serializers`.
 
 Reasons to configure this legacy support include:
