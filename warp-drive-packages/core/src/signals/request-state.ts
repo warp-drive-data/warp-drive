@@ -779,6 +779,21 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
 /**
  * `getRequestState` can be used in both JavaScript and Template contexts.
  *
+ * It returns a {@link RequestState}: a reactive object that updates as the
+ * request advances. Calling it again with the same {@link Future} returns the
+ * same object. Check its flags to narrow it to one of four states:
+ *
+ * - {@link PendingRequest} (`isPending`) is the initial state, before the
+ *   request settles.
+ * - {@link ResolvedRequest} (`isSuccess`) holds the response content on `value`.
+ * - {@link RejectedRequest} (`isError`) holds the error on `reason`.
+ * - {@link CancelledRequest} (`isCancelled`) is a request that was aborted.
+ *   `isError` is also `true` for a cancelled request, so check `isCancelled`
+ *   first if you handle it differently.
+ *
+ * Every state also exposes a {@link RequestLoadingState} on `loadingState`
+ * for tracking the progress of the response stream.
+ *
  * ```ts
  * import { getRequestState } from '@warp-drive/ember';
  *
@@ -825,6 +840,8 @@ export function createRequestState<RT, E>(future: Future<RT>): Readonly<RequestS
  * which offers a number of additional capabilities for requests *beyond* what
  * `RequestState` provides.
  *
+ * @param future - the request {@link Future} to track, as returned by `store.request` or `requestManager.request`
+ * @return the cached {@link RequestState} for `future`
  * @summary Returns a cached, reactive state object tracking a request `Future` through pending, success,
  * error, and cancellation.
  */

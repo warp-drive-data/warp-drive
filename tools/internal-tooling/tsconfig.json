@@ -12,6 +12,8 @@
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
     "noEmit": true,
+    "erasableSyntaxOnly": true,
+    "types": ["node"],
 
     // Best practices
     "strict": true,

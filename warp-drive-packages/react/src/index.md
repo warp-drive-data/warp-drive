@@ -1,10 +1,7 @@
 # @warp-drive/react
 
-This package provides a React-specific reactivity integration,
-components and hooks for ***Warp*Drive**.
-
-- [Installation](/guides/installation/)
-- [Configuration](/guides/configuration/)
+This package provides a React-specific reactivity integration, components and hooks for
+***Warp*Drive**. The [Guides](#guides) at the end of this page cover installing and using it.
 
 ## The Basics
 
@@ -190,4 +187,15 @@ an external dependency of the app, and thus the access of it will only occur onc
 [Here is a babel repl](https://babeljs.io/repl#?config_lz=N4IgZglgNgpgdgQwLYxALhAJxgBygOgCsBnADxABoQdtiYAXY9AbWZHgDdLR6FMBzBkwxQExegAIAjBIDCAC0wB7FBI4xMxCErhMqSJQBMArrGFgEUOgF8AuhTbYEAY3rcsxuPQgp0IBMb0KgjeziB29iDESsaYzjAAKgCeOKgYBiaw4UA&code_lz=JYWwDg9gTgLgBAJQKYEMDG8BmUIjgcilQ3wG4AoUSWRYmAEQHkBZObXAo9GAWgBNcAejQAbYEgB2MMuXJoIEgM7wQATwDKMFDCRwAvAQAWSESIhwA7tBF8Z5ZNybMAdGi46EECDAAUAtACuIJIwzgDmSDAAoiJIwVIAQqoAknw-hF7SAJRZzkQSfEhQPuRwcAA8DhjOmlDAGMwQhQB8pWUVfMAAbs0A3mqa2kgAvuWCnT1tY1WhtfUwjS3kWRRAA&lineWrap=true&version=7.28.3) to see what this looks like in compiled output.
 
 By moving the access inside of `MyApp`, our reactive state is now a dependency of the component's render, and will work as expected.
+
+## Guides
+
+- [Installation](/guides/installation/#react): install `@warp-drive/react` and add the
+  `@warp-drive/react/install` import to your app.
+- [Configuration](/guides/configuration/): configure the build plugin and create a Store.
+- [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Making Requests](/guides/the-manual/requests/): make a request with `<Request />`, or with
+  `getRequestState` inside a `<ReactiveContext />`.
+- [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  loading, error and content states.
 

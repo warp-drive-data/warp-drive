@@ -17,8 +17,10 @@
   "scripts": {
     "sync": "echo \"syncing\"",
     "build": "vite build",
-    "start": "bun ./server/index.ts",
-    "fixtures": "bun run ./fixtures/index.js"
+    "start": "node ./server/index.mts",
+    "fixtures": "node ./fixtures/index.js",
+    "test": "node --test server/tests/*.spec.mts",
+    "check:types": "tsc --noEmit -p server/tsconfig.json"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
@@ -37,12 +39,13 @@
     "@embroider/macros": "catalog:",
     "@embroider/vite": "catalog:",
     "@glimmer/component": "catalog:",
+    "@types/node": "catalog:",
     "babel-plugin-ember-template-compilation": "catalog:",
-    "bun-types": "catalog:",
     "decorator-transforms": "catalog:",
     "ember-source": "catalog:",
     "ember-strict-application-resolver": "catalog:",
     "terser": "catalog:",
+    "typescript": "catalog:",
     "vite": "catalog:",
     "vite-bundle-analyzer": "catalog:",
     "vite-plugin-compression2": "catalog:"

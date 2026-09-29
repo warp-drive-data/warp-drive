@@ -1,4 +1,4 @@
-#! /usr/bin/env bun
-import { main } from './tasks/sync-all';
+#!/usr/bin/env node
+import { main } from './tasks/sync-all.ts';
 
 main();
