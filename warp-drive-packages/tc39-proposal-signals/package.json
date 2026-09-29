@@ -1,6 +1,6 @@
 {
   "name": "@warp-drive/tc39-proposal-signals",
-  "description": "Data bindings and utilities for the prototype TC39 Signals implementation",
+  "description": "Configures WarpDrive reactivity to use the TC39 Signals polyfill (signal-polyfill); import its install entry in apps that use TC39 Signals.",
   "version": "5.10.0-alpha.12",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
