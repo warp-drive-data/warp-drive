@@ -1,7 +1,4 @@
 /**
- * Import this module once at the top of your app and your test setup, as
- * [Installation](/guides/installation/#ember) shows, to use Ember's signals implementation.
- *
  * @module
  * @summary The `buildSignalConfig` function, which creates the signal hooks that wire WarpDrive reactivity into Ember
  * autotracking using `@glimmer/validator` tags.
