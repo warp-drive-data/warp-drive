@@ -19,7 +19,7 @@
 # not "GitHub Actions".
 #
 # Gated to PRs labeled ":label: feat", ":label: doc", or ":label: rfc" (this repo's
-# actual label names -- see enforce-pr-labels-canary.yml): most PRs don't touch the
+# actual label names -- see enforce-changelog-label.yml): most PRs don't touch the
 # docs, and building the whole site isn't free. `labeled`/`unlabeled` are included
 # so a preview appears as soon as one of those labels is added (not just on the
 # next push) and gets torn down if the label is later removed.

@@ -1,5 +1,7 @@
 name: PR
 
+# The changelog label check lives in enforce-changelog-label.yml, which keeps its own copy
+# of the `branches:` filter below -- update both together.
 on:
   pull_request:
     types: [labeled, unlabeled, opened, reopened]
@@ -11,13 +13,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  enforce-changelog-label:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: yogevbd/enforce-label-action@a3c219da6b8fa73f6ba62b68ff09c469b3a1c024 # 2.2.2
-        with:
-          REQUIRED_LABELS_ANY: ':label: breaking,:label: feat,:label: bug,:label: perf,:label: cleanup,:label: deprecation,:label: doc,:label: test,:label: chore'
-          REQUIRED_LABELS_ANY_DESCRIPTION: "Select at least one label for changelog generation. [':label: breaking', ':label: feat', ':label: bug', ':label: perf', ':label: cleanup', ':label: deprecation', ':label: doc', ':label: test', ':label: chore']"
   ban-target-labels:
     runs-on: ubuntu-latest
     steps:

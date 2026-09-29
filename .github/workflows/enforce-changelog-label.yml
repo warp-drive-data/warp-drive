@@ -1,0 +1,120 @@
+# Requires a `:label: <type>` changelog label on every PR, and applies one automatically when a
+# newly-opened PR's title spells its type out in a recognizable convention -- `<type>: title`,
+# `<type>(scope): title` (Conventional Commits form), `<type> | title`, or `[type] title` -- and
+# no changelog label has been applied yet. The automatic label exists because only maintainers
+# can apply labels, which otherwise leaves every non-maintainer PR waiting on one to hand-label
+# it before this check can pass.
+#
+# Labeling and checking happen in the same step because a label applied with the default
+# GITHUB_TOKEN never triggers another workflow run: when the two lived in separate workflows,
+# the check evaluated the `opened` payload before the label existed and nothing re-ran it
+# afterwards (see https://github.com/warp-drive-data/warp-drive/issues/11336).
+#
+# Runs as `pull_request_target`, not `pull_request`, so the write below also works for PRs
+# opened from forks -- the default GITHUB_TOKEN is read-only for `pull_request` when the PR
+# comes from a fork, regardless of the `permissions:` block here. This is still safe against
+# untrusted input because the job never checks out or executes the PR's code -- it only reads
+# the title, base branch and labels from the trusted event payload and calls the Labels API.
+# `pull_request_target` also means the version of this file on the PR's base branch is the one
+# that runs, so a change here only takes effect once it is merged.
+name: PR
+
+on:
+  pull_request_target:
+    types: [labeled, unlabeled, opened, reopened]
+
+# Not cancel-in-progress: a `labeled` event for an unrelated label arriving right after the PR
+# opens must not cancel the `opened` run before it applies the title's label.
+concurrency:
+  group: pr-changelog-label-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+permissions:
+  pull-requests: write
+
+jobs:
+  enforce-changelog-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply a changelog label from the title if none is set yet, then require one
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        with:
+          script: |
+            // Keep in sync with the `:label: *` changelog labels in the root package.json
+            // `changelog.labels` config -- TYPE_TO_LABEL only maps the shorthand a title might
+            // use onto those exact label names, it doesn't invent new ones.
+            const RELEASE_LABELS = [
+              ':label: breaking',
+              ':label: feat',
+              ':label: bug',
+              ':label: perf',
+              ':label: cleanup',
+              ':label: deprecation',
+              ':label: doc',
+              ':label: test',
+              ':label: chore',
+            ];
+            // Only accepted on PRs targeting main; enforce-pr-labels-*.yml bans
+            // `:label: dependencies` on every release branch.
+            const MAIN_LABELS = [...RELEASE_LABELS, ':label: dependencies', ':label: rfc'];
+            const TYPE_TO_LABEL = {
+              breaking: ':label: breaking',
+              feat: ':label: feat',
+              feature: ':label: feat',
+              bug: ':label: bug',
+              fix: ':label: bug',
+              bugfix: ':label: bug',
+              perf: ':label: perf',
+              performance: ':label: perf',
+              cleanup: ':label: cleanup',
+              deprecation: ':label: deprecation',
+              deprecate: ':label: deprecation',
+              doc: ':label: doc',
+              docs: ':label: doc',
+              test: ':label: test',
+              tests: ':label: test',
+              chore: ':label: chore',
+              rfc: ':label: rfc',
+              rfcs: ':label: rfc',
+              dependencies: ':label: dependencies',
+              deps: ':label: dependencies',
+            };
+
+            // Keep in sync with the `branches:` filters of enforce-pr-labels-*.yml. A PR against
+            // any other base -- usually one stacked on another PR's branch, headed for main -- is
+            // labeled as if it targeted main but not checked, as before this job existed.
+            const pr = context.payload.pull_request;
+            const base = pr.base.ref;
+            const targetsMain = base === 'main' || base === 'v4-main';
+            const targetsRelease =
+              ['beta', 'release', 'lts-4-8', 'lts-4-12', 'lts-4-4', 'lts-3-28'].includes(base) ||
+              base.startsWith('release-');
+            const allowed = targetsRelease ? RELEASE_LABELS : MAIN_LABELS;
+
+            const labels = pr.labels.map((label) => label.name);
+            // Only on `opened`: running this on `unlabeled` would re-apply the title's label
+            // while a maintainer is swapping it for a different one.
+            const alreadyLabeled = labels.some((name) => MAIN_LABELS.includes(name));
+            if (context.payload.action === 'opened' && !alreadyLabeled) {
+              const match =
+                pr.title.match(/^\s*\[([a-zA-Z]+)\]/) ||
+                pr.title.match(/^\s*([a-zA-Z]+)(?:\([^)]*\))?\s*[:|]/);
+              const label = match && TYPE_TO_LABEL[match[1].toLowerCase()];
+              if (label && allowed.includes(label)) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: pr.number,
+                  labels: [label],
+                });
+                labels.push(label);
+                core.info(`Applied ${label} from the PR title.`);
+              }
+            }
+
+            if (!targetsMain && !targetsRelease) return;
+            if (!labels.some((name) => allowed.includes(name))) {
+              core.setFailed(
+                `Select at least one label for changelog generation. [${allowed.map((name) => `'${name}'`).join(', ')}]`,
+              );
+            }
