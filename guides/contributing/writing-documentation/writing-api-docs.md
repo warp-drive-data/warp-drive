@@ -1041,7 +1041,12 @@ ones the shape is taken from; copy from them.
   followed by a link to the package's own landing page in the [API docs](/api/) when the docs
   build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
   build and has only the first). Both are absolute URLs: the README is rendered by GitHub and
-  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here.
+  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here. A
+  non-legacy package also lists the guides that teach it, mirroring the guides its own landing
+  page in [README vs `src/index.md`](#readme-vs-src-index-md) lists, with the same absolute
+  URLs, as `@warp-drive/core`'s README does. A legacy package's *Get Started* link points at
+  [Legacy Package Setup](/guides/configuration/legacy-package-setup/) instead of the generic
+  Guides landing page, since that page is the one a still-legacy app actually needs.
 - **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
   and the package's own `LICENSE.md`, which ships in `files` alongside the README.
 

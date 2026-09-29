@@ -80,7 +80,7 @@ export default class PersonModel extends Model {
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/model](https://warp-drive.io/api/@ember-data/model/)
 

@@ -52,6 +52,13 @@ export default useLegacyStore({
 
 *Get Started* → [Guides](https://warp-drive.io/guides/)
 
+API docs for this package → [@warp-drive/legacy](https://warp-drive.io/api/@warp-drive/legacy/)
+
+- [Setup](https://warp-drive.io/guides/configuration/#configure-the-store): create a Store with `useLegacyStore` in the LegacyMode tab.
+- [Legacy Feature Setup for Ember Apps](https://warp-drive.io/guides/configuration/ember): which legacy features `@warp-drive/legacy` restores, and when you still need the `LegacyNetworkHandler`.
+- [LegacyMode](https://warp-drive.io/guides/the-manual/schemas/resources/legacy-mode): emulate `Model` with a schema, using `withDefaults` and `registerDerivations` from this package.
+- [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): the relationship configuration pages show each relationship defined with `@warp-drive/legacy/model` as well as with schemas.
+- [Typing Models & Transforms](https://warp-drive.io/guides/the-manual/typescript/typing-models): type `Model` classes, their fields and their transforms.
 
 <br>
 

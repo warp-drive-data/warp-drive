@@ -28,6 +28,13 @@
 - [ImageWorker](./src/image-worker.md)
 - ReactiveStorage
 
+## Documentation
+
+API docs for this package → [@warp-drive/experiments](https://warp-drive.io/api/@warp-drive/experiments/)
+
+- [Experiments](https://warp-drive.io/guides/the-manual/experiments/): what "experimental" means here, and the list of experiments that have a guide.
+- [Storage Resources](https://warp-drive.io/guides/the-manual/experiments/storage-resources): persist reactive class fields with the `storage` entry point.
+
 ### ♥️ Credits
 
  <details>

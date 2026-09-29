@@ -51,7 +51,7 @@ Every type here is re-exported from [@warp-drive/core/types](https://warp-drive.
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@warp-drive/core-types](https://warp-drive.io/api/@warp-drive/core-types/)
 

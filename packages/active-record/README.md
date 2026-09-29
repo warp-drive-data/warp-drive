@@ -57,7 +57,7 @@ const { content } = await store.request(options);
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/active-record](https://warp-drive.io/api/@ember-data/active-record/)
 

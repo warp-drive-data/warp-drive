@@ -310,6 +310,11 @@ Additionally, `@warp-drive/core-types` provides several utilities for type-check
 
 For the full range of available schema capabilities, see [Field Schemas](../core-types/src/schema/fields.ts)
 
+## Documentation
+
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
+
+API docs for this package → [@warp-drive/schema-record](https://warp-drive.io/api/@warp-drive/schema-record/)
 
 ### ♥️ Credits
 

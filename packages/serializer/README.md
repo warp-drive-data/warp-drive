@@ -86,7 +86,7 @@ The store also needs a cache; the [@ember-data/store](https://github.com/warp-dr
 
 ## Documentation
 
-*Get Started* → [Guides](https://warp-drive.io/guides/)
+*Get Started* → [Legacy Package Setup](https://warp-drive.io/guides/configuration/legacy-package-setup/)
 
 API docs for this package → [@ember-data/serializer](https://warp-drive.io/api/@ember-data/serializer/)
 

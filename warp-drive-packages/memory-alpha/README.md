@@ -135,6 +135,10 @@ const skill = readFileSync(pkgPath.replace('package.json', 'skills/schemas/defin
 Or point an MCP filesystem/docs server, a Claude Code skill, or any other agent tooling at the
 installed package's `skills` directory.
 
+## Documentation
+
+API docs for this package → [@warp-drive/memory-alpha](https://warp-drive.io/api/@warp-drive/memory-alpha/)
+
 ### ♥️ Credits
 
  <details>

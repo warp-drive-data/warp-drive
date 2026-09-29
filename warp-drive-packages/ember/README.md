@@ -1205,6 +1205,17 @@ export { Await as default } from '@warp-drive/ember';
 
 ---
 
+## Documentation
+
+API docs for this package → [@warp-drive/ember](https://warp-drive.io/api/@warp-drive/ember/)
+
+- [Installation](https://warp-drive.io/guides/installation/#ember): install `@warp-drive/ember` and add the `@warp-drive/ember/install` import to your app and tests.
+- [Setup](https://warp-drive.io/guides/configuration/): configure the build plugin in `ember-cli-build` and create a Store.
+- [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses your framework's signals.
+- [Making Requests](https://warp-drive.io/guides/the-manual/requests/): make a request with `<Request />` or `getRequestState`.
+- [Reactive Control Flow](https://warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's loading, error and content states.
+- [Async as Reactive State](https://warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState` and `<Await />`.
+
 ### ♥️ Credits
 
  <details>

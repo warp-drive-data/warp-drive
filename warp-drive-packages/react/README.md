@@ -77,6 +77,12 @@ export function App() {
 
 API docs for this package → [@warp-drive/react](https://warp-drive.io/api/@warp-drive/react/)
 
+- [Installation](https://warp-drive.io/guides/installation/#react): install `@warp-drive/react` and add the `@warp-drive/react/install` import to your app.
+- [Configuration](https://warp-drive.io/guides/configuration/): configure the build plugin and create a Store.
+- [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Making Requests](https://warp-drive.io/guides/the-manual/requests/): make a request with `<Request />`, or with `getRequestState` inside a `<ReactiveContext />`.
+- [Reactive Control Flow](https://warp-drive.io/guides/the-manual/reactivity/control-flow): render a request's loading, error and content states.
+
 <br>
 
 ## Code of Conduct
