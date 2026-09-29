@@ -29,6 +29,9 @@
         },
         {
           "name": "@warp-drive/react"
+        },
+        {
+          "name": "@warp-drive/tc39-proposal-signals"
         }
       ]
     },
