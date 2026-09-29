@@ -46,6 +46,14 @@
   For an alternative modern pattern to Serializers, see the
   [Request Handlers Guide](/guides/the-manual/requests/handlers).
 
+  ### Setup
+
+  Serializers run inside the `LegacyNetworkHandler` from
+  [`@warp-drive/legacy/compat`](/api/@warp-drive/legacy/compat/). A store created with
+  `useLegacyStore` adds it unless `linksMode` is `true`; a store you build yourself must add it
+  to its `RequestManager`, as shown in
+  [Configure the Store](/guides/configuration/legacy-package-setup/setup/universal.md#configure-the-store).
+
   ### Implementing a Serializer
 
   There are only two required serializer methods, one for
