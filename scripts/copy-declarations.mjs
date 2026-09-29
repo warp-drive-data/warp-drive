@@ -1,9 +1,7 @@
-import fs from 'fs';
-import { glob } from 'node:fs/promises';
+import fs from 'node:fs';
+import { copyFile, glob } from 'node:fs/promises';
+import path from 'node:path';
 import { styleText } from 'node:util';
-import path from 'path';
-
-/** @type {import('bun-types')} */
 
 /**
  * A small script to copy all `.d.ts` files from a `src` directory
@@ -22,11 +20,11 @@ import path from 'path';
  *
  * @example
  * ```sh
- * bun ../../scripts/copy-declarations.mjs addon dist-types
+ * node ../../scripts/copy-declarations.mjs addon dist-types
  * ```
  */
 async function main() {
-  const args = Bun.argv.slice(2);
+  const args = process.argv.slice(2);
 
   if (args.length === 0) {
     args.push('src', 'unstable-preview-types');
@@ -58,6 +56,7 @@ async function main() {
   if (files.length === 0) {
     console.log(styleText('red', `\nNo **/*.d.ts files found in ${styleText('white', relativeInputPath)}\n`));
     process.exitCode = 1;
+    return;
   }
 
   console.log(styleText('grey', `\nFound ${styleText('cyan', String(files.length))} files\n`));
@@ -74,9 +73,7 @@ async function main() {
     const outDir = path.dirname(outputFile);
     fs.mkdirSync(outDir, { recursive: true });
 
-    const inFile = Bun.file(file);
-    const outFile = Bun.file(outputFile);
-    await Bun.write(outFile, inFile);
+    await copyFile(file, outputFile);
   }
 
   console.log(styleText('grey', styleText('bold', `\n✅ Copied ${styleText('cyan', String(files.length))} files\n`)));
