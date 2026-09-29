@@ -3,10 +3,10 @@ import { styleText } from 'node:util';
 
 const log = debug('wd:sync-all');
 
-import { main as syncLicense } from './sync-license';
-import { main as syncLogos } from './sync-logos';
-import { main as syncReferences } from './sync-references';
-import { main as syncScripts } from './sync-scripts';
+import { main as syncLicense } from './sync-license.ts';
+import { main as syncLogos } from './sync-logos.ts';
+import { main as syncReferences } from './sync-references.ts';
+import { main as syncScripts } from './sync-scripts.ts';
 
 function isError(error: unknown): error is Error {
   return error instanceof Error;
@@ -17,7 +17,9 @@ async function runTask(name: string, task: () => Promise<void>) {
   try {
     await task();
   } catch (error) {
-    log(styleText('red', `Error Syncing ${name}: ${styleText('yellow', isError(error) ? error.message : error)}`));
+    log(
+      styleText('red', `Error Syncing ${name}: ${styleText('yellow', isError(error) ? error.message : String(error))}`)
+    );
   }
 }
 

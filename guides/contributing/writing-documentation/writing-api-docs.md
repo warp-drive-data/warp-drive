@@ -167,6 +167,17 @@ target from the label.
 function updateUserName(user: User, name: string): void {}
 ```
 
+### Link the Guide That Teaches It
+
+When a guide teaches the concept behind a symbol, link that guide from the symbol's doc comment,
+usually in the paragraph after the summary, with a root-relative URL such as
+`[Request Builders](/guides/the-manual/requests/builders)`. Readers who land on an API page from a
+search are the ones who most need the concept. The link runs both ways: a guide links the API
+pages it names, as [Linking to the API Docs](./writing-guides.md#linking-to-the-api-docs)
+describes, and each package's landing page lists its guides, as
+[README vs `src/index.md`](#readme-vs-src-index-md) describes. Link only published guides; drafts
+are hidden from the sidebar and left out of `llms.txt`.
+
 ### Link Every Member of a Union or Object-as-Enum
 
 Union types and object-as-enum types should link each of their
@@ -1078,6 +1089,13 @@ The split follows from where each file renders:
 
 Some packages still duplicate paragraphs between the two. When you touch one, read the other and
 move each sentence to the file that answers its question.
+
+End every non-legacy package's `src/index.md` with a `## Guides` section: a list of the published
+guides that teach the package, each with a short phrase saying what it covers, as
+`warp-drive-packages/json-api/src/index.md` does. Guides and packages aren't one-to-one; several
+packages can list the same guide, and one package can list many. Don't link a draft. If no
+published guide teaches the package, link the nearest guide that covers what it does, and write
+one if nothing does.
 
 The landing page's entry in `llms.txt`, the index coding agents read to decide which page to
 fetch, is the `description` in the package's `package.json`: the same role `@summary` plays for a

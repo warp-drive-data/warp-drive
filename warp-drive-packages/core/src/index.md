@@ -79,3 +79,35 @@ writing them.
   configures deprecations, optional features, and debug logging.
 - [`@warp-drive/core/configure`](/api/@warp-drive/core/configure/): the API for telling
   ***Warp*Drive** which framework's reactivity system to use.
+
+## Guides
+
+- [Installation](/guides/installation/): install `@warp-drive/core`, a cache and the reactivity
+  package for your framework.
+- [Setup](/guides/configuration/): configure the build plugin and create a Store with
+  `useRecommendedStore`.
+- [Advanced Store Configuration](/guides/configuration/advanced.md): build a Store class by hand,
+  one piece at a time.
+- [Making Requests](/guides/the-manual/requests/): `store.request`, request options and the
+  handler chain.
+- [Builders](/guides/the-manual/requests/builders.md): functions that return a request and a
+  stable cache key.
+- [Handlers](/guides/the-manual/requests/handlers.md): write a handler that transforms a response.
+- [Typing Requests](/guides/the-manual/requests/typing-requests.md): `withResponseType` and
+  `withReactiveResponse`.
+- [Using the Response](/guides/the-manual/requests/using-the-response.md): the `Future` a request
+  returns, its errors and its content.
+- [Schemas](/guides/the-manual/schemas/): how a schema turns cached data into reactive
+  properties.
+- [Caching](/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what
+  to fetch and what to keep.
+- [Key Terminology](/guides/the-manual/caching/key-terms.md): documents, resources and the names
+  of their types.
+- [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  states with `getRequestState`.
+- [Async as Reactive State](/guides/the-manual/reactivity/derivation.md): derive a promise's state
+  with `getPromiseState`.
+- [Relationships](/guides/the-manual/relational-data/): configure each kind of relationship.
+- [Debugging](/guides/the-manual/debugging/): turn on debug logging at runtime or in the build
+  config.

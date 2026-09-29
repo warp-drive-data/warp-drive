@@ -20,9 +20,9 @@
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit --runExternalCode",
     "examine": "export EXAM_PARALLEL_COUNT=$(./bin/calculate-test-jobs); warp-drive-exam --test-port=0 --path=dist-test --parallel=$EXAM_PARALLEL_COUNT --load-balance",
     "launch:tests": "warp-drive-exam --test-port=0 --path=dist-test --server --no-launch",
-    "start": "bun run build:tests --watch",
-    "test": "bun run examine",
-    "test:production": "bun run examine",
+    "start": "pnpm run build:tests --watch",
+    "test": "pnpm run examine",
+    "test:production": "pnpm run examine",
     "test:start": "warp-drive-exam --test-port=0 --path=dist-test --server --no-launch"
   },
   "author": "",

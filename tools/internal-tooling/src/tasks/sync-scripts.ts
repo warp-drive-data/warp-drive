@@ -5,7 +5,7 @@
 import debug from 'debug';
 import { styleText } from 'node:util';
 
-import { runPrettier, walkPackages, type ProjectPackage } from './-utils';
+import { runPrettier, walkPackages, type ProjectPackage } from './-utils.ts';
 
 const log = debug('wd:sync-scripts');
 
@@ -16,8 +16,8 @@ const PUBLIC_PACKAGES = {
 // does not have vite
 const CLASSIC_TEST_APP = {
   'build:tests': 'IS_TESTING=true EMBER_CLI_TEST_COMMAND=true ember build --output-path=dist-test --suppress-sizes',
-  'build:production': 'bun run build:tests -e production',
-  start: 'bun run build:tests --watch',
+  'build:production': 'pnpm run build:tests -e production',
+  start: 'pnpm run build:tests --watch',
   'check:types': 'tsc --noEmit',
 };
 
@@ -31,15 +31,15 @@ const GLINT_TEST_APP = {
 const EXAM_TEST_APP = {
   examine:
     'export EXAM_PARALLEL_COUNT=$(./bin/calculate-test-jobs); ember exam --test-port=0 --path=dist-test --parallel=$EXAM_PARALLEL_COUNT --load-balance',
-  test: 'bun run examine',
-  'test:production': 'bun run examine',
-  'test:start': 'bun run ember test --test-port=0 --path=dist-test --serve --no-launch',
+  test: 'pnpm run examine',
+  'test:production': 'pnpm run examine',
+  'test:start': 'pnpm ember test --test-port=0 --path=dist-test --serve --no-launch',
 };
 
 const TESTEM_TEST_APP = {
   test: 'ember test --test-port=0 --path=dist-test',
   'test:production': 'ember test --test-port=0 --path=dist-test --environment=production',
-  'test:start': 'bun run test --serve --no-launch',
+  'test:start': 'pnpm run test --serve --no-launch',
 };
 
 const DIAGNOSTIC_TEST_APP = {
