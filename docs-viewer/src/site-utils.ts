@@ -67,6 +67,24 @@ function readFrontMatter(
   return fm<WarpDriveFrontMatter>(text).attributes;
 }
 
+/**
+ * Whether a markdown file in a synced content directory is a draft: its frontmatter (or its
+ * `_meta.json` `files` entry) sets `draft`, or its directory's `_meta.json` does. The sidebar
+ * leaves these out, and so do the llms files (see `draftPages`), so both read this one rule.
+ */
+function isDraftFile(dirMeta: Map<string, DirMeta>, fileDir: string, baseName: string, text: string): boolean {
+  if (readFrontMatter(dirMeta, fileDir, baseName, text).draft) return true;
+  return fileDir !== '' && dirMeta.get(fileDir)?.draft === true;
+}
+
+/**
+ * The path vitepress-plugin-llms publishes a page's `.md` twin to, and matches its ignore patterns
+ * against: a directory's `index.md` publishes as `<directory>.md`.
+ */
+function publishedPath(source: string): string {
+  return source.endsWith('/index.md') ? `${source.slice(0, -'/index.md'.length)}.md` : source;
+}
+
 /** Loads every `_meta.json` under a content directory, keyed by forward-slash dir path (root is `''`). */
 function loadDirMeta(contentDirPath: string): Map<string, DirMeta> {
   const metaFiles = globSync('**/_meta.json', { cwd: contentDirPath });
@@ -219,9 +237,9 @@ export interface LegacyGuidePage {
    * patterns against: a directory's `index.md` publishes as `<directory>.md`.
    */
   published: string;
-  title?: string;
+  /** The frontmatter `title`, else the H1. */
+  title: string;
   description?: string;
-  draft: boolean;
 }
 
 const DOCS_ROOT = path.join(import.meta.dirname, '../docs.warp-drive.io');
@@ -232,38 +250,71 @@ const DOCS_ROOT = path.join(import.meta.dirname, '../docs.warp-drive.io');
 export const LEGACY_GUIDE_DIRS = ['guides', 'upgrading', 'blog'];
 
 /**
- * Every page in `LEGACY_GUIDE_DIRS` whose frontmatter sets `legacy: true`, sorted by path. Reads
- * the synced copies, so call it after `prepare-website.ts` has run.
+ * The synced directories under `docs.warp-drive.io/` whose draft pages stay published but are
+ * left out of the llms files (see `draftPages`). `skills/` is not listed: `finalizeSyncedContent`
+ * deletes its drafts before the build, and its `files.index.draft` entries describe the
+ * agent-facing `index.md` that `webIndex` has already replaced, so they don't apply to the page
+ * published in its place.
+ */
+const DRAFT_CONTENT_DIRS = [...LEGACY_GUIDE_DIRS, 'rfcs'];
+
+/** Each markdown file in a synced content directory, with what `isDraftFile` needs to judge it. */
+function contentFiles(docsRoot: string, dir: string) {
+  const dirPath = path.join(docsRoot, dir);
+  const dirMeta = loadDirMeta(dirPath);
+  return globSync('**/*.md', { cwd: dirPath }).map((file) => {
+    const rawDir = normPath(path.dirname(file));
+    const fileDir = rawDir === '.' ? '' : rawDir;
+    const text = readFileSync(path.join(dirPath, file), 'utf-8');
+    return {
+      source: `${dir}/${normPath(file)}`,
+      text,
+      draft: isDraftFile(dirMeta, fileDir, path.basename(file, '.md'), text),
+    };
+  });
+}
+
+/**
+ * The published path of every draft page, by the same rule the sidebar uses (`isDraftFile`), in
+ * `DRAFT_CONTENT_DIRS` and at the site root, sorted. A draft keeps its page and its `.md` twin, but
+ * config.mts leaves it out of `llms.txt` and `llms-full.txt`, and `emitLegacyLlms` leaves it out
+ * of the legacy pair. Reads the synced copies, so call it after `prepare-website.ts` has run.
+ */
+export function draftPages(docsRoot: string = DOCS_ROOT): string[] {
+  const drafts = DRAFT_CONTENT_DIRS.flatMap((dir) => contentFiles(docsRoot, dir))
+    .filter((file) => file.draft)
+    .map((file) => publishedPath(file.source));
+  // site-root pages (index.md, llm-docs.md and so on) have no `_meta.json`
+  for (const file of globSync('*.md', { cwd: docsRoot })) {
+    const text = readFileSync(path.join(docsRoot, file), 'utf-8');
+    if (isDraftFile(new Map(), '', path.basename(file, '.md'), text)) drafts.push(file);
+  }
+  return drafts.sort();
+}
+
+/**
+ * Every non-draft page in `LEGACY_GUIDE_DIRS` whose frontmatter sets `legacy: true`, sorted by
+ * path. Reads the synced copies, so call it after `prepare-website.ts` has run.
  *
- * A non-draft legacy page is kept out of `llms.txt` and `llms-full.txt` and listed in
- * `llms-legacy.txt` and `llms-legacy-full.txt` instead, and gets a Legacy badge and callout (see
- * `markLegacyGuidePages`). A draft legacy page, such as an empty placeholder, is kept out of all
- * four files and gets no badge. A non-draft legacy page must have a frontmatter `title` or an
- * H1, since one of them is its title in `llms-legacy.txt`.
+ * Each is kept out of `llms.txt` and `llms-full.txt` and listed in `llms-legacy.txt` and
+ * `llms-legacy-full.txt` instead, and gets a Legacy badge and callout (see `markLegacyGuidePages`).
+ * A draft legacy page is left out of all four files like any other draft (see `draftPages`), and
+ * gets no badge. Each must have a frontmatter `title` or an H1, since one of them is its title in
+ * `llms-legacy.txt`.
  */
 export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[] {
   const pages: LegacyGuidePage[] = [];
-  const files = LEGACY_GUIDE_DIRS.flatMap((dir) =>
-    globSync('**/*.md', { cwd: path.join(docsRoot, dir) }).map((file) => `${dir}/${normPath(file)}`)
-  );
-  for (const source of files) {
-    const { attributes, body } = fm<LegacyGuideFrontMatter>(readFileSync(path.join(docsRoot, source), 'utf-8'));
-    if (attributes.legacy !== true) continue;
+  for (const { source, text, draft } of LEGACY_GUIDE_DIRS.flatMap((dir) => contentFiles(docsRoot, dir))) {
+    const { attributes, body } = fm<LegacyGuideFrontMatter>(text);
+    if (attributes.legacy !== true || draft) continue;
 
-    const draft = attributes.draft === true;
     // The same fallback vitepress-plugin-llms uses for a page's llms.txt title: frontmatter
     // `title`, else the page's H1 as found by markdown-title, the library the plugin uses.
     const title = attributes.title ?? markdownTitle(body);
-    if (!draft && !title) {
+    if (!title) {
       throw new Error(`${source} sets \`legacy: true\` but has neither a frontmatter \`title\` nor an H1`);
     }
-    pages.push({
-      source,
-      published: source.endsWith('/index.md') ? `${source.slice(0, -'/index.md'.length)}.md` : source,
-      title,
-      description: attributes.description,
-      draft,
-    });
+    pages.push({ source, published: publishedPath(source), title, description: attributes.description });
   }
   return pages.sort((a, b) => a.source.localeCompare(b.source));
 }
@@ -276,11 +327,11 @@ export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[
  * so no heading needs to be found or rewritten.
  */
 export function markLegacyGuidePages(contentDirPath: string) {
-  for (const file of globSync('**/*.md', { cwd: contentDirPath })) {
-    const fullPath = path.join(contentDirPath, file);
-    const raw = readFileSync(fullPath, 'utf-8');
+  const docsRoot = path.dirname(contentDirPath);
+  for (const { source, text: raw, draft } of contentFiles(docsRoot, path.basename(contentDirPath))) {
+    const fullPath = path.join(docsRoot, source);
     const { attributes, body } = fm<LegacyGuideFrontMatter>(raw);
-    if (attributes.legacy !== true || attributes.draft === true) continue;
+    if (attributes.legacy !== true || draft) continue;
 
     const advice = attributes.legacyAdvice ?? 'New code should follow the [current guides](/guides/index.md) instead.';
     // front-matter's `body` is the file with the frontmatter block cut off the front
@@ -335,12 +386,9 @@ export async function getContentStructure(options: ContentStructureOptions) {
     const baseName = path.basename(filepath, '.md');
     const frontMatter = readFrontMatter(dirMeta, fileDir, baseName, text);
 
-    if (frontMatter.draft) {
-      continue;
-    }
-
-    // Skip files whose immediate parent directory is marked draft in _meta.json
-    if (fileDir !== '' && dirMeta.get(fileDir)?.draft) {
+    // Skip draft files, including files whose immediate parent directory is marked draft in
+    // _meta.json
+    if (isDraftFile(dirMeta, fileDir, baseName, text)) {
       continue;
     }
 
@@ -523,13 +571,14 @@ export async function getRfcsStructure() {
   const ContentDirectoryPath = path.join(import.meta.dirname, `../docs.warp-drive.io/${dirName}`);
 
   const entries: { number: number; item: { text: string; link: string } }[] = [];
+  const dirMeta = loadDirMeta(ContentDirectoryPath);
 
   for (const file of globSync('*.md', { cwd: ContentDirectoryPath })) {
     if (file === 'index.md') continue;
 
     const text = readFileSync(path.join(ContentDirectoryPath, file), 'utf-8');
+    if (isDraftFile(dirMeta, '', path.basename(file, '.md'), text)) continue;
     const { attributes } = fm<RfcFrontMatter>(text);
-    if (attributes.draft) continue;
 
     const number = Number(attributes['warp-drive-rfc']);
     const title = attributes.title ?? segmentToTitle(file, null);
