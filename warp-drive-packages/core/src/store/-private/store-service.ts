@@ -1684,7 +1684,7 @@ export class Store extends BaseClass {
   }
 
   /**
-   * ::: tip 💡 For a more complete overview see the [Request Guide](/guides/2-requests/1-overview)
+   * ::: tip 💡 For a more complete overview see the [Request Guide](/guides/the-manual/requests/)
    * :::
    *
    * Issue a request via the configured {@link RequestManager},
