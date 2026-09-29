@@ -90,7 +90,7 @@
       ":label: breaking": ":boom: Breaking Change",
       ":label: feat": ":rocket: Enhancement",
       ":label: bug": ":bug: Bug Fix",
-      ":label: perf:": ":zap: Performance",
+      ":label: perf": ":zap: Performance",
       ":label: cleanup": ":shower: Deprecation Removal",
       ":label: deprecation": ":evergreen_tree: New Deprecation",
       ":label: doc": ":memo: Documentation",

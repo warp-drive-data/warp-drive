@@ -30,27 +30,30 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    without a trailing period. The title becomes the squash commit and the changelog line, so it
    must say what changed for a reader who never opens the PR. The title and body are subject to
    [Keep Commits Human-Authored](./keep-commits-human-authored.md), so carry no agent byline.
-6. Get a changelog label onto the PR. CI on `main` blocks a PR until it carries one; the exact
-   list lives in the `enforce-changelog-label` job of
-   `.github/workflows/enforce-pr-labels-canary.yml`, and the changelog mapping in the root
-   `package.json` under `changelog.labels`. No target label is required — a PR that carries none
-   of the `:dart:` labels below is presumed to need no backport; there is no longer a
-   `:dart: canary` label for that case.
+6. Get a changelog label onto the PR. The `enforce-changelog-label` check fails until it
+   carries one. It isn't a required status check, so a red one doesn't disable merging, but the
+   release notes are built by `lerna-changelog`, which leaves out any PR that doesn't carry a
+   label from `changelog.labels`. The exact
+   list per base branch lives in `.github/workflows/enforce-changelog-label.yml`, and the
+   changelog mapping in the root `package.json` under `changelog.labels`. No target label is
+   required — a PR that carries none of the `:dart:` labels below is presumed to need no
+   backport; there is no longer a `:dart: canary` label for that case.
 
    **If your title matches one of `type: title`, `type(scope): title` (the form step 5 asks
    for), `type | title`, or `[type] title`** (aliases like `fix` → `:label: bug` or `docs` →
-   `:label: doc` included) **and the PR has no changelog label yet**, a bot applies the matching
-   label for you when the PR is opened (`.github/workflows/label-pr-type.yml`).
+   `:label: doc` included) **and the PR has no changelog label yet**, the same check applies the
+   matching label for you when the PR is opened, and passes in that run.
 
    **If you are a maintainer**, apply the changelog label yourself when you open the PR, plus any
    target label the change needs.
 
-   **If you are not, and the bot above doesn't cover your title**, you cannot apply labels at
-   all. Name the changelog label you expect in the PR body instead, so a maintainer can apply it
-   without re-reading the diff. The label check stays red until one does, and that is the
-   expected state of your PR rather than something to fix. Pushing another commit will not clear
-   it. The workflow triggers only on `labeled`, `unlabeled`, `opened`, and `reopened`, so nothing
-   re-evaluates the PR until a maintainer labels it, or the bot does at open time.
+   **If you are not, and the title rule above doesn't cover your title**, you cannot apply labels
+   at all. Name the changelog label you expect in the PR body instead, so a maintainer can apply
+   it without re-reading the diff. The label check stays red until one does, and that is the
+   expected state of your PR rather than something to fix. Pushing another commit or retitling
+   the PR will not clear it. The workflow triggers only on `labeled`, `unlabeled`, `opened`, and
+   `reopened`, and reads the title only on `opened`, so nothing re-evaluates the PR until a
+   maintainer labels it.
 
    Pick exactly one changelog label:
 
@@ -66,13 +69,13 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    | `:label: test`         | new tests, or a refactor of existing tests                                                             |
    | `:label: chore`        | internal refactoring, or a fix scoped only to build tooling, lint/CI config, or other dev-experience-only code, with no public API or runtime-behavior change worth calling out |
    | `:label: rfc`          | a new RFC, or a change to one; see [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md) |
-   | `:label: dependencies` | a dependency bump on `main`                                                                            |
+   | `:label: dependencies` | a dependency bump on `main`; passes the check but is left out of release notes on purpose             |
 
    `:label: bug` is for a fix a consumer of the published packages could actually hit — a runtime
    behavior change. A PR that only touches build/lint/infra/DX surfaces (a broken `turbo` task, a
    flaky CI workflow, an eslint rule, a codemod script) is `:label: chore` even though you're
    "fixing" something, because nothing in the published packages changes. Title that PR
-   `chore(scope): subject`, not `fix(scope): subject` — the bot in step 5 maps a `fix:`-typed
+   `chore(scope): subject`, not `fix(scope): subject` — the title rule above maps a `fix:`-typed
    title straight to `:label: bug`, which would misfile it.
 
    Add a target label only when the change needs to be backported: one `:dart:` label per
@@ -97,7 +100,7 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
 [#11146](https://github.com/warp-drive-data/warp-drive/pull/11146) titled itself
 `docs: dedupe the v5 upgrade guide and codemod READMEs`. Opened today, that title — or the scoped
 `docs(upgrading): dedupe the v5 upgrade guide and codemod READMEs` form step 5 asks for — would
-let the step 6 bot apply `:label: doc` automatically, and no target label would be needed at all,
+let the step 6 check apply `:label: doc` automatically, and no target label would be needed at all,
 since a `main` PR carrying none is presumed to need no backport. At the time it actually opened,
 before either capability existed, only `:label: doc` came in with the PR, the
 `enforce-target-label` check failed for want of `:dart: canary`, and it took a maintainer adding
