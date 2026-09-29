@@ -36,7 +36,7 @@ In LegacyMode:
 - records have all the APIs of Model (references, state props, currentState, methods etc)
 - limited reactivity for attribute fields (same as Model)
 - the continued use of `@warp-drive/legacy` is required (though most imports from it can be removed)
-- `async: true` relationships are supported (though we recommend transitioning to using them in [LinksMode](../../misc/links-mode.md))
+- `async: true` relationships are supported (though we recommend transitioning to using them in LinksMode)
 
 ### Configuration
 
