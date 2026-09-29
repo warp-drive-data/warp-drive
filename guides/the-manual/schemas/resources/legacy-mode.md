@@ -12,9 +12,9 @@ Don't confuse **LegacyMode** with **legacy packages**.
 In the upcoming V6 our recommendation will change to [PolarisMode (preview)](./polaris-mode.md)
 :::
 
-**LegacyMode** can be used to emulate the behaviors and capabilities of The `Model` class from `@warp-drive/legacy/model` that was the default way to define reactive objects with schemas for much of WarpDrive's history.
+**LegacyMode** can be used to emulate the behaviors and capabilities of The [`Model`](/api/@warp-drive/legacy/model/classes/Model) class from `@warp-drive/legacy/model` that was the default way to define reactive objects with schemas for much of WarpDrive's history.
 
-The advantage of using ReactiveResource in LegacyMode is that it allows adopting many newer schema-driven features before fully refactoring away from behaviors of Model that won't be supported by PolarisMode.
+The advantage of using [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource) in LegacyMode is that it allows adopting many newer schema-driven features before fully refactoring away from behaviors of Model that won't be supported by PolarisMode.
 
 Because there is little-to-no distinction between the base features of Model and ReactiveResource in LegacyMode we refer to both of these approaches as LegacyMode. This mode remains the default experience in V5.
 
@@ -43,7 +43,7 @@ In LegacyMode:
 LegacyMode works by defining a series of derived fields on a resource's schema that replicate the behaviors of Model from `@warp-drive/legacy/model` exactly. This is done by sharing the underlying implementation of these features that Model also uses, and thus is why `@warp-drive/legacy` remains
 a requirement for use of LegacyMode.
 
-If not using `useLegacyStore`, the derivations for these fields need to be registered with the schema service.
+If not using [`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore), the derivations for these fields need to be registered with the schema service.
 
 ```ts
 import { registerDerivations } from '@warp-drive/legacy/model/migration-support';

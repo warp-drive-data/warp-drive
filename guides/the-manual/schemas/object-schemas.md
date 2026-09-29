@@ -4,7 +4,7 @@ description: Define an embedded ObjectSchema with a null identity, reference it 
 
 # ObjectSchemas
 
-An ObjectSchema lets you model nested or embedded data structures inside a ResourceSchema. This is ideal when a piece of data belongs to a resource but does not have its own identity (no `@id`) and should not be a top-level resource.
+An [ObjectSchema](/api/@warp-drive/core/types/schema/fields/types/ObjectSchema) lets you model nested or embedded data structures inside a [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema). This is ideal when a piece of data belongs to a resource but does not have its own identity (no `@id`) and should not be a top-level resource.
 
 Using ObjectSchemas keeps your ResourceSchemas organized and reusable while maintaining full reactivity.
 

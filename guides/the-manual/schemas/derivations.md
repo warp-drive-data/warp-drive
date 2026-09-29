@@ -4,7 +4,7 @@ description: Define memoized read-only `derived` fields, register the derivation
 
 # Derivations
 
-Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the ReactiveResource and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.
+Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource) and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.
 
 The computed result is never stored in cache and is never serialized.
 
@@ -156,9 +156,9 @@ A derivation that has never been accessed costs nothing. It is only run on first
 
 ## About Built-in Derivations
 
-`withDefaults` adds a few built-in derived fields to every schema it configures. The most notable is `@identity`, which surfaces the resource's identity — its `id`, `lid`, and `type` — as readable fields on the record.
+[`withDefaults`](/api/@warp-drive/core/reactive/functions/withDefaults) adds a few built-in derived fields to every schema it configures. The most notable is `@identity`, which surfaces the resource's identity — its `id`, `lid`, and `type` — as readable fields on the record.
 
-These are registered automatically when using the recommended store setup. If you are composing a custom store, call `registerDerivations` to wire them in:
+These are registered automatically when using the recommended store setup. If you are composing a custom store, call [`registerDerivations`](/api/@warp-drive/core/reactive/functions/registerDerivations) to wire them in:
 
 ```ts [store/index.ts]
 import { registerDerivations, SchemaService } from '@warp-drive/core/reactive';
