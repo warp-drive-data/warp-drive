@@ -10,7 +10,15 @@ export {
   type AutorefreshBehaviorCombos,
   type AutorefreshBehaviorType,
 } from './request-subscription.ts';
-export { getRequestState, type RequestLoadingState, type RequestState } from './request-state.ts';
+export {
+  getRequestState,
+  type RequestLoadingState,
+  type RequestState,
+  type PendingRequest,
+  type ResolvedRequest,
+  type RejectedRequest,
+  type CancelledRequest,
+} from './request-state.ts';
 export {
   getPaginationCache,
   clearPaginationCache,

@@ -5,7 +5,13 @@
  * @mergeModuleWith <project>
  */
 
-export { Request, type ContentFeatures, type RecoveryFeatures } from './-private/request.gts';
+export {
+  Request,
+  type ContentFeatures,
+  type RecoveryFeatures,
+  type EmberRequestArgs,
+  type RequestSignature,
+} from './-private/request.gts';
 export { Await, Throw } from './-private/await.gts';
 
 export {

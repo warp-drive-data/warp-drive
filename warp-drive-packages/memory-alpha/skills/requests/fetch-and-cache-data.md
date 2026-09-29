@@ -44,7 +44,6 @@ Prefer the `<Request />` component (Ember) or `useQuery`-style hooks (React) ove
 unmount for free:
 
 ```gts
-import { on } from '@ember/modifier';
 import { Request } from '@warp-drive/ember';
 import { findRecord } from '@warp-drive/utilities/json-api';
 

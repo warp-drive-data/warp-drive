@@ -1,16 +1,19 @@
 {
-  "include": ["index.ts"],
+  "include": ["index.mts", "tests/**/*.mts"],
   // how do I set this up where it only applies to
   // this sub-directory?
   "compilerOptions": {
     "lib": ["esnext"],
-    "module": "esnext",
+    "module": "nodenext",
     "target": "esnext",
-    "moduleResolution": "bundler",
+    "moduleResolution": "nodenext",
     "moduleDetection": "force",
     "strict": true,
     "pretty": true,
     "alwaysStrict": true,
-    "types": ["bun-types"]
+    "noEmit": true,
+    "erasableSyntaxOnly": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node"]
   }
 }

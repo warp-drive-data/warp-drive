@@ -15,7 +15,7 @@ import {
   type ProjectPackage,
   type ProjectPackageWithTsConfig,
   type TsConfigFile,
-} from './-utils';
+} from './-utils.ts';
 
 const log = debug('wd:sync-references');
 
