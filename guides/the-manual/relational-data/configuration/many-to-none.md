@@ -114,8 +114,8 @@ directionality or ownership over their inverse.
 [ReactiveResource](../../schemas/index.md) reads these same field definitions from a
 [ResourceSchema](../../schemas/resources/index.md). Define one in
 [LegacyMode](../../schemas/resources/legacy-mode.md), the recommended mode today. Its
-`withDefaults` helper sets `legacy: true`, adds the `id` identity field, and appends the
-derived and local fields that emulate `Model`. The relationship field is the JSON above,
+[`withDefaults`](/api/@warp-drive/legacy/model/migration-support/functions/withDefaults) helper sets `legacy: true`, adds the `id` identity field, and appends the
+derived and local fields that emulate [`Model`](/api/@warp-drive/legacy/model/classes/Model). The relationship field is the JSON above,
 unchanged.
 
 🏃🏾‍♀️ *ActivityData*
@@ -136,7 +136,7 @@ export const ActivityDataSchema = withDefaults({
 });
 ```
 
-If you did not create the store with `useLegacyStore`, call `registerDerivations` once on the
+If you did not create the store with [`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore), call [`registerDerivations`](/api/@warp-drive/legacy/model/migration-support/functions/registerDerivations) once on the
 schema service, as shown in
 [Configuration](../../schemas/resources/legacy-mode.md#configuration).
 [Defining Legacy Schemas](../../schemas/resources/legacy-mode.md#defining-legacy-schemas)
