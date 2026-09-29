@@ -191,3 +191,14 @@ an external dependency of the app, and thus the access of it will only occur onc
 
 By moving the access inside of `MyApp`, our reactive state is now a dependency of the component's render, and will work as expected.
 
+## Guides
+
+- [Installation](/guides/installation/#react): install `@warp-drive/react` and add the
+  `@warp-drive/react/install` import to your app.
+- [Configuration](/guides/configuration/): configure the build plugin and create a Store.
+- [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+- [Making Requests](/guides/the-manual/requests/): make a request with `<Request />`, or with
+  `getRequestState` inside a `<ReactiveContext />`.
+- [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  loading, error and content states.
+

@@ -89,3 +89,10 @@ Properties on the class are decorated to describe how each field should be
 compiled, for instance `@field` for a plain value, `@local` for local-only
 state, or `@derived` for a computed value. See each decorator's own
 documentation below for its exact compiled output.
+
+## Guides
+
+- [Schema DSL](/guides/the-manual/schemas/schema-dsl.md): what this package is for, and its
+  status. It is not published to npm yet.
+- [Schemas](/guides/the-manual/schemas/): the `JSON` schemas this package compiles to, and how a
+  Store uses them.

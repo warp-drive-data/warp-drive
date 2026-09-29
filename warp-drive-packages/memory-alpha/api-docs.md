@@ -5,3 +5,8 @@ just a directory of skill files meant to be read directly or adapted into tool-s
 (Claude Skills, MCP servers, Cursor rules, Copilot instructions, etc.).
 
 See [the manual](/skills/index.md) for the full set of skills.
+
+## Guides
+
+- [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md): for
+  contributors adding or changing a skill in this package.
