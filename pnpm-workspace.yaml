@@ -383,7 +383,7 @@ catalog:
   morgan: ^1.12.1
   oxfmt: ^0.70.0
   oxlint: ^1.85.0
-  oxlint-tsgolint: ^7.0.2002
+  oxlint-tsgolint: ^7.0.2003
   pretender: ^3.4.7
   prettier: ^3.9.9
   prettier-plugin-ember-template-tag: ^2.1.8
