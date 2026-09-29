@@ -122,7 +122,7 @@ module.exports = async function (defaults) {
 
 ## Configure the Store
 
-To get up and running we need to configure a `Store` to understand how we want
+To get up and running we need to configure a [`Store`](/api/@warp-drive/core/classes/Store) to understand how we want
 to handle requests, what our data looks like, how to cache it, and what sort of
 reactive objects to create for that data.
 
@@ -352,7 +352,7 @@ export default class AppStore extends Store {}
 
 ### Add Basic Request Management
 
-`RequestManager` provides a chain-of-responsibility style pipeline for helping
+[`RequestManager`](/api/@warp-drive/core/classes/RequestManager) provides a chain-of-responsibility style pipeline for helping
 you handle centralized concerns around requesting and updating data from your
 backend.
 
@@ -704,7 +704,7 @@ notifications. The `<Request />` component subscribes to these notifications and
 trigger a reload if necessary if an invalidated request is in active use, letting you
 craft advanced policies that meet your product's needs.
 
-***Warp*Drive** provides a basic CachePolicy with a number of great defaults that
+***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy), [`DefaultCachePolicy`](/api/@warp-drive/core/store/classes/DefaultCachePolicy) (re-exported by `@ember-data/request-utils` as `CachePolicy`), with a number of great defaults that
 is a great starting point for most applications. We configure this basic policy
 below.
 
