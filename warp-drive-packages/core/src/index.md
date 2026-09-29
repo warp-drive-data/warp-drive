@@ -8,8 +8,8 @@ the [Cache](/api/@warp-drive/core/types/cache/types/Cache) interface a cache imp
 fills in, and the reactive objects that present cached data to your UI.
 
 :::tip New here?
-Start with Installation and Setup in the [Guides](#guides) at the end of this page. The API docs
-assume that context.
+Start with the [Installation](/guides/installation/) and [Setup](/guides/configuration/) guides.
+The API docs assume that context.
 :::
 
 ## How the Pieces Connect
