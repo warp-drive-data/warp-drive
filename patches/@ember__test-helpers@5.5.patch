@@ -90,7 +90,7 @@ diff --git a/dist/setup-rendering-context.js b/dist/setup-rendering-context.js
 index 28a899ef8a6754f6b18aad4c557ecd048b817451..8a876aacd547a7f19d9ef3601b23d46815bfb3a9 100644
 --- a/dist/setup-rendering-context.js
 +++ b/dist/setup-rendering-context.js
-@@ -16,7 +16,7 @@ const EMPTY_TEMPLATE = precompileTemplate("", {
+@@ -18,7 +18,7 @@ const EMPTY_TEMPLATE = precompileTemplate("", {
  const INVOKE_PROVIDED_COMPONENT = precompileTemplate("<this.ProvidedComponent />", {
    strictMode: false
  });
