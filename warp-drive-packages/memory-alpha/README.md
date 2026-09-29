@@ -41,21 +41,41 @@ without reading this README first.
 
 ## Editor & Agent Setup
 
+### Using It in Your App
+
+Install the package as a dev dependency:
+
+```sh
+pnpm add -D @warp-drive/memory-alpha
+```
+
+Then add this to your app's `AGENTS.md`:
+
+```md
+## WarpDrive
+
+Before writing or changing code that uses `@warp-drive/*` packages, read
+`node_modules/@warp-drive/memory-alpha/skills/index.md`, then only the one skill file it routes
+you to. Skip its "contributing to WarpDrive itself" row.
+```
+
+If your app also has a `CLAUDE.md`, add a line reading `@AGENTS.md` to it, which imports it:
+Claude Code reads `CLAUDE.md` instead of `AGENTS.md` when both exist. For an agent that doesn't
+read `AGENTS.md`, put the same block in the instructions file it does read.
+
+### In This Repo
+
 This repo wires the routing table above into every agent surface it develops against, and each
 one just points back to [`skills/index.md`](./skills/index.md) so there's a single place to
-update:
+update. These files route agents to the contributor skills, so don't copy them into an app:
 
 | Agent | File |
 | --- | --- |
-| Claude Code | [`/CLAUDE.md`](../../CLAUDE.md) |
-| Codex, Grok, Cursor, and other tools following the open [AGENTS.md](https://agents.md) convention | [`/AGENTS.md`](../../AGENTS.md) |
-| Gemini CLI | [`/GEMINI.md`](../../GEMINI.md) |
-| GitHub Copilot | [`/.github/copilot-instructions.md`](../../.github/copilot-instructions.md) |
-| Cursor (project rule, in addition to its AGENTS.md support) | [`/.cursor/rules/memory-alpha.mdc`](../../.cursor/rules/memory-alpha.mdc) |
-
-Consuming this package from an app instead of contributing to WarpDrive itself? Copy whichever
-of those files matches your agent into your own repo and swap the path for
-`node_modules/@warp-drive/memory-alpha/skills/index.md`.
+| Claude Code | [`/CLAUDE.md`](https://github.com/warp-drive-data/warp-drive/blob/main/CLAUDE.md) |
+| Codex, Grok, Cursor, and other tools following the open [AGENTS.md](https://agents.md) convention | [`/AGENTS.md`](https://github.com/warp-drive-data/warp-drive/blob/main/AGENTS.md) |
+| Gemini CLI | [`/GEMINI.md`](https://github.com/warp-drive-data/warp-drive/blob/main/GEMINI.md) |
+| GitHub Copilot | [`/.github/copilot-instructions.md`](https://github.com/warp-drive-data/warp-drive/blob/main/.github/copilot-instructions.md) |
+| Cursor (project rule, in addition to its AGENTS.md support) | [`/.cursor/rules/memory-alpha.mdc`](https://github.com/warp-drive-data/warp-drive/blob/main/.cursor/rules/memory-alpha.mdc) |
 
 ## Structure
 
@@ -100,7 +120,7 @@ under the "Skills" section, using the same markdown-plus-JSON compilation toolin
 Install the package and read markdown files directly from `node_modules`:
 
 ```sh
-npm install @warp-drive/memory-alpha
+pnpm add -D @warp-drive/memory-alpha
 ```
 
 ```ts
