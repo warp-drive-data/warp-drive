@@ -53,7 +53,7 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 
 This library provides reactive utilities for working with promises and requests, building over these primitives to provide functions and components that enable you to build robust performant apps with elegant control flow
 
-Documentation
+API Overview
 
 - [PromiseState](#promisestate)
   - [getPromiseState](#getpromisestate)
@@ -153,7 +153,7 @@ for working with promises, building over these primitives to provide helpers, fu
 
 ---
 
-## Documentation
+## API Overview
 
 ### PromiseState
 

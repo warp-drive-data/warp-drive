@@ -26,9 +26,12 @@
 - [DataWorker](./src/data-worker/README.md)
 - [DocumentStorage](./src/document-storage/README.md)
 - [ImageWorker](./src/image-worker.md)
-- ReactiveStorage
+- Pagination
+- [Storage Resources](https://warp-drive.io/guides/the-manual/experiments/storage-resources)
 
 ## Documentation
+
+*Get Started* → [Guides](https://warp-drive.io/guides/)
 
 API docs for this package → [@warp-drive/experiments](https://warp-drive.io/api/@warp-drive/experiments/)
 
