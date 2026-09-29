@@ -20,12 +20,13 @@ import type { OpaqueRecordInstance } from '../-types/q/record-instance.ts';
 import type { Graph } from '../../graph/-private.ts';
 // oxlint-disable-next-line no-unused-vars
 import { getRequestState, ReactiveResource } from '../../reactive.ts';
-// oxlint-disable-next-line no-unused-vars
+/* oxlint-disable no-unused-vars */
 import type {
   ReactiveDataDocument,
   ReactiveDocument,
   ReactiveErrorDocument,
 } from '../../reactive/-private/document.ts';
+/* oxlint-enable no-unused-vars */
 // oxlint-disable-next-line no-unused-vars
 import type { CacheHandler as CacheHandlerInterface, Future } from '../../request.ts';
 // oxlint-disable-next-line no-unused-vars

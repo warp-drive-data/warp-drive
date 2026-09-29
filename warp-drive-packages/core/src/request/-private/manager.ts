@@ -9,12 +9,14 @@ import { withReactiveResponse, withResponseType } from '../../request';
 import { waitFor } from '../../signals/-private';
 import { peekUniversalTransient, setUniversalTransient } from '../../types/-private';
 import type { RequestKey } from '../../types/identifier';
+/* oxlint-disable no-unused-vars */
 import {
   EnableHydration,
   type RequestInfo,
   type StructuredDocument,
   type StructuredErrorDocument,
 } from '../../types/request';
+/* oxlint-enable no-unused-vars */
 import { assertValidRequest } from './debug';
 import { upgradePromise } from './future';
 import { clearRequestResult, getRequestResult, setPromiseResult } from './promise-cache';
