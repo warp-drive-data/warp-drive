@@ -163,10 +163,29 @@ export const WatcherContext: Context<{
 } | null>(null);
 
 /**
+ * Re-renders its `children` when a WarpDrive signal they read changes.
+ * `<Request />` already wraps its content in one; wrap any other component
+ * that reads reactive WarpDrive data, such as a record's fields.
+ *
+ * It accepts a single prop, `children`.
+ *
+ * @example
+ * ```tsx
+ * import { ReactiveContext } from "@warp-drive/react";
+ *
+ * export function UserName({ user }: { user: User }) {
+ *   return (
+ *     <ReactiveContext>
+ *       <span>{user.name}</span>
+ *     </ReactiveContext>
+ *   );
+ * }
+ * ```
  *
  * @summary Component that re-renders its children when WarpDrive signals they read change, by providing a signal
  * watcher through `WatcherContext`.
  * @category Components
+ * @public
  */
 export function ReactiveContext({ children }: { children: ReactNode }): JSX.Element {
   const watcher = useWatcher();

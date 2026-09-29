@@ -12,6 +12,30 @@ away-team incident that torched the original — so it can be installed into any
 consumed by an MCP server, a Claude Code skill, or adapted into tool-specific instruction files
 (Cursor rules, Copilot instructions, etc.).
 
+## Using These Skills in Your App
+
+Install the package as a dev dependency:
+
+```sh
+pnpm add -D @warp-drive/memory-alpha
+```
+
+Then add this to your app's `AGENTS.md`:
+
+```md
+## WarpDrive
+
+Before writing or changing code that uses `@warp-drive/*` packages, read
+`node_modules/@warp-drive/memory-alpha/skills/index.md`, then only the one skill file it routes
+you to. Skip its "contributing to WarpDrive itself" row.
+```
+
+If your app also has a `CLAUDE.md`, add a line reading `@AGENTS.md` to it, which imports it:
+Claude Code reads `CLAUDE.md` instead of `AGENTS.md` when both exist. For an agent that doesn't
+read `AGENTS.md`, put the same block in the instructions file it does read.
+
+## The Skills
+
 Find the row below that matches what you're doing, or browse the categories in the sidebar.
 
 | If you need to... | Go to |

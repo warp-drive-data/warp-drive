@@ -7,7 +7,7 @@ import { styleText } from 'node:util';
  */
 import path from 'path';
 
-import { getMonorepoRoot, walkPackages, type ProjectPackage } from './-utils';
+import { getMonorepoRoot, walkPackages, type ProjectPackage } from './-utils.ts';
 
 const log = debug('wd:sync-license');
 

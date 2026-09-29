@@ -1343,7 +1343,13 @@ function markLegacyPackagePage(content: string, file: string): string {
   const next =
     pkg.advice ??
     (pkg.replacement ? `New code should use [\`${pkg.replacement}\`](/api/${pkg.replacement}/) instead.` : '');
-  const callout = `:::warning ${status.title}\n\`${pkg.name}\` ${status.is}.${next ? ` ${next}` : ''}\n:::`;
+  // A package's landing page also points apps still on these packages at the guide that sets them
+  // up, so the legacy setup guides are reachable from every legacy package, not only from search.
+  const setup =
+    file === `${pkg.name}/index.md`
+      ? '\n\nFor an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).'
+      : '';
+  const callout = `:::warning ${status.title}\n\`${pkg.name}\` ${status.is}.${next ? ` ${next}` : ''}${setup}\n:::`;
   return content.replace(
     /^(<ModuleBadge [^\n]+\/>)([^\n]*)$/m,
     `$1 <Badge type="danger" text="${status.badge}" />$2\n\n${callout}`
