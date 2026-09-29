@@ -161,8 +161,7 @@ export default useLegacyStore({
 
 :::tip React apps
 React components get the store from `<StoreProvider />`. See
-[Provide the Store](/guides/installation/#provide-the-store-in-react) in the React installation
-steps.
+[Setup - React](/guides/configuration/react).
 :::
 
 **That's it!** It's time to start working with your data.

@@ -193,6 +193,8 @@ By moving the access inside of `MyApp`, our reactive state is now a dependency o
 - [Installation](/guides/installation/#react): install `@warp-drive/react` and add the
   `@warp-drive/react/install` import to your app.
 - [Configuration](/guides/configuration/): configure the build plugin and create a Store.
+- [Setup - React](/guides/configuration/react): provide the store to your components with
+  `<StoreProvider />` and read it with `useStore`.
 - [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
 - [Making Requests](/guides/the-manual/requests/): make a request with `<Request />`, or with
   `getRequestState` inside a `<ReactiveContext />`.
