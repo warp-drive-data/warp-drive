@@ -64,7 +64,7 @@
       "groupName": "github-actions"
     },
     {
-      "matchManagers": ["npm"],
+      "matchFileNames": ["pnpm-lock.yaml"],
       "rebaseWhen": "behind-base-branch"
     }
   ],
