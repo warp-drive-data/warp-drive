@@ -45,7 +45,6 @@ import type {
   CollectionField,
   FieldSchema,
   IdentityField,
-  LegacyHasManyField,
   LegacyRelationshipField,
   ResourceField,
   SchemaArrayField,
@@ -557,14 +556,13 @@ export class JSONAPICache implements Cache {
       this._capabilities.notifyChange(identifier, hasExisting ? 'updated' : 'added', null);
     }
 
-    if (doc.request?.op === 'findHasMany') {
-      const parentIdentifier = doc.request.options?.identifier as ResourceKey | undefined;
-      const parentField = doc.request.options?.field as LegacyHasManyField | undefined;
-      assert(`Expected a hasMany field`, parentField?.kind === 'hasMany');
-      assert(
-        `Expected a parent identifier for a findHasMany request`,
-        parentIdentifier && isResourceKey(parentIdentifier)
-      );
+    const op = doc.request?.op;
+    if (op === 'findHasMany' || op === 'findBelongsTo') {
+      const kind = op === 'findHasMany' ? 'hasMany' : 'belongsTo';
+      const parentIdentifier = doc.request!.options?.identifier as ResourceKey | undefined;
+      const parentField = doc.request!.options?.field as LegacyRelationshipField | undefined;
+      assert(`Expected a ${kind} field`, parentField?.kind === kind);
+      assert(`Expected a parent identifier for a ${op} request`, parentIdentifier && isResourceKey(parentIdentifier));
       if (parentField && parentIdentifier) {
         this.__graph.push({
           op: 'updateRelationship',
