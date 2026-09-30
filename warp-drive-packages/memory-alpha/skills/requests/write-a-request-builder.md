@@ -22,17 +22,23 @@ reusable entry point, not a one-off object.
    `searchUsers`, `createContentLike`. The name is how other code discovers the builder through
    autocomplete.
 5. Give it a doc comment describing its contract: what the request is for, the endpoint and method,
-   what each argument means, what comes back, paging and sorting, and which cached requests it
-   invalidates (`cacheOptions.types`). Editors show this at every call site.
-6. Set the response type inside the builder with `withReactiveResponse<T>()` or
-   `withResponseType<T>()` from `@warp-drive/core/request`. Never add the type at the call site,
+   what each argument means, what comes back, and how it is paged and sorted, using the API's own
+   paging parameters. For a query, say which resource types make it stale when a record of that
+   type is created, and set those types in `cacheOptions.types`. Editors show this comment at every
+   call site.
+6. Set the response type inside the builder, using a helper from `@warp-drive/core/request`. Use
+   `withReactiveResponse<T>()` when the response holds resources with a registered schema, since
+   those come back as a reactive document whose `data` is `T`. Use `withResponseType<T>()` for
+   anything else, with `T` as the full response type. Never add the type at the call site,
    by calling `withResponseType` there or casting the result with `as`: that is a cast, and a
    builder is the only way to type a request without one.
 7. Keep it pure, and make it produce the same RequestKey for the same arguments. Build query
    strings with `buildQueryParams` from `@warp-drive/utilities`, not by hand. For a `POST` or
    other non-`GET` query, set `cacheOptions.key` from a stable serialization of the arguments.
    Without a stable key, identical requests are neither deduplicated nor cached.
-8. At the call site, pass the builder's result straight to `store.request(...)` or `@query`. When
+8. At the call site, pass the builder's result straight to `store.request(...)` or to the `query`
+   argument of the `<Request />` component (`@query` in Ember).
+   [Fetch and Cache Data](./fetch-and-cache-data.md) shows how to render the result. When
    several components need the same data, have each call the builder itself instead of loading it
    once and passing it down. Requests with a matching RequestKey share one response.
 
@@ -45,7 +51,7 @@ import { buildQueryParams } from '@warp-drive/utilities';
 import type { UserPreview } from '#/data/types';
 
 /**
- * Searches active users by name or email.
+ * Searches users by name or email.
  *
  * - Endpoint: `GET /api/users`
  * - Returns at most 20 {@link UserPreview}s, sorted by name, ascending.

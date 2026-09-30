@@ -120,6 +120,7 @@ export function getCompanyPreviewList(search: string) {
     },
     sort: ['name:asc']
   });
+  // the body's keys are always written in the same order, so this key is stable
   const cacheKey = `${url}::${body}`;
 
   return withReactiveResponse<CompanyPreview[]>({
@@ -174,7 +175,7 @@ export type CompanyPreview = Mask<
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 import { Request } from '@warp-drive/ember';
-import { getCompanyPreviewList } from '#/data/builders';
+import { getCompanyPreviewList } from '#/builders/get-company-preview-list.ts';
 
 export default class CompanyPreviewList extends Component<{ Args: { search: string } }> {
   @cached
@@ -220,7 +221,7 @@ declare.
 
 ## Cache Keys for Requests
 
-In order for two requests to be considered the same, their `RequestKey` must match. For GET requests
+In order for two requests to be considered the same, their [RequestKey](/api/@warp-drive/core/types/identifier/types/RequestKey), also called the CacheKey, must match. For GET requests
 the `RequestKey` is typically the `url`, while queries issued using a `POST` request (or other means)
 may need to explicitly set [cacheOptions.key](/api/@warp-drive/core/types/request/types/CacheOptions#key).
 
@@ -395,13 +396,13 @@ the builder.
 ```ts [builders/search-users.ts]
 import { withReactiveResponse } from '@warp-drive/core/request';
 import { buildQueryParams } from '@warp-drive/utilities';
-import type { UserPreview } from '#/data/types';
+import type { User } from '#/data/types';
 
 /**
  * Searches active users by name or email, for pickers such as `UserSelect`.
  *
  * - Endpoint: `GET /api/users`
- * - Returns at most 20 {@link UserPreview}s, sorted by name, ascending.
+ * - Returns at most 20 {@link User}s, sorted by name, ascending.
  * - Deactivated users are never returned.
  *
  * @param term text matched against the user's name and email
@@ -414,7 +415,7 @@ export function searchUsers(term: string) {
     'page[limit]': 20,
   });
 
-  return withReactiveResponse<UserPreview[]>({ url: `/api/users?${params}` });
+  return withReactiveResponse<User[]>({ url: `/api/users?${params}` });
 }
 ```
 
@@ -469,12 +470,12 @@ import { on } from '@ember/modifier';
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { Request } from '@warp-drive/ember';
-import type { UserPreview } from '#/data/types';
+import type { User } from '#/data/types';
 
 interface UserSelectSignature {
   Args: {
     /** the request that loads the options, usually a builder's result */
-    query: RequestInfo<ReactiveDataDocument<UserPreview[]>>;
+    query: RequestInfo<ReactiveDataDocument<User[]>>;
     onSearch: (term: string) => void;
   };
 }
@@ -501,11 +502,11 @@ export const UserSelect: TOC<UserSelectSignature> = <template>
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { Request } from '@warp-drive/react';
-import type { UserPreview } from '#/data/types';
+import type { User } from '#/data/types';
 
 interface UserSelectProps {
   /** the request that loads the options, usually a builder's result */
-  query: RequestInfo<ReactiveDataDocument<UserPreview[]>>;
+  query: RequestInfo<ReactiveDataDocument<User[]>>;
   onSearch: (term: string) => void;
 }
 
