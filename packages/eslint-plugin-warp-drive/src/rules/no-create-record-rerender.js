@@ -36,7 +36,7 @@ module.exports = {
       description: 'Disallow use of `store.createRecord` in getters, constructors, and class properties',
       category: 'Possible Errors',
       recommended: true,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-create-record-rerender.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-create-record-rerender/',
     },
     messages: {
       [messageId]:

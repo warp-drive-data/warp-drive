@@ -44,7 +44,7 @@ module.exports = {
       description: 'Ensures <Request> is always given a states.error handler',
       category: 'Possible Errors',
       recommended: false,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/require-request-error-block.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/require-request-error-block/',
     },
     schema: [],
     messages,

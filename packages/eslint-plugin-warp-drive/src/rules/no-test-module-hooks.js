@@ -24,7 +24,7 @@ module.exports = {
         'Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly',
       category: 'Possible Performance Issues',
       recommended: false,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-test-module-hooks.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-test-module-hooks/',
     },
     schema: false,
     messages: {

@@ -229,7 +229,7 @@ module.exports = {
       description:
         'Rewrites legacy WarpDrive import module specifiers to their modern replacements using an embedded mapping.',
       recommended: false,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-legacy-imports.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-legacy-imports/',
     },
     messages: {
       [RULE_ID]: 'Rewrite import from "{{from}}" to modern modules.',

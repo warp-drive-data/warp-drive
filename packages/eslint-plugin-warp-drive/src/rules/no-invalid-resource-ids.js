@@ -60,7 +60,7 @@ module.exports = {
       description: 'requires the uses of a resource ID to be strings.',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-invalid-resource-ids.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-invalid-resource-ids/',
     },
     schema: false,
   },
