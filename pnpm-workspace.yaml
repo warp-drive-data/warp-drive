@@ -140,6 +140,9 @@ minimumReleaseAgeExclude:
   - "@hono/node-server@1.19.13"
   # Renovate security update: tmp@0.2.6
   - tmp@0.2.6
+  # Carries the .gts source map fixes NullVoxPopuli/ember.nvp#140 and #143, which the
+  # ember API docs need. Drop once 2.10.0 is older than minimumReleaseAge.
+  - "@nullvoxpopuli/ember-rolldown@2.10.0"
   # 5.5.1 (2026-09-27) is the first release whose render() works on the ember-source canary
   # that landed the Route Manager (RFC 1169) and removed view:-outlet; 5.5.0 crashes there
   # and paints on a different tick than every earlier release. Drop this line after 2026-09-30.
@@ -316,7 +319,7 @@ catalog:
   "@html-next/vertical-collection": ^5.0.5
   "@jridgewell/trace-mapping": ^0.3.31
   "@mdit/plugin-footnote": ^1.1.2
-  "@nullvoxpopuli/ember-rolldown": ^2.9.0
+  "@nullvoxpopuli/ember-rolldown": ^2.10.0
   "@pnpm/find-workspace-dir": 1000.1.5
   "@pnpm/find-workspace-packages": 6.0.9
   "@pnpm/logger": 1100.0.0
@@ -466,13 +469,6 @@ packageExtensions:
   ember-source:
     peerDependencies:
       "@glimmer/component": "*"
-  ## The ember-rolldown patch in `patchedDependencies` applies two unreleased upstream fixes
-  ## that import these at runtime: NullVoxPopuli/ember.nvp#140 (`@jridgewell/remapping`) and
-  ## NullVoxPopuli/ember.nvp#143 (`magic-string`). Drop this with the patch.
-  "@nullvoxpopuli/ember-rolldown@2.9.0":
-    dependencies:
-      "@jridgewell/remapping": ^2.3.5
-      magic-string: ^1.4.2
 
 overrides:
   "@embroider/macros": ^1.21.1
@@ -546,7 +542,6 @@ patchedDependencies:
   ember-source@4.4.5: patches/ember-source@4.4.5.patch
   ember-source@3.28.12: patches/ember-source@3.28.12.patch
   "@ember/test-helpers@>=5.5.0 <6": patches/@ember__test-helpers@5.5.patch
-  "@nullvoxpopuli/ember-rolldown@2.9.0": patches/@nullvoxpopuli__ember-rolldown@2.9.0.patch
   ## Two d.ts bundling fixes: sxzz/rolldown-plugin-dts#310 (open) adds `export {}` to a
   ## chunk that would otherwise export its unexported declarations, and an entry keeps its
   ## file-level doc comment (`@module`) when its first statement is an import or
