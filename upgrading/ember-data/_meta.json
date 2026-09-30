@@ -1,8 +1,4 @@
 {
   "title": "ember-data → WarpDrive",
-  "items": [
-    "index",
-    "in-place",
-    "incremental-adoption"
-  ]
+  "items": ["index", "in-place", "incremental-adoption"]
 }
