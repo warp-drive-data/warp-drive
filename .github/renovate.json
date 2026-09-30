@@ -62,11 +62,17 @@
     {
       "matchManagers": ["github-actions"],
       "groupName": "github-actions"
+    },
+    {
+      "matchManagers": ["npm"],
+      "rebaseWhen": "behind-base-branch"
     }
   ],
+  "lockFileMaintenance": {
+    "rebaseWhen": "behind-base-branch"
+  },
   "minimumReleaseAge": "3 days",
   "rangeStrategy": "bump",
-  "rebaseWhen": "behind-base-branch",
   "prHourlyLimit": 10,
   "branchConcurrentLimit": 12,
   "vulnerabilityAlerts": {
