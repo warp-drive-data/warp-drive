@@ -23,13 +23,21 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 const { content } = await store.request(findRecord('user', userId));
 ```
 
-4. To reuse a request shape, write your own builder — a plain function returning a request
-   object:
+4. For any other request, call the app's own builder for it, or write one — a documented, typed
+   function in the app's builders directory that returns a request object. Follow
+   [Write a Request Builder](./write-a-request-builder.md) when writing or changing one; don't
+   write a request object inline at the call site.
 
 ```ts
 // builders/get-users.ts
+import { withReactiveResponse } from '@warp-drive/core/request';
+import type { User } from '#/data/types';
+
+/**
+ * Gets every user. Endpoint: `GET /api/users`
+ */
 export function getUsers() {
-  return { url: '/api/users' };
+  return withReactiveResponse<User[]>({ url: '/api/users' });
 }
 
 // elsewhere

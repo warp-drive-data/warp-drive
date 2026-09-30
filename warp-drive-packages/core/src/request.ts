@@ -28,17 +28,21 @@ export type { Context } from './request/-private/context.ts';
 /**
  * Brands the supplied object with the supplied response type.
  *
- * The [Typing Requests](/guides/the-manual/requests/typing-requests) guide shows how
- * to use it.
+ * Call it inside a [builder](/guides/the-manual/requests/builders), so the type is part of
+ * the builder's contract and every caller gets it through inference. Calling it inline
+ * where the request is made is a cast. The [Typing Requests](/guides/the-manual/requests/typing-requests)
+ * guide shows how to use it.
  *
  * ```ts
  * import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
  * import { withResponseType } from '@warp-drive/core/request';
  * import type { User } from '#/data/user.ts'
  *
- * const result = await store.request(
- *  withResponseType<ReactiveDataDocument<User>>({ url: '/users/1' })
- * );
+ * export function getUser(id: string) {
+ *   return withResponseType<ReactiveDataDocument<User>>({ url: `/users/${id}` });
+ * }
+ *
+ * const result = await store.request(getUser('1'));
  *
  * result.content.data; // will have type User
  * ```
@@ -60,16 +64,20 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  * wrapped in {@link ReactiveDataDocument}. This is a convenience for
  * the common case of using {@link withResponseType} with `ReactiveDataDocument`.
  *
- * The [Typing Requests](/guides/the-manual/requests/typing-requests#typing-reactive-responses)
+ * Like `withResponseType`, call it inside a [builder](/guides/the-manual/requests/builders)
+ * rather than where the request is made. The
+ * [Typing Requests](/guides/the-manual/requests/typing-requests#typing-reactive-responses)
  * guide shows how to use it.
  *
  * ```ts
  * import { withReactiveResponse } from '@warp-drive/core/request';
  * import type { User } from '#/data/user.ts'
  *
- * const result = await store.request(
- *   withReactiveResponse<User>({ url: '/users/1' })
- * );
+ * export function getUser(id: string) {
+ *   return withReactiveResponse<User>({ url: `/users/${id}` });
+ * }
+ *
+ * const result = await store.request(getUser('1'));
  *
  * result.content.data; // will have type User
  * ```
@@ -79,9 +87,11 @@ export function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
  * ```ts
  * type PageMeta = { page: { limit: number; offset: number }; total?: number };
  *
- * const result = await store.request(
- *   withReactiveResponse<User[], PageMeta>({ url: '/users' })
- * );
+ * export function getUsers() {
+ *   return withReactiveResponse<User[], PageMeta>({ url: '/users' });
+ * }
+ *
+ * const result = await store.request(getUsers());
  *
  * result.content.meta?.total; // number | undefined
  * ```
