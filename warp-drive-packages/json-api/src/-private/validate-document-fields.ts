@@ -61,7 +61,7 @@ function validateResourceFields(
   for (const [type, relationshipDoc] of Object.entries(resource.relationships)) {
     const field = fields.get(type);
     if (!field) {
-      return;
+      continue;
     }
     switch (field.kind) {
       case 'belongsTo': {
