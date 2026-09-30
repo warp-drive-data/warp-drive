@@ -159,7 +159,7 @@ code quality. For this, we offer a way to express schemas as TypeScript using ty
 ```ts
 import { field } from '@warp-drive/schema';
 
-export class Hashtag extends Model {
+export class Hashtag {
   @field name: string;
 }
 ```
@@ -170,7 +170,7 @@ export class Hashtag extends Model {
 import { collection } from '@warp-drive/schema';
 import { Hashtag } from './hashtag';
 
-export class ActivityData extends Model {
+export class ActivityData {
   @collection(Hashtag) tags;
 }
 ```

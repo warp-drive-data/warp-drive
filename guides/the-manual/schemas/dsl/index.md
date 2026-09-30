@@ -507,7 +507,7 @@ For LegacyMode resources only:
 @belongsTo(options: {
   type: string;
   async?: boolean;
-  inverse?: string;
+  inverse: string | null;
   sourceKey?: string;
 })
 ```
@@ -528,7 +528,8 @@ class Comment {
 
   @belongsTo({
     type: 'post',
-    async: true
+    async: true,
+    inverse: null
   })
   declare post: Post;
 }
@@ -540,7 +541,7 @@ class Comment {
 @hasMany(options: {
   type: string;
   async?: boolean;
-  inverse?: string;
+  inverse: string | null;
   sourceKey?: string;
 })
 ```
@@ -919,10 +920,10 @@ class User {
 
   @field declare email: string;
 
-  @belongsTo({ type: 'organization', async: true })
+  @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true })
+  @hasMany({ type: 'post', async: true, inverse: 'author' })
   declare posts: Post[];
 
   @local declare isDestroyed: boolean;
@@ -1364,8 +1365,8 @@ export default class UserModel extends Model {
   @attr('string') firstName;
   @attr('string') lastName;
   @attr('string') email;
-  @belongsTo('organization', { async: true }) organization;
-  @hasMany('post', { async: true }) posts;
+  @belongsTo('organization', { async: true, inverse: null }) organization;
+  @hasMany('post', { async: true, inverse: 'author' }) posts;
 }
 ```
 
@@ -1382,10 +1383,10 @@ export class User {
 
   @field declare email: string;
 
-  @belongsTo({ type: 'organization', async: true })
+  @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true })
+  @hasMany({ type: 'post', async: true, inverse: 'author' })
   declare posts: Post[];
 }
 ```
