@@ -7,4 +7,5 @@ description: Start here for task-focused WarpDrive recipes, including the increm
 
 - [Holodeck in Dev Mode](./holodeck-in-dev-mode.md)
 - [Incremental Adoption Guide](/upgrading/v5/incremental-adoption.md)
+- [Paginating `POST` Queries With A Handler](./paginating-post-queries.md)
 - [Naming Conventions: Should resource types be singular or plural? What to choose? Why is that?](./naming-conventions.md)

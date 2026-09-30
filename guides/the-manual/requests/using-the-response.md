@@ -45,6 +45,11 @@ not use the cache, this will be whatever the last handler to process the respons
 
 For requests that do use the cache (most requests), the content property will be a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument).
 
+A `ReactiveDocument` exposes the response's `links` and `meta` alongside its `data`. When the
+response is one page of a collection, its `next()`, `prev()`, `first()` and `last()` methods request
+the page the matching link points to, so later pages never need a request built by hand. See
+[Paginating With Links](./builders.md#paginating-with-links).
+
 ::: tip 💡 TIP
 Whether a request uses the cache (or doesn't) **is not** governed by whether the request is cacheable (has a [RequestKey](/api/@warp-drive/core/types/identifier/types/RequestKey)) but by whether the request should interact with the Cache. See the [caching guide](../caching/index.md#determining-if-a-request-can-use-the-cache) for more info.
 :::

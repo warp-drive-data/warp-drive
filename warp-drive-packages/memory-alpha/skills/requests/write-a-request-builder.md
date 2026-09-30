@@ -36,7 +36,13 @@ reusable entry point, not a one-off object.
    strings with `buildQueryParams` from `@warp-drive/utilities`, not by hand. For a `POST` or
    other non-`GET` query, set `cacheOptions.key` from a stable serialization of the arguments.
    Without a stable key, identical requests are neither deduplicated nor cached.
-8. At the call site, pass the builder's result straight to `store.request(...)` or to the `query`
+8. For a paginated collection, have the builder request the first page only. Don't add a `page`,
+   `offset` or `cursor` argument: load later pages by following the response's `links`, with
+   `next()` on the reactive document or the experimental pagination primitives. For a `POST` or
+   `QUERY` whose server returns no links, the server should persist the query or encode it into a
+   cursor link; if it can't, add a handler that generates the links, as described in
+   [Paginating With Links](/guides/the-manual/requests/builders.md#paginating-with-links).
+9. At the call site, pass the builder's result straight to `store.request(...)` or to the `query`
    argument of the `<Request />` component (`@query` in Ember).
    [Fetch and Cache Data](./fetch-and-cache-data.md) shows how to render the result. When
    several components need the same data, have each call the builder itself instead of loading it
