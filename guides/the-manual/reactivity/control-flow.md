@@ -14,7 +14,8 @@ approach enables enables automatic cleanup when components dismount, unlocking [
 == Component API
 
 With the component API, any builder function can be used to produce the query
-the `<Request />` component should make.
+the `<Request />` component should make (API docs:
+[Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)).
 
 ::: code-group
 
@@ -76,7 +77,8 @@ Coming Soon!
 == JS API
 
 With the JS API, getters and methods can declaratively compute off of
-the state of the request.
+the state of the request, which
+[`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) returns.
 
 ::: code-group
 

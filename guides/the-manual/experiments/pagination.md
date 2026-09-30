@@ -30,8 +30,8 @@ pnpm add @warp-drive/experiments @warp-drive/ember
 
 Nothing else needs configuring. The primitives work with any store whose cache preserves a
 document's `links` and `meta`, which the [`@warp-drive/json-api`](/api/@warp-drive/json-api/)
-cache does. An app on the `ember-data` meta package already has that cache, a `RequestManager`
-and the legacy network handler set up (see [`@ember-data/store`](/api/@ember-data/store/)).
+cache does. An app on the `ember-data` meta package already has that cache, a
+[`RequestManager`](/api/@warp-drive/core/classes/RequestManager) and the legacy network handler set up (see [`@ember-data/store`](/api/@ember-data/store/)).
 
 :::warning ⚠️ Experimental
 Like everything under [Experiments](./index.md), this API has not been through an RFC and may
