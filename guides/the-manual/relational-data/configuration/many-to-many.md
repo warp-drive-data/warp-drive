@@ -101,7 +101,7 @@ export default class TrailRunner extends Model {
 ## Using JSON Schemas
 
 WarpDrive doesn't care where your schemas come from, how they are authored,
-or how you load them into the system so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService)
+or how you load them into the system so long as when it asks the SchemaService
 for information it gets back field definitions in the right json shape.
 
 Here, we show how the above trail runner relationship is described by a field definition.
