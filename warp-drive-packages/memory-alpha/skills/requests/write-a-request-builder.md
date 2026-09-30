@@ -10,12 +10,12 @@ reusable entry point, not a one-off object.
 1. Check whether the app already has a builder for this request before writing one. Look in the
    app's builders directory or package, often `builders/` or `#/builders`. If one exists, call it
    instead of writing a second way to make the same request.
-2. For a standard operation on a resource (`findRecord`, `query`, `createRecord`, `updateRecord`,
-   `deleteRecord`), use or wrap the built-in builder for the app's API format:
-   `@warp-drive/utilities/json-api`, `@warp-drive/utilities/rest`, or
-   `@warp-drive/utilities/active-record`. If the app wraps these in its own builders, call the
-   app's wrappers.
-3. Otherwise write a new builder, one exported function per file, in the app's builders directory.
+2. Don't call the general-purpose builders in `@warp-drive/utilities` (`json-api`, `rest`,
+   `active-record`) or `@warp-drive/legacy/compat/builders` directly from components or app code.
+   They exist for migrating to the request pipeline and for getting started, and can't document or
+   type what a specific request is for. When one fits the endpoint, call it inside your own
+   specific builder, such as `getUser(id)` wrapping `findRecord('user', id)`.
+3. Write the new builder, one exported function per file, in the app's builders directory.
    Keeping builders in one place is what lets the rest of the app, and other apps, find and reuse
    them.
 4. Name it for what it does, following the app's existing convention: `getCompanyPreviewList`,

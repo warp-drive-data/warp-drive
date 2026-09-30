@@ -13,9 +13,10 @@ result is cached, deduplicated, and reactively available to the rest of the app.
 const { content } = await store.request({ url: '/api/users' });
 ```
 
-3. For a resource that already has a registered schema, prefer a builder over hand-writing the
-   request. `findRecord` from `@warp-drive/utilities/json-api` is the built-in builder for
-   fetching a single resource by type and id:
+3. Prefer a builder over hand-writing the request. `findRecord` from
+   `@warp-drive/utilities/json-api` is a general-purpose builder for fetching a single resource by
+   type and id. It is fine for getting started, but in a mature app wrap it in a specific builder,
+   as step 4 describes, instead of calling it from the app directly:
 
 ```ts
 import { findRecord } from '@warp-drive/utilities/json-api';

@@ -545,19 +545,39 @@ that returns something else, and the options are typed without a cast.
 
 ## Built-in Builders
 
-`@warp-drive/utilities` ships builders for three common API formats. Each has `findRecord`, `query`,
-`createRecord`, `updateRecord` and `deleteRecord`:
+***Warp*Drive** ships general-purpose builders for migrating to the request pipeline and for getting
+started quickly. They are a starting point, not the goal: a general-purpose builder can't document,
+type, or encode your app's endpoints and business logic the way your own builders can.
 
-- [`@warp-drive/utilities/json-api`](/api/@warp-drive/utilities/json-api/) for
-  [{json:api}](https://jsonapi.org/), which also has `postQuery`
-- [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/)
-- [`@warp-drive/utilities/active-record`](/api/@warp-drive/utilities/active-record/)
+- The builders in [`@warp-drive/legacy/compat/builders`](/api/@warp-drive/legacy/compat/builders/)
+  help apps move off deprecated store methods such as `findRecord` and `query` while they still use
+  legacy adapters and serializers.
+- The builders in `@warp-drive/utilities` help apps move from legacy requests and those compat
+  builders onto the modern request pipeline. Each API format has `findRecord`, `query`,
+  `createRecord`, `updateRecord` and `deleteRecord`:
+  - [`@warp-drive/utilities/json-api`](/api/@warp-drive/utilities/json-api/) for
+    [{json:api}](https://jsonapi.org/), which also has `postQuery`
+  - [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/)
+  - [`@warp-drive/utilities/active-record`](/api/@warp-drive/utilities/active-record/)
 
-```ts
+  They usually need some tuning for a particular app.
+
+In a mature app, keep general-purpose builders like these as internal infrastructure for building
+more specific builders, rather than calling them from the rest of the app:
+
+```ts [builders/get-user.ts]
 import { findRecord } from '@warp-drive/utilities/json-api';
+import type { User } from '#/data/types';
 
-const { content } = await store.request(findRecord('user', userId));
+/**
+ * Gets a user by id, with their team.
+ *
+ * - Endpoint: `GET /api/users/:id?include=team`
+ */
+export function getUser(id: string) {
+  return findRecord<User>('user', id, { include: ['team'] });
+}
 ```
 
-These cover the standard operations on a resource. Your own builders cover everything else, and can
-call the built-in ones so that the rest of the app imports only from your SDK.
+The rest of the app calls `getUser(id)`, which says what it wants and carries its own documentation,
+instead of calling `findRecord('user', id)` directly.
