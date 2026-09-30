@@ -57,7 +57,7 @@ export function getRuntimeConfig(): typeof RuntimeConfig {
  * Upserts the specified logging configuration into the runtime
  * config.
  *
- * globalThis.setWarpDriveLogging({ LOG_CACHE: true } });
+ * globalThis.setWarpDriveLogging({ LOG_CACHE: true });
  *
  */
 export function setLogging(config: Partial<LOG_CONFIG>): void {
