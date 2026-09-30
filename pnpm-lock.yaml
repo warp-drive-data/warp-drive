@@ -248,8 +248,8 @@ catalogs:
       specifier: ^1.1.2
       version: 1.1.2
     '@nullvoxpopuli/ember-rolldown':
-      specifier: ^2.9.0
-      version: 2.9.0
+      specifier: ^2.10.0
+      version: 2.10.0
     '@pnpm/find-workspace-dir':
       specifier: 1000.1.5
       version: 1000.1.5
@@ -621,6 +621,7 @@ patchedDependencies:
   ember-source@3.28.12: 306d1f8a8f79f778b8ba547074e7040b1a08820d640d00b16ef8357dae8779ab
   ember-source@4.4.5: c4ad8e3def33c3f12f4d7d0931ea823b63e5f00d95b397206e9c19b38f4ac7a8
   qunit@2.19.4: 44177f0047189d474ebdeba20fc8ddc3c8c2a5777d65cbb5f0fac0979bf66301
+  rolldown-plugin-dts@0.28.6: b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393
   testem@3.11.0: cf147865cff81f2d0f3ed51d274f9fdee7b4ad675a902248aa317c07272fbea5
 
 importers:
@@ -3628,7 +3629,7 @@ importers:
         version: 10.0.1(eslint@10.11.0)
       '@nullvoxpopuli/ember-rolldown':
         specifier: 'catalog:'
-        version: 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+        version: 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel':
         specifier: 'catalog:'
         version: 0.2.4(@babel/core@7.29.7)
@@ -5745,8 +5746,8 @@ packages:
     resolution: {integrity: sha512-eAaAjBWbX1IjPlH5VSwggSVAxjmu8YMVFA+SHJiR/D5HFd9dDBcBaPxvFWY3kPdRDONVwOjp6sx27FH39qJLUQ==}
     engines: {node: '>= 24'}
 
-  '@nullvoxpopuli/ember-rolldown@2.9.0':
-    resolution: {integrity: sha512-/Vk/koY0RBkUgO9aiuuj2/2F3ha/nfvkb8SRpkTilV83sHugzR0zLyXLdBrwMoL+F3/+oeDvJSgAo+lZFEfkZw==}
+  '@nullvoxpopuli/ember-rolldown@2.10.0':
+    resolution: {integrity: sha512-0h71PIZMyxqNHx9Lvw79ITa7BvY5bynbbiBnUgp4RbNKX/RMg1izXuP+JqVMzlVUMKI84O0rNyTHA72YTiLcHA==}
     engines: {node: '>= 24'}
     peerDependencies:
       tsdown: '>= 0.22.0'
@@ -14585,15 +14586,18 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-rolldown@2.9.0(2a57dc8c5879e11b0ffb03d1a828f436)':
+  '@nullvoxpopuli/ember-rolldown@2.10.0(2a57dc8c5879e11b0ffb03d1a828f436)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
+      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
+      get-tsconfig: 4.14.3
+      magic-string: 1.4.2
     optionalDependencies:
       tsdown: 0.23.0(9b6222f12abd3ea9381e23b13ce000f2)
       typescript: 6.0.3
@@ -14606,15 +14610,18 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.9.0(3e5691921da8db4b990c95acff33329d)':
+  '@nullvoxpopuli/ember-rolldown@2.10.0(3e5691921da8db4b990c95acff33329d)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
+      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0(@types/babel__core@7.20.5)
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
+      get-tsconfig: 4.14.3
+      magic-string: 1.4.2
     optionalDependencies:
       tsdown: 0.23.0(typescript@6.0.3)
       typescript: 6.0.3
@@ -14627,15 +14634,18 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)':
+  '@nullvoxpopuli/ember-rolldown@2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7
+      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
+      get-tsconfig: 4.14.3
+      magic-string: 1.4.2
     optionalDependencies:
       tsdown: 0.23.0(typescript@6.0.3)
       typescript: 6.0.3
@@ -14648,15 +14658,18 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.9.0(e9992415c7d3482a31abfc3cf285128b)':
+  '@nullvoxpopuli/ember-rolldown@2.10.0(e9992415c7d3482a31abfc3cf285128b)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
       '@embroider/core': 4.6.7(@glint/template@1.9.0)
+      '@jridgewell/remapping': 2.3.5
       '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0
       babel-plugin-ember-template-compilation: 4.0.0
       content-tag: 4.2.0
       decorator-transforms: 2.4.0(@babel/core@7.29.7)
+      get-tsconfig: 4.14.3
+      magic-string: 1.4.2
     optionalDependencies:
       tsdown: 0.23.0(typescript@6.0.3)
       typescript: 6.0.3
@@ -16533,7 +16546,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16587,7 +16600,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(d0e49aa56ab669e5956e3ac46ba8f873)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16641,7 +16654,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(2a57dc8c5879e11b0ffb03d1a828f436)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(2a57dc8c5879e11b0ffb03d1a828f436)
       '@rolldown/plugin-babel': 0.2.4(1e19d2851458e9b2fba7928be020132a)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16695,7 +16708,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16749,7 +16762,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(1e19d2851458e9b2fba7928be020132a)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16803,7 +16816,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(3e5691921da8db4b990c95acff33329d)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(3e5691921da8db4b990c95acff33329d)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
       '@types/debug': 4.1.13
@@ -16857,7 +16870,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(2a57dc8c5879e11b0ffb03d1a828f436)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(2a57dc8c5879e11b0ffb03d1a828f436)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16911,7 +16924,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(02d9a2513d9ed1d532b075ffd9c2b5e7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -16965,7 +16978,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(05ae5575698c3d347cc1c72296e5ff13)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -17019,7 +17032,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(efc39813b1bedc3713635ece1511044f)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -17073,7 +17086,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(e9992415c7d3482a31abfc3cf285128b)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(e9992415c7d3482a31abfc3cf285128b)
       '@rolldown/plugin-babel': 0.2.4(efc39813b1bedc3713635ece1511044f)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -17127,7 +17140,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(134f395caa23f5be4eb62d8f162b3038)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -17181,7 +17194,7 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.6(@babel/core@7.29.7)(eslint@10.11.0)
       '@eslint/js': 10.0.1(eslint@10.11.0)
-      '@nullvoxpopuli/ember-rolldown': 2.9.0(c1e347cf7d38207c01b1cfb494a6fbd3)
+      '@nullvoxpopuli/ember-rolldown': 2.10.0(c1e347cf7d38207c01b1cfb494a6fbd3)
       '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)(vite@8.3.1)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
@@ -21178,7 +21191,7 @@ snapshots:
 
   robust-predicates@3.0.3: {}
 
-  rolldown-plugin-dts@0.28.6(06d10b3d9b90cc6cc5f85ecbd720601d):
+  rolldown-plugin-dts@0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(06d10b3d9b90cc6cc5f85ecbd720601d):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21193,7 +21206,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.28.6(53416e7d3f5f9f524316a0ca2ed25080):
+  rolldown-plugin-dts@0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(53416e7d3f5f9f524316a0ca2ed25080):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21207,7 +21220,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.28.6(eabd0b1f3029b0ff4c03900e056bb6bd):
+  rolldown-plugin-dts@0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(eabd0b1f3029b0ff4c03900e056bb6bd):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21222,7 +21235,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.28.6(rolldown@1.2.11)(typescript@6.0.3):
+  rolldown-plugin-dts@0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(rolldown@1.2.11)(typescript@6.0.3):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -22018,7 +22031,7 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.11
-      rolldown-plugin-dts: 0.28.6(eabd0b1f3029b0ff4c03900e056bb6bd)
+      rolldown-plugin-dts: 0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(eabd0b1f3029b0ff4c03900e056bb6bd)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -22043,7 +22056,7 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.11
-      rolldown-plugin-dts: 0.28.6(06d10b3d9b90cc6cc5f85ecbd720601d)
+      rolldown-plugin-dts: 0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(06d10b3d9b90cc6cc5f85ecbd720601d)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -22068,7 +22081,7 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.11
-      rolldown-plugin-dts: 0.28.6(rolldown@1.2.11)(typescript@6.0.3)
+      rolldown-plugin-dts: 0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(rolldown@1.2.11)(typescript@6.0.3)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2
@@ -22093,7 +22106,7 @@ snapshots:
       obug: 2.2.1
       picomatch: 4.0.7
       rolldown: 1.2.11
-      rolldown-plugin-dts: 0.28.6(53416e7d3f5f9f524316a0ca2ed25080)
+      rolldown-plugin-dts: 0.28.6(patch_hash=b047c24ef1ad63cf423f6beca755004f3e47191f01c1f4f32a5c2e7010e54393)(53416e7d3f5f9f524316a0ca2ed25080)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
       tree-kill: 1.2.2

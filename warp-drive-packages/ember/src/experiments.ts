@@ -5,6 +5,10 @@
  * primitives they build on are published from
  * `@warp-drive/experiments/pagination`.
  *
+ * Today this entry point contains only the pagination components. Other experiments, such as
+ * [storage resources](/guides/the-manual/experiments/storage-resources), live in
+ * [`@warp-drive/experiments`](/api/@warp-drive/experiments/).
+ *
  * @summary Experimental Ember components, `Paginate` and `EachLink`, for rendering reactive paginated collections built
  * on `@warp-drive/experiments/pagination`.
  * @module

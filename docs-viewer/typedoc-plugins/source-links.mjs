@@ -32,9 +32,9 @@ function findPackageRoot(file) {
 }
 
 /**
- * Maps a position in an installed copy of a workspace package's `.d.ts` back to the
- * workspace source it was compiled from, using the `.d.ts.map` that the package build
- * emits next to it. Returns null for anything that isn't a workspace package or has no
+ * Maps a position in a workspace package's built `.d.ts`, in its own `dist` or in an
+ * installed copy, back to the workspace source it was compiled from, using the
+ * `.d.ts.map` that the package build emits next to it. Returns null for anything that isn't a workspace package or has no
  * usable declaration map.
  */
 function createWorkspaceSourceMapper(workspaceDirs) {
@@ -92,7 +92,12 @@ function createWorkspaceSourceMapper(workspaceDirs) {
  *    source, and the link points at a path that doesn't exist on GitHub. We map those back
  *    to `warp-drive-packages/<pkg>/src` through the package's declaration maps.
  *
- * 3. Members inherited from third-party types (TypeScript's lib `Array`/`Error`/`Headers`,
+ * 3. A package whose TypeDoc entry points are its own built `dist/*.d.ts` (`@warp-drive/ember`,
+ *    because TypeDoc can't parse `.gts`) gets links to `dist`, which isn't committed. Any
+ *    `.d.ts` with a declaration map next to it is mapped back to its source the same way;
+ *    one without a map, like a hand-written `.d.ts` in `src`, keeps its own link.
+ *
+ * 4. Members inherited from third-party types (TypeScript's lib `Array`/`Error`/`Headers`,
  *    `EmberObject`, glimmer's `Component`) are declared in files we can't link to, so we
  *    drop those source entries instead of emitting a link that 404s.
  *
@@ -109,13 +114,16 @@ export async function load(app) {
       if (!refl.sources) continue;
 
       refl.sources = refl.sources.filter((source) => {
-        if (!isInstalledCopy(source.fullFileName)) {
+        const installed = isInstalledCopy(source.fullFileName);
+        const mapped =
+          installed || source.fullFileName.endsWith('.d.ts')
+            ? mapToWorkspaceSource(source.fullFileName, source.line, source.character)
+            : null;
+        if (!mapped) {
+          if (installed) return false;
           source.url ??= toSourceUrl(source.fullFileName, source.line);
           return true;
         }
-
-        const mapped = mapToWorkspaceSource(source.fullFileName, source.line, source.character);
-        if (!mapped) return false;
 
         // `fileName` is relative to the base path typedoc picked for this package; keep
         // the remapped one relative to the same base so it reads like its neighbors.
