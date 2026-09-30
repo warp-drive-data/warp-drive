@@ -333,7 +333,6 @@ catalog:
   "@sveltejs/package": ^2.5.8
   "@sveltejs/vite-plugin-svelte": ^7.3.1
   "@types/babel__core": ^7.20.5
-  "@types/bun": ^1.4.2
   "@types/debug": ^4.1.13
   "@types/jquery": ^4.0.1
   "@types/jscodeshift": ^17.3.0
@@ -352,7 +351,6 @@ catalog:
   babel-plugin-debug-macros: ^2.0.0
   babel-plugin-ember-template-compilation: ^4.0.0
   badge-maker: 6.0.0
-  bun-types: ^1.4.2
   commander: ^15.0.0
   comment-json: ^5.0.0
   debug: ^4.4.3
@@ -500,8 +498,6 @@ overrides:
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.21.0
   typescript: 6.0.3
-  "@types/bun": 1.4.2
-  bun-types: 1.4.2
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001812
   rollup: ^4.63.5

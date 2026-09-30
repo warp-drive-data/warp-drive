@@ -27,7 +27,7 @@
       "groupName": "legacy-ember-types"
     },
     {
-      "matchPackageNames": ["bun", "bun-types", "@types/bun", "node", "@types/node"],
+      "matchPackageNames": ["node", "@types/node"],
       "groupName": "dev-engines"
     },
     {

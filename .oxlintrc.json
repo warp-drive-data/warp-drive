@@ -27,9 +27,7 @@
   },
   "globals": {
     // node's `--expose-gc` global, used by a couple of test packages
-    "gc": "readonly",
-    // packages/diagnostic's Bun-specific test runner path
-    "Bun": "readonly"
+    "gc": "readonly"
   },
   "options": {
     "respectEslintDisableDirectives": true

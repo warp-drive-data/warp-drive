@@ -2,8 +2,8 @@
 
 If this PR updates API docs, preview them by:
 
-- install [mise](https://mise.jdx.dev/getting-started.html) and run `mise install` in the root (optional, but recommended -- this pins the correct node/pnpm/bun versions for you)
-- if you aren't using mise, install [pnpm](https://pnpm.io/installation) `12` yourself (bun will be installed automatically by mise or by pnpm as needed)
+- install [mise](https://mise.jdx.dev/getting-started.html) and run `mise install` in the root (optional, but recommended -- this pins the correct node/pnpm versions for you)
+- if you aren't using mise, install [pnpm](https://pnpm.io/installation) `12` yourself
 - run `pnpm install` in the root (if needed)
 - run `pnpm preview` in the root
 
