@@ -188,9 +188,9 @@
  * not show any in-process edits made to this editable copy.
  *
  * ```ts
- * import { Checkout } from '@warp-drive/schema-record';
+ * import { checkout } from '@warp-drive/core/reactive';
  *
- * const editable = await user[Checkout]();
+ * const editable = await checkout<EditableUser>(user);
  * ```
  *
  * ## Utilities
