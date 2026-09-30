@@ -1,12 +1,11 @@
 ---
 title: Using "Just Fetch"
-description: Make requests with a standalone RequestManager and the Fetch handler without a Store, and know what you give up by skipping the Store's cache; draft page.
-draft: true
+description: Make requests with a standalone RequestManager and the Fetch handler without a Store, and know what you give up by skipping the Store's cache.
 ---
 
 # Using "Just Fetch"
 
-Throughout this guide we've shown usage of the `RequestManager` in context of a `Store`.
+Throughout this guide we've shown usage of the [`RequestManager`](/api/@warp-drive/core/classes/RequestManager) in context of a [`Store`](/api/@warp-drive/core/classes/Store).
 
 ::: code-group
 
@@ -40,7 +39,7 @@ This guide covers how to do so.
 
 ## Creating a RequestManager Without a Store
 
-A [RequestManager](/api/@warp-drive/core/classes/RequestManager) does not need a `Store`, and
+A `RequestManager` does not need a `Store`, and
 it is not specific to any library or framework. On its own it does not know how to fulfill a
 request, so register at least one handler with
 [use](/api/@warp-drive/core/classes/RequestManager#use). The
@@ -66,9 +65,9 @@ const { content } = await manager.request({ url: '/api/users' });
 ```
 
 The request accepts the same [request options](./index.md#request-options) as `store.request`,
-and [builders](./builders.md) work with it too. The `Future` it returns has the same `abort()`
+and [builders](./builders.md) work with it too. The [`Future`](/api/@warp-drive/core/request/types/Future) it returns has the same `abort()`
 and `getStream()` described in [Using The Response](./using-the-response.md), and you can pass
-it to `getRequestState` for [reactive control flow](./index.md#reactive-control-flow).
+it to [`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) for [reactive control flow](./index.md#reactive-control-flow).
 
 ```ts
 const future = manager.request({ url: '/api/users' });
@@ -89,7 +88,7 @@ Without a `Store` there is no cache, so:
 - Requests are never deduplicated or resolved from the cache, however often you make them.
 
 This also applies when the same `RequestManager` is shared with a `Store`, including calling
-`store.requestManager.request` directly. The `CacheHandler` only handles requests that carry a
+`store.requestManager.request` directly. The [`CacheHandler`](/api/@warp-drive/core/variables/CacheHandler) only handles requests that carry a
 `store`, and `store.request` is what adds it. Requests made directly with `manager.request`
 pass through the `CacheHandler` untouched, as described in
 [Determining If A Request Can Use The Cache](../caching/index.md#determining-if-a-request-can-use-the-cache).
