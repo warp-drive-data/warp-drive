@@ -484,22 +484,24 @@ export class LegacySupport {
         return;
       }
       const { definition, state } = relationship;
+      const field = this.store.schema.fields({ type: definition.inverseType }).get(definition.key);
+      assert(
+        `Expected a hasMany field definition for ${definition.inverseType}.${definition.key}`,
+        field && field.kind === 'hasMany'
+      );
+
       upgradeStore(this.store);
-      const adapter = this.store.adapterFor?.(definition.type);
+      // linksMode fetches through the request pipeline, never through an adapter
+      const isLinksMode = Boolean(field.options.linksMode);
+      const adapter = isLinksMode ? undefined : this.store.adapterFor?.(definition.type);
       const { isStale, hasDematerializedInverse, hasReceivedData, isEmpty, shouldForceReload } = state;
       const allInverseRecordsAreLoaded = areAllInverseRecordsLoaded(this.store, resource);
       const identifiers = resource.data;
       const shouldFindViaLink =
         resource.links &&
         resource.links.related &&
-        (typeof adapter?.findHasMany === 'function' || typeof identifiers === 'undefined') &&
+        (isLinksMode || typeof adapter?.findHasMany === 'function' || typeof identifiers === 'undefined') &&
         (shouldForceReload || hasDematerializedInverse || isStale || (!allInverseRecordsAreLoaded && !isEmpty));
-
-      const field = this.store.schema.fields({ type: definition.inverseType }).get(definition.key);
-      assert(
-        `Expected a hasMany field definition for ${definition.inverseType}.${definition.key}`,
-        field && field.kind === 'hasMany'
-      );
 
       const request = {
         useLink: shouldFindViaLink,
@@ -522,6 +524,14 @@ export class LegacySupport {
               method: 'GET' as const,
               records: identifiers || [],
               data: request,
+              // the cache reads the parent record and field from `options`
+              // to update the relationship from the response
+              options: {
+                field,
+                identifier: parentIdentifier,
+                links: resource.links,
+                meta: resource.meta,
+              },
               [EnableHydration]: false,
             }
           : {
