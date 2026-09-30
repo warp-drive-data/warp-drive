@@ -193,7 +193,7 @@ response content before passing along the chunk downstream.
 const FetchHandler = {
   async request(context) {
     const response = await fetch(context.request);
-    context.setResponse(reponse);
+    context.setResponse(response);
     context.setStream(response.clone().body);
 
     return response.json();
