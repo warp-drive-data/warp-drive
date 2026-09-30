@@ -1,9 +1,6 @@
 {
   "title": "Requests",
-  "items": [
-    "fetch-and-cache-data",
-    "write-a-request-builder"
-  ],
+  "items": ["fetch-and-cache-data", "write-a-request-builder"],
   "files": {
     "fetch-and-cache-data": {
       "title": "Fetch and Cache Data"
