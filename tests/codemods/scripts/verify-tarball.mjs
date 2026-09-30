@@ -9,7 +9,7 @@
  *                  (npm creates no bin link and fails only at invocation time)
  *  - the 5.9.0-alpha canary: a `dist/index.js` bundle with no shebang
  *
- * Usage: node verify-tarball.mjs --tarball <abs-path-to-tgz> [--pm npm|pnpm|bun]
+ * Usage: node verify-tarball.mjs --tarball <abs-path-to-tgz> [--pm npm|pnpm]
  *
  * Plain node + tar only (no bash, no deps) so it runs unmodified inside
  * a node:alpine container for musl coverage.
@@ -32,8 +32,8 @@ if (!tarball || !path.isAbsolute(tarball) || !existsSync(tarball)) {
   console.error(`--tarball must be an absolute path to an existing .tgz (got: ${tarball})`);
   process.exit(1);
 }
-if (!['npm', 'pnpm', 'bun'].includes(pm)) {
-  console.error(`--pm must be npm, pnpm, or bun (got: ${pm})`);
+if (!['npm', 'pnpm'].includes(pm)) {
+  console.error(`--pm must be npm or pnpm (got: ${pm})`);
   process.exit(1);
 }
 
@@ -130,7 +130,6 @@ writeFileSync(
 const installArgs = {
   npm: ['install', '--no-audit', '--no-fund'],
   pnpm: ['install'],
-  bun: ['install'],
 }[pm];
 
 check(`${pm} installs the tarball`, () => {

@@ -71,25 +71,6 @@ const CONTENT_ALLOWLIST = [
     lines: [/Bun\.serve/],
     why: 'Comments explaining how bind failures differ between Bun.serve and node servers.',
   },
-  {
-    path: /^tests\/codemods\/scripts\/verify-tarball\.mjs$/,
-    why: 'Smoke test that installs the packed codemods tarball the way npm, pnpm and bun users do.',
-  },
-  {
-    path: /^\.github\/workflows\/main\.yml$/,
-    lines: [
-      // the codemods-packaging job's bun consumer smoke test and its setup step
-      /^\s*# bun is installed here only to test consumers who install the codemods tarball with bun\.$/,
-      /^\s*# Pinned by hand: renovate no longer tracks bun\./,
-      /^\s*- uses: oven-sh\/setup-bun@[0-9a-f]{40} # v\d/,
-      /^\s*bun-version: \d+\.\d+\.\d+$/,
-      /^\s*- name: Smoke test \(bun\)$/,
-      /verify-tarball\.mjs --tarball "\$TARBALL" --pm bun$/,
-      // the comment explaining why yarn dlx is not covered by the smoke tests
-      /# directly rather than via the shebang, so npm\/pnpm\/bun already cover$/,
-    ],
-    why: 'Only the codemods consumer smoke test installs and runs bun in CI.',
-  },
 
   // ---- This file -----------------------------------------------------------
   {
