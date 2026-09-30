@@ -9,6 +9,17 @@ the object you hand to `store.request`. It does not send the request or talk to 
 describes one: the `url`, `method`, `headers` and `body`, how the response should be cached, and
 what type the response has.
 
+A builder doesn't need to be complex. Often it only returns an object with a `url`:
+
+```ts [builders/get-current-user.ts]
+export function getCurrentUser() {
+  return { url: '/api/users/me' };
+}
+```
+
+Most builders add a little more: a doc comment describing the endpoint, and the type of its
+response.
+
 ```ts [builders/get-current-user.ts]
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { User } from '#/data/types';
