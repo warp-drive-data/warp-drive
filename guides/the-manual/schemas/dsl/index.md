@@ -507,7 +507,7 @@ For LegacyMode resources only:
 @belongsTo(options: {
   type: string;
   async?: boolean;
-  inverse?: string;
+  inverse: string | null;
   sourceKey?: string;
 })
 ```
@@ -528,7 +528,8 @@ class Comment {
 
   @belongsTo({
     type: 'post',
-    async: true
+    async: true,
+    inverse: null
   })
   declare post: Post;
 }
@@ -540,7 +541,7 @@ class Comment {
 @hasMany(options: {
   type: string;
   async?: boolean;
-  inverse?: string;
+  inverse: string | null;
   sourceKey?: string;
 })
 ```
@@ -919,10 +920,10 @@ class User {
 
   @field declare email: string;
 
-  @belongsTo({ type: 'organization', async: true })
+  @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true })
+  @hasMany({ type: 'post', async: true, inverse: null })
   declare posts: Post[];
 
   @local declare isDestroyed: boolean;
@@ -1382,10 +1383,10 @@ export class User {
 
   @field declare email: string;
 
-  @belongsTo({ type: 'organization', async: true })
+  @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true })
+  @hasMany({ type: 'post', async: true, inverse: null })
   declare posts: Post[];
 }
 ```
