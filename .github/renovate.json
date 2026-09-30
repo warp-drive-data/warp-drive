@@ -62,8 +62,15 @@
     {
       "matchManagers": ["github-actions"],
       "groupName": "github-actions"
+    },
+    {
+      "matchFileNames": ["pnpm-lock.yaml"],
+      "rebaseWhen": "behind-base-branch"
     }
   ],
+  "lockFileMaintenance": {
+    "rebaseWhen": "behind-base-branch"
+  },
   "minimumReleaseAge": "3 days",
   "rangeStrategy": "bump",
   "prHourlyLimit": 10,
