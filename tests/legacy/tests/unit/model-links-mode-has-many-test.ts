@@ -1,6 +1,6 @@
+import { CacheHandler, RequestManager } from '@warp-drive/core';
 /* eslint-disable warp-drive/no-legacy-request-patterns -- these tests cover the legacy reload API */
 import type { Handler } from '@warp-drive/core/request';
-import { CacheHandler, RequestManager } from '@warp-drive/core';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPIAdapter } from '@warp-drive/legacy/adapter/json-api';
