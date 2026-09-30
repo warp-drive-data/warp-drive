@@ -1,7 +1,7 @@
-#!/usr/bin/env node
+#!/usr/bin/env bun
 /**
- * Enrich `public-exports-mapping.json` with replacement information from
- * the `warp-drive-packages` source tree.
+ * Enrich `public-exports-mapping-5.5.json` with replacement information from
+ * the `warp-drive-packages` source tree (run with Bun or Node).
  *
  * Added: Interactive Mode
  *  - Pass `--interactive` (or `-I`) to be prompted for each mapping entry.
@@ -54,12 +54,10 @@
  *  - Small penalty for extra unmatched segments in candidate.
  *
  * Usage:
- *   node scripts/enrich-public-exports-mapping.ts
- *     --in data/public-exports-mapping.json
- *     --out data/public-exports-mapping.enriched.json
- *     [--wd public-exports-mapping-wd.json]
- *     [--root <repo root that mapping `filePath`s are relative to; defaults to this repo>]
- *     [--interactive] [--debug]
+ *   bun scripts/public-exports-mapping/enrich.ts [--interactive] [--debug]
+ *
+ *   Defaults read and write the JSON files next to this script; `--in`, `--wd` and
+ *   `--out` override them.
  */
 
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
@@ -88,7 +86,6 @@ interface ScoredCandidate extends ExportCandidate {
 interface CliOptions {
   in: string;
   wd: string;
-  root: string;
   out?: string;
   debug: boolean;
   interactive: boolean;
@@ -98,9 +95,9 @@ interface CliOptions {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const DEFAULT_INPUT = resolve(__dirname, '..', 'public-exports-mapping-5.5.json');
-const DEFAULT_WD = resolve(__dirname, '..', 'public-exports-mapping-wd.json');
-const DEFAULT_ROOT = resolve(__dirname, '..');
+const REPO_ROOT = resolve(__dirname, '..', '..');
+const DEFAULT_INPUT = resolve(__dirname, 'public-exports-mapping-5.5.json');
+const DEFAULT_WD = resolve(__dirname, 'public-exports-mapping-wd.json');
 
 // Scoring constants
 const SCORE_SEGMENT_MATCH = 3;
@@ -122,14 +119,7 @@ function readJsonFile<T>(filePath: string): T {
 }
 function parseArgs(): CliOptions {
   const args = process.argv.slice(2);
-  const opts: CliOptions = {
-    in: DEFAULT_INPUT,
-    wd: DEFAULT_WD,
-    root: DEFAULT_ROOT,
-    debug: false,
-    interactive: false,
-    showSnippets: false,
-  };
+  const opts: CliOptions = { in: DEFAULT_INPUT, wd: DEFAULT_WD, debug: false, interactive: false, showSnippets: false };
   for (let i = 0; i < args.length; i++) {
     const a = args[i];
     if ((a === '--in' || a === '-i') && args[i + 1]) {
@@ -138,8 +128,6 @@ function parseArgs(): CliOptions {
       opts.wd = resolve(process.cwd(), args[++i]);
     } else if ((a === '--out' || a === '-o') && args[i + 1]) {
       opts.out = resolve(process.cwd(), args[++i]);
-    } else if (a === '--root' && args[i + 1]) {
-      opts.root = resolve(process.cwd(), args[++i]);
     } else if (a === '--debug') {
       opts.debug = true;
     } else if (a === '--interactive' || a === '-I') {
@@ -148,7 +136,7 @@ function parseArgs(): CliOptions {
       opts.showSnippets = true;
     } else if (a === '--help' || a === '-h') {
       console.log(
-        `Usage: enrich-public-exports-mapping [--in path] [--wd path] [--out path] [--root path] [--interactive] [--debug] [--show-snippets]\n\n` +
+        `Usage: enrich-public-exports-mapping [--in path] [--wd path] [--out path] [--interactive] [--debug] [--show-snippets]\n\n` +
           `Interactive prompt commands:\n` +
           `  v <n>   View snippet for candidate at index n\n` +
           `  vo      View snippet for the original mapping file/export\n` +
@@ -810,7 +798,7 @@ async function processEntry(
 
 /* -------------------------------- Entry Point -------------------------------- */
 async function main() {
-  const { in: inFile, wd: wdFile, root: repoRoot, out, debug, interactive, showSnippets } = parseArgs();
+  const { in: inFile, wd: wdFile, out, debug, interactive, showSnippets } = parseArgs();
 
   const entries: MappingEntry[] = readJsonFile(inFile);
 
@@ -822,7 +810,7 @@ async function main() {
   if (interactive && !process.stdin.isTTY) {
     console.warn('Interactive mode requested but stdin is not a TTY. Proceeding non-interactively.');
   }
-  const enriched = await enrich(entries, repoRoot, exportIndex, {
+  const enriched = await enrich(entries, REPO_ROOT, exportIndex, {
     debug,
     interactive: interactive && process.stdin.isTTY,
     showSnippets: !!showSnippets,
