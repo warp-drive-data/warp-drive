@@ -923,7 +923,7 @@ class User {
   @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true, inverse: null })
+  @hasMany({ type: 'post', async: true, inverse: 'author' })
   declare posts: Post[];
 
   @local declare isDestroyed: boolean;
@@ -1365,8 +1365,8 @@ export default class UserModel extends Model {
   @attr('string') firstName;
   @attr('string') lastName;
   @attr('string') email;
-  @belongsTo('organization', { async: true }) organization;
-  @hasMany('post', { async: true }) posts;
+  @belongsTo('organization', { async: true, inverse: null }) organization;
+  @hasMany('post', { async: true, inverse: 'author' }) posts;
 }
 ```
 
@@ -1386,7 +1386,7 @@ export class User {
   @belongsTo({ type: 'organization', async: true, inverse: null })
   declare organization: Organization;
 
-  @hasMany({ type: 'post', async: true, inverse: null })
+  @hasMany({ type: 'post', async: true, inverse: 'author' })
   declare posts: Post[];
 }
 ```
