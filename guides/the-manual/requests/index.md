@@ -307,7 +307,7 @@ Of course, writing requests so manually quickly gets repetitive.
 
 ***Warp*Drive** offers two abstractions for helping to write organized, reusable requests.
 
-- [Builders](./builders.md) - simple functions that produce a json request object, often nothing more than a `url`
+- [Builders](./builders.md) - documented, reusable functions that produce a json request object, sometimes as simple as just a `{ url }`
 - [Handlers](./handlers.md) - middleware that enable enhancing, modifying, or responding to requests
 
 Here's an example of how the requests above could be expressed as builders:
