@@ -7,7 +7,7 @@ description: Render request states declaratively with the Request component or g
 ***Warp*Drive** offers both a JavaScript API and a Component API for working with
 requests. Both APIs offer a clean way of working with asynchronous data via reactive
 values and states instead of needing to switch into imperative code or async/await. This
-approach enables automatic cleanup when components dismount, unlocking intelligent lifecycle management.
+approach enables automatic cleanup when components dismount, unlocking [Intelligent Lifecycle Management]()
 
 :::tabs
 
