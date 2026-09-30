@@ -1,50 +1,119 @@
 ---
-description: Write pure builder functions that return typed RequestInfo objects, and produce stable RequestKeys with sortQueryParams, buildQueryParams, and filterEmpty.
+description: Write documented, well-named builder functions that form a typed, cross-framework SDK for your API, produce stable RequestKeys, and drive the Request component and your own components.
 ---
 
 # Builders
 
-Builders are simple functions that produce a json [request object](/api/@warp-drive/core/types/request/types/RequestInfo). Builders help you to write organized, reusable requests.
+A builder is a function that returns a [request object](/api/@warp-drive/core/types/request/types/RequestInfo),
+the object you hand to `store.request`. It does not send the request or talk to the network; it
+describes one: the `url`, `method`, `headers` and `body`, how the response should be cached, and
+what type the response has.
 
-The simplest builder could produce an object with just a `url`, though usually builders will want to provide a few ***Warp*Drive** specific properties as well set the request method, headers and any other desired [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/RequestInit) properties.
+A builder doesn't need to be complex. Often it only returns an object with a `url`:
 
-We recommend builder functions follow a few guidelines
-- they should be pure functions
-- they should set the [response type](./typing-requests.md) for the request they generate
-- they should rarely rely on [Handlers](./handlers.md) to provide additional
-  info critical to the request.
-- they should mirror either your endpoints or your business logic
-- their name should convey what they do
+```ts [builders/get-current-user.ts]
+export function getCurrentUser() {
+  return { url: '/api/users/me' };
+}
+```
 
+Most builders add a little more: a doc comment describing the endpoint, and the type of its
+response.
 
-Here's an example:
+```ts [builders/get-current-user.ts]
+import { withReactiveResponse } from '@warp-drive/core/request';
+import type { User } from '#/data/types';
+
+/**
+ * Gets the user who is signed in to this session.
+ *
+ * - Endpoint: `GET /api/users/me`
+ */
+export function getCurrentUser() {
+  return withReactiveResponse<User>({ url: '/api/users/me' });
+}
+```
+
+```ts
+import { getCurrentUser } from '#/builders/get-current-user.ts';
+
+const { content } = await store.request(getCurrentUser());
+```
+
+## An SDK For Your API
+
+Taken together, an app's builders are its SDK: the one place that says how the app talks to each
+of its endpoints and why. The rest of the app asks for data by calling a builder, and never needs
+to know how the request behind it is put together.
+
+A builder captures intent. `getCompanyPreviewList(search)` says what the caller wants. The builder
+knows that the endpoint is a `QUERY` sent as a `POST`, which fields and related resources a preview
+needs, how the results are paged and sorted, and which cached requests go stale when a company is
+created. That knowledge is business logic, and a builder keeps it in one place instead of spreading
+it across every component that shows a company.
+
+A request object written inline where it is used can't do any of this. A named function can:
+
+- **It documents its contract.** A doc comment on the builder can say what the endpoint does, what
+  each argument means, what comes back, how it is paged, and what it invalidates. Editors show that
+  comment wherever the builder is used.
+- **It can be found by name.** Type `get` in an editor and autocomplete lists the requests the app
+  knows how to make. A name like `getCompanyPreviewList` tells a reader what the request is for
+  before they open it.
+- **It is reusable.** The same builder serves every component that needs the data, both the JS API
+  and the Component API, and your test suite.
+- **It works in any framework.** A builder is a plain function with no framework imports, so the
+  same SDK works in Ember, React, Vue, Svelte, or plain JavaScript, and can be shared by apps
+  built on different frameworks.
+
+Give every request a builder, even one that is only issued once. It costs one function, and it makes
+the request easy to find, test, review, and change later.
+
+## Writing Builders
+
+A set of builders is only useful as an SDK if readers can find a builder and trust what it says.
+
+- **Document every builder.** Describe what the request is for and how the endpoint behaves: its
+  arguments, what it returns, paging, sorting, permissions, and which cached requests it invalidates.
+- **Give it a name that says what it does**, such as `getCompanyPreviewList` or `createContentLike`.
+  Name builders after either your endpoints or your business logic, and pick one convention for the
+  whole SDK.
+- **Keep builders in one place**, such as a `builders/` directory or their own package, so the whole
+  SDK can be browsed, reused across the app, and shared with other apps.
+- **Keep builders pure.** The same arguments should always produce the same request.
+- **Set the [response type](./typing-requests.md)** on the request object a builder returns.
+- **Rarely rely on [Handlers](./handlers.md)** to add information the request can't work without.
+  Handlers are for concerns that apply to many requests, such as authentication.
+
+Here's a builder that follows those rules.
 
 #### Get A List Of Partial Data
 
-Let's say you have a feature that shows a paginated and sorted list of companies. The request
-for this data will load just the few company fields it needs, as well as a minimal subset of
-the related data for the company's ceo and headquarters.
-
-The list can be searched by the app's users, and the `QUERY` endpoint is implemented using
-the http `POST` method. You want to cache the requests to enable deduping and avoid repeating
-queries.
-
-A builder lets you quickly abstract all of this nuance.
+Say a feature shows a searchable, paginated, sorted list of companies. The request loads only the few
+company fields the list shows, plus a small subset of the related data for each company's CEO and
+headquarters. The endpoint is a `QUERY` sent using the http `POST` method, and you want its results
+cached so that repeated searches are deduplicated.
 
 :::tabs
 
 == Builder
 
-```ts [builders/getCompanyPreviewList.ts]
+```ts [builders/get-company-preview-list.ts]
 import { withReactiveResponse } from '@warp-drive/core/request';
-import { CompanyPreview } from '#/data/types';
+import type { CompanyPreview } from '#/data/types';
 
 /**
- * Gets a list of company previews with info about their CEO and
- * headquarters location sorted alphabetically by name ascending.
- * 
- * - Paginated (limit 25)
- * - See also {@link CompanyPreview}
+ * Searches companies by name and returns the first page of
+ * {@link CompanyPreview}s, each with its CEO and headquarters.
+ *
+ * - Endpoint: `QUERY /companies`, sent as a `POST` with the
+ *   `X-HTTP-METHOD-OVERRIDE` header.
+ * - Sorted alphabetically by name, ascending.
+ * - Paginated, 25 companies per page; this builder requests the first page.
+ * - Loads only the fields a preview renders.
+ * - Cached by search text, and invalidated whenever a company is created.
+ *
+ * @param search text matched against the company name
  */
 export function getCompanyPreviewList(search: string) {
   const url = `/companies`;
@@ -62,6 +131,7 @@ export function getCompanyPreviewList(search: string) {
     },
     sort: ['name:asc']
   });
+  // the body's keys are always written in the same order, so this key is stable
   const cacheKey = `${url}::${body}`;
 
   return withReactiveResponse<CompanyPreview[]>({
@@ -76,6 +146,7 @@ export function getCompanyPreviewList(search: string) {
       'X-HTTP-METHOD-OVERRIDE': 'QUERY'
     },
     body
+  });
 }
 ```
 
@@ -115,12 +186,12 @@ export type CompanyPreview = Mask<
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 import { Request } from '@warp-drive/ember';
-import { getCompanyPreviewList } from '#/data/builders';
+import { getCompanyPreviewList } from '#/builders/get-company-preview-list.ts';
 
 export default class CompanyPreviewList extends Component<{ Args: { search: string } }> {
   @cached
   get searchQuery() {
-    return getCompanyPreviewList(this.search);
+    return getCompanyPreviewList(this.args.search);
   }
 
   <template>
@@ -142,26 +213,26 @@ export default class CompanyPreviewList extends Component<{ Args: { search: stri
 
 :::
 
-## When To Use A Builder
+## Typed Requests Without Casting
 
-Even requests that are only issued once should be given a builder. In addition to making it
-easy to issue the same request from within your test suite, this will ensure that future
-refactoring or expansion is easy to achieve and review.
+A builder is the only way to give a request a response type without a cast. Call
+[withResponseType](/api/@warp-drive/core/request/functions/withResponseType) or
+[withReactiveResponse](/api/@warp-drive/core/request/functions/withReactiveResponse) inside the
+builder, and every caller gets the type through inference. The type is declared once, next to the
+endpoint it describes, as part of the builder's contract.
 
-Builders keep your code neat, making it easy to focus on the intent instead of the specifics.
+Adding the type anywhere else is a cast. That includes calling `withResponseType` inline where the
+request is made, or writing `as` on the result: the caller asserts a type for a request it didn't
+define, and nothing keeps that assertion in step with the endpoint. Templating syntaxes that don't
+accept TypeScript generics can't express a cast at all, while a builder's type reaches `<Request />`
+the same way it reaches `store.request`.
 
-Because builders are functions that can be invoked anywhere, they also bridge between the
-component API and the JS API seamlessly - even in templating syntaxes where casting json 
-to a type or invoking a function with generics would not otherwise work. Builders, by nature,
-enable sharing typed requests cross-framework!
-
-Builders also help to ensure that for a given set of args the same [cache key](/api/@warp-drive/core/types/identifier/types/RequestKey) is produced. Generating stable cache keys is harder
-than it might seem, but builders help to simplify this and ***Warp*Drive** provides additional
-[utilities](/api/@warp-drive/utilities/) to make it even easier still.
+[Typing Requests](./typing-requests.md) covers the response, `meta`, and error types a builder can
+declare.
 
 ## Cache Keys for Requests
 
-In order for two requests to be considered the same, their `RequestKey` must match. For GET requests
+In order for two requests to be considered the same, their [RequestKey](/api/@warp-drive/core/types/identifier/types/RequestKey), also called the CacheKey, must match. For GET requests
 the `RequestKey` is typically the `url`, while queries issued using a `POST` request (or other means)
 may need to explicitly set [cacheOptions.key](/api/@warp-drive/core/types/request/types/CacheOptions#key).
 
@@ -229,4 +300,295 @@ pass state you also render — a tracked array of filter values, say — without
 request reordering what the user sees.
 :::
 
+### Request The Same Data Anywhere
 
+A stable RequestKey means you don't have to load data in one component and pass it down to the
+others. Any component that needs the current user can call `getCurrentUser()` itself. While a
+request is in flight, other requests with the same RequestKey wait on it instead of starting their
+own, so the network sees one request however many components make it. Once the response is cached,
+later calls are served from the cache until the [CachePolicy](../caching/index.md) considers it
+stale.
+
+Here, the page header and a settings panel several components below it each ask for the current
+user, and neither receives it as an argument.
+
+::: code-group
+
+```glimmer-ts [Ember]
+import { Request } from '@warp-drive/ember';
+import { getCurrentUser } from '#/builders/get-current-user.ts';
+
+// app/components/app-header.gts
+export const AppHeader = <template>
+  <Request @query={{(getCurrentUser)}}>
+    <:content as |result|>Signed in as {{result.data.name}}</:content>
+  </Request>
+</template>;
+
+// app/components/settings/email-preferences.gts
+export const EmailPreferences = <template>
+  <Request @query={{(getCurrentUser)}}>
+    <:content as |result|>Emails are sent to {{result.data.email}}</:content>
+  </Request>
+</template>;
+```
+
+```tsx [React]
+import { Request } from '@warp-drive/react';
+import { getCurrentUser } from '#/builders/get-current-user.ts';
+
+// app/components/app-header.tsx
+export function AppHeader() {
+  return <Request
+    query={getCurrentUser()}
+    states={{
+      content: ({ result }) => <>Signed in as {result.data.name}</>,
+    }}
+  />;
+}
+
+// app/components/settings/email-preferences.tsx
+export function EmailPreferences() {
+  return <Request
+    query={getCurrentUser()}
+    states={{
+      content: ({ result }) => <>Emails are sent to {result.data.email}</>,
+    }}
+  />;
+}
+```
+
+```ts [JS API (any framework)]
+import { getCurrentUser } from '#/builders/get-current-user.ts';
+import { store } from '#/data/store.ts';
+
+// Two unrelated parts of the app request the same data at the same time.
+const [header, settings] = await Promise.all([
+  store.request(getCurrentUser()),
+  store.request(getCurrentUser()),
+]);
+
+// The network saw one request, and both results hold the same user.
+header.content.data === settings.content.data; // true
+```
+
+```.svelte [Svelte]
+Coming Soon!
+```
+
+```.vue [Vue]
+Coming Soon!
+```
+
+:::
+
+This only works when the RequestKey is the same every time, which is why producing a stable one is
+a builder's job. A request with no RequestKey, such as a `POST` that doesn't set
+`cacheOptions.key`, is neither deduplicated nor cached.
+
+## Passing Builders To Components
+
+Because a builder returns a plain object, its result can be passed anywhere a request is expected.
+
+The most common place is the `@query` argument of the `<Request />` component
+([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)),
+as the examples above show. [Reactive Control Flow](../reactivity/control-flow.md) covers the
+states it renders.
+
+The same pattern works for your own components. A select, tree, or table can take a request as an
+argument and use it to load its options, children, or rows. The component knows how to render the
+data without knowing which endpoint it comes from, and the parent decides what to load by choosing
+the builder.
+
+:::tabs
+
+== Builder
+
+```ts [builders/search-users.ts]
+import { withReactiveResponse } from '@warp-drive/core/request';
+import { buildQueryParams } from '@warp-drive/utilities';
+import type { User } from '#/data/types';
+
+/**
+ * Searches active users by name or email, for pickers such as `UserSelect`.
+ *
+ * - Endpoint: `GET /api/users`
+ * - Returns at most 20 {@link User}s, sorted by name, ascending.
+ * - Deactivated users are never returned.
+ *
+ * @param term text matched against the user's name and email
+ */
+export function searchUsers(term: string) {
+  const params = buildQueryParams({
+    search: term,
+    'filter[active]': true,
+    sort: 'name',
+    'page[limit]': 20,
+  });
+
+  return withReactiveResponse<User[]>({ url: `/api/users?${params}` });
+}
+```
+
+== Usage
+
+::: code-group
+
+```glimmer-ts [Ember]
+import Component from '@glimmer/component';
+import { tracked } from '@glimmer/tracking';
+import { searchUsers } from '#/builders/search-users.ts';
+import { UserSelect } from '#/components/user-select.gts';
+
+export default class AssignReviewer extends Component {
+  @tracked term = '';
+
+  updateTerm = (term: string) => (this.term = term);
+
+  <template>
+    <UserSelect @query={{searchUsers this.term}} @onSearch={{this.updateTerm}} />
+  </template>
+}
+```
+
+```tsx [React]
+import { useState } from 'react';
+import { searchUsers } from '#/builders/search-users.ts';
+import { UserSelect } from '#/components/user-select.tsx';
+
+export function AssignReviewer() {
+  const [term, setTerm] = useState('');
+
+  return <UserSelect query={searchUsers(term)} onSearch={setTerm} />;
+}
+```
+
+```.svelte [Svelte]
+Coming Soon!
+```
+
+```.vue [Vue]
+Coming Soon!
+```
+
+== Component
+
+::: code-group
+
+```glimmer-ts [Ember]
+import type { TOC } from '@ember/component/template-only';
+import { on } from '@ember/modifier';
+import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
+import type { RequestInfo } from '@warp-drive/core/types/request';
+import { Request } from '@warp-drive/ember';
+import type { User } from '#/data/types';
+
+interface UserSelectSignature {
+  Args: {
+    /** the request that loads the options, usually a builder's result */
+    query: RequestInfo<ReactiveDataDocument<User[]>>;
+    onSearch: (term: string) => void;
+  };
+}
+
+const updateSearch = (onSearch: (term: string) => void) => (event: Event) =>
+  onSearch((event.target as HTMLInputElement).value);
+
+export const UserSelect: TOC<UserSelectSignature> = <template>
+  <input type="search" {{on "input" (updateSearch @onSearch)}} />
+  <Request @query={{@query}}>
+    <:loading>Searching…</:loading>
+    <:content as |result|>
+      <select>
+        {{#each result.data as |user|}}
+          <option value={{user.id}}>{{user.name}}</option>
+        {{/each}}
+      </select>
+    </:content>
+  </Request>
+</template>;
+```
+
+```tsx [React]
+import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
+import type { RequestInfo } from '@warp-drive/core/types/request';
+import { Request } from '@warp-drive/react';
+import type { User } from '#/data/types';
+
+interface UserSelectProps {
+  /** the request that loads the options, usually a builder's result */
+  query: RequestInfo<ReactiveDataDocument<User[]>>;
+  onSearch: (term: string) => void;
+}
+
+export function UserSelect({ query, onSearch }: UserSelectProps) {
+  return <>
+    <input type="search" onChange={(event) => onSearch(event.target.value)} />
+    <Request
+      query={query}
+      states={{
+        loading: () => <>Searching…</>,
+        content: ({ result }) => (
+          <select>
+            {result.data.map((user) => (
+              <option key={user.id} value={user.id}>{user.name}</option>
+            ))}
+          </select>
+        ),
+      }}
+    />
+  </>;
+}
+```
+
+```.svelte [Svelte]
+Coming Soon!
+```
+
+```.vue [Vue]
+Coming Soon!
+```
+
+:::
+
+The component's argument is typed with the response it expects, so TypeScript rejects a request
+that returns something else, and the options are typed without a cast.
+
+## Built-in Builders
+
+***Warp*Drive** ships general-purpose builders for migrating to the request pipeline and for getting
+started quickly. They are a starting point, not the goal: a general-purpose builder can't document,
+type, or encode your app's endpoints and business logic the way your own builders can.
+
+- The builders in [`@warp-drive/legacy/compat/builders`](/api/@warp-drive/legacy/compat/builders/)
+  help apps move off deprecated store methods such as `findRecord` and `query` while they still use
+  legacy adapters and serializers.
+- The builders in `@warp-drive/utilities` help apps move from legacy requests and those compat
+  builders onto the modern request pipeline. Each API format has `findRecord`, `query`,
+  `createRecord`, `updateRecord` and `deleteRecord`:
+  - [`@warp-drive/utilities/json-api`](/api/@warp-drive/utilities/json-api/) for
+    [{json:api}](https://jsonapi.org/), which also has `postQuery`
+  - [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/)
+  - [`@warp-drive/utilities/active-record`](/api/@warp-drive/utilities/active-record/)
+
+  They usually need some tuning for a particular app.
+
+In a mature app, keep general-purpose builders like these as internal infrastructure for building
+more specific builders, rather than calling them from the rest of the app:
+
+```ts [builders/get-user.ts]
+import { findRecord } from '@warp-drive/utilities/json-api';
+import type { User } from '#/data/types';
+
+/**
+ * Gets a user by id, with their team.
+ *
+ * - Endpoint: `GET /api/users/:id?include=team`
+ */
+export function getUser(id: string) {
+  return findRecord<User>('user', id, { include: ['team'] });
+}
+```
+
+The rest of the app calls `getUser(id)`, which says what it wants and carries its own documentation,
+instead of calling `findRecord('user', id)` directly.

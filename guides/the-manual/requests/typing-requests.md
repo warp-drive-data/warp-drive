@@ -1,10 +1,12 @@
 ---
-description: Type request responses with withResponseType and withReactiveResponse, including the ReactiveDataDocument meta, errors, and error-meta type params.
+description: Type request responses in builders with withResponseType and withReactiveResponse, without casting, including the ReactiveDataDocument meta, errors, and error-meta type params.
 ---
 
 # Typing Requests
 
-Use [withResponseType](/api/@warp-drive/core/request/functions/withResponseType) to supply the response type.
+Supply a request's response type in its [builder](./builders.md), using
+[withResponseType](/api/@warp-drive/core/request/functions/withResponseType). The type becomes part
+of the builder's contract, and every caller gets it through inference.
 
 ```ts
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
@@ -16,37 +18,34 @@ interface User {
   lastName: string;
 }
 
-const result = await store.request(
-  withResponseType<ReactiveDataDocument<User>>({ // [!code focus:3]
-    url: '/users/1'
-  })
-);
+/**
+ * Gets a user by id.
+ */
+export function getUser(id: string) { // [!code focus:5]
+  return withResponseType<ReactiveDataDocument<User>>({
+    url: `/users/${id}`
+  });
+}
+
+const result = await store.request(getUser('1')); // [!code focus]
 
 // [!code focus:2]
 result.content.data.firstName; // will have type string
 ```
 
-When using the component API, if the templating syntax does not allow TypeScript
-generics, create a [builder](./builders.md) function.
+A builder is the only way to type a request without a cast. Calling `withResponseType` inline where
+the request is made, or writing `as` on the result, asserts a type for a request that the caller
+didn't define. See [Typed Requests Without Casting](./builders.md#typed-requests-without-casting).
+
+The same builder types the Component API, including in templating syntaxes that don't allow
+TypeScript generics:
 
 ```glimmer-ts
-import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
-import { withResponseType } from '@warp-drive/core/request';
-
-interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-}
-
-function getUser() { // [!code focus:5]
-  return withResponseType<ReactiveDataDocument<User>>({
-    url: '/users/1'
-  });
-}
+import { Request } from '@warp-drive/ember';
+import { getUser } from '#/builders/get-user.ts';
 
 export default <template>
-  <Request @query={{(getUser)}}> <!-- [!code focus] -->
+  <Request @query={{getUser @userId}}> <!-- [!code focus] -->
     <:content as |result|>
       <h1>Hello {{result.data.firstName}}!</h1>
     </:content>
@@ -244,8 +243,11 @@ An endpoint that returns only `meta` and no primary data — a `count`, for inst
 resource type to name. Pass `never` for the first param:
 
 ```ts
-const options = withReactiveResponse<never, { total: number }>({ url: '/users/count' });
-const { content } = await store.request(options);
+function getUserCount() {
+  return withReactiveResponse<never, { total: number }>({ url: '/users/count' });
+}
+
+const { content } = await store.request(getUserCount());
 
 content.meta.total; // number
 ```
@@ -279,7 +281,9 @@ specifies an error shape. Supply your own when you know it:
 ```ts
 type MyError = { code: string; message: string };
 
-const options = withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
+function getUsers() {
+  return withReactiveResponse<User[], PageMeta, MyError>({ url: '/users' });
+}
 ```
 
 ### Typing the Error Document's `meta`

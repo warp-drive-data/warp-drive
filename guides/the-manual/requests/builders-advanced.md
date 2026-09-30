@@ -12,8 +12,6 @@ draft: true
 
 ### GraphQL with WarpDrive
 
-## Best Practices For Builders
-
 ## Composing Builders
 
 ## Builder Utilities

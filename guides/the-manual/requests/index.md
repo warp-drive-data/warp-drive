@@ -307,7 +307,7 @@ Of course, writing requests so manually quickly gets repetitive.
 
 ***Warp*Drive** offers two abstractions for helping to write organized, reusable requests.
 
-- [Builders](./builders.md) - simple functions that produce a json request object
+- [Builders](./builders.md) - documented, reusable functions that produce a json request object, sometimes as simple as just a `{ url }`
 - [Handlers](./handlers.md) - middleware that enable enhancing, modifying, or responding to requests
 
 Here's an example of how the requests above could be expressed as builders:
@@ -389,7 +389,12 @@ const { content } = await store.request(createContentLike({
 
 :::
 
-Builders make it easy to quickly write shareable, reusable requests with [typed responses](./typing-requests.md) that mirror your application's capabilities and critical business logic.
+Together, an app's builders form an [SDK for its API](./builders.md#an-sdk-for-your-api): named,
+documented functions that capture what each endpoint does and the business logic around it, that
+editors autocomplete, and that work the same in any framework. They are also the only way to give a
+request a [typed response](./typing-requests.md) without a cast, and because a builder produces the
+same RequestKey every time, components can make the same request wherever they need the data and
+share one response instead of passing it down.
 
 We build on this foundation to give access to a powerful pipeline for managing requests.
 
