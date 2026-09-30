@@ -401,7 +401,7 @@ catalog:
   react: ^19.3.0
   react-dom: ^19.3.0
   semver: ^7.8.5
-  sharp: ^0.35.4
+  sharp: ^0.35.5
   silent-error: ^1.1.1
   svelte: ^5.57.1
   svgo: ^4.1.0
