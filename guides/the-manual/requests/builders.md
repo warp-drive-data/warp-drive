@@ -109,7 +109,8 @@ import type { CompanyPreview } from '#/data/types';
  * - Endpoint: `QUERY /companies`, sent as a `POST` with the
  *   `X-HTTP-METHOD-OVERRIDE` header.
  * - Sorted alphabetically by name, ascending.
- * - Paginated, 25 companies per page; this builder requests the first page.
+ * - Paginated, 25 companies per page; this builder requests the first
+ *   page, and later pages are loaded by following the response's links.
  * - Loads only the fields a preview renders.
  * - Cached by search text, and invalidated whenever a company is created.
  *
@@ -385,6 +386,95 @@ Coming Soon!
 This only works when the RequestKey is the same every time, which is why producing a stable one is
 a builder's job. A request with no RequestKey, such as a `POST` that doesn't set
 `cacheOptions.key`, is neither deduplicated nor cached.
+
+## Paginating With Links
+
+A builder for a paginated collection requests the first page and nothing more. It doesn't take a
+`page`, `offset` or `cursor` argument. The response to that first request should carry `links`
+to the pages around it, and every later page is loaded by following one of them.
+
+```ts
+import { searchUsers } from '#/builders/search-users.ts';
+import { store } from '#/data/store.ts';
+
+// a GET builder whose endpoint returns links with each page
+const { content: firstPage } = await store.request(searchUsers('ada'));
+
+// follows firstPage.links.next, resolving to null when there is no next page
+const secondPage = await firstPage.next();
+```
+
+The response's [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument) exposes
+`links` and `meta`, and its `next()`, `prev()`, `first()` and `last()` methods request the
+matching link.
+
+Paginating this way keeps pagination out of the builder's contract:
+
+- **The server owns the paging scheme.** Whether the API pages by number, offset, cursor or
+  keyset, the builder's signature stays the same, and a change to that scheme doesn't ripple
+  through every place the app calls the builder.
+- **Every page is keyed by its link.** A link is a `GET` URL, so each page gets a stable
+  RequestKey without the builder computing one, and two components following the same link
+  share one request.
+- **The app never rebuilds a request.** Code that loads the next page doesn't need to remember
+  the search text, filters, fields and sort that the first page was requested with. They are
+  already in the link.
+- **Pagination utilities work unchanged.** The experimental
+  [Pagination](../experiments/pagination.md) primitives, such as
+  [getPaginationState](/api/@warp-drive/experiments/pagination/functions/getPaginationState), and
+  the Ember [`<Paginate />`](/api/@warp-drive/ember/experiments/classes/Paginate) component turn a
+  first-page request into a numbered pager or an infinite list by following these links. Most
+  apps with paginated lists will want them.
+
+If your API doesn't return links for a `GET` collection yet, a
+[handler](./handlers.md) can add them to each response before it reaches the cache, because
+everything it needs is in the request's URL.
+
+### Paginating A `POST` Or `QUERY` Request
+
+Requests like `getCompanyPreviewList` above, which send their query in the body of a `POST` (or
+an http `QUERY`), are harder. A link is a URL, and a URL has no body, so the server has nothing
+it can put in a `next` link that means "the same query, 25 results further on".
+
+The recommended fix is on the server: have it return links anyway, by making the query
+addressable by URL. There are two common ways to do that.
+
+- **Persist the query.** When the server receives the first `POST`, it stores the query body
+  under an id, such as a hash of the normalized body, and returns links that name that id
+  instead of repeating the body:
+
+  ```json
+  {
+    "data": [],
+    "links": {
+      "self": "/companies/queries/7f3a9c?page[offset]=0&page[limit]=25",
+      "next": "/companies/queries/7f3a9c?page[offset]=25&page[limit]=25"
+    }
+  }
+  ```
+
+  Following `next` is a plain `GET`. The server looks up the stored query by its id and applies
+  the page parameters from the URL. Hashing the body means the same query always maps to the same
+  id, so the server stores it once however many times it is run; include the user in the hash, or
+  check access on every page, when results depend on who is asking. A stored query only needs to
+  outlive how long a client might keep paging through the results. Once it expires, a request for
+  one of its links should fail with an error the app can handle by requesting the first page
+  again.
+- **Encode the continuation into the link.** A server that can't store queries can serialize
+  what it needs to resume, such as the query and the position of the last result returned, into
+  an opaque, signed cursor, and return a link like `/companies/search?cursor=eyJxIjp7...`. This
+  keeps the server stateless, at the cost of longer URLs.
+
+Either way, the builder stays exactly as written above, and the app pages through the results
+with `next()` like any other collection.
+
+When the server can't do either, a handler can generate links on the client instead: it
+remembers each `POST` it sends, gives the response a `next` link naming it, and turns a request
+for that link back into a `POST` for the following page.
+[Paginating `POST` Queries With A Handler](../cookbook/paginating-post-queries.md) walks through
+one. Treat it as a fallback, not a first choice: links generated on the client exist only in the
+app's memory, so they can't be bookmarked, shared or restored after a reload the way server links
+can.
 
 ## Passing Builders To Components
 

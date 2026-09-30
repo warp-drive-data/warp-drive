@@ -451,5 +451,7 @@ As well as a suite of useful [utilities](/api/@warp-drive/utilities/handlers/) f
 :::tip Paginated collections
 A request that loads one page of a collection can drive a whole pager or infinite list. The
 experimental [Pagination](../experiments/pagination.md) primitives and the Ember [`<Paginate />`](/api/@warp-drive/ember/experiments/classes/Paginate) component
-build on the requests described here.
+build on the requests described here. A builder for a paginated collection requests only the first
+page, and the rest are loaded by following the response's links; see
+[Paginating With Links](./builders.md#paginating-with-links).
 :::

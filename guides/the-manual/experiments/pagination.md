@@ -92,8 +92,14 @@ just `prev` and `next` works, it simply has no page numbers to render.
 :::tip Your API does not generate links?
 Add a [request handler](../requests/handlers.md) that computes the `links` for paginated
 responses before they reach the cache. This is worth doing even if you never use `<Paginate />`,
-since several ***Warp*Drive** features work best when documents carry links.
+since several ***Warp*Drive** features work best when documents carry links. For a query sent as
+a `POST` or `QUERY`, see
+[Paginating A `POST` Or `QUERY` Request](../requests/builders.md#paginating-a-post-or-query-request).
 :::
+
+The request for the first page should come from a [builder](../requests/builders.md) that takes
+no page arguments; [Paginating With Links](../requests/builders.md#paginating-with-links) explains
+why.
 
 ## Two Modes: Paged and Infinite
 
