@@ -54,7 +54,7 @@ Head over to [many-to-none](./many-to-none.md) if this is the setup that is best
 - [Using @warp-drive/legacy/model](#using-warp-drive-legacy-model)
 - [Using json schemas](#using-json-schemas)
 - [Using ReactiveResource schemas](#using-reactiveresource-schemas)
-- [🚧 Using @warp-drive/schema-record](#using-warp-drive-schema-record-🚧-coming-soon)
+- [🚧 Using @warp-drive/schema-dsl](#using-warp-drive-schema-dsl-🚧-coming-soon)
   - [Legacy Compat Mode](#legacycompat-mode)
 
 ---
@@ -101,7 +101,7 @@ export default class TrailRunner extends Model {
 ## Using JSON Schemas
 
 WarpDrive doesn't care where your schemas come from, how they are authored,
-or how you load them into the system so long as when it asks the [SchemaService](/api/@warp-drive/core/types/schema/schema-service/types/SchemaService)
+or how you load them into the system so long as when it asks the SchemaService
 for information it gets back field definitions in the right json shape.
 
 Here, we show how the above trail runner relationship is described by a field definition.
@@ -201,9 +201,9 @@ shows how to type the records these schemas produce.
 
 ---
 
-## Using `@warp-drive/schema-record` (🚧 Coming Soon)
+## Using `@warp-drive/schema-dsl` (🚧 Coming Soon)
 
-> **Note** The samples below import from `@warp-drive/schema`, a private package in this repository that has not been published to npm. It does not export these decorators yet, so the samples do not run today.
+> **Note** The LegacyCompat Mode samples below use `@warp-drive/schema-dsl`, a private package in this repository that has not been published to npm. The samples before them import from `@warp-drive/schema`, a schema parser and scaffolding CLI that exports no decorators, and no package exports their `resource` or `collection` decorators yet. None of these samples run today.
 
 Working with schemas in a raw json format is far more flexible, lightweight and
 performant than working with bulky classes that need to be shipped across the wire, parsed, and instantiated. Even relatively small apps can quickly find themselves shipping large quantities of JS just to describe their data.
@@ -240,19 +240,22 @@ and adopting other features of schemas sooner.
 🌲 *TrailRunner*
 
 ```ts
-import { hasMany } from '@warp-drive/schema/legacy';
+import { Resource, hasMany } from '@warp-drive/schema-dsl';
 
+@Resource({ legacy: true })
 export class TrailRunner {
-  @hasMany(TrailRunner, { inverse: "friends" })
-  friends;
+  @hasMany({ type: 'trail-runner', inverse: 'friends', async: false })
+  declare friends: TrailRunner[];
 }
 ```
 
 Note, the [many-to-none](./many-to-none.md) variation of this would be:
 
 ```ts
-import { hasMany } from '@warp-drive/schema/legacy';
+import { Resource, hasMany } from '@warp-drive/schema-dsl';
 
+@Resource({ legacy: true })
 export class TrailRunner {
-  @hasMany(TrailRunner) friends;
+  @hasMany({ type: 'trail-runner', inverse: null, async: false })
+  declare friends: TrailRunner[];
 }
