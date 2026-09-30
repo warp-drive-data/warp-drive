@@ -559,8 +559,8 @@ export class JSONAPICache implements Cache {
     const op = doc.request?.op;
     if (op === 'findHasMany' || op === 'findBelongsTo') {
       const kind = op === 'findHasMany' ? 'hasMany' : 'belongsTo';
-      const parentIdentifier = doc.request!.options?.identifier as ResourceKey | undefined;
-      const parentField = doc.request!.options?.field as LegacyRelationshipField | undefined;
+      const parentIdentifier = doc.request.options?.identifier as ResourceKey | undefined;
+      const parentField = doc.request.options?.field as LegacyRelationshipField | undefined;
       assert(`Expected a ${kind} field`, parentField?.kind === kind);
       assert(`Expected a parent identifier for a ${op} request`, parentIdentifier && isResourceKey(parentIdentifier));
       if (parentField && parentIdentifier) {

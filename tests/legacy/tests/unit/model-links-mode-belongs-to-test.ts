@@ -70,7 +70,7 @@ module('Unit | Model | belongsTo in linksMode', function (hooks) {
     const result = await chris.belongsTo('bestFriend').reload();
 
     assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'the related link was requested');
-    assert.equal((result as User | null)?.id, '3', 'reload resolves with the fetched record');
+    assert.equal(result?.id, '3', 'reload resolves with the fetched record');
     assert.equal(chris.bestFriend?.id, '3', 'bestFriend is updated from the response');
   });
 
@@ -94,7 +94,7 @@ module('Unit | Model | belongsTo in linksMode', function (hooks) {
     const result = await chris.belongsTo('bestFriend').reload();
 
     assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'the related link was requested');
-    assert.equal((result as User | null)?.id, '3', 'reload resolves with the fetched record');
+    assert.equal(result?.id, '3', 'reload resolves with the fetched record');
     assert.equal(chris.bestFriend?.id, '3', 'bestFriend is updated from the response');
   });
 
@@ -120,7 +120,7 @@ module('Unit | Model | belongsTo in linksMode', function (hooks) {
     const result = await chris.belongsTo('bestFriend').load();
 
     assert.verifySteps(['op=findBelongsTo, url=/user/1/bestFriend'], 'the related link was requested');
-    assert.equal((result as User | null)?.id, '3', 'load resolves with the fetched record');
+    assert.equal(result?.id, '3', 'load resolves with the fetched record');
     assert.equal(chris.bestFriend?.id, '3', 'bestFriend is updated from the response');
   });
 });
