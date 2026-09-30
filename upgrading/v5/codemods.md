@@ -18,7 +18,7 @@ WarpDrive provides automated codemods to help migrate your EmberData application
 
 > [!NOTE]
 > The codemods require Node.js `>= 22.2` and run on macOS, Linux (glibc and musl/Alpine),
-> and Windows, on both x64 and arm64. `pnpm dlx` and `bunx` work as well as `npx`.
+> and Windows, on both x64 and arm64. `pnpm dlx` works as well as `npx`.
 
 ### Listing Available Codemods
 
