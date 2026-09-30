@@ -47,7 +47,7 @@ registerDerivations(store.schema);
 store.schema.registerResources(schemas);
 ```
 
-See the [Schema DSL Guide](https://warp-drive.io/guide/schemas/dsl) for full documentation.
+See the [Schema DSL Guide](https://warp-drive.io/guides/the-manual/schemas/dsl/) for full documentation.
 
 ### ♥️ Credits
 
