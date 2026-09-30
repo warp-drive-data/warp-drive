@@ -1,9 +1,4 @@
 {
   "title": "Configuration",
-  "items": [
-    "advanced",
-    "ember",
-    "react",
-    "legacy-package-setup"
-  ]
+  "items": ["advanced", "ember", "react", "legacy-package-setup"]
 }
