@@ -28,7 +28,7 @@ module.exports = {
       description: 'Ensures <Request>/<Await> always provide an :error block',
       category: 'Possible Errors',
       recommended: false,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/template-require-request-error-block.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/template-require-request-error-block/',
     },
     schema: [],
     messages,

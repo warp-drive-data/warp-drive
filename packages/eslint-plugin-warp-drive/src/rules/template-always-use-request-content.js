@@ -38,7 +38,7 @@ module.exports = {
       description: 'Ensures the result of a <Request> is actually consumed',
       category: 'Possible Errors',
       recommended: false,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/template-always-use-request-content.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/template-always-use-request-content/',
     },
     schema: [],
     messages,

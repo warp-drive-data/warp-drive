@@ -49,7 +49,7 @@ module.exports = {
       description: 'Restricts usage of discouraged non-warp-drive request patterns',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-external-request-patterns.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-external-request-patterns/',
     },
   },
 

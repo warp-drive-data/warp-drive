@@ -51,7 +51,7 @@ module.exports = {
       description: 'require the use of `store.request()` instead of legacy request patterns',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-legacy-request-patterns.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-legacy-request-patterns/',
     },
   },
 

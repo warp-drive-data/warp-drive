@@ -105,7 +105,7 @@ module.exports = {
         'require the uses of resource-type to follow a convention. Configurable, defaults to singular dasherized.',
       category: 'Best Practices',
       recommended: true,
-      url: 'https://github.com/warp-drive-data/warp-drive/tree/main/packages/eslint-plugin-warp-drive/docs/no-invalid-resource-types.md',
+      url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-invalid-resource-types/',
     },
     schema: false,
   },
