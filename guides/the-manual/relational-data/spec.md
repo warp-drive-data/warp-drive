@@ -100,7 +100,7 @@ Rules 2.x apply to the legacy kinds as well.
 | 5.4 | `links` and `meta` are server-owned: they always reflect remote state and MUST NOT be affected by local mutation. |
 | 5.5 | Whether a relationship has local changes not yet confirmed by the API is reported by the cache (`changedRelationships`), not by the document. |
 | 5.6 | Immutable PolarisMode records render remote state; editable records render local state. Inverses follow the same rule. |
-| 5.7 | Local state becomes remote state when a payload confirming it is received (typically the save response). `commit()` without a payload does not promote relationship state. |
+| 5.7 | Local state becomes remote state when a payload confirming it is received (typically the save response). A save response that omits the relationship leaves its local state unconfirmed. `commit()` promotes the local state of every changed relationship to remote state. |
 | 5.8 | When serializing a relationship for a request, only the identifiers of `data` are sent. `links` and `meta` MUST NOT be echoed back to the API. |
 
 ## 6. Size Guard
