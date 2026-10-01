@@ -1,0 +1,26 @@
+# @warp-drive/alien-signals
+
+Reactivity for ***Warp*Drive** built on [alien-signals](https://github.com/stackblitz/alien-signals),
+the push-pull signals algorithm that also powers Vue 3.6's reactivity. It has two entry points:
+
+- [`install`](/api/@warp-drive/alien-signals/install/) configures ***Warp*Drive** to back its
+  signals and memos with this package's graph. Import it once at the top of your application:
+
+  ```ts
+  import '@warp-drive/alien-signals/install';
+  ```
+
+- [`primitives`](/api/@warp-drive/alien-signals/primitives/) exports the graph itself: signals,
+  memos, and a `Watcher` that a framework integration uses to learn when the data it rendered
+  changed. `@warp-drive/react` is built on it.
+
+The graph implements what ***Warp*Drive**'s signal hooks need rather than the full
+[TC39 Signals](https://github.com/tc39/proposal-signals) API. If your app already uses the TC39
+Signals polyfill, use [`@warp-drive/tc39-proposal-signals`](/api/@warp-drive/tc39-proposal-signals/)
+instead.
+
+## Guides
+
+- [Setup](/guides/configuration/): configure the build plugin and create a Store.
+- [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals, and the hooks
+  that let it use any signals implementation.
