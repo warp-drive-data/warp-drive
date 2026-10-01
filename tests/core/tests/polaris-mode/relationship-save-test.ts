@@ -86,6 +86,11 @@ function ids(doc: ReactiveRelationshipDocument<User[]>): string[] {
   return doc.data!.map((user) => user.id!);
 }
 
+// whether the cache holds a local change to `field` that the API has not confirmed
+function hasUnsavedChanges(store: ReturnType<typeof setup>['store'], record: User, field: string): boolean {
+  return store.cache.changedRelationships(recordIdentifierFor(record)).has(field);
+}
+
 module('Saving | resource and collection edits', function (hooks) {
   setupTest(hooks);
 
@@ -95,13 +100,13 @@ module('Saving | resource and collection edits', function (hooks) {
 
     editable.bestFriend.data = wes;
     assert.equal(rey.bestFriend.data, matt, 'the immutable record shows the remote value before saving');
-    assert.true(editable.bestFriend.isDirty, 'the relationship is dirty before saving');
+    assert.true(hasUnsavedChanges(store, rey, 'bestFriend'), 'the relationship has unsaved changes before saving');
 
     await store.request(saveRequest(editable));
 
     assert.equal(rey.bestFriend.data, matt, 'the immutable record still shows the remote value');
     assert.equal(editable.bestFriend.data, wes, 'the editable record still shows the local edit');
-    assert.true(editable.bestFriend.isDirty, 'the relationship is still dirty');
+    assert.true(hasUnsavedChanges(store, rey, 'bestFriend'), 'the relationship still has unsaved changes');
   });
 
   test('a save whose response omits a collection relationship leaves the edit local', async function (assert) {
@@ -110,12 +115,12 @@ module('Saving | resource and collection edits', function (hooks) {
 
     editable.friends.data!.push(wes);
     assert.deepEqual(ids(rey.friends), ['2'], 'the immutable record shows the remote membership before saving');
-    assert.true(editable.friends.isDirty, 'the relationship is dirty before saving');
+    assert.true(hasUnsavedChanges(store, rey, 'friends'), 'the relationship has unsaved changes before saving');
 
     await store.request(saveRequest(editable));
 
     assert.deepEqual(ids(rey.friends), ['2'], 'the immutable record still shows the remote membership');
     assert.deepEqual(ids(editable.friends), ['2', '3'], 'the editable record still shows the local edit');
-    assert.true(editable.friends.isDirty, 'the relationship is still dirty');
+    assert.true(hasUnsavedChanges(store, rey, 'friends'), 'the relationship still has unsaved changes');
   });
 });
