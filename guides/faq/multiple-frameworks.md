@@ -3,7 +3,7 @@ title: Multiple Frameworks on One Page
 description: Learn why using more than one framework on the same page with WarpDrive means composing each framework's signal configuration into one.
 ---
 
-# Can I use multiple frameworks on one page?
+# Can I use multiple frameworks on one page (for instance Ember and React)?
 
 Yes. One ***Warp*Drive** store can drive components from more than one framework on the same page,
 but you need to compose the frameworks' signal configurations into one.
