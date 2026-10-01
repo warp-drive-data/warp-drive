@@ -61,6 +61,9 @@
  * 4. `... judge --from 4.12.8 --judge jev --threshold <t>` writes
  *    `<out>/4.12.8-5.9.1/decisions.jev.json` and `judge-review.jev.json` (with the scores), or
  *    `decisions/4.12.8.json` when `preferences.json` names `"judge": "jev"`.
+ * 5. `... judge --compare scripts/public-exports-mapping/decisions/4.12.8.json
+ *    tmp/public-exports-judge/4.12.8-5.9.1/decisions.jev.json` prints where Claude and Jev agree,
+ *    where they differ, and the entries below the threshold.
  */
 import { setTimeout as delay } from 'node:timers/promises';
 

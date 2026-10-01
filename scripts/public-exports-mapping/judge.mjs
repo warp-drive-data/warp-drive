@@ -12,11 +12,16 @@
  * ## Judges
  *
  * `--judge claude`, the default, is the judge described here. `--judge jev` asks TypeSafe AI's Jev
- * the same question over the same evidence (jev.mjs, `TYPESAFE_API_KEY`). The judge
- * `preferences.json` names (`judge`, default `claude`) writes `decisions/<from>.json`. Any other
- * judge writes `<out>/<from>-<to>/decisions.<judge>.json` and marks its other outputs the same way
- * (`answers.jev.json`, `judge-review.jev.json`), so a second judge never touches the committed
- * decisions.
+ * the same question over the same evidence (jev.mjs, `TYPESAFE_API_KEY`). `--import
+ * <answers.json>` records answers a person or the project thread gave from the dry-run bundles,
+ * `{ "<decl>": { "choice": { module, export } | null, "confidence": n, "reason": "..." } }`, as
+ * `judge: "thread"`; they go through the same checks as a model's answer (`validateAnswer`, then
+ * `decide`). The judge `preferences.json` names (`judge`, default `claude`) writes
+ * `decisions/<from>.json`. Any other judge writes `<out>/<from>-<to>/decisions.<judge>.json` and
+ * marks its other outputs the same way (`answers.jev.json`, `judge-review.jev.json`), so a second
+ * judge never touches the committed decisions. `judge --compare <a> <b>` prints where two such
+ * files (or review or answers files) agree, where they differ, and the entries below the
+ * threshold.
  *
  * ## Live procedure
  *
@@ -1704,6 +1709,79 @@ export function staleDecisions({ decisions, fromSurface, toSurface }) {
     }
   }
   return problems;
+}
+
+/**
+ * The answers a person or the project thread gave from the dry-run bundles (`--import`),
+ * `{ "<decl>": { "choice": { module, export } | null, "confidence": n, "reason": "..." } }`, each
+ * checked like a model's tool input; `decide` then applies the threshold and the `to` surface.
+ * A declaration that is not residue of the pair, or that already has a decision, is skipped.
+ * @param {unknown} doc
+ * @param {{ residue: Iterable<string>, decided: Iterable<string> }} options  declaration ids
+ * @returns {{ answers: Answer[], skipped: Array<{ decl: string, why: string }> }}
+ */
+export function importedAnswers(doc, { residue, decided }) {
+  if (!doc || typeof doc !== 'object' || Array.isArray(doc)) {
+    throw new InputError('the answers are not an object keyed by declaration id');
+  }
+  const answersByDecl = /** @type {Record<string, unknown>} */ (doc);
+  const residueDecls = new Set(residue);
+  const decidedDecls = new Set(decided);
+  /** @type {Answer[]} */
+  const answers = [];
+  /** @type {Array<{ decl: string, why: string }>} */
+  const skipped = [];
+  for (const decl of Object.keys(answersByDecl).sort(compareStrings)) {
+    if (decidedDecls.has(decl)) {
+      skipped.push({ decl, why: 'already decided; delete its entry to replace it' });
+    } else if (!residueDecls.has(decl)) {
+      skipped.push({ decl, why: 'not residue of this pair' });
+    } else {
+      const checked = validateAnswer(answersByDecl[decl]);
+      const fields = 'error' in checked ? { error: checked.error, retryable: false } : checked.value;
+      answers.push({ decl, id: customIdFor(decl), ...fields });
+    }
+  }
+  return { answers, skipped };
+}
+
+/**
+ * @typedef {{ decl: string, a: any, b: any }} Side  one declaration's entry in each file, or null
+ */
+
+/**
+ * Two judges' entries side by side, by declaration: where both answered and chose the same export
+ * (or both `removed`), the same declaration through another export, or something else; where
+ * only one answered (an entry with an `error` is no answer); and every declaration with an answer
+ * below `threshold` in either.
+ * @param {any[]} a  decisions entries, review entries or answers
+ * @param {any[]} b
+ * @param {{ threshold?: number, declOf?: (ref: TokenRef) => string | undefined }} [options]
+ *   `declOf` names the declaration of a choice in the `to` surface, when it is at hand
+ */
+export function compareDecisions(a, b, { threshold = DEFAULT_THRESHOLD, declOf = () => undefined } = {}) {
+  const byDecl = (/** @type {any[]} */ list) =>
+    new Map(list.filter((e) => e && typeof e.decl === 'string').map((e) => [/** @type {string} */ (e.decl), e]));
+  const left = byDecl(a);
+  const right = byDecl(b);
+  const answered = (/** @type {any} */ e) => Boolean(e) && e.error === undefined && e.choice !== undefined;
+  const key = (/** @type {TokenRef | null} */ ref) => (ref ? tokenKey(ref.module, ref.export) : null);
+  /** @type {Record<'agree' | 'sameDeclaration' | 'disagree' | 'onlyA' | 'onlyB' | 'low', Side[]>} */
+  const out = { agree: [], sameDeclaration: [], disagree: [], onlyA: [], onlyB: [], low: [] };
+  for (const decl of [...new Set([...left.keys(), ...right.keys()])].sort(compareStrings)) {
+    const side = { decl, a: left.get(decl) ?? null, b: right.get(decl) ?? null };
+    const [inA, inB] = [answered(side.a), answered(side.b)];
+    if (inA && inB) {
+      const [x, y] = [side.a.choice, side.b.choice];
+      const declA = x && declOf(x);
+      if (key(x) === key(y)) out.agree.push(side);
+      else if (declA && y && declA === declOf(y)) out.sameDeclaration.push(side);
+      else out.disagree.push(side);
+    } else if (inA) out.onlyA.push(side);
+    else if (inB) out.onlyB.push(side);
+    if ((inA && !(side.a.confidence >= threshold)) || (inB && !(side.b.confidence >= threshold))) out.low.push(side);
+  }
+  return out;
 }
 
 /**

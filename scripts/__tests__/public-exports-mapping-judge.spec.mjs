@@ -1790,7 +1790,7 @@ test('the judge preferences.json names writes decisions/<from>.json; an unknown 
   writeFileSync(preferencesFile, canonical({ ...preferences, judge: 'gpt' }));
   await assert.rejects(
     run(['--from', '1.0.0', '--dry-run', '--out', out], context),
-    /judge: preferences\.json names judge gpt; use claude, jev$/
+    /judge: preferences\.json names judge gpt; use claude, jev, thread/
   );
 });
 
@@ -1822,6 +1822,186 @@ test('judge --calibrate --judge jev judges what git settled, blind, through Jev'
   }
 });
 
+test('judge --import records the answers of the project thread through the same checks as a model answer', async (t) => {
+  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const before = readFileSync(decisions, 'utf8');
+  const output = capture(t);
+  writeFileSync(
+    path.join(cwd, 'answers.json'),
+    JSON.stringify({
+      [ERRORS_ARRAY_TO_HASH]: { choice: null, confidence: 0.9, reason: 'Deleted with the 4.x deprecations in #8550.' },
+      [FETCH_MANAGER]: {
+        choice: { module: '@warp-drive/legacy/compat/-private', export: 'FetchManager' },
+        confidence: 0.85,
+        reason: 'The instance became a class.',
+      },
+      [IDENTIFIER_ARRAY]: {
+        choice: { module: '@warp-drive/core/types', export: 'LiveArray' },
+        confidence: 0.5,
+        reason: 'Probably LiveArray.',
+      },
+      [NORMALIZE_MODEL_NAME]: { choice: 'normalizeModelName', confidence: 0.9, reason: 'Moved.' },
+      [PEEK_RECORDS]: {
+        choice: { module: '@warp-drive/core', export: 'peekRecords' },
+        confidence: 0.9,
+        reason: 'Renamed.',
+      },
+      'packages/store/src/store-service.ts#default': { choice: null, confidence: 1, reason: 'Git settles it.' },
+    })
+  );
+  const context = { dataRoot, cwd, git: fakeGit(), env: {} };
+  const reviewLines = [
+    `  review ${IDENTIFIER_ARRAY} [below-threshold]: @warp-drive/core/types LiveArray at 0.5`,
+    `  review ${NORMALIZE_MODEL_NAME} [error]: choice is neither null nor { module, export }`,
+    `  review ${PEEK_RECORDS} [choice-not-in-to]: @warp-drive/core peekRecords at 0.9`,
+  ];
+  // a dry run checks and counts, and writes nothing
+  assert.equal(await run(['--from', '1.0.0', '--import', 'answers.json', '--dry-run', '--out', out], context), 0);
+  assert.deepEqual(output.log, [
+    'judge --import: skipped packages/store/src/store-service.ts#default: not residue of this pair',
+    'judge --import 1.0.0 -> 3.0.0: 5 answers for 6 open declarations, 1 skipped',
+    'judge: 2 decisions at or above 0.8, 3 for review',
+    ...reviewLines,
+    'judge: dry run, nothing written',
+  ]);
+  assert.ok(!existsSync(path.join(out, '1.0.0-3.0.0')));
+
+  output.log.length = 0;
+  assert.equal(await run(['--from', '1.0.0', '--import', 'answers.json', '--out', out], context), 0);
+  assert.equal(readFileSync(decisions, 'utf8'), before, 'decisions/1.0.0.json belongs to claude');
+  const dir = path.join(out, '1.0.0-3.0.0');
+  const written = JSON.parse(readFileSync(path.join(dir, 'decisions.thread.json'), 'utf8'));
+  assert.deepEqual(written.entries, [
+    {
+      decl: ERRORS_ARRAY_TO_HASH,
+      source: { module: '@ember-data/adapter/error', export: 'errorsArrayToHash' },
+      choice: null,
+      confidence: 0.9,
+      reason: 'Deleted with the 4.x deprecations in #8550.',
+      judge: 'thread',
+      reviewed: false,
+      removedIn: '#8550',
+      shim: shimFromDiff(fixture('git/commits/2222222222.diff'), ['errorsArrayToHash']),
+    },
+    {
+      decl: FETCH_MANAGER,
+      source: { module: '@ember-data/store/-private', export: 'fetchManager' },
+      choice: { module: '@warp-drive/legacy/compat/-private', export: 'FetchManager' },
+      confidence: 0.85,
+      reason: 'The instance became a class.',
+      judge: 'thread',
+      reviewed: false,
+    },
+  ]);
+  const review = JSON.parse(readFileSync(path.join(dir, 'judge-review.thread.json'), 'utf8'));
+  assert.deepEqual(
+    review.map((/** @type {any} */ r) => [r.decl, r.why]),
+    [
+      [IDENTIFIER_ARRAY, ['below-threshold']],
+      [NORMALIZE_MODEL_NAME, ['error']],
+      [PEEK_RECORDS, ['choice-not-in-to']],
+    ]
+  );
+  assert.deepEqual(output.log.slice(2), [
+    'judge: 2 decisions at or above 0.8, 3 for review',
+    ...reviewLines,
+    '  see out/1.0.0-3.0.0/judge-review.thread.json',
+    'judge: wrote out/1.0.0-3.0.0/decisions.thread.json (2 entries); decisions/1.0.0.json belongs to claude (preferences.json "judge")',
+  ]);
+
+  // importing again skips what is decided
+  output.log.length = 0;
+  assert.equal(await run(['--from', '1.0.0', '--import', 'answers.json', '--dry-run', '--out', out], context), 0);
+  assert.deepEqual(output.log.slice(0, 4), [
+    `judge --import: skipped ${ERRORS_ARRAY_TO_HASH}: already decided; delete its entry to replace it`,
+    `judge --import: skipped ${FETCH_MANAGER}: already decided; delete its entry to replace it`,
+    'judge --import: skipped packages/store/src/store-service.ts#default: not residue of this pair',
+    'judge --import 1.0.0 -> 3.0.0: 3 answers for 4 open declarations, 3 skipped',
+  ]);
+  await assert.rejects(
+    run(['--from', '1.0.0', '--import', 'missing.json'], context),
+    /judge: missing\.json does not exist/
+  );
+  writeFileSync(path.join(cwd, 'list.json'), '[]');
+  await assert.rejects(
+    run(['--from', '1.0.0', '--import', 'list.json'], context),
+    /the answers are not an object keyed by declaration id/
+  );
+});
+
+test('judge --compare prints agreement, then the disagreements and low-confidence entries for a person', async (t) => {
+  const { cwd, dataRoot } = copyData(t);
+  const output = capture(t);
+  /** @param {string} decl @param {any} choice @param {number} confidence @param {string} judge */
+  const entry = (decl, choice, confidence, judge) => ({ decl, choice, confidence, reason: `${judge} says so.`, judge });
+  const claude = 'claude-opus-5-5';
+  writeFileSync(
+    path.join(cwd, 'a.json'),
+    canonical({
+      schema: 1,
+      kind: 'decisions',
+      from: '1.0.0',
+      to: '3.0.0',
+      entries: [
+        entry(ERRORS_ARRAY_TO_HASH, null, 0.97, claude),
+        entry(FETCH_MANAGER, { module: '@warp-drive/legacy/compat/-private', export: 'FetchManager' }, 0.85, claude),
+        entry(IDENTIFIER_ARRAY, { module: '@warp-drive/core/store/-private', export: 'LiveArray' }, 0.93, claude),
+        entry(
+          NORMALIZE_MODEL_NAME,
+          { module: '@warp-drive/utilities/string', export: 'normalizeModelName' },
+          0.9,
+          claude
+        ),
+        entry(PEEK_RECORDS, { module: '@warp-drive/core', export: 'peekRecord' }, 0.6, claude),
+      ],
+    })
+  );
+  // a review or answers file is a plain list, and an entry with an error is no answer
+  writeFileSync(
+    path.join(cwd, 'b.json'),
+    canonical([
+      entry(ERRORS_ARRAY_TO_HASH, null, 0.95, 'jev'),
+      entry(FETCH_MANAGER, null, 0.81, 'jev'),
+      entry(IDENTIFIER_ARRAY, { module: '@warp-drive/core/types', export: 'LiveArray' }, 0.91, 'jev'),
+      entry(NORMALIZE_MODEL_NAME, { module: '@warp-drive/utilities/string', export: 'dasherize' }, 0.7, 'jev'),
+      entry(STORE_REQUEST_INPUT, null, 0.85, 'jev'),
+      { decl: PEEK_RECORDS, error: NO_CANDIDATES, why: ['error'] },
+    ])
+  );
+  assert.equal(await run(['--compare', 'a.json', 'b.json'], { dataRoot, cwd }), 0);
+  assert.deepEqual(output.log, [
+    'judge --compare',
+    '  A: a.json, 5 entries (claude-opus-5-5)',
+    '  B: b.json, 6 entries (jev)',
+    '  both answered 4: agree 1 (25%), same declaration through another export 1, disagree 2',
+    '  only A answered 1, only B answered 1',
+    '  disagreements:',
+    `    ${FETCH_MANAGER}`,
+    '      A: @warp-drive/legacy/compat/-private FetchManager at 0.85: claude-opus-5-5 says so.',
+    '      B: removed at 0.81: jev says so.',
+    `    ${NORMALIZE_MODEL_NAME}`,
+    '      A: @warp-drive/utilities/string normalizeModelName at 0.9: claude-opus-5-5 says so.',
+    '      B: @warp-drive/utilities/string dasherize at 0.7: jev says so.',
+    '  same declaration, another export:',
+    `    ${IDENTIFIER_ARRAY}`,
+    '      A: @warp-drive/core/store/-private LiveArray at 0.93: claude-opus-5-5 says so.',
+    '      B: @warp-drive/core/types LiveArray at 0.91: jev says so.',
+    '  below 0.8 in either file, not listed above:',
+    `    ${PEEK_RECORDS}`,
+    '      A: @warp-drive/core peekRecord at 0.6: claude-opus-5-5 says so.',
+    `      B: error: ${NO_CANDIDATES}`,
+    '  only B answered:',
+    `    ${STORE_REQUEST_INPUT}`,
+    '      A: no entry',
+    '      B: removed at 0.85: jev says so.',
+  ]);
+  await assert.rejects(run(['--compare', 'a.json'], { dataRoot, cwd }), /--compare takes two files/);
+  await assert.rejects(
+    run(['--compare', 'a.json', 'nope.json'], { dataRoot, cwd }),
+    /judge: nope\.json does not exist/
+  );
+});
+
 test('judge: usage errors and missing inputs throw', async (t) => {
   const { cwd, dataRoot, out } = copyData(t);
   const output = capture(t);
@@ -1835,11 +2015,27 @@ test('judge: usage errors and missing inputs throw', async (t) => {
     run(['--from', '1.0.0', '--threshold', '1.5'], context),
     /--threshold takes a number from 0 to 1/
   );
-  await assert.rejects(run(['--from', '1.0.0', '--judge', 'gpt'], context), /unknown judge gpt; use claude, jev\n/);
+  await assert.rejects(
+    run(['--from', '1.0.0', '--judge', 'gpt'], context),
+    /unknown judge gpt; use claude, jev, thread/
+  );
+  await assert.rejects(
+    run(['--from', '1.0.0', '--judge', 'thread'], context),
+    /--judge thread takes its answers from --import <answers\.json>/
+  );
+  await assert.rejects(
+    run(['--from', '1.0.0', '--judge', 'jev', '--import', 'a.json'], context),
+    /--import records the answers of a person or the project thread; it takes no --judge jev/
+  );
+  await assert.rejects(
+    run(['--from', '1.0.0', '--import', 'a.json', '--calibrate'], context),
+    /--calibrate asks a model: use --judge claude or jev/
+  );
   await assert.rejects(
     run(['--from', '1.0.0', '--judge', 'jev', '--effort', 'high'], context),
     /--effort is for --judge claude/
   );
+  await assert.rejects(run(['--from', '1.0.0', 'extra'], context), /unexpected argument extra/);
   await assert.rejects(run(['--from', '0.9.0', '--dry-run'], context), /judge: 0\.9\.0 is not a covered release/);
   await assert.rejects(run(['--from', '1.0.0', '--out', out], context), /ANTHROPIC_API_KEY is not set/);
   output.log.length = 0;

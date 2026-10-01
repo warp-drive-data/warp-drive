@@ -1,8 +1,9 @@
 /* eslint-disable no-console -- a command reports on stdout and stderr */
 /**
- * `cli.mjs judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev] [--threshold 0.8]
- * [--calibrate] [--check]`: judges the residue of a release pair and writes decisions. See
- * judge.mjs for the live procedure and jev.mjs for Jev.
+ * `cli.mjs judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev|thread] [--threshold 0.8]
+ * [--calibrate] [--check] [--import <answers.json>]` and `cli.mjs judge --compare <a> <b>`: judges
+ * the residue of a release pair and writes decisions. See judge.mjs for the live procedure and
+ * jev.mjs for Jev.
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
@@ -22,9 +23,12 @@ import {
   askClaude,
   buildContext,
   calibrationBundles,
+  compareDecisions,
   decide,
   defaultGit,
   evidenceFor,
+  importedAnswers,
+  indexSurface,
   loadInputs,
   requestFor,
   shimFor,
@@ -32,25 +36,30 @@ import {
 } from '../judge.mjs';
 
 export const name = 'judge';
-export const describe = 'judge the residue of a release pair (Claude or Jev) and write decisions/<from>.json';
+export const describe =
+  'judge the residue of a release pair (Claude, Jev or the project thread) and write decisions/<from>.json';
 
 /** What each judge writes into a decision's `judge` field. */
-const JUDGE_FIELD = { claude: JUDGE_MODEL, jev: JEV };
+const JUDGE_FIELD = { claude: JUDGE_MODEL, jev: JEV, thread: 'thread' };
 const JUDGE_NAMES = /** @type {Array<keyof typeof JUDGE_FIELD>} */ (Object.keys(JUDGE_FIELD));
 
-const SYNOPSIS = `usage: cli.mjs judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev]
-                     [--threshold 0.8] [--calibrate] [--check] [--limit <n>]
-                     [--effort low|medium|high|xhigh|max] [--batch <id>] [--poll <seconds>] [--out <dir>]`;
+const SYNOPSIS = `usage: cli.mjs judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev|thread]
+                     [--threshold 0.8] [--calibrate] [--check] [--import <answers.json>] [--limit <n>]
+                     [--effort low|medium|high|xhigh|max] [--batch <id>] [--poll <seconds>] [--out <dir>]
+       cli.mjs judge --compare <a.json> <b.json> [--threshold 0.8]`;
 
 const USAGE = `${SYNOPSIS}
 
   --from       the release whose residue is judged (decisions/<from>.json)
   --to         the release the successors come from (default: the newest in releases.json)
   --dry-run    write the evidence bundles and request bodies, print a summary, send nothing
-  --judge      claude (default) or jev (TypeSafe AI's Jev)
-  --threshold  lowest confidence written as a decision (default ${DEFAULT_THRESHOLD})
+  --judge      claude (default), jev (TypeSafe AI's Jev) or thread (the answers of --import)
+  --threshold  lowest confidence written as a decision (default ${DEFAULT_THRESHOLD}); --compare lists what is below it
   --calibrate  judge the declarations git settles, blind, and report agreement; writes no decisions
   --check      fail on stale or malformed decisions files (all of them unless --from is given)
+  --import     answers a person or the project thread gave from the dry-run bundles:
+               { "<decl>": { "choice": { "module", "export" } | null, "confidence": 0.9, "reason": "..." } }
+  --compare    where two decisions files (or review or answers files) agree and differ
   --limit      judge only the first n declarations
   --effort     output_config.effort for claude-opus-5-5 (default ${DEFAULT_EFFORT})
   --batch      resume polling an existing message batch instead of creating one (claude)
@@ -70,6 +79,8 @@ const OPTIONS = {
   threshold: { type: 'string' },
   calibrate: { type: 'boolean', default: false },
   check: { type: 'boolean', default: false },
+  import: { type: 'string' },
+  compare: { type: 'boolean', default: false },
   limit: { type: 'string' },
   effort: { type: 'string' },
   batch: { type: 'string' },
@@ -101,8 +112,10 @@ export async function run(argv, context = {}) {
   const { dataRoot = DATA_ROOT, cwd = process.cwd(), env = process.env } = context;
   /** @type {Record<string, any>} */
   let args;
+  /** @type {string[]} */
+  let positionals;
   try {
-    args = parseArgs({ args: argv, options: OPTIONS, strict: true, allowPositionals: false }).values;
+    ({ values: args, positionals } = parseArgs({ args: argv, options: OPTIONS, strict: true, allowPositionals: true }));
   } catch (error) {
     throw usageError(/** @type {Error} */ (error).message);
   }
@@ -112,13 +125,27 @@ export async function run(argv, context = {}) {
   }
   const threshold = args.threshold === undefined ? DEFAULT_THRESHOLD : Number(args.threshold);
   if (!(threshold >= 0 && threshold <= 1)) throw usageError('--threshold takes a number from 0 to 1');
+  if (args.compare) {
+    if (positionals.length !== 2) throw usageError('--compare takes two files');
+    return compare({ files: positionals, threshold, dataRoot, cwd, to: args.to });
+  }
+  if (positionals.length) throw usageError(`unexpected argument ${positionals[0]}`);
   if (args.check) return check({ from: args.from, dataRoot, cwd });
 
   if (args.judge !== undefined && !JUDGE_NAMES.includes(args.judge)) {
     throw usageError(`unknown judge ${args.judge}; use ${JUDGE_NAMES.join(', ')}`);
   }
+  if (args.import !== undefined && args.judge !== undefined && args.judge !== 'thread') {
+    throw usageError(
+      `--import records the answers of a person or the project thread; it takes no --judge ${args.judge}`
+    );
+  }
   /** @type {keyof typeof JUDGE_FIELD} */
-  const judgeName = args.judge ?? 'claude';
+  const judgeName = args.import !== undefined ? 'thread' : (args.judge ?? 'claude');
+  if (judgeName === 'thread' && args.import === undefined) {
+    throw usageError('--judge thread takes its answers from --import <answers.json>');
+  }
+  if (judgeName === 'thread' && args.calibrate) throw usageError('--calibrate asks a model: use --judge claude or jev');
   const claudeOnly = ['effort', 'batch', 'poll'].filter((flag) => args[flag] !== undefined);
   if (judgeName !== 'claude' && claudeOnly.length) {
     throw usageError(`--${claudeOnly[0]} is for --judge claude`);
@@ -241,23 +268,54 @@ export async function run(argv, context = {}) {
   const decided = new Set(kept.map((/** @type {any} */ e) => /** @type {string} */ (e.decl)));
   const open = ctx.residue.filter((item) => !decided.has(item.decl));
 
-  const bundles = (limit ? open.slice(0, limit) : open).map((item) => evidenceFor(item, ctx));
-  const requests = requestsOf(bundles);
-  scratch(outDir, 'bundles.json', canonical(bundles));
-  scratch(outDir, named('requests.json'), requests.text);
-  printSummary({ ctx, from, to, bundles, decided: decided.size, open: open.length });
-  console.log(
-    `  wrote ${shown}/bundles.json and ${named('requests.json')} (${sizeLine(requests.text, requests.count)})`
-  );
-  if (requests.unsent) {
-    console.log(`  declarations without candidates, not sent to Jev and left for review: ${requests.unsent}`);
+  /** @type {import('../judge.mjs').Bundle[]} */
+  let bundles;
+  /** @type {import('../judge.mjs').Answer[]} */
+  let answers;
+  if (judgeName === 'thread') {
+    const imported = importedAnswers(readJsonInput(path.resolve(cwd, args.import), cwd), {
+      residue: ctx.residue.map((item) => item.decl),
+      decided,
+    });
+    for (const s of imported.skipped) console.log(`judge --import: skipped ${s.decl}: ${s.why}`);
+    const answeredDecls = new Set(imported.answers.map((a) => a.decl));
+    bundles = open.filter((item) => answeredDecls.has(item.decl)).map((item) => evidenceFor(item, ctx));
+    answers = imported.answers;
+    console.log(
+      `judge --import ${from} -> ${to}: ${answers.length} answers for ${open.length} open declarations, ${imported.skipped.length} skipped`
+    );
+    if (dryRun) {
+      const { entries, review } = decide({
+        residue: bundles,
+        answers,
+        threshold,
+        toSurface: ctx.toIndex,
+        judge: JUDGE_FIELD.thread,
+        tieBreak: ctx.tieBreak,
+      });
+      printDecided(entries.length, review, threshold);
+      console.log('judge: dry run, nothing written');
+      return 0;
+    }
+  } else {
+    bundles = (limit ? open.slice(0, limit) : open).map((item) => evidenceFor(item, ctx));
+    const requests = requestsOf(bundles);
+    scratch(outDir, 'bundles.json', canonical(bundles));
+    scratch(outDir, named('requests.json'), requests.text);
+    printSummary({ ctx, from, to, bundles, decided: decided.size, open: open.length });
+    console.log(
+      `  wrote ${shown}/bundles.json and ${named('requests.json')} (${sizeLine(requests.text, requests.count)})`
+    );
+    if (requests.unsent) {
+      console.log(`  declarations without candidates, not sent to Jev and left for review: ${requests.unsent}`);
+    }
+    if (dryRun) {
+      console.log('judge: dry run, nothing sent');
+      return 0;
+    }
+    answers = bundles.length ? await ask(bundles, '') : [];
+    scratch(outDir, named('answers.json'), canonical(answers));
   }
-  if (dryRun) {
-    console.log('judge: dry run, nothing sent');
-    return 0;
-  }
-  const answers = bundles.length ? await ask(bundles, '') : [];
-  scratch(outDir, named('answers.json'), canonical(answers));
 
   const byId = new Map(bundles.map((b) => [b.id, b]));
   for (const answer of answers) {
@@ -325,6 +383,16 @@ function display(dir, cwd) {
 /** @param {string} body @param {number} count */
 function sizeLine(body, count) {
   return `${count} requests, ${Math.round(body.length / 1024)} KB, about ${Math.round(body.length / 4 / 1000)}k input tokens at 4 characters per token`;
+}
+
+/** A JSON file a person points at: missing or broken is a missing input. @param {string} file @param {string} cwd */
+function readJsonInput(file, cwd) {
+  if (!existsSync(file)) throw new InputError(`judge: ${display(file, cwd)} does not exist`);
+  try {
+    return readJson(file);
+  } catch (error) {
+    throw new InputError(`judge: ${display(file, cwd)} is not JSON: ${/** @type {Error} */ (error).message}`);
+  }
 }
 
 /** The entries of a decisions file a second judge wrote earlier, if any. @param {string} file */
@@ -426,6 +494,7 @@ function printCalibration(result) {
 
 /** @param {import('../judge.mjs').Answer[]} answers @param {string} judgeName */
 function printUsage(answers, judgeName) {
+  if (judgeName === 'thread') return;
   const total = { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 };
   for (const a of answers) {
     for (const key of /** @type {Array<keyof typeof total>} */ (Object.keys(total))) {
@@ -441,6 +510,90 @@ function printUsage(answers, judgeName) {
   console.log(
     `judge: usage ${total.input_tokens} input, ${total.output_tokens} output, ${total.cache_read_input_tokens} cache read, ${total.cache_creation_input_tokens} cache write tokens (batch pricing applies)`
   );
+}
+
+/** @param {any} entry */
+function sideLine(entry) {
+  if (!entry) return 'no entry';
+  if (entry.error !== undefined) return `error: ${entry.error}`;
+  if (entry.choice === undefined) return 'no answer';
+  const choice = entry.choice ? `${entry.choice.module} ${entry.choice.export}` : 'removed';
+  return `${choice} at ${entry.confidence}${entry.reason ? `: ${entry.reason}` : ''}`;
+}
+
+/**
+ * `--compare <a> <b>`: where two judges agree, where they differ, and what is below the threshold,
+ * for a person to read. Each file is a decisions file, a review file or an answers file.
+ * @param {{ files: string[], threshold: number, dataRoot: string, cwd: string, to?: string }} options
+ */
+function compare({ files, threshold, dataRoot, cwd, to }) {
+  const [a, b] = files.map((file) => {
+    const absolute = path.resolve(cwd, file);
+    const doc = readJsonInput(absolute, cwd);
+    const entries = Array.isArray(doc) ? doc : doc?.entries;
+    if (!Array.isArray(entries)) {
+      throw new InputError(
+        `judge --compare: ${display(absolute, cwd)} has no entries (a decisions, review or answers file)`
+      );
+    }
+    const judges = [...new Set(entries.map((e) => e?.judge).filter((j) => typeof j === 'string'))].sort();
+    return { shown: display(absolute, cwd), entries, judges, to: typeof doc?.to === 'string' ? doc.to : undefined };
+  });
+  const target = to ?? a.to ?? b.to;
+  const surfaceFile = target && path.join(dataRoot, 'surfaces', `${target}.json`);
+  /** @type {((ref: { module: string, export: string }) => string | undefined) | undefined} */
+  let declOf;
+  if (surfaceFile && existsSync(surfaceFile)) {
+    const decls = new Map(indexSurface(readJson(surfaceFile)).tokens.map((t) => [`${t.module} ${t.export}`, t.decl]));
+    declOf = (ref) => decls.get(`${ref.module} ${ref.export}`);
+  }
+  const result = compareDecisions(a.entries, b.entries, { threshold, declOf });
+  const both = result.agree.length + result.sameDeclaration.length + result.disagree.length;
+  const pct = (/** @type {number} */ n) => (both ? ` (${Math.round((n / both) * 100)}%)` : '');
+  console.log('judge --compare');
+  for (const [label, side] of /** @type {const} */ ([
+    ['A', a],
+    ['B', b],
+  ])) {
+    console.log(
+      `  ${label}: ${side.shown}, ${side.entries.length} entries${side.judges.length ? ` (${side.judges.join(', ')})` : ''}`
+    );
+  }
+  console.log(
+    `  both answered ${both}: agree ${result.agree.length}${pct(result.agree.length)}, same declaration through another export ${result.sameDeclaration.length}, disagree ${result.disagree.length}`
+  );
+  console.log(`  only A answered ${result.onlyA.length}, only B answered ${result.onlyB.length}`);
+  if (!declOf) {
+    const missing = `surfaces/${target ?? '<to>'}.json`;
+    console.log(`  (no ${missing}, so another export of the same declaration counts as a disagreement)`);
+  }
+  const listed = new Set();
+  /** @param {string} title @param {Array<{ decl: string, a: any, b: any }>} sides */
+  const section = (title, sides) => {
+    if (!sides.length) return;
+    console.log(`  ${title}:`);
+    for (const side of sides) {
+      listed.add(side.decl);
+      console.log(`    ${side.decl}`);
+      console.log(`      A: ${sideLine(side.a)}`);
+      console.log(`      B: ${sideLine(side.b)}`);
+    }
+  };
+  section('disagreements', result.disagree);
+  section('same declaration, another export', result.sameDeclaration);
+  section(
+    `below ${threshold} in either file, not listed above`,
+    result.low.filter((side) => !listed.has(side.decl))
+  );
+  section(
+    'only A answered',
+    result.onlyA.filter((side) => !listed.has(side.decl))
+  );
+  section(
+    'only B answered',
+    result.onlyB.filter((side) => !listed.has(side.decl))
+  );
+  return 0;
 }
 
 /**
