@@ -4,18 +4,29 @@
  * three releases (its diffs carry only `declarations`, the one section the judge reads), and
  * fixtures/public-exports-mapping/judge/git stands in for the repository: `v<version>/` holds what
  * `git show v<version>:<path>` prints, `log.json` the `git log -S` answers, and `commits/` what
- * `git show <commit>` prints.
+ * `git show <commit>` prints. Claude is a fake Message Batches client and Jev a fake `fetch` that
+ * answers in the shapes https://docs.typesafe.ai/api.md documents.
  */
 import assert from 'node:assert/strict';
-import { cpSync, existsSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { test } from 'node:test';
 
 import { canonical } from '../public-exports-mapping/artifacts.mjs';
 import { run } from '../public-exports-mapping/commands/judge.mjs';
 import {
+  JEV_ENDPOINT,
+  NO_CANDIDATES,
+  SCORE_LEVELS,
+  askJev,
+  jevRankRequestFor,
+  jevRequestFor,
+  parseJevChoice,
+  postJev,
+  rankWithJev,
+} from '../public-exports-mapping/jev.mjs';
+import {
   InputError,
-  JEV_NOT_CONFIGURED,
   JUDGE_MODEL,
   SUCCESSOR_TOOL,
   TOOL_NAME,
@@ -33,6 +44,7 @@ import {
   loadInputs,
   parseResult,
   renderBundle,
+  renderEvidence,
   requestFor,
   residueOf,
   settledBy,
@@ -1081,6 +1093,264 @@ test('calibrationBundles hides the truth among the candidates; agreementReport s
 });
 
 // ---------------------------------------------------------------------------------------------
+// Jev
+
+const JEV_SECRET = 'tsk-test-0123456789';
+
+/** The declaration a Jev request is about, from the first line of its state. @param {any} body */
+const declOfState = (body) => /** @type {string} */ (/^# Declaration `([^`]+)`/.exec(body.state)?.[1]);
+
+/**
+ * Jev's endpoint as a `fetch`: `respond(body, n)` gives the n-th call's `{ status?, body, headers? }`,
+ * or throws for a network failure. Every call is recorded with its parsed body.
+ * @param {(body: any, n: number) => { status?: number, body: unknown, headers?: Record<string, string> }} respond
+ */
+function fakeJev(respond) {
+  /** @type {Array<{ url: string, method: string, headers: Record<string, string>, body: any }>} */
+  const calls = [];
+  /** @type {import('../public-exports-mapping/jev.mjs').Fetch} */
+  const fetch = async (url, init) => {
+    const body = JSON.parse(init.body);
+    calls.push({ url, method: init.method, headers: init.headers, body });
+    const reply = respond(body, calls.length);
+    const text = typeof reply.body === 'string' ? reply.body : JSON.stringify(reply.body);
+    return new Response(text, { status: reply.status ?? 200, headers: reply.headers });
+  };
+  return Object.assign(fetch, { calls });
+}
+
+/**
+ * A successor answer as the docs show it: probability `p` on `option`, the rest spread evenly.
+ * @param {any} body  the request
+ * @param {string} option
+ * @param {{ p?: number, confidence?: number }} [options]
+ */
+function choiceAnswer(body, option, { p = 0.94, confidence = 0.9 } = {}) {
+  const names = Object.keys(body.questions.successor.criteria);
+  const rest = (1 - p) / (names.length - 1);
+  const probabilities = Object.fromEntries(names.map((n) => [n, n === option ? p : rest]));
+  return {
+    body: {
+      model: 'jev-1.13.0',
+      answers: { successor: { type: 'choice', choice: option, probabilities, confidence } },
+      usage: { input_tokens: 3000, output_tokens: 20 },
+    },
+  };
+}
+
+/** Score answers for the questions of a ranking request, in order. @param {any} body @param {number[]} scores */
+function scoreAnswer(body, scores) {
+  const answers = Object.fromEntries(
+    Object.keys(body.questions).map((id, i) => [
+      id,
+      { type: 'score', score: scores[i] ?? 0, legend: {}, probabilities: {}, confidence: 0.6 },
+    ])
+  );
+  return { body: { model: 'jev-1.13.0', answers, usage: { input_tokens: 3200, output_tokens: 40 } } };
+}
+
+test('jevRequestFor: the evidence as the state, one Choice over the candidate declarations and removed', () => {
+  const { ctx } = fixtureContext();
+  const bundle = evidenceFor(itemOf(ctx, IDENTIFIER_ARRAY), ctx);
+  assert.equal(renderBundle(bundle), `${renderEvidence(bundle)}\nCall ${TOOL_NAME} once with your answer.`);
+  const body = /** @type {any} */ (jevRequestFor(bundle));
+  assert.deepEqual(Object.keys(body), ['model', 'state', 'questions']);
+  assert.equal(body.model, 'jev-latest');
+  assert.equal(body.state, renderEvidence(bundle).trimEnd());
+  assert.doesNotMatch(body.state, new RegExp(TOOL_NAME));
+  const { successor, ...others } = body.questions;
+  assert.deepEqual(others, {});
+  assert.equal(successor.type, 'choice');
+  assert.match(
+    successor.instructions,
+    /^The state describes a declaration that WarpDrive \(formerly EmberData\) 1\.0\.0 exported and that git could not follow into 3\.0\.0, and candidate declarations of 3\.0\.0\. Which candidate continues it:/
+  );
+  // an option per declaration, named after the export the ranking puts first: public before -private
+  assert.deepEqual(Object.entries(successor.criteria).slice(0, 2), [
+    [
+      'createLiveArray from @warp-drive/core/store/-private',
+      'Candidate [1] in the state, declaration `warp-drive-packages/core/src/live-array.ts#createLiveArray`, found by history, file.',
+    ],
+    [
+      'LiveArray from @warp-drive/core/types',
+      'Candidate [2] in the state, declaration `warp-drive-packages/core/src/live-array.ts#LiveArray`, found by history, file.',
+    ],
+  ]);
+  assert.deepEqual(Object.keys(successor.criteria).slice(2), ['removed']);
+  assert.match(successor.criteria.removed, /^The declaration was removed: none of the candidates is/);
+
+  // without candidates there is nothing to choose from
+  assert.equal(jevRequestFor(evidenceFor(itemOf(ctx, STORE_REQUEST_INPUT), ctx)), null);
+});
+
+test('parseJevChoice: the export of the chosen declaration, removed as null, a reason from the probabilities', () => {
+  const { ctx } = fixtureContext();
+  const bundle = evidenceFor(itemOf(ctx, IDENTIFIER_ARRAY), ctx);
+  const body = jevRequestFor(bundle);
+  assert.deepEqual(
+    parseJevChoice(choiceAnswer(body, 'LiveArray from @warp-drive/core/types', { confidence: 0.91 }).body, bundle),
+    {
+      choice: { module: '@warp-drive/core/types', export: 'LiveArray' },
+      confidence: 0.91,
+      reason:
+        'Jev (jev-1.13.0) put 0.94 on [2] LiveArray from @warp-drive/core/types (found by history, file), 0.03 on [1] createLiveArray from @warp-drive/core/store/-private (found by history, file), 0.03 on removed.',
+      probabilities: {
+        'createLiveArray from @warp-drive/core/store/-private': 0.03,
+        'LiveArray from @warp-drive/core/types': 0.94,
+        removed: 0.03,
+      },
+      model: 'jev-1.13.0',
+      usage: { input_tokens: 3000, output_tokens: 20 },
+    }
+  );
+  const removed = parseJevChoice(choiceAnswer(body, 'removed', { p: 1, confidence: 1.4 }).body, bundle);
+  assert.deepEqual(
+    [removed.choice, removed.confidence, removed.reason],
+    [null, 1, 'Jev (jev-1.13.0) put 1.00 on removed.']
+  );
+
+  const answer = (/** @type {object} */ fields) => ({ answers: { successor: { type: 'choice', ...fields } } });
+  assert.deepEqual(
+    parseJevChoice(answer({ choice: 'LiveArray from @warp-drive/core/store/-private', confidence: 0.9 }), bundle),
+    {
+      error: 'Jev chose "LiveArray from @warp-drive/core/store/-private", which is not an option',
+      retryable: false,
+      usage: undefined,
+    }
+  );
+  assert.deepEqual(parseJevChoice({ answers: {} }, bundle), {
+    error: 'no successor answer in the response',
+    retryable: true,
+    usage: undefined,
+  });
+  assert.deepEqual(parseJevChoice(answer({ choice: 'removed', confidence: 'high' }), bundle), {
+    error: 'confidence is not a number',
+    retryable: false,
+    usage: undefined,
+  });
+});
+
+test('askJev posts one request per declaration with the key as a bearer token and retries what the docs say to retry', async () => {
+  const { ctx } = fixtureContext();
+  const bundles = [IDENTIFIER_ARRAY, STORE_REQUEST_INPUT, PEEK_RECORDS].map((decl) =>
+    evidenceFor(itemOf(ctx, decl), ctx)
+  );
+  /** @type {number[]} */
+  const waits = [];
+  /** @type {string[]} */
+  const lines = [];
+  const fetch = fakeJev((body, n) => {
+    if (n === 1) return { status: 429, body: { error: { message: 'slow down' } }, headers: { 'retry-after': '2' } };
+    if (n === 2) return { status: 529, body: 'overloaded' };
+    if (n === 3) throw new TypeError('fetch failed');
+    if (declOfState(body) === IDENTIFIER_ARRAY) return choiceAnswer(body, 'LiveArray from @warp-drive/core/types');
+    return { status: 422, body: { detail: [{ loc: ['body', 'questions'], msg: 'bad' }] } };
+  });
+  const answers = await askJev(bundles, {
+    fetch,
+    apiKey: JEV_SECRET,
+    sleep: async (ms) => {
+      waits.push(ms);
+    },
+    log: (line) => lines.push(line),
+  });
+  // a 429, a 529 and a network failure for the first declaration, then its answer; the second has
+  // no candidates and is not sent; the third gets a 422, which is not retried
+  assert.equal(fetch.calls.length, 5);
+  for (const call of fetch.calls) {
+    assert.deepEqual(
+      [call.url, call.method, call.headers],
+      [JEV_ENDPOINT, 'POST', { authorization: `Bearer ${JEV_SECRET}`, 'content-type': 'application/json' }]
+    );
+  }
+  assert.deepEqual(waits, [2000, 2000, 4000]);
+  assert.deepEqual(lines, [
+    'judge: Jev HTTP 429: slow down; retrying in 2 s',
+    'judge: Jev HTTP 529: overloaded; retrying in 2 s',
+    'judge: Jev request failed: fetch failed; retrying in 4 s',
+  ]);
+  assert.deepEqual(
+    answers.map((a) => [a.decl, a.choice ?? null, a.error ?? null, a.retryable ?? null]),
+    [
+      [IDENTIFIER_ARRAY, { module: '@warp-drive/core/types', export: 'LiveArray' }, null, null],
+      [STORE_REQUEST_INPUT, null, NO_CANDIDATES, false],
+      [PEEK_RECORDS, null, 'HTTP 422: [{"loc":["body","questions"],"msg":"bad"}]', false],
+    ]
+  );
+});
+
+test('postJev gives up after its retries; a refused key stops the run and the message hides the key', async () => {
+  const sleep = async () => {};
+  const busy = fakeJev(() => ({ status: 503, body: 'busy' }));
+  assert.deepEqual(await postJev({}, { fetch: busy, apiKey: JEV_SECRET, sleep, retries: 2 }), {
+    error: 'HTTP 503: busy',
+    retryable: true,
+  });
+  assert.equal(busy.calls.length, 3);
+  const refused = fakeJev(() => ({ status: 401, body: { error: { message: `invalid key ${JEV_SECRET}` } } }));
+  await assert.rejects(postJev({}, { fetch: refused, apiKey: JEV_SECRET, sleep }), (error) => {
+    assert.ok(error instanceof InputError);
+    assert.equal(
+      error.message,
+      'judge: Jev refused the request (HTTP 401: invalid key $TYPESAFE_API_KEY); check TYPESAFE_API_KEY'
+    );
+    return true;
+  });
+  assert.equal(refused.calls.length, 1);
+  await assert.rejects(askJev([], /** @type {any} */ ({ apiKey: JEV_SECRET })), /askJev needs fetch and apiKey/);
+});
+
+test('rankWithJev scores every candidate, best first, and records a failure instead of throwing', async () => {
+  const { ctx } = fixtureContext();
+  const [identifierArray, storeRequestInput, normalize] = [
+    IDENTIFIER_ARRAY,
+    STORE_REQUEST_INPUT,
+    NORMALIZE_MODEL_NAME,
+  ].map((decl) => evidenceFor(itemOf(ctx, decl), ctx));
+  const body = /** @type {any} */ (jevRankRequestFor(identifierArray));
+  assert.equal(body.state, renderEvidence(identifierArray).trimEnd());
+  assert.deepEqual(Object.keys(body.questions), ['candidate_1', 'candidate_2']);
+  assert.deepEqual(body.questions.candidate_2, {
+    type: 'score',
+    instructions:
+      'How well does candidate [2], LiveArray from @warp-drive/core/types (declaration `warp-drive-packages/core/src/live-array.ts#LiveArray`), continue the declaration the state describes?',
+    criteria: SCORE_LEVELS,
+  });
+  assert.equal(jevRankRequestFor(storeRequestInput), null);
+
+  const fetch = fakeJev((request) =>
+    declOfState(request) === IDENTIFIER_ARRAY ? scoreAnswer(request, [1.2, 2.84]) : { status: 403, body: 'forbidden' }
+  );
+  const ranked = await rankWithJev([identifierArray, storeRequestInput, normalize], {
+    fetch,
+    apiKey: JEV_SECRET,
+    sleep: async () => {},
+  });
+  assert.deepEqual([...ranked.keys()], [IDENTIFIER_ARRAY, NORMALIZE_MODEL_NAME]);
+  assert.deepEqual(ranked.get(IDENTIFIER_ARRAY), {
+    scores: [
+      {
+        candidate: 2,
+        choice: { module: '@warp-drive/core/types', export: 'LiveArray' },
+        decl: 'warp-drive-packages/core/src/live-array.ts#LiveArray',
+        score: 2.84,
+        confidence: 0.6,
+      },
+      {
+        candidate: 1,
+        choice: { module: '@warp-drive/core/store/-private', export: 'createLiveArray' },
+        decl: 'warp-drive-packages/core/src/live-array.ts#createLiveArray',
+        score: 1.2,
+        confidence: 0.6,
+      },
+    ],
+  });
+  assert.deepEqual(ranked.get(NORMALIZE_MODEL_NAME), {
+    error: 'judge: Jev refused the request (HTTP 403: forbidden); check TYPESAFE_API_KEY',
+  });
+});
+
+// ---------------------------------------------------------------------------------------------
 // The command
 
 /** Answers for the six residue declarations, by declaration. */
@@ -1352,14 +1622,210 @@ test('judge --check passes valid decisions and fails stale or malformed ones', a
   await assert.rejects(run(['--check', '--from', '9.9.9'], context), /decisions\/9\.9\.9\.json does not exist/);
 });
 
-test('judge --judge jev prints one line and exits 2; usage errors and missing inputs throw', async (t) => {
+/** Jev's answer for each residue declaration with candidates: the option and the confidence. */
+const JEV_PICKS = {
+  [ERRORS_ARRAY_TO_HASH]: ['removed', 0.95],
+  [FETCH_MANAGER]: ['FetchManager from @warp-drive/legacy/compat/-private', 0.83],
+  [IDENTIFIER_ARRAY]: ['LiveArray from @warp-drive/core/types', 0.91],
+  [NORMALIZE_MODEL_NAME]: ['normalizeModelName from @warp-drive/utilities/string', 0.97],
+  [PEEK_RECORDS]: ['peekRecord from @warp-drive/core', 0.42],
+};
+const jevAnswering = () =>
+  fakeJev((body) => {
+    if (!body.questions.successor) return scoreAnswer(body, [1.3]);
+    const [option, confidence] = JEV_PICKS[/** @type {keyof typeof JEV_PICKS} */ (declOfState(body))];
+    return choiceAnswer(body, /** @type {string} */ (option), { confidence: /** @type {number} */ (confidence) });
+  });
+
+test('judge --judge jev --dry-run writes the Jev request bodies; a live run needs TYPESAFE_API_KEY', async (t) => {
+  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const before = readFileSync(decisions, 'utf8');
+  const output = capture(t);
+  const context = { dataRoot, cwd, git: fakeGit(), env: {} };
+  assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--dry-run', '--out', 'out'], context), 0);
+  assert.match(
+    output.log.at(-3) ?? '',
+    /^ {2}wrote out\/1\.0\.0-3\.0\.0\/bundles\.json and requests\.jev\.json \(5 requests, \d+ KB, about \d+k input tokens/
+  );
+  assert.deepEqual(output.log.slice(-2), [
+    '  declarations without candidates, not sent to Jev and left for review: 1',
+    'judge: dry run, nothing sent',
+  ]);
+  const doc = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'requests.jev.json'), 'utf8'));
+  assert.deepEqual(
+    { ...doc, requests: doc.requests.map((/** @type {any} */ r) => r.decl) },
+    {
+      method: 'POST',
+      endpoint: JEV_ENDPOINT,
+      headers: { authorization: 'Bearer $TYPESAFE_API_KEY', 'content-type': 'application/json' },
+      requests: [ERRORS_ARRAY_TO_HASH, FETCH_MANAGER, IDENTIFIER_ARRAY, NORMALIZE_MODEL_NAME, PEEK_RECORDS],
+      unsent: [STORE_REQUEST_INPUT],
+    }
+  );
+  const bundles = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'bundles.json'), 'utf8'));
+  assert.deepEqual(doc.requests[2].body, jevRequestFor(bundles[2]));
+  assert.equal(readFileSync(decisions, 'utf8'), before);
+  await assert.rejects(
+    run(['--from', '1.0.0', '--judge', 'jev', '--out', 'out'], context),
+    /judge: TYPESAFE_API_KEY is not set; export it for a live --judge jev run, or pass --dry-run$/
+  );
+});
+
+test('judge --judge jev writes decisions.jev.json beside the committed decisions and scores what goes to review', async (t) => {
+  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const before = readFileSync(decisions, 'utf8');
+  const output = capture(t);
+  const fetch = jevAnswering();
+  const context = { dataRoot, cwd, git: fakeGit(), env: { TYPESAFE_API_KEY: JEV_SECRET }, sleep: async () => {} };
+  assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--out', out], { ...context, fetch }), 0);
+  assert.equal(readFileSync(decisions, 'utf8'), before, 'decisions/1.0.0.json belongs to claude');
+  // five successor questions; then one ranking, for the review entry that has candidates
+  assert.deepEqual(
+    fetch.calls.map((call) => [declOfState(call.body), Object.keys(call.body.questions).join(' ')]),
+    [
+      [ERRORS_ARRAY_TO_HASH, 'successor'],
+      [FETCH_MANAGER, 'successor'],
+      [IDENTIFIER_ARRAY, 'successor'],
+      [NORMALIZE_MODEL_NAME, 'successor'],
+      [PEEK_RECORDS, 'successor'],
+      [PEEK_RECORDS, 'candidate_1'],
+    ]
+  );
+  const dir = path.join(out, '1.0.0-3.0.0');
+  const written = JSON.parse(readFileSync(path.join(dir, 'decisions.jev.json'), 'utf8'));
+  assert.deepEqual(
+    { ...written, entries: undefined },
+    { schema: 1, kind: 'decisions', from: '1.0.0', to: '3.0.0', entries: undefined }
+  );
+  assert.deepEqual(
+    written.entries.map((/** @type {any} */ e) => [e.decl, e.choice, e.confidence, e.judge, e.removedIn ?? null]),
+    [
+      [ERRORS_ARRAY_TO_HASH, null, 0.95, 'jev', '#8550'],
+      [FETCH_MANAGER, { module: '@warp-drive/legacy/compat/-private', export: 'FetchManager' }, 0.83, 'jev', null],
+      [IDENTIFIER_ARRAY, { module: '@warp-drive/core/types', export: 'LiveArray' }, 0.91, 'jev', null],
+      [
+        NORMALIZE_MODEL_NAME,
+        { module: '@warp-drive/utilities/string', export: 'normalizeModelName' },
+        0.97,
+        'jev',
+        null,
+      ],
+    ]
+  );
+  assert.equal(written.entries[0].shim, shimFromDiff(fixture('git/commits/2222222222.diff'), ['errorsArrayToHash']));
+  assert.equal(
+    written.entries[2].reason,
+    'Jev (jev-1.13.0) put 0.94 on [2] LiveArray from @warp-drive/core/types (found by history, file), 0.03 on [1] createLiveArray from @warp-drive/core/store/-private (found by history, file), 0.03 on removed.'
+  );
+  const review = JSON.parse(readFileSync(path.join(dir, 'judge-review.jev.json'), 'utf8'));
+  assert.deepEqual(
+    review.map((/** @type {any} */ r) => [r.decl, r.why, r.error ?? null, r.scores ?? null]),
+    [
+      [STORE_REQUEST_INPUT, ['error'], NO_CANDIDATES, null],
+      [
+        PEEK_RECORDS,
+        ['below-threshold'],
+        null,
+        [
+          {
+            candidate: 1,
+            choice: { module: '@warp-drive/core', export: 'peekRecord' },
+            decl: 'warp-drive-packages/core/src/peek.ts#peekRecord',
+            score: 1.3,
+            confidence: 0.6,
+          },
+        ],
+      ],
+    ]
+  );
+  assert.ok(existsSync(path.join(dir, 'answers.jev.json')));
+  assert.deepEqual(output.log.slice(-7), [
+    'judge: Jev ranked the candidates of the review entries: 1 scored, 0 failed',
+    'judge: 4 decisions at or above 0.8, 2 for review',
+    `  review ${STORE_REQUEST_INPUT} [error]: ${NO_CANDIDATES}`,
+    `  review ${PEEK_RECORDS} [below-threshold]: @warp-drive/core peekRecord at 0.42`,
+    '  see out/1.0.0-3.0.0/judge-review.jev.json',
+    'judge: usage 15000 input, 100 output tokens (Jev bills input tokens only)',
+    'judge: wrote out/1.0.0-3.0.0/decisions.jev.json (4 entries); decisions/1.0.0.json belongs to claude (preferences.json "judge")',
+  ]);
+  // the key goes into the Authorization header and nowhere else
+  for (const file of readdirSync(dir)) {
+    assert.ok(!readFileSync(path.join(dir, file), 'utf8').includes(JEV_SECRET), file);
+  }
+  assert.ok(![...output.log, ...output.error].some((line) => line.includes(JEV_SECRET)));
+
+  // a second run asks only about what this judge has not decided
+  const again = jevAnswering();
+  assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--out', out], { ...context, fetch: again }), 0);
+  assert.deepEqual(
+    again.calls.filter((call) => call.body.questions.successor).map((call) => declOfState(call.body)),
+    [PEEK_RECORDS]
+  );
+});
+
+test('the judge preferences.json names writes decisions/<from>.json; an unknown one is refused', async (t) => {
+  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const preferencesFile = path.join(dataRoot, 'preferences.json');
+  const preferences = JSON.parse(readFileSync(preferencesFile, 'utf8'));
+  writeFileSync(preferencesFile, canonical({ ...preferences, judge: 'jev' }));
+  capture(t);
+  const context = {
+    dataRoot,
+    cwd,
+    git: fakeGit(),
+    env: { TYPESAFE_API_KEY: JEV_SECRET },
+    fetch: jevAnswering(),
+    sleep: async () => {},
+  };
+  assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--out', out], context), 0);
+  const doc = JSON.parse(readFileSync(decisions, 'utf8'));
+  assert.deepEqual(
+    doc.entries.map((/** @type {any} */ e) => [e.decl, e.judge]),
+    [ERRORS_ARRAY_TO_HASH, FETCH_MANAGER, IDENTIFIER_ARRAY, NORMALIZE_MODEL_NAME].map((decl) => [decl, 'jev'])
+  );
+  assert.ok(existsSync(path.join(out, '1.0.0-3.0.0', 'judge-review.json')));
+  assert.ok(!existsSync(path.join(out, '1.0.0-3.0.0', 'decisions.jev.json')));
+  assert.equal(await run(['--check'], context), 0);
+
+  writeFileSync(preferencesFile, canonical({ ...preferences, judge: 'gpt' }));
+  await assert.rejects(
+    run(['--from', '1.0.0', '--dry-run', '--out', out], context),
+    /judge: preferences\.json names judge gpt; use claude, jev$/
+  );
+});
+
+test('judge --calibrate --judge jev judges what git settled, blind, through Jev', async (t) => {
+  const { cwd, dataRoot, out } = copyData(t);
+  const output = capture(t);
+  const { truth } = calibrationBundles(fixtureContext().ctx);
+  const fetch = fakeJev((body) => {
+    const { winner } = truth[customIdFor(declOfState(body))];
+    return choiceAnswer(body, `${winner.export} from ${winner.module}`);
+  });
+  const context = { dataRoot, cwd, git: fakeGit(), env: { TYPESAFE_API_KEY: JEV_SECRET }, fetch };
+  assert.equal(await run(['--from', '1.0.0', '--calibrate', '--judge', 'jev', '--out', out], context), 0);
+  const dir = path.join(out, '1.0.0-3.0.0');
+  const { report } = JSON.parse(readFileSync(path.join(dir, 'calibration.jev.json'), 'utf8'));
+  assert.deepEqual(report.bySettled, {
+    files: { answers: 1, sameDeclaration: 1, sameExport: 1 },
+    same: { answers: 1, sameDeclaration: 1, sameExport: 1 },
+    symbols: { answers: 2, sameDeclaration: 2, sameExport: 2 },
+  });
+  assert.ok(existsSync(path.join(dir, 'calibration-requests.jev.json')));
+  assert.ok(existsSync(path.join(dir, 'calibration-answers.jev.json')));
+  assert.ok(output.log.includes('judge --calibrate: 4 answers, 0 errors'));
+  // blind: no option says how its candidate was found
+  for (const call of fetch.calls) {
+    for (const description of Object.values(call.body.questions.successor.criteria)) {
+      assert.doesNotMatch(String(description), /found by/);
+    }
+  }
+});
+
+test('judge: usage errors and missing inputs throw', async (t) => {
   const { cwd, dataRoot, out } = copyData(t);
   const output = capture(t);
   const context = { dataRoot, cwd, git: fakeGit(), env: {} };
-  assert.equal(await run(['--from', '1.0.0', '--judge', 'jev'], context), 2);
-  assert.deepEqual(output.error, [JEV_NOT_CONFIGURED]);
-  assert.deepEqual(output.log, []);
-
   await assert.rejects(run(['--bogus'], context), /^Error: judge: Unknown option '--bogus'/);
   await assert.rejects(
     run(['--dry-run'], context),
@@ -1369,7 +1835,11 @@ test('judge --judge jev prints one line and exits 2; usage errors and missing in
     run(['--from', '1.0.0', '--threshold', '1.5'], context),
     /--threshold takes a number from 0 to 1/
   );
-  await assert.rejects(run(['--from', '1.0.0', '--judge', 'gpt'], context), /unknown judge gpt; use claude or jev/);
+  await assert.rejects(run(['--from', '1.0.0', '--judge', 'gpt'], context), /unknown judge gpt; use claude, jev\n/);
+  await assert.rejects(
+    run(['--from', '1.0.0', '--judge', 'jev', '--effort', 'high'], context),
+    /--effort is for --judge claude/
+  );
   await assert.rejects(run(['--from', '0.9.0', '--dry-run'], context), /judge: 0\.9\.0 is not a covered release/);
   await assert.rejects(run(['--from', '1.0.0', '--out', out], context), /ANTHROPIC_API_KEY is not set/);
   output.log.length = 0;

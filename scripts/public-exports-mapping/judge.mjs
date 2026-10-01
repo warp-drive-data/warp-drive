@@ -9,6 +9,15 @@
  * and shape), asks Claude through the Message Batches API which candidate continues each
  * declaration or whether it was removed, and turns confident answers into `decisions/<from>.json`.
  *
+ * ## Judges
+ *
+ * `--judge claude`, the default, is the judge described here. `--judge jev` asks TypeSafe AI's Jev
+ * the same question over the same evidence (jev.mjs, `TYPESAFE_API_KEY`). The judge
+ * `preferences.json` names (`judge`, default `claude`) writes `decisions/<from>.json`. Any other
+ * judge writes `<out>/<from>-<to>/decisions.<judge>.json` and marks its other outputs the same way
+ * (`answers.jev.json`, `judge-review.jev.json`), so a second judge never touches the committed
+ * decisions.
+ *
  * ## Live procedure
  *
  * The judge reads `ANTHROPIC_API_KEY` from the environment and nothing else reads or stores it.
@@ -35,14 +44,14 @@
  * Declarations that already have a decision are not judged again; delete an entry to re-judge it.
  * A stale decision (its `decl` left the `from` surface or its `choice` left the `to` surface) is
  * dropped and judged again. A usage error or a missing input throws, which cli.mjs reports with
- * exit code 1; `--check` exits 1 when it finds a problem; `--judge jev` exits 2.
+ * exit code 1; `--check` exits 1 when it finds a problem.
  *
  * ## Cost
  *
  * One request per declaration. The dry run prints the request count, the size of the request
  * bodies and an estimate of their input tokens; output is the thinking and the tool call, about
  * 1-3k tokens per request; batches are billed at half the standard rate. For 4.12.8 to 5.9.1 that
- * was 49 requests and about 240k input tokens for the judge, and 76 requests and about 300k for
+ * was 34 requests and about 140k input tokens for the judge, and 91 requests and about 410k for
  * `--calibrate`: a few dollars for both.
  *
  * ## Outputs
@@ -80,8 +89,6 @@ export const DEFAULT_TIE_BREAK = ['@warp-drive/ember'];
 /** Most candidate declarations kept per discovery source, so one broad commit cannot flood a bundle. */
 export const DEFAULT_CAPS = { history: 8, name: 8, file: 8 };
 export const DEFAULT_OUT = path.join(REPO_ROOT, 'tmp', 'public-exports-judge');
-export const JEV_NOT_CONFIGURED =
-  "judge: TypeSafe AI's Jev is an optional judge and is not configured in this repository; use --judge claude.";
 const MAX_TOKENS = 16000;
 
 /**
@@ -1375,10 +1382,19 @@ function codeBlock(text, file) {
 }
 
 /**
- * The user message for one bundle.
+ * The user message for one bundle: the evidence, then the instruction to call the tool.
  * @param {Bundle} bundle
  */
 export function renderBundle(bundle) {
+  return `${renderEvidence(bundle)}\nCall ${TOOL_NAME} once with your answer.`;
+}
+
+/**
+ * The evidence of one bundle as text: the declaration, its source, what git knows, and the
+ * candidates, numbered. Claude reads it as the user turn and Jev as the state.
+ * @param {Bundle} bundle
+ */
+export function renderEvidence(bundle) {
   const out = [`# Declaration \`${bundle.decl}\``, '', `Exported by ${bundle.from} as:`];
   for (const t of bundle.source.tokens) out.push(`- ${tokenLine(t)}`);
   out.push('');
@@ -1464,7 +1480,6 @@ export function renderBundle(bundle) {
     else if (c.note) out.push(`Source: ${c.note}.`);
     out.push('');
   });
-  out.push(`Call ${TOOL_NAME} once with your answer.`);
   return out.join('\n');
 }
 
@@ -1607,25 +1622,6 @@ export async function askClaude(bundles, options) {
     return { decl: b.decl, id: b.id, ...answer };
   });
 }
-
-export class JudgeNotConfigured extends Error {}
-
-/**
- * TypeSafe AI's Jev: an optional second judge. The boundary exists so `--judge jev` has a place
- * to land; there is no implementation in this repository.
- * @param {Bundle[]} _bundles
- * @param {unknown} [_options]
- * @returns {Promise<Answer[]>}
- */
-export async function askJev(_bundles, _options) {
-  throw new JudgeNotConfigured(JEV_NOT_CONFIGURED);
-}
-
-/** The judges `--judge` selects from. */
-export const JUDGES = {
-  claude: { model: JUDGE_MODEL, ask: askClaude, configured: true },
-  jev: { model: 'jev', ask: askJev, configured: false },
-};
 
 // ---------------------------------------------------------------------------------------------
 // Decisions

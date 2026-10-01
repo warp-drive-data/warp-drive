@@ -1,23 +1,25 @@
 /* eslint-disable no-console -- a command reports on stdout and stderr */
 /**
  * `cli.mjs judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev] [--threshold 0.8]
- * [--calibrate] [--check]`: judges the residue of a release pair with Claude and writes
- * `decisions/<from>.json`. See judge.mjs for the live procedure.
+ * [--calibrate] [--check]`: judges the residue of a release pair and writes decisions. See
+ * judge.mjs for the live procedure and jev.mjs for Jev.
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 
 import { DATA_ROOT, REPO_ROOT, canonical, readJson, releases, report, writeArtifact } from '../artifacts.mjs';
+import { JEV, JEV_KEY, askJev, jevKey, jevRequests, rankWithJev } from '../jev.mjs';
 import {
   DEFAULT_EFFORT,
   DEFAULT_OUT,
   DEFAULT_POLL_SECONDS,
   DEFAULT_THRESHOLD,
   InputError,
-  JUDGES,
+  JUDGE_MODEL,
   SETTLED_BY,
   agreementReport,
+  askClaude,
   buildContext,
   calibrationBundles,
   decide,
@@ -30,35 +32,41 @@ import {
 } from '../judge.mjs';
 
 export const name = 'judge';
-export const describe = 'judge the residue of a release pair with Claude and write decisions/<from>.json';
+export const describe = 'judge the residue of a release pair (Claude or Jev) and write decisions/<from>.json';
 
-const SYNOPSIS = `usage: cli.mjs judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev] [--threshold 0.8]
-                     [--calibrate] [--check] [--limit <n>] [--effort low|medium|high|xhigh|max]
-                     [--batch <id>] [--poll <seconds>] [--out <dir>]`;
+/** What each judge writes into a decision's `judge` field. */
+const JUDGE_FIELD = { claude: JUDGE_MODEL, jev: JEV };
+const JUDGE_NAMES = /** @type {Array<keyof typeof JUDGE_FIELD>} */ (Object.keys(JUDGE_FIELD));
+
+const SYNOPSIS = `usage: cli.mjs judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev]
+                     [--threshold 0.8] [--calibrate] [--check] [--limit <n>]
+                     [--effort low|medium|high|xhigh|max] [--batch <id>] [--poll <seconds>] [--out <dir>]`;
 
 const USAGE = `${SYNOPSIS}
 
   --from       the release whose residue is judged (decisions/<from>.json)
   --to         the release the successors come from (default: the newest in releases.json)
   --dry-run    write the evidence bundles and request bodies, print a summary, send nothing
-  --judge      claude (default) or jev (not configured)
-  --threshold  lowest confidence written to decisions/ (default ${DEFAULT_THRESHOLD})
+  --judge      claude (default) or jev (TypeSafe AI's Jev)
+  --threshold  lowest confidence written as a decision (default ${DEFAULT_THRESHOLD})
   --calibrate  judge the declarations git settles, blind, and report agreement; writes no decisions
   --check      fail on stale or malformed decisions files (all of them unless --from is given)
   --limit      judge only the first n declarations
   --effort     output_config.effort for claude-opus-5-5 (default ${DEFAULT_EFFORT})
-  --batch      resume polling an existing message batch instead of creating one
-  --poll       seconds between batch status checks (default ${DEFAULT_POLL_SECONDS})
+  --batch      resume polling an existing message batch instead of creating one (claude)
+  --poll       seconds between batch status checks (default ${DEFAULT_POLL_SECONDS}) (claude)
   --out        scratch output directory (default ${path.relative(REPO_ROOT, DEFAULT_OUT)})
 
-Reads ANTHROPIC_API_KEY from the environment for a live run.`;
+The judge preferences.json names ("judge", default claude) writes decisions/<from>.json; any
+other writes <out>/<from>-<to>/decisions.<judge>.json. A live run reads ANTHROPIC_API_KEY
+(claude) or ${JEV_KEY} (jev) from the environment.`;
 
 /** @type {import('node:util').ParseArgsConfig['options']} */
 const OPTIONS = {
   from: { type: 'string' },
   to: { type: 'string' },
   'dry-run': { type: 'boolean', default: false },
-  judge: { type: 'string', default: 'claude' },
+  judge: { type: 'string' },
   threshold: { type: 'string' },
   calibrate: { type: 'boolean', default: false },
   check: { type: 'boolean', default: false },
@@ -75,18 +83,19 @@ const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 /**
  * @typedef {object} JudgeContext
  * @property {string} [dataRoot]  the directory the artifacts live in (cli.mjs passes it)
- * @property {string} [cwd]  the directory the command was run from; a relative `--out` resolves against it
+ * @property {string} [cwd]  the directory the command was run from; relative paths resolve against it
  * @property {import('../judge.mjs').Git} [git]  runs git; tests stub it
  * @property {any} [client]  an Anthropic client; tests pass a fake, a live run builds one from `ANTHROPIC_API_KEY`
- * @property {Record<string, string | undefined>} [env]  where `ANTHROPIC_API_KEY` is read from
- * @property {(ms: number) => Promise<unknown>} [sleep]  waits between batch polls
+ * @property {import('../jev.mjs').Fetch} [fetch]  Jev's HTTP layer; tests pass a fake, a live run uses `globalThis.fetch`
+ * @property {Record<string, string | undefined>} [env]  where `ANTHROPIC_API_KEY` and `TYPESAFE_API_KEY` are read from
+ * @property {(ms: number) => Promise<unknown>} [sleep]  waits between batch polls and before Jev retries
  */
 
 /**
  * Throws on a usage error or a missing input (cli.mjs prints the message and exits 1).
  * @param {string[]} argv  the arguments after `judge`
  * @param {JudgeContext} [context]  `{ dataRoot, cwd }` from cli.mjs, plus what tests inject
- * @returns {Promise<number>} the exit code: 0 done, 1 `--check` found problems, 2 the judge is not configured
+ * @returns {Promise<number>} the exit code: 0 done, 1 `--check` found problems
  */
 export async function run(argv, context = {}) {
   const { dataRoot = DATA_ROOT, cwd = process.cwd(), env = process.env } = context;
@@ -101,21 +110,20 @@ export async function run(argv, context = {}) {
     console.log(USAGE);
     return 0;
   }
-  if (args.check) return check({ from: args.from, dataRoot, cwd });
-
-  const judge = JUDGES[/** @type {keyof typeof JUDGES} */ (args.judge)];
-  if (!judge) throw usageError(`unknown judge ${args.judge}; use claude or jev`);
-  if (!judge.configured) {
-    try {
-      await judge.ask([]);
-    } catch (error) {
-      console.error(/** @type {Error} */ (error).message);
-    }
-    return 2;
-  }
-  if (!args.from) throw usageError('--from is required');
   const threshold = args.threshold === undefined ? DEFAULT_THRESHOLD : Number(args.threshold);
   if (!(threshold >= 0 && threshold <= 1)) throw usageError('--threshold takes a number from 0 to 1');
+  if (args.check) return check({ from: args.from, dataRoot, cwd });
+
+  if (args.judge !== undefined && !JUDGE_NAMES.includes(args.judge)) {
+    throw usageError(`unknown judge ${args.judge}; use ${JUDGE_NAMES.join(', ')}`);
+  }
+  /** @type {keyof typeof JUDGE_FIELD} */
+  const judgeName = args.judge ?? 'claude';
+  const claudeOnly = ['effort', 'batch', 'poll'].filter((flag) => args[flag] !== undefined);
+  if (judgeName !== 'claude' && claudeOnly.length) {
+    throw usageError(`--${claudeOnly[0]} is for --judge claude`);
+  }
+  if (!args.from) throw usageError('--from is required');
   const limit = args.limit === undefined ? undefined : Number(args.limit);
   if (limit !== undefined && !(Number.isInteger(limit) && limit > 0)) {
     throw usageError('--limit takes a positive integer');
@@ -135,6 +143,13 @@ export async function run(argv, context = {}) {
     if (error instanceof InputError) throw new InputError(`judge: ${error.message}`);
     throw error;
   }
+  const preferred = inputs.preferences?.judge ?? 'claude';
+  if (!JUDGE_NAMES.includes(preferred)) {
+    throw new InputError(`judge: preferences.json names judge ${preferred}; use ${JUDGE_NAMES.join(', ')}`);
+  }
+  // the judge preferences.json names writes decisions/<from>.json; another judge marks its files
+  const official = judgeName === preferred;
+  const named = (/** @type {string} */ file) => (official ? file : file.replace(/\.json$/, `.${judgeName}.json`));
   const ctx = buildContext({ ...inputs, git: context.git ?? defaultGit() });
   const outDir = path.join(path.resolve(cwd, args.out ?? DEFAULT_OUT), `${from}-${to}`);
   const shown = display(outDir, cwd);
@@ -142,11 +157,15 @@ export async function run(argv, context = {}) {
 
   /** @param {import('../judge.mjs').Bundle[]} bundles @param {string} prefix */
   const ask = async (bundles, prefix) => {
+    if (judgeName === JEV) return askJev(bundles, jevSettings());
+    if (!context.client && !env.ANTHROPIC_API_KEY) {
+      throw new InputError('judge: ANTHROPIC_API_KEY is not set; export it for a live run, or pass --dry-run');
+    }
     /** @type {Array<{ id: string, round: number, requests: number }>} */
     const batches = [];
-    return judge.ask(bundles, {
+    return askClaude(bundles, {
       client: context.client ?? (await clientFrom(env)),
-      model: judge.model,
+      model: JUDGE_MODEL,
       effort,
       tieBreak: ctx.tieBreak,
       pollIntervalMs: poll * 1000,
@@ -155,21 +174,33 @@ export async function run(argv, context = {}) {
       log: (line) => console.log(line),
       onBatch: (batch, info) => {
         batches.push({ id: batch.id, round: info.round, requests: info.requests });
-        scratch(outDir, `${prefix}batches.json`, canonical(batches));
+        scratch(outDir, `${prefix}${named('batches.json')}`, canonical(batches));
       },
     });
   };
-  const requireKey = () => {
-    if (!context.client && !env.ANTHROPIC_API_KEY) {
-      throw new InputError('judge: ANTHROPIC_API_KEY is not set; export it for a live run, or pass --dry-run');
+  /** @returns {import('../jev.mjs').JevOptions} */
+  const jevSettings = () => ({
+    fetch: context.fetch ?? globalThis.fetch,
+    apiKey: jevKey(env),
+    sleep: context.sleep,
+    log: (line) => console.log(line),
+  });
+  /** The request bodies as a dry run writes them. @param {import('../judge.mjs').Bundle[]} bundles */
+  const requestsOf = (bundles) => {
+    if (judgeName === JEV) {
+      const doc = jevRequests(bundles);
+      return { text: `${JSON.stringify(doc, null, 2)}\n`, count: doc.requests.length, unsent: doc.unsent.length };
     }
+    const requests = bundles.map((b) => requestFor(b, { model: JUDGE_MODEL, effort, tieBreak: ctx.tieBreak }));
+    return { text: `${JSON.stringify({ requests }, null, 2)}\n`, count: requests.length, unsent: 0 };
   };
 
   if (args.calibrate) {
     const { bundles, truth } = calibrationBundles(ctx, { limit });
-    const requests = bundles.map((b) => requestFor(b, { model: judge.model, effort, tieBreak: ctx.tieBreak }));
+    const requests = requestsOf(bundles);
     scratch(outDir, 'calibration-bundles.json', canonical(bundles));
-    const body = scratch(outDir, 'calibration-requests.json', `${JSON.stringify({ requests }, null, 2)}\n`);
+    const requestsFile = `calibration-${named('requests.json')}`;
+    scratch(outDir, requestsFile, requests.text);
     const kinds = SETTLED_BY.map(
       (kind) => `${Object.values(truth).filter((t) => t.settledBy === kind).length} ${kind}`
     );
@@ -180,23 +211,25 @@ export async function run(argv, context = {}) {
       `  settled by ${kinds.join(', ')} (symbols: a history.symbols entry; files: a file move; same: unchanged id)`
     );
     console.log(
-      `  wrote ${shown}/calibration-bundles.json and calibration-requests.json (${sizeLine(body, requests.length)})`
+      `  wrote ${shown}/calibration-bundles.json and ${requestsFile} (${sizeLine(requests.text, requests.count)})`
     );
     if (dryRun) {
       console.log('judge: dry run, nothing sent');
       return 0;
     }
-    requireKey();
     const answers = await ask(bundles, 'calibration-');
-    scratch(outDir, 'calibration-answers.json', canonical(answers));
+    scratch(outDir, `calibration-${named('answers.json')}`, canonical(answers));
     const result = agreementReport(answers, truth);
-    scratch(outDir, 'calibration.json', canonical({ from, to, report: result, truth }));
+    scratch(outDir, named('calibration.json'), canonical({ from, to, report: result, truth }));
     printCalibration(result);
-    printUsage(answers);
+    printUsage(answers, judgeName);
     return 0;
   }
 
-  const existing = inputs.decisions?.entries ?? [];
+  const decisionsFile = official
+    ? path.join(dataRoot, 'decisions', `${from}.json`)
+    : path.join(outDir, `decisions.${judgeName}.json`);
+  const existing = official ? (inputs.decisions?.entries ?? []) : entriesIn(decisionsFile);
   const stale = staleDecisions({
     decisions: { from, to, entries: existing },
     fromSurface: inputs.surfaces[from],
@@ -205,22 +238,27 @@ export async function run(argv, context = {}) {
   const staleDecls = new Set(stale.map((p) => p.decl));
   for (const p of stale) console.log(`judge: dropping the stale decision for ${p.decl}: ${p.problem}`);
   const kept = existing.filter((/** @type {any} */ e) => !staleDecls.has(e.decl));
-  const decided = new Set(kept.map((/** @type {any} */ e) => e.decl));
+  const decided = new Set(kept.map((/** @type {any} */ e) => /** @type {string} */ (e.decl)));
   const open = ctx.residue.filter((item) => !decided.has(item.decl));
+
   const bundles = (limit ? open.slice(0, limit) : open).map((item) => evidenceFor(item, ctx));
-  const requests = bundles.map((b) => requestFor(b, { model: judge.model, effort, tieBreak: ctx.tieBreak }));
+  const requests = requestsOf(bundles);
   scratch(outDir, 'bundles.json', canonical(bundles));
-  const body = scratch(outDir, 'requests.json', `${JSON.stringify({ requests }, null, 2)}\n`);
+  scratch(outDir, named('requests.json'), requests.text);
   printSummary({ ctx, from, to, bundles, decided: decided.size, open: open.length });
-  console.log(`  wrote ${shown}/bundles.json and requests.json (${sizeLine(body, requests.length)})`);
+  console.log(
+    `  wrote ${shown}/bundles.json and ${named('requests.json')} (${sizeLine(requests.text, requests.count)})`
+  );
+  if (requests.unsent) {
+    console.log(`  declarations without candidates, not sent to Jev and left for review: ${requests.unsent}`);
+  }
   if (dryRun) {
     console.log('judge: dry run, nothing sent');
     return 0;
   }
-  if (bundles.length) requireKey();
-
   const answers = bundles.length ? await ask(bundles, '') : [];
-  scratch(outDir, 'answers.json', canonical(answers));
+  scratch(outDir, named('answers.json'), canonical(answers));
+
   const byId = new Map(bundles.map((b) => [b.id, b]));
   for (const answer of answers) {
     if (answer.error !== undefined || answer.choice !== null) continue;
@@ -234,26 +272,23 @@ export async function run(argv, context = {}) {
     answers,
     threshold,
     toSurface: ctx.toIndex,
-    judge: judge.model,
+    judge: JUDGE_FIELD[judgeName],
     tieBreak: ctx.tieBreak,
   });
-  scratch(outDir, 'judge-review.json', canonical(review));
+  if (judgeName === JEV && review.length) await attachScores(review, bundles, jevSettings());
+  scratch(outDir, named('judge-review.json'), canonical(review));
   const merged = [...kept, ...entries].sort((a, b) => (a.decl < b.decl ? -1 : a.decl > b.decl ? 1 : 0));
-  const written = writeArtifact(path.join(dataRoot, 'decisions', `${from}.json`), {
-    schema: 1,
-    kind: 'decisions',
-    from,
-    to,
-    entries: merged,
-  });
-  console.log(`judge: ${entries.length} decisions at or above ${threshold}, ${review.length} for review`);
-  for (const r of review) {
-    const answer = r.error ?? `${r.choice ? `${r.choice.module} ${r.choice.export}` : 'removed'} at ${r.confidence}`;
-    console.log(`  review ${r.decl} [${r.why.join(', ')}]: ${answer}`);
-  }
-  if (review.length) console.log(`  see ${shown}/judge-review.json`);
-  printUsage(answers);
-  return report([written], { command: 'judge' });
+  const doc = { schema: 1, kind: 'decisions', from, to, entries: merged };
+  const written = official ? writeArtifact(decisionsFile, doc) : null;
+  if (!official) scratch(outDir, named('decisions.json'), canonical(doc));
+  printDecided(entries.length, review, threshold);
+  if (review.length) console.log(`  see ${shown}/${named('judge-review.json')}`);
+  printUsage(answers, judgeName);
+  if (written) return report([written], { command: 'judge' });
+  console.log(
+    `judge: wrote ${shown}/${named('decisions.json')} (${merged.length} entries); decisions/${from}.json belongs to ${preferred} (preferences.json "judge")`
+  );
+  return 0;
 }
 
 /** @param {string} message */
@@ -290,6 +325,50 @@ function display(dir, cwd) {
 /** @param {string} body @param {number} count */
 function sizeLine(body, count) {
   return `${count} requests, ${Math.round(body.length / 1024)} KB, about ${Math.round(body.length / 4 / 1000)}k input tokens at 4 characters per token`;
+}
+
+/** The entries of a decisions file a second judge wrote earlier, if any. @param {string} file */
+function entriesIn(file) {
+  if (!existsSync(file)) return [];
+  const doc = readJson(file);
+  return Array.isArray(doc?.entries) ? doc.entries : [];
+}
+
+/**
+ * Scores the candidates of every declaration that goes to review and keeps the scores there. A
+ * failed ranking is noted on the entry; the run goes on.
+ * @param {any[]} review
+ * @param {import('../judge.mjs').Bundle[]} bundles
+ * @param {import('../jev.mjs').JevOptions} settings
+ */
+async function attachScores(review, bundles, settings) {
+  const inReview = new Set(review.map((r) => r.decl));
+  const ranked = await rankWithJev(
+    bundles.filter((b) => inReview.has(b.decl)),
+    settings
+  );
+  let failed = 0;
+  for (const entry of review) {
+    const result = ranked.get(entry.decl);
+    if (!result) continue;
+    if ('scores' in result) entry.scores = result.scores;
+    else {
+      entry.scoresError = result.error;
+      failed++;
+    }
+  }
+  console.log(
+    `judge: Jev ranked the candidates of the review entries: ${ranked.size - failed} scored, ${failed} failed`
+  );
+}
+
+/** @param {number} decisions @param {any[]} review @param {number} threshold */
+function printDecided(decisions, review, threshold) {
+  console.log(`judge: ${decisions} decisions at or above ${threshold}, ${review.length} for review`);
+  for (const r of review) {
+    const answer = r.error ?? `${r.choice ? `${r.choice.module} ${r.choice.export}` : 'removed'} at ${r.confidence}`;
+    console.log(`  review ${r.decl} [${r.why.join(', ')}]: ${answer}`);
+  }
 }
 
 /**
@@ -345,13 +424,19 @@ function printCalibration(result) {
   for (const [kind, t] of Object.entries(result.bySettled)) console.log(row(kind, t));
 }
 
-/** @param {import('../judge.mjs').Answer[]} answers */
-function printUsage(answers) {
+/** @param {import('../judge.mjs').Answer[]} answers @param {string} judgeName */
+function printUsage(answers, judgeName) {
   const total = { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 };
   for (const a of answers) {
     for (const key of /** @type {Array<keyof typeof total>} */ (Object.keys(total))) {
       total[key] += Number(a.usage?.[key] ?? 0);
     }
+  }
+  if (judgeName === JEV) {
+    console.log(
+      `judge: usage ${total.input_tokens} input, ${total.output_tokens} output tokens (Jev bills input tokens only)`
+    );
+    return;
   }
   console.log(
     `judge: usage ${total.input_tokens} input, ${total.output_tokens} output, ${total.cache_read_input_tokens} cache read, ${total.cache_creation_input_tokens} cache write tokens (batch pricing applies)`
