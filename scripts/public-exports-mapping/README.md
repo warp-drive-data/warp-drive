@@ -81,7 +81,10 @@ node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --calibrate # ag
 node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --threshold 0.8
 ```
 
-Answers at or above the threshold land in `decisions/4.12.8.json` with `reviewed: false`;
+Calibration replays the declarations git settled with the truth hidden among the candidates and
+prints agreement per confidence bucket and per kind; read the threshold off the `symbols` row,
+the hardest kind, because the residue is harder than the average calibration item. Answers at or
+above the threshold land in `decisions/4.12.8.json` with `reviewed: false`;
 answers below it, and any choice the newest surface does not contain, go to `judge-review.json`
 in the output directory for a person. Flip `reviewed` to `true` after reading an entry. The
 TypeSafe AI judge ("Jev") is an optional second opinion behind `--judge jev`; it is not

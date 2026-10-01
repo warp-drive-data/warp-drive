@@ -125,7 +125,8 @@ public unless any path segment is `-private` or starts with `-`; it is "old cont
 package is `ember-data` or `@ember-data/*`. `@warp-drive/legacy/*` is modern. Node tooling
 packages that are public on npm but not application API (`eslint-plugin-warp-drive`,
 `@ember-data/codemods`, `warp-drive`) stay in the surfaces and are listed in
-`preferences.ignorePackages`: the map keeps their tokens and the judge never lists them.
+`preferences.ignorePackages`: the map answers `keep` for their tokens, neither the map nor the
+judge takes a candidate from them, and the judge never lists them as residue.
 
 ## Files
 
@@ -232,8 +233,12 @@ that is always present (`package`, `entry`, `forward`, `kind`, `decl`, `dir`, `m
 is the value itself.
 
 `declarations` maps every declaration id of surface `a` to its id in surface `b`, or `null` when
-nothing in `b` continues it. An id continues through `files` first. Otherwise its `symbols` entry
-decides, in this order: an `added` declaration with the same local name; for a default export, the
+nothing in `b` continues it. An id continues through `files` first. Next, when a token
+`(module, name)` of `a` that carried the id still exists in `b` with a declaration in the same
+file or in a file that `files` says continues it, the id maps to that declaration (a default
+export that became a named one in the same file is the usual case; when several such tokens
+disagree, the one whose local name matches the old local name wins, else the first in sorted
+module order). Otherwise its `symbols` entry decides, in this order: an `added` declaration with the same local name; for a default export, the
 one declaration the commit added in the same file (default turned named); the single `added`
 declaration of the same kind, but only when the commit added nothing outside surface `b` and
 removed no other declaration of that kind that would land on the same target. Anything else maps
@@ -257,9 +262,10 @@ For v1 addons (4.12 and 5.0) the tarball's `addon/` tree is the module list and
 counted under `packagesNotInSurface` and gets no token comparison; a package that ships no
 `.d.ts` compares `value` tokens only and records `types: "not published"`. Published declaration
 ids are `<package>/<file in tarball>#<local name>` (`#default` only for an anonymous default);
-`shapes/<version>.json` maps each of them, plus the source declaration id when the local names
-match, to one string: the declaration's signature or member list as the `.d.ts` prints it, for
-the judge's evidence. `audit` runs at release time and on backports, not in CI, because it needs
+`shapes/<version>.json` is `{ schema, kind: "shapes", version, shapes: { <id>: <string> } }`
+and maps each of them, plus the source declaration id when the local names match, to one
+string: the declaration's signature or member list as the `.d.ts` prints it, for the judge's
+evidence. `audit` runs at release time and on backports, not in CI, because it needs
 the registry and release tags.
 
 ### `decisions/<from>.json` (area E, read by D)
@@ -289,9 +295,21 @@ the registry and release tags.
 
 `choice` names a token of the `to` surface or is `null` for "removed, no replacement". `shim`
 is the smallest code that restores a removed token, drafted from the removing commit's diff
-for a human to trim. `reviewed` flips to `true` by hand. Decisions are keyed by `decl` so they
-survive a module rename; a decision whose `decl` is not in the `from` surface, or whose
-`choice` is not in the `to` surface, is stale and fails `--check`.
+for a human to trim. `reviewed` flips to `true` by hand. Entries are sorted by `decl`. Decisions
+are keyed by `decl` so they survive a module rename; a decision whose `decl` is not in the
+`from` surface, or whose `choice` is not in the `to` surface, is stale: `judge --check` fails on
+it, and a live `judge` run drops it and judges the declaration again.
+
+The judge asks `claude-opus-5-5` through the Message Batches API, one request per residue
+declaration: a cached system prompt stating the ranking, the evidence bundle as the user turn,
+a strict `record_successor` tool (`choice: { module, export } | null`, `confidence`, `reason`)
+with `tool_choice` `auto`, since the model rejects a forced tool choice, and a retry round for
+answers without a tool call. Calibration (`--calibrate`) replays the declarations git settled,
+truth hidden among the candidates, and reports agreement per confidence bucket and per kind
+(`files`, `symbols`, `same`); the threshold is read from the `symbols` row, the hardest kind.
+Below the threshold, or when the choice is not a token of `to`, the answer goes to
+`judge-review.json` in the output directory (`tmp/public-exports-judge/<from>-<to>/`, git
+ignored) for a person. No model runs in CI.
 
 ### `preferences.json` (shared, area D writes it)
 
@@ -386,7 +404,7 @@ cli.mjs surface <version|head> [--check]        area A
 cli.mjs history <a> <b> [--check]               area B
 cli.mjs diff <a> <b> [--check]                  area B
 cli.mjs audit <version> [--check]               area C
-cli.mjs judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev]   area E
+cli.mjs judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
 cli.mjs ship [--check]                          area D
 cli.mjs update [--check]                        area A: surface head, then history/diff 5.9.1-head and ship when those commands exist
 cli.mjs release <version>                       area A: surface + history + diff + audit for a newly tagged version, then ship
