@@ -1,0 +1,719 @@
+{
+  "schema": 1,
+  "kind": "merged-delta",
+  "from": "5.7",
+  "base": "5.6",
+  "via": [
+    "5.8",
+    "5.9"
+  ],
+  "to": "5.10",
+  "remove": [
+    "@warp-drive/core/reactive/-private::Editable",
+    "@warp-drive/core/reactive/-private::Legacy",
+    "@warp-drive/core/store/-private::MUTATE",
+    "@warp-drive/core/store/-private::SOURCE",
+    "@warp-drive/core/store/-private::createMemo",
+    "@warp-drive/core/store/-private::isDocumentIdentifier",
+    "@warp-drive/core/store/-private::isStableIdentifier",
+    "@warp-drive/core/store/-private::peekCache",
+    "@warp-drive/core/store/-private::removeRecordDataFor",
+    "@warp-drive/core/store/-private::setCacheFor",
+    "@warp-drive/core/types/identifier::DEBUG_IDENTIFIER_BUCKET",
+    "@warp-drive/core/types/identifier::ExistingRecordIdentifier",
+    "@warp-drive/core/types/identifier::Identifier",
+    "@warp-drive/core/types/identifier::IdentifierBucket",
+    "@warp-drive/core/types/identifier::NewRecordIdentifier",
+    "@warp-drive/core/types/identifier::RecordIdentifier",
+    "@warp-drive/core/types/identifier::StableIdentifier",
+    "@warp-drive/core/types/identifier::StableNewRecordIdentifier",
+    "@warp-drive/experiments/persisted-cache::*",
+    "@warp-drive/experiments/persisted-cache::PersistedCache",
+    "@warp-drive/schema-record/-private::Editable",
+    "@warp-drive/schema-record/-private::Legacy"
+  ],
+  "set": [
+    {
+      "module": "@ember-data/legacy-compat",
+      "export": "*",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/build-config/canary-features",
+      "export": "ENFORCE_STRICT_RESOURCE_FINALIZATION",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/build-config/canary-features",
+        "export": "ENFORCE_STRICT_RESOURCE_FINALIZATION",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/build-config/debugging",
+      "export": "LOG_REACT_SIGNAL_INTEGRATION",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/build-config/debugging",
+        "export": "LOG_REACT_SIGNAL_INTEGRATION",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/build-config/deprecations",
+      "export": "ENABLE_LEGACY_REQUEST_METHODS",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/build-config/deprecations",
+        "export": "ENABLE_LEGACY_REQUEST_METHODS",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive",
+      "export": "ReactiveDocument",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/reactive",
+        "export": "ReactiveDocument",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive",
+      "export": "checkout",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/reactive",
+        "export": "checkout",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive",
+      "export": "commit",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/reactive",
+        "export": "commit",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/reactive",
+      "export": "getExpensiveRequestSubscription",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/reactive/-private",
+      "export": "Context",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/reactive/-private",
+        "export": "Context",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "AutorefreshBehaviorCombos",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "AutorefreshBehaviorType",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "CollectionRecordArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "CollectionRecordArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "ContentFeatures",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "LegacyLiveArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "LegacyLiveArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "LegacyManyArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "LegacyManyArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "LegacyQueryArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "LegacyQueryArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "LiveArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "LiveArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "PrivateCacheCapabilitiesManager",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "PrivateCacheCapabilitiesManager",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "PrivateReactiveResourceArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "PrivateReactiveResourceArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "PrivateStore",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "PrivateStore",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "ReactiveResourceArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "ReactiveResourceArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RecoveryFeatures",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RelatedCollection",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "RelatedCollection",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RequestArgs",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "RequestComponentArgs",
+      "typeOnly": true,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "assertPrivateCapabilities",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "assertPrivateCapabilities",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "assertPrivateStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "assertPrivateStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "createInternalMemo",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "createLegacyManyArray",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "createLegacyManyArray",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "defineGate",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "entangleInitiallyStaleSignal",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "isPrivateStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "isPrivateStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "isRequestKey",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "isRequestKey",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "isResourceKey",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/store/-private",
+        "export": "isResourceKey",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/store/-private",
+      "export": "signal",
+      "typeOnly": false,
+      "to": null
+    },
+    {
+      "module": "@warp-drive/core/types/identifier",
+      "export": "CacheKeyType",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/identifier",
+        "export": "CacheKeyType",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/identifier",
+      "export": "DEBUG_KEY_TYPE",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/types/identifier",
+        "export": "DEBUG_KEY_TYPE",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/identifier",
+      "export": "NewResourceKey",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/identifier",
+        "export": "NewResourceKey",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/identifier",
+      "export": "PersistedResourceKey",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/identifier",
+        "export": "PersistedResourceKey",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/schema/fields",
+      "export": "AttrOptions",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/schema/fields",
+        "export": "AttrOptions",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/schema/fields",
+      "export": "CacheableFieldSchema",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/schema/fields",
+        "export": "CacheableFieldSchema",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/schema/fields",
+      "export": "LegacyTrait",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/schema/fields",
+        "export": "LegacyTrait",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/schema/fields",
+      "export": "PolarisTrait",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/schema/fields",
+        "export": "PolarisTrait",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/core/types/schema/fields",
+      "export": "Trait",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/core/types/schema/fields",
+        "export": "Trait",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember",
+      "export": "ContentFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember",
+        "export": "ContentFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember",
+      "export": "RecoveryFeatures",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/ember",
+        "export": "RecoveryFeatures",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/ember",
+      "export": "createRequestSubscription",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/ember",
+        "export": "createRequestSubscription",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model",
+      "export": "restoreDeprecatedModelRequestBehaviors",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/model",
+        "export": "restoreDeprecatedModelRequestBehaviors",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "ManyArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "ManyArray",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "MaybeBelongsToFields",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "MaybeBelongsToFields",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "MaybeHasManyFields",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "MaybeHasManyFields",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model/-private",
+      "export": "MaybeRelationshipFields",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "MaybeRelationshipFields",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/model/migration-support",
+      "export": "withRestoredDeprecatedModelRequestBehaviors",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/model/migration-support",
+        "export": "withRestoredDeprecatedModelRequestBehaviors",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/store",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/store",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/store",
+      "export": "Store",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/store",
+        "export": "Store",
+        "typeOnly": true
+      }
+    },
+    {
+      "module": "@warp-drive/legacy/store",
+      "export": "restoreDeprecatedStoreBehaviors",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/legacy/store",
+        "export": "restoreDeprecatedStoreBehaviors",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "ReactiveContext",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "ReactiveContext",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "Request",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "Request",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "StoreProvider",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "StoreProvider",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "Throw",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "Throw",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "WatcherContext",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "WatcherContext",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react",
+      "export": "useStore",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react",
+        "export": "useStore",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react/install",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react/install",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react/install",
+      "export": "buildSignalConfig",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react/install",
+        "export": "buildSignalConfig",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/react/install",
+      "export": "settled",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/react/install",
+        "export": "settled",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/schema-record/-private",
+      "export": "Context",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/core/reactive/-private",
+        "export": "Context",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/tc39-proposal-signals/install",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/tc39-proposal-signals/install",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/tc39-proposal-signals/install",
+      "export": "buildSignalConfig",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/tc39-proposal-signals/install",
+        "export": "buildSignalConfig",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/utilities/derivations",
+      "export": "*",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/utilities/derivations",
+        "export": "*",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/utilities/derivations",
+      "export": "concat",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/utilities/derivations",
+        "export": "concat",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "@warp-drive/utilities/handlers",
+      "export": "MetaDocHandler",
+      "typeOnly": false,
+      "to": {
+        "module": "@warp-drive/utilities/handlers",
+        "export": "MetaDocHandler",
+        "typeOnly": false
+      }
+    },
+    {
+      "module": "ember-data/-private/index",
+      "export": "ManyArray",
+      "typeOnly": true,
+      "to": {
+        "module": "@warp-drive/legacy/model/-private",
+        "export": "ManyArray",
+        "typeOnly": true
+      }
+    }
+  ]
+}

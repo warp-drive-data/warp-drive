@@ -2,57 +2,111 @@
 | ---- | -- | -- |
 | `no-legacy-imports` | 🏆 | ✅ |
 
-> [!TIP]
-> This rule is autofixable. Fixes may split a single import/export into multiple
-> declarations when different specifiers map to different target modules. Review
-> diffs for these splits.
-
 > [!NOTE]
-> Rewrites legacy EmberData import module specifiers to their
-> modern replacements using the enriched public exports mapping embedded from
-> `public-exports-mapping-5.5.enriched.json`.
+> Rewrites imports written against an older EmberData or WarpDrive release to the modules that
+> hold the same exports in this plugin's release. Imports that cannot be rewritten safely are
+> reported without a fix. The rule decides from a map that ships with the plugin. It records
+> where every export of each older release lives in this release, and which legacy modules
+> moved as a whole.
 
-This rule updates module paths only; it does not rename imported identifiers.
+> [!TIP]
+> This rule is autofixable. A fix can split one import declaration into several when its names
+> moved to different modules. Review these splits in the diff.
 
 ## Examples
 
 Before:
 
 ```js
-import { findRecord } from '@ember-data/rest/request';
-export { attr, hasMany } from '@ember-data/model';
+import Store from '@ember-data/store';
+import Model, { attr, hasMany } from '@ember-data/model';
+import Adapter from '@ember-data/adapter/rest';
+import { findRecord, Unknown } from '@ember-data/rest/request';
+import * as compat from '@ember-data/legacy-compat';
 ```
 
 After:
 
 ```js
+import { Store } from '@warp-drive/core';
+import Model, { attr, hasMany } from '@warp-drive/legacy/model';
+import { RESTAdapter as Adapter } from '@warp-drive/legacy/adapter/rest';
 import { findRecord } from '@warp-drive/utilities/rest';
+import { Unknown } from '@ember-data/rest/request';
+import * as compat from '@warp-drive/legacy/compat';
 ```
 
-## Scope (v1)
+`Unknown` is also reported, because `@ember-data/rest/request` never exported it.
 
-- Static imports only.
-- Default and named specifiers are supported, including TypeScript `import type` declarations
-  and inline `type` specifiers (e.g. `import { type Foo } from '...'`); their type-only-ness
-  is preserved across the rewrite.
-- Namespace imports, export-all (`export * from`), re-exports with `from`, CommonJS `require`,
-  and dynamic imports are out of scope for v1 (no report).
+## Options
 
-## Unmapped exports
+```js
+rules: {
+  'warp-drive/no-legacy-imports': ['error', { from: '5.7' }],
+}
+```
 
-The embedded mapping is a point-in-time snapshot; it doesn't automatically pick up exports
-added afterward. Rather than silently leaving such an import untouched:
+`from` is the release your imports were written against, as a `major.minor` string. The rule
+uses the map from that release to this plugin's release. The allowed values are every minor
+release from `5.5` up to the one before this plugin's release. The default is `5.5`. Any other
+value fails config validation.
 
-- If every export we've ever tracked for a legacy module funnels into the same replacement
-  module, an untracked token from that module is routed there too (same export name, no
-  guessing at a rename).
-- If a legacy module is known but its tracked exports funnel into more than one replacement
-  module (e.g. some tokens move to `@warp-drive/core`, others to `@warp-drive/ember`), an
-  untracked token from it can't be routed safely. It is reported without an autofix so it
-  gets manual attention instead of being silently skipped.
-- Imports from modules this rule has no bookkeeping for at all (e.g. third-party packages)
-  are still ignored entirely, as before.
+Pick the release your app was on before the upgrade. The same module path can mean different
+things in different releases. For example, with `from: '5.7'` the rule rewrites
+`getRequestState` from `@warp-drive/core/store/-private` to `@warp-drive/ember`.
 
-## Notes
+## What the rule does with each imported name
 
-- Deduplication of existing imports from a replacement module is not performed in v1.
+The rule looks at every default, named and namespace specifier of a static
+`import ... from '...'` declaration. For each name it does one of four things.
+
+- **Rewrite.** The name has a home in a current module. The fix imports it from there. It
+  keeps your local binding name. When the export was renamed, or a default export became a named
+  one, the fix imports the new name under your old local name, as `RESTAdapter as Adapter` shows
+  above. `import type` and inline `type` specifiers stay type-only. When every name in a
+  rewritten declaration is a type, the fix writes `import type`.
+- **Report, no replacement** (`warp-drive.no-legacy-imports.unmapped-export`). The name no
+  longer exists in this release, or the module never exported it. The import is left as written
+  and needs manual migration.
+- **Report, legacy home** (`warp-drive.no-legacy-imports.legacy-home`). The name still lives only
+  in a legacy package, for example the default export of `ember-data/version`. There is no modern
+  module to rewrite to yet, so the import is left as written.
+- **Report, type-only target** (`warp-drive.no-legacy-imports.type-only-target`). A value import
+  names something that was a value in the `from` release and is only a type in this release, for
+  example `import { ManyArray } from '@ember-data/model/-private'`. Rewriting it would import a
+  name with no runtime value, so the import is left as written. Use `import type` if the name is
+  only used as a type, and the rule then rewrites it. Otherwise it needs manual migration.
+
+A declaration with any rewrite gets one `warp-drive.no-legacy-imports` report that carries the
+fix. Names that stay behind keep a declaration from the original module, and their own reports
+are listed separately.
+
+## Names the `from` release did not export
+
+A legacy module whose only export is a single `export *` moved as a whole. A name the map does
+not list, such as one added after the `from` release, follows that move with its name unchanged.
+`import { TotallyNew } from '@ember-data/store/-private'` becomes an import from
+`@warp-drive/core/store/-private`.
+
+A legacy module that names any export of its own did not move as a whole, even when it also has
+an `export *`. `@ember-data/request` forwards `export * from '@warp-drive/core/request'` but takes
+its default export from `@warp-drive/core`. A name from such a module that the map does not list
+is reported as having no replacement.
+
+## Namespace imports
+
+`import * as compat from '@ember-data/legacy-compat'` follows the module's move when the whole
+module moved, as above. A namespace import from a module that did not move as a whole, such as
+`import * as store from '@ember-data/store'` or `import * as req from '@ember-data/request'`, is
+left as written and is not reported.
+
+## What the rule ignores
+
+- Imports from modules the map does not know, such as third-party packages. A module counts as
+  known when the `from` release exported anything from it.
+- Imports from a known module whose export stayed in place.
+- Side-effect imports, such as `import '@ember-data/store'`.
+- Re-exports, such as `export { attr } from '@ember-data/model'` and `export * from '...'`.
+- Dynamic `import()` and CommonJS `require()`.
+
+The fix does not merge a rewritten import into an existing import of the same module.
