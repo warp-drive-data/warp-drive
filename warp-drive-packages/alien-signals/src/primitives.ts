@@ -523,7 +523,7 @@ function releaseUnobservedMemos(): void {
   releaseQueue = [];
   releaseScheduled = false;
   for (let i = 0; i < queue.length; i++) {
-    const memo = queue[i]!;
+    const memo = queue[i];
     memo.queued = false;
     // something may have started depending on it since it was queued
     if (memo.subs === undefined && memo.depsTail !== undefined) {
@@ -535,11 +535,11 @@ function releaseUnobservedMemos(): void {
 
 /** Unlinks all of `sub`'s dependencies, last first. */
 function disposeDeps(sub: ReactiveNode): void {
-  let link = sub.depsTail;
-  while (link !== undefined) {
-    const prev = link.prevDep;
-    unlink(link, sub);
-    link = prev;
+  let dep = sub.depsTail;
+  while (dep !== undefined) {
+    const prev = dep.prevDep;
+    unlink(dep, sub);
+    dep = prev;
   }
 }
 
