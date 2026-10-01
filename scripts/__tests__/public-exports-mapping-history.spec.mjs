@@ -650,7 +650,7 @@ test('historyOf refuses to search symbols in a range a shallow clone cuts', (t) 
   );
 });
 
-test('diffSurfaces maps every declaration of a: through files first, then through the removing commit', () => {
+test('diffSurfaces maps every declaration of a: through files, then the tokens that carried it, then the removing commit', () => {
   const { surfaceA, surfaceB, history } = handWrittenPair();
 
   const { declarations } = diffSurfaces(surfaceA, surfaceB, history);
@@ -669,12 +669,21 @@ test('diffSurfaces maps every declaration of a: through files first, then throug
     'packages/store/src/utils.ts#assert': 'packages/store/src/utils.ts#assert',
     // files: several continuations declare it, the first path wins
     'packages/store/src/graph.ts#Graph': 'warp-drive-packages/core/src/graph.ts#Graph',
-    // files: deleted, or still there but no longer in surface b, and no commit removed it
+    // files: deleted, or still there but no longer in surface b, and no commit removed it; a
+    // token still in b does not count when it names a declaration in a file that does not continue it
     'packages/store/src/gone.ts#gone': null,
     'packages/store/src/cache.ts#peekCache': null,
-    // symbols: moved under the same name, or a default export that became a named one
-    'packages/store/src/record.ts#Record': 'warp-drive-packages/core/src/record.ts#Record',
+    'packages/store/src/normalize.ts#normalizeModelName': null,
+    // tokens: one that carried it is still in b, on a declaration in the same file (a default
+    // export that became a named one, which no commit was found for) or in a file continuing it ...
+    'packages/store/src/coerce-id.ts#default': 'packages/store/src/coerce-id.ts#coerceId',
     'packages/store/src/store.ts#default': 'warp-drive-packages/core/src/store.ts#Store',
+    // ... and when such tokens disagree, the first module's wins, ahead of symbols (LegacySnapshot)
+    'packages/store/src/snapshot.ts#default': 'warp-drive-packages/legacy/src/snapshot.ts#Snapshot',
+    // symbols: moved under the same name (its token stays, in a file that does not continue
+    // record.ts), or a default export that became a named one and lost its token
+    'packages/store/src/record.ts#Record': 'warp-drive-packages/core/src/record.ts#Record',
+    'packages/store/src/record-array.ts#default': 'packages/store/src/record-array.ts#LiveArray',
     // symbols: the only added declaration of the same kind
     'packages/store/src/identifier.ts#isStableIdentifier': 'packages/store/src/identifier.ts#isResourceKey',
     'packages/store/src/identifier.ts#Identifier': 'packages/store/src/identifier.ts#ResourceKey',

@@ -28,6 +28,14 @@ import { canonical } from './artifacts.mjs';
  *   packages: RecordChanges, modules: RecordChanges, exports: Record<string, RecordChanges>,
  *   declarations: Record<string, string | null>,
  * }} Diff
+ * @typedef {{ module: string, name: string }} Token
+ * @typedef {{
+ *   history: History,
+ *   kindsA: Map<string, 'value' | 'type'>,
+ *   kindsB: Map<string, 'value' | 'type'>,
+ *   tokensA: Map<string, Token[]>,
+ *   surfaceB: Surface,
+ * }} Context  what `continuationOf` reads for one pair
  */
 
 /**
@@ -75,6 +83,26 @@ export function declarationKinds(surface) {
 }
 
 /**
+ * The tokens of a surface by the declaration they carry, each list in module order, then in
+ * export name order.
+ * @param {Surface} surface
+ * @returns {Map<string, Token[]>}
+ */
+function tokensByDeclaration(surface) {
+  /** @type {Map<string, Token[]>} */
+  const tokens = new Map();
+  for (const module of Object.keys(surface.modules).sort()) {
+    for (const name of Object.keys(surface.modules[module].exports).sort()) {
+      const { decl } = surface.modules[module].exports[name];
+      const list = tokens.get(decl);
+      if (list) list.push({ module, name });
+      else tokens.set(decl, [{ module, name }]);
+    }
+  }
+  return tokens;
+}
+
+/**
  * Splits `<file>#<name>`; `null` for an `external:` id, which names no file of the tree.
  * @param {string} id
  * @returns {{ file: string, name: string } | null}
@@ -94,6 +122,33 @@ export function splitDeclarationId(id) {
  */
 export function followFiles(files, file) {
   return Object.hasOwn(files, file) ? files[file] : [file];
+}
+
+/**
+ * The declaration surface `b` gives a token that carried `id` in surface `a`, when that token
+ * still exists and the declaration lies in the declaring file of `id` or in a file `files`
+ * says continues it: how a default export that became a named one continues
+ * (`store-service.ts#default` to `store-service.ts#Store`, under `@ember-data/store` `default`).
+ * @param {string} id
+ * @param {{ file: string, name: string }} parsed  `id`, split
+ * @param {Context} context
+ * @returns {string | null}
+ */
+function keptToken(id, { file, name }, { history, tokensA, surfaceB }) {
+  const places = new Set([file, ...followFiles(history.files, file)]);
+  /** @type {string[]} */
+  const kept = [];
+  for (const token of tokensA.get(id) ?? []) {
+    const module = Object.hasOwn(surfaceB.modules, token.module) ? surfaceB.modules[token.module] : null;
+    const record = module && Object.hasOwn(module.exports, token.name) ? module.exports[token.name] : null;
+    const target = record && splitDeclarationId(record.decl);
+    if (record && target && places.has(target.file)) kept.push(record.decl);
+  }
+  // When the tokens disagree, the declaration with the local name of `id` wins, else the one of
+  // the first token in module order (then export name order). Coming after the files rule, a
+  // declaration with that local name in these files only turns up when `files` and surface `b`
+  // disagree, so in practice the module order decides.
+  return kept.find((decl) => splitDeclarationId(decl)?.name === name) ?? kept[0] ?? null;
 }
 
 /**
@@ -134,25 +189,28 @@ function movedByName(id, history, kindsA, kindsB) {
  *
  * 1. File moves: the same binding in a file that continues the declaring file, the declaring
  *    file itself first when it survives, else the first such path.
- * 2. The commit that removed it (`history.symbols`), among the declarations it added that
+ * 2. Tokens: the declaration surface `b` gives a token that carried `id`, when it lies in the
+ *    declaring file or a file continuing it (`keptToken`).
+ * 3. The commit that removed it (`history.symbols`), among the declarations it added that
  *    surface `b` has with the same kind: the one `movedByName` finds; else the only one, when
  *    the commit added nothing outside surface `b` (whose kind is not on record, so it may be
  *    of the same kind) and removed no other declaration of that kind that this rule would
  *    also send there (a rename is one to one).
- * 3. Otherwise `null`, and the judge decides.
+ * 4. Otherwise `null`, and the judge decides.
  * @param {string} id
- * @param {History} history
- * @param {Map<string, 'value' | 'type'>} kindsA
- * @param {Map<string, 'value' | 'type'>} kindsB
+ * @param {Context} context
  * @returns {string | null}
  */
-export function continuationOf(id, history, kindsA, kindsB) {
+export function continuationOf(id, context) {
+  const { history, kindsA, kindsB } = context;
   const parsed = splitDeclarationId(id);
   if (!parsed) return kindsB.has(id) ? id : null;
   const targets = followFiles(history.files, parsed.file);
   const candidates = targets.map((file) => `${file}#${parsed.name}`).filter((candidate) => kindsB.has(candidate));
   if (candidates.includes(id)) return id;
   if (candidates.length) return candidates[0];
+  const kept = keptToken(id, parsed, context);
+  if (kept) return kept;
   if (!Object.hasOwn(history.symbols, id)) return null;
   const byName = movedByName(id, history, kindsA, kindsB);
   if (byName) return byName;
@@ -264,11 +322,17 @@ export function diffSurfaces(surfaceA, surfaceB, history) {
     if (!isEmpty(changes)) exports[module] = changes;
   }
 
-  const kindsA = declarationKinds(surfaceA);
-  const kindsB = declarationKinds(surfaceB);
+  /** @type {Context} */
+  const context = {
+    history,
+    kindsA: declarationKinds(surfaceA),
+    kindsB: declarationKinds(surfaceB),
+    tokensA: tokensByDeclaration(surfaceA),
+    surfaceB,
+  };
   /** @type {Record<string, string | null>} */
   const declarations = {};
-  for (const id of [...kindsA.keys()].sort()) declarations[id] = continuationOf(id, history, kindsA, kindsB);
+  for (const id of [...context.kindsA.keys()].sort()) declarations[id] = continuationOf(id, context);
 
   /** @type {Diff} */
   const diff = {

@@ -38,6 +38,10 @@
         "assert": { "kind": "value", "decl": "packages/store/src/utils.ts#assert" },
         "Graph": { "kind": "value", "decl": "warp-drive-packages/legacy/src/graph.ts#Graph" },
         "Record": { "kind": "value", "decl": "warp-drive-packages/core/src/record.ts#Record" },
+        "LiveArray": { "kind": "value", "decl": "packages/store/src/record-array.ts#LiveArray" },
+        "coerceId": { "kind": "value", "decl": "packages/store/src/coerce-id.ts#coerceId" },
+        "normalizeModelName": { "kind": "value", "decl": "packages/store/src/compat.ts#normalizeModelName" },
+        "Snapshot": { "kind": "value", "decl": "warp-drive-packages/legacy/src/snapshot.ts#Snapshot" },
         "isResourceKey": { "kind": "value", "decl": "packages/store/src/identifier.ts#isResourceKey" },
         "ResourceKey": { "kind": "type", "decl": "packages/store/src/identifier.ts#ResourceKey" },
         "EmberObject": { "kind": "value", "decl": "external:@ember/object#default" }
@@ -52,7 +56,8 @@
         "FlagType": { "kind": "type", "decl": "packages/store/src/flags.ts#FlagType" },
         "NewId": { "kind": "type", "decl": "packages/store/src/ids.ts#NewId" },
         "ManagerA": { "kind": "value", "decl": "packages/store/src/manager-a.ts#ManagerA" },
-        "ManagerB": { "kind": "value", "decl": "packages/store/src/manager-b.ts#ManagerB" }
+        "ManagerB": { "kind": "value", "decl": "packages/store/src/manager-b.ts#ManagerB" },
+        "Snapshot": { "kind": "value", "decl": "warp-drive-packages/legacy/src/snapshot.ts#LegacySnapshot" }
       }
     },
     "@acme/store/compat": {

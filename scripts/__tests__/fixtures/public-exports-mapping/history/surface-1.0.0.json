@@ -30,6 +30,10 @@
         "assert": { "kind": "value", "decl": "packages/store/src/utils.ts#assert" },
         "Graph": { "kind": "value", "decl": "packages/store/src/graph.ts#Graph" },
         "Record": { "kind": "value", "decl": "packages/store/src/record.ts#Record" },
+        "RecordArray": { "kind": "value", "decl": "packages/store/src/record-array.ts#default" },
+        "coerceId": { "kind": "value", "decl": "packages/store/src/coerce-id.ts#default" },
+        "normalizeModelName": { "kind": "value", "decl": "packages/store/src/normalize.ts#normalizeModelName" },
+        "Snapshot": { "kind": "value", "decl": "packages/store/src/snapshot.ts#default" },
         "isStableIdentifier": { "kind": "value", "decl": "packages/store/src/identifier.ts#isStableIdentifier" },
         "Identifier": { "kind": "type", "decl": "packages/store/src/identifier.ts#Identifier" },
         "types": { "kind": "value", "decl": "packages/store/src/types.ts#*ns" },
@@ -46,7 +50,8 @@
         "FLAG": { "kind": "value", "decl": "packages/store/src/flags.ts#FLAG" },
         "OldA": { "kind": "type", "decl": "packages/store/src/ids.ts#OldA" },
         "OldB": { "kind": "type", "decl": "packages/store/src/ids.ts#OldB" },
-        "Manager": { "kind": "value", "decl": "packages/store/src/manager.ts#Manager" }
+        "Manager": { "kind": "value", "decl": "packages/store/src/manager.ts#Manager" },
+        "Snapshot": { "kind": "value", "decl": "packages/store/src/snapshot.ts#default" }
       }
     },
     "@acme/store/legacy": {

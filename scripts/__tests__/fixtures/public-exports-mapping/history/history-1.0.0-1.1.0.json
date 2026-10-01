@@ -8,9 +8,11 @@
     "packages/store/src/graph.ts": ["warp-drive-packages/core/src/graph.ts", "warp-drive-packages/legacy/src/graph.ts"],
     "packages/store/src/gone.ts": [],
     "packages/store/src/manager.ts": [],
+    "packages/store/src/normalize.ts": [],
     "packages/store/src/record.ts": [],
     "packages/store/src/request.js": ["packages/store/src/request.ts"],
     "packages/store/src/schema.ts": ["packages/store/src/schema.ts", "warp-drive-packages/core/src/schema.ts"],
+    "packages/store/src/snapshot.ts": ["warp-drive-packages/legacy/src/snapshot.ts"],
     "packages/store/src/store.ts": ["warp-drive-packages/core/src/store.ts"],
     "packages/store/src/types.ts": ["warp-drive-packages/core/src/types.ts"],
     "packages/store/src/utils.ts": ["packages/store/src/utils.ts", "warp-drive-packages/core/src/utils.ts"]
@@ -65,6 +67,16 @@
       "commit": "8888888888",
       "subject": "refactor: split Manager",
       "added": ["packages/store/src/manager-a.ts#ManagerA", "packages/store/src/manager-b.ts#ManagerB"]
+    },
+    "packages/store/src/record-array.ts#default": {
+      "commit": "9999999999",
+      "subject": "refactor: name the record array LiveArray",
+      "added": ["packages/store/src/record-array.ts#LiveArray"]
+    },
+    "packages/store/src/snapshot.ts#default": {
+      "commit": "aaaaaaaaaa",
+      "subject": "feat: a snapshot for legacy adapters",
+      "added": ["warp-drive-packages/legacy/src/snapshot.ts#LegacySnapshot"]
     }
   }
 }
