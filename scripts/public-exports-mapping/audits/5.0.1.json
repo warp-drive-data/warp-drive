@@ -6,6 +6,13 @@
         "addon/build-url-mixin-18db8c8b.js",
         "addon/index-f54121ea.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/adapter",
       "exports": null,
       "missing": {},
@@ -79,6 +86,13 @@
     },
     "@ember-data/debug": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/debug",
       "exports": null,
       "missing": {},
@@ -100,6 +114,13 @@
     },
     "@ember-data/graph": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/graph",
       "exports": null,
       "missing": {},
@@ -122,6 +143,13 @@
     },
     "@ember-data/json-api": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/json-api",
       "exports": null,
       "missing": {},
@@ -145,6 +173,13 @@
       "chunks": [
         "addon/-private-87269113.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/legacy-compat",
       "exports": null,
       "missing": {},
@@ -180,6 +215,13 @@
       "chunks": [
         "addon/index-8a7de041.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/model",
       "exports": null,
       "missing": {},
@@ -222,6 +264,13 @@
     },
     "@ember-data/private-build-infra": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/private-build-infra",
       "exports": null,
       "missing": {},
@@ -232,6 +281,13 @@
     },
     "@ember-data/request": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/request",
       "exports": null,
       "missing": {},
@@ -265,6 +321,13 @@
       "chunks": [
         "addon/embedded-records-mixin-d75385ff.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/serializer",
       "exports": null,
       "missing": {},
@@ -337,6 +400,13 @@
     },
     "@ember-data/store": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/store",
       "exports": null,
       "missing": {},
@@ -395,6 +465,13 @@
     },
     "@ember-data/tracking": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/tracking",
       "exports": null,
       "missing": {},
@@ -432,6 +509,13 @@
     },
     "ember-data": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/-ember-data",
       "exports": null,
       "missing": {},
@@ -633,8 +717,10 @@
       "version": "5.0.1"
     }
   },
+  "packagesNotInSurface": [],
   "schema": 1,
-  "surface": null,
+  "surface": "scripts/public-exports-mapping/surfaces/5.0.1.json",
+  "surfacePackagesNotInRelease": [],
   "tag": "v5.0.1",
   "version": "5.0.1"
 }

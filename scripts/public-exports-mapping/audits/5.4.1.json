@@ -3,6 +3,13 @@
   "packages": {
     "@ember-data/active-record": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/active-record",
       "exports": {
         "./*": {
@@ -48,6 +55,13 @@
         "dist/index-DokvKSvT.js",
         "dist/serialize-into-hash-DIFDGeuT.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/adapter",
       "exports": {
         ".": {
@@ -183,6 +197,13 @@
     },
     "@ember-data/debug": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/debug",
       "exports": {
         ".": {
@@ -229,6 +250,13 @@
     },
     "@ember-data/graph": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/graph",
       "exports": {
         ".": {
@@ -285,6 +313,13 @@
     },
     "@ember-data/json-api": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/json-api",
       "exports": {
         ".": {
@@ -354,6 +389,13 @@
       "chunks": [
         "dist/-private-Dlia0pw1.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/legacy-compat",
       "exports": {
         ".": {
@@ -488,6 +530,13 @@
         "dist/model-rk3atPqV.js",
         "dist/schema-provider-Bvogtzx9.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/model",
       "exports": {
         ".": {
@@ -622,6 +671,13 @@
       "chunks": [
         "dist/debug-nHWzWIMX.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/request",
       "exports": {
         ".": {
@@ -693,6 +749,13 @@
       "chunks": [
         "dist/inflect-8aYUyMN7.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/request-utils",
       "exports": {
         ".": {
@@ -813,6 +876,13 @@
     },
     "@ember-data/rest": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/rest",
       "exports": {
         "./*": {
@@ -856,6 +926,13 @@
       "chunks": [
         "dist/json-BwMH6O_R.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/serializer",
       "exports": {
         ".": {
@@ -967,6 +1044,13 @@
       "chunks": [
         "dist/many-array-BwVo-2vv.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/store",
       "exports": {
         ".": {
@@ -1125,6 +1209,13 @@
     },
     "@ember-data/tracking": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/tracking",
       "exports": {
         ".": {
@@ -1227,6 +1318,20 @@
         "dist/debugging-Dc--S1MJ.js",
         "dist/deprecations-ChFQtx-4.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [
+          "@warp-drive/build-config/addon-shim.cjs",
+          "@warp-drive/build-config/babel-plugin-transform-asserts.cjs",
+          "@warp-drive/build-config/babel-plugin-transform-deprecations.cjs",
+          "@warp-drive/build-config/babel-plugin-transform-features.cjs",
+          "@warp-drive/build-config/babel-plugin-transform-logging.cjs",
+          "@warp-drive/build-config/cjs-set-config.cjs"
+        ],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/build-config",
       "exports": {
         ".": {
@@ -1450,12 +1555,26 @@
       "version": "5.4.1"
     },
     "@warp-drive/core": {
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "warp-drive-packages/core",
       "published": false,
       "version": "5.4.1-alpha.142"
     },
     "@warp-drive/core-types": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/core-types",
       "exports": {
         ".": {
@@ -1964,6 +2083,29 @@
         "dist/diagnostic-uViIg69W.js",
         "dist/testem-CK9NgiwY.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [
+          "@warp-drive/diagnostic/server/browsers/index",
+          "@warp-drive/diagnostic/server/bun/fetch",
+          "@warp-drive/diagnostic/server/bun/launch-browser",
+          "@warp-drive/diagnostic/server/bun/port",
+          "@warp-drive/diagnostic/server/bun/socket-handler",
+          "@warp-drive/diagnostic/server/bun/watch",
+          "@warp-drive/diagnostic/server/default-setup",
+          "@warp-drive/diagnostic/server/index",
+          "@warp-drive/diagnostic/server/reporters/default",
+          "@warp-drive/diagnostic/server/utils/const",
+          "@warp-drive/diagnostic/server/utils/debug",
+          "@warp-drive/diagnostic/server/utils/get-flags",
+          "@warp-drive/diagnostic/server/utils/platform",
+          "@warp-drive/diagnostic/server/utils/port",
+          "@warp-drive/diagnostic/server/utils/time"
+        ],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/diagnostic",
       "exports": {
         ".": {
@@ -2214,6 +2356,13 @@
     },
     "@warp-drive/ember": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/ember",
       "exports": {
         ".": {
@@ -2258,6 +2407,13 @@
     },
     "@warp-drive/experiments": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/experiments",
       "exports": {
         "./data-worker": {
@@ -2344,6 +2500,13 @@
     },
     "@warp-drive/holodeck": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/holodeck",
       "exports": {
         ".": {
@@ -2402,6 +2565,13 @@
       "chunks": [
         "dist/symbols-DqoS4ybV.js"
       ],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/schema-record",
       "exports": {
         ".": {
@@ -2469,6 +2639,20 @@
     },
     "ember-data": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [
+          "ember-data/app/initializers/ember-data",
+          "ember-data/app/services/store",
+          "ember-data/app/transforms/boolean",
+          "ember-data/app/transforms/date",
+          "ember-data/app/transforms/number",
+          "ember-data/app/transforms/string"
+        ],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/-ember-data",
       "exports": {
         ".": {
@@ -2877,6 +3061,13 @@
     },
     "eslint-plugin-warp-drive": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/eslint-plugin-warp-drive",
       "exports": null,
       "missing": {},
@@ -2896,6 +3087,15 @@
     },
     "warp-drive": {
       "chunks": [],
+      "differences": {
+        "kinds": {},
+        "modulesNotInSurface": [],
+        "modulesNotShipped": [
+          "warp-drive/warp-drive"
+        ],
+        "tokensNotInSurface": {},
+        "tokensNotShipped": {}
+      },
       "dir": "packages/-warp-drive",
       "exports": null,
       "missing": {},
@@ -2906,8 +3106,10 @@
       "version": "0.1.1"
     }
   },
+  "packagesNotInSurface": [],
   "schema": 1,
-  "surface": null,
+  "surface": "scripts/public-exports-mapping/surfaces/5.4.1.json",
+  "surfacePackagesNotInRelease": [],
   "tag": "v5.4.1",
   "version": "5.4.1"
 }
