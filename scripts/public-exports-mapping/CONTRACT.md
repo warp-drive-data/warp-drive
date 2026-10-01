@@ -306,14 +306,26 @@ For one token of the `from` surface with declaration `d`:
 
 Rank candidates, first rule that separates wins:
 
+0. a module that is a home (`forward` null or a relative specifier) before a shim (`forward` a
+   bare specifier naming another module);
 1. a public module before a `-private` one;
 2. a modern package before an old-contract one;
-3. fewer path segments;
+3. fewer path segments below the package name;
 4. not `deprecated`;
 5. `kind` `value` before `type`;
 6. the same export name as the source;
-7. a module in `preferences.tieBreak`, in that order;
+7. a module of a package in `preferences.tieBreak` (the entry or a subpath of it), in that
+   order;
 8. module name, then export name, alphabetical.
+
+When the source token itself is a candidate and rules 0 to 5 do not separate it from the
+winner, the source token wins: an import that is already at a home as good as any other is not
+rewritten (`@warp-drive/react`'s `getRequestState` stays on React, whatever `tieBreak` says).
+
+A decision in `decisions/<from>.json` is judged against the newest release. For an earlier `to`
+the reader follows the chosen declaration backward through `declarations` to that release and
+prefers the exact chosen token when it exists there; when the declaration does not exist at
+that `to`, the token reports `removed`.
 
 The decision for an import of `(module, name)` written against `from`:
 
@@ -322,10 +334,17 @@ The decision for an import of `(module, name)` written against `from`:
 - name not in the module: `report untracked`, unless the module's `forward` at `to` names a
   module, then `rewrite` to `(forward, name)`;
 - no candidate: `report removed` (with `removedIn` and `shim` when a decision carries them);
+- a value import, the source export was a `value` at `from` and the winner is `kind` `type`:
+  `report type-only` (checked before `keep`, since a value that became a type under the same
+  name breaks at runtime);
 - winner is the same `(module, name)`: `keep`;
-- a value import and the winner is `kind` `type`: `report type-only`;
-- winner in a `-private` module: `rewrite` with `reason: 'private-target'`;
+- winner in a `-private` module (a forward into one included): `rewrite` with
+  `reason: 'private-target'`;
 - otherwise `rewrite`.
+
+A namespace or side-effect import (`*`) follows the module: a `preferences.report` entry wins,
+then a `forward` to another module rewrites, then a module whose exports all moved to one
+module rewrites there, then `keep` while the module exists at `to`, else `report removed`.
 
 ## Reader (area D)
 
