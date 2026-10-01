@@ -1,0 +1,10 @@
+{
+  "name": "@fixture/addon",
+  "version": "1.2.3",
+  "keywords": [
+    "ember-addon"
+  ],
+  "ember-addon": {
+    "main": "index.js"
+  }
+}
