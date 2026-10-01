@@ -1,36 +1,85 @@
-/** Where an imported name lives in the map's `to` release. */
+/** An export of a module: `export` is the exported name, `default` included, or `*` for the whole module. */
 export interface Target {
   module: string;
   export: string;
 }
+
+/** A page a report points to, from the shipped `messages.json`. */
+export interface Link {
+  title: string;
+  url: string;
+}
+
 /**
- * What a consumer does with one imported name.
+ * What to do with one imported name so that the import works against the map's `to` release.
  *
- * - `rewrite`: import `to.export` from `to.module` instead.
- * - `report`: leave the import as written and tell the user. `removed` means nothing in the `to`
- *   release stands in for the name. `untracked` means the from-release module is known but the
- *   map has no entry for the name and no module-level move to carry it. `legacy` means the name
- *   still lives only in a legacy package. `type-only` means a value import names something that
- *   was a value in the from release and is only a type in the `to` release.
- * - `keep`: say nothing. The name did not move, or the module is not one the map knows.
+ * - `rewrite`: import `to.export` from `to.module` instead. `reason: 'private-target'` means
+ *   `to.module` is private (a path segment starts with `-`).
+ * - `report`: leave the import as written and tell the user why.
+ *   - `removed`: nothing in `to` continues the export. `removedIn` and `shim` come from a judged
+ *     decision when one exists: where it was removed, and the smallest code that restores it.
+ *   - `untracked`: the module did not export the name in the `from` release.
+ *   - `type-only`: a value import of a value that is only a type in `to`; `to` names that type.
+ *   - `side-effect`: the module is reported as a whole (`preferences.json`), because importing
+ *     it also sets things up.
+ * - `keep`: nothing to do. The module is not one the `from` release had, or the export did not
+ *   move.
  */
 export type Decision =
-  | { action: 'rewrite'; to: Target }
-  | { action: 'report'; reason: 'removed' | 'untracked' | 'legacy' | 'type-only' }
+  | { action: 'rewrite'; to: Target; reason?: 'private-target' }
+  | { action: 'report'; reason: 'removed'; removedIn?: string; shim?: string; links?: readonly Link[] }
+  | { action: 'report'; reason: 'untracked'; links?: readonly Link[] }
+  | { action: 'report'; reason: 'type-only'; to: Target; links?: readonly Link[] }
+  | { action: 'report'; reason: 'side-effect'; links?: readonly Link[] }
   | { action: 'keep' };
-export interface ExportMap {
-  readonly from: string;
-  readonly to: string;
-  /**
-   * `name` is a binding name, `"default"`, or `"*"` for a namespace import. `typeOnly` is true
-   * for an `import type` declaration or an inline `type` specifier.
-   */
-  resolve(module: string, name: string, importKind: { typeOnly: boolean }): Decision;
+
+/** An entry of `decisions/<from>.json` the map did not apply, and why. */
+export interface StaleDecision {
+  decl: string;
+  source: Target | null;
+  choice: Target | null;
+  reason: 'decl-not-in-from' | 'choice-not-in-to' | 'unknown-to' | 'duplicate';
 }
-/** From-releases this plugin ships a map for, oldest first. */
-export function listFromVersions(): string[];
+
+export interface ExportMap {
+  /** The `from` release, as a full version. */
+  readonly from: string;
+  /** The `to` release, as a full version or `head`. */
+  readonly to: string;
+  /** Judged decisions for `from` that could not be applied. */
+  readonly stale: readonly StaleDecision[];
+  /**
+   * `name` is an export name, `"default"`, or `"*"` for a namespace or side-effect import.
+   * `typeOnly` is true for an `import type` declaration or an inline `type` specifier.
+   */
+  resolve(module: string, name: string, options?: { typeOnly?: boolean }): Decision;
+}
+
+export interface LoadMapOptions {
+  /** The release the imports were written against. Defaults to the baseline release. */
+  from?: string;
+  /**
+   * The release to map them to. Defaults to the installed `@warp-drive/core` version's release,
+   * else the newest release.
+   */
+  to?: string;
+  /** Where the mapping data lives. Defaults to the data this plugin ships. */
+  dataDir?: string;
+}
+
 /**
- * The map from `from` to this plugin's own release. Defaults to the oldest shipped release.
- * Throws, naming the shipped versions, when `from` is not one of them.
+ * The map from `from` to `to`. Both accept a full version (`5.9.1`), a `major.minor` (`5.9`) or
+ * `head`; a minor between two shipped releases means the older one. Maps are cached per
+ * `(dataDir, from, to)`. Throws for a version the data does not cover, and with
+ * `code === NO_DATA` when the data directory holds no mapping data.
  */
-export function loadMap(from?: string): ExportMap;
+export function loadMap(options?: LoadMapOptions): ExportMap;
+
+/** The versions a map can name, oldest first, ending with `head` when the data reaches it. */
+export function listReleases(options?: { dataDir?: string }): string[];
+
+/** The `code` of the error `loadMap` throws for a data directory without mapping data. */
+export const NO_DATA: 'ERR_WARP_DRIVE_NO_IMPORT_MAPPING_DATA';
+
+/** The version `head` stands for: this plugin's own version. */
+export const HEAD_VERSION: string;

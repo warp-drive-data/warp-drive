@@ -1,0 +1,134 @@
+{
+  "declarations": {
+    "packages/-ember-data/src/index.ts#default": "packages/-ember-data/src/index.ts#default",
+    "packages/-ember-data/src/store.ts#default": "packages/-ember-data/src/store.ts#default",
+    "packages/request-utils/src/index.ts#setBuildURLConfig": "warp-drive-packages/utilities/src/index.ts#setBuildURLConfig",
+    "warp-drive-packages/core/src/request/-private/future.ts#createDeferred": "warp-drive-packages/core/src/request/-private/future.ts#createDeferred",
+    "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager": "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager",
+    "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#CacheHandler": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#CacheHandler",
+    "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#StoreRequestInput": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#StoreRequestInput",
+    "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
+    "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
+    "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#getRequestState": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
+    "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+    "warp-drive-packages/core/src/store/-private/record-arrays/live-array.ts#LiveArray": "warp-drive-packages/core/src/store/-private/record-arrays/live-array.ts#LiveArray",
+    "warp-drive-packages/core/src/store/-private/store-service.ts#Store": "warp-drive-packages/core/src/store/-private/store-service.ts#Store",
+    "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts#coerceId": "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts#coerceId",
+    "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError",
+    "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError": "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError",
+    "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter",
+    "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler": "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler",
+    "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray": "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray",
+    "warp-drive-packages/legacy/src/model/-private/attr.ts#attr": "warp-drive-packages/legacy/src/model/-private/attr.ts#attr",
+    "warp-drive-packages/legacy/src/model/-private/belongs-to.ts#belongsTo": "warp-drive-packages/legacy/src/model/-private/belongs-to.ts#belongsTo",
+    "warp-drive-packages/legacy/src/model/-private/has-many.ts#hasMany": "warp-drive-packages/legacy/src/model/-private/has-many.ts#hasMany",
+    "warp-drive-packages/legacy/src/model/-private/model.ts#Model": "warp-drive-packages/legacy/src/model/-private/model.ts#Model",
+    "warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#PromiseManyArray": "warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#PromiseManyArray"
+  },
+  "exports": {
+    "@ember-data/request-utils": {
+      "added": {},
+      "changed": {
+        "setBuildURLConfig": {
+          "decl": "warp-drive-packages/utilities/src/index.ts#setBuildURLConfig"
+        }
+      },
+      "removed": []
+    },
+    "@ember-data/store/-private": {
+      "added": {},
+      "changed": {},
+      "removed": ["getRequestState"]
+    },
+    "@warp-drive/core/store": {
+      "added": {
+        "CachePolicy": {
+          "decl": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy",
+          "deprecated": true,
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/core/store/-private": {
+      "added": {},
+      "changed": {},
+      "removed": ["getRequestState"]
+    },
+    "@warp-drive/ember": {
+      "added": {
+        "getRequestState": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/react": {
+      "added": {
+        "getRequestState": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/utilities": {
+      "added": {
+        "setBuildURLConfig": {
+          "decl": "warp-drive-packages/utilities/src/index.ts#setBuildURLConfig",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    }
+  },
+  "from": "5.6.0",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@warp-drive/ember": {
+        "entry": "warp-drive-packages/ember/src/index.ts",
+        "forward": null,
+        "package": "@warp-drive/ember"
+      },
+      "@warp-drive/react": {
+        "entry": "warp-drive-packages/react/src/index.ts",
+        "forward": null,
+        "package": "@warp-drive/react"
+      },
+      "@warp-drive/utilities": {
+        "entry": "warp-drive-packages/utilities/src/index.ts",
+        "forward": null,
+        "package": "@warp-drive/utilities"
+      }
+    },
+    "changed": {},
+    "removed": []
+  },
+  "packages": {
+    "added": {
+      "@warp-drive/ember": {
+        "dir": "warp-drive-packages/ember",
+        "modules": ["@warp-drive/ember"]
+      },
+      "@warp-drive/react": {
+        "dir": "warp-drive-packages/react",
+        "modules": ["@warp-drive/react"]
+      },
+      "@warp-drive/utilities": {
+        "dir": "warp-drive-packages/utilities",
+        "modules": ["@warp-drive/utilities"]
+      }
+    },
+    "changed": {},
+    "removed": []
+  },
+  "schema": 1,
+  "to": "5.9.1"
+}

@@ -1,80 +1,169 @@
 'use strict';
 
+/**
+ * Reads the mapping data this directory ships (written by
+ * `node scripts/public-exports-mapping/cli.mjs ship`) and answers, for an import written against
+ * one release, what to do with it so that it works against another. It rebuilds the `to` surface
+ * by applying the shipped diffs to the shipped baseline surface, once per `(from, to)`, and never
+ * calls the network or a model. The stages and the ranking live in `./map-core.js`.
+ */
+
 const fs = require('fs');
+const { createRequire } = require('module');
 const path = require('path');
 
-const { applyDelta } = require('./delta.js');
+const core = require('./map-core.js');
 
-const KEEP = Object.freeze({ action: 'keep' });
+/** The version `head` stands for: this plugin is released in lockstep with `@warp-drive/core`. */
+const HEAD_VERSION = require('../../package.json').version;
 
-/** @type {Map<string, import('./index').ExportMap>} */
-const cache = new Map();
-/** @type {Map<string, any>} */
-const fullMaps = new Map();
+/** The `code` of the error `loadMap` throws when a data directory holds no mapping data. */
+const NO_DATA = 'ERR_WARP_DRIVE_NO_IMPORT_MAPPING_DATA';
 
-function listFromVersions() {
-  return require('./versions.json');
+/** @type {Map<string, import('./map-core.js').Dataset>} */
+const datasets = new Map();
+/** @type {Map<string, ReturnType<typeof core.createMap>>} */
+const maps = new Map();
+/** @type {Map<string, string | null>} */
+const installedVersions = new Map();
+
+/**
+ * @param {string} file
+ * @returns {any}
+ */
+function readJson(file) {
+  return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
 
-function readMap(version) {
-  return JSON.parse(fs.readFileSync(path.join(__dirname, `${version}.json`), 'utf8'));
+/**
+ * The parsed `*.json` files of a directory, by name; none when it does not exist.
+ * @param {string} dir
+ * @returns {any[]}
+ */
+function readJsonFiles(dir) {
+  /** @type {string[]} */
+  let names;
+  try {
+    names = fs.readdirSync(dir);
+  } catch (error) {
+    if (/** @type {NodeJS.ErrnoException} */ (error).code === 'ENOENT') return [];
+    throw error;
+  }
+  return names
+    .filter((name) => name.endsWith('.json'))
+    .sort()
+    .map((name) => readJson(path.join(dir, name)));
 }
 
-function fullMapOf(version, versions) {
-  if (!fullMaps.has(version)) {
-    const i = versions.indexOf(version);
-    const file = readMap(version);
-    if (i === 0) {
-      if (file.kind !== 'merged' || file.from !== version) {
-        throw new Error(`${version}.json must be the full merged map from ${version}`);
-      }
-      fullMaps.set(version, file);
-    } else {
-      if (file.kind !== 'merged-delta' || file.from !== version || file.base !== versions[i - 1]) {
-        throw new Error(`${version}.json must be a merged-delta from ${version} against ${versions[i - 1]}`);
-      }
-      fullMaps.set(version, applyDelta(fullMapOf(versions[i - 1], versions), file));
+/**
+ * @param {string} dataDir
+ */
+function datasetFor(dataDir) {
+  const dir = path.resolve(dataDir);
+  let dataset = datasets.get(dir);
+  if (!dataset) {
+    const releasesFile = path.join(dir, 'releases.json');
+    if (!fs.existsSync(releasesFile)) {
+      const error = new Error(
+        `No legacy import mapping data in ${dir}. Run \`node scripts/public-exports-mapping/cli.mjs ship\` in the warp-drive repository to write it.`
+      );
+      Object.assign(error, { code: NO_DATA });
+      throw error;
     }
+    const releases = readJson(releasesFile);
+    const messagesFile = path.join(dir, 'messages.json');
+    dataset = core.createDataset({
+      releases,
+      surfaces: [readJson(path.join(dir, `surface.${releases.baseline}.json`))],
+      diffs: readJsonFiles(path.join(dir, 'diffs')),
+      decisions: readJsonFiles(path.join(dir, 'decisions')),
+      preferences: readJson(path.join(dir, 'preferences.json')),
+      messages: fs.existsSync(messagesFile) ? readJson(messagesFile) : undefined,
+      headVersion: HEAD_VERSION,
+    });
+    datasets.set(dir, dataset);
   }
-  return fullMaps.get(version);
+  return dataset;
 }
 
-function loadMap(from = listFromVersions()[0]) {
-  const versions = listFromVersions();
-  if (!versions.includes(from)) {
-    throw new Error(`unknown from-version "${from}"; shipped: ${versions.join(', ')}`);
-  }
-  const cached = cache.get(from);
-  if (cached) return cached;
-
-  const file = fullMapOf(from, versions);
-  const byKey = new Map(file.entries.map((entry) => [`${entry.module}::${entry.export}`, entry]));
-  const legacy = new Set(file.legacyModules);
-  const known = new Set(file.entries.map((entry) => entry.module));
-
-  /** @type {import('./index').ExportMap['resolve']} */
-  function resolve(module, name, { typeOnly }) {
-    const entry = byKey.get(`${module}::${name}`);
-    if (entry) {
-      if (entry.to === null) return name === '*' ? KEEP : { action: 'report', reason: 'removed' };
-      if (legacy.has(entry.to.module)) return { action: 'report', reason: 'legacy' };
-      // A value import of a name that lost its value would break at runtime whether or not it moves.
-      if (!typeOnly && !entry.typeOnly && entry.to.typeOnly) return { action: 'report', reason: 'type-only' };
-      if (entry.to.module === module && entry.to.export === name) return KEEP;
-      return { action: 'rewrite', to: { module: entry.to.module, export: entry.to.export } };
+/**
+ * The version of `@warp-drive/core` installed for the project in `cwd`, or `null`.
+ *
+ * `require.resolve('@warp-drive/core/package.json')` alone is not enough: the package's
+ * `exports` map sends `./*` to `./dist/*.js`, so that request resolves to a file that does not
+ * exist. When it fails, the package directory is looked up along Node's own lookup paths.
+ * @param {string} cwd
+ * @returns {string | null}
+ */
+function installedCoreVersion(cwd) {
+  if (installedVersions.has(cwd)) return /** @type {string | null} */ (installedVersions.get(cwd));
+  /** @type {string | null} */
+  let version = null;
+  try {
+    version = readJson(require.resolve('@warp-drive/core/package.json', { paths: [cwd] })).version;
+  } catch {
+    const lookup = createRequire(path.join(cwd, 'package.json')).resolve.paths('@warp-drive/core') || [];
+    for (const dir of lookup) {
+      const file = path.join(dir, '@warp-drive', 'core', 'package.json');
+      if (!fs.existsSync(file)) continue;
+      version = readJson(file).version;
+      break;
     }
-    // A module-level move carries names the from-release never exported, but never onto a legacy module.
-    const star = byKey.get(`${module}::*`);
-    if (star && star.to && !legacy.has(star.to.module)) {
-      if (star.to.module === module) return KEEP;
-      return { action: 'rewrite', to: { module: star.to.module, export: name } };
-    }
-    return known.has(module) ? { action: 'report', reason: 'untracked' } : KEEP;
   }
+  installedVersions.set(cwd, version);
+  return version;
+}
 
-  const map = { from: file.from, to: file.to, resolve };
-  cache.set(from, map);
+/**
+ * The installed `@warp-drive/core` version's release, else the newest release.
+ * @param {import('./map-core.js').Dataset} dataset
+ */
+function defaultTo(dataset) {
+  const installed = installedCoreVersion(process.cwd());
+  if (installed) {
+    try {
+      return core.resolveVersion(dataset, installed);
+    } catch {
+      // an installed version the data does not cover falls back to the newest release
+    }
+  }
+  const releases = dataset.versions.filter((version) => version !== 'head');
+  return releases[releases.length - 1];
+}
+
+/**
+ * The map from release `from` to release `to`.
+ *
+ * `from` defaults to the baseline release and `to` to the release of the installed
+ * `@warp-drive/core` (looked up from `process.cwd()`), else the newest release. Both accept a
+ * full version, a `major.minor`, or `head`; a minor between two shipped releases means the older
+ * one. When `to` is defaulted and older than `from`, the map is from `from` to `from`.
+ * @param {{ from?: string, to?: string, dataDir?: string }} [options]  `dataDir` defaults to the data
+ *   this plugin ships.
+ */
+function loadMap(options = {}) {
+  const dataset = datasetFor(options.dataDir || __dirname);
+  const from =
+    options.from === undefined ? dataset.releases.baseline : core.resolveVersion(dataset, String(options.from));
+  let to = options.to === undefined ? defaultTo(dataset) : core.resolveVersion(dataset, String(options.to));
+  if (options.to === undefined && dataset.versions.indexOf(to) < dataset.versions.indexOf(from)) to = from;
+  const key = `${path.resolve(options.dataDir || __dirname)}\0${from}\0${to}`;
+  let map = maps.get(key);
+  if (!map) {
+    map = core.createMap(dataset, { from, to });
+    maps.set(key, map);
+  }
   return map;
 }
 
-module.exports = { listFromVersions, loadMap };
+/**
+ * The versions a map can name, oldest first: every shipped release, then `head` when the data
+ * reaches it.
+ * @param {{ dataDir?: string }} [options]
+ * @returns {string[]}
+ */
+function listReleases(options = {}) {
+  return [...datasetFor(options.dataDir || __dirname).versions];
+}
+
+module.exports = { HEAD_VERSION, NO_DATA, listReleases, loadMap };
