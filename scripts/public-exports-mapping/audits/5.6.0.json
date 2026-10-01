@@ -1,0 +1,4651 @@
+{
+  "kind": "audit",
+  "packages": {
+    "@ember-data/active-record": {
+      "chunks": [],
+      "dir": "packages/active-record",
+      "exports": {
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/active-record/request": {
+          "runtime": {
+            "file": "dist/request.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/request.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          }
+        },
+        "@ember-data/active-record/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/adapter": {
+      "chunks": [],
+      "dir": "packages/adapter",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./blueprints/*": {
+          "default": "./blueprints/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/adapter": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "BuildURLMixin",
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "BuildURLMixin",
+              "default"
+            ]
+          }
+        },
+        "@ember-data/adapter/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "determineBodyPromise",
+              "fetch",
+              "parseResponseHeaders",
+              "serializeIntoHash",
+              "serializeQueryParams",
+              "setupFastboot"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "determineBodyPromise",
+              "fetch",
+              "parseResponseHeaders",
+              "serializeIntoHash",
+              "serializeQueryParams",
+              "setupFastboot"
+            ]
+          }
+        },
+        "@ember-data/adapter/blueprints/adapter-test/index": {
+          "runtime": {
+            "file": "blueprints/adapter-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/adapter/blueprints/adapter-test/qunit-files/__root__/__path__/__test__": {
+          "runtime": {
+            "file": "blueprints/adapter-test/qunit-files/__root__/__path__/__test__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/adapter/blueprints/adapter/files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/adapter/files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/adapter/blueprints/adapter/index": {
+          "runtime": {
+            "file": "blueprints/adapter/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/adapter/blueprints/adapter/native-files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/adapter/native-files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/adapter/error": {
+          "runtime": {
+            "file": "dist/error.js",
+            "names": [
+              "AbortError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError",
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/error.d.ts",
+            "names": [
+              "AbortError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError",
+              "default"
+            ]
+          }
+        },
+        "@ember-data/adapter/json-api": {
+          "runtime": {
+            "file": "dist/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/json-api.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/adapter/rest": {
+          "runtime": {
+            "file": "dist/rest.js",
+            "names": [
+              "default",
+              "fetchOptions"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/rest.d.ts",
+            "names": [
+              "FetchRequestInit",
+              "JQueryRequestInit",
+              "QueryState",
+              "RequestData",
+              "default",
+              "fetchOptions"
+            ]
+          }
+        },
+        "@ember-data/adapter/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "parseErrors": [
+        "blueprints/adapter/files/__root__/__path__/__name__.js",
+        "blueprints/adapter/native-files/__root__/__path__/__name__.js"
+      ],
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/debug": {
+      "chunks": [],
+      "dir": "packages/debug",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/debug": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/debug/_app_/data-adapter": {
+          "runtime": {
+            "file": "dist/_app_/data-adapter.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/debug/data-adapter": {
+          "runtime": {
+            "file": "dist/data-adapter.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/graph": {
+      "chunks": [],
+      "dir": "packages/graph",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {
+        ".": {
+          "default": [
+            "./dist/index.js"
+          ]
+        }
+      },
+      "modules": {
+        "@ember-data/graph": {
+          "runtime": null,
+          "types": null
+        },
+        "@ember-data/graph/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "graphFor",
+              "isBelongsTo",
+              "peekGraph"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "CollectionEdge",
+              "Graph",
+              "GraphEdge",
+              "ImplicitEdge",
+              "ResourceEdge",
+              "UpgradedMeta",
+              "graphFor",
+              "isBelongsTo",
+              "peekGraph"
+            ]
+          }
+        },
+        "@ember-data/graph/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/json-api": {
+      "chunks": [],
+      "dir": "packages/json-api",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/json-api": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/json-api/request": {
+          "runtime": {
+            "file": "dist/request.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "postQuery",
+              "query",
+              "serializePatch",
+              "serializeResources",
+              "setBuildURLConfig",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/request.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "postQuery",
+              "query",
+              "serializePatch",
+              "serializeResources",
+              "setBuildURLConfig",
+              "updateRecord"
+            ]
+          }
+        },
+        "@ember-data/json-api/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/legacy-compat": {
+      "chunks": [],
+      "dir": "packages/legacy-compat",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/legacy-compat": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "LegacyNetworkHandler",
+              "adapterFor",
+              "cleanup",
+              "normalize",
+              "pushPayload",
+              "serializeRecord",
+              "serializerFor"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "AdapterPayload",
+              "CompatStore",
+              "LegacyNetworkHandler",
+              "LegacyStoreCompat",
+              "MinimumAdapterInterface",
+              "MinimumSerializerInterface",
+              "SerializerOptions",
+              "adapterFor",
+              "cleanup",
+              "normalize",
+              "pushPayload",
+              "serializeRecord",
+              "serializerFor"
+            ]
+          }
+        },
+        "@ember-data/legacy-compat/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "FetchManager",
+              "SaveOp",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "upgradeStore"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "FetchManager",
+              "SaveOp",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "upgradeStore"
+            ]
+          }
+        },
+        "@ember-data/legacy-compat/builders": {
+          "runtime": {
+            "file": "dist/builders.js",
+            "names": [
+              "findAll",
+              "findRecord",
+              "query",
+              "queryRecord",
+              "saveRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/builders.d.ts",
+            "names": [
+              "findAll",
+              "findRecord",
+              "query",
+              "queryRecord",
+              "saveRecord"
+            ]
+          }
+        },
+        "@ember-data/legacy-compat/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        },
+        "@ember-data/legacy-compat/utils": {
+          "runtime": {
+            "file": "dist/utils.js",
+            "names": [
+              "configureAssertFn",
+              "configureMismatchReporter",
+              "configureTypeNormalization",
+              "expectId",
+              "formattedId",
+              "formattedType",
+              "isEquivId",
+              "isEquivType"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/utils.d.ts",
+            "names": [
+              "configureAssertFn",
+              "configureMismatchReporter",
+              "configureTypeNormalization",
+              "expectId",
+              "formattedId",
+              "formattedType",
+              "isEquivId",
+              "isEquivType"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/model": {
+      "chunks": [],
+      "dir": "packages/model",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./blueprints/*": {
+          "default": "./blueprints/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/model": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "attr",
+              "belongsTo",
+              "buildSchema",
+              "default",
+              "hasMany",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "AsyncBelongsTo",
+              "AsyncHasMany",
+              "HasMany",
+              "ManyArray",
+              "attr",
+              "belongsTo",
+              "buildSchema",
+              "default",
+              "hasMany",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          }
+        },
+        "@ember-data/model/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "Errors",
+              "LEGACY_SUPPORT",
+              "ManyArray",
+              "PromiseBelongsTo",
+              "PromiseManyArray",
+              "lookupLegacySupport"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "Errors",
+              "LEGACY_SUPPORT",
+              "ManyArray",
+              "MinimalLegacyRecord",
+              "ModelStore",
+              "PromiseBelongsTo",
+              "PromiseManyArray",
+              "lookupLegacySupport"
+            ]
+          }
+        },
+        "@ember-data/model/blueprints/model-test/index": {
+          "runtime": {
+            "file": "blueprints/model-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/model/blueprints/model-test/qunit-files/__root__/__path__/__test__": {
+          "runtime": {
+            "file": "blueprints/model-test/qunit-files/__root__/__path__/__test__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/model/blueprints/model/files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/model/files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/model/blueprints/model/index": {
+          "runtime": {
+            "file": "blueprints/model/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/model/blueprints/model/native-files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/model/native-files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/model/hooks": {
+          "runtime": {
+            "file": "dist/hooks.js",
+            "names": [
+              "buildSchema",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/hooks.d.ts",
+            "names": [
+              "buildSchema",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          }
+        },
+        "@ember-data/model/migration-support": {
+          "runtime": {
+            "file": "dist/migration-support.js",
+            "names": [
+              "DelegatingSchemaService",
+              "registerDerivations",
+              "withDefaults"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/migration-support.d.ts",
+            "names": [
+              "DelegatingSchemaService",
+              "WithLegacy",
+              "WithLegacyDerivations",
+              "registerDerivations",
+              "withDefaults"
+            ]
+          }
+        },
+        "@ember-data/model/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "parseErrors": [
+        "blueprints/model/files/__root__/__path__/__name__.js",
+        "blueprints/model/native-files/__root__/__path__/__name__.js"
+      ],
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/request": {
+      "chunks": [],
+      "dir": "packages/request",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/request": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "createDeferred",
+              "default",
+              "getPromiseResult",
+              "setPromiseResult"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "Awaitable",
+              "CacheHandler",
+              "Context",
+              "Deferred",
+              "Future",
+              "Handler",
+              "ImmutableRequestInfo",
+              "ManagedRequestPriority",
+              "NextFn",
+              "RequestContext",
+              "RequestInfo",
+              "ResponseInfo",
+              "StructuredDataDocument",
+              "StructuredDocument",
+              "StructuredErrorDocument",
+              "createDeferred",
+              "default",
+              "getPromiseResult",
+              "setPromiseResult"
+            ]
+          }
+        },
+        "@ember-data/request/fetch": {
+          "runtime": {
+            "file": "dist/fetch.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/fetch.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/request/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/request-utils": {
+      "chunks": [],
+      "dir": "packages/request-utils",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/request-utils": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "CachePolicy",
+              "LifetimesService",
+              "buildBaseURL",
+              "buildQueryParams",
+              "filterEmpty",
+              "parseCacheControl",
+              "setBuildURLConfig",
+              "sortQueryParams"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "BuildURLConfig",
+              "CacheControlValue",
+              "CachePolicy",
+              "CreateRecordUrlOptions",
+              "DeleteRecordUrlOptions",
+              "FindManyUrlOptions",
+              "FindRecordUrlOptions",
+              "FindRelatedCollectionUrlOptions",
+              "FindRelatedResourceUrlOptions",
+              "GenericUrlOptions",
+              "LifetimesService",
+              "PolicyConfig",
+              "QueryUrlOptions",
+              "UpdateRecordUrlOptions",
+              "UrlOptions",
+              "buildBaseURL",
+              "buildQueryParams",
+              "filterEmpty",
+              "parseCacheControl",
+              "setBuildURLConfig",
+              "sortQueryParams"
+            ]
+          }
+        },
+        "@ember-data/request-utils/deprecation-support": {
+          "runtime": {
+            "file": "dist/deprecation-support.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/deprecation-support.d.ts",
+            "names": []
+          }
+        },
+        "@ember-data/request-utils/handlers": {
+          "runtime": {
+            "file": "dist/handlers.js",
+            "names": [
+              "AutoCompress",
+              "Gate",
+              "MAX_URL_LENGTH",
+              "SupportsRequestStreams",
+              "TAB_ASSIGNED",
+              "TAB_ID",
+              "addTraceHeader",
+              "assertInvalidUrlLength"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/handlers.d.ts",
+            "names": [
+              "AutoCompress",
+              "Gate",
+              "MAX_URL_LENGTH",
+              "SupportsRequestStreams",
+              "TAB_ASSIGNED",
+              "TAB_ID",
+              "addTraceHeader",
+              "assertInvalidUrlLength"
+            ]
+          }
+        },
+        "@ember-data/request-utils/string": {
+          "runtime": {
+            "file": "dist/string.js",
+            "names": [
+              "camelize",
+              "capitalize",
+              "clear",
+              "clearRules",
+              "dasherize",
+              "irregular",
+              "loadIrregular",
+              "loadUncountable",
+              "plural",
+              "pluralize",
+              "resetToDefaults",
+              "setMaxLRUCacheSize",
+              "singular",
+              "singularize",
+              "uncountable",
+              "underscore"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/string.d.ts",
+            "names": [
+              "camelize",
+              "capitalize",
+              "clear",
+              "clearRules",
+              "dasherize",
+              "irregular",
+              "loadIrregular",
+              "loadUncountable",
+              "plural",
+              "pluralize",
+              "resetToDefaults",
+              "setMaxLRUCacheSize",
+              "singular",
+              "singularize",
+              "uncountable",
+              "underscore"
+            ]
+          }
+        },
+        "@ember-data/request-utils/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/rest": {
+      "chunks": [],
+      "dir": "packages/rest",
+      "exports": {
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/rest/request": {
+          "runtime": {
+            "file": "dist/request.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/request.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          }
+        },
+        "@ember-data/rest/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/serializer": {
+      "chunks": [],
+      "dir": "packages/serializer",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./blueprints/*": {
+          "default": "./blueprints/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/serializer": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/serializer/blueprints/serializer-test/index": {
+          "runtime": {
+            "file": "blueprints/serializer-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/serializer-test/qunit-files/__root__/__path__/__test__": {
+          "runtime": {
+            "file": "blueprints/serializer-test/qunit-files/__root__/__path__/__test__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/serializer/files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/serializer/files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/serializer/index": {
+          "runtime": {
+            "file": "blueprints/serializer/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/serializer/native-files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/serializer/native-files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/transform-test/index": {
+          "runtime": {
+            "file": "blueprints/transform-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/transform-test/qunit-files/__root__/__path__/__test__": {
+          "runtime": {
+            "file": "blueprints/transform-test/qunit-files/__root__/__path__/__test__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/transform/files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/transform/files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/transform/index": {
+          "runtime": {
+            "file": "blueprints/transform/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/blueprints/transform/native-files/__root__/__path__/__name__": {
+          "runtime": {
+            "file": "blueprints/transform/native-files/__root__/__path__/__name__.js",
+            "names": []
+          },
+          "types": null
+        },
+        "@ember-data/serializer/json": {
+          "runtime": {
+            "file": "dist/json.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/json.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/serializer/json-api": {
+          "runtime": {
+            "file": "dist/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/json-api.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "@ember-data/serializer/rest": {
+          "runtime": {
+            "file": "dist/rest.js",
+            "names": [
+              "EmbeddedRecordsMixin",
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/rest.d.ts",
+            "names": [
+              "EmbeddedRecordsMixin",
+              "default"
+            ]
+          }
+        },
+        "@ember-data/serializer/transform": {
+          "runtime": {
+            "file": "dist/transform.js",
+            "names": [
+              "BooleanTransform",
+              "DateTransform",
+              "NumberTransform",
+              "StringTransform",
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/transform.d.ts",
+            "names": [
+              "BooleanTransform",
+              "DateTransform",
+              "NumberTransform",
+              "StringTransform",
+              "default"
+            ]
+          }
+        },
+        "@ember-data/serializer/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "parseErrors": [
+        "blueprints/serializer/files/__root__/__path__/__name__.js",
+        "blueprints/serializer/native-files/__root__/__path__/__name__.js",
+        "blueprints/transform/files/__root__/__path__/__name__.js",
+        "blueprints/transform/native-files/__root__/__path__/__name__.js"
+      ],
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/store": {
+      "chunks": [],
+      "dir": "packages/store",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/store": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "CacheHandler",
+              "default",
+              "recordIdentifierFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "setKeyInfoForResource",
+              "storeFor"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "CacheHandler",
+              "CacheOperation",
+              "CachePolicy",
+              "Document",
+              "DocumentCacheOperation",
+              "NotificationType",
+              "StoreRequestContext",
+              "StoreRequestInput",
+              "default",
+              "recordIdentifierFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "setKeyInfoForResource",
+              "storeFor"
+            ]
+          }
+        },
+        "@ember-data/store/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "ARRAY_SIGNAL",
+              "CacheHandler",
+              "CollectionRecordArray",
+              "DISPOSE",
+              "LiveArray",
+              "MUTATE",
+              "OBJECT_SIGNAL",
+              "RecordArrayManager",
+              "RelatedCollection",
+              "SOURCE",
+              "Signals",
+              "Store",
+              "StoreMap",
+              "_clearCaches",
+              "_deprecatingNormalize",
+              "coerceId",
+              "constructResource",
+              "consumeInternalSignal",
+              "createMemo",
+              "createRequestSubscription",
+              "defineNonEnumerableSignal",
+              "defineSignal",
+              "ensureStringId",
+              "entangleSignal",
+              "fastPush",
+              "gate",
+              "getOrCreateInternalSignal",
+              "getPromiseState",
+              "getRequestState",
+              "isDocumentIdentifier",
+              "isStableIdentifier",
+              "log",
+              "logGroup",
+              "memoized",
+              "notifyInternalSignal",
+              "peekCache",
+              "peekInternalSignal",
+              "recordIdentifierFor",
+              "removeRecordDataFor",
+              "setCacheFor",
+              "setRecordIdentifier",
+              "storeFor",
+              "waitFor",
+              "withSignalStore"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "ARRAY_SIGNAL",
+              "CacheHandler",
+              "CachePolicy",
+              "CollectionRecordArray",
+              "CreateRecordProperties",
+              "DISPOSE",
+              "FindRecordQuery",
+              "InstanceCache",
+              "LiveArray",
+              "MUTATE",
+              "NativeProxy",
+              "OBJECT_SIGNAL",
+              "PromiseState",
+              "RecordArrayManager",
+              "RelatedCollection",
+              "Request",
+              "RequestCacheRequestState",
+              "RequestLoadingState",
+              "RequestState",
+              "RequestStateService",
+              "RequestSubscription",
+              "SOURCE",
+              "SaveRecordMutation",
+              "SignalHooks",
+              "Signals",
+              "Store",
+              "StoreMap",
+              "StoreRequestContext",
+              "StoreRequestInput",
+              "SubscriptionArgs",
+              "WarpDriveSignal",
+              "_clearCaches",
+              "_deprecatingNormalize",
+              "coerceId",
+              "constructResource",
+              "consumeInternalSignal",
+              "createMemo",
+              "createRequestSubscription",
+              "defineNonEnumerableSignal",
+              "defineSignal",
+              "ensureStringId",
+              "entangleSignal",
+              "fastPush",
+              "gate",
+              "getOrCreateInternalSignal",
+              "getPromiseState",
+              "getRequestState",
+              "isDocumentIdentifier",
+              "isStableIdentifier",
+              "log",
+              "logGroup",
+              "memoized",
+              "notifyInternalSignal",
+              "peekCache",
+              "peekInternalSignal",
+              "recordIdentifierFor",
+              "removeRecordDataFor",
+              "setCacheFor",
+              "setRecordIdentifier",
+              "storeFor",
+              "waitFor",
+              "withSignalStore"
+            ]
+          }
+        },
+        "@ember-data/store/configure": {
+          "runtime": {
+            "file": "dist/configure.js",
+            "names": [
+              "setupSignals"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/configure.d.ts",
+            "names": [
+              "setupSignals"
+            ]
+          }
+        },
+        "@ember-data/store/types": {
+          "runtime": {
+            "file": "dist/types.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/types.d.ts",
+            "names": [
+              "BaseFinderOptions",
+              "CacheCapabilitiesManager",
+              "FindAllOptions",
+              "FindRecordOptions",
+              "LegacyResourceQuery",
+              "ModelSchema",
+              "QueryOptions",
+              "SchemaService"
+            ]
+          }
+        },
+        "@ember-data/store/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@ember-data/tracking": {
+      "chunks": [],
+      "dir": "packages/tracking",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/tracking": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "buildSignalConfig"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "buildSignalConfig"
+            ]
+          }
+        },
+        "@ember-data/tracking/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/build-config": {
+      "chunks": [
+        "dist/canary-features-CuKgaVtX.js",
+        "dist/debugging-VdsvkNjX.js",
+        "dist/deprecations-BNNGFAiG.js"
+      ],
+      "dir": "warp-drive-packages/build-config",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        },
+        "./*.cjs": {
+          "default": "./dist/*.cjs"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/build-config": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "setConfig"
+            ]
+          },
+          "types": {
+            "file": "declarations/index.d.ts",
+            "names": [
+              "WarpDriveConfig",
+              "setConfig"
+            ]
+          }
+        },
+        "@warp-drive/build-config/addon-shim.cjs": {
+          "runtime": {
+            "file": "dist/addon-shim.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/babel-macros": {
+          "runtime": {
+            "file": "dist/babel-macros.js",
+            "names": [
+              "macros"
+            ]
+          },
+          "types": {
+            "file": "declarations/babel-macros.d.ts",
+            "names": [
+              "macros"
+            ]
+          }
+        },
+        "@warp-drive/build-config/babel-plugin-transform-asserts.cjs": {
+          "runtime": {
+            "file": "dist/babel-plugin-transform-asserts.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/babel-plugin-transform-deprecations.cjs": {
+          "runtime": {
+            "file": "dist/babel-plugin-transform-deprecations.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/babel-plugin-transform-features.cjs": {
+          "runtime": {
+            "file": "dist/babel-plugin-transform-features.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/babel-plugin-transform-logging.cjs": {
+          "runtime": {
+            "file": "dist/babel-plugin-transform-logging.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/canary-features": {
+          "runtime": {
+            "file": "dist/canary-features.js",
+            "names": [
+              "JSON_API_CACHE_VALIDATION_ERRORS",
+              "SAMPLE_FEATURE_FLAG"
+            ]
+          },
+          "types": {
+            "file": "declarations/canary-features.d.ts",
+            "names": [
+              "JSON_API_CACHE_VALIDATION_ERRORS",
+              "SAMPLE_FEATURE_FLAG"
+            ]
+          }
+        },
+        "@warp-drive/build-config/cjs-set-config.cjs": {
+          "runtime": {
+            "file": "dist/cjs-set-config.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/build-config/debugging": {
+          "runtime": {
+            "file": "dist/debugging.js",
+            "names": [
+              "DEBUG_RELATIONSHIP_NOTIFICATIONS",
+              "LOG_CACHE",
+              "LOG_CACHE_POLICY",
+              "LOG_GRAPH",
+              "LOG_IDENTIFIERS",
+              "LOG_INSTANCE_CACHE",
+              "LOG_METRIC_COUNTS",
+              "LOG_MUTATIONS",
+              "LOG_NOTIFICATIONS",
+              "LOG_OPERATIONS",
+              "LOG_PAYLOADS",
+              "LOG_REQUESTS",
+              "LOG_REQUEST_STATUS",
+              "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS"
+            ]
+          },
+          "types": {
+            "file": "declarations/debugging.d.ts",
+            "names": [
+              "DEBUG_RELATIONSHIP_NOTIFICATIONS",
+              "LOG_CACHE",
+              "LOG_CACHE_POLICY",
+              "LOG_GRAPH",
+              "LOG_IDENTIFIERS",
+              "LOG_INSTANCE_CACHE",
+              "LOG_METRIC_COUNTS",
+              "LOG_MUTATIONS",
+              "LOG_NOTIFICATIONS",
+              "LOG_OPERATIONS",
+              "LOG_PAYLOADS",
+              "LOG_REQUESTS",
+              "LOG_REQUEST_STATUS",
+              "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS"
+            ]
+          }
+        },
+        "@warp-drive/build-config/deprecations": {
+          "runtime": {
+            "file": "dist/deprecations.js",
+            "names": [
+              "DEPRECATE_CATCH_ALL",
+              "DEPRECATE_COMPUTED_CHAINS",
+              "DEPRECATE_EMBER_INFLECTOR",
+              "DEPRECATE_LEGACY_IMPORTS",
+              "DEPRECATE_MANY_ARRAY_DUPLICATES",
+              "DEPRECATE_NON_STRICT_ID",
+              "DEPRECATE_NON_STRICT_TYPES",
+              "DEPRECATE_NON_UNIQUE_PAYLOADS",
+              "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
+              "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
+              "DEPRECATE_TRACKING_PACKAGE",
+              "DISABLE_7X_DEPRECATIONS",
+              "ENABLE_LEGACY_SCHEMA_SERVICE"
+            ]
+          },
+          "types": {
+            "file": "declarations/deprecations.d.ts",
+            "names": [
+              "DEPRECATE_CATCH_ALL",
+              "DEPRECATE_COMPUTED_CHAINS",
+              "DEPRECATE_EMBER_INFLECTOR",
+              "DEPRECATE_LEGACY_IMPORTS",
+              "DEPRECATE_MANY_ARRAY_DUPLICATES",
+              "DEPRECATE_NON_STRICT_ID",
+              "DEPRECATE_NON_STRICT_TYPES",
+              "DEPRECATE_NON_UNIQUE_PAYLOADS",
+              "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
+              "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
+              "DEPRECATE_TRACKING_PACKAGE",
+              "DISABLE_7X_DEPRECATIONS",
+              "ENABLE_LEGACY_SCHEMA_SERVICE"
+            ]
+          }
+        },
+        "@warp-drive/build-config/env": {
+          "runtime": {
+            "file": "dist/env.js",
+            "names": [
+              "DEBUG",
+              "IS_CI",
+              "IS_RECORDING",
+              "PRODUCTION",
+              "SHOULD_RECORD",
+              "TESTING"
+            ]
+          },
+          "types": {
+            "file": "declarations/env.d.ts",
+            "names": [
+              "DEBUG",
+              "IS_CI",
+              "IS_RECORDING",
+              "PRODUCTION",
+              "SHOULD_RECORD",
+              "TESTING"
+            ]
+          }
+        },
+        "@warp-drive/build-config/macros": {
+          "runtime": {
+            "file": "dist/macros.js",
+            "names": [
+              "assert"
+            ]
+          },
+          "types": {
+            "file": "declarations/macros.d.ts",
+            "names": [
+              "assert"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/core": {
+      "chunks": [
+        "dist/configure-B48bFHOl.js",
+        "dist/context-COmAnXUQ.js",
+        "dist/handler-C2T-IyJK.js",
+        "dist/request-state-CjLph1LP.js",
+        "dist/symbols-SIstXMLI.js"
+      ],
+      "dir": "warp-drive-packages/core",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        },
+        "./*.cjs": {
+          "default": "./cjs-dist/*.cjs"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/core": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "CacheHandler",
+              "Fetch",
+              "RequestManager",
+              "Store",
+              "recordIdentifierFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "setKeyInfoForResource",
+              "storeFor"
+            ]
+          },
+          "types": {
+            "file": "declarations/index.d.ts",
+            "names": [
+              "CacheHandler",
+              "CacheOperation",
+              "CachePolicy",
+              "Document",
+              "DocumentCacheOperation",
+              "Fetch",
+              "NotificationType",
+              "RequestManager",
+              "Store",
+              "StoreRequestContext",
+              "StoreRequestInput",
+              "recordIdentifierFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "setKeyInfoForResource",
+              "storeFor"
+            ]
+          }
+        },
+        "@warp-drive/core/addon-shim.cjs": {
+          "runtime": {
+            "file": "cjs-dist/addon-shim.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/core/build-config": {
+          "runtime": {
+            "file": "dist/build-config.js",
+            "names": [
+              "setConfig"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config.d.ts",
+            "names": [
+              "setConfig"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/babel-macros": {
+          "runtime": {
+            "file": "dist/build-config/babel-macros.js",
+            "names": [
+              "macros"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/babel-macros.d.ts",
+            "names": [
+              "macros"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/canary-features": {
+          "runtime": {
+            "file": "dist/build-config/canary-features.js",
+            "names": [
+              "JSON_API_CACHE_VALIDATION_ERRORS",
+              "SAMPLE_FEATURE_FLAG"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/canary-features.d.ts",
+            "names": [
+              "JSON_API_CACHE_VALIDATION_ERRORS",
+              "SAMPLE_FEATURE_FLAG"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/debugging": {
+          "runtime": {
+            "file": "dist/build-config/debugging.js",
+            "names": [
+              "DEBUG_RELATIONSHIP_NOTIFICATIONS",
+              "LOG_CACHE",
+              "LOG_CACHE_POLICY",
+              "LOG_GRAPH",
+              "LOG_IDENTIFIERS",
+              "LOG_INSTANCE_CACHE",
+              "LOG_METRIC_COUNTS",
+              "LOG_MUTATIONS",
+              "LOG_NOTIFICATIONS",
+              "LOG_OPERATIONS",
+              "LOG_PAYLOADS",
+              "LOG_REQUESTS",
+              "LOG_REQUEST_STATUS",
+              "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/debugging.d.ts",
+            "names": [
+              "DEBUG_RELATIONSHIP_NOTIFICATIONS",
+              "LOG_CACHE",
+              "LOG_CACHE_POLICY",
+              "LOG_GRAPH",
+              "LOG_IDENTIFIERS",
+              "LOG_INSTANCE_CACHE",
+              "LOG_METRIC_COUNTS",
+              "LOG_MUTATIONS",
+              "LOG_NOTIFICATIONS",
+              "LOG_OPERATIONS",
+              "LOG_PAYLOADS",
+              "LOG_REQUESTS",
+              "LOG_REQUEST_STATUS",
+              "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/deprecations": {
+          "runtime": {
+            "file": "dist/build-config/deprecations.js",
+            "names": [
+              "DEPRECATE_CATCH_ALL",
+              "DEPRECATE_COMPUTED_CHAINS",
+              "DEPRECATE_EMBER_INFLECTOR",
+              "DEPRECATE_LEGACY_IMPORTS",
+              "DEPRECATE_MANY_ARRAY_DUPLICATES",
+              "DEPRECATE_NON_STRICT_ID",
+              "DEPRECATE_NON_STRICT_TYPES",
+              "DEPRECATE_NON_UNIQUE_PAYLOADS",
+              "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
+              "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
+              "DEPRECATE_TRACKING_PACKAGE",
+              "DISABLE_7X_DEPRECATIONS",
+              "ENABLE_LEGACY_SCHEMA_SERVICE"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/deprecations.d.ts",
+            "names": [
+              "DEPRECATE_CATCH_ALL",
+              "DEPRECATE_COMPUTED_CHAINS",
+              "DEPRECATE_EMBER_INFLECTOR",
+              "DEPRECATE_LEGACY_IMPORTS",
+              "DEPRECATE_MANY_ARRAY_DUPLICATES",
+              "DEPRECATE_NON_STRICT_ID",
+              "DEPRECATE_NON_STRICT_TYPES",
+              "DEPRECATE_NON_UNIQUE_PAYLOADS",
+              "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
+              "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
+              "DEPRECATE_TRACKING_PACKAGE",
+              "DISABLE_7X_DEPRECATIONS",
+              "ENABLE_LEGACY_SCHEMA_SERVICE"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/env": {
+          "runtime": {
+            "file": "dist/build-config/env.js",
+            "names": [
+              "DEBUG",
+              "IS_CI",
+              "IS_RECORDING",
+              "PRODUCTION",
+              "SHOULD_RECORD",
+              "TESTING"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/env.d.ts",
+            "names": [
+              "DEBUG",
+              "IS_CI",
+              "IS_RECORDING",
+              "PRODUCTION",
+              "SHOULD_RECORD",
+              "TESTING"
+            ]
+          }
+        },
+        "@warp-drive/core/build-config/macros": {
+          "runtime": {
+            "file": "dist/build-config/macros.js",
+            "names": [
+              "assert"
+            ]
+          },
+          "types": {
+            "file": "declarations/build-config/macros.d.ts",
+            "names": [
+              "assert"
+            ]
+          }
+        },
+        "@warp-drive/core/cjs-set-config.cjs": {
+          "runtime": {
+            "file": "cjs-dist/cjs-set-config.cjs",
+            "names": []
+          },
+          "types": null
+        },
+        "@warp-drive/core/configure": {
+          "runtime": {
+            "file": "dist/configure.js",
+            "names": [
+              "setupSignals"
+            ]
+          },
+          "types": {
+            "file": "declarations/configure.d.ts",
+            "names": [
+              "HooksOptions",
+              "SignalHooks",
+              "setupSignals"
+            ]
+          }
+        },
+        "@warp-drive/core/graph/-private": {
+          "runtime": {
+            "file": "dist/graph/-private.js",
+            "names": [
+              "graphFor",
+              "isBelongsTo",
+              "peekGraph"
+            ]
+          },
+          "types": {
+            "file": "declarations/graph/-private.d.ts",
+            "names": [
+              "CollectionEdge",
+              "Graph",
+              "GraphEdge",
+              "ImplicitEdge",
+              "ResourceEdge",
+              "UpgradedMeta",
+              "graphFor",
+              "isBelongsTo",
+              "peekGraph"
+            ]
+          }
+        },
+        "@warp-drive/core/reactive": {
+          "runtime": {
+            "file": "dist/reactive.js",
+            "names": [
+              "Checkout",
+              "SchemaService",
+              "fromIdentity",
+              "instantiateRecord",
+              "registerDerivations",
+              "teardownRecord",
+              "withDefaults"
+            ]
+          },
+          "types": {
+            "file": "declarations/reactive.d.ts",
+            "names": [
+              "CAUTION_MEGA_DANGER_ZONE_Extension",
+              "Checkout",
+              "ExtensionDef",
+              "ProcessedExtension",
+              "ReactiveResource",
+              "SchemaService",
+              "Transformation",
+              "fromIdentity",
+              "instantiateRecord",
+              "registerDerivations",
+              "teardownRecord",
+              "withDefaults"
+            ]
+          }
+        },
+        "@warp-drive/core/reactive/-private": {
+          "runtime": {
+            "file": "dist/reactive/-private.js",
+            "names": [
+              "Editable",
+              "Legacy"
+            ]
+          },
+          "types": {
+            "file": "declarations/reactive/-private.d.ts",
+            "names": [
+              "Editable",
+              "Legacy"
+            ]
+          }
+        },
+        "@warp-drive/core/request": {
+          "runtime": {
+            "file": "dist/request.js",
+            "names": [
+              "createDeferred",
+              "getPromiseResult",
+              "setPromiseResult"
+            ]
+          },
+          "types": {
+            "file": "declarations/request.d.ts",
+            "names": [
+              "Awaitable",
+              "CacheHandler",
+              "Context",
+              "Deferred",
+              "Future",
+              "Handler",
+              "ManagedRequestPriority",
+              "NextFn",
+              "createDeferred",
+              "getPromiseResult",
+              "setPromiseResult"
+            ]
+          }
+        },
+        "@warp-drive/core/store": {
+          "runtime": {
+            "file": "dist/store.js",
+            "names": [
+              "DefaultCachePolicy",
+              "parseCacheControl"
+            ]
+          },
+          "types": {
+            "file": "declarations/store.d.ts",
+            "names": [
+              "CacheControlValue",
+              "DefaultCachePolicy",
+              "PolicyConfig",
+              "parseCacheControl"
+            ]
+          }
+        },
+        "@warp-drive/core/store/-private": {
+          "runtime": {
+            "file": "dist/store/-private.js",
+            "names": [
+              "ARRAY_SIGNAL",
+              "CacheHandler",
+              "CollectionRecordArray",
+              "DISPOSE",
+              "LiveArray",
+              "MUTATE",
+              "OBJECT_SIGNAL",
+              "RecordArrayManager",
+              "RelatedCollection",
+              "SOURCE",
+              "Signals",
+              "Store",
+              "StoreMap",
+              "_clearCaches",
+              "_deprecatingNormalize",
+              "coerceId",
+              "constructResource",
+              "consumeInternalSignal",
+              "createMemo",
+              "createRequestSubscription",
+              "defineNonEnumerableSignal",
+              "defineSignal",
+              "ensureStringId",
+              "entangleSignal",
+              "fastPush",
+              "gate",
+              "getOrCreateInternalSignal",
+              "getPromiseState",
+              "getRequestState",
+              "isDocumentIdentifier",
+              "isStableIdentifier",
+              "log",
+              "logGroup",
+              "memoized",
+              "notifyInternalSignal",
+              "peekCache",
+              "peekInternalSignal",
+              "recordIdentifierFor",
+              "removeRecordDataFor",
+              "setCacheFor",
+              "setRecordIdentifier",
+              "storeFor",
+              "waitFor",
+              "withSignalStore"
+            ]
+          },
+          "types": {
+            "file": "declarations/store/-private.d.ts",
+            "names": [
+              "ARRAY_SIGNAL",
+              "CacheHandler",
+              "CachePolicy",
+              "CollectionRecordArray",
+              "CreateRecordProperties",
+              "DISPOSE",
+              "FindRecordQuery",
+              "InstanceCache",
+              "LiveArray",
+              "MUTATE",
+              "NativeProxy",
+              "OBJECT_SIGNAL",
+              "PromiseState",
+              "RecordArrayManager",
+              "RelatedCollection",
+              "Request",
+              "RequestCacheRequestState",
+              "RequestLoadingState",
+              "RequestState",
+              "RequestStateService",
+              "RequestSubscription",
+              "SOURCE",
+              "SaveRecordMutation",
+              "SignalHooks",
+              "Signals",
+              "Store",
+              "StoreMap",
+              "StoreRequestContext",
+              "StoreRequestInput",
+              "SubscriptionArgs",
+              "WarpDriveSignal",
+              "_clearCaches",
+              "_deprecatingNormalize",
+              "coerceId",
+              "constructResource",
+              "consumeInternalSignal",
+              "createMemo",
+              "createRequestSubscription",
+              "defineNonEnumerableSignal",
+              "defineSignal",
+              "ensureStringId",
+              "entangleSignal",
+              "fastPush",
+              "gate",
+              "getOrCreateInternalSignal",
+              "getPromiseState",
+              "getRequestState",
+              "isDocumentIdentifier",
+              "isStableIdentifier",
+              "log",
+              "logGroup",
+              "memoized",
+              "notifyInternalSignal",
+              "peekCache",
+              "peekInternalSignal",
+              "recordIdentifierFor",
+              "removeRecordDataFor",
+              "setCacheFor",
+              "setRecordIdentifier",
+              "storeFor",
+              "waitFor",
+              "withSignalStore"
+            ]
+          }
+        },
+        "@warp-drive/core/types": {
+          "runtime": {
+            "file": "dist/types.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types.d.ts",
+            "names": [
+              "BaseFinderOptions",
+              "CacheCapabilitiesManager",
+              "FindAllOptions",
+              "FindRecordOptions",
+              "LegacyResourceQuery",
+              "ModelSchema",
+              "QueryOptions",
+              "ResourceKey",
+              "SchemaService",
+              "StableRecordIdentifier"
+            ]
+          }
+        },
+        "@warp-drive/core/types/-private": {
+          "runtime": {
+            "file": "dist/types/-private.js",
+            "names": [
+              "getOrSetGlobal",
+              "getOrSetUniversal",
+              "peekTransient",
+              "peekUniversalTransient",
+              "setTransient",
+              "setUniversalTransient"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/-private.d.ts",
+            "names": [
+              "getOrSetGlobal",
+              "getOrSetUniversal",
+              "peekTransient",
+              "peekUniversalTransient",
+              "setTransient",
+              "setUniversalTransient"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache": {
+          "runtime": {
+            "file": "dist/types/cache.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache.d.ts",
+            "names": [
+              "Cache",
+              "ChangedAttributesHash",
+              "RelationshipDiff"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache/aliases": {
+          "runtime": {
+            "file": "dist/types/cache/aliases.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache/aliases.d.ts",
+            "names": [
+              "ResourceBlob"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache/change": {
+          "runtime": {
+            "file": "dist/types/cache/change.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache/change.d.ts",
+            "names": [
+              "Change"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache/mutations": {
+          "runtime": {
+            "file": "dist/types/cache/mutations.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache/mutations.d.ts",
+            "names": [
+              "AddToResourceRelationshipMutation",
+              "Mutation",
+              "RemoveFromResourceRelationshipMutation",
+              "ReplaceRelatedRecordMutation",
+              "ReplaceRelatedRecordsMutation",
+              "SortRelatedRecordsMutation"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache/operations": {
+          "runtime": {
+            "file": "dist/types/cache/operations.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache/operations.d.ts",
+            "names": [
+              "AddResourceOperation",
+              "AddToDocumentOperation",
+              "AddToResourceRelationshipOperation",
+              "MergeOperation",
+              "Op",
+              "Operation",
+              "RemoveDocumentOperation",
+              "RemoveFromDocumentOperation",
+              "RemoveFromResourceRelationshipOperation",
+              "RemoveResourceOperation",
+              "UpdateResourceFieldOperation",
+              "UpdateResourceOperation",
+              "UpdateResourceRelationshipOperation"
+            ]
+          }
+        },
+        "@warp-drive/core/types/cache/relationship": {
+          "runtime": {
+            "file": "dist/types/cache/relationship.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/cache/relationship.d.ts",
+            "names": [
+              "CollectionRelationship",
+              "Relationship",
+              "ResourceRelationship"
+            ]
+          }
+        },
+        "@warp-drive/core/types/graph": {
+          "runtime": {
+            "file": "dist/types/graph.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/graph.d.ts",
+            "names": [
+              "DeleteRecordOperation",
+              "LocalRelationshipOperation",
+              "Operation",
+              "RemoteRelationshipOperation",
+              "ReplaceRelatedRecordOperation",
+              "ReplaceRelatedRecordsOperation",
+              "SortRelatedRecords",
+              "UnknownOperation",
+              "UpdateRelationshipOperation"
+            ]
+          }
+        },
+        "@warp-drive/core/types/identifier": {
+          "runtime": {
+            "file": "dist/types/identifier.js",
+            "names": [
+              "CACHE_OWNER",
+              "DEBUG_CLIENT_ORIGINATED",
+              "DEBUG_IDENTIFIER_BUCKET",
+              "DEBUG_STALE_CACHE_OWNER"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/identifier.d.ts",
+            "names": [
+              "CACHE_OWNER",
+              "DEBUG_CLIENT_ORIGINATED",
+              "DEBUG_IDENTIFIER_BUCKET",
+              "DEBUG_STALE_CACHE_OWNER",
+              "ExistingRecordIdentifier",
+              "Identifier",
+              "IdentifierBucket",
+              "NewRecordIdentifier",
+              "RecordIdentifier",
+              "RequestKey",
+              "ResourceKey",
+              "StableDocumentIdentifier",
+              "StableExistingRecordIdentifier",
+              "StableIdentifier",
+              "StableNewRecordIdentifier",
+              "StableRecordIdentifier"
+            ]
+          }
+        },
+        "@warp-drive/core/types/json/raw": {
+          "runtime": {
+            "file": "dist/types/json/raw.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/json/raw.d.ts",
+            "names": [
+              "ArrayValue",
+              "ObjectValue",
+              "PrimitiveValue",
+              "Value"
+            ]
+          }
+        },
+        "@warp-drive/core/types/params": {
+          "runtime": {
+            "file": "dist/types/params.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/params.d.ts",
+            "names": [
+              "QueryParamsSerializationOptions",
+              "QueryParamsSource",
+              "Serializable",
+              "SerializablePrimitive"
+            ]
+          }
+        },
+        "@warp-drive/core/types/record": {
+          "runtime": {
+            "file": "dist/types/record.js",
+            "names": [
+              "createIncludeValidator"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/record.d.ts",
+            "names": [
+              "ExtractSuggestedCacheTypes",
+              "Includes",
+              "OpaqueRecordInstance",
+              "StringSatisfiesIncludes",
+              "TypeFromInstance",
+              "TypeFromInstanceOrString",
+              "TypedRecordInstance",
+              "_StringSatisfiesIncludes",
+              "createIncludeValidator"
+            ]
+          }
+        },
+        "@warp-drive/core/types/request": {
+          "runtime": {
+            "file": "dist/types/request.js",
+            "names": [
+              "EnableHydration",
+              "IS_FUTURE",
+              "STRUCTURED",
+              "SkipCache",
+              "withBrand"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/request.d.ts",
+            "names": [
+              "CacheOptions",
+              "ConstrainedRequestOptions",
+              "CreateRequestOptions",
+              "DeleteRequestOptions",
+              "EnableHydration",
+              "FindRecordOptions",
+              "FindRecordRequestOptions",
+              "HTTPMethod",
+              "IS_FUTURE",
+              "ImmutableCreateRequestOptions",
+              "ImmutableDeleteRequestOptions",
+              "ImmutableHeaders",
+              "ImmutableRequestInfo",
+              "ImmutableUpdateRequestOptions",
+              "PostQueryRequestOptions",
+              "QueryRequestOptions",
+              "RemotelyAccessibleIdentifier",
+              "RequestContext",
+              "RequestInfo",
+              "ResponseInfo",
+              "STRUCTURED",
+              "SkipCache",
+              "StructuredDataDocument",
+              "StructuredDocument",
+              "StructuredErrorDocument",
+              "UpdateRequestOptions",
+              "withBrand"
+            ]
+          }
+        },
+        "@warp-drive/core/types/runtime": {
+          "runtime": {
+            "file": "dist/types/runtime.js",
+            "names": [
+              "getRuntimeConfig",
+              "setLogging"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/runtime.d.ts",
+            "names": [
+              "getRuntimeConfig",
+              "setLogging"
+            ]
+          }
+        },
+        "@warp-drive/core/types/schema/concepts": {
+          "runtime": {
+            "file": "dist/types/schema/concepts.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/schema/concepts.d.ts",
+            "names": [
+              "Derivation",
+              "HashFn",
+              "Transformation"
+            ]
+          }
+        },
+        "@warp-drive/core/types/schema/fields": {
+          "runtime": {
+            "file": "dist/types/schema/fields.js",
+            "names": [
+              "isLegacyResourceSchema",
+              "isResourceSchema",
+              "objectSchema",
+              "resourceSchema"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/schema/fields.d.ts",
+            "names": [
+              "ArrayField",
+              "CollectionField",
+              "DerivedField",
+              "FieldSchema",
+              "GenericField",
+              "HashField",
+              "IdentityField",
+              "LegacyAliasField",
+              "LegacyAttributeField",
+              "LegacyBelongsToField",
+              "LegacyField",
+              "LegacyHasManyField",
+              "LegacyModeFieldSchema",
+              "LegacyRelationshipField",
+              "LegacyResourceSchema",
+              "LinksModeBelongsToField",
+              "LinksModeHasManyField",
+              "LocalField",
+              "ObjectAliasField",
+              "ObjectField",
+              "ObjectFieldSchema",
+              "ObjectSchema",
+              "PolarisAliasField",
+              "PolarisModeFieldSchema",
+              "PolarisResourceSchema",
+              "ResourceField",
+              "ResourceSchema",
+              "Schema",
+              "SchemaArrayField",
+              "SchemaObjectField",
+              "isLegacyResourceSchema",
+              "isResourceSchema",
+              "objectSchema",
+              "resourceSchema"
+            ]
+          }
+        },
+        "@warp-drive/core/types/schema/fields.type-test": {
+          "runtime": {
+            "file": "dist/types/schema/fields.type-test.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/schema/fields.type-test.d.ts",
+            "names": []
+          }
+        },
+        "@warp-drive/core/types/spec/document": {
+          "runtime": {
+            "file": "dist/types/spec/document.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/spec/document.d.ts",
+            "names": [
+              "CollectionResourceDataDocument",
+              "ResourceDataDocument",
+              "ResourceDocument",
+              "ResourceErrorDocument",
+              "ResourceMetaDocument",
+              "SingleResourceDataDocument"
+            ]
+          }
+        },
+        "@warp-drive/core/types/spec/error": {
+          "runtime": {
+            "file": "dist/types/spec/error.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/spec/error.d.ts",
+            "names": [
+              "ApiError"
+            ]
+          }
+        },
+        "@warp-drive/core/types/spec/json-api-raw": {
+          "runtime": {
+            "file": "dist/types/spec/json-api-raw.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/spec/json-api-raw.d.ts",
+            "names": [
+              "CollectionResourceDocument",
+              "CollectionResourceRelationship",
+              "EmptyResourceDocument",
+              "ExistingResourceIdentifierObject",
+              "ExistingResourceObject",
+              "InnerRelationshipDocument",
+              "JsonApiDocument",
+              "Link",
+              "LinkObject",
+              "Links",
+              "Meta",
+              "NewResourceIdentifierObject",
+              "NewResourceObject",
+              "PaginationLinks",
+              "ResourceIdentifier",
+              "ResourceIdentifierObject",
+              "ResourceObject",
+              "ResourceRelationshipsObject",
+              "SingleResourceDocument",
+              "SingleResourceRelationship"
+            ]
+          }
+        },
+        "@warp-drive/core/types/symbols": {
+          "runtime": {
+            "file": "dist/types/symbols.js",
+            "names": [
+              "RecordStore",
+              "RequestSignature",
+              "ResourceType",
+              "TransformName",
+              "Type"
+            ]
+          },
+          "types": {
+            "file": "declarations/types/symbols.d.ts",
+            "names": [
+              "RecordStore",
+              "RequestSignature",
+              "ResourceType",
+              "TransformName",
+              "Type"
+            ]
+          }
+        },
+        "@warp-drive/core/types/utils": {
+          "runtime": {
+            "file": "dist/types/utils.js",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/types/utils.d.ts",
+            "names": [
+              "Mutable",
+              "WithPartial"
+            ]
+          }
+        },
+        "@warp-drive/core/utils/string": {
+          "runtime": {
+            "file": "dist/utils/string.js",
+            "names": [
+              "LRUCache",
+              "STRING_DASHERIZE_CACHE",
+              "dasherize"
+            ]
+          },
+          "types": {
+            "file": "declarations/utils/string.d.ts",
+            "names": [
+              "LRUCache",
+              "STRING_DASHERIZE_CACHE",
+              "dasherize"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/core-types": {
+      "chunks": [],
+      "dir": "packages/core-types",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/core-types": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "BaseFinderOptions",
+              "CacheCapabilitiesManager",
+              "FindAllOptions",
+              "FindRecordOptions",
+              "LegacyResourceQuery",
+              "ModelSchema",
+              "QueryOptions",
+              "ResourceKey",
+              "SchemaService",
+              "StableRecordIdentifier"
+            ]
+          }
+        },
+        "@warp-drive/core-types/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "getOrSetGlobal",
+              "getOrSetUniversal",
+              "peekTransient",
+              "peekUniversalTransient",
+              "setTransient",
+              "setUniversalTransient"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "getOrSetGlobal",
+              "getOrSetUniversal",
+              "peekTransient",
+              "peekUniversalTransient",
+              "setTransient",
+              "setUniversalTransient"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache": {
+          "runtime": {
+            "file": "dist/cache.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache.d.ts",
+            "names": [
+              "Cache",
+              "ChangedAttributesHash",
+              "RelationshipDiff"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache/aliases": {
+          "runtime": {
+            "file": "dist/cache/aliases.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache/aliases.d.ts",
+            "names": [
+              "ResourceBlob"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache/change": {
+          "runtime": {
+            "file": "dist/cache/change.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache/change.d.ts",
+            "names": [
+              "Change"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache/mutations": {
+          "runtime": {
+            "file": "dist/cache/mutations.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache/mutations.d.ts",
+            "names": [
+              "AddToResourceRelationshipMutation",
+              "Mutation",
+              "RemoveFromResourceRelationshipMutation",
+              "ReplaceRelatedRecordMutation",
+              "ReplaceRelatedRecordsMutation",
+              "SortRelatedRecordsMutation"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache/operations": {
+          "runtime": {
+            "file": "dist/cache/operations.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache/operations.d.ts",
+            "names": [
+              "AddResourceOperation",
+              "AddToDocumentOperation",
+              "AddToResourceRelationshipOperation",
+              "MergeOperation",
+              "Op",
+              "Operation",
+              "RemoveDocumentOperation",
+              "RemoveFromDocumentOperation",
+              "RemoveFromResourceRelationshipOperation",
+              "RemoveResourceOperation",
+              "UpdateResourceFieldOperation",
+              "UpdateResourceOperation",
+              "UpdateResourceRelationshipOperation"
+            ]
+          }
+        },
+        "@warp-drive/core-types/cache/relationship": {
+          "runtime": {
+            "file": "dist/cache/relationship.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/cache/relationship.d.ts",
+            "names": [
+              "CollectionRelationship",
+              "Relationship",
+              "ResourceRelationship"
+            ]
+          }
+        },
+        "@warp-drive/core-types/graph": {
+          "runtime": {
+            "file": "dist/graph.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/graph.d.ts",
+            "names": [
+              "DeleteRecordOperation",
+              "LocalRelationshipOperation",
+              "Operation",
+              "RemoteRelationshipOperation",
+              "ReplaceRelatedRecordOperation",
+              "ReplaceRelatedRecordsOperation",
+              "SortRelatedRecords",
+              "UnknownOperation",
+              "UpdateRelationshipOperation"
+            ]
+          }
+        },
+        "@warp-drive/core-types/identifier": {
+          "runtime": {
+            "file": "dist/identifier.js",
+            "names": [
+              "CACHE_OWNER",
+              "DEBUG_CLIENT_ORIGINATED",
+              "DEBUG_IDENTIFIER_BUCKET",
+              "DEBUG_STALE_CACHE_OWNER"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/identifier.d.ts",
+            "names": [
+              "CACHE_OWNER",
+              "DEBUG_CLIENT_ORIGINATED",
+              "DEBUG_IDENTIFIER_BUCKET",
+              "DEBUG_STALE_CACHE_OWNER",
+              "ExistingRecordIdentifier",
+              "Identifier",
+              "IdentifierBucket",
+              "NewRecordIdentifier",
+              "RecordIdentifier",
+              "RequestKey",
+              "ResourceKey",
+              "StableDocumentIdentifier",
+              "StableExistingRecordIdentifier",
+              "StableIdentifier",
+              "StableNewRecordIdentifier",
+              "StableRecordIdentifier"
+            ]
+          }
+        },
+        "@warp-drive/core-types/json/raw": {
+          "runtime": {
+            "file": "dist/json/raw.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/json/raw.d.ts",
+            "names": [
+              "ArrayValue",
+              "ObjectValue",
+              "PrimitiveValue",
+              "Value"
+            ]
+          }
+        },
+        "@warp-drive/core-types/params": {
+          "runtime": {
+            "file": "dist/params.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/params.d.ts",
+            "names": [
+              "QueryParamsSerializationOptions",
+              "QueryParamsSource",
+              "Serializable",
+              "SerializablePrimitive"
+            ]
+          }
+        },
+        "@warp-drive/core-types/record": {
+          "runtime": {
+            "file": "dist/record.js",
+            "names": [
+              "createIncludeValidator"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/record.d.ts",
+            "names": [
+              "ExtractSuggestedCacheTypes",
+              "Includes",
+              "OpaqueRecordInstance",
+              "StringSatisfiesIncludes",
+              "TypeFromInstance",
+              "TypeFromInstanceOrString",
+              "TypedRecordInstance",
+              "_StringSatisfiesIncludes",
+              "createIncludeValidator"
+            ]
+          }
+        },
+        "@warp-drive/core-types/request": {
+          "runtime": {
+            "file": "dist/request.js",
+            "names": [
+              "EnableHydration",
+              "IS_FUTURE",
+              "STRUCTURED",
+              "SkipCache",
+              "withBrand"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/request.d.ts",
+            "names": [
+              "CacheOptions",
+              "ConstrainedRequestOptions",
+              "CreateRequestOptions",
+              "DeleteRequestOptions",
+              "EnableHydration",
+              "FindRecordOptions",
+              "FindRecordRequestOptions",
+              "HTTPMethod",
+              "IS_FUTURE",
+              "ImmutableCreateRequestOptions",
+              "ImmutableDeleteRequestOptions",
+              "ImmutableHeaders",
+              "ImmutableRequestInfo",
+              "ImmutableUpdateRequestOptions",
+              "PostQueryRequestOptions",
+              "QueryRequestOptions",
+              "RemotelyAccessibleIdentifier",
+              "RequestContext",
+              "RequestInfo",
+              "ResponseInfo",
+              "STRUCTURED",
+              "SkipCache",
+              "StructuredDataDocument",
+              "StructuredDocument",
+              "StructuredErrorDocument",
+              "UpdateRequestOptions",
+              "withBrand"
+            ]
+          }
+        },
+        "@warp-drive/core-types/runtime": {
+          "runtime": {
+            "file": "dist/runtime.js",
+            "names": [
+              "getRuntimeConfig",
+              "setLogging"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/runtime.d.ts",
+            "names": [
+              "getRuntimeConfig",
+              "setLogging"
+            ]
+          }
+        },
+        "@warp-drive/core-types/schema/concepts": {
+          "runtime": {
+            "file": "dist/schema/concepts.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/schema/concepts.d.ts",
+            "names": [
+              "Derivation",
+              "HashFn",
+              "Transformation"
+            ]
+          }
+        },
+        "@warp-drive/core-types/schema/fields": {
+          "runtime": {
+            "file": "dist/schema/fields.js",
+            "names": [
+              "isLegacyResourceSchema",
+              "isResourceSchema",
+              "objectSchema",
+              "resourceSchema"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/schema/fields.d.ts",
+            "names": [
+              "ArrayField",
+              "CollectionField",
+              "DerivedField",
+              "FieldSchema",
+              "GenericField",
+              "HashField",
+              "IdentityField",
+              "LegacyAliasField",
+              "LegacyAttributeField",
+              "LegacyBelongsToField",
+              "LegacyField",
+              "LegacyHasManyField",
+              "LegacyModeFieldSchema",
+              "LegacyRelationshipField",
+              "LegacyResourceSchema",
+              "LinksModeBelongsToField",
+              "LinksModeHasManyField",
+              "LocalField",
+              "ObjectAliasField",
+              "ObjectField",
+              "ObjectFieldSchema",
+              "ObjectSchema",
+              "PolarisAliasField",
+              "PolarisModeFieldSchema",
+              "PolarisResourceSchema",
+              "ResourceField",
+              "ResourceSchema",
+              "Schema",
+              "SchemaArrayField",
+              "SchemaObjectField",
+              "isLegacyResourceSchema",
+              "isResourceSchema",
+              "objectSchema",
+              "resourceSchema"
+            ]
+          }
+        },
+        "@warp-drive/core-types/spec/document": {
+          "runtime": {
+            "file": "dist/spec/document.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/spec/document.d.ts",
+            "names": [
+              "CollectionResourceDataDocument",
+              "ResourceDataDocument",
+              "ResourceDocument",
+              "ResourceErrorDocument",
+              "ResourceMetaDocument",
+              "SingleResourceDataDocument"
+            ]
+          }
+        },
+        "@warp-drive/core-types/spec/error": {
+          "runtime": {
+            "file": "dist/spec/error.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/spec/error.d.ts",
+            "names": [
+              "ApiError"
+            ]
+          }
+        },
+        "@warp-drive/core-types/spec/json-api-raw": {
+          "runtime": {
+            "file": "dist/spec/json-api-raw.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/spec/json-api-raw.d.ts",
+            "names": [
+              "CollectionResourceDocument",
+              "CollectionResourceRelationship",
+              "EmptyResourceDocument",
+              "ExistingResourceIdentifierObject",
+              "ExistingResourceObject",
+              "InnerRelationshipDocument",
+              "JsonApiDocument",
+              "Link",
+              "LinkObject",
+              "Links",
+              "Meta",
+              "NewResourceIdentifierObject",
+              "NewResourceObject",
+              "PaginationLinks",
+              "ResourceIdentifier",
+              "ResourceIdentifierObject",
+              "ResourceObject",
+              "ResourceRelationshipsObject",
+              "SingleResourceDocument",
+              "SingleResourceRelationship"
+            ]
+          }
+        },
+        "@warp-drive/core-types/symbols": {
+          "runtime": {
+            "file": "dist/symbols.js",
+            "names": [
+              "RecordStore",
+              "RequestSignature",
+              "ResourceType",
+              "TransformName",
+              "Type"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/symbols.d.ts",
+            "names": [
+              "RecordStore",
+              "RequestSignature",
+              "ResourceType",
+              "TransformName",
+              "Type"
+            ]
+          }
+        },
+        "@warp-drive/core-types/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        },
+        "@warp-drive/core-types/utils": {
+          "runtime": {
+            "file": "dist/utils.js",
+            "names": []
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/utils.d.ts",
+            "names": [
+              "Mutable",
+              "WithPartial"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/ember": {
+      "chunks": [],
+      "dir": "warp-drive-packages/ember",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/ember": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "Await",
+              "Request",
+              "Throw",
+              "getPromiseState",
+              "getRequestState"
+            ]
+          },
+          "types": {
+            "file": "declarations/index.d.ts",
+            "names": [
+              "Await",
+              "Request",
+              "RequestLoadingState",
+              "Throw",
+              "getPromiseState",
+              "getRequestState"
+            ]
+          }
+        },
+        "@warp-drive/ember/install": {
+          "runtime": {
+            "file": "dist/install.js",
+            "names": [
+              "buildSignalConfig"
+            ]
+          },
+          "types": {
+            "file": "declarations/install.d.ts",
+            "names": [
+              "buildSignalConfig"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/experiments": {
+      "chunks": [],
+      "dir": "warp-drive-packages/experiments",
+      "exports": {
+        "./data-worker": {
+          "default": "./dist/data-worker.js",
+          "types": "./declarations/data-worker.d.ts"
+        },
+        "./document-storage": {
+          "default": "./dist/document-storage.js",
+          "types": "./declarations/document-storage.d.ts"
+        },
+        "./image-fetch": {
+          "default": "./dist/image-fetch.js",
+          "types": "./declarations/image-fetch.d.ts"
+        },
+        "./image-worker": {
+          "default": "./dist/image-worker.js",
+          "types": "./declarations/image-worker.d.ts"
+        },
+        "./persisted-cache": {
+          "default": "./dist/persisted-cache.js",
+          "types": "./declarations/persisted-cache.d.ts"
+        },
+        "./worker-fetch": {
+          "default": "./dist/worker-fetch.js",
+          "types": "./declarations/worker-fetch.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/experiments/data-worker": {
+          "runtime": {
+            "file": "dist/data-worker.js",
+            "names": [
+              "CacheHandler",
+              "DataWorker"
+            ]
+          },
+          "types": {
+            "file": "declarations/data-worker.d.ts",
+            "names": [
+              "CacheHandler",
+              "DataWorker"
+            ]
+          }
+        },
+        "@warp-drive/experiments/document-storage": {
+          "runtime": {
+            "file": "dist/document-storage.js",
+            "names": [
+              "DocumentStorage"
+            ]
+          },
+          "types": {
+            "file": "declarations/document-storage.d.ts",
+            "names": [
+              "DocumentStorage"
+            ]
+          }
+        },
+        "@warp-drive/experiments/image-fetch": {
+          "runtime": {
+            "file": "dist/image-fetch.js",
+            "names": [
+              "ImageFetch"
+            ]
+          },
+          "types": {
+            "file": "declarations/image-fetch.d.ts",
+            "names": [
+              "ImageFetch"
+            ]
+          }
+        },
+        "@warp-drive/experiments/image-worker": {
+          "runtime": {
+            "file": "dist/image-worker.js",
+            "names": [
+              "ImageWorker"
+            ]
+          },
+          "types": {
+            "file": "declarations/image-worker.d.ts",
+            "names": [
+              "ImageWorker"
+            ]
+          }
+        },
+        "@warp-drive/experiments/persisted-cache": {
+          "runtime": {
+            "file": "dist/persisted-cache.js",
+            "names": [
+              "PersistedCache"
+            ]
+          },
+          "types": {
+            "file": "declarations/persisted-cache.d.ts",
+            "names": [
+              "PersistedCache"
+            ]
+          }
+        },
+        "@warp-drive/experiments/worker-fetch": {
+          "runtime": {
+            "file": "dist/worker-fetch.js",
+            "names": [
+              "WorkerFetch"
+            ]
+          },
+          "types": {
+            "file": "declarations/worker-fetch.d.ts",
+            "names": [
+              "WorkerFetch"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "0.2.4"
+    },
+    "@warp-drive/json-api": {
+      "chunks": [],
+      "dir": "warp-drive-packages/json-api",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/json-api": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "JSONAPICache"
+            ]
+          },
+          "types": {
+            "file": "declarations/index.d.ts",
+            "names": [
+              "JSONAPICache"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/legacy": {
+      "chunks": [
+        "dist/-private-CKrP0ogQ.js",
+        "dist/errors-BX5wowuz.js",
+        "dist/json-Et4mt_LM.js",
+        "dist/runtime-BPCpkOf1-BKOwiRJp.js",
+        "dist/schema-provider-BdQhkT-Q.js",
+        "dist/serialize-into-hash-Bp58npke.js"
+      ],
+      "dir": "warp-drive-packages/legacy",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        }
+      },
+      "missing": {
+        ".": {
+          "default": [
+            "./dist/index.js"
+          ],
+          "types": [
+            "./declarations/index.d.ts"
+          ]
+        }
+      },
+      "modules": {
+        "@warp-drive/legacy": {
+          "runtime": null,
+          "types": null
+        },
+        "@warp-drive/legacy/adapter": {
+          "runtime": {
+            "file": "dist/adapter.js",
+            "names": [
+              "Adapter",
+              "BuildURLMixin"
+            ]
+          },
+          "types": {
+            "file": "declarations/adapter.d.ts",
+            "names": [
+              "Adapter",
+              "BuildURLMixin"
+            ]
+          }
+        },
+        "@warp-drive/legacy/adapter/-private": {
+          "runtime": {
+            "file": "dist/adapter/-private.js",
+            "names": [
+              "determineBodyPromise",
+              "fetch",
+              "parseResponseHeaders",
+              "serializeIntoHash",
+              "serializeQueryParams",
+              "setupFastboot"
+            ]
+          },
+          "types": {
+            "file": "declarations/adapter/-private.d.ts",
+            "names": [
+              "determineBodyPromise",
+              "fetch",
+              "parseResponseHeaders",
+              "serializeIntoHash",
+              "serializeQueryParams",
+              "setupFastboot"
+            ]
+          }
+        },
+        "@warp-drive/legacy/adapter/error": {
+          "runtime": {
+            "file": "dist/adapter/error.js",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError"
+            ]
+          },
+          "types": {
+            "file": "declarations/adapter/error.d.ts",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "AdapterRequestError",
+              "AdapterRequestErrorConstructor",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError"
+            ]
+          }
+        },
+        "@warp-drive/legacy/adapter/json-api": {
+          "runtime": {
+            "file": "dist/adapter/json-api.js",
+            "names": [
+              "JSONAPIAdapter"
+            ]
+          },
+          "types": {
+            "file": "declarations/adapter/json-api.d.ts",
+            "names": [
+              "JSONAPIAdapter"
+            ]
+          }
+        },
+        "@warp-drive/legacy/adapter/rest": {
+          "runtime": {
+            "file": "dist/adapter/rest.js",
+            "names": [
+              "RESTAdapter",
+              "fetchOptions"
+            ]
+          },
+          "types": {
+            "file": "declarations/adapter/rest.d.ts",
+            "names": [
+              "FetchRequestInit",
+              "JQueryRequestInit",
+              "QueryState",
+              "RESTAdapter",
+              "RequestData",
+              "fetchOptions"
+            ]
+          }
+        },
+        "@warp-drive/legacy/compat": {
+          "runtime": {
+            "file": "dist/compat.js",
+            "names": [
+              "LegacyNetworkHandler",
+              "adapterFor",
+              "cleanup",
+              "normalize",
+              "pushPayload",
+              "serializeRecord",
+              "serializerFor"
+            ]
+          },
+          "types": {
+            "file": "declarations/compat.d.ts",
+            "names": [
+              "AdapterPayload",
+              "CompatStore",
+              "LegacyNetworkHandler",
+              "LegacyStoreCompat",
+              "MinimumAdapterInterface",
+              "MinimumSerializerInterface",
+              "SerializerOptions",
+              "adapterFor",
+              "cleanup",
+              "normalize",
+              "pushPayload",
+              "serializeRecord",
+              "serializerFor"
+            ]
+          }
+        },
+        "@warp-drive/legacy/compat/-private": {
+          "runtime": {
+            "file": "dist/compat/-private.js",
+            "names": [
+              "FetchManager",
+              "SaveOp",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "upgradeStore"
+            ]
+          },
+          "types": {
+            "file": "declarations/compat/-private.d.ts",
+            "names": [
+              "FetchManager",
+              "SaveOp",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "upgradeStore"
+            ]
+          }
+        },
+        "@warp-drive/legacy/compat/builders": {
+          "runtime": {
+            "file": "dist/compat/builders.js",
+            "names": [
+              "findAll",
+              "findRecord",
+              "query",
+              "queryRecord",
+              "saveRecord"
+            ]
+          },
+          "types": {
+            "file": "declarations/compat/builders.d.ts",
+            "names": [
+              "findAll",
+              "findRecord",
+              "query",
+              "queryRecord",
+              "saveRecord"
+            ]
+          }
+        },
+        "@warp-drive/legacy/compat/extensions": {
+          "runtime": {
+            "file": "dist/compat/extensions.js",
+            "names": [
+              "EmberArrayLikeExtension",
+              "EmberObjectArrayExtension",
+              "EmberObjectExtension"
+            ]
+          },
+          "types": {
+            "file": "declarations/compat/extensions.d.ts",
+            "names": [
+              "ArrayType",
+              "EmberArrayLikeExtension",
+              "EmberObjectArrayExtension",
+              "EmberObjectExtension",
+              "WithArrayLike",
+              "WithEmberObject"
+            ]
+          }
+        },
+        "@warp-drive/legacy/compat/utils": {
+          "runtime": {
+            "file": "dist/compat/utils.js",
+            "names": [
+              "configureAssertFn",
+              "configureMismatchReporter",
+              "configureTypeNormalization",
+              "expectId",
+              "formattedId",
+              "formattedType",
+              "isEquivId",
+              "isEquivType"
+            ]
+          },
+          "types": {
+            "file": "declarations/compat/utils.d.ts",
+            "names": [
+              "configureAssertFn",
+              "configureMismatchReporter",
+              "configureTypeNormalization",
+              "expectId",
+              "formattedId",
+              "formattedType",
+              "isEquivId",
+              "isEquivType"
+            ]
+          }
+        },
+        "@warp-drive/legacy/model": {
+          "runtime": {
+            "file": "dist/model.js",
+            "names": [
+              "Model",
+              "attr",
+              "belongsTo",
+              "buildSchema",
+              "default",
+              "hasMany",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          },
+          "types": {
+            "file": "declarations/model.d.ts",
+            "names": [
+              "AsyncBelongsTo",
+              "AsyncHasMany",
+              "HasMany",
+              "ManyArray",
+              "Model",
+              "attr",
+              "belongsTo",
+              "buildSchema",
+              "default",
+              "hasMany",
+              "instantiateRecord",
+              "modelFor",
+              "teardownRecord"
+            ]
+          }
+        },
+        "@warp-drive/legacy/model/-private": {
+          "runtime": {
+            "file": "dist/model/-private.js",
+            "names": [
+              "Errors",
+              "LEGACY_SUPPORT",
+              "ManyArray",
+              "PromiseBelongsTo",
+              "PromiseManyArray",
+              "lookupLegacySupport"
+            ]
+          },
+          "types": {
+            "file": "declarations/model/-private.d.ts",
+            "names": [
+              "Errors",
+              "LEGACY_SUPPORT",
+              "ManyArray",
+              "MinimalLegacyRecord",
+              "ModelStore",
+              "PromiseBelongsTo",
+              "PromiseManyArray",
+              "lookupLegacySupport"
+            ]
+          }
+        },
+        "@warp-drive/legacy/model/migration-support": {
+          "runtime": {
+            "file": "dist/model/migration-support.js",
+            "names": [
+              "DelegatingSchemaService",
+              "registerDerivations",
+              "withDefaults"
+            ]
+          },
+          "types": {
+            "file": "declarations/model/migration-support.d.ts",
+            "names": [
+              "DelegatingSchemaService",
+              "WithLegacy",
+              "WithLegacyDerivations",
+              "registerDerivations",
+              "withDefaults"
+            ]
+          }
+        },
+        "@warp-drive/legacy/serializer": {
+          "runtime": {
+            "file": "dist/serializer.js",
+            "names": [
+              "Serializer"
+            ]
+          },
+          "types": {
+            "file": "declarations/serializer.d.ts",
+            "names": [
+              "Serializer"
+            ]
+          }
+        },
+        "@warp-drive/legacy/serializer/json": {
+          "runtime": {
+            "file": "dist/serializer/json.js",
+            "names": [
+              "JSONSerializer"
+            ]
+          },
+          "types": {
+            "file": "declarations/serializer/json.d.ts",
+            "names": [
+              "JSONSerializer"
+            ]
+          }
+        },
+        "@warp-drive/legacy/serializer/json-api": {
+          "runtime": {
+            "file": "dist/serializer/json-api.js",
+            "names": [
+              "JSONAPISerializer"
+            ]
+          },
+          "types": {
+            "file": "declarations/serializer/json-api.d.ts",
+            "names": [
+              "JSONAPISerializer"
+            ]
+          }
+        },
+        "@warp-drive/legacy/serializer/rest": {
+          "runtime": {
+            "file": "dist/serializer/rest.js",
+            "names": [
+              "EmbeddedRecordsMixin",
+              "RESTSerializer"
+            ]
+          },
+          "types": {
+            "file": "declarations/serializer/rest.d.ts",
+            "names": [
+              "EmbeddedRecordsMixin",
+              "RESTSerializer"
+            ]
+          }
+        },
+        "@warp-drive/legacy/serializer/transform": {
+          "runtime": {
+            "file": "dist/serializer/transform.js",
+            "names": [
+              "BooleanTransform",
+              "DateTransform",
+              "NumberTransform",
+              "StringTransform",
+              "Transform"
+            ]
+          },
+          "types": {
+            "file": "declarations/serializer/transform.d.ts",
+            "names": [
+              "BooleanTransform",
+              "DateTransform",
+              "NumberTransform",
+              "StringTransform",
+              "Transform"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/schema-record": {
+      "chunks": [],
+      "dir": "packages/schema-record",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/schema-record": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "Checkout",
+              "SchemaService",
+              "fromIdentity",
+              "instantiateRecord",
+              "registerDerivations",
+              "teardownRecord",
+              "withDefaults"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "Checkout",
+              "SchemaRecord",
+              "SchemaService",
+              "Transformation",
+              "fromIdentity",
+              "instantiateRecord",
+              "registerDerivations",
+              "teardownRecord",
+              "withDefaults"
+            ]
+          }
+        },
+        "@warp-drive/schema-record/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "Editable",
+              "Legacy"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private.d.ts",
+            "names": [
+              "Editable",
+              "Legacy"
+            ]
+          }
+        },
+        "@warp-drive/schema-record/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "@warp-drive/utilities": {
+      "chunks": [
+        "dist/builder-utils-Donkk-BZ.js",
+        "dist/inflect-BSG696t-.js"
+      ],
+      "dir": "warp-drive-packages/utilities",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js",
+          "types": "./declarations/index.d.ts"
+        },
+        "./*": {
+          "default": "./dist/*.js",
+          "types": "./declarations/*.d.ts"
+        },
+        "./*.cjs": {
+          "default": "./dist/*.cjs",
+          "types": "./declarations/*.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@warp-drive/utilities": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "buildBaseURL",
+              "buildQueryParams",
+              "filterEmpty",
+              "setBuildURLConfig",
+              "sortQueryParams"
+            ]
+          },
+          "types": {
+            "file": "declarations/index.d.ts",
+            "names": [
+              "BuildURLConfig",
+              "CreateRecordUrlOptions",
+              "DeleteRecordUrlOptions",
+              "FindManyUrlOptions",
+              "FindRecordUrlOptions",
+              "FindRelatedCollectionUrlOptions",
+              "FindRelatedResourceUrlOptions",
+              "GenericUrlOptions",
+              "QueryUrlOptions",
+              "UpdateRecordUrlOptions",
+              "UrlOptions",
+              "buildBaseURL",
+              "buildQueryParams",
+              "filterEmpty",
+              "setBuildURLConfig",
+              "sortQueryParams"
+            ]
+          }
+        },
+        "@warp-drive/utilities/-private": {
+          "runtime": {
+            "file": "dist/-private.js",
+            "names": [
+              "InflectionRuleDefaults"
+            ]
+          },
+          "types": {
+            "file": "declarations/-private.d.ts",
+            "names": [
+              "InflectionRuleDefaults"
+            ]
+          }
+        },
+        "@warp-drive/utilities/active-record": {
+          "runtime": {
+            "file": "dist/active-record.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "file": "declarations/active-record.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          }
+        },
+        "@warp-drive/utilities/handlers": {
+          "runtime": {
+            "file": "dist/handlers.js",
+            "names": [
+              "AutoCompress",
+              "Gate",
+              "MAX_URL_LENGTH",
+              "SupportsRequestStreams",
+              "TAB_ASSIGNED",
+              "TAB_ID",
+              "addTraceHeader",
+              "assertInvalidUrlLength"
+            ]
+          },
+          "types": {
+            "file": "declarations/handlers.d.ts",
+            "names": [
+              "AutoCompress",
+              "Gate",
+              "MAX_URL_LENGTH",
+              "SupportsRequestStreams",
+              "TAB_ASSIGNED",
+              "TAB_ID",
+              "addTraceHeader",
+              "assertInvalidUrlLength"
+            ]
+          }
+        },
+        "@warp-drive/utilities/json-api": {
+          "runtime": {
+            "file": "dist/json-api.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "postQuery",
+              "query",
+              "serializePatch",
+              "serializeResources",
+              "setBuildURLConfig",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "file": "declarations/json-api.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "postQuery",
+              "query",
+              "serializePatch",
+              "serializeResources",
+              "setBuildURLConfig",
+              "updateRecord"
+            ]
+          }
+        },
+        "@warp-drive/utilities/rest": {
+          "runtime": {
+            "file": "dist/rest.js",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          },
+          "types": {
+            "file": "declarations/rest.d.ts",
+            "names": [
+              "createRecord",
+              "deleteRecord",
+              "findRecord",
+              "query",
+              "updateRecord"
+            ]
+          }
+        },
+        "@warp-drive/utilities/string": {
+          "runtime": {
+            "file": "dist/string.js",
+            "names": [
+              "camelize",
+              "capitalize",
+              "clear",
+              "clearRules",
+              "dasherize",
+              "irregular",
+              "loadIrregular",
+              "loadUncountable",
+              "plural",
+              "pluralize",
+              "resetToDefaults",
+              "setMaxLRUCacheSize",
+              "singular",
+              "singularize",
+              "uncountable",
+              "underscore"
+            ]
+          },
+          "types": {
+            "file": "declarations/string.d.ts",
+            "names": [
+              "camelize",
+              "capitalize",
+              "clear",
+              "clearRules",
+              "dasherize",
+              "irregular",
+              "loadIrregular",
+              "loadUncountable",
+              "plural",
+              "pluralize",
+              "resetToDefaults",
+              "setMaxLRUCacheSize",
+              "singular",
+              "singularize",
+              "uncountable",
+              "underscore"
+            ]
+          }
+        },
+        "@warp-drive/utilities/string.cjs": {
+          "runtime": {
+            "file": "dist/string.cjs",
+            "names": []
+          },
+          "types": {
+            "file": "declarations/string.d.ts",
+            "names": [
+              "camelize",
+              "capitalize",
+              "clear",
+              "clearRules",
+              "dasherize",
+              "irregular",
+              "loadIrregular",
+              "loadUncountable",
+              "plural",
+              "pluralize",
+              "resetToDefaults",
+              "setMaxLRUCacheSize",
+              "singular",
+              "singularize",
+              "uncountable",
+              "underscore"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "ember-data": {
+      "chunks": [],
+      "dir": "packages/-ember-data",
+      "exports": {
+        ".": {
+          "default": "./dist/index.js"
+        },
+        "./*": {
+          "default": "./dist/*.js"
+        },
+        "./app/*": {
+          "default": "./app/*.js"
+        },
+        "./blueprints/*": {
+          "default": "./blueprints/*.js"
+        },
+        "./test-support": {
+          "default": "./dist/test-support/index.js"
+        },
+        "./unstable-preview-types": {
+          "types": "./unstable-preview-types/index.d.ts"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "ember-data": {
+          "runtime": {
+            "file": "dist/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/index.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/-private/core": {
+          "runtime": {
+            "file": "dist/-private/core.js",
+            "names": [
+              "DS",
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/-private/core.d.ts",
+            "names": [
+              "DS",
+              "default"
+            ]
+          }
+        },
+        "ember-data/-private/index": {
+          "runtime": {
+            "file": "dist/-private/index.js",
+            "names": [
+              "DS",
+              "Errors",
+              "ManyArray",
+              "PromiseArray",
+              "PromiseManyArray",
+              "PromiseObject",
+              "RecordArrayManager",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "Store",
+              "coerceId"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/adapter": {
+          "runtime": {
+            "file": "dist/adapter.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/adapter.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/adapters/errors": {
+          "runtime": {
+            "file": "dist/adapters/errors.js",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/adapters/errors.d.ts",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError"
+            ]
+          }
+        },
+        "ember-data/adapters/json-api": {
+          "runtime": {
+            "file": "dist/adapters/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/adapters/json-api.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/adapters/rest": {
+          "runtime": {
+            "file": "dist/adapters/rest.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/adapters/rest.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/app/initializers/ember-data": {
+          "runtime": {
+            "file": "app/initializers/ember-data.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/app/services/store": {
+          "runtime": {
+            "file": "app/services/store.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/app/transforms/boolean": {
+          "runtime": {
+            "file": "app/transforms/boolean.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/app/transforms/date": {
+          "runtime": {
+            "file": "app/transforms/date.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/app/transforms/number": {
+          "runtime": {
+            "file": "app/transforms/number.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/app/transforms/string": {
+          "runtime": {
+            "file": "app/transforms/string.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/attr": {
+          "runtime": {
+            "file": "dist/attr.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/attr.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/blueprints/adapter-test/index": {
+          "runtime": {
+            "file": "blueprints/adapter-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/adapter/index": {
+          "runtime": {
+            "file": "blueprints/adapter/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/model-test/index": {
+          "runtime": {
+            "file": "blueprints/model-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/model/index": {
+          "runtime": {
+            "file": "blueprints/model/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/serializer-test/index": {
+          "runtime": {
+            "file": "blueprints/serializer-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/serializer/index": {
+          "runtime": {
+            "file": "blueprints/serializer/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/transform-test/index": {
+          "runtime": {
+            "file": "blueprints/transform-test/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/blueprints/transform/index": {
+          "runtime": {
+            "file": "blueprints/transform/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "ember-data/model": {
+          "runtime": {
+            "file": "dist/model.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/model.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/relationships": {
+          "runtime": {
+            "file": "dist/relationships.js",
+            "names": [
+              "belongsTo",
+              "hasMany"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/relationships.d.ts",
+            "names": [
+              "belongsTo",
+              "hasMany"
+            ]
+          }
+        },
+        "ember-data/serializer": {
+          "runtime": {
+            "file": "dist/serializer.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/serializer.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/embedded-records-mixin": {
+          "runtime": {
+            "file": "dist/serializers/embedded-records-mixin.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/serializers/embedded-records-mixin.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/json": {
+          "runtime": {
+            "file": "dist/serializers/json.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/serializers/json.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/json-api": {
+          "runtime": {
+            "file": "dist/serializers/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/serializers/json-api.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/rest": {
+          "runtime": {
+            "file": "dist/serializers/rest.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/serializers/rest.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/setup-container": {
+          "runtime": {
+            "file": "dist/setup-container.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/setup-container.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/store": {
+          "runtime": {
+            "file": "dist/store.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/store.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/test-support": {
+          "runtime": {
+            "file": "dist/test-support/index.js",
+            "names": [
+              "render"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/test-support/index.d.ts",
+            "names": [
+              "render"
+            ]
+          }
+        },
+        "ember-data/transform": {
+          "runtime": {
+            "file": "dist/transform.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/transform.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/unstable-preview-types": {
+          "runtime": null,
+          "types": {
+            "file": "unstable-preview-types/index.d.ts",
+            "names": []
+          }
+        },
+        "ember-data/version": {
+          "runtime": {
+            "file": "dist/version.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "ambient": true,
+            "file": "unstable-preview-types/version.d.ts",
+            "names": [
+              "default"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "5.6.0"
+    },
+    "eslint-plugin-warp-drive": {
+      "chunks": [],
+      "dir": "packages/eslint-plugin-warp-drive",
+      "exports": {
+        ".": {
+          "default": "./src/index.js"
+        },
+        "./recommended": {
+          "default": "./src/recommended.js"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "eslint-plugin-warp-drive": {
+          "runtime": {
+            "file": "src/index.js",
+            "names": []
+          },
+          "types": null
+        },
+        "eslint-plugin-warp-drive/recommended": {
+          "runtime": {
+            "file": "src/recommended.js",
+            "names": []
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "exports",
+      "published": true,
+      "version": "0.0.3"
+    }
+  },
+  "schema": 1,
+  "surface": null,
+  "tag": "v5.6.0",
+  "version": "5.6.0"
+}

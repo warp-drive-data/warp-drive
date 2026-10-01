@@ -67,6 +67,10 @@ const CONTENT_ALLOWLIST = [
     why: 'The "bun" export condition lets consumers load the test/mock server under bun.',
   },
   {
+    path: /^scripts\/public-exports-mapping\/audits\/[^/]+\.json$/,
+    why: 'Audits copy the exports maps and module lists of published packages, including the "bun" condition and server/bun/ modules @warp-drive/diagnostic ships for consumers.',
+  },
+  {
     path: /^(packages\/holodeck\/server\/utils\.js|packages\/diagnostic\/server\/src\/index\.ts)$/,
     lines: [/Bun\.serve/],
     why: 'Comments explaining how bind failures differ between Bun.serve and node servers.',

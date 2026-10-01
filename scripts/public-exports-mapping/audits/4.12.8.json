@@ -1,0 +1,802 @@
+{
+  "kind": "audit",
+  "packages": {
+    "@ember-data/adapter": {
+      "chunks": [
+        "addon/build-url-mixin-18db8c8b.js",
+        "addon/index-f54121ea.js",
+        "addon/serialize-into-hash-b9092b25.js"
+      ],
+      "dir": "packages/adapter",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/adapter": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "BuildURLMixin",
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/adapter/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "BuildURLMixin",
+              "determineBodyPromise",
+              "fetch",
+              "parseResponseHeaders",
+              "serializeIntoHash",
+              "serializeQueryParams",
+              "setupFastboot"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/adapter/error": {
+          "runtime": {
+            "file": "addon/error.js",
+            "names": [
+              "AbortError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError",
+              "default",
+              "errorsArrayToHash",
+              "errorsHashToArray"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/adapter/json-api": {
+          "runtime": {
+            "file": "addon/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/adapter/rest": {
+          "runtime": {
+            "file": "addon/rest.js",
+            "names": [
+              "default",
+              "fetchOptions"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/debug": {
+      "chunks": [],
+      "dir": "packages/debug",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/debug": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/debug/setup": {
+          "runtime": {
+            "file": "addon/setup.js",
+            "names": [
+              "default",
+              "typesMapFor"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/graph": {
+      "chunks": [],
+      "dir": "packages/graph",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/graph/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "graphFor",
+              "peekGraph"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/json-api": {
+      "chunks": [],
+      "dir": "packages/json-api",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/json-api": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/legacy-compat": {
+      "chunks": [
+        "addon/fetch-manager-025964e9.js"
+      ],
+      "dir": "packages/legacy-compat",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/legacy-compat": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "LegacyNetworkHandler"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/legacy-compat/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "FetchManager",
+              "SaveOp",
+              "Snapshot",
+              "SnapshotRecordArray"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/legacy-compat/builders": {
+          "runtime": {
+            "file": "addon/builders.js",
+            "names": [
+              "findAll",
+              "findRecord",
+              "query",
+              "queryRecord",
+              "saveRecord"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/model": {
+      "chunks": [
+        "addon/has-many-d45aa09e.js"
+      ],
+      "dir": "packages/model",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/model": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "attr",
+              "belongsTo",
+              "default",
+              "hasMany"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/model/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "Errors",
+              "LEGACY_SUPPORT",
+              "ManyArray",
+              "Model",
+              "PromiseBelongsTo",
+              "PromiseManyArray",
+              "_modelForMixin",
+              "attr",
+              "belongsTo",
+              "diffArray",
+              "hasMany"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/private-build-infra": {
+      "chunks": [],
+      "dir": "packages/private-build-infra",
+      "exports": null,
+      "missing": {},
+      "modules": {},
+      "modulesFrom": "main",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/request": {
+      "chunks": [
+        "addon/context-e36ee987.js"
+      ],
+      "dir": "packages/request",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/request": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "SkipCache",
+              "createDeferred",
+              "default",
+              "getPromiseResult",
+              "setPromiseResult"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/request/fetch": {
+          "runtime": {
+            "file": "addon/fetch.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/request-utils": {
+      "chunks": [],
+      "dir": "packages/request-utils",
+      "exports": {
+        ".": {
+          "default": "./addon/index.js"
+        }
+      },
+      "missing": {},
+      "modules": {
+        "@ember-data/request-utils": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "LifetimesService",
+              "buildBaseURL",
+              "buildQueryParams",
+              "filterEmpty",
+              "parseCacheControl",
+              "setBuildURLConfig",
+              "sortQueryParams"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/serializer": {
+      "chunks": [
+        "addon/embedded-records-mixin-d75385ff.js"
+      ],
+      "dir": "packages/serializer",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/serializer": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/serializer/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "BooleanTransform",
+              "DateTransform",
+              "EmbeddedRecordsMixin",
+              "NumberTransform",
+              "StringTransform",
+              "Transform"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/serializer/json": {
+          "runtime": {
+            "file": "addon/json.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/serializer/json-api": {
+          "runtime": {
+            "file": "addon/json-api.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/serializer/rest": {
+          "runtime": {
+            "file": "addon/rest.js",
+            "names": [
+              "EmbeddedRecordsMixin",
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/serializer/transform": {
+          "runtime": {
+            "file": "addon/transform.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/store": {
+      "chunks": [
+        "addon/index-cc461d33.js"
+      ],
+      "dir": "packages/store",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/store": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "CacheHandler",
+              "default",
+              "normalizeModelName",
+              "recordIdentifierFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "storeFor"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/store/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "AdapterPopulatedRecordArray",
+              "CacheHandler",
+              "IDENTIFIER_ARRAY_TAG",
+              "IdentifierArray",
+              "MUTATE",
+              "RecordArray",
+              "RecordArrayManager",
+              "SOURCE",
+              "Store",
+              "_clearCaches",
+              "coerceId",
+              "constructResource",
+              "ensureStringId",
+              "fastPush",
+              "isStableIdentifier",
+              "normalizeModelName",
+              "notifyArray",
+              "peekCache",
+              "recordIdentifierFor",
+              "removeRecordDataFor",
+              "setIdentifierForgetMethod",
+              "setIdentifierGenerationMethod",
+              "setIdentifierResetMethod",
+              "setIdentifierUpdateMethod",
+              "storeFor"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "@ember-data/tracking": {
+      "chunks": [],
+      "dir": "packages/tracking",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "@ember-data/tracking": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "memoTransact",
+              "transact",
+              "untracked"
+            ]
+          },
+          "types": null
+        },
+        "@ember-data/tracking/-private": {
+          "runtime": {
+            "file": "addon/-private.js",
+            "names": [
+              "addToTransaction",
+              "addTransactionCB",
+              "memoTransact",
+              "subscribe",
+              "transact",
+              "untracked"
+            ]
+          },
+          "types": null
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    },
+    "ember-data": {
+      "chunks": [],
+      "dir": "packages/-ember-data",
+      "exports": null,
+      "missing": {},
+      "modules": {
+        "ember-data": {
+          "runtime": {
+            "file": "addon/index.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/-private": {
+          "runtime": {
+            "file": "addon/-private/index.ts",
+            "names": [
+              "DS",
+              "Errors",
+              "ManyArray",
+              "PromiseArray",
+              "PromiseManyArray",
+              "PromiseObject",
+              "RecordArrayManager",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "Store",
+              "coerceId",
+              "normalizeModelName"
+            ]
+          },
+          "types": {
+            "file": "addon/-private/index.ts",
+            "names": [
+              "DS",
+              "Errors",
+              "ManyArray",
+              "PromiseArray",
+              "PromiseManyArray",
+              "PromiseObject",
+              "RecordArrayManager",
+              "Snapshot",
+              "SnapshotRecordArray",
+              "Store",
+              "coerceId",
+              "normalizeModelName"
+            ]
+          }
+        },
+        "ember-data/-private/core": {
+          "runtime": {
+            "file": "addon/-private/core.js",
+            "names": [
+              "default"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/adapter": {
+          "runtime": {
+            "file": "addon/adapter.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/adapter.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/adapters/errors": {
+          "runtime": {
+            "file": "addon/adapters/errors.ts",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError",
+              "errorsArrayToHash",
+              "errorsHashToArray"
+            ]
+          },
+          "types": {
+            "file": "addon/adapters/errors.ts",
+            "names": [
+              "AbortError",
+              "AdapterError",
+              "ConflictError",
+              "ForbiddenError",
+              "InvalidError",
+              "NotFoundError",
+              "ServerError",
+              "TimeoutError",
+              "UnauthorizedError",
+              "errorsArrayToHash",
+              "errorsHashToArray"
+            ]
+          }
+        },
+        "ember-data/adapters/json-api": {
+          "runtime": {
+            "file": "addon/adapters/json-api.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/adapters/json-api.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/adapters/rest": {
+          "runtime": {
+            "file": "addon/adapters/rest.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/adapters/rest.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/attr": {
+          "runtime": {
+            "file": "addon/attr.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/attr.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/model": {
+          "runtime": {
+            "file": "addon/model.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/model.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/relationships": {
+          "runtime": {
+            "file": "addon/relationships.ts",
+            "names": [
+              "belongsTo",
+              "hasMany"
+            ]
+          },
+          "types": {
+            "file": "addon/relationships.ts",
+            "names": [
+              "belongsTo",
+              "hasMany"
+            ]
+          }
+        },
+        "ember-data/serializer": {
+          "runtime": {
+            "file": "addon/serializer.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/serializer.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/embedded-records-mixin": {
+          "runtime": {
+            "file": "addon/serializers/embedded-records-mixin.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/serializers/embedded-records-mixin.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/json": {
+          "runtime": {
+            "file": "addon/serializers/json.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/serializers/json.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/json-api": {
+          "runtime": {
+            "file": "addon/serializers/json-api.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/serializers/json-api.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/serializers/rest": {
+          "runtime": {
+            "file": "addon/serializers/rest.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/serializers/rest.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/setup-container": {
+          "runtime": {
+            "file": "addon/setup-container.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/setup-container.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/store": {
+          "runtime": {
+            "file": "addon/store.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/store.ts",
+            "names": [
+              "default"
+            ]
+          }
+        },
+        "ember-data/test-support": {
+          "runtime": {
+            "file": "addon-test-support/index.js",
+            "names": [
+              "render"
+            ]
+          },
+          "types": null
+        },
+        "ember-data/transform": {
+          "runtime": {
+            "file": "addon/transform.ts",
+            "names": [
+              "default"
+            ]
+          },
+          "types": {
+            "file": "addon/transform.ts",
+            "names": [
+              "default"
+            ]
+          }
+        }
+      },
+      "modulesFrom": "addon",
+      "published": true,
+      "version": "4.12.8"
+    }
+  },
+  "schema": 1,
+  "surface": null,
+  "tag": "v4.12.8",
+  "version": "4.12.8"
+}
