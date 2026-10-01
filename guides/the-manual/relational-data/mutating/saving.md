@@ -40,7 +40,7 @@ When a builder serializes a relationship for a request it should send **only the
 ```
 
 `links` and `meta` describe the server's view of the relationship as of the last response. While a
-record is being edited they are stale relative to `data` (see `doc.isDirty`), so echoing them back
+record is being edited they are stale relative to `data`, so echoing them back
 would send the API a contradictory relationship. `doc.toJSON()` is a shallow description of the
 document for debugging and `JSON.stringify`, not a request payload; use `recordIdentifierFor` (or
 the cache's `peek`) to build the identifiers you send.

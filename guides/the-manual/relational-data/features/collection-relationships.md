@@ -61,15 +61,17 @@ remote membership, not the array you are editing:
 ```ts
 editable.friends.data.push(a);
 
-editable.friends.meta.count;        // still the server's count
-editable.friends.data.length;       // one more than the server's count
-editable.friends.isDirty;           // true until confirmed by the API
-editable.friends.remoteData.length; // the server's membership, unchanged
+editable.friends.meta.count;  // still the server's count
+editable.friends.data.length; // one more than the server's count
 ```
 
-Prefer `data.length` over `meta.count` while `isDirty` is `true`, or render both to show
-"3 of 100 (+1 unsaved)". `remoteData` is a read-only reactive array of the members the API last
-confirmed; on an immutable record it is the same array as `data`.
+Prefer `data.length` over `meta.count` while the record has unsaved changes. The immutable record
+still shows the membership the API last confirmed, and the cache reports whether a relationship has
+unsaved changes:
+
+```ts
+store.cache.changedRelationships(recordIdentifierFor(user)).has('friends'); // true
+```
 
 ## Membership Is Complete, Not Paged
 
