@@ -16,6 +16,11 @@
  * in every framework on the page. Importing this entry point after another framework's `install`
  * throws, since that framework's hooks are already configured by then.
  *
+ * Memos, such as the ones behind derived fields, always come from this graph, so they only
+ * recompute when a signal ***Warp*Drive** manages changes. A memo that reads state only a
+ * framework tracks, such as an Ember `@tracked` property, keeps returning its cached value when
+ * that state changes.
+ *
  * A library should do this only in its tests, not in its published code. To observe changes
  * from outside ***Warp*Drive**, use the `Watcher` from
  * [`@warp-drive/alien-signals/primitives`](/api/@warp-drive/alien-signals/primitives/).
@@ -31,10 +36,12 @@ import {
   consumeSignal,
   createMemo,
   createSignal,
+  isTracking,
   type MemoNode,
   notifySignal,
   readMemo,
   type SignalNode,
+  Watcher,
 } from './primitives.ts';
 
 /**
@@ -47,13 +54,17 @@ import {
  *
  * - **It brings its own signals**, such as Ember's tags. `createSignal` creates one alongside each
  *   graph signal, and `consumeSignal` and `notifySignal` receive it whenever the graph signal is
- *   consumed or notified. When a memo returns its cached result without running its function, the
- *   graph consumes the signals that memo depends on again, so the integration still sees every
- *   signal behind a memo it reads.
+ *   consumed or notified. Each memo the integration reads also gets one of its signals, created
+ *   for the memo's key the first time it is read while the integration is tracking. Reading the
+ *   memo consumes that signal, whether the memo runs or returns its cached result, and the graph
+ *   notifies it as soon as anything the memo depends on changes. To the integration, a memo is
+ *   just one more signal.
  * - **It observes the graph**, as `@warp-drive/react` does. Without `createSignal`,
- *   `consumeSignal` and `notifySignal` receive the graph's own {@link SignalNode}.
+ *   `consumeSignal` receives the graph's own nodes: each {@link SignalNode} when it is consumed,
+ *   and each {@link MemoNode} just before it is read, whether it runs or returns its cached
+ *   result. `notifySignal` receives each {@link SignalNode} when it is notified.
  *
- * Either kind may also use `consumeMemo`, `willSyncFlushWatchers` and `waitFor`.
+ * Either kind may also use `willSyncFlushWatchers` and `waitFor`.
  *
  * Memos always come from the graph, so a `createMemo` hook is ignored. This means the
  * {@link SignalHooks} built for `setupSignals` can be registered as they are.
@@ -62,30 +73,29 @@ import {
  * @since 5.10.0
  * @public
  */
-export interface SignalIntegration<T = SignalNode> {
+export interface SignalIntegration<T = SignalNode | MemoNode> {
   /**
    * Creates this integration's own signal for `key` on `obj`, paired with the graph signal created
-   * for the same key. Omit it to receive the graph's {@link SignalNode} in `consumeSignal` and
+   * for the same key. Omit it to receive the graph's own nodes in `consumeSignal` and
    * `notifySignal` instead.
    */
   createSignal?: (obj: object, key: string | symbol) => T;
   /**
    * Called when a signal is consumed. For an integration with its own signals, it is also called
-   * for each signal behind a memo that is read without running its function.
+   * with the integration's signal for a memo each time that memo is read. For an integration that
+   * observes the graph, it is also called with each memo just before the memo is read.
    */
   consumeSignal?: (signal: T) => void;
   /**
-   * Called when a signal is notified, after the graph has been notified.
+   * Called when a signal is notified, after the graph has been notified. For an integration with
+   * its own signals, it is also called with the integration's signal for a memo once something the
+   * memo depends on changes.
    */
   notifySignal?: (signal: T) => void;
   /**
-   * Called each time a memo is about to be read, before it runs or returns its cached result.
-   */
-  consumeMemo?: (memo: MemoNode) => void;
-  /**
    * For an integration with its own signals: whether a signal consumed now would be tracked. When
-   * this returns `false`, the graph skips consuming the signals behind a cached memo again. Omit it
-   * to always consume them.
+   * this returns `false`, reading a memo neither consumes the integration's signal for it nor
+   * subscribes that signal to the memo's changes. Omit it to treat every read as tracked.
    */
   isTracking?: () => boolean;
   /**
@@ -119,14 +129,13 @@ export interface ComposingSignalHooks extends Omit<SignalHooks<SignalNode>, 'reg
   register: <K>(buildConfig: (options: HooksOptions) => SignalIntegration<K>) => void;
 }
 
-/** A graph signal, with the signal each integration that brings its own created for it. */
+/**
+ * A graph signal, with the signals that the integrations bringing their own created for it: the
+ * signal itself when exactly one such integration is registered, or one per integration, in the
+ * order they registered.
+ */
 interface ComposedSignal extends SignalNode {
-  foreign?: unknown[];
-}
-
-/** A graph memo, stamped while its dependencies are consumed again so that each is visited once. */
-interface ComposedMemo extends MemoNode {
-  replayedAt?: number;
+  foreign?: unknown;
 }
 
 /**
@@ -161,53 +170,55 @@ interface ComposedMemo extends MemoNode {
  */
 export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
   // Integrations that bring their own signals. An integration's index here is the index of its
-  // signal in each graph signal's `foreign` list.
+  // signal in each list of foreign signals, used when more than one is registered.
   const owners: SignalIntegration<unknown>[] = [];
   // Integrations that observe the graph's own nodes.
-  const signalConsumers: Array<(signal: SignalNode) => void> = [];
+  const nodeConsumers: Array<(node: SignalNode | MemoNode) => void> = [];
   const signalNotifiers: Array<(signal: SignalNode) => void> = [];
-  const memoConsumers: Array<(memo: MemoNode) => void> = [];
   const flushers: Array<() => boolean> = [];
   const waiters: Array<<K>(promise: Promise<K>) => Promise<K>> = [];
   let hasCreatedSignals = false;
 
-  // The indexes of the owners that are tracking while a cached memo's signals are consumed again.
-  const replayTo: number[] = [];
-  let replayEpoch = 0;
-
-  function replay(memo: ComposedMemo): void {
-    replayTo.length = 0;
-    for (let i = 0; i < owners.length; i++) {
-      const owner = owners[i];
-      if (owner.consumeSignal && (!owner.isTracking || owner.isTracking())) {
-        replayTo.push(i);
-      }
+  // Owners can't register once signals exist, so after the first signal this is fixed.
+  function createForeign(obj: object, key: string | symbol): unknown {
+    if (owners.length === 1) {
+      return owners[0].createSignal!(obj, key);
     }
-    if (replayTo.length !== 0) {
-      memo.replayedAt = ++replayEpoch;
-      replayDeps(memo);
+    const foreign = new Array<unknown>(owners.length);
+    for (let i = 0; i < owners.length; i++) {
+      foreign[i] = owners[i].createSignal!(obj, key);
+    }
+    return foreign;
+  }
+
+  function consumeForeign(foreign: unknown): void {
+    if (owners.length === 1) {
+      owners[0].consumeSignal?.(foreign);
+      return;
+    }
+    const signals = foreign as unknown[];
+    for (let i = 0; i < signals.length; i++) {
+      owners[i].consumeSignal?.(signals[i]);
     }
   }
 
-  // Consumes each owner's signal for every signal `memo` depends on, through the memos it read.
-  function replayDeps(memo: ComposedMemo): void {
-    for (let link = memo.deps; link !== undefined; link = link.nextDep) {
-      const dep = link.dep as ComposedSignal | ComposedMemo;
-      if ('fn' in dep) {
-        if (dep.replayedAt !== replayEpoch) {
-          dep.replayedAt = replayEpoch;
-          replayDeps(dep);
-        }
-      } else if (dep.foreign !== undefined) {
-        const foreign = dep.foreign;
-        for (let i = 0; i < replayTo.length; i++) {
-          const index = replayTo[i];
-          if (index < foreign.length) {
-            owners[index].consumeSignal!(foreign[index]);
-          }
-        }
-      }
+  function notifyForeign(foreign: unknown): void {
+    if (owners.length === 1) {
+      owners[0].notifySignal?.(foreign);
+      return;
     }
+    const signals = foreign as unknown[];
+    for (let i = 0; i < signals.length; i++) {
+      owners[i].notifySignal?.(signals[i]);
+    }
+  }
+
+  function isAnyOwnerTracking(): boolean {
+    for (let i = 0; i < owners.length; i++) {
+      const owner = owners[i];
+      if (!owner.isTracking || owner.isTracking()) return true;
+    }
+    return false;
   }
 
   return {
@@ -215,35 +226,25 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
       hasCreatedSignals = true;
       const signal: ComposedSignal = createSignal(obj, key);
       if (owners.length !== 0) {
-        const foreign = new Array<unknown>(owners.length);
-        for (let i = 0; i < owners.length; i++) {
-          foreign[i] = owners[i].createSignal!(obj, key);
-        }
-        signal.foreign = foreign;
+        signal.foreign = createForeign(obj, key);
       }
       return signal;
     },
 
     consumeSignal(signal: ComposedSignal): void {
-      for (let i = 0; i < signalConsumers.length; i++) {
-        signalConsumers[i](signal);
+      for (let i = 0; i < nodeConsumers.length; i++) {
+        nodeConsumers[i](signal);
       }
       consumeSignal(signal);
-      const foreign = signal.foreign;
-      if (foreign !== undefined) {
-        for (let i = 0; i < foreign.length; i++) {
-          owners[i].consumeSignal?.(foreign[i]);
-        }
+      if (signal.foreign !== undefined) {
+        consumeForeign(signal.foreign);
       }
     },
 
     notifySignal(signal: ComposedSignal): void {
       notifySignal(signal);
-      const foreign = signal.foreign;
-      if (foreign !== undefined) {
-        for (let i = 0; i < foreign.length; i++) {
-          owners[i].notifySignal?.(foreign[i]);
-        }
+      if (signal.foreign !== undefined) {
+        notifyForeign(signal.foreign);
       }
       for (let i = 0; i < signalNotifiers.length; i++) {
         signalNotifiers[i](signal);
@@ -251,26 +252,40 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
     },
 
     createMemo<F>(obj: object, key: string | symbol, fn: () => F): () => F {
-      let ran = false;
-      const memo = createMemo(obj, key, () => {
-        ran = true;
-        return fn();
-      });
+      const memo = createMemo(obj, key, fn);
+      // Owners see the memo as a single signal of their own: a gate, notified when anything the
+      // memo depends on changes. Both are created the first time an owner reads the memo.
+      let foreign: unknown;
+      let gate: Watcher | undefined;
+      let armed = false;
       return () => {
-        for (let i = 0; i < memoConsumers.length; i++) {
-          memoConsumers[i](memo);
+        // Observers are told about the memo before it is read, so that one watching it gives it a
+        // subscriber before it runs and it is not queued to release its dependencies.
+        for (let i = 0; i < nodeConsumers.length; i++) {
+          nodeConsumers[i](memo);
         }
-        if (owners.length === 0) {
-          return readMemo(memo);
+        // Inside another memo, that memo's own gate already covers this read.
+        if (owners.length !== 0 && !isTracking() && isAnyOwnerTracking()) {
+          if (gate === undefined) {
+            foreign = createForeign(obj, key);
+            const watcher = new Watcher(() => {
+              armed = false;
+              notifyForeign(foreign);
+              // Stop watching until an owner reads the memo again, so that an unread memo can
+              // still release its dependencies.
+              watcher.unwatchAll();
+            });
+            gate = watcher;
+          }
+          // Watch before reading, so that the memo has a subscriber and is not queued to release
+          // its dependencies.
+          if (!armed) {
+            armed = true;
+            gate.watch(memo);
+          }
+          consumeForeign(foreign);
         }
-        ran = false;
-        try {
-          return readMemo(memo);
-        } finally {
-          // A memo that ran its function consumed its signals as it read them. A cached one read
-          // nothing, so consume the signals it depends on again for owners that track their own.
-          if (!ran) replay(memo);
-        }
+        return readMemo(memo);
       };
     },
 
@@ -298,10 +313,9 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
         }
         owners.push(integration);
       } else {
-        if (integration.consumeSignal) signalConsumers.push(integration.consumeSignal);
+        if (integration.consumeSignal) nodeConsumers.push(integration.consumeSignal);
         if (integration.notifySignal) signalNotifiers.push(integration.notifySignal);
       }
-      if (integration.consumeMemo) memoConsumers.push(integration.consumeMemo);
       if (integration.willSyncFlushWatchers) flushers.push(integration.willSyncFlushWatchers);
       if (integration.waitFor) waiters.push(integration.waitFor);
     },
@@ -327,11 +341,9 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
  * import { registerSignalIntegration } from '@warp-drive/alien-signals/install';
  *
  * registerSignalIntegration(() => ({
- *   consumeSignal: (signal) => {
- *     if (!isTracking()) watchInCurrentComponent(signal);
- *   },
- *   consumeMemo: (memo) => {
- *     if (!isTracking()) watchInCurrentComponent(memo);
+ *   // called with each signal as it is consumed, and each memo just before it is read
+ *   consumeSignal: (node) => {
+ *     if (!isTracking()) watchInCurrentComponent(node);
  *   },
  * }));
  * ```

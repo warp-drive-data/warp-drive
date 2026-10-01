@@ -69,6 +69,12 @@ import '@warp-drive/ember/install';
 import '@warp-drive/react/install';
 ```
 
+> [!TIP]
+> Memoized values such as derived fields then only recompute when a signal ***Warp*Drive**
+> manages changes. If a derivation reads state that only a framework tracks, such as an Ember
+> `@tracked` property or a React `useState` value, it keeps returning its cached value when that
+> state changes. Keep the state a derivation reads in ***Warp*Drive**.
+
 ---
 
 ## Documentation

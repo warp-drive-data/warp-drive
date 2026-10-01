@@ -24,5 +24,14 @@ point configures a signals graph that the frameworks imported after it add their
 also provides the memos for all of them, so memoized values update in every framework. Import it
 first: importing it after another framework's `install` entry point throws.
 
+::: tip Derivations only track WarpDrive's signals
+With `@warp-drive/alien-signals/install`, memoized values such as
+[derived fields](/guides/the-manual/schemas/derivations.md) only recompute when a signal
+***Warp*Drive** manages changes. If a derivation reads state that only a framework tracks, such
+as an Ember `@tracked` property or a React `useState` value, it keeps returning its cached value
+when that state changes. Keep the state a derivation reads in ***Warp*Drive**, for instance as a
+field on the resource it derives from.
+:::
+
 For a complete example with Ember and React, see
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).

@@ -138,6 +138,15 @@ changes. See
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md)
 for the full setup.
 
+::: tip Derivations only track WarpDrive's signals
+With `@warp-drive/alien-signals/install`, memoized values such as
+[derived fields](/guides/the-manual/schemas/derivations.md) only recompute when a signal
+***Warp*Drive** manages changes. If a derivation reads state that only a framework tracks, such
+as an Ember `@tracked` property or a React `useState` value, it keeps returning its cached value
+when that state changes. Keep the state a derivation reads in ***Warp*Drive**, for instance as a
+field on the resource it derives from.
+:::
+
 ## Tips & Tricks aka "The Rule of WarpDrive"
 
 1. only things accessed during a render are subscribed to

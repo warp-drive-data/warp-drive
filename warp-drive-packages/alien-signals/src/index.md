@@ -12,7 +12,10 @@ the push-pull signals algorithm that also powers Vue 3.6's reactivity. It has tw
 
   Other frameworks' `install` entry points imported after it, such as `@warp-drive/ember/install`,
   register their signals with the same graph instead of replacing it, so one store re-renders
-  components in every framework on the page.
+  components in every framework on the page. Memoized values such as
+  [derived fields](/guides/the-manual/schemas/derivations.md) then only recompute when a signal
+  ***Warp*Drive** manages changes, not when state that only a framework tracks, such as an Ember
+  `@tracked` property, changes.
 
 - [`primitives`](/api/@warp-drive/alien-signals/primitives/) exports the graph itself: signals,
   memos, and a `Watcher` that a framework integration uses to learn when the data it rendered

@@ -26,7 +26,7 @@
 import { tagForProperty } from '@ember/-internals/metal';
 import { _backburner } from '@ember/runloop';
 import type { UpdatableTag } from '@glimmer/validator';
-import { consumeTag, createCache, dirtyTag, getValue, track, updateTag } from '@glimmer/validator';
+import { consumeTag, createCache, dirtyTag, getValue, isTracking, track, updateTag } from '@glimmer/validator';
 
 import { importSync } from '@embroider/macros';
 
@@ -104,6 +104,7 @@ export function buildSignalConfig(options: {
         return () => getValue(memo) as F;
       }
     },
+    isTracking,
     willSyncFlushWatchers: () => {
       //@ts-expect-error
       return !!_backburner.currentInstance && _backburner._autorun !== true;
