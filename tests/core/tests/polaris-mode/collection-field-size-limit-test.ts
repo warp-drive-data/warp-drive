@@ -1,3 +1,5 @@
+import { settled } from '@ember/test-helpers';
+
 import { useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
 import { withDefaults } from '@warp-drive/core/reactive';
@@ -63,6 +65,10 @@ function friendsPayload(field: 'friends' | 'legacyFriends', count: number): Sing
 /**
  * Captures the next uncaught error and resolves with it, or resolves
  * with `null` if none is thrown before the microtask queue drains.
+ *
+ * Await `settled()` before calling this. Run-loop work left over from an
+ * earlier test, such as a rendering test's teardown, would otherwise throw
+ * inside the capture window and be reported as this test's error.
  */
 function captureUncaughtError(): Promise<Error | string | null> {
   return new Promise((resolve) => {
@@ -93,6 +99,7 @@ module('Collection | maxCollectionRelationshipSize', function (hooks) {
     const store = new Store();
     assert.equal(store.maxCollectionRelationshipSize, 2, 'the limit is configured on the store');
 
+    await settled();
     const pending = captureUncaughtError();
     const record = store.push<User>(friendsPayload('friends', 3));
 
@@ -115,6 +122,7 @@ module('Collection | maxCollectionRelationshipSize', function (hooks) {
     });
     const store = new Store();
 
+    await settled();
     const pending = captureUncaughtError();
     const record = store.push<User>(friendsPayload('friends', 2));
 
@@ -130,6 +138,7 @@ module('Collection | maxCollectionRelationshipSize', function (hooks) {
     });
     const store = new Store();
 
+    await settled();
     const pending = captureUncaughtError();
     const record = store.push<User>(friendsPayload('legacyFriends', 3));
 
@@ -145,6 +154,7 @@ module('Collection | maxCollectionRelationshipSize', function (hooks) {
     const store = new Store();
     assert.equal(store.maxCollectionRelationshipSize, null, 'the limit is not configured');
 
+    await settled();
     const pending = captureUncaughtError();
     const record = store.push<User>(friendsPayload('friends', 50));
 
