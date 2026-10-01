@@ -12,6 +12,7 @@ import {
   declaredExports,
   fileMoves,
   historyOf,
+  mapForward,
   parseNameStatus,
   twinsOf,
   withoutTemplateTags,
@@ -78,6 +79,20 @@ function git(cwd, args, env = {}) {
   }).trim();
 }
 
+/** b.ts as moving foo out of a.ts left it. */
+const B_TS = [
+  '/**',
+  ' * Helpers that used to live in a.ts, rewritten while moving them.',
+  ' */',
+  "export const helper = 'helper';",
+  '',
+  'export function foo(): number {',
+  '  const doubled = helper.length * 2;',
+  '  return doubled + 30;',
+  '}',
+  '',
+].join('\n');
+
 /**
  * The commits of the fixture repository, oldest first. `files` maps a path to its new
  * contents, or to `null` to delete it.
@@ -107,18 +122,7 @@ const COMMITS = [
     subject: 'feat: move foo into b.ts',
     files: {
       'packages/lib/src/a.ts': 'export type Bar = { id: string };\n',
-      'packages/lib/src/b.ts': [
-        '/**',
-        ' * Helpers that used to live in a.ts, rewritten while moving them.',
-        ' */',
-        "export const helper = 'helper';",
-        '',
-        'export function foo(): number {',
-        '  const doubled = helper.length * 2;',
-        '  return doubled + 30;',
-        '}',
-        '',
-      ].join('\n'),
+      'packages/lib/src/b.ts': B_TS,
     },
   },
   {
@@ -166,17 +170,58 @@ const COMMITS = [
 ];
 
 /**
- * A git repository with the `COMMITS` history, tagged `v1.0.0` and `v1.1.0`.
+ * Another history, where the commit moving foo out of a.ts adds b.ts and scratch.ts, and
+ * before the release b.ts moves under utils/ and scratch.ts is deleted.
+ * @type {typeof COMMITS}
+ */
+const MOVED_TWICE = [
+  {
+    subject: 'feat: first release',
+    tag: 'v1.0.0',
+    files: {
+      'packages/lib/package.json': '{ "name": "@acme/lib" }\n',
+      'packages/lib/src/index.ts': "export { foo } from './a';\n",
+      'packages/lib/src/a.ts': 'export function foo(): number {\n  return 42;\n}\n',
+    },
+  },
+  {
+    subject: 'feat: move foo into b.ts',
+    files: {
+      'packages/lib/src/index.ts': "export { foo } from './b';\n",
+      'packages/lib/src/a.ts': 'export {};\n',
+      'packages/lib/src/b.ts': B_TS,
+      'packages/lib/src/scratch.ts': "export const scratch = 'scratch';\n",
+    },
+  },
+  {
+    subject: 'refactor: move b.ts under utils/',
+    files: {
+      'packages/lib/src/index.ts': "export { foo } from './utils/b';\n",
+      'packages/lib/src/b.ts': null,
+      'packages/lib/src/utils/b.ts': B_TS,
+    },
+  },
+  {
+    subject: 'chore: drop scratch.ts',
+    tag: 'v1.1.0',
+    files: { 'packages/lib/src/scratch.ts': null },
+  },
+];
+
+/**
+ * A git repository with the commits of `log` (`COMMITS` unless told otherwise), tagged as
+ * they say.
  * @param {import('node:test').TestContext} t
+ * @param {typeof COMMITS} [log]
  * @returns {{ repo: string, commits: Record<string, string> }} the repository and the full
  *   hash of each commit by subject
  */
-function fixtureRepo(t) {
+function fixtureRepo(t, log = COMMITS) {
   const repo = tempDir(t, 'public-exports-mapping-history-');
   git(repo, ['init', '--quiet', '--initial-branch=main']);
   /** @type {Record<string, string>} */
   const commits = {};
-  COMMITS.forEach(({ subject, tag, files }, i) => {
+  log.forEach(({ subject, tag, files }, i) => {
     for (const [file, contents] of Object.entries(files)) {
       const absolute = path.join(repo, file);
       if (contents === null) {
@@ -361,6 +406,37 @@ test('fileMoves does not depend on the order of the lines', () => {
   }
 });
 
+test('mapForward renames declaration ids through files, and keeps one whose file was deleted', () => {
+  const files = {
+    'packages/lib/src/b.ts': ['packages/lib/src/utils/b.ts'],
+    'packages/lib/src/cache.ts': ['packages/lib/src/cache.ts', 'packages/other/src/cache.ts'],
+    'packages/lib/src/old.js': ['packages/lib/src/old.ts'],
+    'packages/lib/src/scratch.ts': [],
+  };
+
+  assert.deepEqual(
+    mapForward(
+      [
+        'packages/lib/src/b.ts#foo', // renamed
+        'packages/lib/src/cache.ts#Cache', // copied, and the source survives
+        'packages/lib/src/old.js#legacy', // replaced by its .ts twin
+        'packages/lib/src/scratch.ts#scratch', // deleted with nothing continuing it: kept
+        'packages/lib/src/store.ts#Store', // untouched
+      ],
+      files
+    ),
+    [
+      'packages/lib/src/cache.ts#Cache',
+      'packages/lib/src/old.ts#legacy',
+      'packages/lib/src/scratch.ts#scratch',
+      'packages/lib/src/store.ts#Store',
+      'packages/lib/src/utils/b.ts#foo',
+      'packages/other/src/cache.ts#Cache',
+    ]
+  );
+  assert.deepEqual(mapForward([], files), []);
+});
+
 test('declaredExports lists the bindings a file declares and exports, not the ones it re-exports', () => {
   const source = [
     "import { imported } from './x';",
@@ -484,6 +560,55 @@ test('historyOf finds the commit that removed each declaration and what it added
     canonical(history),
     'a second run gives the same bytes'
   );
+});
+
+test('historyOf names what the removing commit added by the paths those files have at b', (t) => {
+  const { repo, commits } = fixtureRepo(t, MOVED_TWICE);
+  const surfaceA = libSurface('1.0.0', { foo: { kind: 'value', decl: 'packages/lib/src/a.ts#foo' } });
+  const surfaceB = libSurface('1.1.0', { foo: { kind: 'value', decl: 'packages/lib/src/utils/b.ts#foo' } });
+  const move = { commit: commits['feat: move foo into b.ts'].slice(0, 10), subject: 'feat: move foo into b.ts' };
+
+  const history = historyOf('1.0.0', '1.1.0', { surfaceA, surfaceB, cwd: repo });
+
+  assert.deepEqual(history, {
+    schema: 1,
+    kind: 'history',
+    from: '1.0.0',
+    to: '1.1.0',
+    files: {},
+    symbols: {
+      // the commit added b.ts, which moved under utils/ later; scratch.ts, deleted, keeps its path
+      'packages/lib/src/a.ts#foo': {
+        ...move,
+        added: [
+          'packages/lib/src/scratch.ts#scratch',
+          'packages/lib/src/utils/b.ts#foo',
+          'packages/lib/src/utils/b.ts#helper',
+        ],
+      },
+    },
+  });
+  assert.deepEqual(diffSurfaces(surfaceA, surfaceB, history).declarations, {
+    'packages/lib/src/a.ts#foo': 'packages/lib/src/utils/b.ts#foo',
+  });
+
+  // for head, the paths are the working tree's
+  mkdirSync(path.join(repo, 'packages/lib/src/core'));
+  git(repo, ['mv', 'packages/lib/src/utils/b.ts', 'packages/lib/src/core/b.ts']);
+  const head = {
+    ...libSurface('head', { foo: { kind: 'value', decl: 'packages/lib/src/core/b.ts#foo' } }),
+    tag: null,
+  };
+  assert.deepEqual(historyOf('1.0.0', 'head', { surfaceA, surfaceB: head, cwd: repo }).symbols, {
+    'packages/lib/src/a.ts#foo': {
+      ...move,
+      added: [
+        'packages/lib/src/core/b.ts#foo',
+        'packages/lib/src/core/b.ts#helper',
+        'packages/lib/src/scratch.ts#scratch',
+      ],
+    },
+  });
 });
 
 test('historyOf without both surfaces computes files only', (t) => {

@@ -187,6 +187,19 @@ export function fileMoves(records) {
 }
 
 /**
+ * `git diff --name-status` from the revision `from` to `to` (the working tree for `null`),
+ * limited to the package directories.
+ * @param {string} from
+ * @param {string | null} to
+ * @param {{ cwd: string }} options
+ */
+function nameStatusBetween(from, to, { cwd }) {
+  // -l0: rename detection never gives up on a large pair, whatever diff.renameLimit says
+  const args = ['diff', '--name-status', '-l0', ...SIMILARITY, from, ...(to ? [to] : []), '--', ...PACKAGE_ROOTS];
+  return git(args, { cwd });
+}
+
+/**
  * `git diff --name-status` between two releases (the working tree for `head`), limited to the
  * package directories.
  * @param {string} a
@@ -196,10 +209,7 @@ export function fileMoves(records) {
 export function nameStatus(a, b, { cwd = REPO_ROOT } = {}) {
   const from = revisionOf(a);
   if (!from) throw new Error('history: head can only be the newer side of a pair');
-  const to = revisionOf(b);
-  // -l0: rename detection never gives up on a large pair, whatever diff.renameLimit says
-  const args = ['diff', '--name-status', '-l0', ...SIMILARITY, from, ...(to ? [to] : []), '--', ...PACKAGE_ROOTS];
-  return git(args, { cwd });
+  return nameStatusBetween(from, revisionOf(b), { cwd });
 }
 
 /**
@@ -210,6 +220,28 @@ export function nameStatus(a, b, { cwd = REPO_ROOT } = {}) {
  */
 export function filesBetween(a, b, { cwd = REPO_ROOT } = {}) {
   return fileMoves(parseNameStatus(nameStatus(a, b, { cwd })));
+}
+
+/**
+ * Declaration ids named by the paths of some commit, renamed to the paths that continue those
+ * files at a later point, through the `files` section (`fileMoves`) of the range in between:
+ * a declaration of a renamed file takes the new path, one of a copied file every path that
+ * continues it. A file deleted with nothing continuing it keeps its path: no declaration of
+ * the later surface has that id, so it is never picked, and it still counts as something the
+ * commit added outside that surface (see `continuationOf`).
+ * @param {string[]} ids
+ * @param {Record<string, string[]>} files
+ * @returns {string[]} sorted, without duplicates
+ */
+export function mapForward(ids, files) {
+  /** @type {Set<string>} */
+  const forward = new Set();
+  for (const id of ids) {
+    const { file, name } = /** @type {{ file: string, name: string }} */ (splitDeclarationId(id));
+    const paths = followFiles(files, file);
+    for (const path of paths.length ? paths : [file]) forward.add(`${path}#${name}`);
+  }
+  return [...forward].sort();
 }
 
 /**
@@ -359,6 +391,21 @@ export function addedDeclarations(commit, { cwd, reader = readerFor({ cwd }) }) 
 }
 
 /**
+ * `addedDeclarations` of a commit, mapped forward (`mapForward`) to `to`, the working tree for
+ * `null`, through the renames, copies and twins git sees from the commit to `to`, found the
+ * way `files` finds them for a pair.
+ * @param {string} commit  a full hash
+ * @param {string | null} to
+ * @param {{ cwd: string, reader: Reader }} options
+ * @returns {string[]}
+ */
+function addedAsOf(commit, to, { cwd, reader }) {
+  const added = addedDeclarations(commit, { cwd, reader });
+  if (!added.length) return added;
+  return mapForward(added, fileMoves(parseNameStatus(nameStatusBetween(commit, to, { cwd }))).files);
+}
+
+/**
  * Whether `commit` took the binding `name` out of `paths`: before it one of them declared and
  * exported the binding, after it none does.
  * @param {string} commit
@@ -415,8 +462,9 @@ export function discontinued(files, surfaceA, surfaceB) {
  * `v<a>..v<b>` and the declaring file plus the files continuing it lists the commits that
  * changed how often the name occurs there; the newest of them that removed the declaration
  * (the files exported the binding before it and none does after it) is recorded, with the
- * declarations it added. A default export is searched by the text that goes away with it,
- * `export default` or `as default`. Declarations no commit removed are left out.
+ * declarations it added, named by the paths their files have at `b` (`addedAsOf`). A default
+ * export is searched by the text that goes away with it, `export default` or `as default`.
+ * Declarations no commit removed are left out.
  * @param {string} a
  * @param {string} b
  * @param {Record<string, string[]>} files
@@ -429,7 +477,8 @@ export function symbolMoves(a, b, files, surfaceA, surfaceB, { cwd = REPO_ROOT }
   const pending = discontinued(files, surfaceA, surfaceB);
   if (!pending.length) return {};
   const from = revisionOf(a);
-  const range = `${from}..${revisionOf(b) ?? 'HEAD'}`;
+  const to = revisionOf(b);
+  const range = `${from}..${to ?? 'HEAD'}`;
   assertFullHistory(range, { cwd });
   const reader = readerFor({ cwd });
   /** @type {Map<string, string[]>} */
@@ -465,7 +514,7 @@ export function symbolMoves(a, b, files, surfaceA, surfaceB, { cwd = REPO_ROOT }
       .find(({ commit }) => removes(commit, paths, name, reader));
     if (!removal) continue;
     const { commit, subject } = removal;
-    if (!addedBy.has(commit)) addedBy.set(commit, addedDeclarations(commit, { cwd, reader }));
+    if (!addedBy.has(commit)) addedBy.set(commit, addedAsOf(commit, to, { cwd, reader }));
     symbols[id] = { commit: commit.slice(0, ABBREV), subject, added: addedBy.get(commit) ?? [] };
   }
   return symbols;
