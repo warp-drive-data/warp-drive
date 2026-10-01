@@ -128,8 +128,8 @@ As with resource relationships, the response is also cached as a request documen
 
 ::: warning Only `fetch()` lists known to be small
 `fetch()` makes one request to the relationship's `related` link and loads whatever it returns
-in one go. It does not page through the result, and it does not add what it loads to `data`, so
-use it only for lists you know are small. If the list could be large, or users would page, sort
+in one go, replacing the relationship's membership with it. It does not page through the result,
+so use it only for lists you know are small. If the list could be large, or users would page, sort
 or filter it, load it with a top-level request instead:
 [Large Collections](../advanced/large-collections.md) explains how, and
 [Pagination](../advanced/pagination.md) shows loading it a page at a time.
