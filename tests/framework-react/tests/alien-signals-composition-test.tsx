@@ -1,6 +1,9 @@
-import { buildSignalConfig, type SignalIntegration } from "@warp-drive/alien-signals/install";
+import {
+  buildSignalConfig,
+  type ComposingSignalHooks,
+  type SignalIntegration,
+} from "@warp-drive/alien-signals/install";
 import type { MemoNode, SignalNode } from "@warp-drive/alien-signals/primitives";
-import type { SignalHooks } from "@warp-drive/core/configure";
 import { module, test } from "@warp-drive/diagnostic/react";
 
 const options = { wellknown: { Array: "[]" } };
@@ -14,22 +17,20 @@ interface FakeSignal {
  * A stand-in for a framework that brings its own signals, such as Ember: a signal consumed while
  * `track` runs is recorded in that frame, and reads outside of any frame are not tracked.
  */
-function setupForeignFramework(hooks: SignalHooks<SignalNode>) {
+function setupForeignFramework(hooks: ComposingSignalHooks) {
   let frame: string[] | null = null;
   let untrackedReads = 0;
-  hooks.register!(
-    (): SignalIntegration<FakeSignal> => ({
-      createSignal: (_obj, key) => ({ key: String(key), notified: 0 }),
-      consumeSignal: (signal) => {
-        if (frame) frame.push(signal.key);
-        else untrackedReads++;
-      },
-      notifySignal: (signal) => {
-        signal.notified++;
-      },
-      isTracking: () => frame !== null,
-    })
-  );
+  hooks.register((): SignalIntegration<FakeSignal> => ({
+    createSignal: (_obj, key) => ({ key: String(key), notified: 0 }),
+    consumeSignal: (signal) => {
+      if (frame) frame.push(signal.key);
+      else untrackedReads++;
+    },
+    notifySignal: (signal) => {
+      signal.notified++;
+    },
+    isTracking: () => frame !== null,
+  }));
 
   return {
     track(fn: () => unknown): string[] {
@@ -120,14 +121,12 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
   test("notifying a signal notifies the signal each framework created for it", function (assert) {
     const hooks = buildSignalConfig(options);
     let created: FakeSignal | undefined;
-    hooks.register!(
-      (): SignalIntegration<FakeSignal> => ({
-        createSignal: (_obj, key) => (created = { key: String(key), notified: 0 }),
-        notifySignal: (signal) => {
-          signal.notified++;
-        },
-      })
-    );
+    hooks.register((): SignalIntegration<FakeSignal> => ({
+      createSignal: (_obj, key) => (created = { key: String(key), notified: 0 }),
+      notifySignal: (signal) => {
+        signal.notified++;
+      },
+    }));
     const signal = hooks.createSignal({}, "a");
 
     hooks.notifySignal(signal);
@@ -138,13 +137,11 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
     const hooks = buildSignalConfig(options);
     const consumed: Array<SignalNode | MemoNode> = [];
     const notified: SignalNode[] = [];
-    hooks.register!(
-      (): SignalIntegration => ({
-        consumeSignal: (signal) => consumed.push(signal),
-        notifySignal: (signal) => notified.push(signal),
-        consumeMemo: (memo) => consumed.push(memo),
-      })
-    );
+    hooks.register((): SignalIntegration => ({
+      consumeSignal: (signal) => consumed.push(signal),
+      notifySignal: (signal) => notified.push(signal),
+      consumeMemo: (memo) => consumed.push(memo),
+    }));
     const signal = hooks.createSignal({}, "a");
     const memo = hooks.createMemo({}, "memo", () => {
       hooks.consumeSignal(signal);
@@ -163,15 +160,15 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
     const hooks = buildSignalConfig(options);
     assert.false(hooks.willSyncFlushWatchers(), "nothing registered never flushes synchronously");
     let flushes = false;
-    hooks.register!(() => ({ willSyncFlushWatchers: () => false }));
-    hooks.register!(() => ({
+    hooks.register(() => ({ willSyncFlushWatchers: () => false }));
+    hooks.register(() => ({
       willSyncFlushWatchers: () => flushes,
       waitFor: (promise) => {
         assert.step("first waitFor");
         return promise;
       },
     }));
-    hooks.register!(() => ({
+    hooks.register(() => ({
       waitFor: (promise) => {
         assert.step("second waitFor");
         return promise;
@@ -190,9 +187,9 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
     hooks.createSignal({}, "a");
 
     assert.throws(() => {
-      hooks.register!(() => ({ createSignal: () => ({}) }));
+      hooks.register(() => ({ createSignal: () => ({}) }));
     }, /Cannot register signal hooks that create their own signals after WarpDrive has created signals/);
-    hooks.register!(() => ({ consumeMemo: () => {} }));
+    hooks.register(() => ({ consumeMemo: () => {} }));
     assert.ok(true, "a framework that observes the graph can still register");
   });
 });

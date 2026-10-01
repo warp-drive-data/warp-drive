@@ -104,6 +104,21 @@ export interface SignalIntegration<T = SignalNode> {
   createMemo?: unknown;
 }
 
+/**
+ * The {@link SignalHooks} that {@link buildSignalConfig} returns, whose `register` hook accepts a
+ * {@link SignalIntegration}.
+ *
+ * @summary The signal hooks backed by the alien-signals graph, which other signals implementations register with.
+ * @since 5.10.0
+ * @public
+ */
+export interface ComposingSignalHooks extends Omit<SignalHooks<SignalNode>, 'register'> {
+  /**
+   * Adds the {@link SignalIntegration} that `buildConfig` returns to the graph.
+   */
+  register: <K>(buildConfig: (options: HooksOptions) => SignalIntegration<K>) => void;
+}
+
 /** A graph signal, with the signal each integration that brings its own created for it. */
 interface ComposedSignal extends SignalNode {
   foreign?: unknown[];
@@ -144,7 +159,7 @@ interface ComposedMemo extends MemoNode {
  * @since 5.10.0
  * @public
  */
-export function buildSignalConfig(options: HooksOptions): SignalHooks<SignalNode> {
+export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
   // Integrations that bring their own signals. An integration's index here is the index of its
   // signal in each graph signal's `foreign` list.
   const owners: SignalIntegration<unknown>[] = [];
@@ -283,8 +298,8 @@ export function buildSignalConfig(options: HooksOptions): SignalHooks<SignalNode
         }
         owners.push(integration);
       } else {
-        if (integration.consumeSignal) signalConsumers.push(integration.consumeSignal as (signal: SignalNode) => void);
-        if (integration.notifySignal) signalNotifiers.push(integration.notifySignal as (signal: SignalNode) => void);
+        if (integration.consumeSignal) signalConsumers.push(integration.consumeSignal);
+        if (integration.notifySignal) signalNotifiers.push(integration.notifySignal);
       }
       if (integration.consumeMemo) memoConsumers.push(integration.consumeMemo);
       if (integration.willSyncFlushWatchers) flushers.push(integration.willSyncFlushWatchers);
