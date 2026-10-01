@@ -836,6 +836,17 @@
       "forward": null,
       "package": "ember-data"
     },
+    "ember-data/test-support": {
+      "entry": "packages/-ember-data/addon-test-support/index.js",
+      "exports": {
+        "render": {
+          "decl": "packages/-ember-data/addon-test-support/index.js#render",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
     "ember-data/transform": {
       "entry": "packages/-ember-data/addon/transform.ts",
       "exports": {
@@ -947,6 +958,7 @@
         "ember-data/serializers/rest",
         "ember-data/setup-container",
         "ember-data/store",
+        "ember-data/test-support",
         "ember-data/transform"
       ]
     }

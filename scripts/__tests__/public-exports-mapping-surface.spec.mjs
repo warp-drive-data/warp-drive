@@ -69,7 +69,10 @@ describe('rollup era: addon.publicEntrypoints', () => {
     assert.deepEqual(surface.packages, {
       '@fx/infra': { dir: 'packages/infra', modules: [] },
       '@fx/store': { dir: 'packages/store', modules: ['@fx/store', '@fx/store/-private'] },
-      'fx-meta': { dir: 'packages/-meta', modules: ['fx-meta', 'fx-meta/-private', 'fx-meta/store'] },
+      'fx-meta': {
+        dir: 'packages/-meta',
+        modules: ['fx-meta', 'fx-meta/-private', 'fx-meta/store', 'fx-meta/test-support', 'fx-meta/test-support/setup'],
+      },
     });
     assert.equal(surface.modules['@fx/store'].entry, 'packages/store/src/index.ts');
     assert.equal(surface.modules['@fx/store/-private'].entry, 'packages/store/src/-private.ts');
@@ -87,6 +90,22 @@ describe('rollup era: addon.publicEntrypoints', () => {
     assert.equal(surface.modules['fx-meta'].entry, 'packages/-meta/addon/index.js');
     assert.equal(surface.modules['fx-meta/-private'].entry, 'packages/-meta/addon/-private/index.ts');
     assert.equal(surface.modules['fx-meta/types'], undefined);
+  });
+
+  test("a v1 addon's addon-test-support/ is served as <pkg>/test-support", () => {
+    const { surface } = fixture('rollup');
+    const setup = { kind: 'value', decl: 'packages/-meta/addon-test-support/setup.ts#setupStore' };
+    assert.deepEqual(surface.modules['fx-meta/test-support'], {
+      package: 'fx-meta',
+      entry: 'packages/-meta/addon-test-support/index.js',
+      forward: null,
+      exports: {
+        setupStore: setup, // re-exported from 'fx-meta/test-support/setup', resolved to the same tree
+        render: { kind: 'value', decl: 'packages/-meta/addon-test-support/index.js#render' },
+      },
+    });
+    assert.deepEqual(surface.modules['fx-meta/test-support/setup'].exports, { setupStore: setup });
+    assert.equal(surface.modules['fx-meta/test-support/types'], undefined);
   });
 
   test('a default export keeps one identity through every re-export form', () => {

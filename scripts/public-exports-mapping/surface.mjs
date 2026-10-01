@@ -4,8 +4,8 @@
  *
  * Entries come from the build config the package had at that tag (CONTRACT.md "Modules per
  * era"): `addon.publicEntrypoints([...])` in a rollup config, `export const entryPoints = [...]`
- * in a vite or tsdown config, the `addon/` tree of a v1 addon without a build config. Module
- * names come from `package.json#exports` where a vite or tsdown package has one (a pattern key
+ * in a vite or tsdown config, the `addon/` tree of a v1 addon without a build config (and its
+ * `addon-test-support/` tree, which ember-cli mounts at `<pkg>/test-support`). Module names come from `package.json#exports` where a vite or tsdown package has one (a pattern key
  * expands against the entry outputs), else from the entry path with `index` dropped. A package
  * without a build config is published as it is: its modules are its `exports` targets or, with
  * no `exports`, the file `main` names.
@@ -168,10 +168,18 @@ function describePackage(root, dir, json, report) {
 
   if (!found) {
     if (isDir(path.join(dir, 'addon'))) {
-      const entries = walk(path.join(dir, 'addon'))
-        .filter((f) => /\.(js|ts)$/.test(f) && !f.endsWith('.d.ts'))
-        .map((f) => ({ source: path.join(dir, 'addon', f), name: stripExtension(f) }));
-      return { ...base, build: 'v1', config: null, srcDir: 'addon', outDirs: [], entries };
+      /**
+       * @param {string} tree a directory of the addon
+       * @param {string} mount where ember-cli puts it under the package name
+       */
+      const sources = (tree, mount) =>
+        walk(path.join(dir, tree))
+          .filter((f) => /\.(js|ts)$/.test(f) && !f.endsWith('.d.ts'))
+          .map((f) => ({ source: path.join(dir, tree, f), name: mount + stripExtension(f) }));
+      // ember-cli serves addon-test-support/ as <pkg>/test-support
+      const testSupportDir = isDir(path.join(dir, 'addon-test-support')) ? 'addon-test-support' : null;
+      const entries = [...sources('addon', ''), ...(testSupportDir ? sources(testSupportDir, 'test-support/') : [])];
+      return { ...base, build: 'v1', config: null, srcDir: 'addon', outDirs: [], testSupportDir, entries };
     }
     /** @type {WorkspacePackage} */
     const layout = { ...base, build: 'none', config: null, srcDir: 'src', outDirs: ['dist'], main: null, entries: [] };

@@ -6,8 +6,9 @@
  * each `package.json#exports` key becomes exactly one alias (oxc-resolver tries aliases in a
  * random order per instance, so one key never gets two aliases), with build outputs mapped back
  * to the source directory (`./dist/*.js` -> `src/*`, `./addon/index.js` -> `src/index`). A
- * subpath the exports do not list falls back to `<srcDir>/<subpath>`. Nothing ever resolves
- * through `node_modules`: any other bare specifier is external.
+ * subpath the exports do not list falls back to `<srcDir>/<subpath>`, and a v1 addon's
+ * `<name>/test-support` is its `addon-test-support/` directory. Nothing ever resolves through
+ * `node_modules`: any other bare specifier is external.
  */
 import { existsSync, statSync } from 'node:fs';
 import path from 'node:path';
@@ -34,6 +35,8 @@ const MODULE_TARGET = /(\.(js|mjs|ts|mts|gts|gjs|tsx|jsx)|\*)$/;
  * @property {string[]} outDirs directories the build writes to, relative to `dir`
  * @property {string | null} [main] for a package with neither `exports` nor a build config: the
  *   source file its `main` names, relative to `dir`, which is what the bare name resolves to
+ * @property {string | null} [testSupportDir] for a v1 addon: the directory ember-cli serves as
+ *   `<name>/test-support` (`addon-test-support`), relative to `dir`
  *
  * @typedef {object} ExportTarget
  * @property {string} key the exports key (`.`, `./mock`, `./*`)
@@ -251,6 +254,13 @@ export function createResolver(root, packages) {
       }
       const pkg = workspacePackage(specifier);
       if (!pkg) return { external: specifier };
+      const mounted = testSupportPath(pkg, specifier);
+      if (mounted) {
+        const result = factory.sync(fromDir, mounted);
+        return result.path
+          ? inside(root, result.path, specifier)
+          : { error: result.error ?? `${specifier}: not found` };
+      }
       const fixed = exact.get(specifier);
       if (fixed !== undefined) {
         return fixed ? inside(root, fixed.path, specifier) : { error: `${specifier}: not found` };
@@ -271,6 +281,19 @@ export function createResolver(root, packages) {
       return { error: result.error ?? `${specifier}: not found` };
     },
   };
+}
+
+/**
+ * The file a v1 addon's `<name>/test-support[/<path>]` names, null for any other specifier.
+ * @param {PackageLayout} pkg
+ * @param {string} specifier
+ * @returns {string | null}
+ */
+function testSupportPath(pkg, specifier) {
+  if (!pkg.testSupportDir) return null;
+  const mount = `${pkg.name}/test-support`;
+  if (specifier !== mount && !specifier.startsWith(mount + '/')) return null;
+  return path.join(pkg.dir, pkg.testSupportDir, specifier.slice(mount.length + 1) || 'index');
 }
 
 /**
