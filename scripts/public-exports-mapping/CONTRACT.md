@@ -110,14 +110,21 @@ tag (area A), checked against the published package where one exists (area C):
 | Era | Source of entries | Module name |
 | --- | --- | --- |
 | 4.12 to 5.4, `packages/*/rollup.config.mjs` | `addon.publicEntrypoints([...])`, patterns relative to `src/` | `<pkg>/<entry without extension>`, `index` dropped |
-| 4.12, v1 addons (`ember-data` meta package, no build config) | every `.js`/`.ts` under `addon/` | `<pkg>/<path under addon/ without extension>`, `index` dropped |
+| 4.12 and 5.0, v1 addons (no build config, no `exports`) | every `.js`/`.ts` under `addon/` and `addon-test-support/` | `<pkg>/<path under addon/ without extension>`, `index` dropped; `<pkg>/test-support/<path under addon-test-support/>` |
+| any era, no build config | `package.json#exports` targets, else `main` (default `index.js`) | the key with `./` dropped; `<pkg>` for `main` |
 | 5.5 to 5.8, `vite.config.mjs` | `export const entryPoints = [...]`, globs relative to the package | same |
 | 5.9+, `tsdown.config.mjs` | `export const entryPoints = [...]` | same |
 | 5.4+, `package.json#exports` | subpath keys; a pattern key expands against the entry outputs | the key with `./` dropped |
 
-Private packages (`"private": true`) are skipped. A module is public unless any path segment is
-`-private` or starts with `-`; it is "old contract" when its package is `ember-data` or
-`@ember-data/*`. `@warp-drive/legacy/*` is modern.
+Private packages (`"private": true`) are skipped; a published package with no modules is listed
+with `modules: []`. A pattern key expands to the entry outputs Node resolves back to it, with
+the file's own name kept (`ember-data/-private/index`, because `./*` cannot serve the short
+form); an entry an exact key already names is not added again through a pattern. A module is
+public unless any path segment is `-private` or starts with `-`; it is "old contract" when its
+package is `ember-data` or `@ember-data/*`. `@warp-drive/legacy/*` is modern. Node tooling
+packages that are public on npm but not application API (`eslint-plugin-warp-drive`,
+`@ember-data/codemods`, `warp-drive`) stay in the surfaces and are listed in
+`preferences.ignorePackages`: the map keeps their tokens and the judge never lists them.
 
 ## Files
 
@@ -169,8 +176,8 @@ statement's leading JSDoc carries `@deprecated`. `version` is `head` for the wor
 `files` comes from `git diff --name-status -M40% -C40% v<a> v<b> -- packages warp-drive-packages`
 (for `head`, against the working tree), keyed by old paths under `src/` or `addon/`, plus the
 heuristic that a deleted file whose `.ts` twin (or `src/` twin of an `addon/` file) was added in
-the same pair is a rename. A copy whose source survives lists the source first:
-`old -> [old, copy]`. Git runs with `-l0`, `core.quotePath=false`, `--literal-pathspecs`,
+the same pair is a rename. A copy whose source survives includes the source in its sorted list:
+`old -> [copy, old]`. Git runs with `-l0`, `core.quotePath=false`, `--literal-pathspecs`,
 `--no-textconv`, `--no-show-signature` and a cleared git environment, so `cwd` alone decides the
 repository.
 
@@ -181,7 +188,9 @@ hit that only touched a comment or a usage does not count; a default export is s
 `export default` or `as default`, not by its local name). The entry carries the abbreviated hash
 (10 characters), the subject, and `added`: the exported declarations that commit added in the
 files it touched, with their ids mapped forward through later renames in the range so they name
-paths of `v<b>`. Nothing removed means no entry. `history` needs the full commit range: a shallow
+paths of `v<b>` (a file deleted again before `v<b>` keeps its old path: no declaration of `b`
+can match it, but it still counts as something the commit added outside `b`). Nothing removed
+means no entry. `history` needs the full commit range: a shallow
 clone makes it throw, so CI checks out full history with tags (`fetch-depth: 0`).
 
 ### `diffs/<a>-<b>.json` (area B)
@@ -287,6 +296,7 @@ survive a module rename; a decision whose `decl` is not in the `from` surface, o
 
 ```json
 { "schema": 1, "audience": "ember", "tieBreak": ["@warp-drive/ember"],
+  "ignorePackages": ["eslint-plugin-warp-drive", "@ember-data/codemods", "warp-drive"],
   "report": { "ember-data/store": "side-effect", "ember-data": "side-effect" } }
 ```
 
