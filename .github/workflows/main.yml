@@ -52,6 +52,25 @@ jobs:
           install: true
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
+  # The public export map (scripts/public-exports-mapping) is regenerated from
+  # the working tree and compared with the committed data. Its history step
+  # reads git between the newest release tag and HEAD, so this job needs the
+  # full history and the tags, which the other jobs skip.
+  public-exports:
+    needs: [install]
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Public export map is current
+        run: pnpm lint:public-exports
+
   dx:
     needs: [install]
     if: |
