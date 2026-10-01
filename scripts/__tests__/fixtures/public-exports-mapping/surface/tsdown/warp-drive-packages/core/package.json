@@ -1,0 +1,16 @@
+{
+  "name": "@fx/core",
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*.cjs": {
+      "default": "./dist/*.cjs"
+    },
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "@fx/ember",
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./mock": {
+      "types": "./declarations/mock.d.ts",
+      "default": "./dist/mock.js"
+    },
+    "./app/*": {
+      "default": "./app/*.js"
+    },
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    }
+  }
+}

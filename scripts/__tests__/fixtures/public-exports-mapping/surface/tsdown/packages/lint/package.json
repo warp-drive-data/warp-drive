@@ -1,0 +1,10 @@
+{
+  "name": "fx-lint",
+  "exports": {
+    ".": {
+      "default": "./src/index.js"
+    },
+    "./recommended": "./src/recommended.js",
+    "./package.json": "./package.json"
+  }
+}
