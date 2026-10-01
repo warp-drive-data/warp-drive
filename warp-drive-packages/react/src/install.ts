@@ -3,27 +3,18 @@
  *
  * See the [React section of Installation](/guides/installation/#react) for the full setup.
  *
- * @summary Side-effect import that configures WarpDrive to use `@warp-drive/alien-signals` based reactivity so its
- * data updates re-render React components.
+ * @summary Side-effect import that configures WarpDrive to use `@warp-drive/alien-signals` based reactivity, and
+ * registers React with it so its data updates re-render React components.
  * @module
  */
 
 import { use } from 'react';
 
-import {
-  consumeSignal,
-  createMemo,
-  createSignal,
-  hasSubscribers,
-  isTracking,
-  type MemoNode,
-  notifySignal,
-  readMemo,
-  type SignalNode,
-} from '@warp-drive/alien-signals/primitives';
+import { registerSignalIntegration, type SignalIntegration } from '@warp-drive/alien-signals/install';
+import { hasSubscribers, isTracking, type MemoNode, type SignalNode } from '@warp-drive/alien-signals/primitives';
 import { LOG_REACT_SIGNAL_INTEGRATION } from '@warp-drive/core/build-config/debugging';
 import { TESTING } from '@warp-drive/core/build-config/env';
-import { type HooksOptions, setupSignals, type SignalHooks } from '@warp-drive/core/configure';
+import type { HooksOptions } from '@warp-drive/core/configure';
 
 import { WatcherContext } from './-private/reactive-context';
 
@@ -88,44 +79,29 @@ export async function settled(): Promise<void> {
 }
 
 /**
- * Builds the {@link SignalHooks} implementation backed by
- * [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/primitives/),
- * used to wire WarpDrive's reactivity primitives into React.
+ * Builds the {@link SignalIntegration} that connects the
+ * [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/install/) graph to React rendering
+ * and test waiters. Signals and memos read while a component renders are watched by the watcher of
+ * its nearest `ReactiveContext`.
  *
- * @summary Builds the signal hooks, backed by `@warp-drive/alien-signals`, that connect WarpDrive reactivity to React
- * rendering and test waiters.
+ * Importing `@warp-drive/react/install` imports `@warp-drive/alien-signals/install` and passes
+ * this function to `registerSignalIntegration`, so React components re-render alongside any other
+ * framework registered with the same graph.
+ *
+ * @summary Builds the hooks that connect the `@warp-drive/alien-signals` graph to React rendering
+ * and test waiters.
  * @public
  */
-export function buildSignalConfig(_options: HooksOptions): SignalHooks<SignalNode> {
-  return {
-    createSignal,
-
-    notifySignal: (signal: SignalNode) => {
-      if (LOG_REACT_SIGNAL_INTEGRATION) {
-        if (hasSubscribers(signal)) {
-          // oxlint-disable-next-line no-console
-          console.log(`[WarpDrive] Notifying Signal`, signal);
-        } else {
-          // oxlint-disable-next-line no-console
-          console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
-        }
-      }
-      notifySignal(signal);
-    },
-
+export function buildSignalConfig(_options: HooksOptions): SignalIntegration {
+  const integration: SignalIntegration = {
     consumeSignal: (signal: SignalNode) => {
       if (!isTracking()) tryConsumeContext(signal);
-      consumeSignal(signal);
     },
 
-    createMemo: <F>(obj: object, key: string | symbol, fn: () => F): (() => F) => {
-      const memo = createMemo(obj, key, fn);
-      return () => {
-        // watch before reading, so that a memo we are watching already has a
-        // subscriber when it is read and is not queued to release its dependencies
-        if (!isTracking()) tryConsumeContext(memo);
-        return readMemo(memo);
-      };
+    // called before the memo is read, so that a memo we are watching already has a
+    // subscriber when it is read and is not queued to release its dependencies
+    consumeMemo: (memo: MemoNode) => {
+      if (!isTracking()) tryConsumeContext(memo);
     },
 
     waitFor: (promise) => {
@@ -139,9 +115,21 @@ export function buildSignalConfig(_options: HooksOptions): SignalHooks<SignalNod
       }
       return promise;
     },
-
-    willSyncFlushWatchers: () => false,
   };
+
+  if (LOG_REACT_SIGNAL_INTEGRATION) {
+    integration.notifySignal = (signal: SignalNode) => {
+      if (hasSubscribers(signal)) {
+        // oxlint-disable-next-line no-console
+        console.log(`[WarpDrive] Notified Signal`, signal);
+      } else {
+        // oxlint-disable-next-line no-console
+        console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
+      }
+    };
+  }
+
+  return integration;
 }
 
-setupSignals(buildSignalConfig);
+registerSignalIntegration(buildSignalConfig);

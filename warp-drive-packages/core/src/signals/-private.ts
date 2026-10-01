@@ -68,6 +68,7 @@ export {
 
 export {
   setupSignals,
+  registerSignals,
   type HooksOptions,
   type SignalHooks,
   waitFor,

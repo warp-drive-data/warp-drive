@@ -1,7 +1,11 @@
 /**
  * Importing this entry point configures ***Warp*Drive** to use the
  * [TC39 Signals polyfill](https://github.com/proposal-signals/signal-polyfill) for reactivity:
- * on import it calls {@link setupSignals} with {@link buildSignalConfig}.
+ * on import it calls `registerSignals` with {@link buildSignalConfig}.
+ *
+ * If `@warp-drive/alien-signals/install` was imported first, each `Signal.State` is registered with
+ * its signals graph, alongside any other framework's signals, and memos come from that graph.
+ * Otherwise it configures the polyfill on its own with `setupSignals`.
  *
  * Add the import to the top of your application. If you have tests which do not invoke your
  * app, add it to your test setup as well:
@@ -19,7 +23,7 @@
  */
 import { Signal } from 'signal-polyfill';
 
-import { type HooksOptions, setupSignals, type SignalHooks } from '@warp-drive/core/configure';
+import { type HooksOptions, registerSignals, type SignalHooks } from '@warp-drive/core/configure';
 
 /**
  * Builds the {@link SignalHooks} that back ***Warp*Drive**'s reactivity with the
@@ -29,15 +33,15 @@ import { type HooksOptions, setupSignals, type SignalHooks } from '@warp-drive/c
  * is no `waitFor` hook, so requests are not wrapped for test waiters.
  *
  * Importing `@warp-drive/tc39-proposal-signals/install` already passes this function to
- * {@link setupSignals}.
+ * `registerSignals`, which passes it to `setupSignals` when no other signals are configured.
  *
  * @example
  * ```ts
  * // what importing '@warp-drive/tc39-proposal-signals/install' does
- * import { setupSignals } from '@warp-drive/core/configure';
+ * import { registerSignals } from '@warp-drive/core/configure';
  * import { buildSignalConfig } from '@warp-drive/tc39-proposal-signals/install';
  *
- * setupSignals(buildSignalConfig);
+ * registerSignals(buildSignalConfig);
  * ```
  *
  * @param _options - the {@link HooksOptions} that `setupSignals` passes in; this implementation does not read them
@@ -60,4 +64,4 @@ export function buildSignalConfig(_options: HooksOptions): SignalHooks<Signal.St
   };
 }
 
-setupSignals(buildSignalConfig);
+registerSignals(buildSignalConfig);
