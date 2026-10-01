@@ -7,4 +7,4 @@
  * @module
  */
 
-export { setupSignals, type HooksOptions, type SignalHooks } from './signals/-private.ts';
+export { setupSignals, registerSignals, type HooksOptions, type SignalHooks } from './signals/-private.ts';

@@ -115,6 +115,15 @@ export interface SignalHooks<T = SignalRef> {
    * for things like test-waiters.
    */
   waitFor?: <K>(promise: Promise<K>) => Promise<K>;
+
+  /**
+   * An optional method, present only on hooks that compose other signals implementations into
+   * their own, such as the ones `@warp-drive/alien-signals/install` configures.
+   *
+   * {@link registerSignals} calls it instead of replacing the configured hooks, so that a
+   * framework's hooks are added alongside the ones already configured rather than replacing them.
+   */
+  register?: <K>(buildConfig: (options: HooksOptions) => SignalHooks<K>) => void;
 }
 
 /**
@@ -178,6 +187,37 @@ export function setupSignals<T>(buildConfig: (options: HooksOptions) => SignalHo
     },
   });
   setTransient('signalHooks', hooks);
+}
+
+/**
+ * Adds the hooks built by `buildConfig` to the configured signals implementation if it composes
+ * other implementations, such as `@warp-drive/alien-signals`, and otherwise configures them with
+ * {@link setupSignals}.
+ *
+ * A framework's `install` entry point calls this rather than `setupSignals`, so that importing
+ * `@warp-drive/alien-signals/install` first lets every framework on the page share its signals
+ * and memos.
+ *
+ * @example
+ * ```ts
+ * import { registerSignals } from '@warp-drive/core/configure';
+ *
+ * registerSignals(buildSignalConfig);
+ * ```
+ *
+ * @summary Registers signal hooks with the configured composing implementation, or configures
+ * them with `setupSignals` when there is none.
+ * @since 5.10.0
+ * @public
+ * @param buildConfig - a function that takes options and returns a configuration object
+ */
+export function registerSignals<T>(buildConfig: (options: HooksOptions) => SignalHooks<T>): void {
+  const signalHooks: SignalHooks | null = peekTransient('signalHooks');
+  if (signalHooks?.register) {
+    signalHooks.register(buildConfig);
+  } else {
+    setupSignals(buildConfig);
+  }
 }
 
 /**
