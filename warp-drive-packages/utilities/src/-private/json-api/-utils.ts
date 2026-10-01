@@ -3,6 +3,13 @@ import type { QueryParamsSource } from '@warp-drive/core/types/params';
 import type { BuildURLConfig } from '../../index.ts';
 import { buildQueryParams as buildParams, setBuildURLConfig as setConfig } from '../../index.ts';
 
+/**
+ * The configuration {@link setBuildURLConfig} accepts: the {@link BuildURLConfig} fields, plus
+ * the {json:api} profile and extension URIs to send in the `Accept` header.
+ *
+ * @summary Configuration for the JSON:API request builders: host, namespace, and the profile and extension URIs for `Accept`.
+ * @public
+ */
 export interface JSONAPIConfig extends BuildURLConfig {
   profiles?: {
     pagination?: string;

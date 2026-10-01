@@ -61,4 +61,6 @@ export { findRecord } from './-private/json-api/find-record';
 export { query, postQuery } from './-private/json-api/query';
 export { deleteRecord, createRecord, updateRecord } from './-private/json-api/save-record';
 export { serializeResources, serializePatch } from './-private/json-api/serialize';
+export type { JsonApiResourcePatch } from './-private/json-api/serialize';
 export { setBuildURLConfig } from './-private/json-api/-utils';
+export type { JSONAPIConfig } from './-private/json-api/-utils';
