@@ -33,6 +33,9 @@ const LEGACY_PACKAGE_LIST = legacyDocsPackageNames()
   .map((name) => `\`${name}\``)
   .join(', ');
 const SITE_ORIGIN = (process.env.HOSTNAME || 'https://canary.warp-drive.io').replace(/\/$/, '');
+// VitePress doesn't prefix `head` hrefs with `base`, so the feed link carries it explicitly to stay
+// correct on PR previews, which are served from a sub-path.
+const SITE_BASE = (process.env.BASE || '/').replace(/\/?$/, '/');
 
 const TypeDocSidebar = await postProcessApiDocs();
 
@@ -292,7 +295,12 @@ export default withPwa(
         ['link', { rel: 'apple-touch-icon', href: '/logos/favicon/logo-yellow-square-180x180.png', type: 'image/png' }],
         [
           'link',
-          { rel: 'alternate', type: 'application/rss+xml', title: 'WarpDrive Blog', href: `/${BLOG_FEED_PATH}` },
+          {
+            rel: 'alternate',
+            type: 'application/rss+xml',
+            title: 'WarpDrive Blog',
+            href: `${SITE_ORIGIN}${SITE_BASE}${BLOG_FEED_PATH}`,
+          },
         ],
         [
           'meta',
@@ -367,7 +375,7 @@ export default withPwa(
       },
 
       buildEnd(siteConfig) {
-        const posts = emitBlogFeed(siteConfig.outDir, `${SITE_ORIGIN}${siteConfig.site.base}`);
+        const posts = emitBlogFeed(siteConfig.outDir, `${SITE_ORIGIN}${SITE_BASE}`);
         console.log(`emitted ${BLOG_FEED_PATH} with ${posts} posts`);
       },
 
