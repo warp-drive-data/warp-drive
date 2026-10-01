@@ -34,7 +34,7 @@ export function createTodo(attributes: TodoAttributes): RequestInfo<ReactiveData
 }
 ```
 
-`TodoAttributes`, from the schema file, is a todo's fields. The body is a
+`TodoAttributes`, from the schema file, is a todo's `title` and `completed` fields. The body is a
 JSON:API document without an `id`, because the server assigns one. The last two
 lines are the important part: when a `createRecord` request succeeds, the store
 invalidates every request registered for the types in its `cacheOptions.types`.

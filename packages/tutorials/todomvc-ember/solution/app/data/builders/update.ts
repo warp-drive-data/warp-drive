@@ -6,7 +6,7 @@ import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL } from '@warp-drive/utilities';
 
-import type { Todo, TodoAttributes } from '../schemas/todo.ts';
+import type { Todo, TodoAttributes, TodosDocument } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { getActiveTodos, getCompletedTodos } from './query.ts';
 import { serverIndex } from './utils.ts';
@@ -38,7 +38,7 @@ export function patchCacheTodoActivated(store: Store, todo: Todo): void {
 function moveBetweenLists(
   store: Store,
   todo: Todo,
-  lists: { from: ReturnType<typeof getActiveTodos>; to: ReturnType<typeof getActiveTodos> }
+  lists: { from: RequestInfo<TodosDocument>; to: RequestInfo<TodosDocument> }
 ): void {
   // A saved todo always has an id; the cast tells TypeScript so.
   const value = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;

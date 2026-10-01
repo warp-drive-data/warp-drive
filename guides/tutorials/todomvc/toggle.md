@@ -19,7 +19,6 @@ on the copy but never saves it:
 ```ts
 try {
   todo.completed = completed;
-  // TODO (chapter 6): save the toggle and move the todo between lists
 } catch (e) {
   reportError(new Error('Could not update todo completion state', { cause: e }), { toast: true });
   todo.completed = wasCompleted;
@@ -64,11 +63,13 @@ decide, patch when you already know.
 
 ## Move the todo between lists
 
-Add to `app/data/builders/update.ts`, below chapter 5's `patchTodo`. The new
-imports go at the top of the file:
+Add to `app/data/builders/update.ts`, below chapter 5's `patchTodo`. The
+imports go at the top of the file, and one of them adds `TodosDocument` to
+chapter 5's schema import:
 
 ```ts
 import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
+import type { Todo, TodoAttributes, TodosDocument } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { getActiveTodos, getCompletedTodos } from './query.ts';
 // Already in utils.ts. App code, not WarpDrive: where the server would put a todo.
@@ -89,7 +90,7 @@ export function patchCacheTodoActivated(store: Store, todo: Todo): void {
 function moveBetweenLists(
   store: Store,
   todo: Todo,
-  lists: { from: ReturnType<typeof getActiveTodos>; to: ReturnType<typeof getActiveTodos> }
+  lists: { from: RequestInfo<TodosDocument>; to: RequestInfo<TodosDocument> }
 ): void {
   // A saved todo always has an id; the cast tells TypeScript so.
   const value = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;
@@ -154,9 +155,9 @@ The lists change only after the `await`, so a failed save leaves them alone.
 
 ## Check it again
 
-Toggle a todo. The footer count updates, "Clear completed" appears, and on the
-Active page a completed todo leaves the list. Each toggle is one `PATCH` and
-nothing else.
+Toggle a todo. The footer count updates, "Clear completed" shows whenever a todo
+is completed, and on the Active page a completed todo leaves the list. Each
+toggle is one `PATCH` and nothing else.
 
 See [Caching](../../the-manual/caching/index.md) for what else the cache can do.
 

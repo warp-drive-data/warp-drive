@@ -47,16 +47,16 @@ export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: bo
  * DELETE /api/todo/ops.bulk.deleteAll — used by "clear completed". Deletes
  * every completed todo; pass the completed todos so the cache can drop them.
  */
-export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
+export function bulkDeleteTodos(todos: Todo[]): RequestInfo {
   const url = buildBaseURL({ resourcePath: 'todo' });
   const queryString = buildQueryParams({ 'filter[completed]': true });
 
-  return withResponseType<EmptyDocument>({
+  return {
     method: 'DELETE',
     url: `${url}/ops.bulk.deleteAll?${queryString}`,
 
     // Removes each todo from every cached list once the request succeeds.
     op: 'deleteRecord',
     records: todos.map((todo) => recordIdentifierFor(todo)),
-  });
+  };
 }

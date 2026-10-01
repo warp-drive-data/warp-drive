@@ -66,29 +66,28 @@ export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: bo
  * DELETE /api/todo/ops.bulk.deleteAll — used by "clear completed". Deletes
  * every completed todo; pass the completed todos so the cache can drop them.
  */
-export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
+export function bulkDeleteTodos(todos: Todo[]): RequestInfo {
   const url = buildBaseURL({ resourcePath: 'todo' });
   const queryString = buildQueryParams({ 'filter[completed]': true });
 
-  return withResponseType<EmptyDocument>({
+  return {
     method: 'DELETE',
     url: `${url}/ops.bulk.deleteAll?${queryString}`,
 
     // Removes each todo from every cached list once the request succeeds.
     op: 'deleteRecord',
     records: todos.map((todo) => recordIdentifierFor(todo)),
-  });
+  };
 }
 ```
 
-`withResponseType` types a response with no records in it, where
-`withReactiveResponse` would have nothing to make reactive.
-
 **Toggle all.** `bulkPatchTodos` filters on the opposite of the new value, so
-the API changes only the todos that need it. Since the response names no todos,
-`bulkPatchCacheTodos` does the cache's job by hand: `op: 'update'` sets
-`completed` on each changed todo, and chapter 6's functions move it between
-lists. Refetching would also work: one `PATCH`, then a `GET` for each list.
+the API changes only the todos that need it. The response is `{ data: null }`,
+with no todos, so `withResponseType<EmptyDocument>` declares that shape. Like
+`withReactiveResponse`, it only sets the type TypeScript sees. And since the
+response names no todos, `bulkPatchCacheTodos` does the cache's job by hand:
+`op: 'update'` sets `completed` on each changed todo, and chapter 6's functions
+move it between lists. Refetching would also work: one `PATCH`, then a `GET` for each list.
 Patching keeps it to one request, and it reuses chapter 6's functions: the cache
 update you wrote for one todo now covers many.
 
@@ -132,16 +131,19 @@ await this.store.request(bulkDeleteTodos(this.args.completed));
 ## Check it
 
 Click the arrow. Everything is struck through, the footer says "0 items left",
-and "Clear completed" appears. Click it again and everything is active. One
+and "Clear completed" shows. Click it again and everything is active, and "Clear
+completed" goes away. One
 `PATCH` per click, and no `GET`.
 
 Complete a few todos and click "Clear completed". Gone, in one `DELETE`.
 
-That's it. Every control in the TodoMVC spec works, and you wrote the whole
-data layer: five builder files and one handler. Along the way you used all four
-ideas from chapter 2: requests built as plain objects, one pipeline with your
-handler in it, a cache that keeps one copy of each todo, and read-only records
-you change through copies.
+That's it. Every control in the TodoMVC spec works, and you wrote the whole data
+layer: five builder files and one handler. Along the way you used all four ideas
+from chapter 2: requests built as plain objects, one pipeline with your handler
+in it, a cache that keeps one copy of each todo, and read-only records you
+change through copies. And after each write, you picked how the lists catch up:
+chapter 4 let the store refetch them, and chapters 6 and 8 patched the cache
+because you already knew what changed.
 
 ## Where next
 

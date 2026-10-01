@@ -10,8 +10,8 @@ Let's save it, with one request that updates every list at once.
 
 ## Editable copies
 
-Chapter 2 said a todo's fields are read-only, so the item you're editing isn't
-the record itself. The starter's list hands each item an editable copy. In
+Records are read-only, so when you edit a todo, you're editing a copy of it.
+The starter's list hands each item an editable copy. In
 `app/components/todo-app/todo-list.gts`, each todo passes through `checkout`:
 
 ```gts
@@ -36,7 +36,7 @@ export class TodoList extends Component<Signature> {
 
 `checkout`, from `@warp-drive/core/reactive`, returns an editable copy of a
 record. The component's `this.checkout` is a one-line wrapper that tells
-TypeScript the copy is an `EditableTodo`.
+TypeScript the copy is an `EditableTodo`, a type from `app/data/schemas/todo.ts`.
 
 `checkout` is async, so `<Await>` renders the item once the copy is ready.
 Changes to a copy stay on it until you save, while the cache and every other

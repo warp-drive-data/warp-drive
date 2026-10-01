@@ -9,9 +9,10 @@ Let's build the data layer of a TodoMVC app with ***Warp*Drive**.
 
 The starter ships the Ember UI and a local API. You write the ***Warp*Drive**
 part: requests, builders, one handler and a few cache updates. No models,
-adapters or serializers. Your first request renders todos in chapter 1, and each
-chapter after that adds one operation. Most chapters start with a problem every
-data layer has, and show how ***Warp*Drive** handles it.
+adapters or serializers. Your first request renders todos in chapter 1. From
+chapter 4 on, each chapter adds one operation: create, edit, toggle, delete,
+then the bulk controls. Most chapters start with a problem every data layer has,
+and show how ***Warp*Drive** handles it.
 
 <img src="../../images/tutorials/todomvc/finished.png" alt="The finished TodoMVC app: three todos, one completed, and a footer that says 2 items left" width="100%">
 
@@ -60,11 +61,12 @@ todomvc-ember/
     data/
       builders/   you write these, next to a shipped utils.ts
       schemas/    the todo schema, finished
-      store.ts    the store, finished
-    routes/       one per filter: all, active, completed
+      store.ts    the store; you add a handler in chapter 3
+    routes/       one per filter: index (All), active, completed
 ```
 
-The Ember side is done. Each chapter tells you what to write and where.
+The UI is done. You add ***Warp*Drive** calls to a few routes and components,
+and each chapter tells you which.
 
 ## The API
 

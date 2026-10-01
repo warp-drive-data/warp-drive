@@ -95,7 +95,8 @@ TodoMVC hides the footer when there are no todos. The footer can't use the
 page's list to decide: on the Active page that list is filtered, and it can be
 empty while completed todos still exist. So the footer asks the store for all
 the todos itself, and shows only if there are any. In
-`app/components/todo-app/footer.gts`, wrap the footer in that request:
+`app/components/todo-app/footer.gts`, wrap the `<footer>` inside `MaybeFooter`'s
+`<template>` in that request:
 
 ```gts
 // At the top of the file:
@@ -159,6 +160,11 @@ import { getCompletedTodos } from '#app/data/builders/query.ts';
 
 `(getAllTodos)` calls the builder from the template.
 
+These `<:error>` blocks differ from chapter 1's on purpose. If the page's list
+fails to load, `onUnrecoverableError` replaces the app with a "Something went
+wrong" message. If a footer request fails, `<HandleError>` reports it, the count
+and the button show a toast, and the rest of the page keeps working.
+
 The footer asks for the same list as the `index` route, and the Network panel
 shows one `GET /api/todo`, not two. The store recognizes the same request and
 answers both from one response.
@@ -176,7 +182,7 @@ Every request from here on needs the JSON:API headers. You could repeat them in
 every builder, but then each new builder has to remember them, and one that
 forgets breaks against a strict JSON:API server. Instead, let's add them once,
 on the path every request takes: a handler. Create a new file,
-`app/data/handlers/json-api.ts`:
+`app/data/handlers/json-api.ts`, in a new `handlers` folder:
 
 ```ts
 import type { Future, Handler, NextFn } from '@warp-drive/core/request';
