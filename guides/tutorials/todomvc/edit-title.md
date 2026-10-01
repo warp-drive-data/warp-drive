@@ -84,13 +84,12 @@ In `app/components/todo-app/todo-item.gts`, `TitleForm` has a `patchTodoTitle`
 method that doesn't save anything yet. Have it send the request:
 
 ```ts
-await this.store.request(patchTodo(todo, { title }));
-```
-
-Import the builder at the top of `todo-item.gts`:
-
-```ts
+// At the top of the file:
 import { patchTodo } from '#app/data/builders/update.ts';
+
+// ...
+
+await this.store.request(patchTodo(todo, { title }));
 ```
 
 ## Check it

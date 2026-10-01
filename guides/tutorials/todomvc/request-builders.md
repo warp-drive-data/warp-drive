@@ -75,6 +75,7 @@ Two lines do more than build a URL:
 In `app/routes/index.ts`, replace chapter 1's request with the builder:
 
 ```ts
+// At the top of the file:
 import { getAllTodos } from '#app/data/builders/query.ts';
 
 // ...
@@ -96,7 +97,12 @@ empty while completed todos still exist. So the footer asks the store for all
 the todos itself, and shows only if there are any. In
 `app/components/todo-app/footer.gts`, wrap the footer in that request:
 
-```handlebars
+```gts
+// At the top of the file:
+import { getAllTodos } from '#app/data/builders/query.ts';
+
+// ...
+
 <Request @query={{(getAllTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
   <:content as |content|>
@@ -116,7 +122,12 @@ the todos itself, and shows only if there are any. In
 
 In `app/components/todo-app/todo-count.gts`, count the active todos:
 
-```handlebars
+```gts
+// At the top of the file:
+import { getActiveTodos } from '#app/data/builders/query.ts';
+
+// ...
+
 <Request @query={{(getActiveTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
   <:content as |content|>
     <Remaining @remaining={{content.data.length}} />
@@ -130,7 +141,12 @@ In `app/components/todo-app/todo-count.gts`, count the active todos:
 In `app/components/todo-app/clear-completed-todos.gts`, hand the completed todos
 to the button:
 
-```handlebars
+```gts
+// At the top of the file:
+import { getCompletedTodos } from '#app/data/builders/query.ts';
+
+// ...
+
 <Request @query={{(getCompletedTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
   <:content as |content|>
     <ClearCompleted @completed={{content.data}} />
@@ -141,8 +157,7 @@ to the button:
 </Request>
 ```
 
-Import each builder at the top of its file. `(getAllTodos)` calls the builder
-from the template.
+`(getAllTodos)` calls the builder from the template.
 
 The footer asks for the same list as the `index` route, and the Network panel
 shows one `GET /api/todo`, not two. The store recognizes the same request and
@@ -192,6 +207,7 @@ request straight to `next`.
 Add it to the store's `handlers` in `app/data/store.ts`:
 
 ```ts
+// At the top of the file:
 import { JsonApiHandler } from './handlers/json-api.ts';
 
 // ...

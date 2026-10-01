@@ -47,13 +47,12 @@ In `app/components/todo-app/create-todo.gts`, `onSubmit` reads the form into
 there:
 
 ```ts
-await this.store.request(createTodo(attributes));
-```
-
-Import the builder at the top of `create-todo.gts`:
-
-```ts
+// At the top of the file:
 import { createTodo } from '#app/data/builders/create.ts';
+
+// ...
+
+await this.store.request(createTodo(attributes));
 ```
 
 ## Check it

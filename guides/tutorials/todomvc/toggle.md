@@ -136,6 +136,11 @@ Back in `todo-item.gts`, in `CompletedForm`'s `patchTodoToggle`, after the
 request:
 
 ```ts
+// At the top of the file, replacing chapter 5's patchTodo import:
+import { patchCacheTodoActivated, patchCacheTodoCompleted, patchTodo } from '#app/data/builders/update.ts';
+
+// ...
+
 await this.store.request(patchTodo(todo, { completed }));
 
 if (completed) {
@@ -143,12 +148,6 @@ if (completed) {
 } else {
   patchCacheTodoActivated(this.store, todo);
 }
-```
-
-Import them next to `patchTodo`:
-
-```ts
-import { patchCacheTodoActivated, patchCacheTodoCompleted, patchTodo } from '#app/data/builders/update.ts';
 ```
 
 The lists change only after the `await`, so a failed save leaves them alone.

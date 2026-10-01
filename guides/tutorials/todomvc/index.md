@@ -26,7 +26,7 @@ data layer has, and show how ***Warp*Drive** handles it.
 | 5   | [Edit title](./edit-title.md)                       | `checkout` and `updateRecord`              |
 | 6   | [Toggle](./toggle.md)                               | `store.cache.patch`                        |
 | 7   | [Delete](./delete.md)                               | `deleteRecord`                             |
-| 8   | [Bulk operations](./bulk-operations.md), optional   | bulk requests, then where to go next       |
+| 8   | [Bulk operations](./bulk-operations.md)             | bulk requests, then where to go next       |
 
 ## Before you start
 

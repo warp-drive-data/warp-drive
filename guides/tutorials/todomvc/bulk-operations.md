@@ -88,7 +88,9 @@ export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
 the API changes only the todos that need it. Since the response names no todos,
 `bulkPatchCacheTodos` does the cache's job by hand: `op: 'update'` sets
 `completed` on each changed todo, and chapter 6's functions move it between
-lists.
+lists. Refetching would also work: one `PATCH`, then a `GET` for each list.
+Patching keeps it to one request, and it reuses chapter 6's functions: the cache
+update you wrote for one todo now covers many.
 
 **Clear completed.** `bulkDeleteTodos` is chapter 7's `deleteTodo` with many
 keys in `records`. The request already says which todos it deletes, so the cache
@@ -107,6 +109,11 @@ const changed = this.args.todos.filter((todo) => todo.completed !== completed);
 Right after it, send the request, then update the cache:
 
 ```ts
+// At the top of the file:
+import { bulkPatchCacheTodos, bulkPatchTodos } from '#app/data/builders/bulk.ts';
+
+// ...
+
 await this.store.request(bulkPatchTodos({ completed }));
 bulkPatchCacheTodos(this.store, changed, completed);
 ```
@@ -114,22 +121,27 @@ bulkPatchCacheTodos(this.store, changed, completed);
 In `app/components/todo-app/clear-completed-todos.gts`, send the delete:
 
 ```ts
+// At the top of the file:
+import { bulkDeleteTodos } from '#app/data/builders/bulk.ts';
+
+// ...
+
 await this.store.request(bulkDeleteTodos(this.args.completed));
 ```
-
-Import `bulkPatchTodos` and `bulkPatchCacheTodos` in the first file and
-`bulkDeleteTodos` in the second, from `#app/data/builders/bulk.ts`.
 
 ## Check it
 
 Click the arrow. Everything is struck through, the footer says "0 items left",
 and "Clear completed" appears. Click it again and everything is active. One
-`PATCH` per click.
+`PATCH` per click, and no `GET`.
 
 Complete a few todos and click "Clear completed". Gone, in one `DELETE`.
 
 That's it. Every control in the TodoMVC spec works, and you wrote the whole
-data layer: five builder files and one handler.
+data layer: five builder files and one handler. Along the way you used all four
+ideas from chapter 2: requests built as plain objects, one pipeline with your
+handler in it, a cache that keeps one copy of each todo, and read-only records
+you change through copies.
 
 ## Where next
 

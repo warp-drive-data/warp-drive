@@ -48,13 +48,12 @@ Each has a `deleteTodo` method that doesn't send anything yet. Have both send
 the request:
 
 ```ts
-await this.store.request(deleteTodo(todo));
-```
-
-Import the builder at the top of `todo-item.gts`:
-
-```ts
+// At the top of the file:
 import { deleteTodo } from '#app/data/builders/delete.ts';
+
+// ...
+
+await this.store.request(deleteTodo(todo));
 ```
 
 ::: tip
@@ -65,11 +64,15 @@ Inside each component, `this.deleteTodo` is the component's method and
 ## Check it
 
 Hover a todo and click ×. It disappears once the API confirms, and the footer
-count drops. That wait is on purpose: these components delete pessimistically,
-so a todo the server failed to delete never vanishes from the screen. Double-click another, clear its title, press Enter. Gone too. One
-`DELETE` each.
+count drops. The wait is on purpose: these components delete pessimistically,
+so a todo the server failed to delete never vanishes from the screen.
+
+Double-click another todo, clear its title, press Enter. Gone too.
+
+Switch to Active or Completed: neither todo is there. That's one `DELETE` each
+and no `GET`: the cache removed each todo from every list that held it.
 
 ## What's next
 
-Every single-todo operation works. Chapter 8 handles many at once. It's
-optional, so you can also skip to [Where next](./bulk-operations.md#where-next).
+Every single-todo operation works. Two controls still act on many todos at once:
+"Mark all as complete" and "Clear completed". Chapter 8 wires them up.
