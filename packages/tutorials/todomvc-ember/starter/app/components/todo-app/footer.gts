@@ -6,5 +6,8 @@ import { HandleError } from '#app/components/design-system/error.gts';
 
 /** Ensures all Todos are loaded before displaying the footer elements. */
 export const MaybeFooter = <template>
-  {{! TODO (chapter 3): show the footer once there are todos }}
+  {{! TODO (chapter 3): hide the footer while there are no todos }}
+  <footer class="footer">
+    {{yield}}
+  </footer>
 </template> satisfies TOC<{ Blocks: { default: [] } }>;

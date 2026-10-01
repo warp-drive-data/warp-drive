@@ -14,7 +14,7 @@ export default class CompletedTodos extends Route {
 
   model(): { todos?: Future<TodosDocument> } {
     return {
-      // #replace-in-starter TODO (chapter 3): request the completed todos
+      // #replace-in-starter TODO (chapter 1): request the completed todos
       todos: this.store.request(getCompletedTodos()),
       // #end-replace-in-starter
     };

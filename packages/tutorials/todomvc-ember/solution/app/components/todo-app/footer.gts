@@ -9,7 +9,7 @@ import { getAllTodos } from '#app/data/builders/query.ts';
 
 /** Ensures all Todos are loaded before displaying the footer elements. */
 export const MaybeFooter = <template>
-  {{! #replace-in-starter TODO (chapter 3): show the footer once there are todos }}
+  {{! #replace-in-starter TODO (chapter 3): hide the footer while there are no todos }}
   <Request @query={{(getAllTodos)}} @autorefresh={{true}} @autorefreshBehavior="refresh">
 
     {{! On success, render the footer content }}
@@ -28,4 +28,9 @@ export const MaybeFooter = <template>
 
   </Request>
   {{! #end-replace-in-starter }}
+  {{!-- #add-to-starter
+  <footer class="footer">
+    {{yield}}
+  </footer>
+  --}}
 </template> satisfies TOC<{ Blocks: { default: [] } }>;
