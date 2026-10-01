@@ -1,0 +1,3072 @@
+{
+  "kind": "surface",
+  "modules": {
+    "@ember-data/active-record/request": {
+      "entry": "packages/active-record/src/request.ts",
+      "exports": {
+        "createRecord": {
+          "decl": "packages/active-record/src/-private/builders/save-record.ts#createRecord",
+          "kind": "value"
+        },
+        "deleteRecord": {
+          "decl": "packages/active-record/src/-private/builders/save-record.ts#deleteRecord",
+          "kind": "value"
+        },
+        "findRecord": {
+          "decl": "packages/active-record/src/-private/builders/find-record.ts#findRecord",
+          "kind": "value"
+        },
+        "query": {
+          "decl": "packages/active-record/src/-private/builders/query.ts#query",
+          "kind": "value"
+        },
+        "updateRecord": {
+          "decl": "packages/active-record/src/-private/builders/save-record.ts#updateRecord",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/active-record"
+    },
+    "@ember-data/adapter": {
+      "entry": "packages/adapter/src/index.ts",
+      "exports": {
+        "BuildURLMixin": {
+          "decl": "packages/adapter/src/-private/build-url-mixin.ts#BuildURLMixin",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/adapter/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/-private": {
+      "entry": "packages/adapter/src/-private.ts",
+      "exports": {
+        "BuildURLMixin": {
+          "decl": "packages/adapter/src/-private/build-url-mixin.ts#BuildURLMixin",
+          "kind": "value"
+        },
+        "determineBodyPromise": {
+          "decl": "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise",
+          "kind": "value"
+        },
+        "fetch": {
+          "decl": "packages/adapter/src/-private/utils/fetch.ts#getFetchFunction",
+          "kind": "value"
+        },
+        "parseResponseHeaders": {
+          "decl": "packages/adapter/src/-private/utils/parse-response-headers.ts#parseResponseHeaders",
+          "kind": "value"
+        },
+        "serializeIntoHash": {
+          "decl": "packages/adapter/src/-private/utils/serialize-into-hash.ts#serializeIntoHash",
+          "kind": "value"
+        },
+        "serializeQueryParams": {
+          "decl": "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams",
+          "kind": "value"
+        },
+        "setupFastboot": {
+          "decl": "packages/adapter/src/-private/utils/fetch.ts#setupFastboot",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/error": {
+      "entry": "packages/adapter/src/error.js",
+      "exports": {
+        "AbortError": {
+          "decl": "packages/adapter/src/error.js#AbortError",
+          "kind": "value"
+        },
+        "ConflictError": {
+          "decl": "packages/adapter/src/error.js#ConflictError",
+          "kind": "value"
+        },
+        "ForbiddenError": {
+          "decl": "packages/adapter/src/error.js#ForbiddenError",
+          "kind": "value"
+        },
+        "InvalidError": {
+          "decl": "packages/adapter/src/error.js#InvalidError",
+          "kind": "value"
+        },
+        "NotFoundError": {
+          "decl": "packages/adapter/src/error.js#NotFoundError",
+          "kind": "value"
+        },
+        "ServerError": {
+          "decl": "packages/adapter/src/error.js#ServerError",
+          "kind": "value"
+        },
+        "TimeoutError": {
+          "decl": "packages/adapter/src/error.js#TimeoutError",
+          "kind": "value"
+        },
+        "UnauthorizedError": {
+          "decl": "packages/adapter/src/error.js#UnauthorizedError",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/adapter/src/error.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/json-api": {
+      "entry": "packages/adapter/src/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/json-api.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/rest": {
+      "entry": "packages/adapter/src/rest.ts",
+      "exports": {
+        "FetchRequestInit": {
+          "decl": "packages/adapter/src/rest.ts#FetchRequestInit",
+          "kind": "type"
+        },
+        "JQueryRequestInit": {
+          "decl": "packages/adapter/src/rest.ts#JQueryRequestInit",
+          "kind": "type"
+        },
+        "QueryState": {
+          "decl": "packages/adapter/src/rest.ts#QueryState",
+          "kind": "type"
+        },
+        "RequestData": {
+          "decl": "packages/adapter/src/rest.ts#RequestData",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "packages/adapter/src/rest.ts#default",
+          "kind": "value"
+        },
+        "fetchOptions": {
+          "decl": "packages/adapter/src/rest.ts#fetchOptions",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/debug": {
+      "entry": "packages/debug/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/debug/src/data-adapter.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/debug"
+    },
+    "@ember-data/debug/_app_/data-adapter": {
+      "entry": "packages/debug/src/_app_/data-adapter.js",
+      "exports": {
+        "default": {
+          "decl": "packages/debug/src/data-adapter.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/debug"
+    },
+    "@ember-data/debug/data-adapter": {
+      "entry": "packages/debug/src/data-adapter.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/debug/src/data-adapter.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/debug"
+    },
+    "@ember-data/graph/-private": {
+      "entry": "packages/graph/src/-private.ts",
+      "exports": {
+        "CollectionEdge": {
+          "decl": "packages/graph/src/-private/edges/collection.ts#CollectionEdge",
+          "kind": "type"
+        },
+        "Graph": {
+          "decl": "packages/graph/src/-private/graph.ts#Graph",
+          "kind": "type"
+        },
+        "GraphEdge": {
+          "decl": "packages/graph/src/-private/graph.ts#GraphEdge",
+          "kind": "type"
+        },
+        "ImplicitEdge": {
+          "decl": "packages/graph/src/-private/edges/implicit.ts#ImplicitEdge",
+          "kind": "type"
+        },
+        "ResourceEdge": {
+          "decl": "packages/graph/src/-private/edges/resource.ts#ResourceEdge",
+          "kind": "type"
+        },
+        "UpgradedMeta": {
+          "decl": "packages/graph/src/-private/-edge-definition.ts#UpgradedMeta",
+          "kind": "type"
+        },
+        "graphFor": {
+          "decl": "packages/graph/src/-private.ts#graphFor",
+          "kind": "value"
+        },
+        "isBelongsTo": {
+          "decl": "packages/graph/src/-private/-utils.ts#isBelongsTo",
+          "kind": "value"
+        },
+        "peekGraph": {
+          "decl": "packages/graph/src/-private.ts#peekGraph",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/graph"
+    },
+    "@ember-data/json-api": {
+      "entry": "packages/json-api/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/json-api/src/-private/cache.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/json-api"
+    },
+    "@ember-data/json-api/request": {
+      "entry": "packages/json-api/src/request.ts",
+      "exports": {
+        "createRecord": {
+          "decl": "packages/json-api/src/-private/builders/save-record.ts#createRecord",
+          "kind": "value"
+        },
+        "deleteRecord": {
+          "decl": "packages/json-api/src/-private/builders/save-record.ts#deleteRecord",
+          "kind": "value"
+        },
+        "findRecord": {
+          "decl": "packages/json-api/src/-private/builders/find-record.ts#findRecord",
+          "kind": "value"
+        },
+        "postQuery": {
+          "decl": "packages/json-api/src/-private/builders/query.ts#postQuery",
+          "kind": "value"
+        },
+        "query": {
+          "decl": "packages/json-api/src/-private/builders/query.ts#query",
+          "kind": "value"
+        },
+        "serializePatch": {
+          "decl": "packages/json-api/src/-private/serialize.ts#serializePatch",
+          "kind": "value"
+        },
+        "serializeResources": {
+          "decl": "packages/json-api/src/-private/serialize.ts#serializeResources",
+          "kind": "value"
+        },
+        "setBuildURLConfig": {
+          "decl": "packages/json-api/src/-private/builders/-utils.ts#setBuildURLConfig",
+          "kind": "value"
+        },
+        "updateRecord": {
+          "decl": "packages/json-api/src/-private/builders/save-record.ts#updateRecord",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/json-api"
+    },
+    "@ember-data/legacy-compat": {
+      "entry": "packages/legacy-compat/src/index.ts",
+      "exports": {
+        "AdapterPayload": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/minimum-adapter-interface.ts#AdapterPayload",
+          "kind": "type"
+        },
+        "CompatStore": {
+          "decl": "packages/legacy-compat/src/index.ts#CompatStore",
+          "kind": "type"
+        },
+        "LegacyNetworkHandler": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler",
+          "kind": "value"
+        },
+        "LegacyStoreCompat": {
+          "decl": "packages/legacy-compat/src/index.ts#LegacyStoreCompat",
+          "kind": "type"
+        },
+        "MinimumAdapterInterface": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/minimum-adapter-interface.ts#MinimumAdapterInterface",
+          "kind": "type"
+        },
+        "MinimumSerializerInterface": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/minimum-serializer-interface.ts#MinimumSerializerInterface",
+          "kind": "type"
+        },
+        "SerializerOptions": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/minimum-serializer-interface.ts#SerializerOptions",
+          "kind": "type"
+        },
+        "adapterFor": {
+          "decl": "packages/legacy-compat/src/index.ts#adapterFor",
+          "kind": "value"
+        },
+        "cleanup": {
+          "decl": "packages/legacy-compat/src/index.ts#cleanup",
+          "kind": "value"
+        },
+        "normalize": {
+          "decl": "packages/legacy-compat/src/index.ts#normalize",
+          "kind": "value"
+        },
+        "pushPayload": {
+          "decl": "packages/legacy-compat/src/index.ts#pushPayload",
+          "kind": "value"
+        },
+        "serializeRecord": {
+          "decl": "packages/legacy-compat/src/index.ts#serializeRecord",
+          "kind": "value"
+        },
+        "serializerFor": {
+          "decl": "packages/legacy-compat/src/index.ts#serializerFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/legacy-compat/-private": {
+      "entry": "packages/legacy-compat/src/-private.ts",
+      "exports": {
+        "FetchManager": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#FetchManager",
+          "kind": "value"
+        },
+        "SaveOp": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp",
+          "kind": "value"
+        },
+        "Snapshot": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#Snapshot",
+          "kind": "value"
+        },
+        "SnapshotRecordArray": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray",
+          "kind": "value"
+        },
+        "upgradeStore": {
+          "decl": "packages/legacy-compat/src/-private.ts#upgradeStore",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/legacy-compat/builders": {
+      "entry": "packages/legacy-compat/src/builders.ts",
+      "exports": {
+        "findAll": {
+          "decl": "packages/legacy-compat/src/builders/find-all.ts#findAllBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "findRecord": {
+          "decl": "packages/legacy-compat/src/builders/find-record.ts#findRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "query": {
+          "decl": "packages/legacy-compat/src/builders/query.ts#queryBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "queryRecord": {
+          "decl": "packages/legacy-compat/src/builders/query.ts#queryRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "saveRecord": {
+          "decl": "packages/legacy-compat/src/builders/save-record.ts#saveRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/legacy-compat/utils": {
+      "entry": "packages/legacy-compat/src/utils.ts",
+      "exports": {
+        "configureAssertFn": {
+          "decl": "packages/legacy-compat/src/utils.ts#configureAssertFn",
+          "kind": "value"
+        },
+        "configureMismatchReporter": {
+          "decl": "packages/legacy-compat/src/utils.ts#configureMismatchReporter",
+          "kind": "value"
+        },
+        "configureTypeNormalization": {
+          "decl": "packages/legacy-compat/src/utils.ts#configureTypeNormalization",
+          "kind": "value"
+        },
+        "expectId": {
+          "decl": "packages/legacy-compat/src/utils.ts#expectId",
+          "kind": "value"
+        },
+        "formattedId": {
+          "decl": "packages/legacy-compat/src/utils.ts#formattedId",
+          "kind": "value"
+        },
+        "formattedType": {
+          "decl": "packages/legacy-compat/src/utils.ts#formattedType",
+          "kind": "value"
+        },
+        "isEquivId": {
+          "decl": "packages/legacy-compat/src/utils.ts#isEquivId",
+          "kind": "value"
+        },
+        "isEquivType": {
+          "decl": "packages/legacy-compat/src/utils.ts#isEquivType",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/model": {
+      "entry": "packages/model/src/index.ts",
+      "exports": {
+        "AsyncBelongsTo": {
+          "decl": "packages/model/src/-private/promise-belongs-to.ts#PromiseBelongsTo",
+          "kind": "type"
+        },
+        "AsyncHasMany": {
+          "decl": "packages/model/src/-private/promise-many-array.ts#PromiseManyArray",
+          "kind": "type"
+        },
+        "HasMany": {
+          "decl": "packages/store/src/-private/record-arrays/many-array.ts#RelatedCollection",
+          "kind": "type"
+        },
+        "ManyArray": {
+          "decl": "packages/store/src/-private/record-arrays/many-array.ts#RelatedCollection",
+          "kind": "type"
+        },
+        "ModelSchemaProvider": {
+          "decl": "packages/model/src/-private/schema-provider.ts#ModelSchemaProvider",
+          "kind": "value"
+        },
+        "attr": {
+          "decl": "packages/model/src/-private/attr.ts#attr",
+          "kind": "value"
+        },
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.ts#belongsTo",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/model/src/-private/model.ts#Model",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.ts#hasMany",
+          "kind": "value"
+        },
+        "instantiateRecord": {
+          "decl": "packages/model/src/-private/hooks.ts#instantiateRecord",
+          "kind": "value"
+        },
+        "modelFor": {
+          "decl": "packages/model/src/-private/hooks.ts#modelFor",
+          "kind": "value"
+        },
+        "teardownRecord": {
+          "decl": "packages/model/src/-private/hooks.ts#teardownRecord",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/model/-private": {
+      "entry": "packages/model/src/-private.ts",
+      "exports": {
+        "Errors": {
+          "decl": "packages/model/src/-private/errors.ts#Errors",
+          "kind": "value"
+        },
+        "LEGACY_SUPPORT": {
+          "decl": "packages/model/src/-private/legacy-relationships-support.ts#LEGACY_SUPPORT",
+          "kind": "value"
+        },
+        "ManyArray": {
+          "decl": "packages/store/src/-private/record-arrays/many-array.ts#RelatedCollection",
+          "kind": "value"
+        },
+        "Model": {
+          "decl": "packages/model/src/-private/model.ts#Model",
+          "kind": "value"
+        },
+        "ModelStore": {
+          "decl": "packages/model/src/-private/model.ts#ModelStore",
+          "kind": "type"
+        },
+        "PromiseBelongsTo": {
+          "decl": "packages/model/src/-private/promise-belongs-to.ts#PromiseBelongsTo",
+          "kind": "value"
+        },
+        "PromiseManyArray": {
+          "decl": "packages/model/src/-private/promise-many-array.ts#PromiseManyArray",
+          "kind": "value"
+        },
+        "attr": {
+          "decl": "packages/model/src/-private/attr.ts#attr",
+          "kind": "value"
+        },
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.ts#belongsTo",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.ts#hasMany",
+          "kind": "value"
+        },
+        "lookupLegacySupport": {
+          "decl": "packages/model/src/-private/legacy-relationships-support.ts#lookupLegacySupport",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/model/hooks": {
+      "entry": "packages/model/src/hooks.ts",
+      "exports": {
+        "buildSchema": {
+          "decl": "packages/model/src/-private/schema-provider.ts#buildSchema",
+          "kind": "value"
+        },
+        "instantiateRecord": {
+          "decl": "packages/model/src/-private/hooks.ts#instantiateRecord",
+          "kind": "value"
+        },
+        "modelFor": {
+          "decl": "packages/model/src/-private/hooks.ts#modelFor",
+          "kind": "value"
+        },
+        "teardownRecord": {
+          "decl": "packages/model/src/-private/hooks.ts#teardownRecord",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/model/migration-support": {
+      "entry": "packages/model/src/migration-support.ts",
+      "exports": {
+        "DelegatingSchemaService": {
+          "decl": "packages/model/src/migration-support.ts#DelegatingSchemaService",
+          "kind": "value"
+        },
+        "WithLegacy": {
+          "decl": "packages/model/src/migration-support.ts#WithLegacy",
+          "kind": "type"
+        },
+        "WithLegacyDerivations": {
+          "decl": "packages/model/src/migration-support.ts#WithLegacyDerivations",
+          "kind": "type"
+        },
+        "registerDerivations": {
+          "decl": "packages/model/src/migration-support.ts#registerDerivations",
+          "kind": "value"
+        },
+        "withDefaults": {
+          "decl": "packages/model/src/migration-support.ts#withDefaults",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/request": {
+      "entry": "packages/request/src/index.ts",
+      "exports": {
+        "Awaitable": {
+          "decl": "packages/request/src/-private/promise-cache.ts#Awaitable",
+          "kind": "type"
+        },
+        "CacheHandler": {
+          "decl": "packages/request/src/-private/types.ts#CacheHandler",
+          "kind": "type"
+        },
+        "Future": {
+          "decl": "packages/request/src/-private/types.ts#Future",
+          "kind": "type"
+        },
+        "Handler": {
+          "decl": "packages/request/src/-private/types.ts#Handler",
+          "kind": "type"
+        },
+        "ImmutableRequestInfo": {
+          "decl": "packages/core-types/src/request.ts#ImmutableRequestInfo",
+          "kind": "type"
+        },
+        "NextFn": {
+          "decl": "packages/request/src/-private/types.ts#NextFn",
+          "kind": "type"
+        },
+        "RequestContext": {
+          "decl": "packages/core-types/src/request.ts#RequestContext",
+          "kind": "type"
+        },
+        "RequestInfo": {
+          "decl": "packages/core-types/src/request.ts#RequestInfo",
+          "kind": "type"
+        },
+        "ResponseInfo": {
+          "decl": "packages/core-types/src/request.ts#ResponseInfo",
+          "kind": "type"
+        },
+        "StructuredDataDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredDataDocument",
+          "kind": "type"
+        },
+        "StructuredDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredDocument",
+          "kind": "type"
+        },
+        "StructuredErrorDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredErrorDocument",
+          "kind": "type"
+        },
+        "createDeferred": {
+          "decl": "packages/request/src/-private/future.ts#createDeferred",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/request/src/-private/manager.ts#RequestManager",
+          "kind": "value"
+        },
+        "getPromiseResult": {
+          "decl": "packages/request/src/-private/promise-cache.ts#getPromiseResult",
+          "kind": "value"
+        },
+        "setPromiseResult": {
+          "decl": "packages/request/src/-private/promise-cache.ts#setPromiseResult",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request"
+    },
+    "@ember-data/request-utils": {
+      "entry": "packages/request-utils/src/index.ts",
+      "exports": {
+        "BuildURLConfig": {
+          "decl": "packages/request-utils/src/index.ts#BuildURLConfig",
+          "kind": "type"
+        },
+        "CacheControlValue": {
+          "decl": "packages/request-utils/src/index.ts#CacheControlValue",
+          "kind": "type"
+        },
+        "CachePolicy": {
+          "decl": "packages/request-utils/src/index.ts#CachePolicy",
+          "kind": "value"
+        },
+        "CreateRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#CreateRecordUrlOptions",
+          "kind": "type"
+        },
+        "DeleteRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#DeleteRecordUrlOptions",
+          "kind": "type"
+        },
+        "FindManyUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindManyUrlOptions",
+          "kind": "type"
+        },
+        "FindRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRecordUrlOptions",
+          "kind": "type"
+        },
+        "FindRelatedCollectionUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRelatedCollectionUrlOptions",
+          "kind": "type"
+        },
+        "FindRelatedResourceUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRelatedResourceUrlOptions",
+          "kind": "type"
+        },
+        "GenericUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#GenericUrlOptions",
+          "kind": "type"
+        },
+        "LifetimesService": {
+          "decl": "packages/request-utils/src/index.ts#LifetimesService",
+          "kind": "value"
+        },
+        "NotificationCallback": {
+          "decl": "packages/request-utils/src/index.ts#NotificationCallback",
+          "kind": "type"
+        },
+        "PolicyConfig": {
+          "decl": "packages/request-utils/src/index.ts#PolicyConfig",
+          "kind": "type"
+        },
+        "QueryUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#QueryUrlOptions",
+          "kind": "type"
+        },
+        "UpdateRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#UpdateRecordUrlOptions",
+          "kind": "type"
+        },
+        "UrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#UrlOptions",
+          "kind": "type"
+        },
+        "buildBaseURL": {
+          "decl": "packages/request-utils/src/index.ts#buildBaseURL",
+          "kind": "value"
+        },
+        "buildQueryParams": {
+          "decl": "packages/request-utils/src/index.ts#buildQueryParams",
+          "kind": "value"
+        },
+        "filterEmpty": {
+          "decl": "packages/request-utils/src/index.ts#filterEmpty",
+          "kind": "value"
+        },
+        "parseCacheControl": {
+          "decl": "packages/request-utils/src/index.ts#parseCacheControl",
+          "kind": "value"
+        },
+        "setBuildURLConfig": {
+          "decl": "packages/request-utils/src/index.ts#setBuildURLConfig",
+          "kind": "value"
+        },
+        "sortQueryParams": {
+          "decl": "packages/request-utils/src/index.ts#sortQueryParams",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/request-utils/deprecation-support": {
+      "entry": "packages/request-utils/src/deprecation-support.ts",
+      "exports": {},
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/request-utils/handlers": {
+      "entry": "packages/request-utils/src/handlers.ts",
+      "exports": {
+        "AutoCompress": {
+          "decl": "packages/request-utils/src/-private/handlers/auto-compress.ts#AutoCompress",
+          "kind": "value"
+        },
+        "SupportsRequestStreams": {
+          "decl": "packages/request-utils/src/-private/handlers/auto-compress.ts#SupportsRequestStreams",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/request-utils/string": {
+      "entry": "packages/request-utils/src/string.ts",
+      "exports": {
+        "camelize": {
+          "decl": "packages/request-utils/src/-private/string/transform.ts#camelize",
+          "kind": "value"
+        },
+        "capitalize": {
+          "decl": "packages/request-utils/src/-private/string/transform.ts#capitalize",
+          "kind": "value"
+        },
+        "clear": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#clear",
+          "kind": "value"
+        },
+        "clearRules": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#clearRules",
+          "kind": "value"
+        },
+        "dasherize": {
+          "decl": "packages/request-utils/src/-private/string/transform.ts#dasherize",
+          "kind": "value"
+        },
+        "irregular": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#irregular",
+          "kind": "value"
+        },
+        "loadIrregular": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#loadIrregular",
+          "kind": "value"
+        },
+        "loadUncountable": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#loadUncountable",
+          "kind": "value"
+        },
+        "plural": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#plural",
+          "kind": "value"
+        },
+        "pluralize": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#pluralize",
+          "kind": "value"
+        },
+        "resetToDefaults": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#resetToDefaults",
+          "kind": "value"
+        },
+        "setMaxLRUCacheSize": {
+          "decl": "packages/request-utils/src/-private/string/transform.ts#setMaxLRUCacheSize",
+          "kind": "value"
+        },
+        "singular": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#singular",
+          "kind": "value"
+        },
+        "singularize": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#singularize",
+          "kind": "value"
+        },
+        "uncountable": {
+          "decl": "packages/request-utils/src/-private/string/inflect.ts#uncountable",
+          "kind": "value"
+        },
+        "underscore": {
+          "decl": "packages/request-utils/src/-private/string/transform.ts#underscore",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/request/fetch": {
+      "entry": "packages/request/src/fetch.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/request/src/fetch.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request"
+    },
+    "@ember-data/rest/request": {
+      "entry": "packages/rest/src/request.ts",
+      "exports": {
+        "createRecord": {
+          "decl": "packages/rest/src/-private/builders/save-record.ts#createRecord",
+          "kind": "value"
+        },
+        "deleteRecord": {
+          "decl": "packages/rest/src/-private/builders/save-record.ts#deleteRecord",
+          "kind": "value"
+        },
+        "findRecord": {
+          "decl": "packages/rest/src/-private/builders/find-record.ts#findRecord",
+          "kind": "value"
+        },
+        "query": {
+          "decl": "packages/rest/src/-private/builders/query.ts#query",
+          "kind": "value"
+        },
+        "updateRecord": {
+          "decl": "packages/rest/src/-private/builders/save-record.ts#updateRecord",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/rest"
+    },
+    "@ember-data/serializer": {
+      "entry": "packages/serializer/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/json": {
+      "entry": "packages/serializer/src/json.js",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/json-api": {
+      "entry": "packages/serializer/src/json-api.js",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json-api.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/rest": {
+      "entry": "packages/serializer/src/rest.js",
+      "exports": {
+        "EmbeddedRecordsMixin": {
+          "decl": "packages/serializer/src/-private/embedded-records-mixin.js#EmbeddedRecordsMixin",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/serializer/src/rest.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/transform": {
+      "entry": "packages/serializer/src/transform.ts",
+      "exports": {
+        "BooleanTransform": {
+          "decl": "packages/serializer/src/-private/transforms/boolean.ts#BooleanTransform",
+          "kind": "value"
+        },
+        "DateTransform": {
+          "decl": "packages/serializer/src/-private/transforms/date.ts#DateTransform",
+          "kind": "value"
+        },
+        "NumberTransform": {
+          "decl": "packages/serializer/src/-private/transforms/number.ts#NumberTransform",
+          "kind": "value"
+        },
+        "StringTransform": {
+          "decl": "packages/serializer/src/-private/transforms/string.ts#StringTransform",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/serializer/src/-private/transforms/transform.ts#Transform",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/store": {
+      "entry": "packages/store/src/index.ts",
+      "exports": {
+        "CacheHandler": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#CacheHandler",
+          "kind": "value"
+        },
+        "CacheOperation": {
+          "decl": "packages/store/src/-private/managers/notification-manager.ts#CacheOperation",
+          "kind": "type"
+        },
+        "CachePolicy": {
+          "decl": "packages/store/src/-private/cache-handler/types.ts#CachePolicy",
+          "kind": "type"
+        },
+        "Document": {
+          "decl": "packages/store/src/-private/document.ts#ReactiveDocument",
+          "kind": "type"
+        },
+        "DocumentCacheOperation": {
+          "decl": "packages/store/src/-private/managers/notification-manager.ts#DocumentCacheOperation",
+          "kind": "type"
+        },
+        "NotificationType": {
+          "decl": "packages/store/src/-private/managers/notification-manager.ts#NotificationType",
+          "kind": "type"
+        },
+        "StoreRequestContext": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#StoreRequestContext",
+          "kind": "type"
+        },
+        "StoreRequestInput": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#StoreRequestInput",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "packages/store/src/-private/store-service.ts#Store",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "setIdentifierForgetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierResetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
+          "kind": "value"
+        },
+        "setKeyInfoForResource": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setKeyInfoForResource",
+          "kind": "value"
+        },
+        "storeFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/-private": {
+      "entry": "packages/store/src/-private.ts",
+      "exports": {
+        "ARRAY_SIGNAL": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#ARRAY_SIGNAL",
+          "kind": "value"
+        },
+        "CacheHandler": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#CacheHandler",
+          "kind": "value"
+        },
+        "CachePolicy": {
+          "decl": "packages/store/src/-private/cache-handler/types.ts#CachePolicy",
+          "kind": "type"
+        },
+        "CollectionRecordArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#Collection",
+          "kind": "value"
+        },
+        "CreateRecordProperties": {
+          "decl": "packages/store/src/-private/store-service.ts#CreateRecordProperties",
+          "kind": "type"
+        },
+        "Document": {
+          "decl": "packages/store/src/-private/document.ts#ReactiveDocument",
+          "kind": "type"
+        },
+        "FindRecordQuery": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#FindRecordQuery",
+          "kind": "type"
+        },
+        "InstanceCache": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#InstanceCache",
+          "kind": "type"
+        },
+        "LiveArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#IdentifierArray",
+          "kind": "value"
+        },
+        "MUTATE": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE",
+          "kind": "value"
+        },
+        "NativeProxy": {
+          "decl": "packages/store/src/-private/record-arrays/native-proxy-type-fix.ts#NativeProxy",
+          "kind": "type"
+        },
+        "OBJECT_SIGNAL": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#OBJECT_SIGNAL",
+          "kind": "value"
+        },
+        "PromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#PromiseState",
+          "kind": "type"
+        },
+        "RecordArrayManager": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#RecordArrayManager",
+          "kind": "value"
+        },
+        "RelatedCollection": {
+          "decl": "packages/store/src/-private/record-arrays/many-array.ts#RelatedCollection",
+          "kind": "value"
+        },
+        "Request": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#Request",
+          "kind": "type"
+        },
+        "RequestCacheRequestState": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#RequestCacheRequestState",
+          "kind": "type"
+        },
+        "RequestLoadingState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestLoadingState",
+          "kind": "type"
+        },
+        "RequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestCacheRequestState",
+          "kind": "type"
+        },
+        "RequestStateService": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#RequestStateService",
+          "kind": "type"
+        },
+        "SOURCE": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE",
+          "kind": "value"
+        },
+        "SaveRecordMutation": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#SaveRecordMutation",
+          "kind": "type"
+        },
+        "SignalHooks": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#SignalHooks",
+          "kind": "type"
+        },
+        "Signals": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#Signals",
+          "kind": "value"
+        },
+        "Store": {
+          "decl": "packages/store/src/-private/store-service.ts#Store",
+          "kind": "value"
+        },
+        "StoreMap": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#StoreMap",
+          "kind": "value"
+        },
+        "StoreRequestContext": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#StoreRequestContext",
+          "kind": "type"
+        },
+        "StoreRequestInput": {
+          "decl": "packages/store/src/-private/cache-handler/handler.ts#StoreRequestInput",
+          "kind": "type"
+        },
+        "WarpDriveSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#WarpDriveSignal",
+          "kind": "type"
+        },
+        "_clearCaches": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#_clearCaches",
+          "kind": "value"
+        },
+        "_deprecatingNormalize": {
+          "decl": "packages/store/src/-private/utils/normalize-model-name.ts#normalizeModelName",
+          "kind": "value"
+        },
+        "coerceId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#coerceId",
+          "kind": "value"
+        },
+        "constructResource": {
+          "decl": "packages/store/src/-private/utils/construct-resource.ts#constructResource",
+          "kind": "value"
+        },
+        "consumeInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#consumeInternalSignal",
+          "kind": "value"
+        },
+        "createMemo": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#createMemo",
+          "kind": "value"
+        },
+        "defineNonEnumerableSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#defineNonEnumerableSignal",
+          "kind": "value"
+        },
+        "defineSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#defineSignal",
+          "kind": "value"
+        },
+        "ensureStringId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#ensureStringId",
+          "kind": "value"
+        },
+        "entangleSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#entangleSignal",
+          "kind": "value"
+        },
+        "fastPush": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#fastPush",
+          "kind": "value"
+        },
+        "gate": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#gate",
+          "kind": "value"
+        },
+        "getOrCreateInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#getOrCreateInternalSignal",
+          "kind": "value"
+        },
+        "getPromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#getPromiseState",
+          "kind": "value"
+        },
+        "getRequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#getRequestState",
+          "kind": "value"
+        },
+        "isDocumentIdentifier": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#isDocumentIdentifier",
+          "kind": "value"
+        },
+        "isStableIdentifier": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier",
+          "kind": "value"
+        },
+        "log": {
+          "decl": "packages/store/src/-private/debug/utils.ts#log",
+          "kind": "value"
+        },
+        "logGroup": {
+          "decl": "packages/store/src/-private/debug/utils.ts#logGroup",
+          "kind": "value"
+        },
+        "memoized": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#memoized",
+          "kind": "value"
+        },
+        "notifyInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#notifyInternalSignal",
+          "kind": "value"
+        },
+        "peekCache": {
+          "decl": "packages/store/src/-private/caches/cache-utils.ts#peekCache",
+          "kind": "value"
+        },
+        "peekInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#peekInternalSignal",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "removeRecordDataFor": {
+          "decl": "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor",
+          "kind": "value"
+        },
+        "setCacheFor": {
+          "decl": "packages/store/src/-private/caches/cache-utils.ts#setCacheFor",
+          "kind": "value"
+        },
+        "setRecordIdentifier": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#setRecordIdentifier",
+          "kind": "value"
+        },
+        "storeFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
+          "kind": "value"
+        },
+        "withSignalStore": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#withSignalStore",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/configure": {
+      "entry": "packages/store/src/configure.ts",
+      "exports": {
+        "setupSignals": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#setupSignals",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/types": {
+      "entry": "packages/store/src/types.ts",
+      "exports": {
+        "BaseFinderOptions": {
+          "decl": "packages/store/src/-types/q/store.ts#BaseFinderOptions",
+          "kind": "type"
+        },
+        "CacheCapabilitiesManager": {
+          "decl": "packages/store/src/-types/q/cache-capabilities-manager.ts#CacheCapabilitiesManager",
+          "kind": "type"
+        },
+        "FindAllOptions": {
+          "decl": "packages/store/src/-types/q/store.ts#FindAllOptions",
+          "kind": "type"
+        },
+        "FindRecordOptions": {
+          "decl": "packages/store/src/-types/q/store.ts#FindRecordOptions",
+          "kind": "type"
+        },
+        "LegacyResourceQuery": {
+          "decl": "packages/store/src/-types/q/store.ts#LegacyResourceQuery",
+          "kind": "type"
+        },
+        "ModelSchema": {
+          "decl": "packages/store/src/-types/q/ds-model.ts#ModelSchema",
+          "kind": "type"
+        },
+        "QueryOptions": {
+          "decl": "packages/store/src/-types/q/store.ts#QueryOptions",
+          "kind": "type"
+        },
+        "SchemaService": {
+          "decl": "packages/store/src/-types/q/schema-service.ts#SchemaService",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/tracking": {
+      "entry": "packages/tracking/src/index.ts",
+      "exports": {
+        "buildSignalConfig": {
+          "decl": "packages/tracking/src/index.ts#buildSignalConfig",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/tracking"
+    },
+    "@warp-drive/build-config": {
+      "entry": "packages/build-config/src/index.ts",
+      "exports": {
+        "WarpDriveConfig": {
+          "decl": "packages/build-config/src/index.ts#WarpDriveConfig",
+          "kind": "type"
+        },
+        "setConfig": {
+          "decl": "packages/build-config/src/index.ts#setConfig",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/babel-macros": {
+      "entry": "packages/build-config/src/babel-macros.ts",
+      "exports": {
+        "macros": {
+          "decl": "packages/build-config/src/babel-macros.ts#macros",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/canary-features": {
+      "entry": "packages/build-config/src/canary-features.ts",
+      "exports": {
+        "JSON_API_CACHE_VALIDATION_ERRORS": {
+          "decl": "packages/build-config/src/canary-features.ts#JSON_API_CACHE_VALIDATION_ERRORS",
+          "kind": "value"
+        },
+        "SAMPLE_FEATURE_FLAG": {
+          "decl": "packages/build-config/src/canary-features.ts#SAMPLE_FEATURE_FLAG",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/debugging": {
+      "entry": "packages/build-config/src/debugging.ts",
+      "exports": {
+        "DEBUG_RELATIONSHIP_NOTIFICATIONS": {
+          "decl": "packages/build-config/src/debugging.ts#DEBUG_RELATIONSHIP_NOTIFICATIONS",
+          "kind": "value"
+        },
+        "LOG_CACHE": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_CACHE",
+          "kind": "value"
+        },
+        "LOG_CACHE_POLICY": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_CACHE_POLICY",
+          "kind": "value"
+        },
+        "LOG_GRAPH": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_GRAPH",
+          "kind": "value"
+        },
+        "LOG_IDENTIFIERS": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_IDENTIFIERS",
+          "kind": "value"
+        },
+        "LOG_INSTANCE_CACHE": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_INSTANCE_CACHE",
+          "kind": "value"
+        },
+        "LOG_METRIC_COUNTS": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_METRIC_COUNTS",
+          "kind": "value"
+        },
+        "LOG_NOTIFICATIONS": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_NOTIFICATIONS",
+          "kind": "value"
+        },
+        "LOG_REQUESTS": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_REQUESTS",
+          "kind": "value"
+        },
+        "LOG_REQUEST_STATUS": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_REQUEST_STATUS",
+          "kind": "value"
+        },
+        "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS": {
+          "decl": "packages/build-config/src/debugging.ts#__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/deprecations": {
+      "entry": "packages/build-config/src/deprecations.ts",
+      "exports": {
+        "DEPRECATE_CATCH_ALL": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_CATCH_ALL",
+          "kind": "value"
+        },
+        "DEPRECATE_COMPUTED_CHAINS": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_COMPUTED_CHAINS",
+          "kind": "value"
+        },
+        "DEPRECATE_EMBER_INFLECTOR": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_EMBER_INFLECTOR",
+          "kind": "value"
+        },
+        "DEPRECATE_LEGACY_IMPORTS": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_LEGACY_IMPORTS",
+          "kind": "value"
+        },
+        "DEPRECATE_MANY_ARRAY_DUPLICATES": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_MANY_ARRAY_DUPLICATES",
+          "kind": "value"
+        },
+        "DEPRECATE_NON_STRICT_ID": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_NON_STRICT_ID",
+          "kind": "value"
+        },
+        "DEPRECATE_NON_STRICT_TYPES": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_NON_STRICT_TYPES",
+          "kind": "value"
+        },
+        "DEPRECATE_NON_UNIQUE_PAYLOADS": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_NON_UNIQUE_PAYLOADS",
+          "kind": "value"
+        },
+        "DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_RELATIONSHIP_REMOTE_UPDATE_CLEARING_LOCAL_STATE",
+          "kind": "value"
+        },
+        "DEPRECATE_STORE_EXTENDS_EMBER_OBJECT": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_STORE_EXTENDS_EMBER_OBJECT",
+          "kind": "value"
+        },
+        "DEPRECATE_TRACKING_PACKAGE": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_TRACKING_PACKAGE",
+          "kind": "value"
+        },
+        "DISABLE_7X_DEPRECATIONS": {
+          "decl": "packages/build-config/src/deprecations.ts#DISABLE_7X_DEPRECATIONS",
+          "kind": "value"
+        },
+        "ENABLE_LEGACY_SCHEMA_SERVICE": {
+          "decl": "packages/build-config/src/deprecations.ts#ENABLE_LEGACY_SCHEMA_SERVICE",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/env": {
+      "entry": "packages/build-config/src/env.ts",
+      "exports": {
+        "DEBUG": {
+          "decl": "packages/build-config/src/env.ts#DEBUG",
+          "kind": "value"
+        },
+        "IS_CI": {
+          "decl": "packages/build-config/src/env.ts#IS_CI",
+          "kind": "value"
+        },
+        "IS_RECORDING": {
+          "decl": "packages/build-config/src/env.ts#IS_RECORDING",
+          "kind": "value"
+        },
+        "PRODUCTION": {
+          "decl": "packages/build-config/src/env.ts#PRODUCTION",
+          "kind": "value"
+        },
+        "SHOULD_RECORD": {
+          "decl": "packages/build-config/src/env.ts#SHOULD_RECORD",
+          "kind": "value"
+        },
+        "TESTING": {
+          "decl": "packages/build-config/src/env.ts#TESTING",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/build-config/macros": {
+      "entry": "packages/build-config/src/macros.ts",
+      "exports": {
+        "assert": {
+          "decl": "packages/build-config/src/macros.ts#assert",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/build-config"
+    },
+    "@warp-drive/core-types": {
+      "entry": "packages/core-types/src/index.ts",
+      "exports": {
+        "StableRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableRecordIdentifier",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/-private": {
+      "entry": "packages/core-types/src/-private.ts",
+      "exports": {
+        "getOrSetGlobal": {
+          "decl": "packages/core-types/src/-private.ts#getOrSetGlobal",
+          "kind": "value"
+        },
+        "getOrSetUniversal": {
+          "decl": "packages/core-types/src/-private.ts#getOrSetUniversal",
+          "kind": "value"
+        },
+        "peekTransient": {
+          "decl": "packages/core-types/src/-private.ts#peekTransient",
+          "kind": "value"
+        },
+        "peekUniversalTransient": {
+          "decl": "packages/core-types/src/-private.ts#peekUniversalTransient",
+          "kind": "value"
+        },
+        "setTransient": {
+          "decl": "packages/core-types/src/-private.ts#setTransient",
+          "kind": "value"
+        },
+        "setUniversalTransient": {
+          "decl": "packages/core-types/src/-private.ts#setUniversalTransient",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache": {
+      "entry": "packages/core-types/src/cache.ts",
+      "exports": {
+        "Cache": {
+          "decl": "packages/core-types/src/cache.ts#Cache",
+          "kind": "type"
+        },
+        "ChangedAttributesHash": {
+          "decl": "packages/core-types/src/cache.ts#ChangedAttributesHash",
+          "kind": "type"
+        },
+        "RelationshipDiff": {
+          "decl": "packages/core-types/src/cache.ts#RelationshipDiff",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache/aliases": {
+      "entry": "packages/core-types/src/cache/aliases.ts",
+      "exports": {
+        "ResourceBlob": {
+          "decl": "packages/core-types/src/cache/aliases.ts#ResourceBlob",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache/change": {
+      "entry": "packages/core-types/src/cache/change.ts",
+      "exports": {
+        "Change": {
+          "decl": "packages/core-types/src/cache/change.ts#Change",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache/mutations": {
+      "entry": "packages/core-types/src/cache/mutations.ts",
+      "exports": {
+        "AddToResourceRelationshipMutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#AddToResourceRelationshipMutation",
+          "kind": "type"
+        },
+        "Mutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#Mutation",
+          "kind": "type"
+        },
+        "RemoveFromResourceRelationshipMutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#RemoveFromResourceRelationshipMutation",
+          "kind": "type"
+        },
+        "ReplaceRelatedRecordMutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#ReplaceRelatedRecordMutation",
+          "kind": "type"
+        },
+        "ReplaceRelatedRecordsMutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#ReplaceRelatedRecordsMutation",
+          "kind": "type"
+        },
+        "SortRelatedRecordsMutation": {
+          "decl": "packages/core-types/src/cache/mutations.ts#SortRelatedRecordsMutation",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache/operations": {
+      "entry": "packages/core-types/src/cache/operations.ts",
+      "exports": {
+        "AddResourceOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#AddResourceOperation",
+          "kind": "type"
+        },
+        "AddToDocumentOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#AddToDocumentOperation",
+          "kind": "type"
+        },
+        "AddToResourceRelationshipOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#AddToResourceRelationshipOperation",
+          "kind": "type"
+        },
+        "MergeOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#MergeOperation",
+          "kind": "type"
+        },
+        "Op": {
+          "decl": "packages/core-types/src/cache/operations.ts#Op",
+          "kind": "type"
+        },
+        "Operation": {
+          "decl": "packages/core-types/src/cache/operations.ts#Operation",
+          "kind": "type"
+        },
+        "RemoveDocumentOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#RemoveDocumentOperation",
+          "kind": "type"
+        },
+        "RemoveFromDocumentOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#RemoveFromDocumentOperation",
+          "kind": "type"
+        },
+        "RemoveFromResourceRelationshipOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#RemoveFromResourceRelationshipOperation",
+          "kind": "type"
+        },
+        "RemoveResourceOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#RemoveResourceOperation",
+          "kind": "type"
+        },
+        "UpdateResourceFieldOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#UpdateResourceFieldOperation",
+          "kind": "type"
+        },
+        "UpdateResourceOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#UpdateResourceOperation",
+          "kind": "type"
+        },
+        "UpdateResourceRelationshipOperation": {
+          "decl": "packages/core-types/src/cache/operations.ts#UpdateResourceRelationshipOperation",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/cache/relationship": {
+      "entry": "packages/core-types/src/cache/relationship.ts",
+      "exports": {
+        "CollectionRelationship": {
+          "decl": "packages/core-types/src/cache/relationship.ts#CollectionRelationship",
+          "kind": "type"
+        },
+        "Relationship": {
+          "decl": "packages/core-types/src/cache/relationship.ts#Relationship",
+          "kind": "type"
+        },
+        "ResourceRelationship": {
+          "decl": "packages/core-types/src/cache/relationship.ts#ResourceRelationship",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/graph": {
+      "entry": "packages/core-types/src/graph.ts",
+      "exports": {
+        "DeleteRecordOperation": {
+          "decl": "packages/core-types/src/graph.ts#DeleteRecordOperation",
+          "kind": "type"
+        },
+        "Graph": {
+          "decl": "packages/core-types/src/graph.ts#Graph",
+          "kind": "type"
+        },
+        "LocalRelationshipOperation": {
+          "decl": "packages/core-types/src/graph.ts#LocalRelationshipOperation",
+          "kind": "type"
+        },
+        "Operation": {
+          "decl": "packages/core-types/src/graph.ts#Operation",
+          "kind": "type"
+        },
+        "RemoteRelationshipOperation": {
+          "decl": "packages/core-types/src/graph.ts#RemoteRelationshipOperation",
+          "kind": "type"
+        },
+        "ReplaceRelatedRecordOperation": {
+          "decl": "packages/core-types/src/graph.ts#ReplaceRelatedRecordOperation",
+          "kind": "type"
+        },
+        "ReplaceRelatedRecordsOperation": {
+          "decl": "packages/core-types/src/graph.ts#ReplaceRelatedRecordsOperation",
+          "kind": "type"
+        },
+        "SortRelatedRecords": {
+          "decl": "packages/core-types/src/graph.ts#SortRelatedRecords",
+          "kind": "type"
+        },
+        "UnknownOperation": {
+          "decl": "packages/core-types/src/graph.ts#UnknownOperation",
+          "kind": "type"
+        },
+        "UpdateRelationshipOperation": {
+          "decl": "packages/core-types/src/graph.ts#UpdateRelationshipOperation",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/identifier": {
+      "entry": "packages/core-types/src/identifier.ts",
+      "exports": {
+        "CACHE_OWNER": {
+          "decl": "packages/core-types/src/identifier.ts#CACHE_OWNER",
+          "kind": "value"
+        },
+        "DEBUG_CLIENT_ORIGINATED": {
+          "decl": "packages/core-types/src/identifier.ts#DEBUG_CLIENT_ORIGINATED",
+          "kind": "value"
+        },
+        "DEBUG_IDENTIFIER_BUCKET": {
+          "decl": "packages/core-types/src/identifier.ts#DEBUG_IDENTIFIER_BUCKET",
+          "kind": "value"
+        },
+        "DEBUG_STALE_CACHE_OWNER": {
+          "decl": "packages/core-types/src/identifier.ts#DEBUG_STALE_CACHE_OWNER",
+          "kind": "value"
+        },
+        "ExistingRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#ExistingRecordIdentifier",
+          "kind": "type"
+        },
+        "Identifier": {
+          "decl": "packages/core-types/src/identifier.ts#Identifier",
+          "kind": "type"
+        },
+        "IdentifierBucket": {
+          "decl": "packages/core-types/src/identifier.ts#IdentifierBucket",
+          "kind": "type"
+        },
+        "NewRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#NewRecordIdentifier",
+          "kind": "type"
+        },
+        "RecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#RecordIdentifier",
+          "kind": "type"
+        },
+        "StableDocumentIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableDocumentIdentifier",
+          "kind": "type"
+        },
+        "StableExistingRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableExistingRecordIdentifier",
+          "kind": "type"
+        },
+        "StableIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableIdentifier",
+          "kind": "type"
+        },
+        "StableNewRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableNewRecordIdentifier",
+          "kind": "type"
+        },
+        "StableRecordIdentifier": {
+          "decl": "packages/core-types/src/identifier.ts#StableRecordIdentifier",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/json/raw": {
+      "entry": "packages/core-types/src/json/raw.ts",
+      "exports": {
+        "ArrayValue": {
+          "decl": "packages/core-types/src/json/raw.ts#ArrayValue",
+          "kind": "type"
+        },
+        "ObjectValue": {
+          "decl": "packages/core-types/src/json/raw.ts#ObjectValue",
+          "kind": "type"
+        },
+        "PrimitiveValue": {
+          "decl": "packages/core-types/src/json/raw.ts#PrimitiveValue",
+          "kind": "type"
+        },
+        "Value": {
+          "decl": "packages/core-types/src/json/raw.ts#Value",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/params": {
+      "entry": "packages/core-types/src/params.ts",
+      "exports": {
+        "QueryParamsSerializationOptions": {
+          "decl": "packages/core-types/src/params.ts#QueryParamsSerializationOptions",
+          "kind": "type"
+        },
+        "QueryParamsSource": {
+          "decl": "packages/core-types/src/params.ts#QueryParamsSource",
+          "kind": "type"
+        },
+        "Serializable": {
+          "decl": "packages/core-types/src/params.ts#Serializable",
+          "kind": "type"
+        },
+        "SerializablePrimitive": {
+          "decl": "packages/core-types/src/params.ts#SerializablePrimitive",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/record": {
+      "entry": "packages/core-types/src/record.ts",
+      "exports": {
+        "ExtractSuggestedCacheTypes": {
+          "decl": "packages/core-types/src/record.ts#ExtractSuggestedCacheTypes",
+          "kind": "type"
+        },
+        "Includes": {
+          "decl": "packages/core-types/src/record.ts#Includes",
+          "kind": "type"
+        },
+        "OpaqueRecordInstance": {
+          "decl": "packages/core-types/src/record.ts#OpaqueRecordInstance",
+          "kind": "type"
+        },
+        "StringSatisfiesIncludes": {
+          "decl": "packages/core-types/src/record.ts#StringSatisfiesIncludes",
+          "kind": "type"
+        },
+        "TypeFromInstance": {
+          "decl": "packages/core-types/src/record.ts#TypeFromInstance",
+          "kind": "type"
+        },
+        "TypeFromInstanceOrString": {
+          "decl": "packages/core-types/src/record.ts#TypeFromInstanceOrString",
+          "kind": "type"
+        },
+        "TypedRecordInstance": {
+          "decl": "packages/core-types/src/record.ts#TypedRecordInstance",
+          "kind": "type"
+        },
+        "_StringSatisfiesIncludes": {
+          "decl": "packages/core-types/src/record.ts#_StringSatisfiesIncludes",
+          "kind": "type"
+        },
+        "createIncludeValidator": {
+          "decl": "packages/core-types/src/record.ts#createIncludeValidator",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/request": {
+      "entry": "packages/core-types/src/request.ts",
+      "exports": {
+        "CacheOptions": {
+          "decl": "packages/core-types/src/request.ts#CacheOptions",
+          "kind": "type"
+        },
+        "ConstrainedRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#ConstrainedRequestOptions",
+          "kind": "type"
+        },
+        "CreateRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#CreateRequestOptions",
+          "kind": "type"
+        },
+        "DeleteRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#DeleteRequestOptions",
+          "kind": "type"
+        },
+        "EnableHydration": {
+          "decl": "packages/core-types/src/request.ts#EnableHydration",
+          "kind": "value"
+        },
+        "FindRecordOptions": {
+          "decl": "packages/core-types/src/request.ts#FindRecordOptions",
+          "kind": "type"
+        },
+        "FindRecordRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#FindRecordRequestOptions",
+          "kind": "type"
+        },
+        "HTTPMethod": {
+          "decl": "packages/core-types/src/request.ts#HTTPMethod",
+          "kind": "type"
+        },
+        "IS_FUTURE": {
+          "decl": "packages/core-types/src/request.ts#IS_FUTURE",
+          "kind": "value"
+        },
+        "ImmutableCreateRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#ImmutableCreateRequestOptions",
+          "kind": "type"
+        },
+        "ImmutableDeleteRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#ImmutableDeleteRequestOptions",
+          "kind": "type"
+        },
+        "ImmutableHeaders": {
+          "decl": "packages/core-types/src/request.ts#ImmutableHeaders",
+          "kind": "type"
+        },
+        "ImmutableRequestInfo": {
+          "decl": "packages/core-types/src/request.ts#ImmutableRequestInfo",
+          "kind": "type"
+        },
+        "ImmutableUpdateRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#ImmutableUpdateRequestOptions",
+          "kind": "type"
+        },
+        "PostQueryRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#PostQueryRequestOptions",
+          "kind": "type"
+        },
+        "QueryRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#QueryRequestOptions",
+          "kind": "type"
+        },
+        "RemotelyAccessibleIdentifier": {
+          "decl": "packages/core-types/src/request.ts#RemotelyAccessibleIdentifier",
+          "kind": "type"
+        },
+        "RequestContext": {
+          "decl": "packages/core-types/src/request.ts#RequestContext",
+          "kind": "type"
+        },
+        "RequestInfo": {
+          "decl": "packages/core-types/src/request.ts#RequestInfo",
+          "kind": "type"
+        },
+        "ResponseInfo": {
+          "decl": "packages/core-types/src/request.ts#ResponseInfo",
+          "kind": "type"
+        },
+        "STRUCTURED": {
+          "decl": "packages/core-types/src/request.ts#STRUCTURED",
+          "kind": "value"
+        },
+        "SkipCache": {
+          "decl": "packages/core-types/src/request.ts#SkipCache",
+          "kind": "value"
+        },
+        "StructuredDataDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredDataDocument",
+          "kind": "type"
+        },
+        "StructuredDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredDocument",
+          "kind": "type"
+        },
+        "StructuredErrorDocument": {
+          "decl": "packages/core-types/src/request.ts#StructuredErrorDocument",
+          "kind": "type"
+        },
+        "UpdateRequestOptions": {
+          "decl": "packages/core-types/src/request.ts#UpdateRequestOptions",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/runtime": {
+      "entry": "packages/core-types/src/runtime.ts",
+      "exports": {
+        "getRuntimeConfig": {
+          "decl": "packages/core-types/src/runtime.ts#getRuntimeConfig",
+          "kind": "value"
+        },
+        "setLogging": {
+          "decl": "packages/core-types/src/runtime.ts#setLogging",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/schema/concepts": {
+      "entry": "packages/core-types/src/schema/concepts.ts",
+      "exports": {
+        "Derivation": {
+          "decl": "packages/core-types/src/schema/concepts.ts#Derivation",
+          "kind": "type"
+        },
+        "HashFn": {
+          "decl": "packages/core-types/src/schema/concepts.ts#HashFn",
+          "kind": "type"
+        },
+        "Transformation": {
+          "decl": "packages/core-types/src/schema/concepts.ts#Transformation",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/schema/fields": {
+      "entry": "packages/core-types/src/schema/fields.ts",
+      "exports": {
+        "ArrayField": {
+          "decl": "packages/core-types/src/schema/fields.ts#ArrayField",
+          "kind": "type"
+        },
+        "CollectionField": {
+          "decl": "packages/core-types/src/schema/fields.ts#CollectionField",
+          "kind": "type"
+        },
+        "DerivedField": {
+          "decl": "packages/core-types/src/schema/fields.ts#DerivedField",
+          "kind": "type"
+        },
+        "FieldSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#FieldSchema",
+          "kind": "type"
+        },
+        "GenericField": {
+          "decl": "packages/core-types/src/schema/fields.ts#GenericField",
+          "kind": "type"
+        },
+        "HashField": {
+          "decl": "packages/core-types/src/schema/fields.ts#HashField",
+          "kind": "type"
+        },
+        "IdentityField": {
+          "decl": "packages/core-types/src/schema/fields.ts#IdentityField",
+          "kind": "type"
+        },
+        "LegacyAliasField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyAliasField",
+          "kind": "type"
+        },
+        "LegacyAttributeField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyAttributeField",
+          "kind": "type"
+        },
+        "LegacyBelongsToField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyBelongsToField",
+          "kind": "type"
+        },
+        "LegacyField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyField",
+          "kind": "type"
+        },
+        "LegacyHasManyField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyHasManyField",
+          "kind": "type"
+        },
+        "LegacyModeFieldSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyModeFieldSchema",
+          "kind": "type"
+        },
+        "LegacyRelationshipField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyRelationshipField",
+          "kind": "type"
+        },
+        "LegacyResourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#LegacyResourceSchema",
+          "kind": "type"
+        },
+        "LinksModeBelongsToField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LinksModeBelongsToField",
+          "kind": "type"
+        },
+        "LinksModeHasManyField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LinksModeHasManyField",
+          "kind": "type"
+        },
+        "LocalField": {
+          "decl": "packages/core-types/src/schema/fields.ts#LocalField",
+          "kind": "type"
+        },
+        "ObjectAliasField": {
+          "decl": "packages/core-types/src/schema/fields.ts#ObjectAliasField",
+          "kind": "type"
+        },
+        "ObjectField": {
+          "decl": "packages/core-types/src/schema/fields.ts#ObjectField",
+          "kind": "type"
+        },
+        "ObjectFieldSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#ObjectFieldSchema",
+          "kind": "type"
+        },
+        "ObjectSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#ObjectSchema",
+          "kind": "type"
+        },
+        "PolarisAliasField": {
+          "decl": "packages/core-types/src/schema/fields.ts#PolarisAliasField",
+          "kind": "type"
+        },
+        "PolarisModeFieldSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#PolarisModeFieldSchema",
+          "kind": "type"
+        },
+        "PolarisResourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#PolarisResourceSchema",
+          "kind": "type"
+        },
+        "ResourceField": {
+          "decl": "packages/core-types/src/schema/fields.ts#ResourceField",
+          "kind": "type"
+        },
+        "ResourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#ResourceSchema",
+          "kind": "type"
+        },
+        "Schema": {
+          "decl": "packages/core-types/src/schema/fields.ts#Schema",
+          "kind": "type"
+        },
+        "SchemaArrayField": {
+          "decl": "packages/core-types/src/schema/fields.ts#SchemaArrayField",
+          "kind": "type"
+        },
+        "SchemaObjectField": {
+          "decl": "packages/core-types/src/schema/fields.ts#SchemaObjectField",
+          "kind": "type"
+        },
+        "isLegacyResourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#isLegacyResourceSchema",
+          "kind": "value"
+        },
+        "isResourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#isResourceSchema",
+          "kind": "value"
+        },
+        "objectSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#objectSchema",
+          "kind": "value"
+        },
+        "resourceSchema": {
+          "decl": "packages/core-types/src/schema/fields.ts#resourceSchema",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/schema/fields.type-test": {
+      "entry": "packages/core-types/src/schema/fields.type-test.ts",
+      "exports": {},
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/spec/document": {
+      "entry": "packages/core-types/src/spec/document.ts",
+      "exports": {
+        "CollectionResourceDataDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#CollectionResourceDataDocument",
+          "kind": "type"
+        },
+        "ResourceDataDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#ResourceDataDocument",
+          "kind": "type"
+        },
+        "ResourceDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#ResourceDocument",
+          "kind": "type"
+        },
+        "ResourceErrorDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#ResourceErrorDocument",
+          "kind": "type"
+        },
+        "ResourceMetaDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#ResourceMetaDocument",
+          "kind": "type"
+        },
+        "SingleResourceDataDocument": {
+          "decl": "packages/core-types/src/spec/document.ts#SingleResourceDataDocument",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/spec/error": {
+      "entry": "packages/core-types/src/spec/error.ts",
+      "exports": {
+        "ApiError": {
+          "decl": "packages/core-types/src/spec/error.ts#ApiError",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/spec/json-api-raw": {
+      "entry": "packages/core-types/src/spec/json-api-raw.ts",
+      "exports": {
+        "CollectionResourceDocument": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#CollectionResourceDocument",
+          "kind": "type"
+        },
+        "CollectionResourceRelationship": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#CollectionResourceRelationship",
+          "kind": "type"
+        },
+        "EmptyResourceDocument": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#EmptyResourceDocument",
+          "kind": "type"
+        },
+        "ExistingResourceIdentifierObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ExistingResourceIdentifierObject",
+          "kind": "type"
+        },
+        "ExistingResourceObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ExistingResourceObject",
+          "kind": "type"
+        },
+        "InnerRelationshipDocument": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#InnerRelationshipDocument",
+          "kind": "type"
+        },
+        "JsonApiDocument": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#JsonApiDocument",
+          "kind": "type"
+        },
+        "Link": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#Link",
+          "kind": "type"
+        },
+        "LinkObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#LinkObject",
+          "kind": "type"
+        },
+        "Links": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#Links",
+          "kind": "type"
+        },
+        "Meta": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#Meta",
+          "kind": "type"
+        },
+        "NewResourceIdentifierObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#NewResourceIdentifierObject",
+          "kind": "type"
+        },
+        "NewResourceObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#NewResourceObject",
+          "kind": "type"
+        },
+        "PaginationLinks": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#PaginationLinks",
+          "kind": "type"
+        },
+        "ResourceIdentifier": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ResourceIdentifier",
+          "kind": "type"
+        },
+        "ResourceIdentifierObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ResourceIdentifierObject",
+          "kind": "type"
+        },
+        "ResourceObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ResourceObject",
+          "kind": "type"
+        },
+        "ResourceRelationshipsObject": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#ResourceRelationshipsObject",
+          "kind": "type"
+        },
+        "SingleResourceDocument": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#SingleResourceDocument",
+          "kind": "type"
+        },
+        "SingleResourceRelationship": {
+          "decl": "packages/core-types/src/spec/json-api-raw.ts#SingleResourceRelationship",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/symbols": {
+      "entry": "packages/core-types/src/symbols.ts",
+      "exports": {
+        "RecordStore": {
+          "decl": "packages/core-types/src/symbols.ts#RecordStore",
+          "kind": "value"
+        },
+        "RequestSignature": {
+          "decl": "packages/core-types/src/symbols.ts#RequestSignature",
+          "kind": "value"
+        },
+        "ResourceType": {
+          "decl": "packages/core-types/src/symbols.ts#ResourceType",
+          "kind": "value"
+        },
+        "TransformName": {
+          "decl": "packages/core-types/src/symbols.ts#TransformName",
+          "kind": "value"
+        },
+        "Type": {
+          "decl": "packages/core-types/src/symbols.ts#Type",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core-types/utils": {
+      "entry": "packages/core-types/src/utils.ts",
+      "exports": {
+        "Mutable": {
+          "decl": "packages/core-types/src/utils.ts#Mutable",
+          "kind": "type"
+        },
+        "WithPartial": {
+          "decl": "packages/core-types/src/utils.ts#WithPartial",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/ember": {
+      "entry": "packages/ember/src/index.ts",
+      "exports": {
+        "Await": {
+          "decl": "packages/ember/src/-private/await.gts#Await",
+          "kind": "value"
+        },
+        "Request": {
+          "decl": "packages/ember/src/-private/request.gts#Request",
+          "kind": "value"
+        },
+        "RequestLoadingState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestLoadingState",
+          "kind": "type"
+        },
+        "Throw": {
+          "decl": "packages/ember/src/-private/await.gts#Throw",
+          "kind": "value"
+        },
+        "getPromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#getPromiseState",
+          "kind": "value"
+        },
+        "getRequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#getRequestState",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/ember"
+    },
+    "@warp-drive/ember/install": {
+      "entry": "packages/ember/src/install.ts",
+      "exports": {
+        "buildSignalConfig": {
+          "decl": "packages/ember/src/install.ts#buildSignalConfig",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/ember"
+    },
+    "@warp-drive/experiments/data-worker": {
+      "entry": "packages/experiments/src/data-worker.ts",
+      "exports": {
+        "CacheHandler": {
+          "decl": "packages/experiments/src/data-worker/cache-handler.ts#CacheHandler",
+          "kind": "value"
+        },
+        "DataWorker": {
+          "decl": "packages/experiments/src/data-worker/worker.ts#DataWorker",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/experiments/document-storage": {
+      "entry": "packages/experiments/src/document-storage.ts",
+      "exports": {
+        "DocumentStorage": {
+          "decl": "packages/experiments/src/document-storage/index.ts#DocumentStorage",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/experiments/image-fetch": {
+      "entry": "packages/experiments/src/image-fetch.ts",
+      "exports": {
+        "ImageFetch": {
+          "decl": "packages/experiments/src/image-worker/fetch.ts#ImageFetch",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/experiments/image-worker": {
+      "entry": "packages/experiments/src/image-worker.ts",
+      "exports": {
+        "ImageWorker": {
+          "decl": "packages/experiments/src/image-worker/worker.ts#ImageWorker",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/experiments/persisted-cache": {
+      "entry": "packages/experiments/src/persisted-cache.ts",
+      "exports": {
+        "PersistedCache": {
+          "decl": "packages/experiments/src/persisted-cache/cache.ts#PersistedCache",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/experiments/worker-fetch": {
+      "entry": "packages/experiments/src/worker-fetch.ts",
+      "exports": {
+        "WorkerFetch": {
+          "decl": "packages/experiments/src/data-worker/fetch.ts#WorkerFetch",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/experiments"
+    },
+    "@warp-drive/schema-record": {
+      "entry": "packages/schema-record/src/index.ts",
+      "exports": {
+        "Checkout": {
+          "decl": "packages/schema-record/src/-private/symbols.ts#Checkout",
+          "kind": "value"
+        },
+        "SchemaRecord": {
+          "decl": "packages/schema-record/src/-private/record.ts#SchemaRecord",
+          "kind": "type"
+        },
+        "SchemaService": {
+          "decl": "packages/schema-record/src/-private/schema.ts#SchemaService",
+          "kind": "value"
+        },
+        "Transformation": {
+          "decl": "packages/schema-record/src/-private/schema.ts#Transformation",
+          "kind": "type"
+        },
+        "fromIdentity": {
+          "decl": "packages/schema-record/src/-private/schema.ts#fromIdentity",
+          "kind": "value"
+        },
+        "instantiateRecord": {
+          "decl": "packages/schema-record/src/-private/hooks.ts#instantiateRecord",
+          "kind": "value"
+        },
+        "registerDerivations": {
+          "decl": "packages/schema-record/src/-private/schema.ts#registerDerivations",
+          "kind": "value"
+        },
+        "teardownRecord": {
+          "decl": "packages/schema-record/src/-private/hooks.ts#teardownRecord",
+          "kind": "value"
+        },
+        "withDefaults": {
+          "decl": "packages/schema-record/src/-private/schema.ts#withDefaults",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/schema-record"
+    },
+    "@warp-drive/schema-record/-private": {
+      "entry": "packages/schema-record/src/-private.ts",
+      "exports": {
+        "Editable": {
+          "decl": "packages/schema-record/src/-private/symbols.ts#Editable",
+          "kind": "value"
+        },
+        "Legacy": {
+          "decl": "packages/schema-record/src/-private/symbols.ts#Legacy",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/schema-record"
+    },
+    "ember-data": {
+      "entry": "packages/-ember-data/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/src/-private/core.ts#DS",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/-private/core": {
+      "entry": "packages/-ember-data/src/-private/core.ts",
+      "exports": {
+        "DS": {
+          "decl": "packages/-ember-data/src/-private/core.ts#DS",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/-ember-data/src/-private/core.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/-private/index": {
+      "entry": "packages/-ember-data/src/-private/index.ts",
+      "exports": {
+        "DS": {
+          "decl": "packages/-ember-data/src/-private/core.ts#DS",
+          "kind": "value"
+        },
+        "Errors": {
+          "decl": "packages/model/src/-private/errors.ts#Errors",
+          "kind": "value"
+        },
+        "ManyArray": {
+          "decl": "packages/store/src/-private/record-arrays/many-array.ts#RelatedCollection",
+          "kind": "value"
+        },
+        "PromiseArray": {
+          "decl": "packages/-ember-data/src/-private/index.ts#PromiseArray",
+          "kind": "value"
+        },
+        "PromiseManyArray": {
+          "decl": "packages/model/src/-private/promise-many-array.ts#PromiseManyArray",
+          "kind": "value"
+        },
+        "PromiseObject": {
+          "decl": "packages/-ember-data/src/-private/index.ts#PromiseObject",
+          "kind": "value"
+        },
+        "RecordArrayManager": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#RecordArrayManager",
+          "kind": "value"
+        },
+        "Snapshot": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#Snapshot",
+          "kind": "value"
+        },
+        "SnapshotRecordArray": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray",
+          "kind": "value"
+        },
+        "Store": {
+          "decl": "packages/-ember-data/src/store.ts#default",
+          "kind": "value"
+        },
+        "coerceId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#coerceId",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapter": {
+      "entry": "packages/-ember-data/src/adapter.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/errors": {
+      "entry": "packages/-ember-data/src/adapters/errors.ts",
+      "exports": {
+        "AbortError": {
+          "decl": "packages/adapter/src/error.js#AbortError",
+          "kind": "value"
+        },
+        "AdapterError": {
+          "decl": "packages/adapter/src/error.js#default",
+          "kind": "value"
+        },
+        "ConflictError": {
+          "decl": "packages/adapter/src/error.js#ConflictError",
+          "kind": "value"
+        },
+        "ForbiddenError": {
+          "decl": "packages/adapter/src/error.js#ForbiddenError",
+          "kind": "value"
+        },
+        "InvalidError": {
+          "decl": "packages/adapter/src/error.js#InvalidError",
+          "kind": "value"
+        },
+        "NotFoundError": {
+          "decl": "packages/adapter/src/error.js#NotFoundError",
+          "kind": "value"
+        },
+        "ServerError": {
+          "decl": "packages/adapter/src/error.js#ServerError",
+          "kind": "value"
+        },
+        "TimeoutError": {
+          "decl": "packages/adapter/src/error.js#TimeoutError",
+          "kind": "value"
+        },
+        "UnauthorizedError": {
+          "decl": "packages/adapter/src/error.js#UnauthorizedError",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/json-api": {
+      "entry": "packages/-ember-data/src/adapters/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/json-api.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/rest": {
+      "entry": "packages/-ember-data/src/adapters/rest.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/rest.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/attr": {
+      "entry": "packages/-ember-data/src/attr.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/model/src/-private/attr.ts#attr",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/model": {
+      "entry": "packages/-ember-data/src/model.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/model/src/-private/model.ts#Model",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/relationships": {
+      "entry": "packages/-ember-data/src/relationships.ts",
+      "exports": {
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.ts#belongsTo",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.ts#hasMany",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializer": {
+      "entry": "packages/-ember-data/src/serializer.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/embedded-records-mixin": {
+      "entry": "packages/-ember-data/src/serializers/embedded-records-mixin.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/-private/embedded-records-mixin.js#EmbeddedRecordsMixin",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/json": {
+      "entry": "packages/-ember-data/src/serializers/json.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/json-api": {
+      "entry": "packages/-ember-data/src/serializers/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json-api.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/rest": {
+      "entry": "packages/-ember-data/src/serializers/rest.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/rest.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/setup-container": {
+      "entry": "packages/-ember-data/src/setup-container.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/src/setup-container.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/store": {
+      "entry": "packages/-ember-data/src/store.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/src/store.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/test-support": {
+      "entry": "packages/-ember-data/src/test-support/index.ts",
+      "exports": {
+        "render": {
+          "decl": "packages/-ember-data/src/test-support/index.ts#render",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/transform": {
+      "entry": "packages/-ember-data/src/transform.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/-private/transforms/transform.ts#Transform",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/version": {
+      "entry": "packages/-ember-data/src/version.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/package.json#version",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    }
+  },
+  "packages": {
+    "@ember-data/active-record": {
+      "dir": "packages/active-record",
+      "modules": [
+        "@ember-data/active-record/request"
+      ]
+    },
+    "@ember-data/adapter": {
+      "dir": "packages/adapter",
+      "modules": [
+        "@ember-data/adapter",
+        "@ember-data/adapter/-private",
+        "@ember-data/adapter/error",
+        "@ember-data/adapter/json-api",
+        "@ember-data/adapter/rest"
+      ]
+    },
+    "@ember-data/debug": {
+      "dir": "packages/debug",
+      "modules": [
+        "@ember-data/debug",
+        "@ember-data/debug/_app_/data-adapter",
+        "@ember-data/debug/data-adapter"
+      ]
+    },
+    "@ember-data/graph": {
+      "dir": "packages/graph",
+      "modules": [
+        "@ember-data/graph/-private"
+      ]
+    },
+    "@ember-data/json-api": {
+      "dir": "packages/json-api",
+      "modules": [
+        "@ember-data/json-api",
+        "@ember-data/json-api/request"
+      ]
+    },
+    "@ember-data/legacy-compat": {
+      "dir": "packages/legacy-compat",
+      "modules": [
+        "@ember-data/legacy-compat",
+        "@ember-data/legacy-compat/-private",
+        "@ember-data/legacy-compat/builders",
+        "@ember-data/legacy-compat/utils"
+      ]
+    },
+    "@ember-data/model": {
+      "dir": "packages/model",
+      "modules": [
+        "@ember-data/model",
+        "@ember-data/model/-private",
+        "@ember-data/model/hooks",
+        "@ember-data/model/migration-support"
+      ]
+    },
+    "@ember-data/request": {
+      "dir": "packages/request",
+      "modules": [
+        "@ember-data/request",
+        "@ember-data/request/fetch"
+      ]
+    },
+    "@ember-data/request-utils": {
+      "dir": "packages/request-utils",
+      "modules": [
+        "@ember-data/request-utils",
+        "@ember-data/request-utils/deprecation-support",
+        "@ember-data/request-utils/handlers",
+        "@ember-data/request-utils/string"
+      ]
+    },
+    "@ember-data/rest": {
+      "dir": "packages/rest",
+      "modules": [
+        "@ember-data/rest/request"
+      ]
+    },
+    "@ember-data/serializer": {
+      "dir": "packages/serializer",
+      "modules": [
+        "@ember-data/serializer",
+        "@ember-data/serializer/json",
+        "@ember-data/serializer/json-api",
+        "@ember-data/serializer/rest",
+        "@ember-data/serializer/transform"
+      ]
+    },
+    "@ember-data/store": {
+      "dir": "packages/store",
+      "modules": [
+        "@ember-data/store",
+        "@ember-data/store/-private",
+        "@ember-data/store/configure",
+        "@ember-data/store/types"
+      ]
+    },
+    "@ember-data/tracking": {
+      "dir": "packages/tracking",
+      "modules": [
+        "@ember-data/tracking"
+      ]
+    },
+    "@warp-drive/build-config": {
+      "dir": "packages/build-config",
+      "modules": [
+        "@warp-drive/build-config",
+        "@warp-drive/build-config/babel-macros",
+        "@warp-drive/build-config/canary-features",
+        "@warp-drive/build-config/debugging",
+        "@warp-drive/build-config/deprecations",
+        "@warp-drive/build-config/env",
+        "@warp-drive/build-config/macros"
+      ]
+    },
+    "@warp-drive/core": {
+      "dir": "warp-drive-packages/core",
+      "modules": []
+    },
+    "@warp-drive/core-types": {
+      "dir": "packages/core-types",
+      "modules": [
+        "@warp-drive/core-types",
+        "@warp-drive/core-types/-private",
+        "@warp-drive/core-types/cache",
+        "@warp-drive/core-types/cache/aliases",
+        "@warp-drive/core-types/cache/change",
+        "@warp-drive/core-types/cache/mutations",
+        "@warp-drive/core-types/cache/operations",
+        "@warp-drive/core-types/cache/relationship",
+        "@warp-drive/core-types/graph",
+        "@warp-drive/core-types/identifier",
+        "@warp-drive/core-types/json/raw",
+        "@warp-drive/core-types/params",
+        "@warp-drive/core-types/record",
+        "@warp-drive/core-types/request",
+        "@warp-drive/core-types/runtime",
+        "@warp-drive/core-types/schema/concepts",
+        "@warp-drive/core-types/schema/fields",
+        "@warp-drive/core-types/schema/fields.type-test",
+        "@warp-drive/core-types/spec/document",
+        "@warp-drive/core-types/spec/error",
+        "@warp-drive/core-types/spec/json-api-raw",
+        "@warp-drive/core-types/symbols",
+        "@warp-drive/core-types/utils"
+      ]
+    },
+    "@warp-drive/ember": {
+      "dir": "packages/ember",
+      "modules": [
+        "@warp-drive/ember",
+        "@warp-drive/ember/install"
+      ]
+    },
+    "@warp-drive/experiments": {
+      "dir": "packages/experiments",
+      "modules": [
+        "@warp-drive/experiments/data-worker",
+        "@warp-drive/experiments/document-storage",
+        "@warp-drive/experiments/image-fetch",
+        "@warp-drive/experiments/image-worker",
+        "@warp-drive/experiments/persisted-cache",
+        "@warp-drive/experiments/worker-fetch"
+      ]
+    },
+    "@warp-drive/schema-record": {
+      "dir": "packages/schema-record",
+      "modules": [
+        "@warp-drive/schema-record",
+        "@warp-drive/schema-record/-private"
+      ]
+    },
+    "ember-data": {
+      "dir": "packages/-ember-data",
+      "modules": [
+        "ember-data",
+        "ember-data/-private/core",
+        "ember-data/-private/index",
+        "ember-data/adapter",
+        "ember-data/adapters/errors",
+        "ember-data/adapters/json-api",
+        "ember-data/adapters/rest",
+        "ember-data/attr",
+        "ember-data/model",
+        "ember-data/relationships",
+        "ember-data/serializer",
+        "ember-data/serializers/embedded-records-mixin",
+        "ember-data/serializers/json",
+        "ember-data/serializers/json-api",
+        "ember-data/serializers/rest",
+        "ember-data/setup-container",
+        "ember-data/store",
+        "ember-data/test-support",
+        "ember-data/transform",
+        "ember-data/version"
+      ]
+    }
+  },
+  "schema": 1,
+  "tag": "v5.5.0",
+  "version": "5.5.0"
+}
