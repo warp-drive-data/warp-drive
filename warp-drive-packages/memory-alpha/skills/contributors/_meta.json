@@ -9,6 +9,7 @@
     "write-documentation",
     "use-ci-as-the-source-of-truth",
     "extract-test-setup-into-functions",
+    "create-symbols",
     "submit-a-pr"
   ],
   "webIndex": "overview",
@@ -22,6 +23,7 @@
     "write-documentation": { "title": "Write Documentation" },
     "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" },
     "extract-test-setup-into-functions": { "title": "Extract Test Setup Into Functions" },
+    "create-symbols": { "title": "Create Symbols With getOrSetGlobal" },
     "submit-a-pr": { "title": "Submit a PR" }
   }
 }
