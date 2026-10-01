@@ -13,7 +13,10 @@
  * - `kinds`: per module both have, exports whose `kind` disagrees (`value` when the published JS
  *   has the binding, `type` when only the published types have it).
  *
- * A package the surface does not cover is listed under `packagesNotInSurface` and not compared.
+ * A package that publishes no types (`types: "not published"`, as every package of 4.12 and 5.0)
+ * is compared on its values only: the surface's `type` exports, and its modules that export
+ * nothing else, are not expected to ship. A package the surface does not cover is listed under
+ * `packagesNotInSurface` and not compared.
  *
  * The shapes map each declaration the published types export to its shape, by
  * `<package>/<file in the package>#<local name>` and, when a surface is given, also by the
@@ -197,13 +200,23 @@ export function compareWithSurface(packages, surface) {
       uncovered.push(name);
       continue;
     }
+    // without published types only values can be checked: a type export, or a module that exports
+    // types and nothing else, is not expected to ship
+    const valuesOnly = record.published && record.types === 'not published';
+    /** @param {SurfaceExport} entry */
+    const expected = (entry) => !valuesOnly || entry.kind === 'value';
+    /** @param {string} module */
+    const expectedModule = (module) => {
+      const exports = Object.values(surface.modules[module].exports);
+      return exports.length === 0 || exports.some(expected);
+    };
     const surfaceModules = new Set(byPackage.get(name) ?? []);
     /** @type {Record<string, ModuleRecord>} */
     const published = record.published ? record.modules : {};
     const shipped = new Set(Object.keys(published).filter((m) => published[m].runtime || published[m].types));
     /** @type {Differences} */
     const entry = {
-      modulesNotShipped: [...surfaceModules].filter((m) => !shipped.has(m)).sort(compare),
+      modulesNotShipped: [...surfaceModules].filter((m) => !shipped.has(m) && expectedModule(m)).sort(compare),
       modulesNotInSurface: [...shipped].filter((m) => !surfaceModules.has(m)).sort(compare),
       tokensNotShipped: {},
       tokensNotInSurface: {},
@@ -211,17 +224,17 @@ export function compareWithSurface(packages, surface) {
     };
     for (const module of [...surfaceModules].filter((m) => shipped.has(m)).sort(compare)) {
       const kinds = publishedKinds(published[module]);
-      const expected = surface.modules[module].exports;
-      const notShipped = Object.keys(expected)
-        .filter((n) => !kinds.has(n))
+      const exports = surface.modules[module].exports;
+      const notShipped = Object.keys(exports)
+        .filter((n) => !kinds.has(n) && expected(exports[n]))
         .sort(compare);
-      const notInSurface = [...kinds.keys()].filter((n) => !Object.hasOwn(expected, n)).sort(compare);
+      const notInSurface = [...kinds.keys()].filter((n) => !Object.hasOwn(exports, n)).sort(compare);
       /** @type {Differences['kinds'][string]} */
       const disagreeing = {};
-      for (const exported of Object.keys(expected).sort(compare)) {
+      for (const exported of Object.keys(exports).sort(compare)) {
         const kind = kinds.get(exported);
-        if (kind && kind !== expected[exported].kind) {
-          disagreeing[exported] = { published: kind, surface: expected[exported].kind };
+        if (kind && kind !== exports[exported].kind) {
+          disagreeing[exported] = { published: kind, surface: exports[exported].kind };
         }
       }
       if (notShipped.length) entry.tokensNotShipped[module] = notShipped;

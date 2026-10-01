@@ -10,7 +10,9 @@
  *   `exports` map, the targets that do not ship, its modules, and per module the runtime export
  *   names (from the JS the `import`/`default` condition resolves to) and the type export names
  *   (from the `.d.ts` the `types` condition resolves to, the `.d.ts` beside the JS, a shipped
- *   `.ts` source, or an ambient `declare module` block), following `export *` and re-exports.
+ *   `.ts` source, or an ambient `declare module` block), following `export *` and re-exports. A
+ *   package that ships no `.d.ts` at all publishes no types: it is marked `types: "not
+ *   published"` and none of its modules has type names.
  * - `PublishedRelease` ties the packages of one release together, so an `export * from` another
  *   package of the release resolves too, and prints declaration shapes from the `.d.ts` files.
  *
@@ -80,6 +82,7 @@ const EXTENSION = /(?:\.d)?\.[cm]?[jt]sx?$/;
  * @typedef {{
  *   version: string, published: true, modulesFrom: Layout['modulesFrom'], exports: unknown,
  *   missing: Missing, chunks: string[], modules: Record<string, ModuleRecord>, parseErrors?: string[],
+ *   types?: 'not published',
  * }} PublishedRecord
  */
 
@@ -407,6 +410,8 @@ export class PublishedPackage {
   #ambient = null;
   /** @type {Layout | null} */
   #layout = null;
+  /** @type {boolean | null} */
+  #publishesTypes = null;
 
   /** @param {Map<string, Buffer>} files  path inside the package -> bytes */
   constructor(files) {
@@ -466,9 +471,19 @@ export class PublishedPackage {
     return this.#ambient;
   }
 
+  /** Whether the package ships any `.d.ts`; without one it publishes no types. */
+  get publishesTypes() {
+    this.#publishesTypes ??= [...this.files.keys()].some((file) => DTS.test(file));
+    return this.#publishesTypes;
+  }
+
   /** @returns {Layout} */
   get layout() {
-    this.#layout ??= layoutOf(this);
+    if (!this.#layout) {
+      const layout = layoutOf(this);
+      if (!this.publishesTypes) for (const entry of layout.modules.values()) entry.types = null;
+      this.#layout = layout;
+    }
     return this.#layout;
   }
 
@@ -1330,6 +1345,7 @@ export class PublishedRelease {
       modules,
     };
     if (pkg.errors.size) record.parseErrors = sorted(pkg.errors.keys());
+    if (!pkg.publishesTypes) record.types = 'not published';
     return record;
   }
 

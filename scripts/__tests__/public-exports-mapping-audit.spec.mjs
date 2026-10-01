@@ -241,6 +241,7 @@ test('shapes print a class, a function and an interface as the .d.ts declares th
 test("a v1 addon's modules are its addon/ and addon-test-support/ files, index dropped", () => {
   const addon = readPublished(ADDON_DIR);
   assert.equal(addon.modulesFrom, 'addon');
+  assert.equal(addon.types, 'not published', 'the addon ships no .d.ts');
   assert.deepEqual(Object.keys(addon.modules), [
     '@fixture/addon',
     '@fixture/addon/-private',
@@ -250,8 +251,9 @@ test("a v1 addon's modules are its addon/ and addon-test-support/ files, index d
   assert.deepEqual(addon.chunks, ['addon/index-1a2b3c4d.js']);
   assert.deepEqual(addon.modules['@fixture/addon/-private'], {
     runtime: { file: 'addon/-private/index.ts', names: ['Thing', 'configure'] },
-    types: { file: 'addon/-private/index.ts', names: ['Mode', 'Options', 'Thing', 'configure'] },
+    types: null,
   });
+  assert.equal(readPublished(KIT_TGZ).types, undefined, 'a package that ships a .d.ts publishes types');
 });
 
 test('only code modules count: no package.json, Markdown, JSON, blueprints or unstable-preview-types', () => {
@@ -458,6 +460,44 @@ test('a published package the surface does not cover is listed, not compared', a
   assert.deepEqual(/** @type {any} */ (audit.packages['@fixture/gone']).differences.modulesNotShipped, [
     '@fixture/gone',
   ]);
+});
+
+test('a package that publishes no types is compared on its values only', () => {
+  const addon = { dir: 'packages/addon', ...readPublished(ADDON_DIR) };
+  /** @param {Record<string, 'value' | 'type'>} kinds */
+  const exports = (kinds) =>
+    Object.fromEntries(Object.entries(kinds).map(([name, kind]) => [name, { kind, decl: `src#${name}` }]));
+  const surface = {
+    packages: { '@fixture/addon': { dir: 'packages/addon', modules: [] } },
+    modules: {
+      '@fixture/addon/-private': {
+        package: '@fixture/addon',
+        exports: exports({ Thing: 'value', configure: 'value', Options: 'type', Mode: 'type', removed: 'value' }),
+      },
+      '@fixture/addon/utils/strings': {
+        package: '@fixture/addon',
+        exports: exports({ dasherize: 'value', camelize: 'type' }),
+      },
+      '@fixture/addon/types': { package: '@fixture/addon', exports: exports({ Registry: 'type' }) },
+      '@fixture/addon/gone': { package: '@fixture/addon', exports: exports({ gone: 'value' }) },
+      '@fixture/addon/register': { package: '@fixture/addon', exports: {} },
+    },
+  };
+  const { differences, notInSurface } = compareWithSurface(
+    /** @type {any} */ ({ '@fixture/addon': addon }),
+    /** @type {any} */ (surface)
+  );
+  assert.deepEqual(notInSurface, []);
+  assert.deepEqual(differences['@fixture/addon'], {
+    // `types` exports only types and is not expected; `register` exports nothing and still is
+    modulesNotShipped: ['@fixture/addon/gone', '@fixture/addon/register'],
+    modulesNotInSurface: ['@fixture/addon', '@fixture/addon/test-support'],
+    // Options and Mode are types, which this package does not publish
+    tokensNotShipped: { '@fixture/addon/-private': ['removed'] },
+    tokensNotInSurface: {},
+    // the JS exports camelize, so it is a value whatever the surface says
+    kinds: { '@fixture/addon/utils/strings': { camelize: { published: 'value', surface: 'type' } } },
+  });
 });
 
 test('compareWithSurface reports nothing for a surface that matches', async (t) => {
