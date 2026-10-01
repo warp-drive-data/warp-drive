@@ -87,7 +87,7 @@ method that doesn't save anything yet. Have it send the request:
 await this.store.request(patchTodo(todo, { title }));
 ```
 
-Import the builder:
+Import the builder at the top of `todo-item.gts`:
 
 ```ts
 import { patchTodo } from '#app/data/builders/update.ts';

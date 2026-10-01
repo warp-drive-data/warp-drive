@@ -50,7 +50,7 @@ there:
 await this.store.request(createTodo(attributes));
 ```
 
-Import the builder:
+Import the builder at the top of `create-todo.gts`:
 
 ```ts
 import { createTodo } from '#app/data/builders/create.ts';

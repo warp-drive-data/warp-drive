@@ -51,7 +51,7 @@ the request:
 await this.store.request(deleteTodo(todo));
 ```
 
-Import the builder:
+Import the builder at the top of `todo-item.gts`:
 
 ```ts
 import { deleteTodo } from '#app/data/builders/delete.ts';
@@ -65,7 +65,8 @@ Inside each component, `this.deleteTodo` is the component's method and
 ## Check it
 
 Hover a todo and click ×. It disappears once the API confirms, and the footer
-count drops. Double-click another, clear its title, press Enter. Gone too. One
+count drops. That wait is on purpose: these components delete pessimistically,
+so a todo the server failed to delete never vanishes from the screen. Double-click another, clear its title, press Enter. Gone too. One
 `DELETE` each.
 
 ## What's next
