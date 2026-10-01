@@ -253,6 +253,59 @@ test("a v1 addon's modules are its addon/ and addon-test-support/ files, index d
   });
 });
 
+test('only code modules count: no package.json, Markdown, JSON, blueprints or unstable-preview-types', () => {
+  const files = new Map(
+    Object.entries({
+      'package.json': JSON.stringify({
+        name: '@fixture/tools',
+        version: '2.0.0',
+        exports: {
+          '.': { types: './dist/index.d.ts', default: './dist/index.js' },
+          './package.json': './package.json',
+          './test-support': { types: './dist/test-support.d.ts', default: './dist/test-support.js' },
+          './unstable-preview-types': { types: './unstable-preview-types/index.d.ts' },
+          './types': { types: './dist/types.d.ts' },
+          './styles/*': './dist/styles/*.css',
+          './blueprints/*': './blueprints/*.js',
+          './migrate/*': './src/migrate/*',
+        },
+      }),
+      'dist/index.js': 'export const run = () => {};\n',
+      'dist/index.d.ts': 'export declare const run: () => void;\n',
+      'dist/test-support.js': 'export function setupTest() {}\n',
+      'dist/test-support.d.ts': 'export declare function setupTest(): void;\n',
+      'dist/types.d.ts': 'export type Mode = "a" | "b";\n',
+      'dist/styles/theme.css': ':root {}\n',
+      'unstable-preview-types/index.d.ts': "declare module '@fixture/tools' {\n  export const run: () => void;\n}\n",
+      'blueprints/model/index.js': 'module.exports = {};\n',
+      'src/migrate/README.md': '# migrate\n',
+      'src/migrate/config.json': '{}\n',
+      'src/migrate/legacy.cjs': 'module.exports = {};\n',
+      'src/migrate/task.mjs': 'export function migrate() {}\n',
+      'src/migrate/types.ts': 'export interface Options {}\nexport const DEFAULTS: Options = {};\n',
+    }).map(([file, text]) => [file, Buffer.from(text)])
+  );
+  const pkg = new PublishedPackage(files);
+  const { modules, missing } = new PublishedRelease([pkg]).describe(pkg);
+  assert.deepEqual(Object.keys(modules), [
+    '@fixture/tools',
+    '@fixture/tools/migrate/legacy.cjs',
+    '@fixture/tools/migrate/task.mjs',
+    '@fixture/tools/migrate/types.ts',
+    '@fixture/tools/test-support',
+    '@fixture/tools/types',
+  ]);
+  assert.deepEqual(modules['@fixture/tools/types'], {
+    runtime: null,
+    types: { file: 'dist/types.d.ts', names: ['Mode'] },
+  });
+  assert.deepEqual(modules['@fixture/tools/migrate/types.ts'], {
+    runtime: { file: 'src/migrate/types.ts', names: ['DEFAULTS'] },
+    types: { file: 'src/migrate/types.ts', names: ['DEFAULTS', 'Options'] },
+  });
+  assert.deepEqual(missing, {}, 'every target ships, whether or not its subpath counts as a module');
+});
+
 test('export * from another package of the release resolves there; read alone it stays unresolved', () => {
   const alone = readPublished(ADDON_DIR);
   assert.deepEqual(alone.modules['@fixture/addon'], {

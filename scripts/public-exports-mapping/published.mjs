@@ -14,11 +14,13 @@
  * - `PublishedRelease` ties the packages of one release together, so an `export * from` another
  *   package of the release resolves too, and prints declaration shapes from the `.d.ts` files.
  *
- * Module names derive from the package as published:
- * - `exports`: every key with `./` dropped; a pattern key expands against the files of the
- *   tarball its runtime target (else its types target) matches, keeping only the files Node
- *   resolves back to that key, skipping files that live under the target of a more specific
- *   condition of the same key (the `unpkg` builds) and files an explicit key already names;
+ * Module names derive from the package as published, code modules only:
+ * - `exports`: every key with `./` dropped whose target (its runtime target, else its types
+ *   target) is a `.js`, `.mjs`, `.cjs`, `.ts` or `.d.ts` file, except `blueprints/` and the
+ *   `unstable-preview-types` entries; a pattern key expands against the files of the tarball its
+ *   runtime target (else its types target) matches, keeping only the files Node resolves back to
+ *   that key, skipping files that live under the target of a more specific condition of the same
+ *   key (the `unpkg` builds) and files an explicit key already names;
  * - a v1 addon (`ember-addon.version` 1, as 4.12 and 5.0 publish): every `.js`/`.ts` under
  *   `addon/` as `<pkg>/<path>` and under `addon-test-support/` as `<pkg>/test-support/<path>`,
  *   `index` dropped;
@@ -44,6 +46,8 @@ export const MAX_BODY = 2000;
 
 const MANIFEST = /^(?:packages|warp-drive-packages)\/[^/]+\/package\.json$/;
 const CODE = /\.(?:[cm]?[jt]s|[jt]sx)$/;
+/** What a module's target is: JavaScript or TypeScript, `.d.ts` included. */
+const CODE_MODULE = /\.[cm]?[jt]s$/;
 const DTS = /\.d\.[cm]?ts$/;
 const TYPES_FILE = /\.d\.[cm]?ts$|\.[cm]?tsx?$/;
 const EXTENSION = /(?:\.d)?\.[cm]?[jt]sx?$/;
@@ -589,7 +593,7 @@ function layoutOf(pkg) {
 
 /** @param {string} file */
 function isSource(file) {
-  return CODE.test(file) && !DTS.test(file);
+  return CODE_MODULE.test(file) && !DTS.test(file);
 }
 
 /**
@@ -767,7 +771,8 @@ function exportsLayout(pkg, map) {
     }
     const runtime = runtimeTarget(target);
     if (typeof runtime === 'string') explicitFiles.add(clean(runtime));
-    candidates.push({ module: moduleName(pkg.name, key), key, star: null });
+    const resolved = typeof runtime === 'string' ? runtime : typesTarget(target);
+    if (isCodeModule(key, resolved)) candidates.push({ module: moduleName(pkg.name, key), key, star: null });
   }
 
   for (const [key, target] of Object.entries(map)) {
@@ -793,7 +798,7 @@ function exportsLayout(pkg, map) {
       const star = matchTarget(driver, file);
       if (star === null || nested.some((other) => file.startsWith(other))) continue;
       const subpath = key.replaceAll('*', star);
-      if (matchKey(map, subpath)?.key !== key) continue;
+      if (matchKey(map, subpath)?.key !== key || !isCodeModule(subpath, file)) continue;
       if (isChunk(file)) chunks.add(file);
       else if (!explicitFiles.has(file)) candidates.push({ module: moduleName(pkg.name, subpath), key, star });
     }
@@ -832,6 +837,20 @@ function exportsLayout(pkg, map) {
     for (const [condition, targets] of Object.entries(byCondition)) frozen[key][condition] = sorted(targets);
   }
   return { missing: frozen, chunks: sorted(chunks), modules: sortedMap(modules) };
+}
+
+/**
+ * Whether an `exports` subpath resolving to `target` is a code module: the target is a `.js`,
+ * `.mjs`, `.cjs`, `.ts` or `.d.ts` file (so `package.json`, Markdown and JSON are not), outside
+ * `blueprints/`, and the subpath is not one of the `unstable-preview-types` entries.
+ * @param {string} subpath  `.` or `./<path>`
+ * @param {unknown} target
+ */
+function isCodeModule(subpath, target) {
+  if (typeof target !== 'string' || !CODE_MODULE.test(target)) return false;
+  const file = clean(target);
+  if (subpath.startsWith('./blueprints/') || file.startsWith('blueprints/')) return false;
+  return ![...subpath.split('/'), ...file.split('/')].includes('unstable-preview-types');
 }
 
 /**
