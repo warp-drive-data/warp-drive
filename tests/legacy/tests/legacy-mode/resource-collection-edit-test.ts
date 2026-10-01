@@ -1,6 +1,7 @@
 import { setOwner } from '@ember/owner';
 import type { TestContext } from '@ember/test-helpers';
 
+import { recordIdentifierFor } from '@warp-drive/core';
 import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
@@ -137,13 +138,18 @@ module('Legacy | Edit | resource and collection', function (hooks) {
     assert.equal(Matt.bestFriend.data, Rey, 'Matt has Rey as bestFriend');
     assert.equal(Wes.bestFriend.data, null, 'Wesley has no bestFriend');
 
-    assert.false(Rey.bestFriend.isDirty, 'the relationship is not dirty');
+    const reyKey = recordIdentifierFor(Rey);
+    assert.false(store.cache.changedRelationships(reyKey).has('bestFriend'), 'the relationship has no unsaved changes');
 
     Rey.bestFriend.data = Wes;
 
     assert.equal(Rey.bestFriend.data, Wes, 'Wes is now the bestFriend of Rey');
-    assert.equal(Rey.bestFriend.remoteData, Matt, 'remoteData still reflects the remote state');
-    assert.true(Rey.bestFriend.isDirty, 'the relationship is dirty');
+    assert.equal(
+      store.cache.getRemoteRelationship(reyKey, 'bestFriend').data,
+      recordIdentifierFor(Matt),
+      'the remote state is unchanged'
+    );
+    assert.true(store.cache.changedRelationships(reyKey).has('bestFriend'), 'the relationship has unsaved changes');
     assert.equal(Wes.bestFriend.data, Rey, 'Rey is now the bestFriend of Wes');
     assert.equal(Matt.bestFriend.data, null, 'Matt no longer has a bestFriend');
 
