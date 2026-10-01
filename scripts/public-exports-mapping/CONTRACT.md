@@ -6,7 +6,8 @@ exports, how those exports moved between releases, and from that the import rewr
 build the parts in parallel, so this file pins the file formats and the rules every part must
 agree on. When this file and a part disagree, this file wins; change this file first.
 
-Status: implementation contract. README.md and INTENTION.md replace it once the parts land.
+[README.md](./README.md) says why the data exists and how to work with it; this file is the
+format specification the code and the data follow.
 
 ## Releases
 
