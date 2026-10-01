@@ -4,7 +4,8 @@
  * - `packagesAt(version)` lists the non-private packages of a release tag (the working tree for
  *   `head`), each with the version its own `package.json` names at that tag.
  * - `fetchTarball(name, version)` runs `npm pack` once per name and version into a cache outside
- *   the repository and reports `unpublished` when the registry has no such version.
+ *   the repository and reports `unpublished` when the registry has no such version, which it
+ *   also remembers in the cache.
  * - `readPublished(source)` describes one tarball (or an unpacked package directory): its
  *   `exports` map, the targets that do not ship, its modules, and per module the runtime export
  *   names (from the JS the `import`/`default` condition resolves to) and the type export names
@@ -26,7 +27,7 @@
  * is a shared build chunk rather than an entry: it is listed under `chunks`, not as a module.
  */
 import { execFile, execFileSync } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { promisify } from 'node:util';
 import { gunzipSync } from 'node:zlib';
@@ -184,6 +185,17 @@ export function tarballPath(cacheDir, name, version) {
 }
 
 /**
+ * The file that records that the registry has no `name@version`: `<version>.unpublished` beside
+ * where its tarball would be. Delete it to ask the registry again.
+ * @param {string} cacheDir
+ * @param {string} name
+ * @param {string} version
+ */
+export function unpublishedMarkerPath(cacheDir, name, version) {
+  return path.join(cacheDir, name.replace('/', '+'), `${version}.unpublished`);
+}
+
+/**
  * The default `Pack`: `npm pack <name>@<version> --pack-destination <destination>`, run with the
  * destination (outside the repository, whose `devEngines` npm would enforce) as its cwd.
  * @type {Pack}
@@ -220,8 +232,8 @@ function parseJson(text) {
 
 /**
  * The tarball of `name@version`, packed into the cache the first time and read from it after
- * that. A version the registry does not have is `unpublished`, not an error; it is not cached,
- * so a package published after its tag was cut is picked up by the next run.
+ * that. A version the registry does not have is `unpublished`, not an error, and is remembered by
+ * a marker file in the cache, so a later run asks the registry nothing.
  * @param {string} name
  * @param {string} version
  * @param {{ cacheDir?: string, pack?: Pack }} [options]
@@ -230,9 +242,14 @@ function parseJson(text) {
 export async function fetchTarball(name, version, { cacheDir = defaultCacheDir(), pack = npmPack } = {}) {
   const file = tarballPath(cacheDir, name, version);
   if (existsSync(file)) return { name, version, status: 'cached', path: file };
+  const marker = unpublishedMarkerPath(cacheDir, name, version);
+  if (existsSync(marker)) return { name, version, status: 'unpublished', path: null };
   mkdirSync(path.dirname(file), { recursive: true });
   const packed = await pack({ name, version, destination: path.dirname(file) });
-  if (packed === null) return { name, version, status: 'unpublished', path: null };
+  if (packed === null) {
+    writeFileSync(marker, `the registry has no ${name}@${version}; delete this file to ask again\n`);
+    return { name, version, status: 'unpublished', path: null };
+  }
   if (path.resolve(packed) !== file) renameSync(packed, file);
   return { name, version, status: 'fetched', path: file };
 }

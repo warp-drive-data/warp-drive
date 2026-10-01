@@ -31,6 +31,7 @@ import {
   readPublished,
   readTarball,
   tarballPath,
+  unpublishedMarkerPath,
 } from '../public-exports-mapping/published.mjs';
 import { tempDir } from './-run-script.mjs';
 
@@ -298,7 +299,7 @@ test('names and declarations reached through an export * cycle are complete from
   assert.equal(shapes.get('@fixture/cycle/c.d.ts#c'), 'const c: 3');
 });
 
-test('fetchTarball packs once into the cache and reports a version the registry lacks as unpublished', async (t) => {
+test('fetchTarball packs once into the cache and remembers a version the registry lacks as unpublished', async (t) => {
   const cacheDir = tempDir(t);
   const { pack, calls } = fixturePack();
 
@@ -320,6 +321,13 @@ test('fetchTarball packs once into the cache and reports a version the registry 
   const missing = await fetchTarball(GONE.name, GONE.version, { cacheDir, pack });
   assert.deepEqual(missing, { name: GONE.name, version: GONE.version, status: 'unpublished', path: null });
   assert.equal(existsSync(tarballPath(cacheDir, GONE.name, GONE.version)), false);
+  const marker = unpublishedMarkerPath(cacheDir, GONE.name, GONE.version);
+  assert.equal(marker, path.join(cacheDir, '@fixture+gone', '0.1.0.unpublished'));
+  assert.ok(existsSync(marker));
+
+  const again = await fetchTarball(GONE.name, GONE.version, { cacheDir, pack });
+  assert.deepEqual(again, missing);
+  assert.deepEqual(calls, ['@fixture/kit@1.2.3', '@fixture/gone@0.1.0'], 'the registry is asked once per version');
 });
 
 test('the audit compares the published packages with a contract-shaped surface', async (t) => {
