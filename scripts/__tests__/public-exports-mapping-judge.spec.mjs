@@ -535,6 +535,7 @@ test('evidenceFor: source, git history, and per candidate its tokens, text and s
       module: '@ember-data/store',
       export: 'IdentifierArray',
       kind: 'value',
+      package: '@ember-data/store',
       public: true,
       oldContract: true,
       segments: 2,
@@ -543,6 +544,7 @@ test('evidenceFor: source, git history, and per candidate its tokens, text and s
       module: '@ember-data/store/-private',
       export: 'IdentifierArray',
       kind: 'value',
+      package: '@ember-data/store',
       public: false,
       oldContract: true,
       segments: 3,
@@ -580,6 +582,7 @@ test('evidenceFor: source, git history, and per candidate its tokens, text and s
     module: '@warp-drive/core/types',
     export: 'LiveArray',
     kind: 'type',
+    package: '@warp-drive/core',
     public: true,
     oldContract: false,
     segments: 3,
@@ -912,6 +915,26 @@ test('decide writes confident answers and sends the rest to review', () => {
     ]
   );
   assert.equal(review[2].error, 'no record_successor call (stop_reason end_turn)');
+});
+
+test('decide ranks the source tokens of an evidence bundle like tokens, old contract included', () => {
+  const { ctx } = fixtureContext();
+  const bundle = evidenceFor(itemOf(ctx, ERRORS_ARRAY_TO_HASH), ctx);
+  // ember-data re-exported most of @ember-data/*: two public, old-contract exports of one declaration
+  bundle.source.tokens.push({
+    ...bundle.source.tokens[0],
+    module: 'ember-data/adapters/errors',
+    package: 'ember-data',
+  });
+  const { entries } = decide({
+    residue: [bundle],
+    answers: [{ decl: ERRORS_ARRAY_TO_HASH, id: bundle.id, choice: null, confidence: 0.9, reason: 'Gone.' }],
+    toSurface: ctx.toIndex,
+  });
+  assert.deepEqual(
+    entries.map((e) => e.source),
+    [{ module: '@ember-data/adapter/error', export: 'errorsArrayToHash' }]
+  );
 });
 
 test('staleDecisions: a decl the from surface lacks, a choice the to surface lacks', () => {

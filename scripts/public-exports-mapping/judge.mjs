@@ -1127,8 +1127,9 @@ export function customIdFor(decl) {
 }
 
 /**
- * A token as the evidence shows it: where it is exported and the facts the ranking reads.
- * @typedef {{ module: string, export: string, kind: 'value' | 'type', public: boolean, oldContract: boolean, segments: number, deprecated?: true }} TokenFacts
+ * A token as the evidence shows it: where it is exported and the facts the ranking reads, with
+ * its package, so `compareTokens` can rank these as it ranks tokens.
+ * @typedef {{ module: string, export: string, kind: 'value' | 'type', package: string, public: boolean, oldContract: boolean, segments: number, deprecated?: true }} TokenFacts
  */
 
 /** @param {Token} t @returns {TokenFacts} */
@@ -1138,6 +1139,7 @@ function describeToken(t) {
     module: t.module,
     export: t.export,
     kind: t.kind,
+    package: t.package,
     public: isPublicModule(t.module),
     oldContract: isOldContract(t.package),
     segments: segmentsOf(t.module),
