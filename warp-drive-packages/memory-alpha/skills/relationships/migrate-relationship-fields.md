@@ -48,8 +48,8 @@ be migrated yet.
 7. For every `async: true` field, make sure something loads it, following
    [Step 5: Load Async Relationships](/upgrading/v5/relationships.md#step-5-load-async-relationships).
    Prefer adding the relationship to the `include` of the request that loads the parent; use
-   `doc.fetch()` or a `<Request />` on `doc.links.related` only for relationships loaded on demand,
-   and render the document that returns rather than expecting `doc.data` to fill in.
+   `doc.fetch()` or a `<Request />` on `doc.links.related` only for relationships loaded on demand.
+   `doc.fetch()` fills in `doc.data`; a `<Request />` does not, so render its response.
 8. Run the app's tests with the JSON:API validator active and fix what it reports in the payloads
    (fixtures, mocks, or the API) rather than by weakening the schema. The
    [Relationship Specification](/guides/the-manual/relational-data/spec.md#_3-4-enforcement)
