@@ -70,10 +70,10 @@ alien-signals graph instead. Importing `@warp-drive/alien-signals/install` after
 `@warp-drive/react/install` imports `@warp-drive/alien-signals/install` itself, so React works in
 either position. Listing alien-signals first anyway keeps the rule simple: it always comes first.
 
-:::tip Coming from a hand-composed setup?
-An earlier version of this guide composed the Ember and React hooks by hand in an
-`app/signals.ts` file that called `setupSignals`. Delete that file, and replace its import with
-the three imports above.
+:::tip Already composing signal hooks yourself?
+If your app combines each framework's `buildSignalConfig` in its own `setupSignals` call, so that
+`createSignal` returns one signal per framework, you no longer need it. Delete that call, and
+replace the import of the module it lives in with the three imports above.
 :::
 
 ## How the Frameworks Share Signals
