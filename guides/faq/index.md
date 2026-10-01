@@ -6,3 +6,4 @@ description: Find short answers to common questions about adopting and configuri
 # Frequently Asked Questions
 
 - [Do I need PolarisMode to share state between Ember and React on the same page?](./polaris-mode-with-ember-and-react.md)
+- [Can I use multiple frameworks on one page?](./multiple-frameworks.md)
