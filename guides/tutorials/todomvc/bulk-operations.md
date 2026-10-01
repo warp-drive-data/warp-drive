@@ -1,6 +1,6 @@
 ---
 title: 8. Bulk operations
-description: Toggle every todo and clear the completed ones with one request each, update the cache yourself when the response has no todos, then see where to go next.
+description: Toggle or clear many todos with one request each, and update the cache yourself when the response doesn't say what changed.
 ---
 
 # Bulk operations
@@ -12,20 +12,21 @@ each, so let's write those.
 ## Write the builders
 
 JSON:API doesn't define bulk updates, so the API has two endpoints of its own.
-Both answer `{ "data": null }` without the todos they changed, and that shapes
-the code.
+Both answer `{ "data": null }`, without the todos they changed. Real APIs often
+work like this, and the cache tools from chapters 6 and 7 fill the gap.
 
-Create `app/data/builders/bulk.ts`:
+Create a new file, `app/data/builders/bulk.ts`:
 
 ```ts
+import { recordIdentifierFor } from '@warp-drive/core';
 import { withResponseType } from '@warp-drive/core/request';
+import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';
 
 import type { Todo } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { patchCacheTodoActivated, patchCacheTodoCompleted } from './update.ts';
-import { keyForSavedResource } from './utils.ts';
 
 interface EmptyDocument {
   data: null;
@@ -53,7 +54,9 @@ export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<
  */
 export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: boolean): void {
   for (const todo of changed) {
-    store.cache.patch({ record: keyForSavedResource(todo), op: 'update', field: 'completed', value: completed });
+    // A saved todo always has an id; the cast tells TypeScript so.
+    const record = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;
+    store.cache.patch({ record, op: 'update', field: 'completed', value: completed });
     if (completed) patchCacheTodoCompleted(store, todo);
     else patchCacheTodoActivated(store, todo);
   }
@@ -73,7 +76,7 @@ export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
 
     // Removes each todo from every cached list once the request succeeds.
     op: 'deleteRecord',
-    records: todos.map(keyForSavedResource),
+    records: todos.map((todo) => recordIdentifierFor(todo)),
   });
 }
 ```
@@ -93,23 +96,22 @@ drops them all when it succeeds.
 
 ## Send them
 
-Open `app/components/todo-app/toggle-all-todos.gts`. Above the `TODO (chapter 8)`
-comment, the shipped code works out the new value and which todos change:
+In `app/components/todo-app/toggle-all-todos.gts`, the shipped code already
+works out the new value and which todos change:
 
 ```ts
 const completed = !this.areViewableCompleted;
 const changed = this.args.todos.filter((todo) => todo.completed !== completed);
 ```
 
-Replace the comment with the request, then the cache update:
+Right after it, send the request, then update the cache:
 
 ```ts
 await this.store.request(bulkPatchTodos({ completed }));
 bulkPatchCacheTodos(this.store, changed, completed);
 ```
 
-In `app/components/todo-app/clear-completed-todos.gts`, replace the
-`TODO (chapter 8)` comment:
+In `app/components/todo-app/clear-completed-todos.gts`, send the delete:
 
 ```ts
 await this.store.request(bulkDeleteTodos(this.args.completed));

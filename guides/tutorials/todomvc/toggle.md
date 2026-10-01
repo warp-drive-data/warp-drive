@@ -1,18 +1,20 @@
 ---
 title: 6. Toggle
-description: Save a todo's completed state with patchTodo, see why the active and completed lists go stale, and move the todo between cached lists with store.cache.patch.
+description: Save a todo's completed state, then move it between the Active and Completed lists yourself by patching the cache.
 ---
 
 # Toggle
 
 Click a checkbox and the todo is struck through, but a reload undoes it. Let's
 save the toggle. Saving turns out to be half the job: the todo also has to move
-between the Active and Completed lists.
+between the Active and Completed lists. The usual fix is to refetch both lists.
+***Warp*Drive** also lets you edit the cached lists yourself, so each toggle
+stays one request.
 
 ## Save it
 
-Open `app/components/todo-app/todo-item.gts` and find `TODO (chapter 6)` in
-`CompletedForm`:
+In `app/components/todo-app/todo-item.gts`, `CompletedForm` sets the new value
+on the copy but never saves it:
 
 ```ts
 try {
@@ -24,9 +26,9 @@ try {
 }
 ```
 
-The line above the comment is why the checkbox already works: `todo` is chapter
-5's editable copy. Replace the comment with the `patchTodo` builder from
-chapter 5:
+That first line is why the checkbox already works: `todo` is chapter 5's
+editable copy, so setting `completed` changes only the copy. Save it with the
+`patchTodo` builder from chapter 5, right after that line:
 
 ```ts
 await this.store.request(patchTodo(todo, { completed }));
@@ -54,14 +56,26 @@ The `PATCH` updated todo 2's `completed` field everywhere it appears. But the
 cache doesn't know what `filter[completed]` means, so it can't tell that todo 2
 now belongs in the other list.
 
-Chapter 4 solved this by refetching. That works here too, at a `GET` per list.
-This time you know what changed, so let's change the cached lists directly.
+You could refetch the lists, as chapter 4 does after a create, at the cost of a
+`GET` for each. But here you already know what changed: one todo moved from one
+list to the other. So let's make that change in the cache directly.
+***Warp*Drive** lets you choose per change: refetch when the server should
+decide, patch when you already know.
 
 ## Move the todo between lists
 
-Add to `app/data/builders/update.ts`:
+Add to `app/data/builders/update.ts`, below chapter 5's `patchTodo`. The new
+imports go at the top of the file:
 
 ```ts
+import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
+import type Store from '../store.ts';
+import { getActiveTodos, getCompletedTodos } from './query.ts';
+// Already in utils.ts. App code, not WarpDrive: where the server would put a todo.
+import { serverIndex } from './utils.ts';
+
+// ...
+
 /** Moves a todo from the cached "active" list to the cached "completed" list. */
 export function patchCacheTodoCompleted(store: Store, todo: Todo): void {
   moveBetweenLists(store, todo, { from: getActiveTodos(), to: getCompletedTodos() });
@@ -77,39 +91,49 @@ function moveBetweenLists(
   todo: Todo,
   lists: { from: ReturnType<typeof getActiveTodos>; to: ReturnType<typeof getActiveTodos> }
 ): void {
-  const value = keyForSavedResource(todo);
-  const from = keyForRequest(store, lists.from);
-  const to = keyForRequest(store, lists.to);
+  // A saved todo always has an id; the cast tells TypeScript so.
+  const value = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;
+  const from = store.cacheKeyManager.getOrCreateDocumentIdentifier(lists.from);
+  const to = store.cacheKeyManager.getOrCreateDocumentIdentifier(lists.to);
 
   // Only patch lists that have been requested; the others will fetch fresh.
-  if (store.cache.peekRequest(to)) {
-    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: serverIndex(store, to, value) });
+  if (to && store.cache.peekRequest(to)) {
+    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: serverIndex(store, lists.to, value) });
   }
-  if (store.cache.peekRequest(from)) {
+  if (from && store.cache.peekRequest(from)) {
     store.cache.patch({ record: from, op: 'remove', field: 'data', value });
   }
 }
 ```
 
-And the imports. The `utils.ts` line replaces chapter 5's:
+A request is just an object, so `getActiveTodos()` and `getCompletedTodos()`
+name the two lists without sending anything.
+`store.cacheKeyManager.getOrCreateDocumentIdentifier` gives each list's cache
+key: the key its response is stored under.
 
-```ts
-import type Store from '../store.ts';
-import { getActiveTodos, getCompletedTodos } from './query.ts';
-import { keyForRequest, keyForSavedResource, serverIndex } from './utils.ts';
-```
+Then `store.cache.patch` edits the cached documents as if the server had:
+`op: 'add'` puts the todo's key into one list, and `op: 'remove'` takes it out
+of the other. `cache.patch` needs the key of a saved todo, one with an `id`.
+`recordIdentifierFor` can't promise that, because a todo created in the browser
+has no `id` until it's saved, so the cast tells TypeScript this one is saved.
 
-The builders name the lists without sending anything, and `keyForRequest` asks
-the store which cache key each one is stored under. Then `store.cache.patch`
-edits the cached documents as if the server had: `op: 'add'` puts the todo's key
-into one list and `op: 'remove'` takes it out of the other.
+`peekRequest` checks whether a list is in the cache at all. A list that was
+never fetched is left alone; it fetches fresh when something asks for it.
 
-`serverIndex`, shipped in `utils.ts`, works out where the server would put the
-todo in its new list, so the cache matches what a refetch would return.
+::: info Keeping the order right
+Patching makes you responsible for what a refetch would have told you,
+including order. Without an `index`, `op: 'add'` puts the todo at the end of its
+new list. But this tutorial's API lists todos in the order they were created, so
+a refetch would put it somewhere else. The unfiltered list is already cached in
+that order, so `serverIndex` places the todo after every todo in its new list
+that was created before it. It's this app's ordering rule, not part of
+***Warp*Drive**, so the starter includes it in `utils.ts`.
+:::
 
 ## Call it after the save
 
-Back in `patchTodoToggle`, after the request:
+Back in `todo-item.gts`, in `CompletedForm`'s `patchTodoToggle`, after the
+request:
 
 ```ts
 await this.store.request(patchTodo(todo, { completed }));

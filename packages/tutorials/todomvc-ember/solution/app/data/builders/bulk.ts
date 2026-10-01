@@ -1,12 +1,13 @@
 // #omit-file-from-starter
+import { recordIdentifierFor } from '@warp-drive/core';
 import { withResponseType } from '@warp-drive/core/request';
+import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL, buildQueryParams } from '@warp-drive/utilities';
 
 import type { Todo } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { patchCacheTodoActivated, patchCacheTodoCompleted } from './update.ts';
-import { keyForSavedResource } from './utils.ts';
 
 interface EmptyDocument {
   data: null;
@@ -34,7 +35,9 @@ export function bulkPatchTodos(attributes: { completed: boolean }): RequestInfo<
  */
 export function bulkPatchCacheTodos(store: Store, changed: Todo[], completed: boolean): void {
   for (const todo of changed) {
-    store.cache.patch({ record: keyForSavedResource(todo), op: 'update', field: 'completed', value: completed });
+    // A saved todo always has an id; the cast tells TypeScript so.
+    const record = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;
+    store.cache.patch({ record, op: 'update', field: 'completed', value: completed });
     if (completed) patchCacheTodoCompleted(store, todo);
     else patchCacheTodoActivated(store, todo);
   }
@@ -54,6 +57,6 @@ export function bulkDeleteTodos(todos: Todo[]): RequestInfo<EmptyDocument> {
 
     // Removes each todo from every cached list once the request succeeds.
     op: 'deleteRecord',
-    records: todos.map(keyForSavedResource),
+    records: todos.map((todo) => recordIdentifierFor(todo)),
   });
 }

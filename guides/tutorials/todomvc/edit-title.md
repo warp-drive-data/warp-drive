@@ -49,39 +49,34 @@ that.
 Create a new file, `app/data/builders/update.ts`:
 
 ```ts
+import { recordIdentifierFor } from '@warp-drive/core';
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL } from '@warp-drive/utilities';
 
 import type { Todo, TodoAttributes } from '../schemas/todo.ts';
-import { keyForSavedResource } from './utils.ts';
 
 /** PATCH /api/todo/:id */
 export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): RequestInfo<ReactiveDataDocument<Todo>> {
-  const key = keyForSavedResource(todo);
-
   return withReactiveResponse<Todo>({
     method: 'PATCH',
-    url: buildBaseURL({ op: 'updateRecord', resourcePath: 'todo', identifier: key }),
-    body: JSON.stringify({ data: { type: 'todo', id: key.id, attributes } }),
+    url: buildBaseURL({ op: 'updateRecord', identifier: { type: 'todo', id: todo.id } }),
+    body: JSON.stringify({ data: { type: 'todo', id: todo.id, attributes } }),
 
     // 'updateRecord' plus the todo's key: on success the cache commits the
     // response to this todo, and every list holding it re-renders.
     op: 'updateRecord',
-    records: [key],
+    records: [recordIdentifierFor(todo)],
   });
 }
 ```
 
-`keyForSavedResource` returns the todo's cache key: its `type` and `id`. It
-ships in `utils.ts` because the delete and bulk builders use it too, and there's
-little to it: ***Warp*Drive**'s `recordIdentifierFor(todo)`, plus a check that
-the todo has an `id`, since only a saved todo can be updated. `buildBaseURL`
-turns the key into `/api/todo/<id>`.
-`op: 'updateRecord'` with `records: [key]` tells the cache which todo this
-request saves, so the response is written into that todo. `attributes` is
-`Partial`, so the body carries only what changed.
+`recordIdentifierFor(todo)`, from `@warp-drive/core`, returns the todo's cache
+key: its `type` and `id`. `op: 'updateRecord'` with that key in `records` tells
+the cache which todo this request saves, so the response is written into that
+todo. `buildBaseURL` turns the type and id into `/api/todo/<id>`, and
+`attributes` is `Partial`, so the body carries only what changed.
 
 ## Send it
 
