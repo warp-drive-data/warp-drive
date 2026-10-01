@@ -93,15 +93,17 @@ large.
 
 ## Fetching
 
-When the relationship carries a `related` link, `doc.fetch()` requests it and resolves with a
-collection document:
+When the relationship carries a `related` link, `doc.fetch()` requests it, writes the returned
+members into the relationship, and resolves with the same relationship document:
 
 ```ts
-const { data: friends } = await user.friends.fetch();
+const friends = await user.friends.fetch();
+friends === user.friends; // true
+friends.data;             // the members the response returned
 ```
 
-As with resource relationships, the response is cached and reactive but is not written back into
-the relationship's `data`.
+As with resource relationships, the response is also cached as a request document under
+`doc.identifier`.
 
 ## Mutating
 

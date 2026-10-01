@@ -70,7 +70,8 @@ user.pets.data;        // Pet[] | undefined
 
 The document mirrors the relationship payload the API sent (`data`, `links`, `meta`). `data` is
 `undefined` when the payload carried no `data` member, `null`/`[]` when the relationship is known
-to be empty. `doc.fetch()` requests the `related` link as a top-level request.
+to be empty. `doc.fetch()` requests the `related` link, writes the response's `data` into the
+relationship, and resolves with the same document.
 
 `links` and `meta` are server-owned and always reflect the last payload received; local mutations
 only change `data`.

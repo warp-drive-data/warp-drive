@@ -47,14 +47,15 @@ const secondPage = await firstPage.content.next();
 
 ## Using The Relationship's Link
 
-If the API places a `related` link on the relationship, it is a fine way to discover the endpoint:
+If the API places a `related` link on the relationship, it is a fine way to discover the endpoint.
+Build a top-level request from it:
 
 ```ts
-const { content } = await post.comments.fetch({ url: `${post.comments.links.related}?page[size]=25` });
+const firstPage = await store.request({ url: `${post.comments.links.related}?page[size]=25` });
 ```
 
-`fetch()` issues a normal request and resolves with a top-level document; it does not change
-`post.comments.data`.
+Don't page with `doc.fetch()`. It always requests the relationship's link as-is, and it replaces
+the relationship's membership with whatever the response contains.
 
 ## Reactive Pagination
 

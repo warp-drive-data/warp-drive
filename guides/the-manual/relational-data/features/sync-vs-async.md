@@ -53,13 +53,14 @@ validator reports a missing link as an error and the graph asserts on it in deve
 ```ts
 post.comments.data;          // undefined
 await post.comments.fetch(); // requests post.comments.links.related
+post.comments.data;          // the comments the response returned
 ```
 
 If a payload does include `data`, the referenced resources must be included, exactly as for sync
 relationships.
 
-WarpDrive does **not** fetch async relationships automatically, and `fetch()` returns a top-level
-document rather than filling in `doc.data`. This differs from the legacy `belongsTo`/`hasMany`
+WarpDrive does **not** fetch async relationships automatically: nothing is loaded until you call
+`fetch()`, which fills in `doc.data` and resolves with the relationship document. This differs from the legacy `belongsTo`/`hasMany`
 fields, which wrap async relationships in promise proxies that fetch on access.
 
 Use async relationships when the related data is optional, expensive, or belongs to a different

@@ -58,7 +58,8 @@ member, reading `doc.data` throws rather than handing back an empty record.
 
 ## Links Are Not Followed Automatically
 
-WarpDrive never fetches a `related` link on its own. Call `doc.fetch()` when you need the data, or
-issue a top-level request. The `next`/`prev`/`first`/`last` links an API may attach to a
+WarpDrive never fetches a `related` link on its own. Call `doc.fetch()` when you need the data;
+it loads the link and fills in `doc.data`. Issue a top-level request instead when you need a
+filtered, sorted or paginated view. The `next`/`prev`/`first`/`last` links an API may attach to a
 relationship are surfaced on `doc.links` but relationship membership is not paginated; see
 [Pagination](../advanced/pagination.md).
