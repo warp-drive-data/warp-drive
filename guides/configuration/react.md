@@ -91,10 +91,14 @@ export function mountUserList(element: HTMLElement, store: Store): () => void {
 The host app calls `mountUserList` with the element to render into and its own store, and calls
 the returned function when it removes that element.
 
-::: warning Embedding React in an app built with another framework
-***Warp*Drive** has one reactivity configuration per page, and each framework's `install` import
-replaces whatever an earlier one set up. If the host app uses another framework's integration,
-such as `@warp-drive/ember`, and your React components share its store, components in one of the
-two frameworks may not re-render when data changes. Test updates in both before relying on
-them.
+::: tip Embedding React in an app built with another framework
+One store can drive components from both frameworks, but each framework only re-renders for its
+own signals, and each framework's `install` import configures ***Warp*Drive** for that framework
+alone. For components in both to re-render when data changes, compose the two signal
+configurations into one. See
+[Can I use multiple frameworks on one page?](/guides/faq/multiple-frameworks.md), and for Ember
+and React,
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
+An Ember app doesn't need PolarisMode to share its store with React; see
+[Do I need PolarisMode to share state between Ember and React on the same page?](/guides/faq/polaris-mode-with-ember-and-react.md).
 :::
