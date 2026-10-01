@@ -4,25 +4,27 @@
 
 > [!NOTE]
 > Rewrites imports written against an older EmberData or WarpDrive release to the modules that
-> hold the same exports in this plugin's release. Imports that cannot be rewritten safely are
-> reported without a fix. The rule decides from a map that ships with the plugin. It records
-> where every export of each older release lives in this release, and which legacy modules
-> moved as a whole.
+> hold the same exports in a newer one, and reports the imports it cannot rewrite. The rule
+> decides from data that ships with the plugin: what every public module exported in each
+> covered release since 4.12, how each export moved from one release to the next, and a
+> judged answer for the exports whose history alone does not say where they went. It never
+> reads the network.
 
 > [!TIP]
 > This rule is autofixable. A fix can split one import declaration into several when its names
-> moved to different modules. Review these splits in the diff.
+> moved to different modules, and it adds names to an import of the target module that is
+> already in the file. Review the fixes in the diff.
 
 ## Examples
 
-Before:
+With `{ from: '4.12', to: '5.9' }`, before:
 
 ```js
 import Store from '@ember-data/store';
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, hasMany, Unknown } from '@ember-data/model';
 import Adapter from '@ember-data/adapter/rest';
-import { findRecord, Unknown } from '@ember-data/rest/request';
-import * as compat from '@ember-data/legacy-compat';
+import { ManyArray } from '@ember-data/model/-private';
+import DS from 'ember-data';
 ```
 
 After:
@@ -30,83 +32,100 @@ After:
 ```js
 import { Store } from '@warp-drive/core';
 import Model, { attr, hasMany } from '@warp-drive/legacy/model';
+import { Unknown } from '@ember-data/model';
 import { RESTAdapter as Adapter } from '@warp-drive/legacy/adapter/rest';
-import { findRecord } from '@warp-drive/utilities/rest';
-import { Unknown } from '@ember-data/rest/request';
-import * as compat from '@warp-drive/legacy/compat';
+import { ManyArray } from '@ember-data/model/-private';
+import DS from 'ember-data';
 ```
 
-`Unknown` is also reported, because `@ember-data/rest/request` never exported it.
+`Unknown` is reported because `@ember-data/model` did not export it in 4.12. `ManyArray` is
+reported because 5.9 has only a type by that name. `DS` is reported because importing
+`ember-data` also sets things up as a side effect, so the import cannot be moved.
 
 ## Options
 
 ```js
 rules: {
-  'warp-drive/no-legacy-imports': ['error', { from: '5.7' }],
+  'warp-drive/no-legacy-imports': ['error', { from: '4.12', to: '5.9' }],
 }
 ```
 
-`from` is the release your imports were written against, as a `major.minor` string. The rule
-uses the map from that release to this plugin's release. The allowed values are every minor
-release from `5.5` up to the one before this plugin's release. The default is `5.5`. Any other
-value fails config validation.
+- `from` is the release your imports were written against. The default is `4.12`, the oldest
+  release the data covers. Set it to the release your app was on before the upgrade: the same
+  module path can mean different things in different releases.
+- `to` is the release to rewrite the imports for. The default is the version of
+  `@warp-drive/core` that resolves from the directory ESLint runs in, or the newest release in
+  the data when none resolves or the data does not cover it. When that version is older than
+  `from`, the default is `from`.
 
-Pick the release your app was on before the upgrade. The same module path can mean different
-things in different releases. For example, with `from: '5.7'` the rule rewrites
-`getRequestState` from `@warp-drive/core/store/-private` to `@warp-drive/ember`.
+Both take a version (`'5.9.1'`), its minor (`'5.9'`), any patch or prerelease of a minor
+(`'5.9.0'`, `'5.10.0-alpha.1'`) or `'head'`, the unreleased version this plugin was built with.
+The data lists a release only when it moved or removed a public export, so a minor between two
+listed releases means the older one: `'5.3'` means 5.0. A version older than 4.12 or newer than
+the data is an error when the rule starts, and the error lists the versions the data covers.
 
-## What the rule does with each imported name
+## What the rule does with each import
 
-The rule looks at every default, named and namespace specifier of a static
-`import ... from '...'` declaration. For each name it does one of four things.
+The rule looks at every top-level `import ... from '...'` declaration, including `import type`
+and side-effect imports like `import '...'`. Each imported name gets one of these outcomes.
 
-- **Rewrite.** The name has a home in a current module. The fix imports it from there. It
-  keeps your local binding name. When the export was renamed, or a default export became a named
-  one, the fix imports the new name under your old local name, as `RESTAdapter as Adapter` shows
-  above. `import type` and inline `type` specifiers stay type-only. When every name in a
-  rewritten declaration is a type, the fix writes `import type`.
-- **Report, no replacement** (`warp-drive.no-legacy-imports.unmapped-export`). The name no
-  longer exists in this release, or the module never exported it. The import is left as written
-  and needs manual migration.
-- **Report, legacy home** (`warp-drive.no-legacy-imports.legacy-home`). The name still lives only
-  in a legacy package, for example the default export of `ember-data/version`. There is no modern
-  module to rewrite to yet, so the import is left as written.
-- **Report, type-only target** (`warp-drive.no-legacy-imports.type-only-target`). A value import
-  names something that was a value in the `from` release and is only a type in this release, for
-  example `import { ManyArray } from '@ember-data/model/-private'`. Rewriting it would import a
+- **Rewrite** (`warp-drive.no-legacy-imports`). The export has a home in `to`, in another module
+  or under another name. The fix imports it from there.
+- **Rewrite to a private module** (`warp-drive.no-legacy-imports.private-target`). The only home
+  is a module whose path has a segment starting with `-`, such as
+  `@warp-drive/core/store/-private`. The fix still imports from there, and the message says so,
+  because a private module can change in any release.
+- **Removed** (`warp-drive.no-legacy-imports.removed`). Nothing in `to` continues the export. The
+  import is left as written. When the removal was judged, the message names the pull request
+  that removed it and can show a short shim that restores it. The message links the upgrade guide,
+  the API docs and the request service cheat sheet.
+- **Untracked** (`warp-drive.no-legacy-imports.untracked`). The module existed in `from` but did
+  not export this name, so the data has no record of where it went. Check the name, or set `from`
+  to the release the code was written against. When the module only re-exports another module in
+  `to` (`export * from '...'`), the name follows that module instead, as a rewrite.
+- **Type-only target** (`warp-drive.no-legacy-imports.type-only-target`). A value import of
+  something that was a value in `from` and is only a type in `to`. Rewriting it would import a
   name with no runtime value, so the import is left as written. Use `import type` if the name is
   only used as a type, and the rule then rewrites it. Otherwise it needs manual migration.
+- **Side effect** (`warp-drive.no-legacy-imports.side-effect`). `ember-data` and
+  `ember-data/store` set up things as a side effect of being imported, so no import of them is
+  moved. The rule reports the declaration once and links the upgrade guide.
+- **Keep**. The export did not move, or the module is not one the `from` release had. Third-party
+  packages and modules that were new after `from` are never touched.
 
-A declaration with any rewrite gets one `warp-drive.no-legacy-imports` report that carries the
-fix. Names that stay behind keep a declaration from the original module, and their own reports
-are listed separately.
+When an export has several homes in `to`, the rule picks one by these rules, in order: a public
+module before a private one, a `@warp-drive/*` (or other modern) package before `ember-data` and
+`@ember-data/*`, fewer path segments, not deprecated, a value before a type, the same export
+name, the `@warp-drive/ember` module before other modules, then alphabetical order.
 
-## Names the `from` release did not export
+## What the fix writes
 
-A legacy module whose only export is a single `export *` moved as a whole. A name the map does
-not list, such as one added after the `from` release, follows that move with its name unchanged.
-`import { TotallyNew } from '@ember-data/store/-private'` becomes an import from
-`@warp-drive/core/store/-private`.
+- It keeps your local binding names. When the export was renamed, or a default export became a
+  named one, the fix imports the new name under your old local name, as
+  `RESTAdapter as Adapter` shows above. A named export that became a default one is imported as
+  the default.
+- Names that move to different modules split the declaration, one declaration per module, in
+  the order the names first appear. Names that stay keep a declaration from the original module.
+- `import type` and inline `type` specifiers stay type-only. A declaration whose names are all
+  types is written as `import type`.
+- When the file already imports from the target module, the fix adds the names to that
+  declaration instead of writing a second one. It does not add to a namespace import, a
+  side-effect import, an import with attributes, or values to an `import type` declaration. When two declarations
+  move names to the same new module, the second one is merged in on ESLint's next fix pass.
+- Quotes and semicolons follow the declaration being fixed.
 
-A legacy module that names any export of its own did not move as a whole, even when it also has
-an `export *`. `@ember-data/request` forwards `export * from '@warp-drive/core/request'` but takes
-its default export from `@warp-drive/core`. A name from such a module that the map does not list
-is reported as having no replacement.
+## Namespace and side-effect imports
 
-## Namespace imports
-
-`import * as compat from '@ember-data/legacy-compat'` follows the module's move when the whole
-module moved, as above. A namespace import from a module that did not move as a whole, such as
-`import * as store from '@ember-data/store'` or `import * as req from '@ember-data/request'`, is
-left as written and is not reported.
+`import * as ns from '...'` and `import '...'` depend on the whole module. They follow the
+module's re-export target in `to` when the module only re-exports another one, or the move of
+the whole module when every export moved to one other module under the same names. They stay as
+written while the module exists in `to`, and are reported as removed when it does not.
 
 ## What the rule ignores
 
-- Imports from modules the map does not know, such as third-party packages. A module counts as
-  known when the `from` release exported anything from it.
-- Imports from a known module whose export stayed in place.
-- Side-effect imports, such as `import '@ember-data/store'`.
 - Re-exports, such as `export { attr } from '@ember-data/model'` and `export * from '...'`.
 - Dynamic `import()` and CommonJS `require()`.
+- Imports nested in a TypeScript `declare module` block.
 
-The fix does not merge a rewritten import into an existing import of the same module.
+When the plugin is installed without its data, for example from a checkout where the data was
+not generated, the rule reports nothing.
