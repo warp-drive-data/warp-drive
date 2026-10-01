@@ -64,7 +64,7 @@ eagerly and without autofetch.
 | Rule | JSON:API validator | Graph | Runtime |
 | --- | --- | --- | --- |
 | 3.1.1 | error | — | — |
-| 3.1.2 | — | — | throws on access to `data`/`remoteData` |
+| 3.1.2 | — | — | throws on access to `data` |
 | 3.2.1 | error | assertion (dev builds) on every payload | — |
 | 3.3.1 | error | — | — |
 | 3.3.3 | warning by default; error when `strict.syncRelationshipLinks` is `true` | — | — |
@@ -94,11 +94,11 @@ Rules 2.x apply to the legacy kinds as well.
 
 | Rule | Statement |
 | --- | --- |
-| 5.1 | The value of a strict relationship field is a `ReactiveRelationshipDocument` exposing `data`, `remoteData`, `isDirty`, `links`, `meta` and `fetch()`. Assigning the field itself is an error. |
+| 5.1 | The value of a strict relationship field is a `ReactiveRelationshipDocument` exposing `data`, `links`, `meta` and `fetch()`. Assigning the field itself is an error. |
 | 5.2 | `data` MAY be assigned (resource: a record or `null`; collection: an array of records) and, for collections, mutated with the array mutation methods, only when the owning record is editable: any LegacyMode record, or a PolarisMode record returned by `checkout()`. On an immutable record every mutation is an error. |
 | 5.3 | A record MUST appear at most once in a collection; adding a duplicate is an error. |
 | 5.4 | `links` and `meta` are server-owned: they always reflect remote state and MUST NOT be affected by local mutation. |
-| 5.5 | `remoteData` always reflects remote state. `isDirty` is `true` while local and remote state differ. |
+| 5.5 | Whether a relationship has local changes not yet confirmed by the API is reported by the cache (`changedRelationships`), not by the document. |
 | 5.6 | Immutable PolarisMode records render remote state; editable records render local state. Inverses follow the same rule. |
 | 5.7 | Local state becomes remote state when a payload confirming it is received (typically the save response). `commit()` without a payload does not promote relationship state. |
 | 5.8 | When serializing a relationship for a request, only the identifiers of `data` are sent. `links` and `meta` MUST NOT be echoed back to the API. |

@@ -78,23 +78,8 @@ template re-renders when the relationship is updated by a new payload.
 `links` and `meta` always reflect the **last payload received from the API**, on editable and
 immutable records alike. Local mutations never change them. That keeps them trustworthy as a
 description of the server's view, but it means anything in `meta` that is derived from membership
-is stale while the relationship has unsaved changes.
-
-Two properties make that drift visible:
-
-```ts
-editable.bestFriend.data = otherUser;
-
-editable.bestFriend.isDirty;    // true until the change is confirmed by the API
-editable.bestFriend.remoteData; // the related record the API last confirmed
-editable.bestFriend.data;       // otherUser
-```
-
-- **`isDirty`** is `true` while the relationship has local changes not yet confirmed by the API.
-  It is the same on the immutable record and its checked-out copy: it describes the relationship,
-  not the projection.
-- **`remoteData`** is the membership as the API last confirmed it. On an immutable record it is the
-  same value as `data`.
+is stale while the relationship has unsaved changes. The immutable record keeps showing the related
+record the API last confirmed until the change is saved.
 
 ## Fetching
 
