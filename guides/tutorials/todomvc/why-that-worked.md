@@ -1,6 +1,6 @@
 ---
 title: 2. Why that worked
-description: The four ideas WarpDrive is built on: requests instead of models, one path for every request, one cached copy of each thing, and read-only records.
+description: 'The four ideas WarpDrive is built on: requests instead of models, one path for every request, one cached copy of each thing, and read-only records.'
 ---
 
 # Why that worked
