@@ -168,12 +168,12 @@ immutable record they assert. Saving is unchanged: serialize the identifiers in 
 
 Because nothing fetches on access, every async relationship needs an explicit load somewhere, and
 this is usually the largest part of the migration. `doc.data` is `undefined` until a payload that
-carries the relationship's `data` (and includes the members) reaches the cache; nothing else fills
-it in. You have two ways to make that happen.
+carries the relationship's `data` (and includes the members) reaches the cache. You have two ways
+to make that happen.
 
 **Include it in the request that loads the parent.** Once the members arrive with the parent,
 `doc.data` is readable synchronously and stays so. This is the simplest path for relationships a
-screen always needs, and the only way to make `post.comments.data` itself populated:
+screen always needs:
 
 ```ts
 import { findRecord } from '@warp-drive/utilities/json-api';
@@ -182,18 +182,19 @@ const { content } = await store.request(findRecord('post', id, { include: ['auth
 content.data.comments.data; // Comment[]
 ```
 
-**Fetch the link.** `doc.fetch()` requests `links.related` and resolves with the response as a
-top-level document, the same kind `store.request` resolves with. The response is a list of comments,
-not a payload for the post, so it does **not** fill in `post.comments.data`; that stays `undefined`
-unless the API also echoes the post's relationship in the response. Render the document `fetch()`
-returns, or request the link with a
-[`<Request />` component](/guides/the-manual/requests/index.md#reactive-control-flow) so the
-loading and error states are handled for you:
+**Fetch the link.** `doc.fetch()` requests `links.related`, writes the members the response
+returns into the relationship, and resolves with the relationship document itself. After it
+settles, `post.comments.data` is readable synchronously, the same as if the members had been
+included with the post. To get loading and error states in a template, store the promise
+`fetch()` returns and derive its state with
+[`getPromiseState`](/guides/the-manual/reactivity/derivation.md), or request the link with a
+[`<Request />` component](/guides/the-manual/requests/index.md#reactive-control-flow) and render
+the response:
 
 ```ts
 const comments = await post.comments.fetch();
-comments.data;      // Comment[]
-post.comments.data; // still undefined
+comments === post.comments; // true
+post.comments.data;         // Comment[]
 ```
 
 `findRecord`, `store.request` and response documents are covered in
