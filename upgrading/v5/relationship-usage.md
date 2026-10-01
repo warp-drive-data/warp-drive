@@ -242,12 +242,12 @@ get commentsState() {
 }
 ```
 
-`fetch()` requests `links.related` and returns a promise for the response, a
-[`ReactiveDocument`](/guides/the-manual/requests/using-the-response.md), the same object
-`store.request` resolves with; read the comments from `commentsState.value.data`. It does not write
-back into `post.comments.data`, so the document it returns is the thing to render. The `<Request />` form from Phase 2 works unchanged
-with `post.comments.links.related` as the URL, and is the better choice when you want retry,
-refresh and cancellation handled for you.
+`fetch()` requests `links.related`, writes the comments the response returns into the
+relationship, and resolves with the relationship document itself, so `commentsState.value` is
+`post.comments`. Once it settles, read the comments from `post.comments.data`; use
+`commentsState` only for the loading and error branches. The `<Request />` form from Phase 2 works
+unchanged with `post.comments.links.related` as the URL, and is the better choice when you want
+retry, refresh and cancellation handled for you.
 
 **Finish flipping included fields to `async: false`.** Any relationship that every request now
 includes and that Phase 2 left `async: true` is a sync relationship. Declare it `async: false` so
@@ -263,4 +263,4 @@ the API to that contract, and remove the loading branches that guarded it.
 | chain three levels deep | one `getPromiseState` or child `<Await>` per level | one `include` path covering the chain | plain `.data` reads |
 | sync utility reading `post.comments` | `post.hasMany('comments').value()` plus an explicit `load()` | `value()` always returns the value; `post.comments` itself once `async: false` | `post.comments.data` |
 | relationship loaded on demand | `<Await>` over the proxy | `<Request>` over `hasMany('comments').link()` | `<Request>` over `post.comments.links.related`, or `getPromiseState(post.comments.fetch())` |
-| `post.hasMany('comments').reload()` | unchanged | `state.reload()` on the request that loaded it | re-run the request that loaded it (`reload()` on its state); `post.comments.fetch()` only re-fetches the on-demand document |
+| `post.hasMany('comments').reload()` | unchanged | `state.reload()` on the request that loaded it | `post.comments.fetch()` for a relationship loaded through its link; otherwise re-run the request that loaded it (`reload()` on its state) |
