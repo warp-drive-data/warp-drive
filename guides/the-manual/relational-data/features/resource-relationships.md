@@ -84,16 +84,20 @@ record the API last confirmed until the change is saved.
 ## Fetching
 
 When the relationship carries a `related` link, `doc.fetch()` requests it through the store's
-request pipeline and resolves with the resulting document:
+request pipeline and resolves with the same relationship document:
 
 ```ts
-const { data: bestFriend } = await user.bestFriend.fetch();
+const doc = await user.bestFriend.fetch();
+doc === user.bestFriend; // true
+doc.data;                // the resource the response returned
 ```
 
-`fetch()` issues an ordinary [request](../../requests/index.md): the response is cached and
-reactive like any other, but it is **not** written back into the relationship's `data`. If your API
-returns the related resource together with an updated parent, push the parent to update the
-relationship.
+`fetch()` issues an ordinary GET [request](../../requests/index.md) for `links.related` (or
+`links.self` when there is no `related` link). Pass request options such as `headers` to it, but
+not a `url`, which is always the link. The response is cached as a request document whose key is
+`doc.identifier`, and its `data` is written into the relationship's remote state, the same as if
+the API had pushed it. The relationship's `links` and `meta` are kept. A response without `data`
+leaves the relationship unchanged.
 
 ## Mutating
 
