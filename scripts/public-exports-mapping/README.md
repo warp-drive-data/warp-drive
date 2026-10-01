@@ -25,8 +25,9 @@ actually has. So the data is derived:
   from every declaration id of `a` to its id in `b` (or `null`). Applying the diffs to the 4.12.8
   surface rebuilds every later surface, so the plugin ships one surface and eight diffs.
 - **Decisions** (`decisions/<from>.json`): for declarations git cannot follow, the successor a
-  judge chose (a Claude model, with the evidence recorded), or "removed" with the removing PR and
-  the smallest shim that restores the export. Reviewed by a person before they ship.
+  judge chose from the recorded evidence (the project thread, a Claude model or TypeSafe AI's
+  Jev), or "removed" with the removing PR and the smallest shim that restores the export.
+  Reviewed by a person before they ship.
 - **Audits and shapes** (`audits/`, `shapes/`): the package as actually published on npm,
   compared with the surface, and the `.d.ts` signatures the judge gets as evidence.
 
@@ -43,7 +44,8 @@ surface <version|head> | --all     surfaces from the release tags (detached work
 history <a> <b>                    file renames and symbol moves between two releases, from git
 diff <a> <b>                       the diff between two surfaces, using the history
 audit <version> | --all            the published packages against the surface (npm tarballs, cached)
-judge --from <v> [--to <v>]        evidence bundles and the Claude judge for the residue; --dry-run, --calibrate
+judge --from <v> [--to <v>]        evidence bundles and a judge for the residue; --dry-run, --import, --calibrate
+judge --compare <a> <b>            where two judges' decisions agree and differ
 ship                               copy the plugin's data into packages/eslint-plugin-warp-drive
 update                             surface head, history and diff from the newest release, ship
 release <version>                  everything for a newly listed release
@@ -71,24 +73,39 @@ plugin's reader and rule are tested with `pnpm test:legacy-imports` in
 
 ## Judging the residue
 
-Declarations git cannot follow (72 of the 180 tokens of 4.12.8, at the time of writing) need a
-decision. The judge runs locally, never in CI:
+Declarations git cannot follow (45 of the 180 tokens of 4.12.8, in 34 declarations, at the time
+of writing) need a decision. Judging runs locally, never in CI. The judge of record is the one
+`preferences.json` names (`thread`: the project's Claude thread, or a person, reading the
+evidence bundles), and its decisions are the ones that ship:
 
 ```
-export ANTHROPIC_API_KEY=...            # read from the environment only
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --dry-run   # bundles and request bodies, no call
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --calibrate # agreement on the git-settled tokens
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --threshold 0.8
+node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --dry-run            # bundles and request bodies, no call
+# read tmp/public-exports-judge/4.12.8-5.9.1/bundles.json, write answers.json
+node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --import answers.json  # -> decisions/4.12.8.json
+```
+
+An answers file maps each declaration id to `{ "choice": { "module", "export" } | null,
+"confidence", "reason" }`; a `null` choice is "removed", and the import adds the removing PR and
+the shim drafted from its diff. Two model judges read the same bundles and write next to them,
+for comparison:
+
+```
+export ANTHROPIC_API_KEY=...                                                  # Claude, Message Batches API
+node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --calibrate   # agreement on the git-settled tokens
+node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --judge claude --threshold 0.8
+export TYPESAFE_API_KEY=...                                                   # TypeSafe AI's Jev
+node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --judge jev
+node scripts/public-exports-mapping/cli.mjs judge --compare scripts/public-exports-mapping/decisions/4.12.8.json \
+  tmp/public-exports-judge/4.12.8-5.9.1/decisions.jev.json
 ```
 
 Calibration replays the declarations git settled with the truth hidden among the candidates and
 prints agreement per confidence bucket and per kind; read the threshold off the `symbols` row,
 the hardest kind, because the residue is harder than the average calibration item. Answers at or
-above the threshold land in `decisions/4.12.8.json` with `reviewed: false`;
-answers below it, and any choice the newest surface does not contain, go to `judge-review.json`
-in the output directory for a person. Flip `reviewed` to `true` after reading an entry. The
-TypeSafe AI judge ("Jev") is an optional second opinion behind `--judge jev`; it is not
-configured.
+above the threshold become decisions with `reviewed: false`; answers below it, and any choice
+the newest surface does not contain, go to `judge-review.json` in the output directory for a
+person. `--compare` lists where two judges differ: those entries are the ones to read first.
+Flip `reviewed` to `true` after reading an entry.
 
 ## How the lint rule reads it
 

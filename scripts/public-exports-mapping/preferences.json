@@ -1,6 +1,7 @@
 {
   "audience": "ember",
   "ignorePackages": ["eslint-plugin-warp-drive", "@ember-data/codemods", "warp-drive"],
+  "judge": "thread",
   "report": {
     "ember-data": "side-effect",
     "ember-data/store": "side-effect"

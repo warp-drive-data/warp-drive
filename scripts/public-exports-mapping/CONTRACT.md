@@ -279,7 +279,7 @@ the registry and release tags.
       "source": { "module": "@ember-data/store/-private", "export": "IdentifierArray" },
       "choice": { "module": "@warp-drive/core/store/-private", "export": "LiveArray" },
       "confidence": 0.93, "reason": "Same class renamed in #9965; members and constructor match.",
-      "judge": "claude-opus-5-5", "reviewed": false
+      "judge": "thread", "reviewed": false
     },
     {
       "decl": "packages/adapter/src/error.ts#errorsArrayToHash",
@@ -287,7 +287,7 @@ the registry and release tags.
       "choice": null, "removedIn": "#8550",
       "shim": "export function errorsArrayToHash(errors) {\n  // ...\n}",
       "confidence": 0.98, "reason": "Deleted with the 4.x deprecations in #8550; nothing took its place.",
-      "judge": "claude-opus-5-5", "reviewed": false
+      "judge": "thread", "reviewed": false
     }
   ]
 }
@@ -311,13 +311,32 @@ Below the threshold, or when the choice is not a token of `to`, the answer goes 
 `judge-review.json` in the output directory (`tmp/public-exports-judge/<from>-<to>/`, git
 ignored) for a person. No model runs in CI.
 
+Three judges read the same evidence bundles, and a decision's `judge` field says which one
+answered: `claude-opus-5-5` (above), `jev` and `thread`. `--judge jev` asks TypeSafe AI's Jev
+(`POST https://api.typesafe.ai/v1/systemone`, key `TYPESAFE_API_KEY` from the environment) one
+`choice` question per declaration whose options are the candidate declarations and `removed`;
+Jev returns a probability per option and a confidence and no text, so the reason it records
+lists where the probability went. `thread` is the project thread or a person: they read the
+bundles `--dry-run` writes and answer in a JSON file,
+`{ "<decl>": { "choice": { "module", "export" } | null, "confidence": 0.9, "reason": "..." } }`,
+which `--import <answers.json>` turns into decisions (a `null` choice gets `removedIn` and the
+`shim` from the bundle's history). `preferences.judge` names the judge of record: its run
+writes `decisions/<from>.json`, any other judge writes
+`<out>/<from>-<to>/decisions.<judge>.json`, and `judge --compare <a.json> <b.json>` lists where
+two such files (decisions, review or answers) agree, differ and fall below the threshold, so a
+second judge's disagreements go to a person before a shipped decision changes.
+
 ### `preferences.json` (shared, area D writes it)
 
 ```json
 { "schema": 1, "audience": "ember", "tieBreak": ["@warp-drive/ember"],
   "ignorePackages": ["eslint-plugin-warp-drive", "@ember-data/codemods", "warp-drive"],
-  "report": { "ember-data/store": "side-effect", "ember-data": "side-effect" } }
+  "report": { "ember-data/store": "side-effect", "ember-data": "side-effect" },
+  "judge": "thread" }
 ```
+
+`judge` is the judge of record for `decisions/<from>.json`: `claude`, `jev` or `thread`
+(default `claude`); the other judges write next to the scratch bundles for `judge --compare`.
 
 ## Stages and ranking (area D, using A, B, E data)
 
@@ -404,7 +423,8 @@ cli.mjs surface <version|head> [--check]        area A
 cli.mjs history <a> <b> [--check]               area B
 cli.mjs diff <a> <b> [--check]                  area B
 cli.mjs audit <version> [--check]               area C
-cli.mjs judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
+cli.mjs judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev|thread] [--import answers.json] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
+cli.mjs judge --compare <a.json> <b.json> [--threshold 0.8]   area E: where two judges agree and differ
 cli.mjs ship [--check]                          area D
 cli.mjs update [--check]                        area A: surface head, then history/diff 5.9.1-head and ship when those commands exist
 cli.mjs release <version>                       area A: surface + history + diff + audit for a newly tagged version, then ship
