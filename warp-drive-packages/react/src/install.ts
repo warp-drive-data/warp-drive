@@ -93,9 +93,21 @@ export async function settled(): Promise<void> {
  * @public
  */
 export function buildSignalConfig(_options: HooksOptions): SignalIntegration {
-  const integration: SignalIntegration = {
+  return {
     consumeSignal: (signal: SignalNode) => {
       if (!isTracking()) tryConsumeContext(signal);
+    },
+
+    notifySignal: (signal: SignalNode) => {
+      if (LOG_REACT_SIGNAL_INTEGRATION) {
+        if (hasSubscribers(signal)) {
+          // oxlint-disable-next-line no-console
+          console.log(`[WarpDrive] Notified Signal`, signal);
+        } else {
+          // oxlint-disable-next-line no-console
+          console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
+        }
+      }
     },
 
     // called before the memo is read, so that a memo we are watching already has a
@@ -116,20 +128,6 @@ export function buildSignalConfig(_options: HooksOptions): SignalIntegration {
       return promise;
     },
   };
-
-  if (LOG_REACT_SIGNAL_INTEGRATION) {
-    integration.notifySignal = (signal: SignalNode) => {
-      if (hasSubscribers(signal)) {
-        // oxlint-disable-next-line no-console
-        console.log(`[WarpDrive] Notified Signal`, signal);
-      } else {
-        // oxlint-disable-next-line no-console
-        console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
-      }
-    };
-  }
-
-  return integration;
 }
 
 registerSignalIntegration(buildSignalConfig);
