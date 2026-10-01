@@ -1,23 +1,28 @@
 ---
 title: Multiple Frameworks on One Page
-description: Learn why using more than one framework on the same page with WarpDrive means composing each framework's signal configuration into one.
+description: Learn how to use more than one framework on the same page with WarpDrive by importing @warp-drive/alien-signals/install before each framework's install entry point.
 ---
 
 # Can I use multiple frameworks on one page (for instance Ember and React)?
 
-Yes. One ***Warp*Drive** store can drive components from more than one framework on the same page,
-but you need to compose the frameworks' signal configurations into one.
+Yes. One ***Warp*Drive** store can drive components from more than one framework on the same page.
+Import `@warp-drive/alien-signals/install` first, then each framework's `install` entry point:
+
+```ts
+import '@warp-drive/alien-signals/install';
+import '@warp-drive/ember/install';
+import '@warp-drive/react/install';
+```
 
 Each framework generally only re-renders in response to its own signals implementation: Ember
 re-renders for its autotracking tags, and React components re-render for the signals that
-`@warp-drive/react` subscribes them to. Each framework's `install` entry point configures
-***Warp*Drive** to use that framework's signals alone, so with only one of them installed,
-components in the other framework won't update when data changes.
+`@warp-drive/react` subscribes them to. On its own, each framework's `install` entry point
+configures ***Warp*Drive** to use that framework's signals alone.
 
-There's no built-in helper for composing them. Instead you write one short `setupSignals` call that
-builds each framework's configuration and creates a signal for each framework on every reactive
-field. The same approach works for any framework that has a ***Warp*Drive** signals configuration,
-or one you write yourself.
+[`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/) solves this. Its `install` entry
+point configures a signals graph that the frameworks imported after it add their signals to. It
+also provides the memos for all of them, so memoized values update in every framework. Import it
+first: importing it after another framework's `install` entry point throws.
 
 For a complete example with Ember and React, see
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).

@@ -47,10 +47,12 @@ export type SignalRef = unknown;
  * The hooks which MUST be configured in order to use reactive arrays,
  * resources and documents with framework specfic signals or TC39 signals.
  *
- * Support for multiple frameworks simultaneously can be done via
- * this abstraction by returning multiple signals from the `createSignal`
- * method, and consuming the correct one via the correct framework via
- * the `consumeSignal` and `notifySignal` methods.
+ * To support multiple frameworks on the same page, import
+ * `@warp-drive/alien-signals/install` before each framework's `install` entry
+ * point. Its hooks implement {@link SignalHooks.register}, so each framework's
+ * hooks, passed to {@link registerSignals}, are added to its signals graph
+ * instead of replacing it, and its memos stay up to date for every framework.
+ * See [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
  *
  * Unlike many signals implementations, WarpDrive does not wrap values as
  * signals directly, but instead uses signals to alert the reactive layer
@@ -162,8 +164,9 @@ export interface HooksOptions {
 }
 
 /**
- * Configures the signals implementation to use. Supports multiple
- * implementations simultaneously.
+ * Configures the signals implementation to use, replacing any configured
+ * before. To add a framework's hooks alongside those of other frameworks, use
+ * {@link registerSignals} instead.
  *
  * See {@link HooksOptions} for the options passed to the provided function
  * when called.

@@ -122,7 +122,21 @@ function UserList() {
 
 ## Using React Embedded In Another Reactive Framework
 
-show signals composition by running both configs and combining them
+When React components share a page and a store with another framework, such as an Ember app that
+renders some React components, import `@warp-drive/alien-signals/install` before either
+framework's `install` import:
+
+```ts
+import '@warp-drive/alien-signals/install';
+import '@warp-drive/ember/install';
+import '@warp-drive/react/install';
+```
+
+The other framework then registers its signals with the same graph React watches, and memoized
+values come from that graph, so components in both frameworks re-render when the data they read
+changes. See
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md)
+for the full setup.
 
 ## Tips & Tricks aka "The Rule of WarpDrive"
 

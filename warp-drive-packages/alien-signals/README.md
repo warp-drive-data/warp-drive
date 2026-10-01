@@ -41,9 +41,11 @@ rich applications &mdash; letting you ship better experiences more quickly witho
 # @warp-drive/alien-signals
 
 The reactivity integration for apps that don't use a framework integration such as
-`@warp-drive/ember` or `@warp-drive/react`. It backs ***Warp*Drive**'s reactive data with a
-signals graph built on [alien-signals](https://github.com/stackblitz/alien-signals), and exports
-that graph's primitives for building framework integrations; `@warp-drive/react` is built on them.
+`@warp-drive/ember` or `@warp-drive/react`, and for pages that use more than one. It backs
+***Warp*Drive**'s reactive data with a signals graph built on
+[alien-signals](https://github.com/stackblitz/alien-signals) that other frameworks' signals register
+with, and exports that graph's primitives for building framework integrations;
+`@warp-drive/react` is built on them.
 
 ## Installation
 
@@ -58,12 +60,22 @@ import calls `setupSignals` from `@warp-drive/core/configure`:
 import '@warp-drive/alien-signals/install';
 ```
 
+To render with more than one framework on the same page, import it before each framework's
+`install` entry point:
+
+```ts
+import '@warp-drive/alien-signals/install';
+import '@warp-drive/ember/install';
+import '@warp-drive/react/install';
+```
+
 ---
 
 ## Documentation
 
 - [API Docs](https://warp-drive.io/api/@warp-drive/alien-signals/): the `install` entry point, and the signals, memos and `Watcher` in `primitives`.
 - [Reactivity](https://warp-drive.io/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI, the concept this package implements.
+- [Using Ember and React on the Same Page](https://warp-drive.io/guides/the-manual/cookbook/multiple-frameworks-on-one-page): sharing one store between frameworks with this package's graph.
 
 ### ♥️ Credits
 
