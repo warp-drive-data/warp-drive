@@ -3,46 +3,64 @@
  *
  * See the [React section of Installation](/guides/installation/#react) for the full setup.
  *
- * @summary Side-effect import that configures WarpDrive to use Signal polyfill based reactivity so its data updates
- * re-render React components.
+ * @summary Side-effect import that configures WarpDrive to use `@warp-drive/alien-signals` based reactivity so its
+ * data updates re-render React components.
  * @module
  */
 
 import { use } from 'react';
-import { Signal } from 'signal-polyfill';
 
+import {
+  consumeSignal,
+  createMemo,
+  createSignal,
+  hasSubscribers,
+  isTracking,
+  type MemoNode,
+  notifySignal,
+  readMemo,
+  type SignalNode,
+} from '@warp-drive/alien-signals/primitives';
 import { LOG_REACT_SIGNAL_INTEGRATION } from '@warp-drive/core/build-config/debugging';
-import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
+import { TESTING } from '@warp-drive/core/build-config/env';
 import { type HooksOptions, setupSignals, type SignalHooks } from '@warp-drive/core/configure';
 
 import { WatcherContext } from './-private/reactive-context';
 
-function tryConsumeContext(signal: Signal.State<unknown> | Signal.Computed<unknown>): void {
+/**
+ * Adds `node` to the watcher of the nearest `ReactiveContext`, if we are rendering inside one.
+ *
+ * Callers skip this while a memo is computing: the memo is itself watched, so the watcher
+ * already hears about changes to everything it reads.
+ */
+function tryConsumeContext(node: SignalNode | MemoNode): void {
+  // `use` logs before throwing when called outside of a render, so silence it while we try
   // oxlint-disable-next-line no-console
   const logError = console.error;
+  // oxlint-disable-next-line no-console
+  console.error = noop;
   try {
-    // oxlint-disable-next-line no-console
-    console.error = () => {};
     // ensure signals are watched by our closest watcher
     const watcher = use(WatcherContext);
-    // oxlint-disable-next-line no-console
-    console.error = logError;
-    watcher?.watcher.watch(signal);
+    watcher?.watcher.watch(node);
     if (LOG_REACT_SIGNAL_INTEGRATION) {
       // oxlint-disable-next-line no-console
-      console.log(`[WarpDrive] Consumed Context Signal`, signal, watcher);
+      console.log(`[WarpDrive] Consumed Context Signal`, node, watcher);
     }
   } catch {
-    // oxlint-disable-next-line no-console
-    console.error = logError;
     // if we are not in a React context, we will Error
     // so we just ignore it.
     if (LOG_REACT_SIGNAL_INTEGRATION) {
       // oxlint-disable-next-line no-console
-      console.log(`[WarpDrive] No Context Available To Consume Signal`, signal);
+      console.log(`[WarpDrive] No Context Available To Consume Signal`, node);
     }
+  } finally {
+    // oxlint-disable-next-line no-console
+    console.error = logError;
   }
 }
+
+function noop(): void {}
 
 let pending: Promise<unknown>[];
 /**
@@ -70,22 +88,21 @@ export async function settled(): Promise<void> {
 }
 
 /**
- * Builds the {@link SignalHooks} implementation backed by the
- * [Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),
+ * Builds the {@link SignalHooks} implementation backed by
+ * [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/primitives/),
  * used to wire WarpDrive's reactivity primitives into React.
  *
- * @summary Builds the signal hooks, backed by the Signal polyfill, that connect WarpDrive reactivity to React rendering
- * and test waiters.
+ * @summary Builds the signal hooks, backed by `@warp-drive/alien-signals`, that connect WarpDrive reactivity to React
+ * rendering and test waiters.
  * @public
  */
-export function buildSignalConfig(options: HooksOptions): SignalHooks {
+export function buildSignalConfig(_options: HooksOptions): SignalHooks<SignalNode> {
   return {
-    createSignal: (obj: object, key: string | symbol) =>
-      new Signal.State(DEBUG ? { obj, key } : null, { equals: () => false }),
+    createSignal,
 
-    notifySignal: (signal: Signal.State<unknown>) => {
+    notifySignal: (signal: SignalNode) => {
       if (LOG_REACT_SIGNAL_INTEGRATION) {
-        if (Signal.subtle.hasSinks(signal)) {
+        if (hasSubscribers(signal)) {
           // oxlint-disable-next-line no-console
           console.log(`[WarpDrive] Notifying Signal`, signal);
         } else {
@@ -93,20 +110,21 @@ export function buildSignalConfig(options: HooksOptions): SignalHooks {
           console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
         }
       }
-      signal.set(signal.get());
+      notifySignal(signal);
     },
 
-    consumeSignal: (signal: Signal.State<unknown>) => {
-      tryConsumeContext(signal);
-      void signal.get();
+    consumeSignal: (signal: SignalNode) => {
+      if (!isTracking()) tryConsumeContext(signal);
+      consumeSignal(signal);
     },
 
-    createMemo: <F>(object: object, key: string | symbol, fn: () => F): (() => F) => {
-      const memo = new Signal.Computed<F>(fn);
+    createMemo: <F>(obj: object, key: string | symbol, fn: () => F): (() => F) => {
+      const memo = createMemo(obj, key, fn);
       return () => {
-        tryConsumeContext(memo);
-
-        return memo.get();
+        // watch before reading, so that a memo we are watching already has a
+        // subscriber when it is read and is not queued to release its dependencies
+        if (!isTracking()) tryConsumeContext(memo);
+        return readMemo(memo);
       };
     },
 
@@ -123,7 +141,7 @@ export function buildSignalConfig(options: HooksOptions): SignalHooks {
     },
 
     willSyncFlushWatchers: () => false,
-  } as SignalHooks;
+  };
 }
 
 setupSignals(buildSignalConfig);

@@ -7,12 +7,10 @@
     "skipLibCheck": true,
     "disableSourceOfProjectReferenceRedirect": false,
     "emitDeclarationOnly": true,
-    "allowJs": false,
     "checkJs": false,
     "alwaysStrict": true,
     "strict": true,
     "pretty": true,
-    "jsx": "react-jsx",
     "exactOptionalPropertyTypes": false,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
@@ -46,9 +44,6 @@
   "references": [
     {
       "path": "../core"
-    },
-    {
-      "path": "../alien-signals"
     }
   ]
 }

@@ -75,6 +75,7 @@ tests/performance/services
 tests/utilities/models
 tests/utilities/services
 tests/utilities/tests
+warp-drive-packages/alien-signals/src
 warp-drive-packages/core/src
 warp-drive-packages/ember/src
 warp-drive-packages/experiments/src

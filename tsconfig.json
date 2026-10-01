@@ -24,6 +24,7 @@
     { "path": "./packages/tracking" },
     { "path": "./packages/unpublished-test-infra" },
     { "path": "./warp-drive-packages/build-config" },
+    { "path": "./warp-drive-packages/alien-signals" },
     { "path": "./warp-drive-packages/core" },
     { "path": "./warp-drive-packages/ember" },
     { "path": "./warp-drive-packages/react" },

@@ -65,9 +65,10 @@ what signals they consume the way that reactive frameworks do, but by building
 overtop of other Signal libraries we can provide this.
 
 Due to the above limitations, the React Signals integration is built
-overtop the polyfill for [TC39 Proposal Signals](https://github.com/tc39/proposal-signals)
+overtop [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/primitives/), a signals graph
+built on [alien-signals](https://github.com/stackblitz/alien-signals).
 
-The TC39 Proposal's `Watcher` especially is valuable here, as it allows us to subscribe to changes
+Its `Watcher` especially is valuable here, as it allows us to subscribe to changes
 to the dependency graph of a memo and not just a signal.
 
 Every {@link ReactiveContext | <ReactiveContext />} provides a `Watcher` and subscribes to it as

@@ -1,41 +1,34 @@
 {
-  "name": "@warp-drive/react",
-  "description": "React bindings for WarpDrive, providing `StoreProvider`, `useStore` and the `<Request />` component for rendering request states with React reactivity.",
+  "name": "@warp-drive/alien-signals",
+  "description": "Configures WarpDrive reactivity to use a signals graph built on alien-signals; import its install entry in apps, or build a framework integration on its primitives.",
   "version": "5.10.0-alpha.13",
   "license": "MIT",
   "author": "Chris Thoburn <runspired@users.noreply.github.com>",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com:warp-drive-data/warp-drive.git",
-    "directory": "warp-drive-packages/react"
+    "directory": "warp-drive-packages/alien-signals"
   },
   "homepage": "https://github.com/warp-drive-data/warp-drive",
   "bugs": "https://github.com/warp-drive-data/warp-drive/issues",
   "keywords": [
-    "ember-addon",
-    "react",
     "signals",
     "warp-drive"
   ],
   "scripts": {
-    "build:pkg": "NODE_ENV=production node node_modules/tsdown/dist/run.mjs",
+    "build:pkg": "node node_modules/tsdown/dist/run.mjs",
     "prepack": "pnpm run build:pkg",
     "sync": "echo \"syncing\"",
     "check:types": "node ./node_modules/typescript-7/bin/tsc --noEmit",
     "start": "node node_modules/tsdown/dist/run.mjs --watch"
   },
   "files": [
-    "addon-main.cjs",
     "dist",
     "README.md",
     "LICENSE.md",
     "logos"
   ],
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "default": "./dist/index.js"
-    },
     "./*": {
       "types": "./dist/*.d.ts",
       "default": "./dist/*.js"
@@ -43,32 +36,19 @@
   },
   "dependencies": {
     "@embroider/macros": "^1.21.1",
-    "@warp-drive/alien-signals": "workspace:*",
     "@warp-drive/core": "workspace:*",
-    "react": "^19.3.0"
+    "alien-signals": "3.2.1"
   },
   "peerDependenciesMeta": {},
   "devDependencies": {
     "@babel/core": "catalog:",
     "@babel/plugin-transform-typescript": "catalog:",
     "@babel/preset-env": "catalog:",
-    "@babel/preset-react": "catalog:",
     "@babel/preset-typescript": "catalog:",
     "@babel/runtime": "catalog:",
-    "@types/react": "catalog:",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/internal-config": "workspace:*",
-    "decorator-transforms": "catalog:",
-    "react": "catalog:",
     "tsdown": "catalog:",
     "typescript-7": "catalog:"
-  },
-  "ember-addon": {
-    "main": "addon-main.cjs",
-    "type": "addon",
-    "version": 2
-  },
-  "ember": {
-    "edition": "octane"
   }
 }

@@ -33,6 +33,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@warp-drive-internal/specs": "workspace:*",
+    "@warp-drive/alien-signals": "workspace:*",
     "@warp-drive/core": "workspace:*",
     "@warp-drive/diagnostic": "workspace:*",
     "@warp-drive/holodeck": "workspace:*",

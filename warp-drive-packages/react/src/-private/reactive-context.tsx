@@ -1,6 +1,5 @@
 import { createContext, type JSX, type ReactNode, useSyncExternalStore, type Context, useMemo } from "react";
-import { Signal } from "signal-polyfill";
-
+import { Watcher } from "@warp-drive/alien-signals/primitives";
 import { LOG_REACT_SIGNAL_INTEGRATION } from "@warp-drive/core/build-config/debugging";
 
 let nextFlush: Promise<void> | null = null;
@@ -12,15 +11,15 @@ interface WatcherState {
   pending: boolean;
   destroyed: boolean;
   notifyReact: (() => void) | null;
-  watcher: Signal.subtle.Watcher;
+  watcher: Watcher;
 
   // the extra wrapper returned here ensures that the context value for the watcher
   // changes causing a re-render when the watcher is updated.
-  snapshot: { watcher: Signal.subtle.Watcher } | null;
+  snapshot: { watcher: Watcher } | null;
 }
 
 function clearWatcher(state: WatcherState) {
-  state.watcher.unwatch(...Signal.subtle.introspectSources(state.watcher));
+  state.watcher.unwatchAll();
 }
 
 function flush(state: WatcherState) {
@@ -38,8 +37,7 @@ function flush(state: WatcherState) {
   if (LOG_REACT_SIGNAL_INTEGRATION) {
     /* eslint-disable no-console */
     console.log(`[WarpDrive] Notifying React That WatcherContext:${state.watcherId} Has Updated`);
-    console.log("all signals", new Set(Signal.subtle.introspectSources(state.watcher)));
-    console.log("dirty signals", new Set(state.watcher.getPending()));
+    console.log("all signals", new Set(state.watcher.watched));
     /* eslint-enable no-console */
   }
 
@@ -49,7 +47,7 @@ function flush(state: WatcherState) {
 
   // tell the Watcher to start watching for changes again
   // by signaling that notifications have been flushed.
-  state.watcher.watch();
+  state.watcher.rearm();
 }
 
 function _createWatcher() {
@@ -63,17 +61,17 @@ function _createWatcher() {
     pending: false,
     destroyed: false,
     notifyReact: null as (() => void) | null,
-    watcher: null as unknown as Signal.subtle.Watcher,
+    watcher: null as unknown as Watcher,
 
     // the extra wrapper returned here ensures that the context value for the watcher
     // changes causing a re-render when the watcher is updated.
-    snapshot: null as { watcher: Signal.subtle.Watcher } | null,
+    snapshot: null as { watcher: Watcher } | null,
   };
 
-  state.watcher = new Signal.subtle.Watcher((...args) => {
+  state.watcher = new Watcher(() => {
     if (LOG_REACT_SIGNAL_INTEGRATION) {
       // eslint-disable-next-line no-console
-      console.log(`watcher ${state.watcherId} notified`, args, state.watcher);
+      console.log(`watcher ${state.watcherId} notified`, state.watcher);
     }
     if (!state.pending && !state.destroyed) {
       watchers.push(state);
@@ -113,14 +111,12 @@ function _createWatcher() {
     }
   });
 
-  // The watcher won't begin watching until we call `watcher.watch()`
-  state.watcher.watch();
   state.snapshot = { watcher: state.watcher };
 
   return state;
 }
 
-export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
+export function useWatcher(): { watcher: Watcher } | null {
   const state = useMemo(_createWatcher, []);
 
   return useSyncExternalStore(
@@ -132,8 +128,8 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
       state.destroyed = false;
       state.notifyReact = notifyChanged;
 
-      // The watcher won't begin watching until we call `watcher.watch()`
-      state.watcher.watch();
+      // re-arm the watcher in case it was notified while we were unsubscribed
+      state.watcher.rearm();
 
       return () => {
         if (LOG_REACT_SIGNAL_INTEGRATION) {
@@ -155,11 +151,12 @@ export function useWatcher(): { watcher: Signal.subtle.Watcher } | null {
  */
 export const WatcherContext: Context<{
   /**
-   * The `Signal.subtle.Watcher` used to observe signal changes for the nearest {@link ReactiveContext}.
+   * The `Watcher` from `@warp-drive/alien-signals/primitives` used to observe signal changes for the
+   * nearest {@link ReactiveContext}.
    */
-  watcher: Signal.subtle.Watcher;
+  watcher: Watcher;
 } | null> = createContext<{
-  watcher: Signal.subtle.Watcher;
+  watcher: Watcher;
 } | null>(null);
 
 /**

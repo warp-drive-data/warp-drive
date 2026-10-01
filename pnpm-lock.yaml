@@ -3083,6 +3083,9 @@ importers:
       '@warp-drive-internal/specs':
         specifier: workspace:*
         version: file:specs(a7ff23c8118f752c1ebc654ecc3746ca)
+      '@warp-drive/alien-signals':
+        specifier: workspace:*
+        version: file:warp-drive-packages/alien-signals(@babel/core@7.29.7)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
@@ -3731,6 +3734,43 @@ importers:
         specifier: 6.0.3
         version: 6.0.3
 
+  warp-drive-packages/alien-signals:
+    dependencies:
+      '@embroider/macros':
+        specifier: ^1.21.1
+        version: 1.21.1
+      '@warp-drive/core':
+        specifier: workspace:*
+        version: file:warp-drive-packages/core(@babel/core@7.29.7)
+      alien-signals:
+        specifier: 3.2.1
+        version: 3.2.1
+    devDependencies:
+      '@babel/core':
+        specifier: 'catalog:'
+        version: 7.29.7
+      '@babel/plugin-transform-typescript':
+        specifier: 'catalog:'
+        version: 7.29.9(@babel/core@7.29.7)
+      '@babel/preset-env':
+        specifier: 'catalog:'
+        version: 7.29.7(@babel/core@7.29.7)
+      '@babel/preset-typescript':
+        specifier: 'catalog:'
+        version: 7.29.7(@babel/core@7.29.7)
+      '@babel/runtime':
+        specifier: 'catalog:'
+        version: 7.29.7
+      '@warp-drive/internal-config':
+        specifier: workspace:*
+        version: file:tools/internal-config(@babel/runtime@7.29.7)
+      tsdown:
+        specifier: 'catalog:'
+        version: 0.23.0(typescript@7.1.0-dev.20260928.1)
+      typescript-7:
+        specifier: 'catalog:'
+        version: typescript@7.1.0-dev.20260928.1
+
   warp-drive-packages/build-config:
     dependencies:
       '@embroider/addon-shim':
@@ -4014,18 +4054,15 @@ importers:
       '@embroider/macros':
         specifier: ^1.21.1
         version: 1.21.1
+      '@warp-drive/alien-signals':
+        specifier: workspace:*
+        version: file:warp-drive-packages/alien-signals(@babel/core@7.29.7)
       '@warp-drive/core':
         specifier: workspace:*
         version: file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/tc39-proposal-signals':
-        specifier: workspace:*
-        version: file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.29.7)
       react:
         specifier: ^19.3.0
         version: 19.3.0
-      signal-polyfill:
-        specifier: ^0.2.2
-        version: 0.2.2
     devDependencies:
       '@babel/core':
         specifier: 'catalog:'
@@ -7411,6 +7448,9 @@ packages:
       '@warp-drive/json-api': workspace:*
       '@warp-drive/utilities': workspace:*
 
+  '@warp-drive/alien-signals@file:warp-drive-packages/alien-signals':
+    resolution: {directory: warp-drive-packages/alien-signals, type: directory}
+
   '@warp-drive/build-config@file:warp-drive-packages/build-config':
     resolution: {directory: warp-drive-packages/build-config, type: directory}
 
@@ -7511,9 +7551,6 @@ packages:
     resolution: {directory: warp-drive-packages/svelte, type: directory}
     peerDependencies:
       svelte: ^5.57.1
-
-  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals':
-    resolution: {directory: warp-drive-packages/tc39-proposal-signals, type: directory}
 
   '@warp-drive/utilities@file:warp-drive-packages/utilities':
     resolution: {directory: warp-drive-packages/utilities, type: directory}
@@ -16287,6 +16324,26 @@ snapshots:
       - '@glint/template'
       - supports-color
 
+  '@warp-drive/alien-signals@file:warp-drive-packages/alien-signals(@babel/core@7.29.7)':
+    dependencies:
+      '@embroider/macros': 1.21.1
+      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
+      alien-signals: 3.2.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - supports-color
+
+  '@warp-drive/alien-signals@file:warp-drive-packages/alien-signals(e0ff4349d3585fabae29421d7a4b80a6)':
+    dependencies:
+      '@embroider/macros': 1.21.1(@glint/template@1.9.0)
+      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+      alien-signals: 3.2.1
+    transitivePeerDependencies:
+      - '@babel/core'
+      - '@glint/template'
+      - supports-color
+
   '@warp-drive/build-config@file:warp-drive-packages/build-config':
     dependencies:
       '@embroider/addon-shim': 1.10.3
@@ -17452,10 +17509,9 @@ snapshots:
   '@warp-drive/react@file:warp-drive-packages/react(@babel/core@7.29.7)':
     dependencies:
       '@embroider/macros': 1.21.1
+      '@warp-drive/alien-signals': file:warp-drive-packages/alien-signals(@babel/core@7.29.7)
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.29.7)
       react: 19.3.0
-      signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -17464,10 +17520,9 @@ snapshots:
   '@warp-drive/react@file:warp-drive-packages/react(e0ff4349d3585fabae29421d7a4b80a6)':
     dependencies:
       '@embroider/macros': 1.21.1(@glint/template@1.9.0)
+      '@warp-drive/alien-signals': file:warp-drive-packages/alien-signals(e0ff4349d3585fabae29421d7a4b80a6)
       '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
-      '@warp-drive/tc39-proposal-signals': file:warp-drive-packages/tc39-proposal-signals(e0ff4349d3585fabae29421d7a4b80a6)
       react: 19.3.0
-      signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'
@@ -17494,26 +17549,6 @@ snapshots:
     dependencies:
       '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
       svelte: 5.57.1
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(@babel/core@7.29.7)':
-    dependencies:
-      '@embroider/macros': 1.21.1
-      '@warp-drive/core': file:warp-drive-packages/core(@babel/core@7.29.7)
-      signal-polyfill: 0.2.2
-    transitivePeerDependencies:
-      - '@babel/core'
-      - '@glint/template'
-      - supports-color
-
-  '@warp-drive/tc39-proposal-signals@file:warp-drive-packages/tc39-proposal-signals(e0ff4349d3585fabae29421d7a4b80a6)':
-    dependencies:
-      '@embroider/macros': 1.21.1(@glint/template@1.9.0)
-      '@warp-drive/core': file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
-      signal-polyfill: 0.2.2
     transitivePeerDependencies:
       - '@babel/core'
       - '@glint/template'

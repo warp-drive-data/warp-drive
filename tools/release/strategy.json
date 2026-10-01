@@ -139,6 +139,13 @@
       "mirrorPublish": true,
       "unpkgPublish": true
     },
+    "@warp-drive/alien-signals": {
+      "stage": "stable",
+      "types": "stable",
+      "typesPublish": false,
+      "mirrorPublish": true,
+      "unpkgPublish": true
+    },
     "@warp-drive/tc39-proposal-signals": {
       "stage": "stable",
       "types": "stable",

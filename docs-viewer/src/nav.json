@@ -32,6 +32,9 @@
         },
         {
           "name": "@warp-drive/tc39-proposal-signals"
+        },
+        {
+          "name": "@warp-drive/alien-signals"
         }
       ]
     },
