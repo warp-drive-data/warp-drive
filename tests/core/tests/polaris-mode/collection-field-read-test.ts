@@ -81,7 +81,11 @@ module('Reads | collection', function (hooks) {
     const record = pushUsers(store);
 
     const doc = record.friends;
-    assert.equal(doc.identifier, null, 'a relationship document has no request identifier');
+    assert.equal(
+      doc.identifier,
+      store.cacheKeyManager.getOrCreateDocumentIdentifier({ url: '/user/1/friends', method: 'GET' }),
+      'the identifier is the request key for the related link'
+    );
     assert.deepEqual(doc.links, { related: '/user/1/friends' }, 'friends.links is accessible');
     assert.deepEqual(doc.meta, { count: 2 }, 'friends.meta is accessible');
 
@@ -204,24 +208,19 @@ module('Reads | collection', function (hooks) {
     );
   });
 
-  test('we can fetch the related link', async function (assert) {
+  test('fetch() loads the related link into the relationship and resolves with the same document', async function (assert) {
     const requests: string[] = [];
+    const responses = [
+      [{ type: 'user', id: '2', attributes: { name: 'Benedikt' } }],
+      [
+        { type: 'user', id: '2', attributes: { name: 'Benedikt' } },
+        { type: 'user', id: '3', attributes: { name: 'Jane' } },
+      ],
+    ];
     const handler = {
       request<T>(context: RequestContext): Promise<T> {
         requests.push(context.request.url!);
-        return Promise.resolve({
-          data: [
-            {
-              type: 'user',
-              id: '2',
-              attributes: { name: 'Benedikt' },
-              relationships: {
-                friends: { links: { related: '/user/2/friends' }, data: [{ type: 'user', id: '1' }] },
-              },
-            },
-          ],
-          links: { self: '/user/1/friends' },
-        } as T);
+        return Promise.resolve({ data: responses[requests.length - 1], links: { self: '/user/1/friends' } } as T);
       },
     };
     const TestStore = useRecommendedStore({
@@ -237,18 +236,36 @@ module('Reads | collection', function (hooks) {
         id: '1',
         attributes: { name: 'Leo' },
         relationships: {
-          friends: { links: { related: '/user/1/friends' } },
+          friends: { links: { related: '/user/1/friends' }, meta: { count: 2 } },
         },
       },
     });
+    const doc = record.friends;
 
-    assert.equal(record.friends.data, undefined, 'data is undefined before fetching');
+    assert.equal(doc.data, undefined, 'data is undefined before fetching');
 
-    const result = (await record.friends.fetch()) as { data: User[] };
+    const result = await doc.fetch();
 
     assert.deepEqual(requests, ['/user/1/friends'], 'the related link was requested');
-    assert.equal(result.data.length, 1, 'the fetched document has the related resources');
-    assert.equal(result.data[0].name, 'Benedikt', 'the related resource is in the cache');
+    assert.equal(result, doc, 'fetch resolves with the same relationship document');
+    const friends = doc.data!;
+    assert.arrayEquals(
+      friends.map((friend) => friend.id),
+      ['2'],
+      'data is the fetched membership'
+    );
+    assert.equal(friends[0], store.peekRecord('user', '2'), 'members are record instances');
+    assert.deepEqual(doc.links, { related: '/user/1/friends' }, 'the relationship keeps its own links');
+    assert.deepEqual(doc.meta, { count: 2 }, 'the relationship keeps its own meta');
+
+    await doc.fetch();
+
+    assert.equal(doc.data, friends, 'the data array instance is stable across fetches');
+    assert.arrayEquals(
+      friends.map((friend) => friend.id),
+      ['2', '3'],
+      'a second fetch replaces the membership'
+    );
   });
 
   test('materializing a related resource that was not included errors', async function (assert) {
