@@ -488,6 +488,13 @@ import '@warp-drive/react/install';
 Only apps need to do the installation above, libraries providing React components that make use of ***Warp*Drive**
 should only do the above installation in their tests but not in any published library code.
 
+::: tip React alongside another framework
+If React components share a page and a store with another framework, such as an Ember app that
+renders some React components, import `@warp-drive/alien-signals/install` before both frameworks'
+`install` imports. See
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
+:::
+
 
 ## Svelte (🚧 Coming Soon) {#svelte}
 

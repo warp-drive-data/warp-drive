@@ -93,9 +93,9 @@ the returned function when it removes that element.
 
 ::: tip Embedding React in an app built with another framework
 One store can drive components from both frameworks, but each framework only re-renders for its
-own signals, and each framework's `install` import configures ***Warp*Drive** for that framework
-alone. For components in both to re-render when data changes, compose the two signal
-configurations into one. See
+own signals. For components in both to re-render when data changes, import
+`@warp-drive/alien-signals/install` before either framework's `install` import, so that both
+frameworks share its signals graph. See
 [Can I use multiple frameworks on one page?](/guides/faq/multiple-frameworks.md), and for Ember
 and React,
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
