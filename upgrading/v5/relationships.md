@@ -144,9 +144,8 @@ not received membership yet (a links-only payload). `null` and `[]` still mean k
 for it where an async relationship may not have loaded.
 
 The document and its `data` array are stable instances per record, so templates and getters that
-hold onto them keep working as the cache changes. Two more properties exist for edits:
-`remoteData`, the membership the API last confirmed, and `isDirty`, whether local state differs
-from it. See [Resource Relationships](/guides/the-manual/relational-data/features/resource-relationships.md)
+hold onto them keep working as the cache changes. See
+[Resource Relationships](/guides/the-manual/relational-data/features/resource-relationships.md)
 and [Collection Relationships](/guides/the-manual/relational-data/features/collection-relationships.md).
 
 ## Step 4: Update Writes
