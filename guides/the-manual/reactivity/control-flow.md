@@ -80,11 +80,6 @@ With the JS API, getters and methods can declaratively compute off of
 the state of the request, which
 [`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) returns.
 
-In React, [`useStore`](/api/@warp-drive/react/functions/useStore) returns the store your app
-provides (see [Provide the Store in React](/guides/configuration/react#provide-the-store)),
-and a [`<ReactiveContext />`](/api/@warp-drive/react/functions/ReactiveContext) re-renders the
-component inside it when the request state it reads changes.
-
 ::: code-group
 
 ```glimmer-ts:line-numbers [Ember]
@@ -127,6 +122,8 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 import { getRequestState } from '@warp-drive/core/reactive';
 
 function ReactiveExample($props) {
+  // useStore returns the store your app provides with <StoreProvider />,
+  // see /guides/configuration/react#provide-the-store
   const store = useStore();
   const request = useMemo(
     () => store.request(
@@ -141,6 +138,8 @@ function ReactiveExample($props) {
 }
 
 export function Example($props) {
+  // ReactiveContext re-renders the component inside it
+  // when the request state it reads changes
   return (
     <ReactiveContext>
       <ReactiveExample ...$props />
