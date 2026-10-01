@@ -44,6 +44,7 @@ const AMBIENT_FILE =
 
 const KIT = { name: '@fixture/kit', dir: 'packages/kit', version: '1.2.3' };
 const GONE = { name: '@fixture/gone', dir: 'packages/gone', version: '0.1.0' };
+const NEW = { name: '@fixture/new', dir: 'packages/new', version: '3.0.0' };
 
 /**
  * A `pack` that serves the fixture tarball for `@fixture/kit@1.2.3` and reports every other
@@ -385,18 +386,20 @@ test('fetchTarball packs once into the cache and remembers a version the registr
 
 test('the audit compares the published packages with a contract-shaped surface', async (t) => {
   const { audit, shapes, tarballs } = await auditRelease('1.2.3', {
-    packages: [GONE, KIT],
+    packages: [GONE, KIT, NEW],
     surface: /** @type {any} */ (fixtureSurface()),
     cacheDir: tempDir(t),
     pack: fixturePack().pack,
   });
   assert.deepEqual(
     tarballs.map((tarball) => tarball.status),
-    ['unpublished', 'fetched']
+    ['unpublished', 'fetched', 'unpublished']
   );
   assert.equal(audit.tag, 'v1.2.3');
   assert.equal(audit.surface, 'scripts/public-exports-mapping/surfaces/1.2.3.json');
   assert.deepEqual(audit.surfacePackagesNotInRelease, ['@fixture/elsewhere']);
+  assert.deepEqual(audit.packagesNotInSurface, ['@fixture/new']);
+  assert.deepEqual(audit.packages['@fixture/new'], { dir: 'packages/new', version: '3.0.0', published: false });
   assert.deepEqual(audit.packages['@fixture/gone'], {
     dir: 'packages/gone',
     version: '0.1.0',
@@ -436,6 +439,25 @@ test('the audit compares the published packages with a contract-shaped surface',
     undefined,
     'a source id whose name differs from the published declaration gets no shape'
   );
+});
+
+test('a published package the surface does not cover is listed, not compared', async (t) => {
+  const surface = fixtureSurface();
+  delete (/** @type {any} */ (surface.packages)['@fixture/kit']);
+  for (const module of Object.keys(surface.modules)) {
+    if (module.startsWith('@fixture/kit')) delete (/** @type {any} */ (surface.modules)[module]);
+  }
+  const { audit } = await auditRelease('1.2.3', {
+    packages: [KIT, GONE],
+    surface: /** @type {any} */ (surface),
+    cacheDir: tempDir(t),
+    pack: fixturePack().pack,
+  });
+  assert.deepEqual(audit.packagesNotInSurface, ['@fixture/kit']);
+  assert.equal('differences' in audit.packages['@fixture/kit'], false);
+  assert.deepEqual(/** @type {any} */ (audit.packages['@fixture/gone']).differences.modulesNotShipped, [
+    '@fixture/gone',
+  ]);
 });
 
 test('compareWithSurface reports nothing for a surface that matches', async (t) => {

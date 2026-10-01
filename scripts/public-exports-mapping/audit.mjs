@@ -4,7 +4,7 @@
  *
  * The audit records, per non-private package of a release, what npm has at the version the tag's
  * `package.json` names (see `published.mjs`) and, when `surfaces/<version>.json` exists, how the
- * surface disagrees with it:
+ * surface disagrees with it, per package the surface covers:
  *
  * - `modulesNotShipped`: modules of the surface the package does not ship;
  * - `modulesNotInSurface`: modules the package ships that the surface lacks (all their tokens);
@@ -12,6 +12,8 @@
  * - `tokensNotInSurface`: per module both have, exports of the package the surface lacks;
  * - `kinds`: per module both have, exports whose `kind` disagrees (`value` when the published JS
  *   has the binding, `type` when only the published types have it).
+ *
+ * A package the surface does not cover is listed under `packagesNotInSurface` and not compared.
  *
  * The shapes map each declaration the published types export to its shape, by
  * `<package>/<file in the package>#<local name>` and, when a surface is given, also by the
@@ -48,7 +50,8 @@ import { declarationId, fetchTarball, openPublished, packagesAt, PublishedReleas
  * @typedef {PackageAudit & { differences?: Differences }} PackageEntry
  * @typedef {{
  *   schema: 1, kind: 'audit', version: string, tag: string | null, surface: string | null,
- *   packages: Record<string, PackageEntry>, surfacePackagesNotInRelease?: string[],
+ *   packages: Record<string, PackageEntry>, packagesNotInSurface?: string[],
+ *   surfacePackagesNotInRelease?: string[],
  * }} Audit
  * @typedef {{ schema: 1, kind: 'shapes', version: string, tag: string | null, shapes: Record<string, string> }} Shapes
  * @typedef {{
@@ -126,8 +129,9 @@ export async function auditRelease(version, options = {}) {
   if (surface) {
     const file = options.surfaceFile ?? surfacePath(version);
     audit.surface = path.relative(REPO_ROOT, file).split(path.sep).join('/');
-    const { differences, surfaceOnly } = compareWithSurface(records, surface);
+    const { differences, surfaceOnly, notInSurface } = compareWithSurface(records, surface);
     for (const [name, entry] of Object.entries(differences)) records[name].differences = entry;
+    audit.packagesNotInSurface = notInSurface;
     audit.surfacePackagesNotInRelease = surfaceOnly;
   }
 
@@ -168,10 +172,12 @@ export function publishedKinds(record) {
 }
 
 /**
- * The differences between the published packages and a surface, per package.
+ * The differences between the published packages and a surface, per package the surface covers.
  * @param {Record<string, PackageAudit>} packages
  * @param {Surface} surface
- * @returns {{ differences: Record<string, Differences>, surfaceOnly: string[] }}
+ * @returns {{ differences: Record<string, Differences>, surfaceOnly: string[], notInSurface: string[] }}
+ *   `surfaceOnly`: packages of the surface the release does not have; `notInSurface`: packages of
+ *   the release the surface does not cover
  */
 export function compareWithSurface(packages, surface) {
   /** @type {Map<string, string[]>} */
@@ -181,9 +187,16 @@ export function compareWithSurface(packages, surface) {
     if (list) list.push(module);
     else byPackage.set(entry.package, [module]);
   }
+  const covered = new Set([...Object.keys(surface.packages ?? {}), ...byPackage.keys()]);
   /** @type {Record<string, Differences>} */
   const differences = {};
+  /** @type {string[]} */
+  const uncovered = [];
   for (const [name, record] of Object.entries(packages)) {
+    if (!covered.has(name)) {
+      uncovered.push(name);
+      continue;
+    }
     const surfaceModules = new Set(byPackage.get(name) ?? []);
     /** @type {Record<string, ModuleRecord>} */
     const published = record.published ? record.modules : {};
@@ -217,8 +230,8 @@ export function compareWithSurface(packages, surface) {
     }
     differences[name] = entry;
   }
-  const surfaceOnly = [...byPackage.keys()].filter((name) => !Object.hasOwn(packages, name)).sort(compare);
-  return { differences, surfaceOnly };
+  const surfaceOnly = [...covered].filter((name) => !Object.hasOwn(packages, name)).sort(compare);
+  return { differences, surfaceOnly, notInSurface: uncovered.sort(compare) };
 }
 
 /**
