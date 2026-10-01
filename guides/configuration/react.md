@@ -95,7 +95,10 @@ the returned function when it removes that element.
 One store can drive components from both frameworks, but each framework only re-renders for its
 own signals. For components in both to re-render when data changes, import
 `@warp-drive/alien-signals/install` before either framework's `install` import, so that both
-frameworks share its signals graph. See
+frameworks share its signals graph. Memoized values such as
+[derived fields](/guides/the-manual/schemas/derivations.md) then only recompute when a signal
+***Warp*Drive** manages changes, not when state that only a framework tracks, such as an Ember
+`@tracked` property, changes. See
 [Can I use multiple frameworks on one page?](/guides/faq/multiple-frameworks.md), and for Ember
 and React,
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).

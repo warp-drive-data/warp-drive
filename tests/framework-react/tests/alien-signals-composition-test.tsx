@@ -194,11 +194,10 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
   test("a framework without its own signals observes the graph's signals and memos", function (assert) {
     const hooks = buildSignalConfig(options);
     const consumed: Array<SignalNode | MemoNode> = [];
-    const notified: SignalNode[] = [];
+    const notified: Array<SignalNode | MemoNode> = [];
     hooks.register((): SignalIntegration => ({
-      consumeSignal: (signal) => consumed.push(signal),
-      notifySignal: (signal) => notified.push(signal),
-      consumeMemo: (memo) => consumed.push(memo),
+      consumeSignal: (node) => consumed.push(node),
+      notifySignal: (node) => notified.push(node),
     }));
     const signal = hooks.createSignal({}, "a");
     const memo = hooks.createMemo({}, "memo", () => {
@@ -210,6 +209,9 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
     assert.equal(consumed.length, 2, "the memo and the signal it read were consumed");
     assert.true("fn" in consumed[0], "the memo was consumed before it ran");
     assert.equal(consumed[1], signal, "the graph's own signal was consumed");
+    memo();
+    assert.equal(consumed.length, 3, "a cached read consumes the memo again");
+    assert.true("fn" in consumed[2], "the cached read consumed the memo");
     hooks.notifySignal(signal);
     assert.deepEqual(notified, [signal], "the graph's own signal was notified");
   });
@@ -247,7 +249,7 @@ module("Unit | @warp-drive/alien-signals | install composition", function () {
     assert.throws(() => {
       hooks.register(() => ({ createSignal: () => ({}) }));
     }, /Cannot register signal hooks that create their own signals after WarpDrive has created signals/);
-    hooks.register(() => ({ consumeMemo: () => {} }));
+    hooks.register(() => ({ consumeSignal: () => {} }));
     assert.ok(true, "a framework that observes the graph can still register");
   });
 });

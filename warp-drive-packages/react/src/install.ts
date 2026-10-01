@@ -94,11 +94,14 @@ export async function settled(): Promise<void> {
  */
 export function buildSignalConfig(_options: HooksOptions): SignalIntegration {
   return {
-    consumeSignal: (signal: SignalNode) => {
-      if (!isTracking()) tryConsumeContext(signal);
+    // called with each signal as it is consumed, and with each memo just before it is read, so
+    // that a memo we are watching already has a subscriber when it is read and is not queued to
+    // release its dependencies
+    consumeSignal: (node: SignalNode | MemoNode) => {
+      if (!isTracking()) tryConsumeContext(node);
     },
 
-    notifySignal: (signal: SignalNode) => {
+    notifySignal: (signal: SignalNode | MemoNode) => {
       if (LOG_REACT_SIGNAL_INTEGRATION) {
         if (hasSubscribers(signal)) {
           // oxlint-disable-next-line no-console
@@ -108,12 +111,6 @@ export function buildSignalConfig(_options: HooksOptions): SignalIntegration {
           console.log(`[WarpDrive] Notified Signal That Has No Watcher`, signal);
         }
       }
-    },
-
-    // called before the memo is read, so that a memo we are watching already has a
-    // subscriber when it is read and is not queued to release its dependencies
-    consumeMemo: (memo: MemoNode) => {
-      if (!isTracking()) tryConsumeContext(memo);
     },
 
     waitFor: (promise) => {

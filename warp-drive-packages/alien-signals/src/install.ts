@@ -16,6 +16,11 @@
  * in every framework on the page. Importing this entry point after another framework's `install`
  * throws, since that framework's hooks are already configured by then.
  *
+ * Memos, such as the ones behind derived fields, always come from this graph, so they only
+ * recompute when a signal ***Warp*Drive** manages changes. A memo that reads state only a
+ * framework tracks, such as an Ember `@tracked` property, keeps returning its cached value when
+ * that state changes.
+ *
  * A library should do this only in its tests, not in its published code. To observe changes
  * from outside ***Warp*Drive**, use the `Watcher` from
  * [`@warp-drive/alien-signals/primitives`](/api/@warp-drive/alien-signals/primitives/).
@@ -55,9 +60,11 @@ import {
  *   notifies it as soon as anything the memo depends on changes. To the integration, a memo is
  *   just one more signal.
  * - **It observes the graph**, as `@warp-drive/react` does. Without `createSignal`,
- *   `consumeSignal` and `notifySignal` receive the graph's own {@link SignalNode}.
+ *   `consumeSignal` receives the graph's own nodes: each {@link SignalNode} when it is consumed,
+ *   and each {@link MemoNode} just before it is read, whether it runs or returns its cached
+ *   result. `notifySignal` receives each {@link SignalNode} when it is notified.
  *
- * Either kind may also use `consumeMemo`, `willSyncFlushWatchers` and `waitFor`.
+ * Either kind may also use `willSyncFlushWatchers` and `waitFor`.
  *
  * Memos always come from the graph, so a `createMemo` hook is ignored. This means the
  * {@link SignalHooks} built for `setupSignals` can be registered as they are.
@@ -66,16 +73,17 @@ import {
  * @since 5.10.0
  * @public
  */
-export interface SignalIntegration<T = SignalNode> {
+export interface SignalIntegration<T = SignalNode | MemoNode> {
   /**
    * Creates this integration's own signal for `key` on `obj`, paired with the graph signal created
-   * for the same key. Omit it to receive the graph's {@link SignalNode} in `consumeSignal` and
+   * for the same key. Omit it to receive the graph's own nodes in `consumeSignal` and
    * `notifySignal` instead.
    */
   createSignal?: (obj: object, key: string | symbol) => T;
   /**
    * Called when a signal is consumed. For an integration with its own signals, it is also called
-   * with the integration's signal for a memo each time that memo is read.
+   * with the integration's signal for a memo each time that memo is read. For an integration that
+   * observes the graph, it is also called with each memo just before the memo is read.
    */
   consumeSignal?: (signal: T) => void;
   /**
@@ -84,10 +92,6 @@ export interface SignalIntegration<T = SignalNode> {
    * memo depends on changes.
    */
   notifySignal?: (signal: T) => void;
-  /**
-   * Called each time a memo is about to be read, before it runs or returns its cached result.
-   */
-  consumeMemo?: (memo: MemoNode) => void;
   /**
    * For an integration with its own signals: whether a signal consumed now would be tracked. When
    * this returns `false`, reading a memo neither consumes the integration's signal for it nor
@@ -169,9 +173,8 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
   // signal in each list of foreign signals, used when more than one is registered.
   const owners: SignalIntegration<unknown>[] = [];
   // Integrations that observe the graph's own nodes.
-  const signalConsumers: Array<(signal: SignalNode) => void> = [];
+  const nodeConsumers: Array<(node: SignalNode | MemoNode) => void> = [];
   const signalNotifiers: Array<(signal: SignalNode) => void> = [];
-  const memoConsumers: Array<(memo: MemoNode) => void> = [];
   const flushers: Array<() => boolean> = [];
   const waiters: Array<<K>(promise: Promise<K>) => Promise<K>> = [];
   let hasCreatedSignals = false;
@@ -229,8 +232,8 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
     },
 
     consumeSignal(signal: ComposedSignal): void {
-      for (let i = 0; i < signalConsumers.length; i++) {
-        signalConsumers[i](signal);
+      for (let i = 0; i < nodeConsumers.length; i++) {
+        nodeConsumers[i](signal);
       }
       consumeSignal(signal);
       if (signal.foreign !== undefined) {
@@ -256,8 +259,10 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
       let gate: Watcher | undefined;
       let armed = false;
       return () => {
-        for (let i = 0; i < memoConsumers.length; i++) {
-          memoConsumers[i](memo);
+        // Observers are told about the memo before it is read, so that one watching it gives it a
+        // subscriber before it runs and it is not queued to release its dependencies.
+        for (let i = 0; i < nodeConsumers.length; i++) {
+          nodeConsumers[i](memo);
         }
         // Inside another memo, that memo's own gate already covers this read.
         if (owners.length !== 0 && !isTracking() && isAnyOwnerTracking()) {
@@ -308,10 +313,9 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
         }
         owners.push(integration);
       } else {
-        if (integration.consumeSignal) signalConsumers.push(integration.consumeSignal);
+        if (integration.consumeSignal) nodeConsumers.push(integration.consumeSignal);
         if (integration.notifySignal) signalNotifiers.push(integration.notifySignal);
       }
-      if (integration.consumeMemo) memoConsumers.push(integration.consumeMemo);
       if (integration.willSyncFlushWatchers) flushers.push(integration.willSyncFlushWatchers);
       if (integration.waitFor) waiters.push(integration.waitFor);
     },
@@ -337,11 +341,9 @@ export function buildSignalConfig(options: HooksOptions): ComposingSignalHooks {
  * import { registerSignalIntegration } from '@warp-drive/alien-signals/install';
  *
  * registerSignalIntegration(() => ({
- *   consumeSignal: (signal) => {
- *     if (!isTracking()) watchInCurrentComponent(signal);
- *   },
- *   consumeMemo: (memo) => {
- *     if (!isTracking()) watchInCurrentComponent(memo);
+ *   // called with each signal as it is consumed, and each memo just before it is read
+ *   consumeSignal: (node) => {
+ *     if (!isTracking()) watchInCurrentComponent(node);
  *   },
  * }));
  * ```

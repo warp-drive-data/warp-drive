@@ -491,7 +491,10 @@ should only do the above installation in their tests but not in any published li
 ::: tip React alongside another framework
 If React components share a page and a store with another framework, such as an Ember app that
 renders some React components, import `@warp-drive/alien-signals/install` before both frameworks'
-`install` imports. See
+`install` imports. Memoized values such as
+[derived fields](/guides/the-manual/schemas/derivations.md) then only recompute when a signal
+***Warp*Drive** manages changes, not when state that only a framework tracks, such as an Ember
+`@tracked` property, changes. See
 [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
 :::
 
