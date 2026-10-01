@@ -135,7 +135,7 @@ export async function runSteps(caller, steps, { check = false, dir = COMMANDS_DI
       console.log(`${caller}: skipping ${[name, ...args].join(' ')} (not implemented yet)`);
       continue;
     }
-    const argv = check ? [...args, '--check'] : args;
+    const argv = check && !args.includes('--check') ? [...args, '--check'] : args;
     console.log(`${caller}: ${[name, ...argv].join(' ')}`);
     const code = await runCommand(name, argv, { dir, context });
     worst = Math.max(worst, code);

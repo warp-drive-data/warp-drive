@@ -29,6 +29,9 @@ export async function run(argv, { dataRoot = DATA_ROOT, cwd = process.cwd() } = 
       ['surface', ['head']],
       ['history', [newest, 'head']],
       ['diff', [newest, 'head']],
+      // decisions are judged against the newest release; a choice that the surfaces no longer
+      // carry is stale and fails here, whether or not --check was given (judge never calls the model in this mode)
+      ['judge', ['--check']],
       ['ship', []],
     ],
     { check: values.check, context: { dataRoot, cwd } }

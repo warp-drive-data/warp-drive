@@ -49,6 +49,9 @@ export async function run(argv, { dataRoot = DATA_ROOT, cwd = process.cwd() } = 
     steps.push(['diff', [previous, version]]);
   }
   steps.push(['audit', [version]]);
+  // a decision whose choice the new release no longer carries is stale; judge --check reports it
+  // without calling the model, and the residue is judged again by hand with `judge --from`
+  steps.push(['judge', ['--check']]);
   steps.push(['ship', []]);
   return runSteps('release', steps, { check: values.check, context: { dataRoot, cwd } });
 }
