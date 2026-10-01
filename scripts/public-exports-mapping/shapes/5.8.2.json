@@ -2,8 +2,6 @@
   "kind": "shapes",
   "schema": 1,
   "shapes": {
-    "@ember-data/codemods/src/index.ts#Codemods": "const Codemods\ntype Codemods = typeof Codemods",
-    "@ember-data/codemods/src/index.ts#Logs": "const Logs",
     "@ember-data/request-utils/unstable-preview-types/index.d.ts#LifetimesService": "class LifetimesService extends DefaultCachePolicy\n  constructor(config: PolicyConfig)",
     "@ember-data/tracking/unstable-preview-types/index.d.ts#buildSignalConfig": "function buildSignalConfig(options: { wellknown: { Array: symbol | string; }; }): { createSignal(obj: object, key: string | symbol): Tag | [Tag, Tag, Tag]; consumeSignal(signal: Tag | [Tag, Tag, Tag]): void; notifySignal(signal: Tag | [Tag, Tag, Tag]): void; createMemo: <F>(object: object, key: string | symbol, fn: () => F) => (() => F); willSyncFlushWatchers: () => boolean; waitFor: <K>(promise: Promise<K>) => Promise<K>; }",
     "@warp-drive/build-config/declarations/babel-macros.d.ts#macros": "function macros(): BabelPlugin[]",

@@ -45,13 +45,6 @@
               "updateRecord"
             ]
           }
-        },
-        "@ember-data/active-record/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
@@ -117,34 +110,6 @@
             ]
           }
         },
-        "@ember-data/adapter/blueprints/adapter-test/index": {
-          "runtime": {
-            "file": "blueprints/adapter-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/adapter/blueprints/adapter-test/qunit-files/__root__/__path__/__test__": {
-          "runtime": {
-            "file": "blueprints/adapter-test/qunit-files/__root__/__path__/__test__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/adapter/blueprints/adapter/files/__root__/__path__/__name__": {
-          "runtime": {
-            "file": "blueprints/adapter/files/__root__/__path__/__name__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/adapter/blueprints/adapter/index": {
-          "runtime": {
-            "file": "blueprints/adapter/index.js",
-            "names": []
-          },
-          "types": null
-        },
         "@ember-data/adapter/error": {
           "runtime": {
             "file": "dist/error.js",
@@ -208,20 +173,9 @@
               "fetchOptions"
             ]
           }
-        },
-        "@ember-data/adapter/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
-      "parseErrors": [
-        "blueprints/adapter-test/qunit-files/__root__/__path__/__test__.js",
-        "blueprints/adapter/files/__root__/__path__/__name__.js"
-      ],
       "published": true,
       "version": "5.9.1"
     },
@@ -246,19 +200,6 @@
               "legacyCompatBuildersLog"
             ]
           },
-          "types": {
-            "file": "src/index.ts",
-            "names": [
-              "legacyCompatBuilders",
-              "legacyCompatBuildersLog"
-            ]
-          }
-        },
-        "@ember-data/codemods/schema-migration/README.md": {
-          "runtime": {
-            "file": "src/schema-migration/README.md",
-            "names": []
-          },
           "types": null
         },
         "@ember-data/codemods/schema-migration/codemod.ts": {
@@ -268,24 +209,6 @@
               "Codemod",
               "Input"
             ]
-          },
-          "types": {
-            "file": "src/schema-migration/codemod.ts",
-            "names": [
-              "Codemod",
-              "Filename",
-              "Input",
-              "InputFile",
-              "SkipReason",
-              "SkippedFile",
-              "TransformerResult"
-            ]
-          }
-        },
-        "@ember-data/codemods/schema-migration/config-schema.json": {
-          "runtime": {
-            "file": "src/schema-migration/config-schema.json",
-            "names": []
           },
           "types": null
         },
@@ -306,32 +229,6 @@
               "getConfiguredImport"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/config.ts",
-            "names": [
-              "DEFAULT_INPUT_DIR",
-              "DEFAULT_MIXIN_SOURCE_DIR",
-              "DEFAULT_MODEL_SOURCE_DIR",
-              "DEFAULT_OUTPUT_DIR",
-              "DEFAULT_RESOURCES_DIR",
-              "DEFAULT_TRAITS_DIR",
-              "DEFAULT_WARP_DRIVE_IMPORTS",
-              "FinalOptions",
-              "LegacyPackageImports",
-              "MigrateOptions",
-              "MirrorPackageImports",
-              "ModernPackageImports",
-              "PackageImport",
-              "TransformOptions",
-              "getConfiguredImport"
-            ]
-          }
-        },
-        "@ember-data/codemods/schema-migration/example.config.json": {
-          "runtime": {
-            "file": "src/schema-migration/example.config.json",
-            "names": []
-          },
           "types": null
         },
         "@ember-data/codemods/schema-migration/processors/mixin-analyzer.ts": {
@@ -341,15 +238,7 @@
               "analyzeModelMixinUsage"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/processors/mixin-analyzer.ts",
-            "names": [
-              "ModelMixinAnalysisResult",
-              "analyzeModelMixinUsage",
-              "connectedMixins",
-              "modelToMixinsMap"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/processors/mixin.ts": {
           "runtime": {
@@ -358,12 +247,7 @@
               "toArtifacts"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/processors/mixin.ts",
-            "names": [
-              "toArtifacts"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/processors/model.ts": {
           "runtime": {
@@ -374,15 +258,7 @@
               "toArtifacts"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/processors/model.ts",
-            "names": [
-              "ModelAnalysisResult",
-              "generateIntermediateModelTraitArtifacts",
-              "processIntermediateModelsToTraits",
-              "toArtifacts"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/tasks/migrate.ts": {
           "runtime": {
@@ -392,13 +268,7 @@
               "runMigration"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/tasks/migrate.ts",
-            "names": [
-              "default",
-              "runMigration"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/artifact.ts": {
           "runtime": {
@@ -418,26 +288,7 @@
               "linkEntities"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/artifact.ts",
-            "names": [
-              "ArtifactConfig",
-              "ArtifactKind",
-              "SchemaArtifact",
-              "SchemaArtifactRegistry",
-              "buildEntityRegistry",
-              "createResourceArtifactConfig",
-              "createTraitArtifactConfig",
-              "deriveResourceExtensionName",
-              "deriveResourceSchemaName",
-              "deriveTraitExtensionName",
-              "deriveTraitInterfaceName",
-              "deriveTraitSchemaName",
-              "findEntityByBaseName",
-              "isConnectedToModel",
-              "linkEntities"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/ast-helpers.ts": {
           "runtime": {
@@ -456,22 +307,7 @@
               "withTransformWrapper"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/ast-helpers.ts",
-            "names": [
-              "findAssociatedInterface",
-              "findClassDeclaration",
-              "findDefaultExport",
-              "getEmberDataImports",
-              "getExportedIdentifier",
-              "getMixinImports",
-              "parseDecoratorArgumentsWithNodes",
-              "parseObjectLiteral",
-              "parseObjectLiteralFromNode",
-              "parseObjectPropertiesFromNode",
-              "withTransformWrapper"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/ast-utils.ts": {
           "runtime": {
@@ -547,86 +383,7 @@
               "withTransformWrapper"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/ast-utils.ts",
-            "names": [
-              "BUILT_IN_TYPE_MAPPINGS",
-              "DEFAULT_EMBER_DATA_SOURCE",
-              "DEFAULT_MIXIN_SOURCE",
-              "ExtractedType",
-              "FRAGMENT_BASE_SOURCE",
-              "FRAGMENT_DECORATOR_SOURCE",
-              "ImportSourceConfig",
-              "MergedSchemaOptions",
-              "PropertyInfo",
-              "SCHEMA_OPTION_REF_PREFIX",
-              "SchemaField",
-              "SchemaFieldForType",
-              "TransformArtifact",
-              "WARP_DRIVE_MODEL",
-              "buildLegacySchemaObject",
-              "buildTraitArtifacts",
-              "buildTraitSchemaObject",
-              "collectRelationshipImports",
-              "collectTraitImports",
-              "convertToSchemaField",
-              "createExtensionArtifactWithTypes",
-              "createExtensionFromOriginalFile",
-              "createTypeArtifact",
-              "extractBaseName",
-              "extractCamelCaseName",
-              "extractPascalCaseName",
-              "extractTypeFromDeclaration",
-              "extractTypeFromDecorator",
-              "extractTypeFromMethod",
-              "extractTypesFromInterface",
-              "findAssociatedInterface",
-              "findClassDeclaration",
-              "findDefaultExport",
-              "findEmberImportLocalName",
-              "generateExportStatement",
-              "generateExtensionCode",
-              "generateInterfaceCode",
-              "generateMergedSchemaCode",
-              "generateTraitImport",
-              "generateWarpDriveTypeImport",
-              "getEmberDataImports",
-              "getExportedIdentifier",
-              "getFieldKindFromDecorator",
-              "getFileExtension",
-              "getImportSourceConfig",
-              "getLanguageFromPath",
-              "getMixinImports",
-              "getModelImportSource",
-              "getModelImportSources",
-              "getResourcesImport",
-              "getTypeScriptTypeForAttribute",
-              "indentCode",
-              "isImportFromSource",
-              "isMixinFile",
-              "isMixinImportPath",
-              "isModelFile",
-              "isModelImportPath",
-              "isSpecialMixinImport",
-              "mapFieldsToTypeProperties",
-              "mixinNameToTraitName",
-              "parseDecoratorArgumentsWithNodes",
-              "parseObjectLiteral",
-              "parseObjectLiteralFromNode",
-              "parseObjectPropertiesFromNode",
-              "processImports",
-              "removeQuotes",
-              "replaceWildcardPattern",
-              "resolveImportPath",
-              "resolveRelativeImport",
-              "schemaFieldToLegacyFormat",
-              "schemaFieldToTypeScriptType",
-              "toPascalCase",
-              "transformModelToResourceImport",
-              "transformWarpDriveImport",
-              "withTransformWrapper"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/code-processing.ts": {
           "runtime": {
@@ -684,61 +441,7 @@
               "isTypeScriptFileByPath"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/code-processing.ts",
-            "names": [
-              "FILE_EXTENSION_JS",
-              "FILE_EXTENSION_TS",
-              "NODE_KIND_ARGUMENTS",
-              "NODE_KIND_ARROW_FUNCTION",
-              "NODE_KIND_AS_EXPRESSION",
-              "NODE_KIND_CALL_EXPRESSION",
-              "NODE_KIND_CLASS_BODY",
-              "NODE_KIND_CLASS_DECLARATION",
-              "NODE_KIND_CLASS_HERITAGE",
-              "NODE_KIND_COMPUTED_PROPERTY_NAME",
-              "NODE_KIND_DECORATOR",
-              "NODE_KIND_FALSE",
-              "NODE_KIND_FIELD_DEFINITION",
-              "NODE_KIND_FUNCTION",
-              "NODE_KIND_IDENTIFIER",
-              "NODE_KIND_IMPORT_CLAUSE",
-              "NODE_KIND_IMPORT_SPECIFIER",
-              "NODE_KIND_IMPORT_STATEMENT",
-              "NODE_KIND_LEXICAL_DECLARATION",
-              "NODE_KIND_MEMBER_EXPRESSION",
-              "NODE_KIND_METHOD_DEFINITION",
-              "NODE_KIND_NAMED_IMPORTS",
-              "NODE_KIND_NUMBER",
-              "NODE_KIND_OBJECT",
-              "NODE_KIND_PAIR",
-              "NODE_KIND_PROPERTY_IDENTIFIER",
-              "NODE_KIND_STRING",
-              "NODE_KIND_TRUE",
-              "NODE_KIND_VARIABLE_DECLARATION",
-              "NODE_KIND_VARIABLE_DECLARATOR",
-              "extractFieldNameFromKey",
-              "findCallExpressions",
-              "findDecorators",
-              "findIdentifiersInArguments",
-              "findImportStatements",
-              "findObjectArgument",
-              "findObjectArguments",
-              "findStringArgument",
-              "findStringArguments",
-              "getCallArguments",
-              "getDefaultImportIdentifier",
-              "getImportClause",
-              "getImportSourcePath",
-              "getNamedImportIdentifiers",
-              "isInsideDecorator",
-              "isJavaScriptFileByPath",
-              "isObjectMethodSyntax",
-              "isPolymorphicRelationship",
-              "isTypeOnlyImport",
-              "isTypeScriptFileByPath"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/config.ts": {
           "runtime": {
@@ -752,19 +455,7 @@
               "validateConfigForTransform"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/config.ts",
-            "names": [
-              "ConfigOptions",
-              "FullConfig",
-              "loadConfig",
-              "mergeOptions",
-              "normalizeCliPaths",
-              "resolveConfigPaths",
-              "saveConfig",
-              "validateConfigForTransform"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/extension-generation.ts": {
           "runtime": {
@@ -776,16 +467,7 @@
               "getExtensionArtifactType"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/extension-generation.ts",
-            "names": [
-              "ExtensionContext",
-              "createExtensionFromOriginalFile",
-              "generateExtensionCode",
-              "generateRegistrationBlock",
-              "getExtensionArtifactType"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/file-parser.ts": {
           "runtime": {
@@ -796,18 +478,7 @@
               "parseFile"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/file-parser.ts",
-            "names": [
-              "ParsedBehavior",
-              "ParsedField",
-              "ParsedFile",
-              "ParsedFileImport",
-              "extractLeadingComment",
-              "isClassMethodSyntax",
-              "parseFile"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/import-utils.ts": {
           "runtime": {
@@ -835,31 +506,7 @@
               "transformWarpDriveImport"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/import-utils.ts",
-            "names": [
-              "DEFAULT_EMBER_DATA_SOURCE",
-              "DEFAULT_MIXIN_SOURCE",
-              "FRAGMENT_BASE_SOURCE",
-              "FRAGMENT_DECORATOR_SOURCE",
-              "WARP_DRIVE_MODEL",
-              "findEmberImportLocalName",
-              "generateTraitImport",
-              "generateWarpDriveTypeImport",
-              "getModelImportSource",
-              "getModelImportSources",
-              "getResourcesImport",
-              "isMixinFile",
-              "isMixinImportPath",
-              "isModelFile",
-              "isModelImportPath",
-              "isSpecialMixinImport",
-              "processImports",
-              "resolveTraitImportPath",
-              "transformModelToResourceImport",
-              "transformWarpDriveImport"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/path-utils.ts": {
           "runtime": {
@@ -885,30 +532,7 @@
               "wildcardPatternToRegex"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/path-utils.ts",
-            "names": [
-              "ImportSourceConfig",
-              "extractBaseName",
-              "extractCamelCaseName",
-              "extractPascalCaseName",
-              "getFileExtension",
-              "getImportSourceConfig",
-              "getLanguageFromPath",
-              "getPathSuffix",
-              "indentCode",
-              "isImportFromSource",
-              "mixinNameToTraitName",
-              "normalizeClassicImport",
-              "removeQuotes",
-              "replaceWildcardPattern",
-              "resolveImportPath",
-              "resolveRelativeImport",
-              "resolveWithExtensions",
-              "toPascalCase",
-              "wildcardPatternToRegex"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/schema-generation.ts": {
           "runtime": {
@@ -931,31 +555,7 @@
               "schemaFieldToLegacyFormat"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/schema-generation.ts",
-            "names": [
-              "FieldTypeInfo",
-              "MergedSchemaOptions",
-              "PropertyInfo",
-              "SCHEMA_OPTION_REF_PREFIX",
-              "SchemaField",
-              "TransformArtifact",
-              "buildLegacySchemaObject",
-              "buildTraitArtifacts",
-              "buildTraitSchemaObject",
-              "collectRelationshipImports",
-              "collectTraitImports",
-              "convertToSchemaField",
-              "createExtensionArtifactWithTypes",
-              "createTypeArtifact",
-              "generateExportStatement",
-              "generateInterfaceCode",
-              "generateMergedSchemaCode",
-              "getFieldKindFromDecorator",
-              "mapFieldsToTypeProperties",
-              "schemaFieldToLegacyFormat"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/string.ts": {
           "runtime": {
@@ -1010,58 +610,7 @@
               "toKebabCase"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/string.ts",
-            "names": [
-              "BACKSLASH_REGEX",
-              "CAMEL_CASE_BOUNDARY_REGEX",
-              "EXPORT_DEFAULT_LINE_END_REGEX",
-              "EXPORT_KEYWORD_REGEX",
-              "EXPORT_LINE_END_REGEX",
-              "EXTENSION_PATH_REGEX",
-              "EXT_FILE_PATH_REGEX",
-              "FILENAME_WITH_EXTENSION_REGEX",
-              "FILE_EXTENSION_JT_REGEX",
-              "FILE_EXTENSION_REGEX",
-              "IMPORT_DEFAULT_REGEX",
-              "IMPORT_PATH_SINGLE_QUOTE_REGEX",
-              "IMPORT_TYPE_DEFAULT_REGEX",
-              "KEBAB_TO_CAMEL_REGEX",
-              "LEADING_HYPHEN_REGEX",
-              "MIXIN_SUFFIX_REGEX",
-              "MODEL_NAME_SUFFIX_REGEX",
-              "MODEL_SUFFIX_REGEX",
-              "NAMED_TYPE_IMPORT_REGEX",
-              "PARENT_DIR_PREFIX_REGEX",
-              "REGEX_SPECIAL_CHARS",
-              "RELATIVE_TYPE_IMPORT_REGEX",
-              "SAME_DIR_PREFIX_REGEX",
-              "SCHEMA_PATH_REGEX",
-              "SCHEMA_SUFFIX_REGEX",
-              "SURROUNDING_QUOTES_REGEX",
-              "TRAILING_MODEL_SUFFIX_REGEX",
-              "TRAILING_SINGLE_WILDCARD_REGEX",
-              "TRAILING_WILDCARD_REGEX",
-              "TRAIT_SUFFIX_REGEX",
-              "UPPERCASE_LETTER_REGEX",
-              "WHITESPACE_REGEX",
-              "WILDCARD_REGEX",
-              "WORD_BOUNDARY_REGEX",
-              "WORD_SEPARATOR_REGEX",
-              "capitalizeFirstLetter",
-              "capitalizeWord",
-              "createQuotedPathRegex",
-              "escapeRegexChars",
-              "extractDirectory",
-              "kebabLetterToUpper",
-              "mixinNameToKebab",
-              "normalizePath",
-              "pascalToKebab",
-              "removeFileExtension",
-              "removeSameDirPrefix",
-              "toKebabCase"
-            ]
-          }
+          "types": null
         },
         "@ember-data/codemods/schema-migration/utils/type-utils.ts": {
           "runtime": {
@@ -1078,26 +627,12 @@
               "schemaFieldToTypeScriptType"
             ]
           },
-          "types": {
-            "file": "src/schema-migration/utils/type-utils.ts",
-            "names": [
-              "BUILT_IN_TYPE_MAPPINGS",
-              "DEFAULT_EMBER_DATA_SOURCE",
-              "DEFAULT_MIXIN_SOURCE",
-              "ExtractedType",
-              "SchemaFieldForType",
-              "extractTypeFromDeclaration",
-              "extractTypeFromDecorator",
-              "extractTypeFromMethod",
-              "extractTypesFromInterface",
-              "getTypeScriptTypeForAttribute",
-              "schemaFieldToTypeScriptType"
-            ]
-          }
+          "types": null
         }
       },
       "modulesFrom": "exports",
       "published": true,
+      "types": "not published",
       "version": "5.9.1"
     },
     "@ember-data/debug": {
@@ -1206,13 +741,6 @@
               "peekGraph"
             ]
           }
-        },
-        "@ember-data/graph/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
@@ -1277,13 +805,6 @@
               "setBuildURLConfig",
               "updateRecord"
             ]
-          }
-        },
-        "@ember-data/json-api/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
           }
         }
       },
@@ -1381,13 +902,6 @@
               "queryRecord",
               "saveRecord"
             ]
-          }
-        },
-        "@ember-data/legacy-compat/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
           }
         },
         "@ember-data/legacy-compat/utils": {
@@ -1502,34 +1016,6 @@
             ]
           }
         },
-        "@ember-data/model/blueprints/model-test/index": {
-          "runtime": {
-            "file": "blueprints/model-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/model/blueprints/model-test/qunit-files/__root__/__path__/__test__": {
-          "runtime": {
-            "file": "blueprints/model-test/qunit-files/__root__/__path__/__test__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/model/blueprints/model/files/__root__/__path__/__name__": {
-          "runtime": {
-            "file": "blueprints/model/files/__root__/__path__/__name__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/model/blueprints/model/index": {
-          "runtime": {
-            "file": "blueprints/model/index.js",
-            "names": []
-          },
-          "types": null
-        },
         "@ember-data/model/hooks": {
           "runtime": {
             "file": "dist/hooks.js",
@@ -1572,20 +1058,9 @@
               "withRestoredDeprecatedModelRequestBehaviors"
             ]
           }
-        },
-        "@ember-data/model/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
-      "parseErrors": [
-        "blueprints/model-test/qunit-files/__root__/__path__/__test__.js",
-        "blueprints/model/files/__root__/__path__/__name__.js"
-      ],
       "published": true,
       "version": "5.9.1"
     },
@@ -1658,13 +1133,6 @@
             "names": [
               "default"
             ]
-          }
-        },
-        "@ember-data/request/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
           }
         }
       },
@@ -1813,13 +1281,6 @@
               "underscore"
             ]
           }
-        },
-        "@ember-data/request-utils/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
@@ -1860,13 +1321,6 @@
               "updateRecord"
             ]
           }
-        },
-        "@ember-data/rest/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
@@ -1905,62 +1359,6 @@
               "default"
             ]
           }
-        },
-        "@ember-data/serializer/blueprints/serializer-test/index": {
-          "runtime": {
-            "file": "blueprints/serializer-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/serializer-test/qunit-files/__root__/__path__/__test__": {
-          "runtime": {
-            "file": "blueprints/serializer-test/qunit-files/__root__/__path__/__test__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/serializer/files/__root__/__path__/__name__": {
-          "runtime": {
-            "file": "blueprints/serializer/files/__root__/__path__/__name__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/serializer/index": {
-          "runtime": {
-            "file": "blueprints/serializer/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/transform-test/index": {
-          "runtime": {
-            "file": "blueprints/transform-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/transform-test/qunit-files/__root__/__path__/__test__": {
-          "runtime": {
-            "file": "blueprints/transform-test/qunit-files/__root__/__path__/__test__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/transform/files/__root__/__path__/__name__": {
-          "runtime": {
-            "file": "blueprints/transform/files/__root__/__path__/__name__.js",
-            "names": []
-          },
-          "types": null
-        },
-        "@ember-data/serializer/blueprints/transform/index": {
-          "runtime": {
-            "file": "blueprints/transform/index.js",
-            "names": []
-          },
-          "types": null
         },
         "@ember-data/serializer/json": {
           "runtime": {
@@ -2027,22 +1425,9 @@
               "default"
             ]
           }
-        },
-        "@ember-data/serializer/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
-      "parseErrors": [
-        "blueprints/serializer-test/qunit-files/__root__/__path__/__test__.js",
-        "blueprints/serializer/files/__root__/__path__/__name__.js",
-        "blueprints/transform-test/qunit-files/__root__/__path__/__test__.js",
-        "blueprints/transform/files/__root__/__path__/__name__.js"
-      ],
       "published": true,
       "version": "5.9.1"
     },
@@ -2207,13 +1592,6 @@
               "SchemaService"
             ]
           }
-        },
-        "@ember-data/store/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
         }
       },
       "modulesFrom": "exports",
@@ -2245,13 +1623,6 @@
             "names": [
               "buildSignalConfig"
             ]
-          }
-        },
-        "@ember-data/tracking/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
           }
         }
       },
@@ -4068,13 +3439,6 @@
             ]
           }
         },
-        "@warp-drive/core-types/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
-        },
         "@warp-drive/core-types/utils": {
           "runtime": {
             "file": "dist/utils.js",
@@ -4995,101 +4359,10 @@
         "./package.json": "./package.json"
       },
       "missing": {},
-      "modules": {
-        "@warp-drive/memory-alpha/_meta.json": {
-          "runtime": {
-            "file": "skills/_meta.json",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/contributors/_meta.json": {
-          "runtime": {
-            "file": "skills/contributors/_meta.json",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/contributors/fix-at-the-source.md": {
-          "runtime": {
-            "file": "skills/contributors/fix-at-the-source.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/contributors/index.md": {
-          "runtime": {
-            "file": "skills/contributors/index.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/contributors/overview.md": {
-          "runtime": {
-            "file": "skills/contributors/overview.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/contributors/start-in-a-fresh-worktree.md": {
-          "runtime": {
-            "file": "skills/contributors/start-in-a-fresh-worktree.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/index.md": {
-          "runtime": {
-            "file": "skills/index.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/overview.md": {
-          "runtime": {
-            "file": "skills/overview.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/package.json": {
-          "runtime": {
-            "file": "package.json",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/requests/_meta.json": {
-          "runtime": {
-            "file": "skills/requests/_meta.json",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/requests/fetch-and-cache-data.md": {
-          "runtime": {
-            "file": "skills/requests/fetch-and-cache-data.md",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/schemas/_meta.json": {
-          "runtime": {
-            "file": "skills/schemas/_meta.json",
-            "names": []
-          },
-          "types": null
-        },
-        "@warp-drive/memory-alpha/schemas/define-a-resource-schema.md": {
-          "runtime": {
-            "file": "skills/schemas/define-a-resource-schema.md",
-            "names": []
-          },
-          "types": null
-        }
-      },
+      "modules": {},
       "modulesFrom": "exports",
       "published": true,
+      "types": "not published",
       "version": "5.9.1"
     },
     "@warp-drive/react": {
@@ -5218,13 +4491,6 @@
             "names": [
               "Context"
             ]
-          }
-        },
-        "@warp-drive/schema-record/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
           }
         }
       },
@@ -5768,62 +5034,6 @@
             ]
           }
         },
-        "ember-data/blueprints/adapter-test/index": {
-          "runtime": {
-            "file": "blueprints/adapter-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/adapter/index": {
-          "runtime": {
-            "file": "blueprints/adapter/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/model-test/index": {
-          "runtime": {
-            "file": "blueprints/model-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/model/index": {
-          "runtime": {
-            "file": "blueprints/model/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/serializer-test/index": {
-          "runtime": {
-            "file": "blueprints/serializer-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/serializer/index": {
-          "runtime": {
-            "file": "blueprints/serializer/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/transform-test/index": {
-          "runtime": {
-            "file": "blueprints/transform-test/index.js",
-            "names": []
-          },
-          "types": null
-        },
-        "ember-data/blueprints/transform/index": {
-          "runtime": {
-            "file": "blueprints/transform/index.js",
-            "names": []
-          },
-          "types": null
-        },
         "ember-data/model": {
           "runtime": {
             "file": "dist/model.js",
@@ -5980,13 +5190,6 @@
             ]
           }
         },
-        "ember-data/unstable-preview-types": {
-          "runtime": null,
-          "types": {
-            "file": "unstable-preview-types/index.d.ts",
-            "names": []
-          }
-        },
         "ember-data/version": {
           "runtime": {
             "file": "dist/version.js",
@@ -6046,6 +5249,7 @@
       },
       "modulesFrom": "exports",
       "published": true,
+      "types": "not published",
       "version": "5.9.1"
     },
     "warp-drive": {

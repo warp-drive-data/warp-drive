@@ -1,12 +1,7 @@
 {
   "kind": "shapes",
   "schema": 1,
-  "shapes": {
-    "ember-data/addon/-private/index.ts#PromiseArray": "const PromiseArray",
-    "ember-data/addon/-private/index.ts#PromiseObject": "const PromiseObject",
-    "ember-data/addon/-private/index.ts#Store": "class Store extends BaseStore\n  constructor(args: Record<string, unknown>)",
-    "ember-data/addon/setup-container.ts#setupContainer": "function setupContainer(application: Application)"
-  },
+  "shapes": {},
   "tag": "v4.12.8",
   "version": "4.12.8"
 }

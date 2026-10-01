@@ -74,6 +74,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/debug": {
@@ -94,6 +95,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/graph": {
@@ -115,6 +117,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/json-api": {
@@ -135,6 +138,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/legacy-compat": {
@@ -169,6 +173,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/model": {
@@ -212,6 +217,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/private-build-infra": {
@@ -252,6 +258,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/serializer": {
@@ -325,6 +332,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/store": {
@@ -382,6 +390,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "@ember-data/tracking": {
@@ -418,6 +427,7 @@
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     },
     "ember-data": {
@@ -452,22 +462,7 @@
               "coerceId"
             ]
           },
-          "types": {
-            "file": "addon/-private/index.ts",
-            "names": [
-              "DS",
-              "Errors",
-              "ManyArray",
-              "PromiseArray",
-              "PromiseManyArray",
-              "PromiseObject",
-              "RecordArrayManager",
-              "Snapshot",
-              "SnapshotRecordArray",
-              "Store",
-              "coerceId"
-            ]
-          }
+          "types": null
         },
         "ember-data/-private/core": {
           "runtime": {
@@ -485,12 +480,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/adapter.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/adapters/errors": {
           "runtime": {
@@ -507,20 +497,7 @@
               "UnauthorizedError"
             ]
           },
-          "types": {
-            "file": "addon/adapters/errors.ts",
-            "names": [
-              "AbortError",
-              "AdapterError",
-              "ConflictError",
-              "ForbiddenError",
-              "InvalidError",
-              "NotFoundError",
-              "ServerError",
-              "TimeoutError",
-              "UnauthorizedError"
-            ]
-          }
+          "types": null
         },
         "ember-data/adapters/json-api": {
           "runtime": {
@@ -529,12 +506,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/adapters/json-api.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/adapters/rest": {
           "runtime": {
@@ -543,12 +515,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/adapters/rest.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/attr": {
           "runtime": {
@@ -557,12 +524,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/attr.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/model": {
           "runtime": {
@@ -571,12 +533,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/model.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/relationships": {
           "runtime": {
@@ -586,13 +543,7 @@
               "hasMany"
             ]
           },
-          "types": {
-            "file": "addon/relationships.ts",
-            "names": [
-              "belongsTo",
-              "hasMany"
-            ]
-          }
+          "types": null
         },
         "ember-data/serializer": {
           "runtime": {
@@ -601,12 +552,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/serializer.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/serializers/embedded-records-mixin": {
           "runtime": {
@@ -615,12 +561,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/serializers/embedded-records-mixin.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/serializers/json": {
           "runtime": {
@@ -629,12 +570,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/serializers/json.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/serializers/json-api": {
           "runtime": {
@@ -643,12 +579,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/serializers/json-api.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/serializers/rest": {
           "runtime": {
@@ -657,12 +588,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/serializers/rest.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/setup-container": {
           "runtime": {
@@ -671,12 +597,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/setup-container.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/store": {
           "runtime": {
@@ -685,12 +606,7 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/store.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         },
         "ember-data/test-support": {
           "runtime": {
@@ -708,16 +624,12 @@
               "default"
             ]
           },
-          "types": {
-            "file": "addon/transform.ts",
-            "names": [
-              "default"
-            ]
-          }
+          "types": null
         }
       },
       "modulesFrom": "addon",
       "published": true,
+      "types": "not published",
       "version": "5.0.1"
     }
   },
