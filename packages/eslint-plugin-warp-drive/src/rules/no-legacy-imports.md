@@ -81,22 +81,35 @@ and side-effect imports like `import '...'`. Each imported name gets one of thes
   the API docs and the request service cheat sheet.
 - **Untracked** (`warp-drive.no-legacy-imports.untracked`). The module existed in `from` but did
   not export this name, so the data has no record of where it went. Check the name, or set `from`
-  to the release the code was written against. When the module only re-exports another module in
-  `to` (`export * from '...'`), the name follows that module instead, as a rewrite.
+  to the release the code was written against. When the module is a shim in `to`, a single
+  `export * from` another module, the name follows that module instead, as a rewrite.
 - **Type-only target** (`warp-drive.no-legacy-imports.type-only-target`). A value import of
-  something that was a value in `from` and is only a type in `to`. Rewriting it would import a
-  name with no runtime value, so the import is left as written. Use `import type` if the name is
-  only used as a type, and the rule then rewrites it. Otherwise it needs manual migration.
+  something that was a value in `from` and is only a type in `to`, in another module or in the
+  same one. The import would bring in a name with no runtime value, so it is left as written. Use
+  `import type` if the name is only used as a type, and the rule then rewrites it when the type
+  lives elsewhere. Otherwise it needs manual migration.
 - **Side effect** (`warp-drive.no-legacy-imports.side-effect`). `ember-data` and
   `ember-data/store` set up things as a side effect of being imported, so no import of them is
   moved. The rule reports the declaration once and links the upgrade guide.
 - **Keep**. The export did not move, or the module is not one the `from` release had. Third-party
   packages and modules that were new after `from` are never touched.
 
-When an export has several homes in `to`, the rule picks one by these rules, in order: a public
-module before a private one, a `@warp-drive/*` (or other modern) package before `ember-data` and
-`@ember-data/*`, fewer path segments, not deprecated, a value before a type, the same export
-name, the `@warp-drive/ember` module before other modules, then alphabetical order.
+When an export has several homes in `to`, the rule picks one by these rules, in order:
+
+0. a module that holds the export before a shim, a module whose entry is a single
+   `export * from` another module;
+1. a public module before a private one;
+2. a `@warp-drive/*` (or other modern) package before `ember-data` and `@ember-data/*`;
+3. fewer path segments below the package name;
+4. not deprecated;
+5. a value before a type;
+6. the same export name;
+7. a module of the `@warp-drive/ember` package before other modules;
+8. module name, then export name, in alphabetical order.
+
+When the module and the name you import are one of the homes, the import stays unless rules 0
+to 5 rank another home before it. `import { getRequestState } from '@warp-drive/react'` stays
+on React although rule 7 prefers `@warp-drive/ember`.
 
 ## What the fix writes
 
@@ -110,8 +123,9 @@ name, the `@warp-drive/ember` module before other modules, then alphabetical ord
   types is written as `import type`.
 - When the file already imports from the target module, the fix adds the names to that
   declaration instead of writing a second one. It does not add to a namespace import, a
-  side-effect import, an import with attributes, or values to an `import type` declaration. When two declarations
-  move names to the same new module, the second one is merged in on ESLint's next fix pass.
+  side-effect import, an import with attributes, or values to an `import type` declaration.
+  When two declarations move names to the same new module, the second one is merged in on
+  ESLint's next fix pass.
 - Quotes and semicolons follow the declaration being fixed.
 
 ## Namespace and side-effect imports
@@ -123,6 +137,8 @@ written while the module exists in `to`, and are reported as removed when it doe
 
 ## What the rule ignores
 
+- Imports from `warp-drive`, `@ember-data/codemods` and `eslint-plugin-warp-drive`, the packages
+  the data does not map.
 - Re-exports, such as `export { attr } from '@ember-data/model'` and `export * from '...'`.
 - Dynamic `import()` and CommonJS `require()`.
 - Imports nested in a TypeScript `declare module` block.
