@@ -1,0 +1,188 @@
+{
+  "declarations": {
+    "external:@ember/object#default": "external:@ember/object#default",
+    "external:rsvp#Promise": null,
+    "packages/old/src/index.ts#oldThing": null,
+    "packages/store/src/cache.ts#Cache": "packages/store/src/cache.ts#Cache",
+    "packages/store/src/cache.ts#peekCache": null,
+    "packages/store/src/flags.ts#FLAG": null,
+    "packages/store/src/gone.ts#gone": null,
+    "packages/store/src/graph.ts#Graph": "warp-drive-packages/core/src/graph.ts#Graph",
+    "packages/store/src/identifier.ts#Identifier": "packages/store/src/identifier.ts#ResourceKey",
+    "packages/store/src/identifier.ts#isStableIdentifier": "packages/store/src/identifier.ts#isResourceKey",
+    "packages/store/src/ids.ts#OldA": null,
+    "packages/store/src/ids.ts#OldB": null,
+    "packages/store/src/legacy.ts#legacyHelper": null,
+    "packages/store/src/manager.ts#Manager": null,
+    "packages/store/src/record.ts#Record": "warp-drive-packages/core/src/record.ts#Record",
+    "packages/store/src/request.js#request": "packages/store/src/request.ts#request",
+    "packages/store/src/schema.ts#Schema": "warp-drive-packages/core/src/schema.ts#Schema",
+    "packages/store/src/store.ts#default": "warp-drive-packages/core/src/store.ts#Store",
+    "packages/store/src/types.ts#*ns": "warp-drive-packages/core/src/types.ts#*ns",
+    "packages/store/src/utils.ts#assert": "packages/store/src/utils.ts#assert"
+  },
+  "exports": {
+    "@acme/core": {
+      "added": {
+        "Graph": {
+          "decl": "warp-drive-packages/core/src/graph.ts#Graph",
+          "kind": "value"
+        },
+        "Record": {
+          "decl": "warp-drive-packages/core/src/record.ts#Record",
+          "kind": "value"
+        },
+        "RecordOptions": {
+          "decl": "warp-drive-packages/core/src/record.ts#RecordOptions",
+          "kind": "type"
+        },
+        "Schema": {
+          "decl": "warp-drive-packages/core/src/schema.ts#Schema",
+          "kind": "value"
+        },
+        "Store": {
+          "decl": "warp-drive-packages/core/src/store.ts#Store",
+          "kind": "value"
+        },
+        "StoreOptions": {
+          "decl": "warp-drive-packages/core/src/store.ts#StoreOptions",
+          "kind": "type"
+        },
+        "assert": {
+          "decl": "warp-drive-packages/core/src/utils.ts#assert",
+          "kind": "value"
+        },
+        "types": {
+          "decl": "warp-drive-packages/core/src/types.ts#*ns",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@acme/store": {
+      "added": {
+        "ResourceKey": {
+          "decl": "packages/store/src/identifier.ts#ResourceKey",
+          "kind": "type"
+        },
+        "isResourceKey": {
+          "decl": "packages/store/src/identifier.ts#isResourceKey",
+          "kind": "value"
+        }
+      },
+      "changed": {
+        "Cache": {
+          "deprecated": true
+        },
+        "EmberObject": {
+          "deprecated": null
+        },
+        "Graph": {
+          "decl": "warp-drive-packages/legacy/src/graph.ts#Graph"
+        },
+        "Record": {
+          "decl": "warp-drive-packages/core/src/record.ts#Record"
+        },
+        "Schema": {
+          "decl": "warp-drive-packages/core/src/schema.ts#Schema",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "warp-drive-packages/core/src/store.ts#Store"
+        },
+        "request": {
+          "decl": "packages/store/src/request.ts#request"
+        }
+      },
+      "removed": ["Identifier", "isStableIdentifier", "peekCache", "types"]
+    },
+    "@acme/store/-private": {
+      "added": {
+        "FlagType": {
+          "decl": "packages/store/src/flags.ts#FlagType",
+          "kind": "type"
+        },
+        "ManagerA": {
+          "decl": "packages/store/src/manager-a.ts#ManagerA",
+          "kind": "value"
+        },
+        "ManagerB": {
+          "decl": "packages/store/src/manager-b.ts#ManagerB",
+          "kind": "value"
+        },
+        "NewId": {
+          "decl": "packages/store/src/ids.ts#NewId",
+          "kind": "type"
+        },
+        "compatHelper": {
+          "decl": "packages/store/src/compat.ts#compatHelper",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": ["FLAG", "Manager", "OldA", "OldB", "gone", "legacyHelper"]
+    },
+    "@acme/store/compat": {
+      "added": {
+        "compatHelper": {
+          "decl": "packages/store/src/compat.ts#compatHelper",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@acme/store/legacy": {
+      "added": {
+        "Store": {
+          "decl": "warp-drive-packages/core/src/store.ts#Store",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": ["legacyHelper"]
+    }
+  },
+  "from": "1.0.0",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@acme/core": {
+        "entry": "warp-drive-packages/core/src/index.ts",
+        "forward": null,
+        "package": "@acme/core"
+      },
+      "@acme/store/compat": {
+        "entry": "packages/store/src/compat.ts",
+        "forward": null,
+        "package": "@acme/store"
+      }
+    },
+    "changed": {
+      "@acme/store/-private": {
+        "entry": "packages/store/src/-private/index.ts"
+      },
+      "@acme/store/legacy": {
+        "forward": "@acme/core"
+      }
+    },
+    "removed": ["@acme/old"]
+  },
+  "packages": {
+    "added": {
+      "@acme/core": {
+        "dir": "warp-drive-packages/core",
+        "modules": ["@acme/core"]
+      }
+    },
+    "changed": {
+      "@acme/store": {
+        "modules": ["@acme/store", "@acme/store/-private", "@acme/store/compat", "@acme/store/legacy"]
+      }
+    },
+    "removed": ["@acme/old"]
+  },
+  "schema": 1,
+  "to": "1.1.0"
+}

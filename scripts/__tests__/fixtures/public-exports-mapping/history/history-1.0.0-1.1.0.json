@@ -1,0 +1,70 @@
+{
+  "schema": 1,
+  "kind": "history",
+  "from": "1.0.0",
+  "to": "1.1.0",
+  "files": {
+    "packages/old/src/index.ts": [],
+    "packages/store/src/graph.ts": ["warp-drive-packages/core/src/graph.ts", "warp-drive-packages/legacy/src/graph.ts"],
+    "packages/store/src/gone.ts": [],
+    "packages/store/src/manager.ts": [],
+    "packages/store/src/record.ts": [],
+    "packages/store/src/request.js": ["packages/store/src/request.ts"],
+    "packages/store/src/schema.ts": ["packages/store/src/schema.ts", "warp-drive-packages/core/src/schema.ts"],
+    "packages/store/src/store.ts": ["warp-drive-packages/core/src/store.ts"],
+    "packages/store/src/types.ts": ["warp-drive-packages/core/src/types.ts"],
+    "packages/store/src/utils.ts": ["packages/store/src/utils.ts", "warp-drive-packages/core/src/utils.ts"]
+  },
+  "symbols": {
+    "packages/old/src/index.ts#oldThing": { "commit": "1111111111", "subject": "chore: remove @acme/old", "added": [] },
+    "packages/store/src/store.ts#default": {
+      "commit": "2222222222",
+      "subject": "refactor: export Store by name",
+      "added": ["warp-drive-packages/core/src/store.ts#Store", "warp-drive-packages/core/src/store.ts#StoreOptions"]
+    },
+    "packages/store/src/record.ts#Record": {
+      "commit": "3333333333",
+      "subject": "feat: move Record to @acme/core",
+      "added": [
+        "warp-drive-packages/core/src/record.ts#Record",
+        "warp-drive-packages/core/src/record.ts#RecordOptions",
+        "warp-drive-packages/core/src/record.ts#helper"
+      ]
+    },
+    "packages/store/src/identifier.ts#Identifier": {
+      "commit": "4444444444",
+      "subject": "refactor: rename identifiers to resource keys",
+      "added": ["packages/store/src/identifier.ts#ResourceKey", "packages/store/src/identifier.ts#isResourceKey"]
+    },
+    "packages/store/src/identifier.ts#isStableIdentifier": {
+      "commit": "4444444444",
+      "subject": "refactor: rename identifiers to resource keys",
+      "added": ["packages/store/src/identifier.ts#ResourceKey", "packages/store/src/identifier.ts#isResourceKey"]
+    },
+    "packages/store/src/legacy.ts#legacyHelper": {
+      "commit": "5555555555",
+      "subject": "feat: compat helpers",
+      "added": ["packages/store/src/compat.ts#compatHelper", "packages/store/src/compat.ts#internal"]
+    },
+    "packages/store/src/flags.ts#FLAG": {
+      "commit": "6666666666",
+      "subject": "refactor: flags become a type",
+      "added": ["packages/store/src/flags.ts#FlagType"]
+    },
+    "packages/store/src/ids.ts#OldA": {
+      "commit": "7777777777",
+      "subject": "refactor: one id type",
+      "added": ["packages/store/src/ids.ts#NewId"]
+    },
+    "packages/store/src/ids.ts#OldB": {
+      "commit": "7777777777",
+      "subject": "refactor: one id type",
+      "added": ["packages/store/src/ids.ts#NewId"]
+    },
+    "packages/store/src/manager.ts#Manager": {
+      "commit": "8888888888",
+      "subject": "refactor: split Manager",
+      "added": ["packages/store/src/manager-a.ts#ManagerA", "packages/store/src/manager-b.ts#ManagerB"]
+    }
+  }
+}
