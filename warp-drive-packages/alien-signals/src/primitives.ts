@@ -65,6 +65,13 @@ export interface SignalNode extends ReactiveNode {
    * @internal
    */
   key?: string | symbol;
+  /**
+   * The value of the notification counter when the signal was last notified, so a
+   * {@link Watcher} can report it as pending. Only present in development builds.
+   *
+   * @internal
+   */
+  notifiedAt?: number;
 }
 
 /**
@@ -108,6 +115,8 @@ export interface MemoNode<T = unknown> extends ReactiveNode {
 let activeSub: MemoNode | undefined;
 /** Incremented on each memo evaluation; `link` uses it to skip duplicate links within one run. */
 let cycle = 0;
+/** Development builds only: incremented on each notifySignal, for `Watcher.getPending()`. */
+let notifications = 0;
 
 /** Watchers notified during the current propagation, delivered once it has finished. */
 const notified: Array<Watcher | undefined> = [];
@@ -210,6 +219,9 @@ export function consumeSignal(signal: SignalNode): void {
  * @public
  */
 export function notifySignal(signal: SignalNode): void {
+  if (DEBUG) {
+    signal.notifiedAt = ++notifications;
+  }
   const subs = signal.subs;
   if (subs !== undefined) {
     // Mark the whole graph below the signal as pending, then its direct subscribers as dirty,
@@ -418,6 +430,12 @@ export class Watcher implements ReactiveNode {
    * @internal
    */
   _watched: Set<SignalNode | MemoNode> = new Set();
+  /**
+   * Development builds only: the notification counter when the watcher was last armed.
+   *
+   * @internal
+   */
+  _armedAt: number = notifications;
 
   /**
    * @param notify - called once when anything watched may have changed, until {@link Watcher.rearm} is called
@@ -459,6 +477,27 @@ export class Watcher implements ReactiveNode {
    */
   rearm(): void {
     this.flags = Watching;
+    if (DEBUG) {
+      this._armedAt = notifications;
+    }
+  }
+
+  /**
+   * Lists what this watcher is watching that may have changed since it was created or last
+   * re-armed: memos that are due to recompute, and, in development builds only, signals that
+   * have been notified. Useful for debug logging; it walks everything watched.
+   *
+   * @return the watched signals and memos that may have changed
+   */
+  getPending(): Array<SignalNode | MemoNode> {
+    const pending: Array<SignalNode | MemoNode> = [];
+    const armedAt = this._armedAt;
+    for (const node of this._watched) {
+      if ('fn' in node ? node.flags & (Dirty | Pending) : DEBUG && (node.notifiedAt ?? 0) > armedAt) {
+        pending.push(node);
+      }
+    }
+    return pending;
   }
 
   /**
@@ -468,6 +507,9 @@ export class Watcher implements ReactiveNode {
   unwatchAll(): void {
     this._watched.clear();
     this.flags = Watching;
+    if (DEBUG) {
+      this._armedAt = notifications;
+    }
     disposeDeps(this);
   }
 }

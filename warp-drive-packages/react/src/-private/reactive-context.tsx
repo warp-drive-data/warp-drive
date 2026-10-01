@@ -39,6 +39,7 @@ function flush(state: WatcherState) {
     /* eslint-disable no-console */
     console.log(`[WarpDrive] Notifying React That WatcherContext:${state.watcherId} Has Updated`);
     console.log("all signals", new Set(state.watcher.watched));
+    console.log("dirty signals", new Set(state.watcher.getPending()));
     /* eslint-enable no-console */
   }
 

@@ -9,6 +9,7 @@ import {
   readMemo,
   Watcher,
 } from "@warp-drive/alien-signals/primitives";
+import { DEBUG } from "@warp-drive/core/build-config/env";
 import { module, test } from "@warp-drive/diagnostic/react";
 
 module("Unit | @warp-drive/alien-signals | primitives", function () {
@@ -93,6 +94,34 @@ module("Unit | @warp-drive/alien-signals | primitives", function () {
     watcher.watch(direct);
     notifySignal(direct);
     assert.verifySteps(["notified"], "notified by a directly watched signal");
+    watcher.unwatchAll();
+  });
+
+  test("a Watcher reports what is pending since it was last re-armed", function (assert) {
+    const owner = {};
+    const signal = createSignal(owner, "s");
+    const direct = createSignal(owner, "direct");
+    const memo = createMemo(owner, "memo", () => {
+      consumeSignal(signal);
+      return {};
+    });
+    const watcher = new Watcher(() => {});
+    watcher.watch(memo);
+    watcher.watch(direct);
+    readMemo(memo);
+    assert.deepEqual(watcher.getPending(), [], "nothing is pending before a change");
+
+    notifySignal(signal);
+    notifySignal(direct);
+    assert.deepEqual(
+      watcher.getPending(),
+      DEBUG ? [memo, direct] : [memo],
+      DEBUG ? "reports the memo due to recompute and the notified signal" : "reports the memo due to recompute"
+    );
+
+    watcher.rearm();
+    readMemo(memo);
+    assert.deepEqual(watcher.getPending(), [], "nothing is pending after re-arming and reading");
     watcher.unwatchAll();
   });
 
