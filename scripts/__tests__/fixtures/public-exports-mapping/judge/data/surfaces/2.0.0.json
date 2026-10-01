@@ -1,0 +1,90 @@
+{
+  "kind": "surface",
+  "modules": {
+    "@ember-data/adapter/error": {
+      "entry": "packages/adapter/src/error.ts",
+      "exports": {
+        "InvalidError": {
+          "decl": "packages/adapter/src/error.ts#InvalidError",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/adapter/src/error.ts#AdapterError",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/request-utils/string": {
+      "entry": "packages/request-utils/src/string.ts",
+      "exports": {
+        "dasherize": {
+          "decl": "packages/request-utils/src/string.ts#dasherize",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "packages/request-utils/src/string.ts#normalizeModelName",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/store": {
+      "entry": "packages/store/src/index.ts",
+      "exports": {
+        "IdentifierArray": {
+          "decl": "packages/store/src/identifier-array.ts#IdentifierArray",
+          "kind": "value"
+        },
+        "StoreRequestInput": {
+          "decl": "packages/store/src/types.ts#StoreRequestInput",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "packages/store/src/store-service.ts#default",
+          "kind": "value"
+        },
+        "peekRecord": {
+          "decl": "packages/store/src/peek.ts#peekRecord",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/caches.ts#recordIdentifierFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/-private": {
+      "entry": "packages/store/src/-private.ts",
+      "exports": {
+        "IdentifierArray": {
+          "decl": "packages/store/src/identifier-array.ts#IdentifierArray",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    }
+  },
+  "packages": {
+    "@ember-data/adapter": {
+      "dir": "packages/adapter",
+      "modules": ["@ember-data/adapter/error"]
+    },
+    "@ember-data/request-utils": {
+      "dir": "packages/request-utils",
+      "modules": ["@ember-data/request-utils/string"]
+    },
+    "@ember-data/store": {
+      "dir": "packages/store",
+      "modules": ["@ember-data/store", "@ember-data/store/-private"]
+    }
+  },
+  "schema": 1,
+  "tag": "v2.0.0",
+  "version": "2.0.0"
+}

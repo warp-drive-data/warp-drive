@@ -1,0 +1,151 @@
+{
+  "kind": "surface",
+  "modules": {
+    "@ember-data/store": {
+      "entry": "packages/store/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "warp-drive-packages/core/src/store-service.ts#Store",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "warp-drive-packages/core/src/caches.ts#recordIdentifierFor",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/identifiers.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@warp-drive/core": {
+      "entry": "warp-drive-packages/core/src/index.ts",
+      "exports": {
+        "Store": {
+          "decl": "warp-drive-packages/core/src/store-service.ts#Store",
+          "kind": "value"
+        },
+        "cacheKeyFor": {
+          "decl": "warp-drive-packages/core/src/caches.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "peekRecord": {
+          "decl": "warp-drive-packages/core/src/peek.ts#peekRecord",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "warp-drive-packages/core/src/caches.ts#recordIdentifierFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core"
+    },
+    "@warp-drive/core/store/-private": {
+      "entry": "warp-drive-packages/core/src/store/-private.ts",
+      "exports": {
+        "LiveArray": {
+          "decl": "warp-drive-packages/core/src/live-array.ts#LiveArray",
+          "kind": "value"
+        },
+        "createLiveArray": {
+          "decl": "warp-drive-packages/core/src/live-array.ts#createLiveArray",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core"
+    },
+    "@warp-drive/core/types": {
+      "entry": "warp-drive-packages/core/src/types.ts",
+      "exports": {
+        "LiveArray": {
+          "decl": "warp-drive-packages/core/src/live-array.ts#LiveArray",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core"
+    },
+    "@warp-drive/legacy/adapter/error": {
+      "entry": "warp-drive-packages/legacy/src/adapter/error.ts",
+      "exports": {
+        "AdapterError": {
+          "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError",
+          "kind": "value"
+        },
+        "InvalidError": {
+          "decl": "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/legacy"
+    },
+    "@warp-drive/legacy/compat/-private": {
+      "entry": "warp-drive-packages/legacy/src/compat/-private.ts",
+      "exports": {
+        "FetchManager": {
+          "decl": "warp-drive-packages/legacy/src/compat/fetch-manager.ts#FetchManager",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/legacy"
+    },
+    "@warp-drive/utilities/string": {
+      "entry": "warp-drive-packages/utilities/src/string.ts",
+      "exports": {
+        "dasherize": {
+          "decl": "warp-drive-packages/utilities/src/string.ts#dasherize",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "warp-drive-packages/utilities/src/string.ts#normalizeModelName",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/utilities"
+    },
+    "warp-drive/types": {
+      "entry": "packages/-warp-drive/src/types.ts",
+      "exports": {
+        "LiveArray": {
+          "decl": "warp-drive-packages/core/src/live-array.ts#LiveArray",
+          "kind": "type"
+        }
+      },
+      "forward": null,
+      "package": "warp-drive"
+    }
+  },
+  "packages": {
+    "@ember-data/store": {
+      "dir": "packages/store",
+      "modules": ["@ember-data/store"]
+    },
+    "@warp-drive/core": {
+      "dir": "warp-drive-packages/core",
+      "modules": ["@warp-drive/core", "@warp-drive/core/store/-private", "@warp-drive/core/types"]
+    },
+    "@warp-drive/legacy": {
+      "dir": "warp-drive-packages/legacy",
+      "modules": ["@warp-drive/legacy/adapter/error", "@warp-drive/legacy/compat/-private"]
+    },
+    "@warp-drive/utilities": {
+      "dir": "warp-drive-packages/utilities",
+      "modules": ["@warp-drive/utilities/string"]
+    },
+    "warp-drive": {
+      "dir": "packages/-warp-drive",
+      "modules": ["warp-drive/types"]
+    }
+  },
+  "schema": 1,
+  "tag": "v3.0.0",
+  "version": "3.0.0"
+}

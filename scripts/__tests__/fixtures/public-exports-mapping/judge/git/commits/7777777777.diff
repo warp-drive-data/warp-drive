@@ -1,0 +1,14 @@
+diff --git a/packages/store/src/fetch-manager.ts b/packages/store/src/fetch-manager.ts
+deleted file mode 100644
+index 9a8b7c6..0000000
+--- a/packages/store/src/fetch-manager.ts
++++ /dev/null
+@@ -1,8 +0,0 @@
+-class FetchManagerImpl {
+-  pending = new Map<string, Promise<unknown>>();
+-}
+-
+-/**
+- * The store's shared fetch manager.
+- */
+-export const fetchManager = new FetchManagerImpl();

@@ -1,0 +1,33 @@
+{
+  "files": {
+    "packages/adapter/src/error.ts": ["warp-drive-packages/legacy/src/adapter/error.ts"],
+    "packages/request-utils/src/string.ts": ["warp-drive-packages/utilities/src/string.ts"],
+    "packages/store/src/caches.ts": ["warp-drive-packages/core/src/caches.ts"],
+    "packages/store/src/identifier-array.ts": ["warp-drive-packages/core/src/live-array.ts"],
+    "packages/store/src/peek.ts": ["warp-drive-packages/core/src/peek.ts"],
+    "packages/store/src/store-service.ts": ["warp-drive-packages/core/src/store-service.ts"],
+    "packages/store/src/types.ts": ["warp-drive-packages/core/src/types.ts"]
+  },
+  "from": "2.0.0",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {
+    "packages/store/src/identifier-array.ts#IdentifierArray": {
+      "added": [
+        "warp-drive-packages/core/src/live-array.ts#LiveArray",
+        "warp-drive-packages/core/src/live-array.ts#createLiveArray"
+      ],
+      "commit": "6666666666",
+      "subject": "feat: universal reactivity hooks (#9965)"
+    },
+    "packages/store/src/store-service.ts#default": {
+      "added": [
+        "warp-drive-packages/core/src/peek.ts#peekRecord",
+        "warp-drive-packages/core/src/store-service.ts#Store"
+      ],
+      "commit": "5555555555",
+      "subject": "feat: extract @ember-data/store => @warp-drive/core (#9998)"
+    }
+  },
+  "to": "3.0.0"
+}

@@ -1,0 +1,31 @@
+diff --git a/packages/adapter/src/error.js b/packages/adapter/src/error.js
+index 1a2b3c4..5d6e7f8 100644
+--- a/packages/adapter/src/error.js
++++ b/packages/adapter/src/error.js
+@@ -10,26 +10,3 @@ function AdapterError(errors, message = 'Adapter operation failed') {
+ }
+ 
+ export default AdapterError;
+-
+-/**
+-  Converts an array of JSON:API errors into an object keyed by attribute.
+-
+-  ```javascript
+-  import { errorsArrayToHash } from '@ember-data/adapter/error';
+-
+-  errorsArrayToHash([{ source: { pointer: '/data/attributes/name' }, detail: 'is invalid' }]);
+-  // => { name: ['is invalid'] }
+-  ```
+-
+-  @method errorsArrayToHash
+-  @deprecated use the errors of the request instead
+-  @public
+-*/
+-export function errorsArrayToHash(errors) {
+-  const out = {};
+-  for (const error of errors) {
+-    const key = error.source.pointer.split('/').at(-1);
+-    (out[key] ??= []).push(error.detail);
+-  }
+-  return out;
+-}

@@ -1,0 +1,99 @@
+{
+  "kind": "surface",
+  "modules": {
+    "@ember-data/adapter/error": {
+      "entry": "packages/adapter/src/error.js",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/error.js#default",
+          "kind": "value"
+        },
+        "errorsArrayToHash": {
+          "decl": "packages/adapter/src/error.js#errorsArrayToHash",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/store": {
+      "entry": "packages/store/src/index.ts",
+      "exports": {
+        "IdentifierArray": {
+          "decl": "packages/store/src/identifier-array.ts#IdentifierArray",
+          "kind": "value"
+        },
+        "StoreRequestInput": {
+          "decl": "packages/store/src/types.ts#StoreRequestInput",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "packages/store/src/store-service.ts#default",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "packages/store/src/utils.ts#normalizeModelName",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "peekRecords": {
+          "decl": "packages/store/src/utils.ts#peekRecords",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/caches.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/identifiers.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/-private": {
+      "entry": "packages/store/src/-private.ts",
+      "exports": {
+        "IdentifierArray": {
+          "decl": "packages/store/src/identifier-array.ts#IdentifierArray",
+          "kind": "value"
+        },
+        "fetchManager": {
+          "decl": "packages/store/src/fetch-manager.ts#fetchManager",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "eslint-plugin-warp-drive": {
+      "entry": "packages/eslint-plugin-warp-drive/src/index.js",
+      "exports": {
+        "rules": {
+          "decl": "packages/eslint-plugin-warp-drive/src/index.js#rules",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "eslint-plugin-warp-drive"
+    }
+  },
+  "packages": {
+    "@ember-data/adapter": {
+      "dir": "packages/adapter",
+      "modules": ["@ember-data/adapter/error"]
+    },
+    "@ember-data/store": {
+      "dir": "packages/store",
+      "modules": ["@ember-data/store", "@ember-data/store/-private"]
+    },
+    "eslint-plugin-warp-drive": {
+      "dir": "packages/eslint-plugin-warp-drive",
+      "modules": ["eslint-plugin-warp-drive"]
+    }
+  },
+  "schema": 1,
+  "tag": "v1.0.0",
+  "version": "1.0.0"
+}
