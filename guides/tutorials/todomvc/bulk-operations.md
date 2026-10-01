@@ -105,7 +105,7 @@ const completed = !this.areViewableCompleted;
 const changed = this.args.todos.filter((todo) => todo.completed !== completed);
 ```
 
-Right after it, send the request, then update the cache:
+Inside the `try` that follows, send the request, then update the cache:
 
 ```ts
 // At the top of the file:
