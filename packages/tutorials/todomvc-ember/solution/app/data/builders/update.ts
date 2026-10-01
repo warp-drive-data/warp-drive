@@ -1,8 +1,8 @@
 // #omit-file-from-starter
 import { recordIdentifierFor } from '@warp-drive/core';
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
-import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import { withReactiveResponse } from '@warp-drive/core/request';
+import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL } from '@warp-drive/utilities';
 
