@@ -68,6 +68,11 @@ function pushUsers(store: InstanceType<typeof Store>) {
   });
 }
 
+// whether the cache holds a local change to `bestFriend` that the API has not confirmed
+function hasUnsavedChanges(store: InstanceType<typeof Store>, record: User): boolean {
+  return store.cache.changedRelationships(recordIdentifierFor(record)).has('bestFriend');
+}
+
 module('Writes | resource', function (hooks) {
   setupTest(hooks);
 
@@ -83,21 +88,17 @@ module('Writes | resource', function (hooks) {
     const editableRey = await checkout<User>(Rey);
     assert.true(editableRey.bestFriend !== Rey.bestFriend, 'the editable record has its own document');
     assert.equal(editableRey.bestFriend.data, Matt, 'the editable document starts from the remote state');
-    assert.equal(editableRey.bestFriend.remoteData, Matt, 'remoteData reflects the remote state');
-    assert.false(editableRey.bestFriend.isDirty, 'the relationship is not dirty');
+    assert.false(hasUnsavedChanges(store, Rey), 'the relationship has no unsaved changes');
     const linksBefore = editableRey.bestFriend.links;
     const metaBefore = editableRey.bestFriend.meta;
 
     editableRey.bestFriend.data = Wes;
 
     assert.equal(editableRey.bestFriend.data, Wes, 'the editable document reflects the local change');
-    assert.equal(editableRey.bestFriend.remoteData, Matt, 'remoteData still reflects the remote state');
-    assert.true(editableRey.bestFriend.isDirty, 'the relationship is dirty');
-    assert.true(Rey.bestFriend.isDirty, 'the immutable document reports the same dirty state');
+    assert.true(hasUnsavedChanges(store, Rey), 'the relationship has unsaved changes');
     assert.equal(editableRey.bestFriend.links, linksBefore, 'links are untouched (same instance) by a local change');
     assert.equal(editableRey.bestFriend.meta, metaBefore, 'meta is untouched (same instance) by a local change');
     assert.equal(Rey.bestFriend.data, Matt, 'the immutable document still reflects the remote state');
-    assert.equal(Rey.bestFriend.remoteData, Matt, 'remoteData on the immutable document is its data');
     assert.equal(Matt.bestFriend.data, Rey, 'the immutable inverse still reflects the remote state');
     assert.equal(Wes.bestFriend.data, null, 'the immutable inverse still reflects the remote state');
 
@@ -133,8 +134,7 @@ module('Writes | resource', function (hooks) {
 
     assert.equal(Rey.bestFriend.data, Wes, 'the immutable document reflects the confirmed state');
     assert.equal(editableRey.bestFriend.data, Wes, 'the editable document reflects the confirmed state');
-    assert.equal(editableRey.bestFriend.remoteData, Wes, 'remoteData reflects the confirmed state');
-    assert.false(editableRey.bestFriend.isDirty, 'the relationship is no longer dirty');
+    assert.false(hasUnsavedChanges(store, Rey), 'the relationship no longer has unsaved changes');
     assert.equal(Wes.bestFriend.data, Rey, 'the immutable inverse reflects the confirmed state');
     assert.equal(Matt.bestFriend.data, null, 'the immutable prior inverse reflects the confirmed state');
   });
@@ -146,15 +146,14 @@ module('Writes | resource', function (hooks) {
 
     const editableRey = await checkout<User>(Rey);
     editableRey.bestFriend.data = Wes;
-    assert.true(editableRey.bestFriend.isDirty, 'the relationship is dirty');
+    assert.true(hasUnsavedChanges(store, Rey), 'the relationship has unsaved changes');
     assert.equal(Rey.bestFriend.data, Matt, 'the immutable document still reflects the remote state');
 
     await commit(editableRey);
 
     assert.equal(Rey.bestFriend.data, Wes, 'the immutable document reflects the committed state');
     assert.equal(editableRey.bestFriend.data, Wes, 'the editable document reflects the committed state');
-    assert.equal(editableRey.bestFriend.remoteData, Wes, 'remoteData reflects the committed state');
-    assert.false(editableRey.bestFriend.isDirty, 'the relationship is no longer dirty');
+    assert.false(hasUnsavedChanges(store, Rey), 'the relationship no longer has unsaved changes');
     assert.equal(Wes.bestFriend.data, Rey, 'the immutable inverse reflects the committed state');
     assert.equal(Matt.bestFriend.data, null, 'the immutable prior inverse reflects the committed state');
   });

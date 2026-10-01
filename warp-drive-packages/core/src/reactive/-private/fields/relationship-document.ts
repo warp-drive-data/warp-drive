@@ -33,10 +33,7 @@ import { Context } from '../symbols.ts';
  * `links` and `meta` are server-owned and **always** reflect the last
  * payload received from the API, on editable and immutable resources alike.
  * They are never changed by local mutations, so `meta` derived from
- * membership becomes stale while the relationship has unsaved changes. Use
- * {@link ReactiveRelationshipDocument.isDirty | isDirty} and
- * {@link ReactiveRelationshipDocument.remoteData | remoteData} to detect and
- * reason about that drift.
+ * membership becomes stale while the relationship has unsaved changes.
  *
  * `data` is `undefined` when the relationship payload did not include a
  * `data` member (e.g. a links-only payload for an async relationship);
@@ -71,28 +68,6 @@ export interface ReactiveRelationshipDocument<T> {
   data: T | undefined;
 
   /**
-   * The related resource(s) as last confirmed by the API, ignoring any
-   * unsaved local changes. On an immutable resource this is the same as
-   * `data`; on an editable resource it lets you compare the local
-   * membership against the remote one while the relationship is being
-   * edited.
-   *
-   * `undefined` when the relationship has not received membership data.
-   *
-   * @public
-   */
-  readonly remoteData: T | undefined;
-
-  /**
-   * Whether the relationship has local changes that have not yet been
-   * confirmed by the API. When `true`, `links` and `meta` describe the
-   * remote membership (`remoteData`), not the local one (`data`).
-   *
-   * @public
-   */
-  readonly isDirty: boolean;
-
-  /**
    * The links object for this relationship, if any.
    *
    * Server-owned: always reflects the last payload received from the API
@@ -107,7 +82,7 @@ export interface ReactiveRelationshipDocument<T> {
    *
    * Server-owned: always reflects the last payload received from the API
    * and is never affected by local mutations. Values derived from membership
-   * are stale while `isDirty` is `true`.
+   * are stale while the relationship has unsaved changes.
    *
    * @public
    */
@@ -253,39 +228,6 @@ defineGate(RelationshipDocumentProto, 'meta', {
   },
 });
 
-defineGate(RelationshipDocumentProto, 'remoteData', {
-  get(this: ReactiveRelationshipDocument<unknown>) {
-    upgradeThis(this);
-    const source = this[Context];
-    if (!source.editable) {
-      // an immutable resource already renders remote state
-      return this.data;
-    }
-
-    const { store, resourceKey, path } = source;
-    const key = path[path.length - 1];
-    const rel = store.cache.getRemoteRelationship(resourceKey, key) as ResourceRelationship;
-
-    if (rel.data === undefined) {
-      return undefined;
-    }
-    if (!rel.data) {
-      return null;
-    }
-    assertRelatedIsLoaded(store, resourceKey, source.field, rel.data);
-    const record: unknown = store.peekRecord(rel.data);
-    return record;
-  },
-});
-
-defineGate(RelationshipDocumentProto, 'isDirty', {
-  get(this: ReactiveRelationshipDocument<unknown>): boolean {
-    upgradeThis(this);
-    const { store, resourceKey, path } = this[Context];
-    return store.cache.changedRelationships(resourceKey).has(path[path.length - 1]);
-  },
-});
-
 defineGate(RelationshipDocumentProto, 'data', {
   get(this: ReactiveRelationshipDocument<unknown>) {
     upgradeThis(this);
@@ -355,10 +297,10 @@ export function createRelationshipDocument<T>(source: RelationshipSource): React
  * recompute from the cache on next access.
  *
  * `channel` is the channel the relationship notification was tagged with.
- * A purely `'local'` change (a mutation) can only affect `data` and
- * `isDirty`; `links`, `meta` and `remoteData` are server-owned and are left
- * alone so their identity is preserved and consumers of them do not
- * recompute. Unscoped or `'remote'` notifications stale everything.
+ * A purely `'local'` change (a mutation) can only affect `data`; `links` and
+ * `meta` are server-owned and are left alone so their identity is preserved
+ * and consumers of them do not recompute. Unscoped or `'remote'`
+ * notifications stale everything.
  *
  * @private
  */
@@ -370,7 +312,6 @@ export function notifyRelationshipDocument(
   const signals = withSignalStore(doc);
 
   notifyInternalSignal(peekInternalSignal(signals, 'data'));
-  notifyInternalSignal(peekInternalSignal(signals, 'isDirty'));
 
   if (channel === 'local') {
     return;
@@ -378,5 +319,4 @@ export function notifyRelationshipDocument(
 
   notifyInternalSignal(peekInternalSignal(signals, 'links'));
   notifyInternalSignal(peekInternalSignal(signals, 'meta'));
-  notifyInternalSignal(peekInternalSignal(signals, 'remoteData'));
 }
