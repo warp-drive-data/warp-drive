@@ -1,0 +1,29 @@
+{
+  "files": {
+    "warp-drive-packages/core/src/reactive/-private/fields/compute.ts": [],
+    "warp-drive-packages/core/src/store/-private/caches/cache-utils.ts": [],
+    "warp-drive-packages/core/src/store/-private/caches/identifier-cache.ts": [
+      "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts"
+    ],
+    "warp-drive-packages/core/src/store/-private/legacy-model-support/record-reference.ts": [],
+    "warp-drive-packages/core/src/store/-private/legacy-model-support/shim-model-class.ts": [],
+    "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts": [],
+    "warp-drive-packages/core/src/store/-private/record-arrays/many-array.ts": [
+      "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts"
+    ],
+    "warp-drive-packages/core/src/store/-types/q/ds-model.ts": [],
+    "warp-drive-packages/experiments/src/persisted-cache.ts": [],
+    "warp-drive-packages/experiments/src/persisted-cache/README.md": [],
+    "warp-drive-packages/experiments/src/persisted-cache/cache.ts": [],
+    "warp-drive-packages/experiments/src/persisted-cache/db.ts": [],
+    "warp-drive-packages/experiments/src/persisted-cache/fetch.ts": [],
+    "warp-drive-packages/utilities/src/-private/derivations.ts": [
+      "warp-drive-packages/utilities/src/derivations.ts"
+    ]
+  },
+  "from": "5.6.0",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {},
+  "to": "5.7.0"
+}

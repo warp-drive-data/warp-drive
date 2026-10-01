@@ -1,0 +1,774 @@
+{
+  "files": {
+    "packages/-warp-drive/src/-private/shared/git.ts": [],
+    "packages/-warp-drive/src/-private/warp-drive/commands/default-ts-config.js": [
+      "packages/-warp-drive/src/-private/warp-drive/commands/default-ts-config.ts"
+    ],
+    "packages/active-record/src/-private/builders/-utils.ts": [],
+    "packages/active-record/src/-private/builders/find-record.ts": [
+      "warp-drive-packages/utilities/src/-private/active-record/find-record.ts"
+    ],
+    "packages/active-record/src/-private/builders/query.ts": [
+      "warp-drive-packages/utilities/src/-private/active-record/query.ts"
+    ],
+    "packages/active-record/src/-private/builders/save-record.ts": [
+      "warp-drive-packages/utilities/src/-private/active-record/save-record.ts"
+    ],
+    "packages/adapter/src/-private.ts": [
+      "packages/adapter/src/-private.ts",
+      "warp-drive-packages/legacy/src/adapter/-private.ts"
+    ],
+    "packages/adapter/src/-private/build-url-mixin.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts"
+    ],
+    "packages/adapter/src/-private/fastboot-interface.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/fastboot-interface.ts"
+    ],
+    "packages/adapter/src/-private/utils/continue-on-reject.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/continue-on-reject.ts"
+    ],
+    "packages/adapter/src/-private/utils/determine-body-promise.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/determine-body-promise.ts"
+    ],
+    "packages/adapter/src/-private/utils/fetch.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/fetch.ts"
+    ],
+    "packages/adapter/src/-private/utils/parse-response-headers.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/parse-response-headers.ts"
+    ],
+    "packages/adapter/src/-private/utils/serialize-into-hash.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/serialize-into-hash.ts"
+    ],
+    "packages/adapter/src/-private/utils/serialize-query-params.ts": [
+      "warp-drive-packages/legacy/src/adapter/-private/utils/serialize-query-params.ts"
+    ],
+    "packages/adapter/src/error.js": [
+      "warp-drive-packages/legacy/src/adapter/error.ts"
+    ],
+    "packages/adapter/src/index.ts": [
+      "packages/adapter/src/index.ts",
+      "warp-drive-packages/legacy/src/adapter.ts"
+    ],
+    "packages/adapter/src/json-api.ts": [
+      "packages/adapter/src/json-api.ts",
+      "warp-drive-packages/legacy/src/adapter/json-api.ts"
+    ],
+    "packages/adapter/src/rest.ts": [
+      "packages/adapter/src/rest.ts",
+      "warp-drive-packages/legacy/src/adapter/rest.ts"
+    ],
+    "packages/build-config/src/-private/utils/deprecations.ts": [
+      "warp-drive-packages/build-config/src/-private/utils/deprecations.ts"
+    ],
+    "packages/build-config/src/-private/utils/features.ts": [
+      "warp-drive-packages/build-config/src/-private/utils/features.ts"
+    ],
+    "packages/build-config/src/-private/utils/get-env.ts": [
+      "warp-drive-packages/build-config/src/-private/utils/get-env.ts"
+    ],
+    "packages/build-config/src/-private/utils/logging.ts": [
+      "warp-drive-packages/build-config/src/-private/utils/logging.ts"
+    ],
+    "packages/build-config/src/babel-macros.ts": [
+      "warp-drive-packages/build-config/src/babel-macros.ts"
+    ],
+    "packages/build-config/src/canary-features.ts": [
+      "warp-drive-packages/build-config/src/canary-features.ts"
+    ],
+    "packages/build-config/src/cjs-set-config.ts": [
+      "warp-drive-packages/build-config/src/cjs-set-config.ts"
+    ],
+    "packages/build-config/src/debugging.ts": [
+      "warp-drive-packages/build-config/src/debugging.ts"
+    ],
+    "packages/build-config/src/deprecation-versions.ts": [
+      "warp-drive-packages/build-config/src/deprecations.ts"
+    ],
+    "packages/build-config/src/deprecations.ts": [],
+    "packages/build-config/src/env.ts": [],
+    "packages/build-config/src/index.ts": [
+      "warp-drive-packages/build-config/src/index.ts"
+    ],
+    "packages/build-config/src/macros.ts": [],
+    "packages/build-config/src/validate-exports.type-test.ts": [
+      "warp-drive-packages/build-config/src/validate-exports.type-test.ts"
+    ],
+    "packages/core-types/src/-private.ts": [
+      "packages/core-types/src/-private.ts",
+      "warp-drive-packages/core/src/types/-private.ts"
+    ],
+    "packages/core-types/src/cache.ts": [
+      "packages/core-types/src/cache.ts",
+      "warp-drive-packages/core/src/types/cache.ts"
+    ],
+    "packages/core-types/src/cache/aliases.ts": [
+      "packages/core-types/src/cache/aliases.ts",
+      "warp-drive-packages/core/src/types/cache/aliases.ts"
+    ],
+    "packages/core-types/src/cache/change.ts": [
+      "packages/core-types/src/cache/change.ts",
+      "warp-drive-packages/core/src/types/cache/change.ts"
+    ],
+    "packages/core-types/src/cache/mutations.ts": [
+      "packages/core-types/src/cache/mutations.ts",
+      "warp-drive-packages/core/src/types/cache/mutations.ts"
+    ],
+    "packages/core-types/src/cache/operations.ts": [
+      "packages/core-types/src/cache/operations.ts",
+      "warp-drive-packages/core/src/types/cache/operations.ts"
+    ],
+    "packages/core-types/src/cache/relationship.ts": [
+      "packages/core-types/src/cache/relationship.ts",
+      "warp-drive-packages/core/src/types/cache/relationship.ts"
+    ],
+    "packages/core-types/src/graph.ts": [
+      "packages/core-types/src/graph.ts",
+      "warp-drive-packages/core/src/types/graph.ts"
+    ],
+    "packages/core-types/src/identifier.ts": [
+      "packages/core-types/src/identifier.ts",
+      "warp-drive-packages/core/src/types/identifier.ts"
+    ],
+    "packages/core-types/src/json/raw.ts": [
+      "packages/core-types/src/json/raw.ts",
+      "warp-drive-packages/core/src/types/json/raw.ts"
+    ],
+    "packages/core-types/src/params.ts": [
+      "packages/core-types/src/params.ts",
+      "warp-drive-packages/core/src/types/params.ts"
+    ],
+    "packages/core-types/src/record.ts": [
+      "packages/core-types/src/record.ts",
+      "warp-drive-packages/core/src/types/record.ts"
+    ],
+    "packages/core-types/src/record.type-test.ts": [
+      "warp-drive-packages/core/src/types/record.type-test.ts"
+    ],
+    "packages/core-types/src/request.ts": [
+      "packages/core-types/src/request.ts",
+      "warp-drive-packages/core/src/types/request.ts"
+    ],
+    "packages/core-types/src/runtime.ts": [
+      "packages/core-types/src/runtime.ts",
+      "warp-drive-packages/core/src/types/runtime.ts"
+    ],
+    "packages/core-types/src/schema/concepts.ts": [
+      "packages/core-types/src/schema/concepts.ts",
+      "warp-drive-packages/core/src/types/schema/concepts.ts"
+    ],
+    "packages/core-types/src/schema/fields.ts": [
+      "packages/core-types/src/schema/fields.ts",
+      "warp-drive-packages/core/src/types/schema/fields.ts"
+    ],
+    "packages/core-types/src/schema/fields.type-test.ts": [
+      "warp-drive-packages/core/src/types/schema/fields.type-test.ts"
+    ],
+    "packages/core-types/src/spec/document.ts": [
+      "packages/core-types/src/spec/document.ts",
+      "warp-drive-packages/core/src/types/spec/document.ts"
+    ],
+    "packages/core-types/src/spec/error.ts": [
+      "packages/core-types/src/spec/error.ts",
+      "warp-drive-packages/core/src/types/spec/error.ts"
+    ],
+    "packages/core-types/src/spec/json-api-raw.ts": [
+      "packages/core-types/src/spec/json-api-raw.ts",
+      "warp-drive-packages/core/src/types/spec/json-api-raw.ts"
+    ],
+    "packages/core-types/src/symbols.ts": [
+      "packages/core-types/src/symbols.ts",
+      "warp-drive-packages/core/src/types/symbols.ts"
+    ],
+    "packages/core-types/src/utils.ts": [
+      "packages/core-types/src/utils.ts",
+      "warp-drive-packages/core/src/types/utils.ts"
+    ],
+    "packages/ember/src/-private/await.gts": [
+      "warp-drive-packages/ember/src/-private/await.gts"
+    ],
+    "packages/ember/src/-private/request.gts": [
+      "warp-drive-packages/ember/src/-private/request.gts"
+    ],
+    "packages/ember/src/.gitkeep": [
+      "warp-drive-packages/core/src/index.md",
+      "warp-drive-packages/ember/src/.gitkeep",
+      "warp-drive-packages/experiments/src/.gitkeep",
+      "warp-drive-packages/legacy/src/compat/.gitkeep",
+      "warp-drive-packages/legacy/src/serializer/.gitkeep"
+    ],
+    "packages/ember/src/index.ts": [
+      "warp-drive-packages/ember/src/index.ts"
+    ],
+    "packages/ember/src/install.ts": [
+      "warp-drive-packages/ember/src/install.ts"
+    ],
+    "packages/experiments/src/.gitkeep": [
+      "warp-drive-packages/core/src/request/.gitkeep"
+    ],
+    "packages/experiments/src/data-worker.ts": [
+      "warp-drive-packages/experiments/src/data-worker.ts"
+    ],
+    "packages/experiments/src/data-worker/README.md": [
+      "warp-drive-packages/experiments/src/data-worker/README.md"
+    ],
+    "packages/experiments/src/data-worker/cache-handler.ts": [
+      "warp-drive-packages/experiments/src/data-worker/cache-handler.ts"
+    ],
+    "packages/experiments/src/data-worker/fetch.ts": [
+      "warp-drive-packages/experiments/src/data-worker/fetch.ts"
+    ],
+    "packages/experiments/src/data-worker/types.ts": [
+      "warp-drive-packages/experiments/src/data-worker/types.ts"
+    ],
+    "packages/experiments/src/data-worker/utils.ts": [
+      "warp-drive-packages/experiments/src/data-worker/utils.ts"
+    ],
+    "packages/experiments/src/data-worker/worker.ts": [
+      "warp-drive-packages/experiments/src/data-worker/worker.ts"
+    ],
+    "packages/experiments/src/document-storage.ts": [
+      "warp-drive-packages/experiments/src/document-storage.ts"
+    ],
+    "packages/experiments/src/document-storage/README.md": [
+      "warp-drive-packages/experiments/src/document-storage/README.md"
+    ],
+    "packages/experiments/src/document-storage/index.ts": [
+      "warp-drive-packages/experiments/src/document-storage/index.ts"
+    ],
+    "packages/experiments/src/image-fetch.ts": [
+      "warp-drive-packages/experiments/src/image-fetch.ts"
+    ],
+    "packages/experiments/src/image-worker.ts": [
+      "warp-drive-packages/experiments/src/image-worker.ts"
+    ],
+    "packages/experiments/src/image-worker/README.md": [
+      "warp-drive-packages/experiments/src/image-worker/README.md"
+    ],
+    "packages/experiments/src/image-worker/fetch.ts": [
+      "warp-drive-packages/experiments/src/image-worker/fetch.ts"
+    ],
+    "packages/experiments/src/image-worker/types.ts": [
+      "warp-drive-packages/experiments/src/image-worker/types.ts"
+    ],
+    "packages/experiments/src/image-worker/worker.ts": [
+      "warp-drive-packages/experiments/src/image-worker/worker.ts"
+    ],
+    "packages/experiments/src/persisted-cache.ts": [
+      "warp-drive-packages/experiments/src/persisted-cache.ts"
+    ],
+    "packages/experiments/src/persisted-cache/README.md": [
+      "warp-drive-packages/experiments/src/persisted-cache/README.md"
+    ],
+    "packages/experiments/src/persisted-cache/cache.ts": [
+      "warp-drive-packages/experiments/src/persisted-cache/cache.ts"
+    ],
+    "packages/experiments/src/persisted-cache/db.ts": [
+      "warp-drive-packages/experiments/src/persisted-cache/db.ts"
+    ],
+    "packages/experiments/src/persisted-cache/fetch.ts": [
+      "warp-drive-packages/experiments/src/persisted-cache/fetch.ts"
+    ],
+    "packages/experiments/src/worker-fetch.ts": [
+      "warp-drive-packages/experiments/src/worker-fetch.ts"
+    ],
+    "packages/graph/src/-private.ts": [
+      "packages/graph/src/-private.ts",
+      "warp-drive-packages/core/src/graph/-private.ts"
+    ],
+    "packages/graph/src/-private/-diff.ts": [
+      "warp-drive-packages/core/src/graph/-private/-diff.ts"
+    ],
+    "packages/graph/src/-private/-edge-definition.ts": [
+      "warp-drive-packages/core/src/graph/-private/-edge-definition.ts"
+    ],
+    "packages/graph/src/-private/-state.ts": [
+      "warp-drive-packages/core/src/graph/-private/-state.ts"
+    ],
+    "packages/graph/src/-private/-utils.ts": [
+      "warp-drive-packages/core/src/graph/-private/-utils.ts"
+    ],
+    "packages/graph/src/-private/coerce-id.ts": [
+      "warp-drive-packages/core/src/graph/-private/coerce-id.ts"
+    ],
+    "packages/graph/src/-private/debug/assert-polymorphic-type.ts": [
+      "warp-drive-packages/core/src/graph/-private/debug/assert-polymorphic-type.ts"
+    ],
+    "packages/graph/src/-private/edges/collection.ts": [
+      "warp-drive-packages/core/src/graph/-private/edges/collection.ts"
+    ],
+    "packages/graph/src/-private/edges/implicit.ts": [],
+    "packages/graph/src/-private/edges/resource.ts": [
+      "warp-drive-packages/core/src/graph/-private/edges/resource.ts"
+    ],
+    "packages/graph/src/-private/graph.ts": [
+      "warp-drive-packages/core/src/graph/-private/graph.ts"
+    ],
+    "packages/graph/src/-private/normalize-link.ts": [
+      "warp-drive-packages/core/src/graph/-private/normalize-link.ts"
+    ],
+    "packages/graph/src/-private/operations/add-to-related-records.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/add-to-related-records.ts"
+    ],
+    "packages/graph/src/-private/operations/merge-identifier.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/merge-identifier.ts"
+    ],
+    "packages/graph/src/-private/operations/remove-from-related-records.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/remove-from-related-records.ts"
+    ],
+    "packages/graph/src/-private/operations/replace-related-record.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/replace-related-record.ts"
+    ],
+    "packages/graph/src/-private/operations/replace-related-records.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/replace-related-records.ts"
+    ],
+    "packages/graph/src/-private/operations/update-relationship.ts": [
+      "warp-drive-packages/core/src/graph/-private/operations/update-relationship.ts"
+    ],
+    "packages/json-api/src/-private/builders/-utils.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/-utils.ts"
+    ],
+    "packages/json-api/src/-private/builders/find-record.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/find-record.ts"
+    ],
+    "packages/json-api/src/-private/builders/find-record.type-test.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/find-record.type-test.ts"
+    ],
+    "packages/json-api/src/-private/builders/query.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/query.ts"
+    ],
+    "packages/json-api/src/-private/builders/query.type-test.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/query.type-test.ts"
+    ],
+    "packages/json-api/src/-private/builders/save-record.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/save-record.ts"
+    ],
+    "packages/json-api/src/-private/cache.ts": [
+      "warp-drive-packages/json-api/src/-private/cache.ts"
+    ],
+    "packages/json-api/src/-private/serialize.ts": [
+      "warp-drive-packages/utilities/src/-private/json-api/serialize.ts"
+    ],
+    "packages/json-api/src/-private/validate-document-fields.ts": [
+      "warp-drive-packages/json-api/src/-private/validate-document-fields.ts"
+    ],
+    "packages/json-api/src/-private/validator/1.1/7.1_top-level-document-members.ts": [
+      "warp-drive-packages/json-api/src/-private/validator/1.1/7.1_top-level-document-members.ts"
+    ],
+    "packages/json-api/src/-private/validator/1.1/7.2_resource-objects.ts": [
+      "warp-drive-packages/json-api/src/-private/validator/1.1/7.2_resource-objects.ts"
+    ],
+    "packages/json-api/src/-private/validator/1.1/links.ts": [
+      "warp-drive-packages/json-api/src/-private/validator/1.1/links.ts"
+    ],
+    "packages/json-api/src/-private/validator/index.ts": [
+      "warp-drive-packages/json-api/src/-private/validator/index.ts"
+    ],
+    "packages/json-api/src/-private/validator/utils.ts": [
+      "warp-drive-packages/json-api/src/-private/validator/utils.ts"
+    ],
+    "packages/json-api/src/index.ts": [
+      "packages/json-api/src/index.ts",
+      "warp-drive-packages/json-api/src/index.ts"
+    ],
+    "packages/legacy-compat/src/-private.ts": [
+      "packages/legacy-compat/src/-private.ts",
+      "warp-drive-packages/legacy/src/compat/-private.ts"
+    ],
+    "packages/legacy-compat/src/builders.ts": [
+      "packages/legacy-compat/src/builders.ts",
+      "warp-drive-packages/legacy/src/compat/builders.ts"
+    ],
+    "packages/legacy-compat/src/builders/find-all.ts": [
+      "warp-drive-packages/legacy/src/compat/builders/find-all.ts"
+    ],
+    "packages/legacy-compat/src/builders/find-record.ts": [
+      "warp-drive-packages/legacy/src/compat/builders/find-record.ts"
+    ],
+    "packages/legacy-compat/src/builders/query.ts": [
+      "warp-drive-packages/legacy/src/compat/builders/query.ts"
+    ],
+    "packages/legacy-compat/src/builders/save-record.ts": [
+      "warp-drive-packages/legacy/src/compat/builders/save-record.ts"
+    ],
+    "packages/legacy-compat/src/builders/utils.ts": [
+      "warp-drive-packages/legacy/src/compat/builders/utils.ts"
+    ],
+    "packages/legacy-compat/src/index.ts": [
+      "packages/legacy-compat/src/index.ts",
+      "warp-drive-packages/legacy/src/compat.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/fetch-manager.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/identifier-has-id.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/identifier-has-id.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/legacy-data-fetch.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-data-fetch.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/legacy-data-utils.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-data-utils.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/minimum-adapter-interface.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/minimum-serializer-interface.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-serializer-interface.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/serializer-response.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/serializer-response.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot-record-array.ts"
+    ],
+    "packages/legacy-compat/src/legacy-network-handler/snapshot.ts": [
+      "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot.ts"
+    ],
+    "packages/legacy-compat/src/utils.ts": [
+      "packages/legacy-compat/src/utils.ts",
+      "warp-drive-packages/legacy/src/compat/utils.ts"
+    ],
+    "packages/model/src/-private/attr.ts": [
+      "warp-drive-packages/legacy/src/model/-private/attr.ts"
+    ],
+    "packages/model/src/-private/attr.type-test.ts": [
+      "warp-drive-packages/legacy/src/model/-private/attr.type-test.ts"
+    ],
+    "packages/model/src/-private/belongs-to.ts": [
+      "warp-drive-packages/legacy/src/model/-private/belongs-to.ts"
+    ],
+    "packages/model/src/-private/belongs-to.type-test.ts": [
+      "warp-drive-packages/legacy/src/model/-private/belongs-to.type-test.ts"
+    ],
+    "packages/model/src/-private/debug/assert-polymorphic-type.ts": [
+      "warp-drive-packages/legacy/src/model/-private/debug/assert-polymorphic-type.ts"
+    ],
+    "packages/model/src/-private/errors.ts": [
+      "warp-drive-packages/legacy/src/model/-private/errors.ts"
+    ],
+    "packages/model/src/-private/has-many.ts": [
+      "warp-drive-packages/legacy/src/model/-private/has-many.ts"
+    ],
+    "packages/model/src/-private/has-many.type-test.ts": [
+      "warp-drive-packages/legacy/src/model/-private/has-many.type-test.ts"
+    ],
+    "packages/model/src/-private/hooks.ts": [
+      "warp-drive-packages/legacy/src/model/-private/hooks.ts"
+    ],
+    "packages/model/src/-private/legacy-relationships-support.ts": [
+      "warp-drive-packages/legacy/src/model/-private/legacy-relationships-support.ts"
+    ],
+    "packages/model/src/-private/model-for-mixin.ts": [
+      "warp-drive-packages/legacy/src/model/-private/model-for-mixin.ts"
+    ],
+    "packages/model/src/-private/model-methods.ts": [
+      "warp-drive-packages/legacy/src/model/-private/model-methods.ts"
+    ],
+    "packages/model/src/-private/model.ts": [
+      "warp-drive-packages/legacy/src/model/-private/model.ts"
+    ],
+    "packages/model/src/-private/model.type-test.ts": [
+      "warp-drive-packages/legacy/src/model/-private/model.type-test.ts"
+    ],
+    "packages/model/src/-private/notify-changes.ts": [
+      "warp-drive-packages/legacy/src/model/-private/notify-changes.ts"
+    ],
+    "packages/model/src/-private/promise-belongs-to.ts": [
+      "warp-drive-packages/legacy/src/model/-private/promise-belongs-to.ts"
+    ],
+    "packages/model/src/-private/promise-many-array.ts": [
+      "warp-drive-packages/legacy/src/model/-private/promise-many-array.ts"
+    ],
+    "packages/model/src/-private/promise-proxy-base.d.ts": [
+      "warp-drive-packages/legacy/src/model/-private/promise-proxy-base.d.ts"
+    ],
+    "packages/model/src/-private/promise-proxy-base.js": [
+      "warp-drive-packages/legacy/src/model/-private/promise-proxy-base.js"
+    ],
+    "packages/model/src/-private/record-state.ts": [
+      "warp-drive-packages/legacy/src/model/-private/record-state.ts"
+    ],
+    "packages/model/src/-private/references/belongs-to.ts": [
+      "warp-drive-packages/legacy/src/model/-private/references/belongs-to.ts"
+    ],
+    "packages/model/src/-private/references/has-many.ts": [
+      "warp-drive-packages/legacy/src/model/-private/references/has-many.ts"
+    ],
+    "packages/model/src/-private/schema-provider.ts": [
+      "warp-drive-packages/legacy/src/model/-private/schema-provider.ts"
+    ],
+    "packages/model/src/-private/type-utils.ts": [
+      "warp-drive-packages/legacy/src/model/-private/type-utils.ts"
+    ],
+    "packages/model/src/-private/util.ts": [
+      "warp-drive-packages/legacy/src/model/-private/util.ts"
+    ],
+    "packages/model/src/index.ts": [
+      "packages/model/src/index.ts",
+      "warp-drive-packages/legacy/src/model.ts"
+    ],
+    "packages/model/src/migration-support.ts": [
+      "packages/model/src/migration-support.ts",
+      "warp-drive-packages/legacy/src/model/migration-support.ts"
+    ],
+    "packages/model/src/migration-support.type-test.ts": [
+      "warp-drive-packages/legacy/src/model/migration-support.type-test.ts"
+    ],
+    "packages/request-utils/src/-private/handlers/auto-compress.ts": [
+      "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts"
+    ],
+    "packages/request-utils/src/-private/string/inflect.ts": [
+      "warp-drive-packages/utilities/src/-private/string/inflect.ts"
+    ],
+    "packages/request-utils/src/-private/string/inflections.ts": [
+      "warp-drive-packages/utilities/src/-private/string/inflections.ts"
+    ],
+    "packages/request-utils/src/-private/string/transform.ts": [
+      "warp-drive-packages/utilities/src/-private/string/transform.ts"
+    ],
+    "packages/request-utils/src/handlers.ts": [
+      "packages/request-utils/src/handlers.ts",
+      "warp-drive-packages/utilities/src/handlers.ts"
+    ],
+    "packages/request-utils/src/index.ts": [
+      "packages/request-utils/src/index.ts",
+      "warp-drive-packages/core/src/store/-private/default-cache-policy.ts"
+    ],
+    "packages/request-utils/src/string.ts": [
+      "packages/request-utils/src/string.ts",
+      "warp-drive-packages/utilities/src/string.ts"
+    ],
+    "packages/request/src/-private/context.ts": [
+      "warp-drive-packages/core/src/request/-private/context.ts"
+    ],
+    "packages/request/src/-private/debug.ts": [
+      "warp-drive-packages/core/src/request/-private/debug.ts"
+    ],
+    "packages/request/src/-private/future.ts": [
+      "warp-drive-packages/core/src/request/-private/future.ts"
+    ],
+    "packages/request/src/-private/manager.ts": [],
+    "packages/request/src/-private/promise-cache.ts": [
+      "warp-drive-packages/core/src/request/-private/promise-cache.ts"
+    ],
+    "packages/request/src/-private/types.ts": [
+      "warp-drive-packages/core/src/request/-private/types.ts"
+    ],
+    "packages/request/src/-private/utils.ts": [
+      "warp-drive-packages/core/src/request/-private/utils.ts"
+    ],
+    "packages/request/src/fetch.ts": [
+      "packages/request/src/fetch.ts",
+      "warp-drive-packages/core/src/request/-private/fetch.ts"
+    ],
+    "packages/rest/src/-private/builders/-utils.ts": [
+      "warp-drive-packages/utilities/src/-private/builder-utils.ts"
+    ],
+    "packages/rest/src/-private/builders/find-record.ts": [
+      "warp-drive-packages/utilities/src/-private/rest/find-record.ts"
+    ],
+    "packages/rest/src/-private/builders/query.ts": [
+      "warp-drive-packages/utilities/src/-private/rest/query.ts"
+    ],
+    "packages/rest/src/-private/builders/save-record.ts": [
+      "warp-drive-packages/utilities/src/-private/rest/save-record.ts"
+    ],
+    "packages/schema-record/src/-private.ts": [
+      "packages/schema-record/src/-private.ts",
+      "warp-drive-packages/core/src/reactive/-private.ts"
+    ],
+    "packages/schema-record/src/-private/fields/compute.ts": [
+      "warp-drive-packages/core/src/reactive/-private/fields/compute.ts"
+    ],
+    "packages/schema-record/src/-private/fields/managed-array.ts": [
+      "warp-drive-packages/core/src/reactive/-private/fields/managed-array.ts"
+    ],
+    "packages/schema-record/src/-private/fields/managed-object.ts": [
+      "warp-drive-packages/core/src/reactive/-private/fields/managed-object.ts"
+    ],
+    "packages/schema-record/src/-private/fields/many-array-manager.ts": [
+      "warp-drive-packages/core/src/reactive/-private/fields/many-array-manager.ts"
+    ],
+    "packages/schema-record/src/-private/hooks.ts": [
+      "warp-drive-packages/core/src/reactive/-private/hooks.ts"
+    ],
+    "packages/schema-record/src/-private/record.ts": [
+      "warp-drive-packages/core/src/reactive/-private/record.ts"
+    ],
+    "packages/schema-record/src/-private/schema.ts": [
+      "warp-drive-packages/core/src/reactive/-private/schema.ts"
+    ],
+    "packages/schema-record/src/-private/symbols.ts": [
+      "warp-drive-packages/core/src/reactive/-private/symbols.ts"
+    ],
+    "packages/schema-record/src/index.ts": [
+      "packages/schema-record/src/index.ts",
+      "warp-drive-packages/core/src/reactive.ts"
+    ],
+    "packages/serializer/src/-private/embedded-records-mixin.js": [
+      "warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts"
+    ],
+    "packages/serializer/src/-private/transforms/boolean.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts"
+    ],
+    "packages/serializer/src/-private/transforms/boolean.type-test.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.type-test.ts"
+    ],
+    "packages/serializer/src/-private/transforms/date.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/date.ts"
+    ],
+    "packages/serializer/src/-private/transforms/number.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/number.ts"
+    ],
+    "packages/serializer/src/-private/transforms/string.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/string.ts"
+    ],
+    "packages/serializer/src/-private/transforms/transform.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/transforms/transform.ts"
+    ],
+    "packages/serializer/src/-private/utils.ts": [
+      "warp-drive-packages/legacy/src/serializer/-private/utils.ts"
+    ],
+    "packages/serializer/src/index.ts": [
+      "packages/serializer/src/index.ts",
+      "warp-drive-packages/legacy/src/serializer.ts"
+    ],
+    "packages/serializer/src/json-api.js": [
+      "warp-drive-packages/legacy/src/serializer/json-api.ts"
+    ],
+    "packages/serializer/src/json.js": [
+      "warp-drive-packages/legacy/src/serializer/json.ts"
+    ],
+    "packages/serializer/src/rest.js": [
+      "warp-drive-packages/legacy/src/serializer/rest.ts"
+    ],
+    "packages/store/src/-private.ts": [
+      "packages/store/src/-private.ts",
+      "warp-drive-packages/core/src/store/-private.ts"
+    ],
+    "packages/store/src/-private/cache-handler/handler.ts": [
+      "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts"
+    ],
+    "packages/store/src/-private/cache-handler/types.ts": [
+      "warp-drive-packages/core/src/store/-private/cache-handler/types.ts"
+    ],
+    "packages/store/src/-private/cache-handler/utils.ts": [
+      "warp-drive-packages/core/src/store/-private/cache-handler/utils.ts"
+    ],
+    "packages/store/src/-private/caches/cache-utils.ts": [
+      "warp-drive-packages/core/src/store/-private/caches/cache-utils.ts"
+    ],
+    "packages/store/src/-private/caches/identifier-cache.ts": [
+      "warp-drive-packages/core/src/store/-private/caches/identifier-cache.ts"
+    ],
+    "packages/store/src/-private/caches/instance-cache.ts": [
+      "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts"
+    ],
+    "packages/store/src/-private/caches/resource-utils.ts": [
+      "warp-drive-packages/core/src/store/-private/caches/resource-utils.ts"
+    ],
+    "packages/store/src/-private/debug/utils.ts": [
+      "warp-drive-packages/core/src/store/-private/debug/utils.ts"
+    ],
+    "packages/store/src/-private/document.ts": [
+      "warp-drive-packages/core/src/reactive/-private/document.ts"
+    ],
+    "packages/store/src/-private/legacy-model-support/record-reference.ts": [
+      "warp-drive-packages/core/src/store/-private/legacy-model-support/record-reference.ts"
+    ],
+    "packages/store/src/-private/legacy-model-support/shim-model-class.ts": [
+      "warp-drive-packages/core/src/store/-private/legacy-model-support/shim-model-class.ts"
+    ],
+    "packages/store/src/-private/managers/cache-capabilities-manager.ts": [
+      "warp-drive-packages/core/src/store/-private/managers/cache-capabilities-manager.ts"
+    ],
+    "packages/store/src/-private/managers/cache-manager.ts": [
+      "warp-drive-packages/core/src/store/-private/managers/cache-manager.ts"
+    ],
+    "packages/store/src/-private/managers/notification-manager.ts": [
+      "warp-drive-packages/core/src/store/-private/managers/notification-manager.ts"
+    ],
+    "packages/store/src/-private/managers/record-array-manager.ts": [
+      "warp-drive-packages/core/src/store/-private/managers/record-array-manager.ts"
+    ],
+    "packages/store/src/-private/network/request-cache.ts": [
+      "warp-drive-packages/core/src/store/-private/network/request-cache.ts"
+    ],
+    "packages/store/src/-private/new-core-tmp/promise-state.ts": [
+      "warp-drive-packages/core/src/store/-private/new-core-tmp/promise-state.ts"
+    ],
+    "packages/store/src/-private/new-core-tmp/reactivity/configure.ts": [
+      "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts"
+    ],
+    "packages/store/src/-private/new-core-tmp/reactivity/internal.ts": [
+      "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts"
+    ],
+    "packages/store/src/-private/new-core-tmp/reactivity/signal.ts": [
+      "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts"
+    ],
+    "packages/store/src/-private/new-core-tmp/request-state.ts": [
+      "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts"
+    ],
+    "packages/store/src/-private/record-arrays/identifier-array.ts": [
+      "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts"
+    ],
+    "packages/store/src/-private/record-arrays/many-array.ts": [
+      "warp-drive-packages/core/src/store/-private/record-arrays/many-array.ts"
+    ],
+    "packages/store/src/-private/record-arrays/native-proxy-type-fix.ts": [
+      "warp-drive-packages/core/src/store/-private/record-arrays/native-proxy-type-fix.ts"
+    ],
+    "packages/store/src/-private/store-service.ts": [
+      "warp-drive-packages/core/src/store/-private/store-service.ts"
+    ],
+    "packages/store/src/-private/store-service.type-test.ts": [
+      "warp-drive-packages/core/src/store/-private/store-service.type-test.ts"
+    ],
+    "packages/store/src/-private/utils/coerce-id.ts": [
+      "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts"
+    ],
+    "packages/store/src/-private/utils/construct-resource.ts": [
+      "warp-drive-packages/core/src/store/-private/utils/construct-resource.ts"
+    ],
+    "packages/store/src/-private/utils/is-non-empty-string.ts": [
+      "warp-drive-packages/core/src/store/-private/utils/is-non-empty-string.ts"
+    ],
+    "packages/store/src/-private/utils/normalize-model-name.ts": [
+      "warp-drive-packages/core/src/store/-private/utils/normalize-model-name.ts"
+    ],
+    "packages/store/src/-private/utils/uuid-polyfill.ts": [
+      "warp-drive-packages/core/src/store/-private/utils/uuid-polyfill.ts"
+    ],
+    "packages/store/src/-types/overview.ts": [],
+    "packages/store/src/-types/q/cache-capabilities-manager.ts": [
+      "warp-drive-packages/core/src/store/-types/q/cache-capabilities-manager.ts"
+    ],
+    "packages/store/src/-types/q/ds-model.ts": [
+      "warp-drive-packages/core/src/store/-types/q/ds-model.ts"
+    ],
+    "packages/store/src/-types/q/identifier.ts": [],
+    "packages/store/src/-types/q/promise-proxies.ts": [
+      "warp-drive-packages/core/src/store/-types/q/promise-proxies.ts"
+    ],
+    "packages/store/src/-types/q/record-data-json-api.ts": [
+      "warp-drive-packages/core/src/store/-types/q/record-data-json-api.ts"
+    ],
+    "packages/store/src/-types/q/record-instance.ts": [
+      "warp-drive-packages/core/src/store/-types/q/record-instance.ts"
+    ],
+    "packages/store/src/-types/q/schema-service.ts": [
+      "warp-drive-packages/core/src/store/-types/q/schema-service.ts"
+    ],
+    "packages/store/src/-types/q/store.ts": [
+      "warp-drive-packages/core/src/store/-types/q/store.ts"
+    ]
+  },
+  "from": "5.5.0",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {},
+  "to": "5.6.0"
+}

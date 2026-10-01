@@ -1,0 +1,184 @@
+{
+  "files": {
+    "packages/-ember-data/addon/-private/core.js": [
+      "packages/-ember-data/src/-private/core.ts"
+    ],
+    "packages/-ember-data/addon/-private/index.ts": [
+      "packages/-ember-data/src/-private/index.ts"
+    ],
+    "packages/-ember-data/addon/adapter.ts": [
+      "packages/-ember-data/src/adapter.ts"
+    ],
+    "packages/-ember-data/addon/adapters/errors.ts": [
+      "packages/-ember-data/src/adapters/errors.ts"
+    ],
+    "packages/-ember-data/addon/adapters/json-api.ts": [
+      "packages/-ember-data/src/adapters/json-api.ts"
+    ],
+    "packages/-ember-data/addon/adapters/rest.ts": [
+      "packages/-ember-data/src/adapters/rest.ts"
+    ],
+    "packages/-ember-data/addon/attr.ts": [
+      "packages/-ember-data/src/attr.ts"
+    ],
+    "packages/-ember-data/addon/index.js": [
+      "packages/-ember-data/src/index.ts"
+    ],
+    "packages/-ember-data/addon/model.ts": [
+      "packages/-ember-data/src/model.ts"
+    ],
+    "packages/-ember-data/addon/relationships.ts": [
+      "packages/-ember-data/src/relationships.ts"
+    ],
+    "packages/-ember-data/addon/serializer.ts": [
+      "packages/-ember-data/src/serializer.ts"
+    ],
+    "packages/-ember-data/addon/serializers/embedded-records-mixin.ts": [
+      "packages/-ember-data/src/serializers/embedded-records-mixin.ts"
+    ],
+    "packages/-ember-data/addon/serializers/json-api.ts": [
+      "packages/-ember-data/src/serializers/json-api.ts"
+    ],
+    "packages/-ember-data/addon/serializers/json.ts": [
+      "packages/-ember-data/src/serializers/json.ts"
+    ],
+    "packages/-ember-data/addon/serializers/rest.ts": [
+      "packages/-ember-data/src/serializers/rest.ts"
+    ],
+    "packages/-ember-data/addon/setup-container.ts": [
+      "packages/-ember-data/src/setup-container.ts"
+    ],
+    "packages/-ember-data/addon/store.ts": [
+      "packages/-ember-data/src/store.ts"
+    ],
+    "packages/-ember-data/addon/transform.ts": [
+      "packages/-ember-data/src/transform.ts"
+    ],
+    "packages/debug/addon/index.js": [
+      "packages/debug/src/data-adapter.ts"
+    ],
+    "packages/graph/src/-private/debug/assert-polymorphic-type.js": [
+      "packages/graph/src/-private/debug/assert-polymorphic-type.ts"
+    ],
+    "packages/graph/src/-private/graph/-edge-definition.ts": [
+      "packages/graph/src/-private/-edge-definition.ts"
+    ],
+    "packages/graph/src/-private/graph/-operations.ts": [
+      "packages/core-types/src/graph.ts"
+    ],
+    "packages/graph/src/-private/graph/-state.ts": [
+      "packages/graph/src/-private/-state.ts"
+    ],
+    "packages/graph/src/-private/graph/-utils.ts": [
+      "packages/graph/src/-private/-utils.ts"
+    ],
+    "packages/graph/src/-private/graph/graph.ts": [
+      "packages/graph/src/-private/graph.ts"
+    ],
+    "packages/graph/src/-private/graph/index.ts": [],
+    "packages/graph/src/-private/graph/operations/add-to-related-records.ts": [],
+    "packages/graph/src/-private/graph/operations/merge-identifier.ts": [
+      "packages/graph/src/-private/operations/merge-identifier.ts"
+    ],
+    "packages/graph/src/-private/graph/operations/remove-from-related-records.ts": [],
+    "packages/graph/src/-private/graph/operations/replace-related-record.ts": [
+      "packages/graph/src/-private/operations/replace-related-record.ts"
+    ],
+    "packages/graph/src/-private/graph/operations/replace-related-records.ts": [],
+    "packages/graph/src/-private/graph/operations/update-relationship.ts": [
+      "packages/graph/src/-private/operations/update-relationship.ts"
+    ],
+    "packages/graph/src/-private/relationships/state/belongs-to.ts": [],
+    "packages/graph/src/-private/relationships/state/has-many.ts": [],
+    "packages/legacy-compat/src/legacy-network-handler/legacy-data-fetch.js": [
+      "packages/legacy-compat/src/legacy-network-handler/legacy-data-fetch.ts"
+    ],
+    "packages/model/src/-private/attr.js": [
+      "packages/model/src/-private/attr.ts"
+    ],
+    "packages/model/src/-private/belongs-to.js": [
+      "packages/model/src/-private/belongs-to.ts"
+    ],
+    "packages/model/src/-private/debug/assert-polymorphic-type.js": [
+      "packages/model/src/-private/debug/assert-polymorphic-type.ts"
+    ],
+    "packages/model/src/-private/has-many.js": [
+      "packages/model/src/-private/has-many.ts"
+    ],
+    "packages/model/src/-private/many-array.ts": [],
+    "packages/model/src/-private/model.js": [
+      "packages/model/src/-private/model.ts"
+    ],
+    "packages/private-build-infra/src/addon-build-config-for-data-package.js": [],
+    "packages/private-build-infra/src/create-version-module.js": [],
+    "packages/private-build-infra/src/debug-macros.js": [],
+    "packages/private-build-infra/src/debugging.js": [],
+    "packages/private-build-infra/src/deprecations.js": [],
+    "packages/private-build-infra/src/features.js": [
+      "packages/build-config/src/-private/utils/features.ts"
+    ],
+    "packages/private-build-infra/src/packages.js": [],
+    "packages/private-build-infra/src/stripped-build-plugins.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-convert-existence-checks-to-macros/index.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-debug-env/index.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-deprecations/index.js": [
+      "packages/build-config/cjs-src/transforms/babel-plugin-transform-deprecations.js"
+    ],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-ext.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-features/index.js": [
+      "packages/build-config/cjs-src/transforms/babel-plugin-transform-features.js"
+    ],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-has-debug-package/index.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-logging/index.js": [],
+    "packages/private-build-infra/src/transforms/babel-plugin-transform-packages/index.js": [],
+    "packages/private-build-infra/src/utilities/detect-module.js": [],
+    "packages/private-build-infra/src/utilities/edition-detector.js": [],
+    "packages/private-build-infra/src/utilities/extend-from-application-entity.js": [],
+    "packages/private-build-infra/src/utilities/get-env.js": [],
+    "packages/private-build-infra/src/utilities/module-prefix-for-project.js": [],
+    "packages/private-build-infra/src/utilities/require-module.js": [],
+    "packages/private-build-infra/src/utilities/rollup-private-module.js": [],
+    "packages/private-build-infra/src/utilities/test-framework-detector.js": [],
+    "packages/private-build-infra/src/v2-babel-build-pack.js": [],
+    "packages/serializer/src/-private.ts": [],
+    "packages/serializer/src/-private/transforms/boolean.js": [
+      "packages/serializer/src/-private/transforms/boolean.ts"
+    ],
+    "packages/serializer/src/-private/transforms/date.js": [
+      "packages/serializer/src/-private/transforms/date.ts"
+    ],
+    "packages/serializer/src/-private/transforms/number.js": [
+      "packages/serializer/src/-private/transforms/number.ts"
+    ],
+    "packages/serializer/src/-private/transforms/string.js": [
+      "packages/serializer/src/-private/transforms/string.ts"
+    ],
+    "packages/serializer/src/-private/transforms/transform.js": [
+      "packages/serializer/src/-private/transforms/transform.ts"
+    ],
+    "packages/serializer/src/transform.js": [
+      "packages/serializer/src/transform.ts"
+    ],
+    "packages/store/src/-private/cache-handler.ts": [],
+    "packages/store/src/-private/index.ts": [],
+    "packages/store/src/-private/legacy-model-support/schema-definition-service.ts": [],
+    "packages/store/src/-private/managers/cache-manager.ts": [
+      "packages/core-types/src/cache.ts",
+      "packages/experiments/src/persisted-cache/cache.ts",
+      "packages/store/src/-private/managers/cache-manager.ts"
+    ],
+    "packages/store/src/-private/managers/cache-store-wrapper.ts": [
+      "packages/store/src/-private/managers/cache-capabilities-manager.ts"
+    ],
+    "packages/store/src/-private/utils/identifier-debug-consts.ts": [],
+    "packages/unpublished-test-infra/src/node-test-helpers/fixture.js": [],
+    "packages/unpublished-test-infra/src/node-test-helpers/generate-fake-package-manifest.js": [],
+    "packages/unpublished-test-infra/src/node-test-helpers/setup-test-environment.js": [],
+    "packages/unpublished-test-infra/src/testem/custom-dot-reporter.js": []
+  },
+  "from": "5.0.1",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {},
+  "to": "5.4.1"
+}

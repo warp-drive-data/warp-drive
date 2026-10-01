@@ -1,0 +1,15 @@
+{
+  "files": {
+    "packages/ember/src/-private/promise-state.ts": [],
+    "packages/ember/src/-private/request-state.ts": [
+      "packages/store/src/-private/new-core-tmp/request-state.ts"
+    ],
+    "packages/tracking/src/-private.ts": [],
+    "packages/tracking/src/.gitkeep": []
+  },
+  "from": "5.4.1",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {},
+  "to": "5.5.0"
+}

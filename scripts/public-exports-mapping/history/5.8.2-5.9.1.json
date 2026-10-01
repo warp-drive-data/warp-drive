@@ -1,0 +1,17 @@
+{
+  "files": {
+    "packages/codemods/src/schema-migration/migrate-to-schema-index.ts": [],
+    "packages/codemods/src/schema-migration/mixin-to-schema-index.ts": [],
+    "packages/codemods/src/schema-migration/mixin-to-schema.ts": [],
+    "packages/codemods/src/schema-migration/model-to-schema-index.ts": [],
+    "packages/codemods/src/schema-migration/model-to-schema.ts": [],
+    "packages/codemods/src/utils/options.ts": [],
+    "packages/diagnostic/src/ember-classic.ts": [],
+    "warp-drive-packages/experiments/src/image-worker/README.md": []
+  },
+  "from": "5.8.2",
+  "kind": "history",
+  "schema": 1,
+  "symbols": {},
+  "to": "5.9.1"
+}
