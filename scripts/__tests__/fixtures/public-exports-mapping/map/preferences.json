@@ -1,0 +1,9 @@
+{
+  "audience": "ember",
+  "report": {
+    "ember-data": "side-effect",
+    "ember-data/store": "side-effect"
+  },
+  "schema": 1,
+  "tieBreak": ["@warp-drive/ember"]
+}
