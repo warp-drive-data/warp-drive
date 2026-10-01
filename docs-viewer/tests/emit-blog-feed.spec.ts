@@ -63,7 +63,7 @@ describe('blog feed', () => {
 
   test('writes RSS 2.0 with escaped text and permanent clean-URL links', () => {
     const root = fixture({
-      'blog/v5/a-and-b.md': post("title: A & B <ok>\ndescription: Why \"this\" matters\ndate: 2026-09-05"),
+      'blog/v5/a-and-b.md': post('title: A & B <ok>\ndescription: Why "this" matters\ndate: 2026-09-05'),
     });
     const out = mkdtempSync(join(tmpdir(), 'blog-feed-out-'));
     tempDirs.push(out);

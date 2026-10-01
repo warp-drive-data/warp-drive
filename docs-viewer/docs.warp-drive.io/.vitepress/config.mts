@@ -290,7 +290,10 @@ export default withPwa(
         ['link', { rel: 'icon', href: '/favicon.ico', sizes: '32x32' }],
         ['link', { rel: 'icon', href: '/logos/warp-drive/prefers-color-w.svg', type: 'image/svg+xml' }],
         ['link', { rel: 'apple-touch-icon', href: '/logos/favicon/logo-yellow-square-180x180.png', type: 'image/png' }],
-        ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'WarpDrive Blog', href: `/${BLOG_FEED_PATH}` }],
+        [
+          'link',
+          { rel: 'alternate', type: 'application/rss+xml', title: 'WarpDrive Blog', href: `/${BLOG_FEED_PATH}` },
+        ],
         [
           'meta',
           {
