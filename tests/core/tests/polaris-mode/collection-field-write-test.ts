@@ -83,8 +83,9 @@ function ids(doc: ReactiveRelationshipDocument<User[]>): string[] {
   return doc.data!.map((user) => user.id!);
 }
 
-function remoteIds(doc: ReactiveRelationshipDocument<User[]>): string[] {
-  return doc.remoteData!.map((user) => user.id!);
+// whether the cache holds a local change to `friends` that the API has not confirmed
+function hasUnsavedChanges(store: InstanceType<typeof Store>, record: User): boolean {
+  return store.cache.changedRelationships(recordIdentifierFor(record)).has('friends');
 }
 
 module('Writes | collection', function (hooks) {
@@ -104,11 +105,9 @@ module('Writes | collection', function (hooks) {
     assert.true(editable.friends !== record.friends, 'the editable record has its own document');
     assert.true(editable.friends.data !== record.friends.data, 'the editable record has its own array');
     assert.arrayEquals(ids(editable.friends), ['2', '3'], 'the editable document starts from the remote state');
-    assert.arrayEquals(remoteIds(editable.friends), ['2', '3'], 'remoteData reflects the remote state');
-    assert.false(editable.friends.isDirty, 'the relationship is not dirty');
+    assert.false(hasUnsavedChanges(store, record), 'the relationship has no unsaved changes');
     const linksBefore = editable.friends.links;
     const metaBefore = editable.friends.meta;
-    const remoteArray = editable.friends.remoteData;
 
     // inverses reflect the local state on editable copies only
     const [record2, record3] = record.friends.data!;
@@ -130,14 +129,10 @@ module('Writes | collection', function (hooks) {
     assert.arrayEquals(ids(editable.friends), ['2', '3', '4'], 'push adds to the end');
     assert.arrayEquals(ids(editable4.friends), ['1'], 'push updates the local inverse');
     assertRemoteInverses();
-    assert.arrayEquals(remoteIds(editable.friends), ['2', '3'], 'remoteData still reflects the remote state');
-    assert.equal(editable.friends.remoteData, remoteArray, 'the remoteData array instance is stable');
-    assert.true(editable.friends.isDirty, 'the relationship is dirty');
-    assert.true(record.friends.isDirty, 'the immutable document reports the same dirty state');
+    assert.true(hasUnsavedChanges(store, record), 'the relationship has unsaved changes');
     assert.equal(editable.friends.links, linksBefore, 'links are untouched (same instance) by a local change');
     assert.equal(editable.friends.meta, metaBefore, 'meta is untouched (same instance) by a local change');
     assert.deepEqual(editable.friends.meta, { count: 2 }, 'meta still describes the remote membership');
-    assert.equal(record.friends.remoteData, record.friends.data, 'remoteData on the immutable document is its data');
     assertRemoteState();
 
     editable.friends.data!.unshift(record6);
@@ -235,6 +230,7 @@ module('Writes | collection', function (hooks) {
     assert.arrayEquals(ids(record.friends), ['2', '3'], 'the immutable document still reflects the remote state');
     assert.arrayEquals(ids(editable4.friends), ['1'], 'the local inverse reflects the local change');
     assert.arrayEquals(ids(record4.friends), [], 'the immutable inverse still reflects the remote state');
+    assert.deepEqual(editable.friends.meta, { count: 2 }, 'the editable document shows the remote meta');
 
     // e.g. the response to a save request
     store.push<User>({
@@ -244,6 +240,7 @@ module('Writes | collection', function (hooks) {
         attributes: { name: 'Leo' },
         relationships: {
           friends: {
+            meta: { count: 3 },
             data: [
               { type: 'user', id: '2' },
               { type: 'user', id: '3' },
@@ -257,11 +254,12 @@ module('Writes | collection', function (hooks) {
     assert.equal(record.friends.data, friends, 'the array instance is stable');
     assert.arrayEquals(ids(record.friends), ['2', '3', '4'], 'the immutable document reflects the confirmed state');
     assert.arrayEquals(ids(editable.friends), ['2', '3', '4'], 'the editable document reflects the confirmed state');
-    assert.arrayEquals(remoteIds(editable.friends), ['2', '3', '4'], 'remoteData reflects the confirmed state');
-    assert.false(editable.friends.isDirty, 'the relationship is no longer dirty');
+    assert.deepEqual(record.friends.meta, { count: 3 }, 'the immutable document reflects the confirmed meta');
+    assert.deepEqual(editable.friends.meta, { count: 3 }, 'the editable document reflects the confirmed meta');
+    assert.false(hasUnsavedChanges(store, record), 'the relationship no longer has unsaved changes');
     assert.arrayEquals(ids(record4.friends), ['1'], 'the immutable inverse reflects the confirmed state');
     assert.arrayEquals(ids(editable4.friends), ['1'], 'the editable inverse reflects the confirmed state');
-    assert.false(editable4.friends.isDirty, 'the inverse relationship is not dirty');
+    assert.false(hasUnsavedChanges(store, record4), 'the inverse relationship has no unsaved changes');
   });
 
   test('commit() promotes a local change to the immutable document', async function (assert) {
@@ -275,7 +273,7 @@ module('Writes | collection', function (hooks) {
     editable.friends.data!.push(record4);
     editable.friends.data!.shift();
     assert.arrayEquals(ids(editable.friends), ['3', '4'], 'the editable document reflects the local change');
-    assert.true(editable.friends.isDirty, 'the relationship is dirty');
+    assert.true(hasUnsavedChanges(store, record), 'the relationship has unsaved changes');
     assert.arrayEquals(ids(record.friends), ['2', '3'], 'the immutable document still reflects the remote state');
 
     await commit(editable);
@@ -283,8 +281,7 @@ module('Writes | collection', function (hooks) {
     assert.equal(record.friends.data, friends, 'the array instance is stable');
     assert.arrayEquals(ids(record.friends), ['3', '4'], 'the immutable document reflects the committed state');
     assert.arrayEquals(ids(editable.friends), ['3', '4'], 'the editable document reflects the committed state');
-    assert.arrayEquals(remoteIds(editable.friends), ['3', '4'], 'remoteData reflects the committed state');
-    assert.false(editable.friends.isDirty, 'the relationship is no longer dirty');
+    assert.false(hasUnsavedChanges(store, record), 'the relationship no longer has unsaved changes');
     assert.arrayEquals(ids(record4.friends), ['1'], 'the immutable inverse reflects the committed state');
     assert.arrayEquals(ids(record2.friends), [], 'the immutable prior inverse reflects the committed state');
   });
