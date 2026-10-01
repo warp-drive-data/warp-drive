@@ -7,7 +7,6 @@ import {
   entangleSignal,
   notifyInternalSignal,
   OBJECT_SIGNAL,
-  type SignalStore,
   Signals,
   withSignalStore,
 } from '../../signals/-private.ts';
@@ -753,22 +752,20 @@ function _DESTROY(record: ReactiveResource): void {
   record[Context].store.notifications.unsubscribe(record.___notifications);
   record.___notifications = null as unknown as object;
 
-  // tear down the arrays backing any materialized collection relationship documents
-  const signals = (record as unknown as { [Signals]: SignalStore | undefined })[Signals];
-  if (signals) {
-    const context = record[Context];
-    const schema = context.store.schema as unknown as SchemaService;
-    const fields = context.path === null ? schema.fields(context.resourceKey) : null;
-    if (fields) {
-      fields.forEach((field) => {
-        if (field.kind === 'collection' || field.kind === 'resource') {
-          const doc = signals.get(getFieldCacheKey(field)!)?.value as ReactiveRelationshipDocument<unknown> | undefined;
-          if (doc) {
-            destroyRelationshipDocument(doc);
-          }
+  // tear down any materialized relationship documents (and the arrays backing collections)
+  const context = record[Context];
+  const schema = context.store.schema as unknown as SchemaService;
+  const fields = context.path === null ? schema.fields(context.resourceKey) : null;
+  if (fields) {
+    const signals = withSignalStore(record);
+    fields.forEach((field) => {
+      if (field.kind === 'collection' || field.kind === 'resource') {
+        const doc = signals.get(getFieldCacheKey(field)!)?.value as ReactiveRelationshipDocument<unknown> | undefined;
+        if (doc) {
+          destroyRelationshipDocument(doc);
         }
-      });
-    }
+      }
+    });
   }
 
   // FIXME we need a way to also unsubscribe all SchemaObjects when the primary
