@@ -43,6 +43,18 @@
       "groupName": "eslint"
     },
     {
+      "matchPackageNames": [
+        "oxlint",
+        "oxfmt",
+        "/^oxlint-/",
+        "/^oxc-/",
+        "/^@oxlint\\//",
+        "/^@oxfmt\\//",
+        "/^@oxc-project\\//"
+      ],
+      "groupName": "oxc"
+    },
+    {
       "matchPackageNames": ["/vite/", "/rollup/", "/rolldown/", "/tsdown/", "/unplugin/"],
       "groupName": "build-tools"
     },
