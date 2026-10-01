@@ -4,13 +4,14 @@
 # then -- regardless of whether anything needed removing -- compacts gh-pages down
 # to a single orphan commit.
 #
-# gh-pages otherwise grows without bound: deploy.yml (production, on every push to
-# main) and pr-preview.yml (per PR) both intentionally layer their writes onto
-# whatever is already on the branch (`keep_files`/incremental commits), since each
-# only owns its own slice of the tree -- the site root vs. one pr-preview/
-# subfolder -- and must leave the other alone. Neither can safely reset history
-# itself. Rebuilding gh-pages as one fresh commit here, on a schedule, bounds how
-# much of that layering survives to the next run instead of accumulating forever.
+# gh-pages history otherwise grows without bound: deploy.yml (production, on every
+# push to main) and pr-preview.yml (per PR) both add commits on top of whatever is
+# already on the branch, since each only owns its own slice of the tree -- the site
+# root vs. one pr-preview/ subfolder -- and must leave the other alone. Neither can
+# safely reset history itself. Rebuilding gh-pages as one fresh commit here, on a
+# schedule, bounds how much of that history survives to the next run. This only
+# compacts history: what keeps the published tree small is deploy.yml replacing the
+# whole site root on each deploy rather than layering over the previous build.
 # Both of the other workflows re-fetch gh-pages fresh on every push, so rewriting
 # it out from under them between their runs is safe.
 name: docs PR preview sweep
