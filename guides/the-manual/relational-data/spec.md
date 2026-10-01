@@ -49,7 +49,7 @@ eagerly and without autofetch.
 | --- | --- |
 | 3.2.1 | Every payload for the relationship MUST provide a `links` object containing a `related` link. |
 | 3.2.2 | `data` MAY be omitted. When present, rule 3.1 applies. |
-| 3.2.3 | The related data is never fetched automatically. `doc.fetch()` requests the `related` link as a top-level request and does not write the response back into the relationship. |
+| 3.2.3 | The related data is never fetched automatically. `doc.fetch()` requests the `related` link (or `self` when there is no `related` link), caches the response as a request document keyed by `doc.identifier`, writes the response's `data` into the relationship's remote state, and resolves with the relationship document itself. |
 
 ### 3.3 `async: false` (the default)
 
@@ -94,7 +94,7 @@ Rules 2.x apply to the legacy kinds as well.
 
 | Rule | Statement |
 | --- | --- |
-| 5.1 | The value of a strict relationship field is a `ReactiveRelationshipDocument` exposing `data`, `links`, `meta` and `fetch()`. Assigning the field itself is an error. |
+| 5.1 | The value of a strict relationship field is a `ReactiveRelationshipDocument` exposing `data`, `links`, `meta`, `identifier` and `fetch()`. `identifier` is the request key for the relationship's `related` (or `self`) link, or `null` when it has neither. Assigning the field itself is an error. |
 | 5.2 | `data` MAY be assigned (resource: a record or `null`; collection: an array of records) and, for collections, mutated with the array mutation methods, only when the owning record is editable: any LegacyMode record, or a PolarisMode record returned by `checkout()`. On an immutable record every mutation is an error. |
 | 5.3 | A record MUST appear at most once in a collection; adding a duplicate is an error. |
 | 5.4 | `links` and `meta` are server-owned: they always reflect remote state and MUST NOT be affected by local mutation. |
