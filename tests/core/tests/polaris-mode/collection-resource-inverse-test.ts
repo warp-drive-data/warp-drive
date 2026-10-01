@@ -1,4 +1,4 @@
-import { useRecommendedStore } from '@warp-drive/core';
+import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
 import { checkout, withDefaults } from '@warp-drive/core/reactive';
 import type { Type } from '@warp-drive/core/types/symbols';
@@ -176,7 +176,10 @@ module('Inverses | collection <-> resource', function (hooks) {
 
     assert.arrayEquals(ids(post.comments), ['2', '3'], 'the immutable document reflects the confirmed state');
     assert.arrayEquals(ids(editablePost.comments), ['2', '3'], 'the editable document reflects the confirmed state');
-    assert.false(editablePost.comments.isDirty, 'the relationship is no longer dirty');
+    assert.false(
+      store.cache.changedRelationships(recordIdentifierFor(post)).has('comments'),
+      'the relationship no longer has unsaved changes'
+    );
     assert.equal(comment3.post.data, post, 'the immutable inverse reflects the confirmed state');
     assert.equal(comment1.post.data, null, 'the immutable prior inverse reflects the confirmed state');
   });
