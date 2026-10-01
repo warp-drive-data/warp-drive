@@ -32,8 +32,8 @@ await store.request(init);
 
 When the response arrives the cache applies the returned payload as the new **remote** state: the
 relationship's membership becomes what the API said it is, and immutable records update. A
-relationship the response leaves out is **not** updated: its edits stay local, the document stays
-`isDirty`, and immutable records keep showing the old membership. Have the API return every
+relationship the response leaves out is **not** updated: its edits stay local and unsaved, and
+immutable records keep showing the old membership. Have the API return every
 relationship it saved, or push a payload that includes them once the save succeeds.
 
 ::: tip
@@ -67,7 +67,7 @@ had friends `2` and `3` and `4` was added, `serializePatch` produces:
 ```
 
 `links` and `meta` describe the server's view of the relationship as of the last response. While a
-record is being edited they are stale relative to `data` (see `doc.isDirty`); `meta.count` would
+record is being edited they are stale relative to `data`; `meta.count` would
 still say `2` here, so sending them back gives the API a contradictory relationship.
 
 The `@warp-drive/utilities/json-api` serializers are starting points, not finished request bodies:
