@@ -28,7 +28,7 @@ scripts/public-exports-mapping/
   releases.json     covered versions
   artifacts.mjs     canonical JSON, write/check helpers, repo paths        (shared, exists)
   cli.mjs           `node scripts/public-exports-mapping/cli.mjs <command> ...`; loads commands/*.mjs
-  commands/*.mjs    one file per command: `export const name`, `export const describe`, `export async function run(argv)`
+  commands/*.mjs    one file per command: `export const name`, `export const describe`, `export async function run(argv, context)`
   resolver.mjs      oxc-resolver configured for a source tree                          area A
   exports.mjs       what one source file exports, from the oxc-parser module record     area A
   worktrees.mjs     a git worktree per release tag, disposed after use                  area A
@@ -166,18 +166,34 @@ statement's leading JSDoc carries `@deprecated`. `version` is `head` for the wor
 }
 ```
 
-`files` comes from `git diff --name-status -M40% -C40% v<a> v<b> -- packages warp-drive-packages`,
-restricted to `src/` and `addon/`, plus the heuristic that a deleted file whose `.ts` twin (or
-`src/` twin of an `addon/` file) was added in the same pair is a rename. `symbols` has one entry
-per declaration of surface `a` that has no same-id declaration in surface `b` after `files`:
-the last commit in `v<a>..v<b>` that `git log -S<name>` finds for that file, its subject, and
-the exported declarations that commit added in the files it touched.
+`files` comes from `git diff --name-status -M40% -C40% v<a> v<b> -- packages warp-drive-packages`
+(for `head`, against the working tree), keyed by old paths under `src/` or `addon/`, plus the
+heuristic that a deleted file whose `.ts` twin (or `src/` twin of an `addon/` file) was added in
+the same pair is a rename. A copy whose source survives lists the source first:
+`old -> [old, copy]`. Git runs with `-l0`, `core.quotePath=false`, `--literal-pathspecs`,
+`--no-textconv`, `--no-show-signature` and a cleared git environment, so `cwd` alone decides the
+repository.
+
+`symbols` has one entry per declaration of surface `a` that has no same-id declaration in surface
+`b` after `files`, when a commit in `v<a>..v<b>` removed that exported binding from its file: the
+newest `git log -S` hit that, by parsing the file before and after, really removed the binding (a
+hit that only touched a comment or a usage does not count; a default export is searched as
+`export default` or `as default`, not by its local name). The entry carries the abbreviated hash
+(10 characters), the subject, and `added`: the exported declarations that commit added in the
+files it touched, with their ids mapped forward through later renames in the range so they name
+paths of `v<b>`. Nothing removed means no entry. `history` needs the full commit range: a shallow
+clone makes it throw, so CI checks out full history with tags (`fetch-depth: 0`).
 
 ### `diffs/<a>-<b>.json` (area B)
 
 ```json
 {
   "schema": 1, "kind": "diff", "from": "5.5.0", "to": "5.6.0",
+  "packages": {
+    "added": { "@warp-drive/core": { "dir": "warp-drive-packages/core", "modules": ["@warp-drive/core", "@warp-drive/core/store"] } },
+    "removed": ["@ember-data/private-build-infra"],
+    "changed": { "@ember-data/store": { "modules": ["@ember-data/store", "@ember-data/store/-private", "@ember-data/store/types"] } }
+  },
   "modules": {
     "added": { "@warp-drive/core": { "package": "@warp-drive/core", "entry": "warp-drive-packages/core/src/index.ts", "forward": null } },
     "removed": ["@warp-drive/core-types/schema/fields.type-test"],
@@ -198,11 +214,20 @@ the exported declarations that commit added in the files it touched.
 }
 ```
 
-A diff is complete: applying `modules` and `exports` to surface `a` reproduces surface `b`
-exactly (`changed` carries every attribute that differs, `decl` included). `declarations` maps
-every declaration id of surface `a` to its id in surface `b`, or `null` when nothing in `b`
-continues it; a `symbols` entry with exactly one `added` declaration of the same kind maps to
-it, otherwise the id maps to `null` and the judge (area E) decides.
+A diff is complete: applying `packages`, `modules` and `exports` to surface `a` reproduces
+surface `b` exactly, `version` and `tag` coming from `to`; `diffSurfaces` refuses to return a
+diff for which that does not hold. A `changed` record carries every attribute that differs. For
+an optional attribute (`deprecated`) the value `null` means "absent in `b`"; for an attribute
+that is always present (`package`, `entry`, `forward`, `kind`, `decl`, `dir`, `modules`) `null`
+is the value itself.
+
+`declarations` maps every declaration id of surface `a` to its id in surface `b`, or `null` when
+nothing in `b` continues it. An id continues through `files` first. Otherwise its `symbols` entry
+decides, in this order: an `added` declaration with the same local name; for a default export, the
+one declaration the commit added in the same file (default turned named); the single `added`
+declaration of the same kind, but only when the commit added nothing outside surface `b` and
+removed no other declaration of that kind that would land on the same target. Anything else maps
+to `null`, and the judge (area E) decides.
 
 ### `audits/<version>.json` and `shapes/<version>.json` (area C)
 
@@ -259,7 +284,11 @@ survive a module rename; a decision whose `decl` is not in the `from` surface, o
 
 For one token of the `from` surface with declaration `d`:
 
-1. Follow `declarations` through every diff from `from` to `to`; `d'` is the result, or `null`.
+1. Follow `declarations` through the diffs from `from` to `to`, pair by pair. When a pair maps
+   the current id to `null`, look the id up verbatim in the surfaces of the later releases up
+   to `to`, in order; the first surface that declares it resumes the chain from there (4.12
+   carried backports that 5.0 lacks and 5.4 has again under the same id). `d'` is the id
+   reached at `to`, or `null`.
 2. Candidates: every token of the `to` surface whose `decl` is `d'`.
 3. No candidates and a decision for `d` in `decisions/<from>.json`: its `choice` (or removed).
 4. No candidates and no decision: the token is unresolved; it reports `removed` and `judge`
@@ -324,5 +353,16 @@ cli.mjs release <version>                       area A: surface + history + diff
 ```
 
 `cli.mjs` discovers `commands/*.mjs`; a command module that is missing is reported as "not
-implemented yet" rather than failing the loader. Area A writes `cli.mjs` and the loader; every
-other area adds only its own `commands/<name>.mjs`.
+implemented yet" (exit 2) rather than failing the loader. Area A writes `cli.mjs` and the loader;
+every other area adds only its own `commands/<name>.mjs`.
+
+A command exports `run(argv, context)`: `argv` is the argument list after the command name,
+`context` is `{ dataRoot, cwd }` with defaults of the data directory and `process.cwd()` (tests
+pass a temp directory). `run` resolves to the process exit code and throws on a usage error or
+a missing input; the loader prints the error message and exits 1. `console` output belongs in
+`commands/*.mjs` only (one `no-console` disable per file); library modules return data.
+
+Generated JSON directories (`surfaces/`, `history/`, `diffs/`, `audits/`, `shapes/`,
+`decisions/` and the shipped copies) are excluded from `oxfmt` in `.oxfmtrc.jsonc`, because the
+formatter would collapse short arrays and break the byte-for-byte `--check`. Hand-written
+fixtures and code must pass `pnpm exec oxfmt --check`.
