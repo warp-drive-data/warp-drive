@@ -76,13 +76,14 @@ the last state received from the API. When the save response arrives the remote 
 and the immutable records reflect the change. See [Saving](./saving.md).
 
 Only `data` is affected by an edit. `links` and `meta` stay as the API last sent them, so
-`meta.count` describes the remote membership until the save is confirmed. Use `doc.isDirty` to
-know when that is the case and `doc.remoteData` to read the remote membership alongside the local
-one:
+`meta.count` describes the remote membership until the save is confirmed:
 
 ```ts
 editable.friends.data.push(a);
-editable.friends.isDirty;           // true
-editable.friends.remoteData.length; // server's count
-editable.friends.data.length;       // server's count + 1
+editable.friends.meta.count;  // server's count
+editable.friends.data.length; // server's count + 1
+user.friends.data.length;     // server's count, on the immutable record
 ```
+
+To find out whether a record has relationship changes that are not saved yet, ask the cache with
+`store.cache.changedRelationships(recordIdentifierFor(user))`.

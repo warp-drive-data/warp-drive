@@ -73,8 +73,7 @@ The document mirrors the relationship payload the API sent (`data`, `links`, `me
 to be empty. `doc.fetch()` requests the `related` link as a top-level request.
 
 `links` and `meta` are server-owned and always reflect the last payload received; local mutations
-only change `data`. `doc.isDirty` reports whether the relationship has unconfirmed local changes
-and `doc.remoteData` exposes the membership the API last confirmed.
+only change `data`.
 
 Type the fields with `ReactiveRelationshipDocument`:
 
