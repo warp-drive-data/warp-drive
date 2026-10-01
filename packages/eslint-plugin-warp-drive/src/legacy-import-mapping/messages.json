@@ -1,0 +1,28 @@
+{
+  "kind": "messages",
+  "links": {
+    "api-docs": {
+      "title": "API docs",
+      "url": "https://warp-drive.io/api/"
+    },
+    "request-service-cheat-sheet": {
+      "title": "Request service cheat sheet",
+      "url": "https://request-service-cheat-sheet.netlify.app"
+    },
+    "upgrade-guide": {
+      "title": "In-place upgrade guide",
+      "url": "https://warp-drive.io/upgrading/v5/"
+    }
+  },
+  "reasons": {
+    "removed": [
+      "upgrade-guide",
+      "api-docs",
+      "request-service-cheat-sheet"
+    ],
+    "side-effect": [
+      "upgrade-guide"
+    ]
+  },
+  "schema": 1
+}

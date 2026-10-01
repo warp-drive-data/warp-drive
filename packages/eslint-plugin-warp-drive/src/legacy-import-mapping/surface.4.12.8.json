@@ -1,0 +1,1171 @@
+{
+  "kind": "surface",
+  "modules": {
+    "@ember-data/adapter": {
+      "entry": "packages/adapter/src/index.ts",
+      "exports": {
+        "BuildURLMixin": {
+          "decl": "packages/adapter/src/-private/build-url-mixin.ts#default",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/adapter/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/-private": {
+      "entry": "packages/adapter/src/-private.ts",
+      "exports": {
+        "BuildURLMixin": {
+          "decl": "packages/adapter/src/-private/build-url-mixin.ts#default",
+          "kind": "value"
+        },
+        "determineBodyPromise": {
+          "decl": "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise",
+          "kind": "value"
+        },
+        "fetch": {
+          "decl": "packages/adapter/src/-private/utils/fetch.ts#default",
+          "kind": "value"
+        },
+        "parseResponseHeaders": {
+          "decl": "packages/adapter/src/-private/utils/parse-response-headers.ts#default",
+          "kind": "value"
+        },
+        "serializeIntoHash": {
+          "decl": "packages/adapter/src/-private/utils/serialize-into-hash.ts#default",
+          "kind": "value"
+        },
+        "serializeQueryParams": {
+          "decl": "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams",
+          "kind": "value"
+        },
+        "setupFastboot": {
+          "decl": "packages/adapter/src/-private/utils/fetch.ts#setupFastboot",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/error": {
+      "entry": "packages/adapter/src/error.js",
+      "exports": {
+        "AbortError": {
+          "decl": "packages/adapter/src/error.js#AbortError",
+          "kind": "value"
+        },
+        "ConflictError": {
+          "decl": "packages/adapter/src/error.js#ConflictError",
+          "kind": "value"
+        },
+        "ForbiddenError": {
+          "decl": "packages/adapter/src/error.js#ForbiddenError",
+          "kind": "value"
+        },
+        "InvalidError": {
+          "decl": "packages/adapter/src/error.js#InvalidError",
+          "kind": "value"
+        },
+        "NotFoundError": {
+          "decl": "packages/adapter/src/error.js#NotFoundError",
+          "kind": "value"
+        },
+        "ServerError": {
+          "decl": "packages/adapter/src/error.js#ServerError",
+          "kind": "value"
+        },
+        "TimeoutError": {
+          "decl": "packages/adapter/src/error.js#TimeoutError",
+          "kind": "value"
+        },
+        "UnauthorizedError": {
+          "decl": "packages/adapter/src/error.js#UnauthorizedError",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/adapter/src/error.js#default",
+          "kind": "value"
+        },
+        "errorsArrayToHash": {
+          "decl": "packages/adapter/src/error.js#errorsArrayToHash",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "errorsHashToArray": {
+          "decl": "packages/adapter/src/error.js#errorsHashToArray",
+          "deprecated": true,
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/json-api": {
+      "entry": "packages/adapter/src/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/json-api.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/adapter/rest": {
+      "entry": "packages/adapter/src/rest.ts",
+      "exports": {
+        "FetchRequestInit": {
+          "decl": "packages/adapter/src/rest.ts#FetchRequestInit",
+          "kind": "type"
+        },
+        "JQueryRequestInit": {
+          "decl": "packages/adapter/src/rest.ts#JQueryRequestInit",
+          "kind": "type"
+        },
+        "RequestData": {
+          "decl": "packages/adapter/src/rest.ts#RequestData",
+          "kind": "type"
+        },
+        "default": {
+          "decl": "packages/adapter/src/rest.ts#default",
+          "kind": "value"
+        },
+        "fetchOptions": {
+          "decl": "packages/adapter/src/rest.ts#fetchOptions",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/adapter"
+    },
+    "@ember-data/debug": {
+      "entry": "packages/debug/addon/index.js",
+      "exports": {
+        "default": {
+          "decl": "packages/debug/addon/index.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/debug"
+    },
+    "@ember-data/debug/setup": {
+      "entry": "packages/debug/addon/setup.js",
+      "exports": {
+        "default": {
+          "decl": "packages/debug/addon/setup.js#default",
+          "kind": "value"
+        },
+        "typesMapFor": {
+          "decl": "packages/debug/addon/setup.js#typesMapFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/debug"
+    },
+    "@ember-data/graph/-private": {
+      "entry": "packages/graph/src/-private.ts",
+      "exports": {
+        "graphFor": {
+          "decl": "packages/graph/src/-private/graph/index.ts#graphFor",
+          "kind": "value"
+        },
+        "peekGraph": {
+          "decl": "packages/graph/src/-private/graph/index.ts#peekGraph",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/graph"
+    },
+    "@ember-data/json-api": {
+      "entry": "packages/json-api/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/json-api/src/-private/cache.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/json-api"
+    },
+    "@ember-data/legacy-compat": {
+      "entry": "packages/legacy-compat/src/index.ts",
+      "exports": {
+        "LegacyNetworkHandler": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/legacy-compat/-private": {
+      "entry": "packages/legacy-compat/src/-private.ts",
+      "exports": {
+        "FetchManager": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#default",
+          "kind": "value"
+        },
+        "SaveOp": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp",
+          "kind": "value"
+        },
+        "Snapshot": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#default",
+          "kind": "value"
+        },
+        "SnapshotRecordArray": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/legacy-compat/builders": {
+      "entry": "packages/legacy-compat/src/builders.ts",
+      "exports": {
+        "findAll": {
+          "decl": "packages/legacy-compat/src/builders/find-all.ts#findAllBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "findRecord": {
+          "decl": "packages/legacy-compat/src/builders/find-record.ts#findRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "query": {
+          "decl": "packages/legacy-compat/src/builders/query.ts#queryBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "queryRecord": {
+          "decl": "packages/legacy-compat/src/builders/query.ts#queryRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "saveRecord": {
+          "decl": "packages/legacy-compat/src/builders/save-record.ts#saveRecordBuilder",
+          "deprecated": true,
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/legacy-compat"
+    },
+    "@ember-data/model": {
+      "entry": "packages/model/src/index.ts",
+      "exports": {
+        "attr": {
+          "decl": "packages/model/src/-private/attr.js#default",
+          "kind": "value"
+        },
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.js#default",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/model/src/-private/model.js#default",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/model/-private": {
+      "entry": "packages/model/src/-private.ts",
+      "exports": {
+        "Errors": {
+          "decl": "packages/model/src/-private/errors.ts#default",
+          "kind": "value"
+        },
+        "LEGACY_SUPPORT": {
+          "decl": "packages/model/src/-private/model.js#LEGACY_SUPPORT",
+          "kind": "value"
+        },
+        "ManyArray": {
+          "decl": "packages/model/src/-private/many-array.ts#default",
+          "kind": "value"
+        },
+        "Model": {
+          "decl": "packages/model/src/-private/model.js#default",
+          "kind": "value"
+        },
+        "PromiseBelongsTo": {
+          "decl": "packages/model/src/-private/promise-belongs-to.ts#default",
+          "kind": "value"
+        },
+        "PromiseManyArray": {
+          "decl": "packages/model/src/-private/promise-many-array.ts#default",
+          "kind": "value"
+        },
+        "_modelForMixin": {
+          "decl": "packages/model/src/-private/model-for-mixin.ts#default",
+          "kind": "value"
+        },
+        "attr": {
+          "decl": "packages/model/src/-private/attr.js#default",
+          "kind": "value"
+        },
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.js#default",
+          "kind": "value"
+        },
+        "diffArray": {
+          "decl": "packages/model/src/-private/diff-array.ts#default",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/model"
+    },
+    "@ember-data/request": {
+      "entry": "packages/request/src/index.ts",
+      "exports": {
+        "Awaitable": {
+          "decl": "packages/request/src/-private/promise-cache.ts#Awaitable",
+          "kind": "type"
+        },
+        "SkipCache": {
+          "decl": "packages/request/src/-private/types.ts#SkipCache",
+          "kind": "value"
+        },
+        "createDeferred": {
+          "decl": "packages/request/src/-private/future.ts#createDeferred",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/request/src/-private/manager.ts#RequestManager",
+          "kind": "value"
+        },
+        "getPromiseResult": {
+          "decl": "packages/request/src/-private/promise-cache.ts#getPromiseResult",
+          "kind": "value"
+        },
+        "setPromiseResult": {
+          "decl": "packages/request/src/-private/promise-cache.ts#setPromiseResult",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request"
+    },
+    "@ember-data/request-utils": {
+      "entry": "packages/request-utils/src/index.ts",
+      "exports": {
+        "CacheControlValue": {
+          "decl": "packages/request-utils/src/index.ts#CacheControlValue",
+          "kind": "type"
+        },
+        "CreateRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#CreateRecordUrlOptions",
+          "kind": "type"
+        },
+        "DeleteRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#DeleteRecordUrlOptions",
+          "kind": "type"
+        },
+        "FindManyUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindManyUrlOptions",
+          "kind": "type"
+        },
+        "FindRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRecordUrlOptions",
+          "kind": "type"
+        },
+        "FindRelatedCollectionUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRelatedCollectionUrlOptions",
+          "kind": "type"
+        },
+        "FindRelatedResourceUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#FindRelatedResourceUrlOptions",
+          "kind": "type"
+        },
+        "GenericUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#GenericUrlOptions",
+          "kind": "type"
+        },
+        "LifetimesConfig": {
+          "decl": "packages/request-utils/src/index.ts#LifetimesConfig",
+          "kind": "type"
+        },
+        "LifetimesService": {
+          "decl": "packages/request-utils/src/index.ts#LifetimesService",
+          "kind": "value"
+        },
+        "QueryUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#QueryUrlOptions",
+          "kind": "type"
+        },
+        "UpdateRecordUrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#UpdateRecordUrlOptions",
+          "kind": "type"
+        },
+        "UrlOptions": {
+          "decl": "packages/request-utils/src/index.ts#UrlOptions",
+          "kind": "type"
+        },
+        "buildBaseURL": {
+          "decl": "packages/request-utils/src/index.ts#buildBaseURL",
+          "kind": "value"
+        },
+        "buildQueryParams": {
+          "decl": "packages/request-utils/src/index.ts#buildQueryParams",
+          "kind": "value"
+        },
+        "filterEmpty": {
+          "decl": "packages/request-utils/src/index.ts#filterEmpty",
+          "kind": "value"
+        },
+        "parseCacheControl": {
+          "decl": "packages/request-utils/src/index.ts#parseCacheControl",
+          "kind": "value"
+        },
+        "setBuildURLConfig": {
+          "decl": "packages/request-utils/src/index.ts#setBuildURLConfig",
+          "kind": "value"
+        },
+        "sortQueryParams": {
+          "decl": "packages/request-utils/src/index.ts#sortQueryParams",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request-utils"
+    },
+    "@ember-data/request/fetch": {
+      "entry": "packages/request/src/fetch.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/request/src/fetch.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/request"
+    },
+    "@ember-data/serializer": {
+      "entry": "packages/serializer/src/index.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/-private": {
+      "entry": "packages/serializer/src/-private.ts",
+      "exports": {
+        "BooleanTransform": {
+          "decl": "packages/serializer/src/-private/transforms/boolean.js#default",
+          "kind": "value"
+        },
+        "DateTransform": {
+          "decl": "packages/serializer/src/-private/transforms/date.js#default",
+          "kind": "value"
+        },
+        "EmbeddedRecordsMixin": {
+          "decl": "packages/serializer/src/-private/embedded-records-mixin.js#default",
+          "kind": "value"
+        },
+        "NumberTransform": {
+          "decl": "packages/serializer/src/-private/transforms/number.js#default",
+          "kind": "value"
+        },
+        "StringTransform": {
+          "decl": "packages/serializer/src/-private/transforms/string.js#default",
+          "kind": "value"
+        },
+        "Transform": {
+          "decl": "external:@ember/object#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/json": {
+      "entry": "packages/serializer/src/json.js",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/json-api": {
+      "entry": "packages/serializer/src/json-api.js",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json-api.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/rest": {
+      "entry": "packages/serializer/src/rest.js",
+      "exports": {
+        "EmbeddedRecordsMixin": {
+          "decl": "packages/serializer/src/-private/embedded-records-mixin.js#default",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/serializer/src/rest.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/serializer/transform": {
+      "entry": "packages/serializer/src/transform.js",
+      "exports": {
+        "default": {
+          "decl": "external:@ember/object#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/serializer"
+    },
+    "@ember-data/store": {
+      "entry": "packages/store/src/index.ts",
+      "exports": {
+        "CacheHandler": {
+          "decl": "packages/store/src/-private/cache-handler.ts#CacheHandler",
+          "kind": "value"
+        },
+        "default": {
+          "decl": "packages/store/src/-private/store-service.ts#default",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "packages/store/src/-private/index.ts#normalizeModelName",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "setIdentifierForgetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierResetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
+          "kind": "value"
+        },
+        "storeFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/store"
+    },
+    "@ember-data/store/-private": {
+      "entry": "packages/store/src/-private.ts",
+      "exports": {
+        "AdapterPopulatedRecordArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#Collection",
+          "kind": "value"
+        },
+        "CacheHandler": {
+          "decl": "packages/store/src/-private/cache-handler.ts#CacheHandler",
+          "kind": "value"
+        },
+        "IDENTIFIER_ARRAY_TAG": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#IDENTIFIER_ARRAY_TAG",
+          "kind": "value"
+        },
+        "IdentifierArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#default",
+          "kind": "value"
+        },
+        "MUTATE": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE",
+          "kind": "value"
+        },
+        "RecordArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#default",
+          "kind": "value"
+        },
+        "RecordArrayManager": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#default",
+          "kind": "value"
+        },
+        "SOURCE": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE",
+          "kind": "value"
+        },
+        "Store": {
+          "decl": "packages/store/src/-private/store-service.ts#default",
+          "kind": "value"
+        },
+        "_clearCaches": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#_clearCaches",
+          "kind": "value"
+        },
+        "coerceId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#default",
+          "kind": "value"
+        },
+        "constructResource": {
+          "decl": "packages/store/src/-private/utils/construct-resource.ts#default",
+          "kind": "value"
+        },
+        "ensureStringId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#ensureStringId",
+          "kind": "value"
+        },
+        "fastPush": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#fastPush",
+          "kind": "value"
+        },
+        "isStableIdentifier": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "packages/store/src/-private/index.ts#normalizeModelName",
+          "kind": "value"
+        },
+        "notifyArray": {
+          "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray",
+          "kind": "value"
+        },
+        "peekCache": {
+          "decl": "packages/store/src/-private/caches/cache-utils.ts#default",
+          "kind": "value"
+        },
+        "recordIdentifierFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "removeRecordDataFor": {
+          "decl": "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor",
+          "kind": "value"
+        },
+        "setIdentifierForgetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierResetMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
+          "kind": "value"
+        },
+        "storeFor": {
+          "decl": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
+          "kind": "value"
+        }
+      },
+      "forward": "./-private/index",
+      "package": "@ember-data/store"
+    },
+    "@ember-data/tracking": {
+      "entry": "packages/tracking/src/index.ts",
+      "exports": {
+        "memoTransact": {
+          "decl": "packages/tracking/src/-private.ts#memoTransact",
+          "kind": "value"
+        },
+        "transact": {
+          "decl": "packages/tracking/src/-private.ts#transact",
+          "kind": "value"
+        },
+        "untracked": {
+          "decl": "packages/tracking/src/-private.ts#untracked",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/tracking"
+    },
+    "@ember-data/tracking/-private": {
+      "entry": "packages/tracking/src/-private.ts",
+      "exports": {
+        "Tag": {
+          "decl": "packages/tracking/src/-private.ts#Tag",
+          "kind": "type"
+        },
+        "addToTransaction": {
+          "decl": "packages/tracking/src/-private.ts#addToTransaction",
+          "kind": "value"
+        },
+        "addTransactionCB": {
+          "decl": "packages/tracking/src/-private.ts#addTransactionCB",
+          "kind": "value"
+        },
+        "memoTransact": {
+          "decl": "packages/tracking/src/-private.ts#memoTransact",
+          "kind": "value"
+        },
+        "subscribe": {
+          "decl": "packages/tracking/src/-private.ts#subscribe",
+          "kind": "value"
+        },
+        "transact": {
+          "decl": "packages/tracking/src/-private.ts#transact",
+          "kind": "value"
+        },
+        "untracked": {
+          "decl": "packages/tracking/src/-private.ts#untracked",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@ember-data/tracking"
+    },
+    "ember-data": {
+      "entry": "packages/-ember-data/addon/index.js",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/addon/-private/core.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/-private": {
+      "entry": "packages/-ember-data/addon/-private/index.ts",
+      "exports": {
+        "DS": {
+          "decl": "packages/-ember-data/addon/-private/core.js#default",
+          "kind": "value"
+        },
+        "Errors": {
+          "decl": "packages/model/src/-private/errors.ts#default",
+          "kind": "value"
+        },
+        "ManyArray": {
+          "decl": "packages/model/src/-private/many-array.ts#default",
+          "kind": "value"
+        },
+        "PromiseArray": {
+          "decl": "packages/-ember-data/addon/-private/index.ts#PromiseArray",
+          "kind": "value"
+        },
+        "PromiseManyArray": {
+          "decl": "packages/model/src/-private/promise-many-array.ts#default",
+          "kind": "value"
+        },
+        "PromiseObject": {
+          "decl": "packages/-ember-data/addon/-private/index.ts#PromiseObject",
+          "kind": "value"
+        },
+        "RecordArrayManager": {
+          "decl": "packages/store/src/-private/managers/record-array-manager.ts#default",
+          "kind": "value"
+        },
+        "Snapshot": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#default",
+          "kind": "value"
+        },
+        "SnapshotRecordArray": {
+          "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#default",
+          "kind": "value"
+        },
+        "Store": {
+          "decl": "packages/-ember-data/addon/-private/index.ts#Store",
+          "kind": "value"
+        },
+        "coerceId": {
+          "decl": "packages/store/src/-private/utils/coerce-id.ts#default",
+          "kind": "value"
+        },
+        "normalizeModelName": {
+          "decl": "packages/store/src/-private/index.ts#normalizeModelName",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/-private/core": {
+      "entry": "packages/-ember-data/addon/-private/core.js",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/addon/-private/core.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapter": {
+      "entry": "packages/-ember-data/addon/adapter.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/errors": {
+      "entry": "packages/-ember-data/addon/adapters/errors.ts",
+      "exports": {
+        "AbortError": {
+          "decl": "packages/adapter/src/error.js#AbortError",
+          "kind": "value"
+        },
+        "AdapterError": {
+          "decl": "packages/adapter/src/error.js#default",
+          "kind": "value"
+        },
+        "ConflictError": {
+          "decl": "packages/adapter/src/error.js#ConflictError",
+          "kind": "value"
+        },
+        "ForbiddenError": {
+          "decl": "packages/adapter/src/error.js#ForbiddenError",
+          "kind": "value"
+        },
+        "InvalidError": {
+          "decl": "packages/adapter/src/error.js#InvalidError",
+          "kind": "value"
+        },
+        "NotFoundError": {
+          "decl": "packages/adapter/src/error.js#NotFoundError",
+          "kind": "value"
+        },
+        "ServerError": {
+          "decl": "packages/adapter/src/error.js#ServerError",
+          "kind": "value"
+        },
+        "TimeoutError": {
+          "decl": "packages/adapter/src/error.js#TimeoutError",
+          "kind": "value"
+        },
+        "UnauthorizedError": {
+          "decl": "packages/adapter/src/error.js#UnauthorizedError",
+          "kind": "value"
+        },
+        "errorsArrayToHash": {
+          "decl": "packages/adapter/src/error.js#errorsArrayToHash",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "errorsHashToArray": {
+          "decl": "packages/adapter/src/error.js#errorsHashToArray",
+          "deprecated": true,
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/json-api": {
+      "entry": "packages/-ember-data/addon/adapters/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/json-api.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/adapters/rest": {
+      "entry": "packages/-ember-data/addon/adapters/rest.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/adapter/src/rest.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/attr": {
+      "entry": "packages/-ember-data/addon/attr.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/model/src/-private/attr.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/model": {
+      "entry": "packages/-ember-data/addon/model.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/model/src/-private/model.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/relationships": {
+      "entry": "packages/-ember-data/addon/relationships.ts",
+      "exports": {
+        "belongsTo": {
+          "decl": "packages/model/src/-private/belongs-to.js#default",
+          "kind": "value"
+        },
+        "hasMany": {
+          "decl": "packages/model/src/-private/has-many.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializer": {
+      "entry": "packages/-ember-data/addon/serializer.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/index.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/embedded-records-mixin": {
+      "entry": "packages/-ember-data/addon/serializers/embedded-records-mixin.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/-private/embedded-records-mixin.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/json": {
+      "entry": "packages/-ember-data/addon/serializers/json.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/json-api": {
+      "entry": "packages/-ember-data/addon/serializers/json-api.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/json-api.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/serializers/rest": {
+      "entry": "packages/-ember-data/addon/serializers/rest.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/serializer/src/rest.js#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/setup-container": {
+      "entry": "packages/-ember-data/addon/setup-container.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/addon/setup-container.ts#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/store": {
+      "entry": "packages/-ember-data/addon/store.ts",
+      "exports": {
+        "default": {
+          "decl": "packages/-ember-data/addon/-private/index.ts#Store",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/test-support": {
+      "entry": "packages/-ember-data/addon-test-support/index.js",
+      "exports": {
+        "render": {
+          "decl": "packages/-ember-data/addon-test-support/index.js#render",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    },
+    "ember-data/transform": {
+      "entry": "packages/-ember-data/addon/transform.ts",
+      "exports": {
+        "default": {
+          "decl": "external:@ember/object#default",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "ember-data"
+    }
+  },
+  "packages": {
+    "@ember-data/adapter": {
+      "dir": "packages/adapter",
+      "modules": [
+        "@ember-data/adapter",
+        "@ember-data/adapter/-private",
+        "@ember-data/adapter/error",
+        "@ember-data/adapter/json-api",
+        "@ember-data/adapter/rest"
+      ]
+    },
+    "@ember-data/debug": {
+      "dir": "packages/debug",
+      "modules": [
+        "@ember-data/debug",
+        "@ember-data/debug/setup"
+      ]
+    },
+    "@ember-data/graph": {
+      "dir": "packages/graph",
+      "modules": [
+        "@ember-data/graph/-private"
+      ]
+    },
+    "@ember-data/json-api": {
+      "dir": "packages/json-api",
+      "modules": [
+        "@ember-data/json-api"
+      ]
+    },
+    "@ember-data/legacy-compat": {
+      "dir": "packages/legacy-compat",
+      "modules": [
+        "@ember-data/legacy-compat",
+        "@ember-data/legacy-compat/-private",
+        "@ember-data/legacy-compat/builders"
+      ]
+    },
+    "@ember-data/model": {
+      "dir": "packages/model",
+      "modules": [
+        "@ember-data/model",
+        "@ember-data/model/-private"
+      ]
+    },
+    "@ember-data/private-build-infra": {
+      "dir": "packages/private-build-infra",
+      "modules": []
+    },
+    "@ember-data/request": {
+      "dir": "packages/request",
+      "modules": [
+        "@ember-data/request",
+        "@ember-data/request/fetch"
+      ]
+    },
+    "@ember-data/request-utils": {
+      "dir": "packages/request-utils",
+      "modules": [
+        "@ember-data/request-utils"
+      ]
+    },
+    "@ember-data/serializer": {
+      "dir": "packages/serializer",
+      "modules": [
+        "@ember-data/serializer",
+        "@ember-data/serializer/-private",
+        "@ember-data/serializer/json",
+        "@ember-data/serializer/json-api",
+        "@ember-data/serializer/rest",
+        "@ember-data/serializer/transform"
+      ]
+    },
+    "@ember-data/store": {
+      "dir": "packages/store",
+      "modules": [
+        "@ember-data/store",
+        "@ember-data/store/-private"
+      ]
+    },
+    "@ember-data/tracking": {
+      "dir": "packages/tracking",
+      "modules": [
+        "@ember-data/tracking",
+        "@ember-data/tracking/-private"
+      ]
+    },
+    "ember-data": {
+      "dir": "packages/-ember-data",
+      "modules": [
+        "ember-data",
+        "ember-data/-private",
+        "ember-data/-private/core",
+        "ember-data/adapter",
+        "ember-data/adapters/errors",
+        "ember-data/adapters/json-api",
+        "ember-data/adapters/rest",
+        "ember-data/attr",
+        "ember-data/model",
+        "ember-data/relationships",
+        "ember-data/serializer",
+        "ember-data/serializers/embedded-records-mixin",
+        "ember-data/serializers/json",
+        "ember-data/serializers/json-api",
+        "ember-data/serializers/rest",
+        "ember-data/setup-container",
+        "ember-data/store",
+        "ember-data/test-support",
+        "ember-data/transform"
+      ]
+    }
+  },
+  "schema": 1,
+  "tag": "v4.12.8",
+  "version": "4.12.8"
+}
