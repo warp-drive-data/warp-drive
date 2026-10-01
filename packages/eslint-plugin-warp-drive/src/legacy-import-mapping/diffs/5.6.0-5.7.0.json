@@ -155,7 +155,7 @@
     "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#IdentifierArray": null,
     "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#MUTATE": null,
     "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#SOURCE": null,
-    "warp-drive-packages/core/src/store/-private/record-arrays/many-array.ts#RelatedCollection": null,
+    "warp-drive-packages/core/src/store/-private/record-arrays/many-array.ts#RelatedCollection": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
     "warp-drive-packages/core/src/store/-private/record-arrays/native-proxy-type-fix.ts#NativeProxy": "warp-drive-packages/core/src/store/-private/record-arrays/native-proxy-type-fix.ts#NativeProxy",
     "warp-drive-packages/core/src/store/-private/store-service.ts#CreateRecordProperties": "warp-drive-packages/core/src/store/-private/store-service.ts#CreateRecordProperties",
     "warp-drive-packages/core/src/store/-private/store-service.ts#Store": "warp-drive-packages/core/src/store/-private/store-service.ts#Store",
