@@ -5,7 +5,11 @@ import type { Store } from '../../../index.ts';
 import { withBrand } from '../../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../../signals/-private.ts';
 import { createRelatedCollection, recordIdentifierFor } from '../../../store/-private.ts';
-import type { NotificationChannel } from '../../../store/-private/managers/notification-manager.ts';
+import type {
+  NotificationChannel,
+  NotificationType,
+  UnsubscribeToken,
+} from '../../../store/-private/managers/notification-manager.ts';
 import type { ReactiveResourceArray } from '../../../store/-private/record-arrays/resource-array.ts';
 import type { UpdateResourceRelationshipOperation } from '../../../types/cache/operations.ts';
 import type { CollectionRelationship, Relationship, ResourceRelationship } from '../../../types/cache/relationship.ts';
@@ -166,6 +170,13 @@ interface RelationshipSource {
    * the first time membership data is available.
    */
   collection: ReactiveResourceArray | null;
+  /**
+   * An editable resource only subscribes to `'local'` relationship
+   * notifications, but its document also renders remote state (`links` and
+   * `meta`). This subscription delivers the `'remote'`
+   * notifications those need, e.g. a payload that confirms a local change.
+   */
+  remoteSubscription: UnsubscribeToken | null;
 }
 
 interface PrivateRelationshipDocument extends ReactiveRelationshipDocument<unknown> {
@@ -387,11 +398,27 @@ function isRecord(value: unknown): boolean {
  * @private
  */
 export function createRelationshipDocument<T>(
-  source: Omit<RelationshipSource, 'collection'>
+  source: Omit<RelationshipSource, 'collection' | 'remoteSubscription'>
 ): ReactiveRelationshipDocument<T> {
   const doc = Object.create(RelationshipDocumentProto) as PrivateRelationshipDocument;
-  doc[Context] = Object.assign({ collection: null }, source);
+  const context: RelationshipSource = Object.assign({ collection: null, remoteSubscription: null }, source);
+  doc[Context] = context;
   withSignalStore(doc);
+
+  if (source.editable) {
+    const { store, resourceKey, path } = source;
+    const key = path[path.length - 1];
+    context.remoteSubscription = store.notifications.subscribe(
+      resourceKey,
+      (_key: ResourceKey, type: NotificationType, field?: string | string[]) => {
+        if (type === 'relationships' && field === key) {
+          notifyRemoteProjection(doc);
+        }
+      },
+      'remote'
+    );
+  }
+
   return doc as unknown as ReactiveRelationshipDocument<T>;
 }
 
@@ -425,6 +452,19 @@ export function notifyRelationshipDocument(
     return;
   }
 
+  notifyRemoteProjection(doc);
+}
+
+/**
+ * Marks the server-owned properties of a relationship document (`links`
+ * and `meta`) as stale. `data` is left alone: a purely remote change never
+ * alters the local projection an editable document renders.
+ *
+ * @private
+ */
+function notifyRemoteProjection(doc: ReactiveRelationshipDocument<unknown>): void {
+  const signals = withSignalStore(doc);
+
   notifyInternalSignal(peekInternalSignal(signals, 'links'));
   notifyInternalSignal(peekInternalSignal(signals, 'meta'));
 }
@@ -437,7 +477,12 @@ export function notifyRelationshipDocument(
  */
 export function destroyRelationshipDocument(doc: ReactiveRelationshipDocument<unknown>): void {
   upgradeThis(doc);
-  const { collection } = doc[Context];
+  const context = doc[Context];
+  const { collection } = context;
+  if (context.remoteSubscription) {
+    context.store.notifications.unsubscribe(context.remoteSubscription);
+    context.remoteSubscription = null;
+  }
   if (collection && !collection.isDestroyed) {
     collection.destroy(false);
   }
