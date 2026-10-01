@@ -42,9 +42,8 @@ both, and pass every hook through to both results:
 - `consumeSignal` and `notifySignal` call each framework's hook with its half of the pair.
   Consuming a signal outside its own framework's render doesn't subscribe anything to it, so it's
   safe to always consume both.
-- `createMemo` creates a memo in each framework and reads both on every access, so each framework
-  tracks the memo's dependencies. When the data changes, the memoized function runs once for each
-  framework.
+- `createMemo` uses Ember's memo. This has a known limitation for React; see
+  [Memoized Values in React Components](#memoized-values-in-react-components) below.
 
 ```ts [app/signals.ts]
 import { setupSignals, type SignalHooks } from '@warp-drive/core/configure';
@@ -72,14 +71,8 @@ setupSignals((options): SignalHooks<ComposedSignal> => {
       react.notifySignal(reactSignal);
     },
 
-    createMemo: (obj, key, fn) => {
-      const emberMemo = ember.createMemo(obj, key, fn);
-      const reactMemo = react.createMemo(obj, key, fn);
-      return () => {
-        emberMemo();
-        return reactMemo();
-      };
-    },
+    // See "Memoized Values in React Components" below.
+    createMemo: (obj, key, fn) => ember.createMemo(obj, key, fn),
 
     // Ember's runloop may flush watchers synchronously; React never does.
     willSyncFlushWatchers: () => ember.willSyncFlushWatchers() || react.willSyncFlushWatchers(),
@@ -89,6 +82,23 @@ setupSignals((options): SignalHooks<ComposedSignal> => {
   };
 });
 ```
+
+### Memoized Values in React Components
+
+:::warning Known Limitation
+React components may not re-render when a memoized value they read changes.
+:::
+
+***Warp*Drive** memoizes some values with the `createMemo` hook, including
+[derived fields](/guides/the-manual/schemas/derivations.md) and some request and pagination state. Ember's memo only runs its function when its cached value is stale,
+and a React component only subscribes to the signals it sees read while it renders. When a React
+component reads a memoized value that is already cached, no signals are read, so the component
+doesn't subscribe to the data the value depends on. That happens, for example, when an Ember
+component computed the value first, or when the React component re-renders for an unrelated
+reason. When that data later changes, the React component doesn't re-render.
+
+Ember components aren't affected, and neither are plain fields, which don't use `createMemo`. A
+pattern that fixes this for React is planned as a follow-up to this guide.
 
 ## Install the Composed Hooks
 
