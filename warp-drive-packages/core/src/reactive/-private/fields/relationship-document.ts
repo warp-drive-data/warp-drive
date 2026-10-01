@@ -6,10 +6,13 @@ import { withBrand } from '../../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../../signals/-private.ts';
 import { recordIdentifierFor } from '../../../store/-private.ts';
 import type { NotificationChannel } from '../../../store/-private/managers/notification-manager.ts';
-import type { ResourceRelationship } from '../../../types/cache/relationship.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
+import type { UpdateResourceRelationshipOperation } from '../../../types/cache/operations.ts';
+import type { Relationship, ResourceRelationship } from '../../../types/cache/relationship.ts';
+import type { PersistedResourceKey, RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { RequestInfo } from '../../../types/request.ts';
+import { EnableHydration } from '../../../types/request.ts';
 import type { ResourceField } from '../../../types/schema/fields.ts';
+import type { ResourceDocument } from '../../../types/spec/document.ts';
 import type { Link, Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 import { Context } from '../symbols.ts';
 
@@ -38,8 +41,9 @@ import { Context } from '../symbols.ts';
  * `data` is `undefined` when the relationship payload did not include a
  * `data` member (e.g. a links-only payload for an async relationship);
  * `null` means the relationship is known to be empty. Use
- * {@link ReactiveRelationshipDocument.fetch | fetch} to load the related
- * data via the relationship's `related` link.
+ * {@link ReactiveRelationshipDocument.fetch | fetch} to load the relationship
+ * through its `related` link: the response updates `data`, and the promise
+ * resolves with this same document.
  *
  * When the owning resource is editable the relationship may be mutated
  * through `data`:
@@ -89,24 +93,42 @@ export interface ReactiveRelationshipDocument<T> {
   readonly meta?: Meta;
 
   /**
-   * Relationship documents are not request documents and so
-   * have no RequestKey.
+   * The cache key of the request document for this relationship's `related`
+   * link (or its `self` link when there is no `related` link), or `null` when
+   * the relationship has neither.
+   *
+   * It is the same key a top-level request for that URL is cached under, and
+   * the key {@link ReactiveRelationshipDocument.fetch | fetch} caches its
+   * response under. It updates when the relationship's links change.
    *
    * @public
    */
-  readonly identifier: null;
+  readonly identifier: RequestKey | null;
 
   /**
-   * Fetches the related link for this relationship (falling back to the
-   * self link), returning a promise that resolves with the response
-   * document when the request completes.
+   * Requests this relationship's `related` link (falling back to its `self`
+   * link) and resolves with this same document once the response has been
+   * applied to it.
    *
-   * The response is a top-level document; it is not merged into the
-   * relationship's membership.
+   * The response's `data` becomes the relationship's remote membership, the
+   * same as a payload for the parent resource that includes the relationship
+   * would: immutable records show it, and editable records reconcile it with
+   * any unsaved local changes. The relationship's `links` and `meta` are kept;
+   * the response's top-level `links` and `meta` describe the response, not
+   * the relationship. Every resource the response references must be in it.
+   *
+   * ```ts
+   * const friends = await user.friends.fetch();
+   * friends === user.friends; // true
+   * friends.data; // the members the API returned
+   * ```
+   *
+   * The response is also cached as a request document under
+   * {@link ReactiveRelationshipDocument.identifier | identifier}.
    *
    * @public
    */
-  fetch(options?: RequestInfo): Promise<unknown>;
+  fetch(options?: RequestInfo): Promise<ReactiveRelationshipDocument<T>>;
 
   /**
    * Implemented for `JSON.stringify` support.
@@ -132,7 +154,6 @@ interface RelationshipSource {
 }
 
 interface PrivateRelationshipDocument extends ReactiveRelationshipDocument<unknown> {
-  _store: Store;
   [Context]: RelationshipSource;
 }
 
@@ -173,25 +194,44 @@ function urlFromLink(link: Link): string {
 }
 
 const RelationshipDocumentProto = {
-  fetch(
+  async fetch(
     this: ReactiveRelationshipDocument<unknown>,
     options: RequestInfo = withBrand<unknown>({ url: '', method: 'GET' })
-  ): Promise<unknown> {
+  ): Promise<ReactiveRelationshipDocument<unknown>> {
     upgradeThis(this);
-    const { links } = this;
+    const { store, resourceKey, path, field } = this[Context];
+    const key = path[path.length - 1];
+    const { links } = store.cache.getRemoteRelationship(resourceKey, key);
     const href = links?.related || links?.self;
-    assert(
-      `Cannot fetch ${this[Context].resourceKey.type}.${this[Context].field.name} because the relationship has no related or self link`,
-      href
-    );
+    assert(`Cannot fetch ${resourceKey.type}.${field.name} because the relationship has no related or self link`, href);
     options.method = options.method || 'GET';
-    Object.assign(options, { url: urlFromLink(href) });
-    return this._store.request<unknown>(options).then((response) => response.content);
+    // the cache's own (non-reactive) document, so its `data` holds the resource keys
+    // to apply to the relationship
+    Object.assign(options, { url: urlFromLink(href), [EnableHydration]: false });
+
+    const { content } = await store.request<ResourceDocument>(options);
+
+    if (content && 'data' in content && content.data !== undefined) {
+      const value = { data: content.data } as Relationship<PersistedResourceKey>;
+      // the relationship keeps its own links: async relationships must always carry `related`
+      if (links) {
+        value.links = links;
+      }
+      const op: UpdateResourceRelationshipOperation = {
+        op: 'update',
+        record: resourceKey as PersistedResourceKey,
+        field: key,
+        value,
+      };
+      store.cache.patch(op);
+    }
+
+    return this;
   },
 
   toJSON(this: ReactiveRelationshipDocument<unknown>): object {
-    const json: { identifier: null; data?: unknown; links?: Links | PaginationLinks; meta?: Meta } = {
-      identifier: null,
+    const json: { identifier: RequestKey | null; data?: unknown; links?: Links | PaginationLinks; meta?: Meta } = {
+      identifier: this.identifier,
     };
     if (this.data !== undefined) {
       json.data = this.data;
@@ -205,6 +245,21 @@ const RelationshipDocumentProto = {
     return json;
   },
 };
+
+Object.defineProperty(RelationshipDocumentProto, 'identifier', {
+  enumerable: true,
+  configurable: true,
+  get(this: ReactiveRelationshipDocument<unknown>): RequestKey | null {
+    upgradeThis(this);
+    const href = this.links?.related || this.links?.self;
+    if (!href) {
+      return null;
+    }
+    return this[Context].store.cacheKeyManager.getOrCreateDocumentIdentifier(
+      withBrand<unknown>({ url: urlFromLink(href), method: 'GET' })
+    );
+  },
+});
 
 defineGate(RelationshipDocumentProto, 'links', {
   get(this: ReactiveRelationshipDocument<unknown>) {
@@ -284,10 +339,7 @@ function isRecord(value: unknown): boolean {
  */
 export function createRelationshipDocument<T>(source: RelationshipSource): ReactiveRelationshipDocument<T> {
   const doc = Object.create(RelationshipDocumentProto) as PrivateRelationshipDocument;
-  doc._store = source.store;
   doc[Context] = Object.assign({}, source);
-  // @ts-expect-error we are initializing it here
-  doc.identifier = null;
   withSignalStore(doc);
   return doc as unknown as ReactiveRelationshipDocument<T>;
 }
