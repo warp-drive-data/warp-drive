@@ -5,6 +5,7 @@ import { defineConfig, type DefaultTheme, type Plugin } from 'vitepress';
 import { withMermaid } from 'vitepress-plugin-mermaid';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 
+import { BLOG_FEED_PATH, emitBlogFeed } from '../../src/emit-blog-feed.ts';
 import {
   draftPages,
   getBlogStructure,
@@ -16,7 +17,6 @@ import {
   legacyGuidePages,
   postProcessApiDocs,
 } from '../../src/site-utils.ts';
-import { BLOG_FEED_PATH, emitBlogFeed } from '../../src/emit-blog-feed.ts';
 
 // Legacy API pages stay out of llms.txt and llms-full.txt so an agent working on a modern app isn't
 // steered toward Models, Adapters, or packages that only re-export modern ones.
