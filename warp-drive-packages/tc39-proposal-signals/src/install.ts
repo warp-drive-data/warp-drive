@@ -60,6 +60,7 @@ export function buildSignalConfig(_options: HooksOptions): SignalHooks<Signal.St
       const memo = new Signal.Computed<F>(fn);
       return () => memo.get();
     },
+    isTracking: () => Signal.subtle.currentComputed() !== undefined,
     willSyncFlushWatchers: () => false,
   };
 }

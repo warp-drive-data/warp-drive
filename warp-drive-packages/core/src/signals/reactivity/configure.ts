@@ -119,6 +119,16 @@ export interface SignalHooks<T = SignalRef> {
   waitFor?: <K>(promise: Promise<K>) => Promise<K>;
 
   /**
+   * An optional method that returns whether a signal consumed right now would be tracked by the
+   * framework, for instance because a component is rendering.
+   *
+   * ***Warp*Drive** itself does not call it. Hooks that compose other implementations, such as
+   * the ones `@warp-drive/alien-signals/install` configures, use it to skip work for reads that no
+   * framework would track.
+   */
+  isTracking?: () => boolean;
+
+  /**
    * An optional method, present only on hooks that compose other signals implementations into
    * their own, such as the ones `@warp-drive/alien-signals/install` configures.
    *

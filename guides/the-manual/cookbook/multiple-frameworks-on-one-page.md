@@ -90,19 +90,15 @@ You don't need any of this to use the setup above, but it explains why it works.
   [derived fields](/guides/the-manual/schemas/derivations.md) and some request and pagination
   state, are memos in the alien-signals graph; neither framework creates its own. A React
   component watches the memo itself, so it re-renders whenever anything the memo depends on
-  changes. When a memo returns a cached value without running again, the graph consumes the Ember
-  tag of every signal the memo depends on, so Ember tracks those reads as if the memo had run.
-  Memoized values update in both frameworks, whichever one read them first.
+  changes. Ember sees each memo as one more tag: reading the memo consumes it, whether the memo
+  runs or returns a cached value, and the graph dirties it as soon as anything the memo depends on
+  changes. Memoized values update in both frameworks, whichever one read them first.
 - **Test waiters.** Each framework's `waitFor` hook still runs, so `await settled()` from
   `@ember/test-helpers` waits for ***Warp*Drive**'s requests in your Ember tests.
 
-Two behaviors differ from an Ember app that only imports `@warp-drive/ember/install`:
-
-- A memo that nothing in the alien-signals graph depends on, such as a derived field that only
-  Ember components read, releases its dependencies a microtask after it is read, and runs again on
-  its next read. Ember still re-renders correctly; the value is just recomputed more often.
-- With the `DEPRECATE_COMPUTED_CHAINS` deprecation active, a classic computed property that
-  depends on a memoized key won't recompute when that memo changes.
+One behavior differs from an Ember app that only imports `@warp-drive/ember/install`: with the
+`DEPRECATE_COMPUTED_CHAINS` deprecation active, a classic computed property that depends on a
+memoized key may not recompute when that memo changes.
 
 ## Share the Store
 
