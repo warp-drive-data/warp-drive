@@ -83,6 +83,10 @@
     "@ember-data/request": {
       "entry": "packages/request/src/index.ts",
       "exports": {
+        "RequestInfo": {
+          "decl": "packages/request/src/-private/types.ts#RequestInfo",
+          "kind": "type"
+        },
         "createDeferred": {
           "decl": "packages/request/src/-private/future.ts#createDeferred",
           "kind": "value"

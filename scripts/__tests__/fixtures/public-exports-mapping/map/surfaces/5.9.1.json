@@ -83,6 +83,10 @@
     "@ember-data/request": {
       "entry": "packages/request/src/index.ts",
       "exports": {
+        "RequestInfo": {
+          "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
+          "kind": "type"
+        },
         "createDeferred": {
           "decl": "warp-drive-packages/core/src/request/-private/future.ts#createDeferred",
           "kind": "value"
@@ -175,6 +179,10 @@
           "decl": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#CacheHandler",
           "kind": "value"
         },
+        "ConfiguredStore": {
+          "decl": "warp-drive-packages/core/src/index.ts#ConfiguredStore",
+          "kind": "type"
+        },
         "RequestManager": {
           "decl": "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager",
           "kind": "value"
@@ -193,6 +201,28 @@
         },
         "storeFor": {
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/core"
+    },
+    "@warp-drive/core-types/request": {
+      "entry": "packages/core-types/src/request.ts",
+      "exports": {
+        "RequestInfo": {
+          "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
+          "kind": "type"
+        }
+      },
+      "forward": "@warp-drive/core/types/request",
+      "package": "@warp-drive/core-types"
+    },
+    "@warp-drive/core/reactive": {
+      "entry": "warp-drive-packages/core/src/reactive.ts",
+      "exports": {
+        "getPromiseState": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/promise-state.ts#getPromiseState",
           "kind": "value"
         }
       },
@@ -257,11 +287,33 @@
       "forward": null,
       "package": "@warp-drive/core"
     },
+    "@warp-drive/core/types/request": {
+      "entry": "warp-drive-packages/core/src/types/request.ts",
+      "exports": {
+        "RequestInfo": {
+          "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
+          "kind": "type"
+        }
+      },
+      "forward": "./request/info.ts",
+      "package": "@warp-drive/core"
+    },
     "@warp-drive/ember": {
       "entry": "warp-drive-packages/ember/src/index.ts",
       "exports": {
         "getRequestState": {
           "decl": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "@warp-drive/ember"
+    },
+    "@warp-drive/ember/reactive": {
+      "entry": "warp-drive-packages/ember/src/reactive.ts",
+      "exports": {
+        "getPromiseState": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/promise-state.ts#getPromiseState",
           "kind": "value"
         }
       },
@@ -406,6 +458,17 @@
       },
       "forward": null,
       "package": "ember-data"
+    },
+    "warp-drive/core": {
+      "entry": "packages/-warp-drive/src/core.ts",
+      "exports": {
+        "Store": {
+          "decl": "warp-drive-packages/core/src/store/-private/store-service.ts#Store",
+          "kind": "value"
+        }
+      },
+      "forward": null,
+      "package": "warp-drive"
     }
   },
   "packages": {
@@ -437,14 +500,20 @@
       "dir": "warp-drive-packages/core",
       "modules": [
         "@warp-drive/core",
+        "@warp-drive/core/reactive",
         "@warp-drive/core/request",
         "@warp-drive/core/store",
-        "@warp-drive/core/store/-private"
+        "@warp-drive/core/store/-private",
+        "@warp-drive/core/types/request"
       ]
+    },
+    "@warp-drive/core-types": {
+      "dir": "packages/core-types",
+      "modules": ["@warp-drive/core-types/request"]
     },
     "@warp-drive/ember": {
       "dir": "warp-drive-packages/ember",
-      "modules": ["@warp-drive/ember"]
+      "modules": ["@warp-drive/ember", "@warp-drive/ember/reactive"]
     },
     "@warp-drive/legacy": {
       "dir": "warp-drive-packages/legacy",
@@ -467,6 +536,10 @@
     "ember-data": {
       "dir": "packages/-ember-data",
       "modules": ["ember-data", "ember-data/store"]
+    },
+    "warp-drive": {
+      "dir": "packages/-warp-drive",
+      "modules": ["warp-drive/core"]
     }
   },
   "schema": 1,

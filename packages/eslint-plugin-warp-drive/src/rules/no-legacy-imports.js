@@ -195,8 +195,7 @@ module.exports = {
         'as written. Check the name, or set the `from` option to the release this code was written against.',
       [TYPE_ONLY_TARGET_ID]:
         '"{{name}}" from "{{module}}" is a value, but {{to}} only has a type for it: {{target}}. The import is left as ' +
-        'written. Use `import type` if it is only used as a type, and the rule then rewrites it; otherwise it needs ' +
-        'manual migration.',
+        'written. Use `import type` if it is only used as a type{{typeThen}}; otherwise it needs manual migration.',
       [SIDE_EFFECT_ID]:
         'Importing "{{module}}" also sets things up as a side effect, so it cannot be rewritten to another module. ' +
         'The import is left as written; set up what it provided by hand.{{links}}',
@@ -261,6 +260,11 @@ module.exports = {
           name,
           subject,
           target: decision.to ? `${decision.to.export} in "${decision.to.module}"` : '',
+          // a type that kept the module and the name needs no rewrite once the import is type-only
+          typeThen:
+            decision.to && (decision.to.module !== module || decision.to.export !== name)
+              ? ', and the rule then rewrites it'
+              : '',
           removedIn: decision.removedIn ? ` (removed in ${decision.removedIn})` : '',
           shim: decision.shim ? `\n\nA shim that restores it:\n${decision.shim}\n` : '',
           // after a shim, the links start their own line

@@ -19,11 +19,11 @@
  * @typedef {{ module: string, export: string }} Target
  * @typedef {{ decl: string, source?: Target, choice: Target | null, removedIn?: string, shim?: string }} DecisionEntry
  * @typedef {{ schema: 1, kind: 'decisions', from: string, to: string, entries: DecisionEntry[] }} DecisionsFile
- * @typedef {{ schema: 1, audience?: string, tieBreak?: string[], report?: Record<string, string> }} Preferences
+ * @typedef {{ schema: 1, audience?: string, tieBreak?: string[], report?: Record<string, string>, ignorePackages?: string[] }} Preferences
  * @typedef {{ title: string, url: string }} Link
  * @typedef {{ schema: 1, kind: 'messages', links: Record<string, Link>, reasons: Record<string, string[]> }} Messages
  * @typedef {{ schema: 1, baseline: string, releases: string[] }} Releases
- * @typedef {{ module: string, export: string, kind: 'value' | 'type', decl: string, deprecated: boolean, package: string }} Token
+ * @typedef {{ module: string, export: string, kind: 'value' | 'type', decl: string, deprecated: boolean, package: string, shim: boolean }} Token
  * @typedef {{ action: 'keep' }
  *   | { action: 'rewrite', to: Target, reason?: 'private-target' }
  *   | { action: 'report', reason: string, to?: Target, removedIn?: string, shim?: string, links?: Link[] }} Decision
@@ -64,6 +64,16 @@ function isPublicModule(module) {
  */
 function isOldContract(pkg) {
   return pkg === 'ember-data' || pkg.startsWith('@ember-data/');
+}
+
+/**
+ * Whether a module with this `forward` is a shim: a bare specifier names another module that the
+ * module only re-exports. A `null` forward, or a relative specifier (a file of the module's own
+ * package), leaves the module a home of what it exports.
+ * @param {string | null | undefined} forward
+ */
+function isShimForward(forward) {
+  return typeof forward === 'string' && forward !== '' && !forward.startsWith('.') && !forward.startsWith('/');
 }
 
 /**
@@ -190,21 +200,24 @@ function compareText(a, b) {
 }
 
 /**
+ * The position of the first `preferences.tieBreak` entry whose package holds `module`: the module
+ * is the entry or starts with it and `/`. A module no entry holds ranks after all of them.
  * @param {string} module
  * @param {Preferences} preferences
  */
 function tieBreakRank(module, preferences) {
   const list = (preferences && preferences.tieBreak) || [];
-  const index = list.indexOf(module);
+  const index = list.findIndex((entry) => module === entry || module.startsWith(`${entry}/`));
   return index === -1 ? list.length : index;
 }
 
 /**
- * The ranking rules, in order; the first that separates two candidates wins. `source` is the
- * token being mapped.
+ * The ranking rules, 0 to 8 in order; the first that separates two candidates wins. `source` is
+ * the token being mapped.
  * @type {ReadonlyArray<{ rule: number, name: string, compare: (a: Token, b: Token, source: Target, preferences: Preferences) => number }>}
  */
 const RANKING = Object.freeze([
+  { rule: 0, name: 'home', compare: (a, b) => Number(Boolean(a.shim)) - Number(Boolean(b.shim)) },
   { rule: 1, name: 'public', compare: (a, b) => Number(!isPublicModule(a.module)) - Number(!isPublicModule(b.module)) },
   { rule: 2, name: 'modern', compare: (a, b) => Number(isOldContract(a.package)) - Number(isOldContract(b.package)) },
   {
@@ -260,14 +273,27 @@ function compareCandidates(a, b, source, preferences) {
 }
 
 /**
- * The candidates, best home first.
+ * The last rule that can rank another candidate before the source token itself. When the source
+ * token is a candidate and rules 0 to this one leave it tied with the best candidate, it stays.
+ */
+const SOURCE_TIE_RULE = 5;
+
+/**
+ * The candidates, best home first. The source token, when it is a candidate, comes first unless
+ * a rule up to `SOURCE_TIE_RULE` ranks another candidate before it.
  * @param {Token[]} candidates
  * @param {Target} source
  * @param {Preferences} preferences
  * @returns {Token[]}
  */
 function rankCandidates(candidates, source, preferences) {
-  return [...candidates].sort((a, b) => compareCandidates(a, b, source, preferences));
+  const ranked = [...candidates].sort((a, b) => compareCandidates(a, b, source, preferences));
+  const index = ranked.findIndex((token) => token.module === source.module && token.export === source.export);
+  if (index > 0) {
+    const separated = separatingRule(ranked[0], ranked[index], source, preferences);
+    if (!separated || separated.rule > SOURCE_TIE_RULE) ranked.unshift(...ranked.splice(index, 1));
+  }
+  return ranked;
 }
 
 // ---------------------------------------------------------------------------------------------
@@ -298,6 +324,12 @@ function indexFiles(files, keyOf, what) {
  */
 function checkPreferences(preferences) {
   const result = preferences || { schema: 1 };
+  for (const key of /** @type {const} */ (['tieBreak', 'ignorePackages'])) {
+    const list = result[key];
+    if (list !== undefined && (!Array.isArray(list) || list.some((entry) => typeof entry !== 'string'))) {
+      throw new Error(`preferences.json: ${key} must be a list of package or module names`);
+    }
+  }
   for (const [module, reason] of Object.entries(result.report || {})) {
     if (!REPORT_REASONS.includes(reason)) {
       throw new Error(`preferences.json reports ${module} as "${reason}"; known reasons: ${REPORT_REASONS.join(', ')}`);
@@ -479,6 +511,7 @@ function tokensByDecl(dataset, surface) {
           decl: exported.decl,
           deprecated: exported.deprecated === true,
           package: pkg,
+          shim: isShimForward(record.forward),
         };
         const list = index.get(exported.decl);
         if (list) list.push(token);
@@ -561,6 +594,7 @@ function createMap(dataset, { from, to }) {
 
   const { preferences } = dataset;
   const reported = preferences.report || {};
+  const ignoredPackages = new Set(preferences.ignorePackages || []);
   const fromSurface = surfaceAt(dataset, from);
   const toSurface = surfaceAt(dataset, to);
   const toTokens = tokensByDecl(dataset, toSurface);
@@ -628,10 +662,17 @@ function createMap(dataset, { from, to }) {
     const choice = /** @type {Target} */ (entry.choice);
     const decidedTo = /** @type {DecisionsFile} */ (decisionsFile).to;
     if (decidedTo === to) {
+      const record = toSurface.modules[choice.module];
       const exported = /** @type {ExportRecord} */ (exportOf(toSurface, choice));
-      const pkg = toSurface.modules[choice.module].package || packageOf(choice.module);
       return [
-        { ...choice, kind: exported.kind, decl: exported.decl, deprecated: exported.deprecated === true, package: pkg },
+        {
+          ...choice,
+          kind: exported.kind,
+          decl: exported.decl,
+          deprecated: exported.deprecated === true,
+          package: record.package || packageOf(choice.module),
+          shim: isShimForward(record.forward),
+        },
       ];
     }
     const decided = /** @type {ExportRecord} */ (exportOf(surfaceAt(dataset, decidedTo), choice));
@@ -733,6 +774,25 @@ function createMap(dataset, { from, to }) {
   }
 
   /**
+   * The module `module` only re-exports at `to`, when it is a shim there.
+   * @param {string} module
+   * @returns {string | null}
+   */
+  function shimTarget(module) {
+    const after = toSurface.modules[module];
+    return after && isShimForward(after.forward) ? /** @type {string} */ (after.forward) : null;
+  }
+
+  /**
+   * Whether `module` of the `from` surface belongs to a package `preferences.ignorePackages` names.
+   * @param {string} module
+   */
+  function isIgnored(module) {
+    const record = fromSurface.modules[module];
+    return Boolean(record) && ignoredPackages.has(record.package || packageOf(module));
+  }
+
+  /**
    * The decision for one named or default import (CONTRACT.md, the decision for an import).
    * @param {string} module
    * @param {string} name
@@ -743,7 +803,7 @@ function createMap(dataset, { from, to }) {
     const record = fromSurface.modules[module];
     const exported = Object.hasOwn(record.exports, name) ? record.exports[name] : undefined;
     if (!exported) {
-      const forward = toSurface.modules[module] && toSurface.modules[module].forward;
+      const forward = shimTarget(module);
       return forward ? rewrite({ module: forward, export: name }) : report('untracked');
     }
     const { candidates, entry } = resolveToken(module, name);
@@ -751,15 +811,16 @@ function createMap(dataset, { from, to }) {
       return report('removed', entry ? { removedIn: entry.removedIn, shim: entry.shim } : {});
     }
     const [winner] = candidates;
-    if (winner.module === module && winner.export === name) return KEEP;
-    // A value import of something that was a value and is only a type now would break at runtime.
+    // A value import of something that was a value and is only a type now would break at runtime,
+    // also when the type kept the module and the name.
     if (!typeOnly && exported.kind === 'value' && winner.kind === 'type') return report('type-only', { to: winner });
+    if (winner.module === module && winner.export === name) return KEEP;
     return rewrite(winner);
   }
 
   /**
    * A namespace import, or a side-effect import, depends on the module as a whole. It follows
-   * the module's `forward` at `to`, or a move that takes every export of the module to one
+   * the module a shim at `to` re-exports, or a move that takes every export of the module to one
    * other module under the same names; else it stays when the module still exists.
    * @param {string} module
    * @param {boolean} typeOnly
@@ -767,7 +828,8 @@ function createMap(dataset, { from, to }) {
    */
   function decideModule(module, typeOnly) {
     const after = toSurface.modules[module];
-    if (after && after.forward) return rewrite({ module: after.forward, export: '*' });
+    const forward = shimTarget(module);
+    if (forward) return rewrite({ module: forward, export: '*' });
     const names = Object.keys(fromSurface.modules[module].exports);
     /** @type {string | null} */
     let common = null;
@@ -802,7 +864,7 @@ function createMap(dataset, { from, to }) {
     const key = `${typeOnly ? 'type' : 'value'}\0${module}\0${name}`;
     let decision = decisions.get(key);
     if (!decision) {
-      if (!Object.hasOwn(fromSurface.modules, module)) decision = KEEP;
+      if (!Object.hasOwn(fromSurface.modules, module) || isIgnored(module)) decision = KEEP;
       else if (Object.hasOwn(reported, module)) decision = report(reported[module]);
       else if (name === '*') decision = decideModule(module, typeOnly);
       else decision = decideName(module, name, typeOnly);
@@ -863,11 +925,12 @@ function createMap(dataset, { from, to }) {
     },
     /**
      * Tokens that no declaration chain and no decision resolves, for the judge. Tokens of a
-     * module `preferences.report` names are left out: they are reported whatever they map to.
+     * module `preferences.report` names are left out, since they are reported whatever they map
+     * to, and so are tokens of a package `preferences.ignorePackages` names.
      */
     get residue() {
       return listTokens()
-        .filter((token) => token.via === null && !Object.hasOwn(reported, token.module))
+        .filter((token) => token.via === null && !Object.hasOwn(reported, token.module) && !isIgnored(token.module))
         .map(({ module, export: name, kind, decl, target }) => ({ module, export: name, kind, decl, target }));
     },
   };
@@ -886,6 +949,7 @@ function buildMap(data) {
 module.exports = {
   REPORT_REASONS,
   RANKING,
+  SOURCE_TIE_RULE,
   applyDiff,
   buildMap,
   compareCandidates,
@@ -895,6 +959,7 @@ module.exports = {
   followDeclaration,
   isOldContract,
   isPublicModule,
+  isShimForward,
   minorOf,
   packageOf,
   pathSegments,

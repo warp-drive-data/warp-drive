@@ -12,10 +12,12 @@ import {
   followDeclaration,
   isOldContract,
   isPublicModule,
+  isShimForward,
   pathSegments,
   rankCandidates,
   resolveVersion,
   separatingRule,
+  SOURCE_TIE_RULE,
 } from '../public-exports-mapping/map.mjs';
 import { MESSAGES, ship } from '../public-exports-mapping/ship.mjs';
 import { tempDir } from './-run-script.mjs';
@@ -52,16 +54,17 @@ function fixtureData() {
 const fixtureMap = (from, to) => buildMap({ ...fixtureData(), from, to });
 
 /**
- * A candidate token.
+ * A candidate token. `forward` is its module's `forward`: a bare specifier makes the module a shim.
  * @param {string} module
  * @param {string} name
- * @param {{ kind?: 'value' | 'type', deprecated?: boolean, pkg?: string }} [options]
+ * @param {{ kind?: 'value' | 'type', deprecated?: boolean, pkg?: string, forward?: string | null }} [options]
  */
-function token(module, name, { kind = 'value', deprecated = false, pkg } = {}) {
+function token(module, name, { kind = 'value', deprecated = false, pkg, forward = null } = {}) {
   const scoped = module.startsWith('@');
   const segments = module.split('/');
   const pkgName = pkg ?? (scoped ? segments.slice(0, 2).join('/') : segments[0]);
-  return { module, export: name, kind, decl: `src/${name}.ts#${name}`, deprecated, package: pkgName };
+  const shim = isShimForward(forward);
+  return { module, export: name, kind, decl: `src/${name}.ts#${name}`, deprecated, package: pkgName, shim };
 }
 
 describe('module classification', () => {
@@ -77,6 +80,14 @@ describe('module classification', () => {
     assert.equal(isOldContract('@ember-data/store'), true);
     assert.equal(isOldContract('@warp-drive/legacy'), false);
     assert.equal(isOldContract('@warp-drive/core'), false);
+  });
+
+  test('a module is a shim when its forward is a bare specifier, and a home otherwise', () => {
+    assert.equal(isShimForward(null), false);
+    assert.equal(isShimForward('./request/info.ts'), false);
+    assert.equal(isShimForward('../shared/index.ts'), false);
+    assert.equal(isShimForward('@warp-drive/core/types/request'), true);
+    assert.equal(isShimForward('ember-inflector'), true);
   });
 
   test('path segments are counted below the package, so a scope is not one', () => {
@@ -100,6 +111,25 @@ describe('ranking', () => {
     assert.deepEqual(separatingRule(worse, better, source, preferences)?.order, 1);
     assert.deepEqual(rankCandidates([worse, better], source, preferences), [better, worse]);
   }
+
+  test('0: a home before a shim, even with more path segments or in a private module', () => {
+    const shimOf = (module, target) => token(module, 'Thing', { forward: target });
+    separates(
+      0,
+      token('@warp-drive/core/types/request', 'Thing'),
+      shimOf('@warp-drive/core-types/request', '@warp-drive/core/types/request')
+    );
+    separates(
+      0,
+      token('@warp-drive/core/types/request', 'Thing', { forward: './request/info.ts' }),
+      shimOf('@warp-drive/core-types/request', '@warp-drive/core/types/request')
+    );
+    separates(
+      0,
+      token('@warp-drive/core/store/-private', 'Thing'),
+      shimOf('@warp-drive/core/store', '@warp-drive/core/store/-private')
+    );
+  });
 
   test('1: a public module before a private one, even an old-contract one', () => {
     separates(1, token('@ember-data/store', 'Thing'), token('@warp-drive/core/store/-private', 'Thing'));
@@ -130,15 +160,32 @@ describe('ranking', () => {
     separates(6, token('@warp-drive/react', 'Thing'), token('@warp-drive/ember', 'Other'));
   });
 
-  test('7: a module in preferences.tieBreak, in its order, before the alphabet', () => {
+  test('7: a module of a package in preferences.tieBreak, in its order, before the alphabet', () => {
     separates(7, token('@warp-drive/ember', 'Thing'), token('@warp-drive/core', 'Thing'));
+    separates(7, token('@warp-drive/ember/reactive', 'Thing'), token('@warp-drive/core/reactive', 'Thing'));
     const preferences = { ...PREFERENCES, tieBreak: ['@warp-drive/react', '@warp-drive/ember'] };
     separates(7, token('@warp-drive/react', 'Thing'), token('@warp-drive/ember', 'Thing'), preferences);
+    // a package whose name only starts with an entry is another package
+    separates(8, token('@warp-drive/core', 'Thing'), token('@warp-drive/ember-extra', 'Thing'));
   });
 
   test('8: module name, then export name, alphabetical', () => {
     separates(8, token('@warp-drive/core', 'Other'), token('@warp-drive/legacy', 'Other'));
     separates(8, token('@warp-drive/core', 'Alpha'), token('@warp-drive/core', 'Beta'));
+  });
+
+  test('the source token keeps a tie that only rules 6 to 8 would break', () => {
+    const react = { module: '@warp-drive/react', export: 'getRequestState' };
+    const own = token('@warp-drive/react', 'getRequestState');
+    const ember = token('@warp-drive/ember', 'getRequestState');
+    assert.equal(SOURCE_TIE_RULE, 5);
+    assert.equal(separatingRule(ember, own, react, PREFERENCES)?.rule, 7);
+    assert.deepEqual(rankCandidates([ember, own], react, PREFERENCES), [own, ember]);
+    // a rule up to 5 still ranks a better home before the source token
+    const deprecated = token('@warp-drive/react', 'getRequestState', { deprecated: true });
+    assert.deepEqual(rankCandidates([deprecated, ember], react, PREFERENCES), [ember, deprecated]);
+    const shim = token('@warp-drive/react', 'getRequestState', { forward: '@warp-drive/ember' });
+    assert.deepEqual(rankCandidates([shim, ember], react, PREFERENCES), [ember, shim]);
   });
 
   test('the same token is not separated', () => {
@@ -307,10 +354,18 @@ describe('diffs and versions', () => {
     assert.throws(() => resolveVersion(dataset, 'next'), /"next" is not a version/);
   });
 
-  test('preferences.report takes only the known reasons', () => {
+  test('preferences.report takes only the known reasons, and the lists take names', () => {
     assert.throws(
       () => createDataset({ ...fixtureData(), preferences: { schema: 1, report: { 'ember-data': 'gone' } } }),
       /reports ember-data as "gone"/
+    );
+    assert.throws(
+      () => createDataset({ ...fixtureData(), preferences: { schema: 1, ignorePackages: 'warp-drive' } }),
+      /ignorePackages must be a list/
+    );
+    assert.throws(
+      () => createDataset({ ...fixtureData(), preferences: { schema: 1, tieBreak: [1] } }),
+      /tieBreak must be a list/
     );
   });
 });
@@ -498,7 +553,7 @@ describe('buildMap', () => {
     );
   });
 
-  test('a value that became a type in place is kept: the contract checks the same token before type-only', () => {
+  test('a value that became a type in place is reported: type-only is checked before keep', () => {
     const surface = (version, kind) => ({
       schema: 1,
       kind: 'surface',
@@ -523,7 +578,103 @@ describe('buildMap', () => {
       ],
       preferences: PREFERENCES,
     });
-    assert.deepEqual(inPlace.resolve('m', 'X'), { action: 'keep' });
+    assert.deepEqual(inPlace.resolve('m', 'X'), {
+      action: 'report',
+      reason: 'type-only',
+      to: { module: 'm', export: 'X' },
+    });
+    assert.deepEqual(inPlace.resolve('m', 'X', { typeOnly: true }), { action: 'keep' });
+  });
+
+  test('in the fixture: a value import of a class that became a type in place', () => {
+    const map56 = fixtureMap('5.6', '5.9');
+    assert.deepEqual(map56.resolve('@warp-drive/core', 'ConfiguredStore'), {
+      action: 'report',
+      reason: 'type-only',
+      to: { module: '@warp-drive/core', export: 'ConfiguredStore' },
+    });
+    assert.deepEqual(map56.resolve('@warp-drive/core', 'ConfiguredStore', { typeOnly: true }), { action: 'keep' });
+  });
+
+  test('a home ranks before a shim of it, whatever the path segments', () => {
+    const request = map.tokens.find((t) => t.module === '@ember-data/request' && t.export === 'RequestInfo');
+    assert.deepEqual(
+      request.candidates.map((c) => c.module),
+      ['@warp-drive/core/types/request', '@ember-data/request', '@warp-drive/core-types/request']
+    );
+    assert.deepEqual(decide('@ember-data/request', 'RequestInfo', true), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/core/types/request', export: 'RequestInfo' },
+    });
+    assert.deepEqual(
+      fixtureMap('5.6', '5.9').resolve('@warp-drive/core-types/request', 'RequestInfo', { typeOnly: true }),
+      {
+        action: 'rewrite',
+        to: { module: '@warp-drive/core/types/request', export: 'RequestInfo' },
+      }
+    );
+  });
+
+  test('only a shim forwards names and namespaces; a relative forward is a home', () => {
+    const map56 = fixtureMap('5.6', '5.9');
+    assert.deepEqual(map56.resolve('@warp-drive/core-types/request', 'Unknown'), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/core/types/request', export: 'Unknown' },
+    });
+    assert.deepEqual(map56.resolve('@warp-drive/core-types/request', '*'), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/core/types/request', export: '*' },
+    });
+    assert.deepEqual(map56.resolve('@warp-drive/core/types/request', 'Unknown'), {
+      action: 'report',
+      reason: 'untracked',
+    });
+    assert.deepEqual(map56.resolve('@warp-drive/core/types/request', '*'), { action: 'keep' });
+  });
+
+  test('the source token stays when only rules 6 to 8 rank another home first', () => {
+    const map59 = fixtureMap('5.9', '5.9');
+    assert.deepEqual(map59.resolve('@warp-drive/react', 'getRequestState'), { action: 'keep' });
+    assert.deepEqual(map59.resolve('@warp-drive/ember', 'getRequestState'), { action: 'keep' });
+    assert.deepEqual(map59.resolve('@warp-drive/core/store', 'CachePolicy'), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/core/store', export: 'DefaultCachePolicy' },
+    });
+  });
+
+  test('preferences.tieBreak prefers any module of its packages', () => {
+    assert.deepEqual(fixtureMap('5.6', '5.9').resolve('@warp-drive/core/store/-private', 'getPromiseState'), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/ember/reactive', export: 'getPromiseState' },
+    });
+  });
+
+  test('preferences.ignorePackages: their modules keep every import and leave the residue', () => {
+    const ignoring = fixtureMap('5.6', '5.9');
+    for (const name of ['UmbrellaOnly', 'Store', 'Nope', '*']) {
+      assert.deepEqual(ignoring.resolve('warp-drive/core', name), { action: 'keep' }, name);
+    }
+    assert.equal(
+      ignoring.residue.some((t) => t.module === 'warp-drive/core'),
+      false
+    );
+
+    const data = fixtureData();
+    const tracking = buildMap({
+      ...data,
+      preferences: { ...data.preferences, ignorePackages: [] },
+      from: '5.6',
+      to: '5.9',
+    });
+    assert.deepEqual(tracking.resolve('warp-drive/core', 'UmbrellaOnly'), { action: 'report', reason: 'removed' });
+    assert.deepEqual(tracking.resolve('warp-drive/core', 'Store'), {
+      action: 'rewrite',
+      to: { module: '@warp-drive/core', export: 'Store' },
+    });
+    assert.deepEqual(
+      tracking.residue.filter((t) => t.module === 'warp-drive/core').map((t) => t.export),
+      ['UmbrellaOnly']
+    );
   });
 });
 

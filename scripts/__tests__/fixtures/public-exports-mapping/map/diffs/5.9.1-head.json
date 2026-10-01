@@ -2,6 +2,8 @@
   "declarations": {
     "packages/-ember-data/src/index.ts#default": "packages/-ember-data/src/index.ts#default",
     "packages/-ember-data/src/store.ts#default": "packages/-ember-data/src/store.ts#default",
+    "warp-drive-packages/core/src/index.ts#ConfiguredStore": "warp-drive-packages/core/src/index.ts#ConfiguredStore",
+    "warp-drive-packages/core/src/reactive/-private/promise-state.ts#getPromiseState": "warp-drive-packages/core/src/reactive/-private/promise-state.ts#getPromiseState",
     "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
     "warp-drive-packages/core/src/request/-private/future.ts#createDeferred": "warp-drive-packages/core/src/request/-private/future.ts#createDeferred",
     "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager": "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager",
@@ -14,6 +16,7 @@
     "warp-drive-packages/core/src/store/-private/record-arrays/live-array.ts#LiveArray": "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
     "warp-drive-packages/core/src/store/-private/store-service.ts#Store": "warp-drive-packages/core/src/store/-private/store-service.ts#Store",
     "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts#coerceId": "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts#coerceId",
+    "warp-drive-packages/core/src/types/request/info.ts#RequestInfo": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
     "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError",
     "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError": "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError",
     "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter",

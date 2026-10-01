@@ -313,6 +313,45 @@ const TABLE = [
     ['rewrite'],
   ],
   ['5.9', '5.9', `import { DefaultCachePolicy } from '@warp-drive/core/store';`, null, []],
+  // rule 0: a home ranks before a shim that only re-exports it, though the shim has fewer segments
+  [
+    '4.12',
+    '5.9',
+    `import type { RequestInfo } from '@ember-data/request';`,
+    `import type { RequestInfo } from '@warp-drive/core/types/request';`,
+    ['rewrite'],
+  ],
+  [
+    '5.6',
+    '5.9',
+    `import type { RequestInfo } from '@warp-drive/core-types/request';`,
+    `import type { RequestInfo } from '@warp-drive/core/types/request';`,
+    ['rewrite'],
+  ],
+  // a name the from release did not export follows a shim, but not a home's relative export *
+  [
+    '5.6',
+    '5.9',
+    `import { Unknown } from '@warp-drive/core-types/request';`,
+    `import { Unknown } from '@warp-drive/core/types/request';`,
+    ['rewrite'],
+  ],
+  ['5.6', '5.9', `import { Unknown } from '@warp-drive/core/types/request';`, null, ['untracked']],
+  // the source token stays when only the tie break or the alphabet would move it
+  ['5.9', '5.9', `import { getRequestState } from '@warp-drive/react';`, null, []],
+  // a value that became a type in place: type-only is checked before keep
+  ['5.6', '5.9', `import { ConfiguredStore } from '@warp-drive/core';`, null, ['type-only-target']],
+  ['5.6', '5.9', `import type { ConfiguredStore } from '@warp-drive/core';`, null, []],
+  // preferences.tieBreak names a package: any module of it wins the tie
+  [
+    '5.6',
+    '5.9',
+    `import { getPromiseState } from '@warp-drive/core/store/-private';`,
+    `import { getPromiseState } from '@warp-drive/ember/reactive';`,
+    ['rewrite'],
+  ],
+  // preferences.ignorePackages: imports from those packages are never touched
+  ['5.6', '5.9', `import { UmbrellaOnly, Store } from 'warp-drive/core';`, null, []],
   // 5.3 is not a listed release: it means 5.0.1, which no longer had normalizeModelName
   ['5.3', '5.9', `import { normalizeModelName } from '@ember-data/store';`, null, ['untracked']],
 ];
@@ -458,6 +497,16 @@ describe('no-legacy-imports', () => {
     it('names the type a value moved onto', () => {
       const [message] = messagesFor(`import { ManyArray } from '@ember-data/model/-private';`);
       assert.match(message.message, /only has a type for it: ManyArray in "@warp-drive\/legacy\/model"\./);
+      assert.match(message.message, /Use `import type` if it is only used as a type, and the rule then rewrites it;/);
+    });
+
+    it('promises no rewrite for a value that became a type in place', () => {
+      const [message] = messagesFor(`import { ConfiguredStore } from '@warp-drive/core';`, { from: '5.6', to: '5.9' });
+      assert.match(message.message, /only has a type for it: ConfiguredStore in "@warp-drive\/core"\./);
+      assert.match(
+        message.message,
+        /Use `import type` if it is only used as a type; otherwise it needs manual migration\.$/
+      );
     });
 
     it('names the release an untracked name was looked up in', () => {

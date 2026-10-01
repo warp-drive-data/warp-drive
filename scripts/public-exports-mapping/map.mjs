@@ -15,6 +15,7 @@ const core = require('../../packages/eslint-plugin-warp-drive/src/legacy-import-
 export const {
   RANKING,
   REPORT_REASONS,
+  SOURCE_TIE_RULE,
   applyDiff,
   compareCandidates,
   createDataset,
@@ -23,6 +24,7 @@ export const {
   followDeclaration,
   isOldContract,
   isPublicModule,
+  isShimForward,
   minorOf,
   packageOf,
   pathSegments,

@@ -18,6 +18,7 @@
     "packages/request-utils/src/index.ts#setBuildURLConfig": null,
     "packages/request/src/-private/future.ts#createDeferred": "packages/request/src/-private/future.ts#createDeferred",
     "packages/request/src/-private/manager.ts#default": "packages/request/src/-private/manager.ts#default",
+    "packages/request/src/-private/types.ts#RequestInfo": "packages/request/src/-private/types.ts#RequestInfo",
     "packages/store/src/-private/cache-handler.ts#CacheHandler": "packages/store/src/-private/cache-handler.ts#CacheHandler",
     "packages/store/src/-private/cache-handler.ts#StoreRequestInput": "packages/store/src/-private/cache-handler.ts#StoreRequestInput",
     "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
