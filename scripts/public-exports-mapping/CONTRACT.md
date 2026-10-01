@@ -232,15 +232,25 @@ to `null`, and the judge (area E) decides.
 ### `audits/<version>.json` and `shapes/<version>.json` (area C)
 
 The published package at the version the tag's `package.json` names (`npm pack` into a cache
-directory outside the repository, keyed by name and version). `audits/<version>.json` records,
-per package: the `exports` map, every `exports` target that does not ship, and per module the
-runtime export names (from `oxc-parser` over `dist/*.js`) and the type names (from the `.d.ts`),
-followed by the differences against `surfaces/<version>.json`: a module the surface has and the
-package does not ship, a token the package has and the surface lacks (and the reverse), and a
-`kind` that disagrees. For 4.12, a v1 addon tarball's `addon/` tree is its module list.
-`shapes/<version>.json` maps each declaration id to one string: the declaration's signature or
-member list as the `.d.ts` prints it, for the judge's evidence. A package unpublished at that
-version is recorded as such, not an error.
+directory outside the repository, `$WARP_DRIVE_EXPORTS_CACHE` or `<repo>/../.cache/warp-drive-public-exports`,
+keyed by name and version; an unpublished version is cached as such too, so a second run needs
+no registry). `audits/<version>.json` records, per package: the `exports` map, every `exports`
+target that does not ship, content-hashed chunks and parse errors, and per module the runtime
+export names (from `oxc-parser` over the shipped `.js`) and the type names (from the `.d.ts`),
+followed by the differences against `surfaces/<version>.json`: `modulesNotShipped`,
+`modulesNotInSurface`, `tokensNotShipped`, `tokensNotInSurface` and `kinds` disagreements. The
+module list keeps code modules only: an `exports` key whose target is `.js`, `.mjs`, `.cjs`,
+`.ts` or `.d.ts`, skipping `package.json`, `*.md`, `*.json`, `blueprints/` and the
+`unstable-preview-types` keys; a pattern key expands to the files Node resolves back to it.
+For v1 addons (4.12 and 5.0) the tarball's `addon/` tree is the module list and
+`addon-test-support/` lists as `<pkg>/test-support/...`. A package the surface does not cover is
+counted under `packagesNotInSurface` and gets no token comparison; a package that ships no
+`.d.ts` compares `value` tokens only and records `types: "not published"`. Published declaration
+ids are `<package>/<file in tarball>#<local name>` (`#default` only for an anonymous default);
+`shapes/<version>.json` maps each of them, plus the source declaration id when the local names
+match, to one string: the declaration's signature or member list as the `.d.ts` prints it, for
+the judge's evidence. `audit` runs at release time and on backports, not in CI, because it needs
+the registry and release tags.
 
 ### `decisions/<from>.json` (area E, read by D)
 
