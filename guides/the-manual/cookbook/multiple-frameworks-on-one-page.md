@@ -7,7 +7,7 @@ description: Compose the Ember and React signal configurations with `setupSignal
 ## In This Guide
 
 ***Warp*Drive** doesn't wrap your data in any one framework's signals. Instead, it calls a set of
-[SignalHooks](/api/@warp-drive/core/configure/interfaces/SignalHooks) whenever data is read or
+[SignalHooks](/api/@warp-drive/core/configure/types/SignalHooks) whenever data is read or
 changes, and each framework's `install` entry point registers the hooks for that framework. Ember
 only re-renders for Ember's tags, and React only re-renders for the signals its watchers subscribe
 to. So when both frameworks render the same data, the hooks need to create, consume and notify a
@@ -124,5 +124,5 @@ class. Create it the usual way for Ember, then hand that instance to React's
 The same approach works for any pair of frameworks: build each one's hooks, give `createSignal` one
 signal per framework, and pass every other hook through to each. To write hooks for a framework
 that doesn't have a ***Warp*Drive** package yet, see
-[SignalHooks](/api/@warp-drive/core/configure/interfaces/SignalHooks) and
+[SignalHooks](/api/@warp-drive/core/configure/types/SignalHooks) and
 [`setupSignals`](/api/@warp-drive/core/configure/functions/setupSignals).
