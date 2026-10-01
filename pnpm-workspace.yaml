@@ -395,7 +395,7 @@ catalog:
   pretender: ^3.4.7
   prettier: ^3.9.9
   prettier-plugin-ember-template-tag: ^2.1.8
-  qunit: ^2.26.0
+  qunit: ^3.0.0
   qunit-console-grouper: ^0.3.0
   qunit-dom: ^3.6.0
   react: ^19.3.0
@@ -494,7 +494,7 @@ overrides:
   "@ember/optional-features>ember-cli-version-checker": "-"
   unplugin>webpack-virtual-modules: "-"
   ember-cli-htmlbars: ^7.0.1
-  qunit: 2.26.0
+  qunit: 3.0.0
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.21.0
   typescript: 6.0.3
