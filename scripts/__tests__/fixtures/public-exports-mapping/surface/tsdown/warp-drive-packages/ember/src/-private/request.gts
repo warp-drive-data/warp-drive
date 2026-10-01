@@ -14,7 +14,5 @@ export class Request extends Component<{ Args: RequestArgs }> {
     return `request to ${this.args.url}`;
   }
 
-  <template>
-    {{this.label}}
-  </template>
+  <template>{{this.label}}</template>
 }
