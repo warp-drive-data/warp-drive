@@ -81,7 +81,12 @@ module('Reads | resource', function (hooks) {
     assert.equal(record.name, 'Chris', 'name is accessible');
 
     const doc = record.bestFriend;
-    assert.equal(doc.identifier, null, 'a relationship document has no request identifier');
+    const identifier = store.cacheKeyManager.getOrCreateDocumentIdentifier({
+      url: '/user/1/bestFriend',
+      method: 'GET',
+    });
+    assert.equal(doc.identifier, identifier, 'the identifier is the request key for the related link');
+    assert.equal(doc.data?.bestFriend.identifier, null, 'the identifier is null when the relationship has no link');
     assert.equal(doc.data?.id, '2', 'bestFriend.data.id is accessible');
     assert.equal(doc.data?.$type, 'user', 'bestFriend.data.$type is accessible');
     assert.equal(doc.data?.name, 'Rey', 'bestFriend.data.name is accessible');
@@ -97,7 +102,7 @@ module('Reads | resource', function (hooks) {
     assert.deepEqual(
       doc.toJSON(),
       {
-        identifier: null,
+        identifier,
         data: store.peekRecord('user', '2'),
         links: { related: '/user/1/bestFriend' },
         meta: { since: '2020' },
@@ -169,7 +174,7 @@ module('Reads | resource', function (hooks) {
     assert.equal(record.bestFriend.data, null, 'the relationship is unchanged');
   });
 
-  test('we can fetch the related link', async function (assert) {
+  test('fetch() loads the related link into the relationship and resolves with the same document', async function (assert) {
     const requests: string[] = [];
     const handler = {
       request<T>(context: RequestContext): Promise<T> {
@@ -199,18 +204,51 @@ module('Reads | resource', function (hooks) {
         id: '1',
         attributes: { name: 'Chris' },
         relationships: {
-          bestFriend: { links: { related: '/user/1/bestFriend' } },
+          bestFriend: { links: { related: '/user/1/bestFriend' }, meta: { since: '2020' } },
         },
       },
     });
+    const doc = record.bestFriend;
 
-    assert.equal(record.bestFriend.data, undefined, 'data is undefined before fetching');
+    assert.equal(doc.data, undefined, 'data is undefined before fetching');
 
-    const result = (await record.bestFriend.fetch()) as { data: User };
+    const result = await doc.fetch();
 
     assert.deepEqual(requests, ['/user/1/bestFriend'], 'the related link was requested');
-    assert.equal(result.data.id, '2', 'the fetched document has the related resource');
-    assert.equal(result.data.name, 'Rey', 'the related resource is in the cache');
+    assert.equal(result, doc, 'fetch resolves with the same relationship document');
+    assert.equal(doc.data, store.peekRecord('user', '2'), 'data is the fetched related record');
+    assert.equal(doc.data?.name, 'Rey', 'the related record has its attributes');
+    assert.deepEqual(doc.links, { related: '/user/1/bestFriend' }, 'the relationship keeps its own links');
+    assert.deepEqual(doc.meta, { since: '2020' }, 'the relationship keeps its own meta');
+    assert.ok(store.cache.peek(doc.identifier!), 'the response is cached as a request document under identifier');
+  });
+
+  test('the identifier follows the relationship links', function (assert) {
+    const store = new Store();
+    registerUser(store, true);
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { name: 'Chris' },
+        relationships: { bestFriend: { links: { related: '/user/1/bestFriend' } } },
+      },
+    });
+    assert.equal(record.bestFriend.identifier?.lid, '/user/1/bestFriend', 'the identifier uses the related link');
+
+    store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        relationships: { bestFriend: { links: { related: { href: '/users/1/best-friend' } } } },
+      },
+    });
+    assert.equal(
+      record.bestFriend.identifier?.lid,
+      '/users/1/best-friend',
+      'the identifier follows a new related link'
+    );
   });
 
   test('materializing a related resource that was not included errors', async function (assert) {
