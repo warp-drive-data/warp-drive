@@ -1,0 +1,226 @@
+{
+  "declarations": {
+    "external:@ember/object#default": "external:@ember/object#default",
+    "packages/-ember-data/addon-test-support/index.js#render": "packages/-ember-data/addon-test-support/index.js#render",
+    "packages/-ember-data/addon/-private/core.js#default": "packages/-ember-data/addon/-private/core.js#default",
+    "packages/-ember-data/addon/-private/index.ts#PromiseArray": "packages/-ember-data/addon/-private/index.ts#PromiseArray",
+    "packages/-ember-data/addon/-private/index.ts#PromiseObject": "packages/-ember-data/addon/-private/index.ts#PromiseObject",
+    "packages/-ember-data/addon/-private/index.ts#Store": "packages/-ember-data/addon/-private/index.ts#Store",
+    "packages/-ember-data/addon/setup-container.ts#default": "packages/-ember-data/addon/setup-container.ts#default",
+    "packages/adapter/src/-private/build-url-mixin.ts#default": "packages/adapter/src/-private/build-url-mixin.ts#default",
+    "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise": "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise",
+    "packages/adapter/src/-private/utils/fetch.ts#default": "packages/adapter/src/-private/utils/fetch.ts#default",
+    "packages/adapter/src/-private/utils/fetch.ts#setupFastboot": "packages/adapter/src/-private/utils/fetch.ts#setupFastboot",
+    "packages/adapter/src/-private/utils/parse-response-headers.ts#default": "packages/adapter/src/-private/utils/parse-response-headers.ts#default",
+    "packages/adapter/src/-private/utils/serialize-into-hash.ts#default": "packages/adapter/src/-private/utils/serialize-into-hash.ts#default",
+    "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams": "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams",
+    "packages/adapter/src/error.js#AbortError": "packages/adapter/src/error.js#AbortError",
+    "packages/adapter/src/error.js#ConflictError": "packages/adapter/src/error.js#ConflictError",
+    "packages/adapter/src/error.js#ForbiddenError": "packages/adapter/src/error.js#ForbiddenError",
+    "packages/adapter/src/error.js#InvalidError": "packages/adapter/src/error.js#InvalidError",
+    "packages/adapter/src/error.js#NotFoundError": "packages/adapter/src/error.js#NotFoundError",
+    "packages/adapter/src/error.js#ServerError": "packages/adapter/src/error.js#ServerError",
+    "packages/adapter/src/error.js#TimeoutError": "packages/adapter/src/error.js#TimeoutError",
+    "packages/adapter/src/error.js#UnauthorizedError": "packages/adapter/src/error.js#UnauthorizedError",
+    "packages/adapter/src/error.js#default": "packages/adapter/src/error.js#default",
+    "packages/adapter/src/error.js#errorsArrayToHash": null,
+    "packages/adapter/src/error.js#errorsHashToArray": null,
+    "packages/adapter/src/index.ts#default": "packages/adapter/src/index.ts#default",
+    "packages/adapter/src/json-api.ts#default": "packages/adapter/src/json-api.ts#default",
+    "packages/adapter/src/rest.ts#FetchRequestInit": "packages/adapter/src/rest.ts#FetchRequestInit",
+    "packages/adapter/src/rest.ts#JQueryRequestInit": "packages/adapter/src/rest.ts#JQueryRequestInit",
+    "packages/adapter/src/rest.ts#RequestData": "packages/adapter/src/rest.ts#RequestData",
+    "packages/adapter/src/rest.ts#default": "packages/adapter/src/rest.ts#default",
+    "packages/adapter/src/rest.ts#fetchOptions": "packages/adapter/src/rest.ts#fetchOptions",
+    "packages/debug/addon/index.js#default": "packages/debug/addon/index.js#default",
+    "packages/debug/addon/setup.js#default": null,
+    "packages/debug/addon/setup.js#typesMapFor": null,
+    "packages/graph/src/-private/graph/index.ts#graphFor": "packages/graph/src/-private/graph/index.ts#graphFor",
+    "packages/graph/src/-private/graph/index.ts#peekGraph": "packages/graph/src/-private/graph/index.ts#peekGraph",
+    "packages/json-api/src/-private/cache.ts#default": "packages/json-api/src/-private/cache.ts#default",
+    "packages/legacy-compat/src/builders/find-all.ts#findAllBuilder": null,
+    "packages/legacy-compat/src/builders/find-record.ts#findRecordBuilder": null,
+    "packages/legacy-compat/src/builders/query.ts#queryBuilder": null,
+    "packages/legacy-compat/src/builders/query.ts#queryRecordBuilder": null,
+    "packages/legacy-compat/src/builders/save-record.ts#saveRecordBuilder": null,
+    "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp",
+    "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#default": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#default",
+    "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler": "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler",
+    "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#default": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#default",
+    "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#default": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#default",
+    "packages/model/src/-private/attr.js#default": "packages/model/src/-private/attr.js#default",
+    "packages/model/src/-private/belongs-to.js#default": "packages/model/src/-private/belongs-to.js#default",
+    "packages/model/src/-private/diff-array.ts#default": null,
+    "packages/model/src/-private/errors.ts#default": "packages/model/src/-private/errors.ts#default",
+    "packages/model/src/-private/has-many.js#default": "packages/model/src/-private/has-many.js#default",
+    "packages/model/src/-private/many-array.ts#default": "packages/model/src/-private/many-array.ts#default",
+    "packages/model/src/-private/model-for-mixin.ts#default": "packages/model/src/-private/model-for-mixin.ts#default",
+    "packages/model/src/-private/model.js#LEGACY_SUPPORT": "packages/model/src/-private/model.js#LEGACY_SUPPORT",
+    "packages/model/src/-private/model.js#default": "packages/model/src/-private/model.js#default",
+    "packages/model/src/-private/promise-belongs-to.ts#default": "packages/model/src/-private/promise-belongs-to.ts#default",
+    "packages/model/src/-private/promise-many-array.ts#default": "packages/model/src/-private/promise-many-array.ts#default",
+    "packages/request-utils/src/index.ts#CacheControlValue": null,
+    "packages/request-utils/src/index.ts#CreateRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#DeleteRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindManyUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRelatedCollectionUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRelatedResourceUrlOptions": null,
+    "packages/request-utils/src/index.ts#GenericUrlOptions": null,
+    "packages/request-utils/src/index.ts#LifetimesConfig": null,
+    "packages/request-utils/src/index.ts#LifetimesService": null,
+    "packages/request-utils/src/index.ts#QueryUrlOptions": null,
+    "packages/request-utils/src/index.ts#UpdateRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#UrlOptions": null,
+    "packages/request-utils/src/index.ts#buildBaseURL": null,
+    "packages/request-utils/src/index.ts#buildQueryParams": null,
+    "packages/request-utils/src/index.ts#filterEmpty": null,
+    "packages/request-utils/src/index.ts#parseCacheControl": null,
+    "packages/request-utils/src/index.ts#setBuildURLConfig": null,
+    "packages/request-utils/src/index.ts#sortQueryParams": null,
+    "packages/request/src/-private/future.ts#createDeferred": "packages/request/src/-private/future.ts#createDeferred",
+    "packages/request/src/-private/manager.ts#RequestManager": "packages/request/src/-private/manager.ts#RequestManager",
+    "packages/request/src/-private/promise-cache.ts#Awaitable": null,
+    "packages/request/src/-private/promise-cache.ts#getPromiseResult": null,
+    "packages/request/src/-private/promise-cache.ts#setPromiseResult": null,
+    "packages/request/src/-private/types.ts#SkipCache": null,
+    "packages/request/src/fetch.ts#default": "packages/request/src/fetch.ts#default",
+    "packages/serializer/src/-private/embedded-records-mixin.js#default": "packages/serializer/src/-private/embedded-records-mixin.js#default",
+    "packages/serializer/src/-private/transforms/boolean.js#default": "packages/serializer/src/-private/transforms/boolean.js#default",
+    "packages/serializer/src/-private/transforms/date.js#default": "packages/serializer/src/-private/transforms/date.js#default",
+    "packages/serializer/src/-private/transforms/number.js#default": "packages/serializer/src/-private/transforms/number.js#default",
+    "packages/serializer/src/-private/transforms/string.js#default": "packages/serializer/src/-private/transforms/string.js#default",
+    "packages/serializer/src/index.ts#default": "packages/serializer/src/index.ts#default",
+    "packages/serializer/src/json-api.js#default": "packages/serializer/src/json-api.js#default",
+    "packages/serializer/src/json.js#default": "packages/serializer/src/json.js#default",
+    "packages/serializer/src/rest.js#default": "packages/serializer/src/rest.js#default",
+    "packages/store/src/-private/cache-handler.ts#CacheHandler": "packages/store/src/-private/cache-handler.ts#CacheHandler",
+    "packages/store/src/-private/caches/cache-utils.ts#default": "packages/store/src/-private/caches/cache-utils.ts#default",
+    "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor": "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor",
+    "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier": "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
+    "packages/store/src/-private/caches/instance-cache.ts#_clearCaches": "packages/store/src/-private/caches/instance-cache.ts#_clearCaches",
+    "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
+    "packages/store/src/-private/caches/instance-cache.ts#storeFor": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
+    "packages/store/src/-private/index.ts#normalizeModelName": null,
+    "packages/store/src/-private/managers/record-array-manager.ts#default": "packages/store/src/-private/managers/record-array-manager.ts#default",
+    "packages/store/src/-private/managers/record-array-manager.ts#fastPush": "packages/store/src/-private/managers/record-array-manager.ts#fastPush",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#Collection": "packages/store/src/-private/record-arrays/identifier-array.ts#Collection",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#IDENTIFIER_ARRAY_TAG": "packages/store/src/-private/record-arrays/identifier-array.ts#IDENTIFIER_ARRAY_TAG",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE": "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE": "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#default": "packages/store/src/-private/record-arrays/identifier-array.ts#default",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray": "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray",
+    "packages/store/src/-private/store-service.ts#default": "packages/store/src/-private/store-service.ts#default",
+    "packages/store/src/-private/utils/coerce-id.ts#default": "packages/store/src/-private/utils/coerce-id.ts#default",
+    "packages/store/src/-private/utils/coerce-id.ts#ensureStringId": null,
+    "packages/store/src/-private/utils/construct-resource.ts#default": null,
+    "packages/tracking/src/-private.ts#Tag": null,
+    "packages/tracking/src/-private.ts#addToTransaction": "packages/tracking/src/-private.ts#addToTransaction",
+    "packages/tracking/src/-private.ts#addTransactionCB": "packages/tracking/src/-private.ts#addTransactionCB",
+    "packages/tracking/src/-private.ts#memoTransact": "packages/tracking/src/-private.ts#memoTransact",
+    "packages/tracking/src/-private.ts#subscribe": "packages/tracking/src/-private.ts#subscribe",
+    "packages/tracking/src/-private.ts#transact": "packages/tracking/src/-private.ts#transact",
+    "packages/tracking/src/-private.ts#untracked": "packages/tracking/src/-private.ts#untracked"
+  },
+  "exports": {
+    "@ember-data/adapter/error": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "errorsArrayToHash",
+        "errorsHashToArray"
+      ]
+    },
+    "@ember-data/model/-private": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "diffArray"
+      ]
+    },
+    "@ember-data/request": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "Awaitable",
+        "SkipCache",
+        "getPromiseResult",
+        "setPromiseResult"
+      ]
+    },
+    "@ember-data/store": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "normalizeModelName"
+      ]
+    },
+    "@ember-data/store/-private": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "constructResource",
+        "ensureStringId",
+        "normalizeModelName"
+      ]
+    },
+    "@ember-data/tracking/-private": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "Tag"
+      ]
+    },
+    "ember-data/-private": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "normalizeModelName"
+      ]
+    },
+    "ember-data/adapters/errors": {
+      "added": {},
+      "changed": {},
+      "removed": [
+        "errorsArrayToHash",
+        "errorsHashToArray"
+      ]
+    }
+  },
+  "from": "4.12.8",
+  "kind": "diff",
+  "modules": {
+    "added": {},
+    "changed": {},
+    "removed": [
+      "@ember-data/debug/setup",
+      "@ember-data/legacy-compat/builders",
+      "@ember-data/request-utils"
+    ]
+  },
+  "packages": {
+    "added": {},
+    "changed": {
+      "@ember-data/debug": {
+        "modules": [
+          "@ember-data/debug"
+        ]
+      },
+      "@ember-data/legacy-compat": {
+        "modules": [
+          "@ember-data/legacy-compat",
+          "@ember-data/legacy-compat/-private"
+        ]
+      }
+    },
+    "removed": [
+      "@ember-data/request-utils"
+    ]
+  },
+  "schema": 1,
+  "to": "5.0.1"
+}

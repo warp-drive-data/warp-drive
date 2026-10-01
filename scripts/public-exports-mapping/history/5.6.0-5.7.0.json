@@ -24,6 +24,358 @@
   "from": "5.6.0",
   "kind": "history",
   "schema": 1,
-  "symbols": {},
+  "symbols": {
+    "warp-drive-packages/core/src/reactive/-private/symbols.ts#Editable": {
+      "added": [
+        "warp-drive-packages/core/src/reactive/-private/symbols.ts#Context",
+        "warp-drive-packages/core/src/types/schema/fields.ts#AttrOptions"
+      ],
+      "commit": "8d9c276121",
+      "subject": "feat: support defaultValue for SchemaObject and SchemaArray fields (#10059)"
+    },
+    "warp-drive-packages/core/src/reactive/-private/symbols.ts#Legacy": {
+      "added": [
+        "warp-drive-packages/core/src/reactive/-private/symbols.ts#Context",
+        "warp-drive-packages/core/src/types/schema/fields.ts#AttrOptions"
+      ],
+      "commit": "8d9c276121",
+      "subject": "feat: support defaultValue for SchemaObject and SchemaArray fields (#10059)"
+    },
+    "warp-drive-packages/core/src/store/-private/caches/cache-utils.ts#peekCache": {
+      "added": [
+        "warp-drive-packages/core/src/graph/-private/-utils.ts#checkIfNew",
+        "warp-drive-packages/core/src/reactive/-private/record.ts#_CHECKOUT",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#getNewRecord",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#removeRecordIdentifier",
+        "warp-drive-packages/core/src/store/-private/store-service.ts#CreateContext"
+      ],
+      "commit": "fe8e19c5f7",
+      "subject": "feat: polarismode createRecord, createRecord with lid (#10055)"
+    },
+    "warp-drive-packages/core/src/store/-private/caches/cache-utils.ts#removeRecordDataFor": {
+      "added": [
+        "warp-drive-packages/core/src/graph/-private/-utils.ts#checkIfNew",
+        "warp-drive-packages/core/src/reactive/-private/record.ts#_CHECKOUT",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#getNewRecord",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#removeRecordIdentifier",
+        "warp-drive-packages/core/src/store/-private/store-service.ts#CreateContext"
+      ],
+      "commit": "fe8e19c5f7",
+      "subject": "feat: polarismode createRecord, createRecord with lid (#10055)"
+    },
+    "warp-drive-packages/core/src/store/-private/caches/cache-utils.ts#setCacheFor": {
+      "added": [
+        "warp-drive-packages/core/src/graph/-private/-utils.ts#checkIfNew",
+        "warp-drive-packages/core/src/reactive/-private/record.ts#_CHECKOUT",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#getNewRecord",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#removeRecordIdentifier",
+        "warp-drive-packages/core/src/store/-private/store-service.ts#CreateContext"
+      ],
+      "commit": "fe8e19c5f7",
+      "subject": "feat: polarismode createRecord, createRecord with lid (#10055)"
+    },
+    "warp-drive-packages/core/src/store/-private/caches/identifier-cache.ts#isDocumentIdentifier": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/store/-private/caches/identifier-cache.ts#isStableIdentifier": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#Collection": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#createSignalDescriptor",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#ForEachCB",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#KeyType",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#LegacyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#MinimumManager",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#convertToInt",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArrayGetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArraySetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#safeForEach",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#save",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#update",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#upgradeThis",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#createLegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#createLegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#createLegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRelatedCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRequestCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#TargetArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRelatedCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRequestCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#destroy"
+      ],
+      "commit": "f8b615453d",
+      "subject": "perf: instantiate only a single ArrayHandler (#10064)"
+    },
+    "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#IdentifierArray": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#createSignalDescriptor",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#ForEachCB",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#KeyType",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#LegacyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#MinimumManager",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#convertToInt",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArrayGetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArraySetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#safeForEach",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#save",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#update",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#upgradeThis",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#createLegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#createLegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#createLegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRelatedCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRequestCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#TargetArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRelatedCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRequestCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#destroy"
+      ],
+      "commit": "f8b615453d",
+      "subject": "perf: instantiate only a single ArrayHandler (#10064)"
+    },
+    "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#MUTATE": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#createSignalDescriptor",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#ForEachCB",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#KeyType",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#LegacyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#MinimumManager",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#convertToInt",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArrayGetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArraySetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#safeForEach",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#save",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#update",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#upgradeThis",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#createLegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#createLegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#createLegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRelatedCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRequestCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#TargetArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRelatedCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRequestCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#destroy"
+      ],
+      "commit": "f8b615453d",
+      "subject": "perf: instantiate only a single ArrayHandler (#10064)"
+    },
+    "warp-drive-packages/core/src/store/-private/record-arrays/identifier-array.ts#SOURCE": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#createSignalDescriptor",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#ForEachCB",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#KeyType",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#LegacyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#MinimumManager",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#convertToInt",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArrayGetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArraySetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#safeForEach",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#save",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#update",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#upgradeThis",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#createLegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#createLegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#createLegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRelatedCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRequestCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#TargetArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRelatedCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRequestCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#destroy"
+      ],
+      "commit": "f8b615453d",
+      "subject": "perf: instantiate only a single ArrayHandler (#10064)"
+    },
+    "warp-drive-packages/core/src/store/-private/record-arrays/many-array.ts#RelatedCollection": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#createSignalDescriptor",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#ForEachCB",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#KeyType",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#LegacyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#MinimumManager",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#convertToInt",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArrayGetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#isArraySetter",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#safeForEach",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#save",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#update",
+        "warp-drive-packages/core/src/store/-private/record-arrays/-utils.ts#upgradeThis",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#createLegacyLiveArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#createLegacyManyArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArrayCreateOptions",
+        "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#createLegacyQueryArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRelatedCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveRequestCollectionCreateArgs",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#TargetArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createReactiveResourceArray",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRelatedCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#createRequestCollection",
+        "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#destroy"
+      ],
+      "commit": "f8b615453d",
+      "subject": "perf: instantiate only a single ArrayHandler (#10064)"
+    },
+    "warp-drive-packages/core/src/store/-types/q/ds-model.ts#ModelSchema": {
+      "added": [
+        "warp-drive-packages/build-config/src/deprecation-versions.ts#ENABLE_LEGACY_REQUEST_METHODS",
+        "warp-drive-packages/build-config/src/deprecations.ts#ENABLE_LEGACY_REQUEST_METHODS",
+        "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#Caches",
+        "warp-drive-packages/core/src/store/-private/store-service.ts#isMaybeIdentifier",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#BaseFinderOptions",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#FindAllOptions",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#FindRecordOptions",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#KeyOrString",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#LegacyResourceQuery",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#ModelSchema",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#QueryOptions",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#RecordReference",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#ShimModelClass",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#getShimClass",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#preloadData",
+        "warp-drive-packages/core/src/store/deprecated/-private.ts#resourceIsFullyDeleted",
+        "warp-drive-packages/legacy/src/model/-private/model-methods.ts#_destroyRecord",
+        "warp-drive-packages/legacy/src/model/-private/model-methods.ts#_reload",
+        "warp-drive-packages/legacy/src/model/-private/model-methods.ts#_save",
+        "warp-drive-packages/legacy/src/model/-private/model.ts#restoreDeprecatedModelRequestBehaviors",
+        "warp-drive-packages/legacy/src/model/migration-support.ts#withRestoredDeprecatedModelRequestBehaviors",
+        "warp-drive-packages/legacy/src/store.ts#restoreDeprecatedStoreBehaviors",
+        "warp-drive-packages/legacy/src/store/-private.ts#BaseFinderOptions",
+        "warp-drive-packages/legacy/src/store/-private.ts#FindAllOptions",
+        "warp-drive-packages/legacy/src/store/-private.ts#FindRecordOptions",
+        "warp-drive-packages/legacy/src/store/-private.ts#KeyOrString",
+        "warp-drive-packages/legacy/src/store/-private.ts#LegacyResourceQuery",
+        "warp-drive-packages/legacy/src/store/-private.ts#ModelSchema",
+        "warp-drive-packages/legacy/src/store/-private.ts#QueryOptions",
+        "warp-drive-packages/legacy/src/store/-private.ts#RecordReference",
+        "warp-drive-packages/legacy/src/store/-private.ts#ShimModelClass",
+        "warp-drive-packages/legacy/src/store/-private.ts#getShimClass",
+        "warp-drive-packages/legacy/src/store/-private.ts#preloadData",
+        "warp-drive-packages/legacy/src/store/-private.ts#resourceIsFullyDeleted"
+      ],
+      "commit": "7cfb7a689f",
+      "subject": "feat: implement deprecation of legacy request methods (#10019)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#DEBUG_IDENTIFIER_BUCKET": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#ExistingRecordIdentifier": {
+      "added": [],
+      "commit": "5d37caf5c0",
+      "subject": "types: eliminate RecordIdentifier type variants (#10076)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#Identifier": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#IdentifierBucket": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#NewRecordIdentifier": {
+      "added": [],
+      "commit": "5d37caf5c0",
+      "subject": "types: eliminate RecordIdentifier type variants (#10076)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#RecordIdentifier": {
+      "added": [],
+      "commit": "5d37caf5c0",
+      "subject": "types: eliminate RecordIdentifier type variants (#10076)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#StableIdentifier": {
+      "added": [
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isRequestKey",
+        "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#isResourceKey",
+        "warp-drive-packages/core/src/types/identifier.ts#CacheKeyType",
+        "warp-drive-packages/core/src/types/identifier.ts#DEBUG_KEY_TYPE"
+      ],
+      "commit": "5e871640cb",
+      "subject": "types: remove StableIdentifier and Identifier types as base (#10077)"
+    },
+    "warp-drive-packages/core/src/types/identifier.ts#StableNewRecordIdentifier": {
+      "added": [
+        "warp-drive-packages/core/src/types/identifier.ts#NewResourceKey"
+      ],
+      "commit": "22ca83539a",
+      "subject": "types: rename StableNewRecordIdentifier => NewResourceKey (#10072)"
+    },
+    "warp-drive-packages/experiments/src/persisted-cache/cache.ts#PersistedCache": {
+      "added": [],
+      "commit": "950bc23a94",
+      "subject": "chore: deleted PersistedCache experiment (#10074)"
+    }
+  },
   "to": "5.7.0"
 }

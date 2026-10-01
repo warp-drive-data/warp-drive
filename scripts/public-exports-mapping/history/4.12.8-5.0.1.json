@@ -22,6 +22,49 @@
   "from": "4.12.8",
   "kind": "history",
   "schema": 1,
-  "symbols": {},
+  "symbols": {
+    "packages/adapter/src/error.js#errorsArrayToHash": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    },
+    "packages/adapter/src/error.js#errorsHashToArray": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    },
+    "packages/debug/addon/setup.js#default": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    },
+    "packages/debug/addon/setup.js#typesMapFor": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    },
+    "packages/model/src/-private/diff-array.ts#default": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    },
+    "packages/store/src/-private/index.ts#normalizeModelName": {
+      "added": [
+        "packages/store/src/-private/managers/cache-manager.ts#CacheManager"
+      ],
+      "commit": "362b588ac5",
+      "subject": "chore: remove 4.x deprecations (#8550)"
+    }
+  },
   "to": "5.0.1"
 }
