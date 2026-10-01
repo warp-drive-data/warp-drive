@@ -600,6 +600,17 @@ function createMap(dataset, { from, to }) {
   const toTokens = tokensByDecl(dataset, toSurface);
   const decisionsFile = dataset.decisions.get(from);
 
+  /**
+   * Stage 2: the tokens of the `to` surface that declare `decl`. A token of a package
+   * `preferences.ignorePackages` names is dropped before ranking, so the tooling and umbrella
+   * packages never become a rewrite target.
+   * @param {string} decl
+   * @returns {Token[]}
+   */
+  function homesOf(decl) {
+    return (toTokens.get(decl) || []).filter((token) => !ignoredPackages.has(token.package));
+  }
+
   /** @type {Map<string, string | null>} */
   const followed = new Map();
   /** @param {string} decl */
@@ -664,16 +675,16 @@ function createMap(dataset, { from, to }) {
     if (decidedTo === to) {
       const record = toSurface.modules[choice.module];
       const exported = /** @type {ExportRecord} */ (exportOf(toSurface, choice));
-      return [
-        {
-          ...choice,
-          kind: exported.kind,
-          decl: exported.decl,
-          deprecated: exported.deprecated === true,
-          package: record.package || packageOf(choice.module),
-          shim: isShimForward(record.forward),
-        },
-      ];
+      /** @type {Token} */
+      const chosen = {
+        ...choice,
+        kind: exported.kind,
+        decl: exported.decl,
+        deprecated: exported.deprecated === true,
+        package: record.package || packageOf(choice.module),
+        shim: isShimForward(record.forward),
+      };
+      return ignoredPackages.has(chosen.package) ? [] : [chosen];
     }
     const decided = /** @type {ExportRecord} */ (exportOf(surfaceAt(dataset, decidedTo), choice));
     /** @type {string[]} */
@@ -684,7 +695,7 @@ function createMap(dataset, { from, to }) {
     } else {
       decls = predecessorsOf(decided.decl, decidedTo);
     }
-    const candidates = decls.flatMap((decl) => toTokens.get(decl) || []);
+    const candidates = decls.flatMap(homesOf);
     const exact = candidates.find((token) => token.module === choice.module && token.export === choice.export);
     const rest = rankCandidates(
       candidates.filter((token) => token !== exact),
@@ -712,7 +723,7 @@ function createMap(dataset, { from, to }) {
     const source = { module, export: name };
     const { decl } = fromSurface.modules[module].exports[name];
     const target = follow(decl);
-    const found = target === null ? [] : toTokens.get(target) || [];
+    const found = target === null ? [] : homesOf(target);
     if (found.length) {
       resolution = { via: 'declarations', target, candidates: rankCandidates(found, source, preferences) };
     } else {

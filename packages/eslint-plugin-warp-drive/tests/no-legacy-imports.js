@@ -352,6 +352,10 @@ const TABLE = [
   ],
   // preferences.ignorePackages: imports from those packages are never touched
   ['5.6', '5.9', `import { UmbrellaOnly, Store } from 'warp-drive/core';`, null, []],
+  // a module of an ignored package is never a rewrite target: the real home wins, and without one
+  // the export has no replacement
+  ['4.12', '5.9', `import { setIdentifierGenerationMethod } from '@ember-data/store';`, null, []],
+  ['4.12', '5.9', `import { setIdentifierUpdateMethod } from '@ember-data/store';`, null, ['removed']],
   // 5.3 is not a listed release: it means 5.0.1, which no longer had normalizeModelName
   ['5.3', '5.9', `import { normalizeModelName } from '@ember-data/store';`, null, ['untracked']],
 ];

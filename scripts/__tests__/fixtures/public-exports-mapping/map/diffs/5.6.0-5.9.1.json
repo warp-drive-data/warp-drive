@@ -12,6 +12,8 @@
     "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
     "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
     "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy",
+    "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod",
+    "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod",
     "warp-drive-packages/core/src/store/-private/new-core-tmp/promise-state.ts#getPromiseState": "warp-drive-packages/core/src/reactive/-private/promise-state.ts#getPromiseState",
     "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#getRequestState": "warp-drive-packages/core/src/reactive/-private/request-state.ts#getRequestState",
     "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",

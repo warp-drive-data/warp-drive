@@ -19,6 +19,8 @@
     "packages/request/src/-private/types.ts#RequestInfo": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
     "packages/store/src/-private/cache-handler.ts#CacheHandler": null,
     "packages/store/src/-private/cache-handler.ts#StoreRequestInput": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#StoreRequestInput",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod",
     "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
     "packages/store/src/-private/caches/instance-cache.ts#storeFor": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
     "packages/store/src/-private/record-arrays/identifier-array.ts#default": null,
@@ -134,11 +136,14 @@
         "recordIdentifierFor": {
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor"
         },
+        "setIdentifierGenerationMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod"
+        },
         "storeFor": {
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor"
         }
       },
-      "removed": []
+      "removed": ["setIdentifierUpdateMethod"]
     },
     "@ember-data/store/-private": {
       "added": {
@@ -404,6 +409,14 @@
         },
         "UmbrellaOnly": {
           "decl": "packages/-warp-drive/src/core.ts#UmbrellaOnly",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod",
           "kind": "value"
         }
       },

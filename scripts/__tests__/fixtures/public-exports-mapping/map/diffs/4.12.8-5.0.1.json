@@ -21,6 +21,8 @@
     "packages/request/src/-private/types.ts#RequestInfo": "packages/request/src/-private/types.ts#RequestInfo",
     "packages/store/src/-private/cache-handler.ts#CacheHandler": "packages/store/src/-private/cache-handler.ts#CacheHandler",
     "packages/store/src/-private/cache-handler.ts#StoreRequestInput": "packages/store/src/-private/cache-handler.ts#StoreRequestInput",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
     "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
     "packages/store/src/-private/caches/instance-cache.ts#storeFor": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
     "packages/store/src/-private/index.ts#normalizeModelName": null,

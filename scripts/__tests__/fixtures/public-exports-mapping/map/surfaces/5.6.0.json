@@ -133,6 +133,10 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
           "kind": "value"
         },
+        "setIdentifierGenerationMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
         "storeFor": {
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
           "kind": "value"
@@ -424,6 +428,14 @@
         },
         "UmbrellaOnly": {
           "decl": "packages/-warp-drive/src/core.ts#UmbrellaOnly",
+          "kind": "value"
+        },
+        "setIdentifierGenerationMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod",
           "kind": "value"
         }
       },

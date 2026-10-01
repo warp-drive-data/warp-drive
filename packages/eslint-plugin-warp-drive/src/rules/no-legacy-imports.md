@@ -138,7 +138,7 @@ written while the module exists in `to`, and are reported as removed when it doe
 ## What the rule ignores
 
 - Imports from `warp-drive`, `@ember-data/codemods` and `eslint-plugin-warp-drive`, the packages
-  the data does not map.
+  the data does not map. The fix never moves an import into them either.
 - Re-exports, such as `export { attr } from '@ember-data/model'` and `export * from '...'`.
 - Dynamic `import()` and CommonJS `require()`.
 - Imports nested in a TypeScript `declare module` block.

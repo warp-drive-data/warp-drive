@@ -422,6 +422,14 @@ describe('buildMap', () => {
         decl: 'packages/store/src/-private/index.ts#normalizeModelName',
         target: null,
       },
+      // its only home is a module of an ignored package
+      {
+        module: '@ember-data/store',
+        export: 'setIdentifierUpdateMethod',
+        kind: 'value',
+        decl: 'packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod',
+        target: 'warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod',
+      },
     ]);
   });
 
@@ -647,6 +655,57 @@ describe('buildMap', () => {
       action: 'rewrite',
       to: { module: '@warp-drive/ember/reactive', export: 'getPromiseState' },
     });
+  });
+
+  test('preferences.ignorePackages: a module of theirs is never a candidate beside a real home', () => {
+    const source = ['@ember-data/store', 'setIdentifierGenerationMethod'];
+    const shared = map.tokens.find((t) => t.module === source[0] && t.export === source[1]);
+    assert.deepEqual(
+      shared.candidates.map((c) => c.module),
+      ['@ember-data/store']
+    );
+    assert.deepEqual(decide(...source), { action: 'keep' });
+
+    const data = fixtureData();
+    const tracking = buildMap({
+      ...data,
+      preferences: { ...data.preferences, ignorePackages: [] },
+      from: '4.12',
+      to: '5.9',
+    });
+    assert.deepEqual(tracking.resolve(...source), {
+      action: 'rewrite',
+      to: { module: 'warp-drive/core', export: 'setIdentifierGenerationMethod' },
+    });
+  });
+
+  test('preferences.ignorePackages: when their module is the only home, the token has no candidate', () => {
+    const source = ['@ember-data/store', 'setIdentifierUpdateMethod'];
+    const only = map.tokens.find((t) => t.module === source[0] && t.export === source[1]);
+    assert.equal(only.via, null);
+    assert.deepEqual(only.candidates, []);
+    assert.deepEqual(decide(...source), { action: 'report', reason: 'removed' });
+    assert.equal(
+      map.residue.some((t) => t.export === 'setIdentifierUpdateMethod'),
+      true
+    );
+
+    // the no-candidate path takes a judged decision when there is one
+    const data = fixtureData();
+    data.decisions[0].entries.push({
+      decl: only.decl,
+      source: { module: source[0], export: source[1] },
+      choice: { module: '@ember-data/store', export: 'setIdentifierGenerationMethod' },
+    });
+    const judged = buildMap({ ...data, from: '4.12', to: '5.9' });
+    assert.deepEqual(judged.resolve(...source), {
+      action: 'rewrite',
+      to: { module: '@ember-data/store', export: 'setIdentifierGenerationMethod' },
+    });
+    assert.equal(
+      judged.residue.some((t) => t.export === 'setIdentifierUpdateMethod'),
+      false
+    );
   });
 
   test('preferences.ignorePackages: their modules keep every import and leave the residue', () => {

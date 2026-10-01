@@ -129,6 +129,14 @@
           "decl": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
           "kind": "value"
         },
+        "setIdentifierGenerationMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
+          "kind": "value"
+        },
+        "setIdentifierUpdateMethod": {
+          "decl": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
+          "kind": "value"
+        },
         "storeFor": {
           "decl": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
           "kind": "value"
