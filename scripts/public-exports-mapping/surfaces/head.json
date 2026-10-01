@@ -270,6 +270,14 @@
     "@ember-data/json-api/request": {
       "entry": "packages/json-api/src/request.ts",
       "exports": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
+          "kind": "type"
+        },
         "createRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/json-api/save-record.ts#createRecord",
           "kind": "value"
@@ -831,6 +839,14 @@
         "AutoCompress": {
           "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#AutoCompress",
           "kind": "value"
+        },
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
         },
         "Gate": {
           "decl": "warp-drive-packages/utilities/src/-private/handlers/gated.ts#Gate",
@@ -2248,6 +2264,10 @@
     "@warp-drive/core-types/runtime": {
       "entry": "packages/core-types/src/runtime.ts",
       "exports": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
+        },
         "getRuntimeConfig": {
           "decl": "warp-drive-packages/core/src/types/runtime.ts#getRuntimeConfig",
           "kind": "value"
@@ -4126,6 +4146,10 @@
     "@warp-drive/core/types/runtime": {
       "entry": "warp-drive-packages/core/src/types/runtime.ts",
       "exports": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
+        },
         "getRuntimeConfig": {
           "decl": "warp-drive-packages/core/src/types/runtime.ts#getRuntimeConfig",
           "kind": "value"
@@ -6002,6 +6026,14 @@
           "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#AutoCompress",
           "kind": "value"
         },
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
+        },
         "Gate": {
           "decl": "warp-drive-packages/utilities/src/-private/handlers/gated.ts#Gate",
           "kind": "value"
@@ -6041,6 +6073,14 @@
     "@warp-drive/utilities/json-api": {
       "entry": "warp-drive-packages/utilities/src/json-api.ts",
       "exports": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
+          "kind": "type"
+        },
         "createRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/json-api/save-record.ts#createRecord",
           "kind": "value"

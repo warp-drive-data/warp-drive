@@ -10,6 +10,22 @@ import { assert } from "@warp-drive/core/build-config/macros";
 const StoreContext = createContext<Store | null>(null);
 
 /**
+ * Returns the Store provided by the nearest {@link StoreProvider}. In development
+ * builds, calling it outside a `<StoreProvider />` throws an error.
+ *
+ * For how to set up the provider, see
+ * [Provide the Store in React](/guides/configuration/react#provide-the-store).
+ *
+ * @example
+ * ```tsx
+ * import { useStore } from "@warp-drive/react";
+ *
+ * export function ReloadButton({ request }) {
+ *   const store = useStore();
+ *   return <button onClick={() => store.request(request)}>Reload</button>;
+ * }
+ * ```
+ *
  * @summary Hook that returns the Store provided by the nearest `StoreProvider`, asserting that one exists.
  * @category Hooks
  */
@@ -25,7 +41,7 @@ export function useStore(): Store {
 /**
  * The props accepted by {@link StoreProvider | `<StoreProvider />`}: `children`,
  * and either `store`, an existing Store instance to provide, or `Store`, a
- * Store class the provider instantiates once and provides.
+ * Store class the provider creates an instance of for you.
  *
  * @example
  * ```tsx
@@ -51,7 +67,7 @@ export type StoreProviderProps =
     }
   | {
       /**
-       * A Store class to instantiate once and provide.
+       * A Store class the provider creates an instance of for you and provides.
        */
       Store: typeof Store;
       /**
@@ -65,7 +81,10 @@ export type StoreProviderProps =
  * `<Request />` uses it when no `store` prop is given.
  *
  * Pass either `store`, an existing Store instance, or `Store`, a Store class
- * the provider instantiates once. See {@link StoreProviderProps}.
+ * the provider creates an instance of for you. See {@link StoreProviderProps}.
+ *
+ * For where this fits in app setup, see
+ * [Provide the Store in React](/guides/configuration/react#provide-the-store).
  *
  * @example
  * ```tsx

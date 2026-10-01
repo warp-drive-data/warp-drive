@@ -657,6 +657,34 @@
     "warp-drive-packages/utilities/src/index.ts#sortQueryParams": "warp-drive-packages/utilities/src/index.ts#sortQueryParams"
   },
   "exports": {
+    "@ember-data/json-api/request": {
+      "added": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
+          "kind": "type"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@ember-data/request-utils/handlers": {
+      "added": {
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
     "@ember-data/store/-private": {
       "added": {
         "FieldValueIdentity": {
@@ -666,6 +694,16 @@
         "fieldValueIdentity": {
           "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#fieldValueIdentity",
           "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/core-types/runtime": {
+      "added": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
         }
       },
       "changed": {},
@@ -726,6 +764,16 @@
         "fieldValueIdentity": {
           "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#fieldValueIdentity",
           "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/core/types/runtime": {
+      "added": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
         }
       },
       "changed": {},
@@ -889,6 +937,34 @@
         },
         "StoreProviderProps": {
           "decl": "warp-drive-packages/react/src/-private/store-provider.tsx#StoreProviderProps",
+          "kind": "type"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/utilities/handlers": {
+      "added": {
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/utilities/json-api": {
+      "added": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
           "kind": "type"
         }
       },

@@ -30,7 +30,14 @@ export const SupportsRequestStreams: boolean = (() => {
   return duplexAccessed && !hasContentType;
 })();
 
-interface Constraints {
+/**
+ * The minimum body size, per body type, at which {@link AutoCompress} compresses a request
+ * body. Passed as {@link CompressionOptions.constraints}.
+ *
+ * @summary Minimum request body sizes, per body type, at which `AutoCompress` compresses a body.
+ * @public
+ */
+export interface Constraints {
   /**
    * The minimum size at which to compress blobs
    *
@@ -64,10 +71,12 @@ interface Constraints {
 }
 
 /**
- * Options for configuring the AutoCompress handler.
+ * Options for configuring the {@link AutoCompress} handler.
  *
+ * @summary Options for `new AutoCompress()`: the compression format, size constraints and whether to stream the body.
+ * @public
  */
-interface CompressionOptions {
+export interface CompressionOptions {
   /**
    * The compression format to use. Must be a valid
    * compression format supported by [CompressionStream](https://developer.mozilla.org/en-US/docs/Web/API/CompressionStream)

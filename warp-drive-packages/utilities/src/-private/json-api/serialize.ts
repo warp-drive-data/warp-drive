@@ -7,6 +7,13 @@ import type { InnerRelationshipDocument, ResourceObject } from '@warp-drive/core
 
 type ChangedRelationshipData = InnerRelationshipDocument;
 
+/**
+ * The resource object {@link serializePatch} produces: the resource's `type` and `id` (or `lid`
+ * for a new record) with only its changed attributes and relationships.
+ *
+ * @summary A JSON:API resource object holding only a record's changed attributes and relationships, as produced by `serializePatch`.
+ * @public
+ */
 export type JsonApiResourcePatch =
   | {
       type: string;

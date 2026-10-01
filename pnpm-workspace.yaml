@@ -382,7 +382,7 @@ catalog:
   fs-extra: ^11.4.1
   git-repo-version: ^1.0.2
   globals: ^17.12.0
-  hono: ^4.13.9
+  hono: ^4.13.10
   ignore: ^7.0.10
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
@@ -392,13 +392,13 @@ catalog:
   morgan: ^1.12.1
   oxc-parser: ^0.151.0
   oxc-resolver: ^11.24.2
-  oxfmt: ^0.70.0
-  oxlint: ^1.85.0
+  oxfmt: ^0.71.0
+  oxlint: ^1.86.0
   oxlint-tsgolint: ^7.0.2003
   pretender: ^3.4.7
   prettier: ^3.9.9
   prettier-plugin-ember-template-tag: ^2.1.8
-  qunit: ^2.26.0
+  qunit: ^3.0.0
   qunit-console-grouper: ^0.3.0
   qunit-dom: ^3.6.0
   react: ^19.3.0
@@ -413,14 +413,14 @@ catalog:
   todomvc-app-css: ^2.4.3
   todomvc-common: ^1.0.5
   tsdown: ^0.23.0
-  turbo: ^2.11.4
+  turbo: ^2.11.5
   typedoc: ^0.28.20
   typedoc-plugin-markdown: ^4.13.1
   typedoc-plugin-mdn-links: ^5.1.1
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
   typescript: ^6.0.3
-  typescript-7: "npm:typescript@7.1.0-dev.20260926.1"
+  typescript-7: "npm:typescript@7.1.0-dev.20260928.1"
   typescript-eslint: ^8.70.1
   typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0
@@ -497,7 +497,7 @@ overrides:
   "@ember/optional-features>ember-cli-version-checker": "-"
   unplugin>webpack-virtual-modules: "-"
   ember-cli-htmlbars: ^7.0.1
-  qunit: 2.26.0
+  qunit: 3.0.0
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.21.0
   typescript: 6.0.3
