@@ -5,6 +5,21 @@ description: Build the data layer of a TodoMVC app with WarpDrive and Ember. Cre
 
 # TodoMVC
 
+:::warning **🚧 Pardon Our Stardust!**
+The `@warp-drive/tutorials` package isn't published yet, so the `npx` command
+below doesn't work. Until it is, run the starter from a clone of the WarpDrive
+repo:
+
+```sh
+git clone https://github.com/warp-drive-data/warp-drive.git
+cd warp-drive
+pnpm install
+cd packages/tutorials/todomvc-ember/starter
+pnpm start
+```
+
+:::
+
 Let's build the data layer of a TodoMVC app with ***Warp*Drive**.
 
 The starter ships the Ember UI and a local API. You write the ***Warp*Drive**
