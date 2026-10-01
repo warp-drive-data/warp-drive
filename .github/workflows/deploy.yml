@@ -61,8 +61,11 @@ jobs:
       # instead (peaceiris/actions-gh-pages' `keep_files`) kept every old chunk forever and
       # pushed the Pages artifact past its size limit.
       #
-      # The new commit is assembled from trees rather than a checkout: pr-preview/'s tree is
-      # reused as-is, so none of its blobs need downloading (`--filter=blob:none`).
+      # The new commit is assembled from trees rather than a checkout, so none of pr-preview/'s
+      # blobs are downloaded (`--filter=blob:none`). That only holds for the exact commands
+      # used here: `mktree` reuses pr-preview/'s tree by id, where `read-tree` would lazily
+      # fetch every blob under it, and `push --no-thin` stops pack-objects from fetching the
+      # previous build's blobs to use as delta bases.
       #
       # pr-preview.yml can push to gh-pages between this script's fetch and its push, which
       # rejects ours as a non-fast-forward. Each retry re-fetches gh-pages and rebuilds the
@@ -85,20 +88,23 @@ jobs:
 
           for attempt in 1 2 3; do
             if [ "$attempt" -gt 1 ]; then
-              echo "gh-pages moved during deploy (attempt $((attempt - 1))); retrying" >&2
+              echo "deploy attempt $((attempt - 1)) failed (most likely gh-pages moved); retrying" >&2
               sleep $((attempt * 5))
             fi
-            git fetch -q --depth=1 --filter=blob:none origin gh-pages
+            git fetch -q --depth=1 --filter=blob:none origin gh-pages || continue
             base_sha="$(git rev-parse FETCH_HEAD)"
 
             rm -f .git/index
-            git --work-tree="$dist" add -A
-            if git rev-parse -q --verify "$base_sha:pr-preview" > /dev/null; then
-              git read-tree --prefix=pr-preview/ "$base_sha:pr-preview"
+            # --force: publish everything in the build, even if it ships a .gitignore
+            git --work-tree="$dist" add -A --force
+            tree="$(git write-tree)"
+            preview="$(git ls-tree "$base_sha" pr-preview)"
+            if [ -n "$preview" ]; then
+              tree="$({ git ls-tree "$tree"; printf '%s\n' "$preview"; } | git mktree)"
             fi
-            commit="$(git commit-tree "$(git write-tree)" -p "$base_sha" -m "deploy: $GITHUB_SHA")"
+            commit="$(git commit-tree "$tree" -p "$base_sha" -m "deploy: $GITHUB_SHA")"
 
-            if git push -q origin "$commit:refs/heads/gh-pages"; then
+            if git push --no-thin -q origin "$commit:refs/heads/gh-pages"; then
               exit 0
             fi
           done

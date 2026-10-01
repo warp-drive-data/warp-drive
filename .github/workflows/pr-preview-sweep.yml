@@ -10,8 +10,9 @@
 # root vs. one pr-preview/ subfolder -- and must leave the other alone. Neither can
 # safely reset history itself. Rebuilding gh-pages as one fresh commit here, on a
 # schedule, bounds how much of that history survives to the next run. This only
-# compacts history: what keeps the published tree small is deploy.yml replacing the
-# whole site root on each deploy rather than layering over the previous build.
+# compacts history, not the published tree: deploy.yml keeps the site root to a single
+# build by replacing it on each deploy, and pr-preview/ is sized by how many previews
+# are open.
 # Both of the other workflows re-fetch gh-pages fresh on every push, so rewriting
 # it out from under them between their runs is safe.
 name: docs PR preview sweep
