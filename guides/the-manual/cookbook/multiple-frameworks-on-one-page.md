@@ -96,9 +96,15 @@ You don't need any of this to use the setup above, but it explains why it works.
 - **Test waiters.** Each framework's `waitFor` hook still runs, so `await settled()` from
   `@ember/test-helpers` waits for ***Warp*Drive**'s requests in your Ember tests.
 
-One behavior differs from an Ember app that only imports `@warp-drive/ember/install`: with the
-`DEPRECATE_COMPUTED_CHAINS` deprecation active, a classic computed property that depends on a
-memoized key may not recompute when that memo changes.
+Two behaviors differ from an Ember app that only imports `@warp-drive/ember/install`:
+
+- A memo only recomputes when a signal managed by ***Warp*Drive** changes. If a
+  [derived field](/guides/the-manual/schemas/derivations.md) reads state that only a framework
+  tracks, such as an Ember `@tracked` property or a React `useState` value, the memo keeps
+  returning its cached value when that state changes. Keep the state a derivation reads in
+  ***Warp*Drive**, for instance as a field on the resource it derives from.
+- With the `DEPRECATE_COMPUTED_CHAINS` deprecation active, a classic computed property that
+  depends on a memoized key may not recompute when that memo changes.
 
 ## Share the Store
 
