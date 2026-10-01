@@ -16,6 +16,7 @@ import {
   legacyGuidePages,
   postProcessApiDocs,
 } from '../../src/site-utils.ts';
+import { BLOG_FEED_PATH, emitBlogFeed } from '../../src/emit-blog-feed.ts';
 
 // Legacy API pages stay out of llms.txt and llms-full.txt so an agent working on a modern app isn't
 // steered toward Models, Adapters, or packages that only re-export modern ones.
@@ -289,6 +290,7 @@ export default withPwa(
         ['link', { rel: 'icon', href: '/favicon.ico', sizes: '32x32' }],
         ['link', { rel: 'icon', href: '/logos/warp-drive/prefers-color-w.svg', type: 'image/svg+xml' }],
         ['link', { rel: 'apple-touch-icon', href: '/logos/favicon/logo-yellow-square-180x180.png', type: 'image/png' }],
+        ['link', { rel: 'alternate', type: 'application/rss+xml', title: 'WarpDrive Blog', href: `/${BLOG_FEED_PATH}` }],
         [
           'meta',
           {
@@ -359,6 +361,11 @@ export default withPwa(
 
       sitemap: {
         hostname: process.env.HOSTNAME || 'https://canary.warp-drive.io',
+      },
+
+      buildEnd(siteConfig) {
+        const posts = emitBlogFeed(siteConfig.outDir, `${SITE_ORIGIN}${siteConfig.site.base}`);
+        console.log(`emitted ${BLOG_FEED_PATH} with ${posts} posts`);
       },
 
       themeConfig: {

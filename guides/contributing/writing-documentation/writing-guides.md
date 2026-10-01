@@ -151,6 +151,23 @@ revised:
 This lets a reader who lands on an old search result or bookmark know immediately whether the
 page still applies to the version they're using.
 
+A blog post also sets the date it was published as a frontmatter `date`, written `YYYY-MM-DD`.
+The blog's RSS feed (`/blog/feed.xml`) lists every published post that isn't a draft or a section
+`index.md`, newest first, and uses `date` to order and date them, so the docs build fails on a post
+without one:
+
+```md
+---
+title: Introducing Upgrading & Blog
+description: Learn why WarpDrive 5.10 added the permanent Upgrading and Blog sections.
+date: 2026-09-05
+---
+```
+
+A post's feed entry uses its frontmatter `title` (or its H1) and `description`. Its link is also
+its ID in feed readers, which is one more reason a post's URL must never change: renaming it would
+show subscribers the post a second time as new.
+
 ### Organize by major version
 
 Each section is sub-divided by major version (`upgrading/v5/`, `blog/v5/`, `upgrading/v6/`, ...).
