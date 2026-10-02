@@ -15,7 +15,7 @@ packages as a dependency in an app). Find the single row below that matches your
 | You're about to run, or are about to reach for, any local test/lint/build command — even mid-task, even if you already read this table once this session for a different reason | `use-ci-as-the-source-of-truth.md` |
 | You're writing or reviewing a test and about to share setup/teardown across more than one `test()` in a module | `extract-test-setup-into-functions.md` |
 | Your change is finished and you're turning it into a pull request — title, labels CI enforces, and backports | `submit-a-pr.md` |
-| You're opening a pull request, editing its description, or changing its changelog label — decide whether it needs a `## Blog Summary` section and write it | `write-a-pr-blog-summary.md` |
+| You're opening a pull request, changing what an open one does, or changing its changelog label — decide whether it needs a summary file in `.next-release-post/` and write it | `write-a-pr-blog-summary.md` |
 | You're drafting a blog post announcing a release — summarizing a version's major changes and notable fixes | `draft-a-release-blog-post.md` |
 
 The first two rows apply to **every** session, whatever the task — read them before anything

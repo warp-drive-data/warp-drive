@@ -31,8 +31,8 @@ checks CI runs on every PR, so a PR opened this way carries everything those che
    must say what changed for a reader who never opens the PR. The title and body are subject to
    [Keep Commits Human-Authored](./keep-commits-human-authored.md), so carry no agent byline.
    Once you know the changelog label from step 6, follow
-   [Write a PR Blog Summary](./write-a-pr-blog-summary.md) to decide whether the body needs a
-   `## Blog Summary` section, and write it if so.
+   [Write a PR Blog Summary](./write-a-pr-blog-summary.md) to decide whether the PR needs a
+   summary file in `.next-release-post/`, and add it if so.
 6. Get a changelog label onto the PR. The `enforce-changelog-label` check fails until it
    carries one. It isn't a required status check, so a red one doesn't disable merging, but the
    release notes are built by `lerna-changelog`, which leaves out any PR that doesn't carry a
