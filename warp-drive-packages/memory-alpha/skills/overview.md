@@ -45,6 +45,8 @@ Find the row below that matches what you're doing, or browse the categories in t
 | Write, name, document, or type a request builder, or add a new request to the app's SDK | [Write a Request Builder](/skills/requests/write-a-request-builder.md) |
 | Set up HTTP mocking for a test suite with `@warp-drive/holodeck` | [Set Up Holodeck](/skills/holodeck/set-up-holodeck.md) |
 | Mock a request in a test, or fix a mock that stopped matching | [Mock HTTP Requests in Tests](/skills/holodeck/mock-http-requests-in-tests.md) |
+| Change a schema's `belongsTo`/`hasMany` field to `resource`/`collection` | [Migrate belongsTo and hasMany Fields to resource and collection](/skills/relationships/migrate-relationship-fields.md) |
+| Move code that consumes an async `belongsTo`/`hasMany` implicitly (`#each` blocks, `.content`, getters reading through it) toward requests and `resource`/`collection` | [Migrate Async Relationship Usage](/skills/relationships/migrate-async-relationship-usage.md) |
 | Re-record one holodeck mock, or review a test that sets `RECORD` | [Use RECORD in Holodeck Mocks](/skills/holodeck/using-record.md) |
 | Look up a guide, upgrade note, or API reference page that no row above covers — a concept, an option, a signature | [Read the Docs as Markdown](/skills/docs/read-the-docs-as-markdown.md) |
 | You're contributing to WarpDrive itself, not just consuming it as a dependency | [Contributor Skills](/skills/contributors/index.md) |
