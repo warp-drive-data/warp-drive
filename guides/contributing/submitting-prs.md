@@ -121,10 +121,12 @@ handful of changes in that release that a user would want to hear about, in pros
 post from the PRs themselves instead of from memory, a PR that carries one of the labels below
 adds a short summary file to the
 [`.next-release-post/`](https://github.com/warp-drive-data/warp-drive/tree/main/.next-release-post)
-directory at the repo root. The release post is drafted from those files, and the PR that adds the
-post deletes them, so the directory only ever holds summaries for changes that haven't been
-announced yet (see the [Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md)
-skill).
+directory at the repo root. Any stable release's post, patch releases included, is drafted from
+the files added between the previous release's tag and its own, and the PR that adds the post
+deletes the shipped files from `main`, so the directory only ever holds summaries for changes
+that haven't shipped yet (see the
+[Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) skill). A fix
+backported to a release branch brings its summary with it when its commit is cherry-picked.
 
 The summary lives in the PR's diff rather than its description on purpose: it is reviewed like
 any other change, and once merged it can only change through another reviewed PR. Reviewers
