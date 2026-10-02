@@ -113,3 +113,42 @@ it will need to be added manually.
 #### Project Labels
 
 Labels used for tracking work in [various projects](https://github.com/warp-drive-data/warp-drive/projects) are not enforced, but PRs and issues should be labeled for any applicable projects and added to those projects when reviewed.
+
+### Blog Summaries
+
+The changelog lists every labeled PR by title. A release's blog post is different: it explains the
+handful of changes in that release that a user would want to hear about, in prose. To build that
+post from the PRs themselves instead of from memory, a PR that carries one of the labels below
+includes a `## Blog Summary` section in its description, and the release post is drafted from
+those sections (see the [Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md)
+skill).
+
+Whether a PR needs the section depends on its [changelog label](#changelog-labels):
+
+| Changelog label | Blog Summary |
+| --- | --- |
+| `:label: breaking`, `:label: feat`, `:label: deprecation`, `:label: cleanup`, `:label: perf` | Required |
+| `:label: bug` | Only for a fix users would notice: a long-standing, widely reported, or data-correctness bug |
+| `:label: doc` | Only for a new guide, tutorial, or other new section of the docs site |
+| `:label: test`, `:label: chore`, `:label: rfc`, `:label: dependencies` | Leave it out |
+
+The label is what decides. If a PR's label changes, add or remove the section to match; when the
+post is drafted, a summary on a PR whose label isn't gated in is ignored.
+
+Write the section for someone who uses ***Warp*Drive** and has not read the PR:
+
+```md
+## Blog Summary
+
+Ember and React components on the same page can now share one store. Import
+`@warp-drive/alien-signals/install` before each framework's own `install`, and every framework
+re-renders when the data it read changes, including when a memo returns a cached value. See
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
+```
+
+- Two to five sentences, or a short bullet list, in the present tense: what changed, who it
+  affects, and anything they need to do.
+- At most one short code example, and only if it shows the change better than a sentence does.
+- Link the guide or API page that covers the change in depth instead of re-explaining it.
+- Name the package if it isn't obvious, and the deprecation ID for a deprecation.
+- Leave out the implementation, the review history, and internal names a user never sees.

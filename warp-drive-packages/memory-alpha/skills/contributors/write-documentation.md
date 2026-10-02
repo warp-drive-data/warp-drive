@@ -19,6 +19,9 @@ last two bullets: the checks and the label.
    to decide whether X needs TSDoc, a guide, a permanent-URL page, a README, or several of those,
    and confirm that split with the user before drafting anything. If the answer is an RFC, this
    isn't the skill for it: switch to [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md).
+   If it's a `blog/` post announcing a release, follow
+   [Draft a Release Blog Post](./draft-a-release-blog-post.md), which works through this skill's
+   steps for you.
 2. Read the guide for that type of doc before you write a word, and treat it as binding:
 
    | Type of doc | Read |
