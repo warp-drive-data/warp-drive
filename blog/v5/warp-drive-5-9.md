@@ -13,9 +13,10 @@ outline:
 ***Warp*Drive** 5.9 is out, and this post is for apps already on 5.x deciding whether and how
 to upgrade. The headline changes are experimental reactive pagination, a codemod that turns
 EmberData models into schemas, and a new package of ***Warp*Drive** knowledge for AI coding
-agents. Most apps can upgrade without changes, but read
-[Changes That May Need Attention](#changes-that-may-need-attention) first: published types are
-now rolled up per entry point, and `@warp-drive/holodeck` now really replays in CI.
+agents. Before upgrading, read
+[Changes That May Need Attention](#changes-that-may-need-attention): most apps won't hit any of
+them, but the two most likely to are that published types are now rolled up per entry point and
+that `@warp-drive/holodeck` now replays its fixtures in CI.
 
 ## Install 5.9.1, not 5.9.0
 
@@ -34,7 +35,7 @@ instead of on its own `0.x` line, so its version always matches theirs.
 
 ## Changes That May Need Attention
 
-None of these change an API you're meant to call, but each can surface after upgrading.
+Each of these can surface after upgrading, and each says what to do about it.
 
 ### Types are rolled up per entry point
 
@@ -235,8 +236,9 @@ immutable ([#10543](https://github.com/warp-drive-data/warp-drive/pull/10543)).
 
 ## Performance
 
-`JSONAPICache` now sends one notification per changed record instead of one per changed field,
-which saves work when you push large payloads; subscribers are still called once per key
+When a push changes several fields on a record, `JSONAPICache` now hands the store's notification
+manager all of them in one call instead of one call per field, which saves work when you push
+large payloads. Subscribers see no difference: they are still called once per changed field
 ([#10614](https://github.com/warp-drive-data/warp-drive/pull/10614),
 [#10560](https://github.com/warp-drive-data/warp-drive/pull/10560)). To support this,
 `store.notifications.notify()` accepts an array or `Set` of keys, as does a cache's
