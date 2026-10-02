@@ -61,7 +61,7 @@
  *
  * ## Outputs
  *
- * Scratch output goes to `<out>/<from>-<to>/` (`--out`, default `tmp/public-exports-judge`, which
+ * Scratch output goes to `<out>/<from>-<to>/` (`--out`, default `tmp/public-exports-mapping/judge`, which
  * git ignores): `bundles.json` (evidence per declaration) and `requests.json` (the exact
  * `messages.batches.create` body) on every run; `batches.json`, `answers.json` and
  * `judge-review.json` after a live run; the same with a `calibration-` prefix, plus
@@ -82,7 +82,9 @@ import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { parseSync } from 'oxc-parser';
 
-import { DATA_ROOT, REPO_ROOT, readJson } from './artifacts.mjs';
+import { DATA_ROOT, REPO_ROOT, readJson, SCRATCH_ROOT, writeArtifact } from './artifacts.mjs';
+import { decisionsPath, diffPath, historyPath, loadSurface, shapesPath } from './data.mjs';
+import { historyOf } from './history.mjs';
 
 export const JUDGE_MODEL = 'claude-opus-5-5';
 export const TOOL_NAME = 'record_successor';
@@ -93,7 +95,7 @@ export const DEFAULT_POLL_SECONDS = 60;
 export const DEFAULT_TIE_BREAK = ['@warp-drive/ember'];
 /** Most candidate declarations kept per discovery source, so one broad commit cannot flood a bundle. */
 export const DEFAULT_CAPS = { history: 8, name: 8, file: 8 };
-export const DEFAULT_OUT = path.join(REPO_ROOT, 'tmp', 'public-exports-judge');
+export const DEFAULT_OUT = path.join(SCRATCH_ROOT, 'judge');
 const MAX_TOKENS = 16000;
 
 /**
@@ -323,32 +325,45 @@ function surfaceAt(surfaces, version) {
 }
 
 /**
- * Reads what the judge needs for one (from, to) pair from a data directory laid out as the
- * contract describes: the surface of every release from `from` to `to` (a chain that breaks
- * looks its id up in the later ones), and the diff and history of every pair between them.
- * Shapes, preferences and existing decisions are optional.
- * @param {{ from: string, to: string, versions: string[], dataRoot?: string }} options
+ * Reads what the judge needs for one (from, to) pair: the product's diffs between them, the
+ * surface of every release from `from` to `to` (scanned into scratch, or derived from the diffs;
+ * a chain that breaks looks its id up in the later ones) and the history of every pair, computed
+ * from git into scratch when it is not there yet. Shapes (`audit <to>` writes them), preferences
+ * and existing decisions are optional.
+ * @param {{ from: string, to: string, versions: string[], dataRoot?: string, scratchRoot?: string, cwd?: string }} options
+ *   `cwd` is the repository git reads for a history that scratch lacks
  */
-export function loadInputs({ from, to, versions, dataRoot = DATA_ROOT }) {
+export function loadInputs({ from, to, versions, dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = REPO_ROOT }) {
   const list = versionsBetween(from, to, versions);
-  const pairs = list.slice(1).map((b, i) => `${list[i]}-${b}`);
-  /** @type {string[]} */
-  const missing = [];
-  const read = (/** @type {string} */ rel, optional = false) => {
-    const file = path.join(dataRoot, rel);
-    if (existsSync(file)) return readJson(file);
-    if (!optional) missing.push(rel);
-    return null;
-  };
-  const surfaces = Object.fromEntries(list.map((version) => [version, read(`surfaces/${version}.json`)]));
-  const diffs = pairs.map((pair) => read(`diffs/${pair}.json`));
-  const history = pairs.map((pair) => read(`history/${pair}.json`));
-  const shapes = read(`shapes/${to}.json`, true);
-  const preferences = read('preferences.json', true);
-  const decisions = read(`decisions/${from}.json`, true);
-  if (missing.length) {
-    throw new InputError(`missing inputs in ${path.relative(REPO_ROOT, dataRoot) || '.'}: ${missing.join(', ')}`);
+  const pairs = list.slice(1).map((b, i) => /** @type {[string, string]} */ ([list[i], b]));
+  const roots = { dataRoot, scratchRoot };
+  const optional = (/** @type {string} */ file) => (existsSync(file) ? readJson(file) : null);
+  const missingDiffs = pairs
+    .filter(([a, b]) => !existsSync(diffPath(a, b, roots)))
+    .map(([a, b]) => `diffs/${a}-${b}.json`);
+  if (missingDiffs.length) {
+    throw new InputError(`missing inputs in ${path.relative(REPO_ROOT, dataRoot) || '.'}: ${missingDiffs.join(', ')}`);
   }
+  const diffs = pairs.map(([a, b]) => readJson(diffPath(a, b, roots)));
+  /** @type {Record<string, any>} */
+  const surfaces = {};
+  for (const version of list) {
+    try {
+      surfaces[version] = loadSurface(version, roots);
+    } catch (error) {
+      throw new InputError(/** @type {Error} */ (error).message);
+    }
+  }
+  const history = pairs.map(([a, b]) => {
+    const file = historyPath(a, b, roots);
+    if (existsSync(file)) return readJson(file);
+    const doc = historyOf(a, b, { surfaceA: surfaces[a], surfaceB: surfaces[b], cwd });
+    writeArtifact(file, doc, { scratch: true });
+    return doc;
+  });
+  const shapes = optional(shapesPath(to, roots));
+  const preferences = optional(path.join(dataRoot, 'preferences.json'));
+  const decisions = optional(decisionsPath(from, roots));
   return { from, to, versions: list, surfaces, diffs, history, shapes: shapeMap(shapes), preferences, decisions };
 }
 
@@ -1699,12 +1714,12 @@ export function staleDecisions({ decisions, fromSurface, toSurface }) {
   const problems = [];
   for (const entry of decisions.entries ?? []) {
     if (!fromDecls.has(entry.decl)) {
-      problems.push({ decl: entry.decl, problem: `not a declaration of surfaces/${decisions.from}.json` });
+      problems.push({ decl: entry.decl, problem: `not a declaration of the ${decisions.from} surface` });
     }
     if (entry.choice && !toIndex.has(entry.choice.module, entry.choice.export)) {
       problems.push({
         decl: entry.decl,
-        problem: `choice ${entry.choice.module} ${entry.choice.export} is not a token of surfaces/${decisions.to}.json`,
+        problem: `choice ${entry.choice.module} ${entry.choice.export} is not a token of the ${decisions.to} surface`,
       });
     }
   }

@@ -1,11 +1,10 @@
 /**
  * The judge, area E of the public exports mapping pipeline. Nothing here runs git or reaches the
- * network. fixtures/public-exports-mapping/judge/data is a contract-shaped data directory for
- * three releases (its diffs carry only `declarations`, the one section the judge reads), and
- * fixtures/public-exports-mapping/judge/git stands in for the repository: `v<version>/` holds what
- * `git show v<version>:<path>` prints, `log.json` the `git log -S` answers, and `commits/` what
- * `git show <commit>` prints. Claude is a fake Message Batches client and Jev a fake `fetch` that
- * answers in the shapes https://docs.typesafe.ai/api.md documents.
+ * network. The fixtures come from fixtures/public-exports-mapping/judge.mjs: `data/` is a
+ * contract-shaped data directory for three releases, and `git/` stands in for the repository:
+ * `v<version>/` holds what `git show v<version>:<path>` prints, `log.json` the `git log -S`
+ * answers, and `commits/` what `git show <commit>` prints. Claude is a fake Message Batches client
+ * and Jev a fake `fetch` that answers in the shapes https://docs.typesafe.ai/api.md documents.
  */
 import assert from 'node:assert/strict';
 import { cpSync, existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
@@ -53,8 +52,11 @@ import {
   staleDecisions,
 } from '../public-exports-mapping/judge.mjs';
 import { tempDir } from './-run-script.mjs';
+import { tree as JUDGE_TREE } from './fixtures/public-exports-mapping/judge.mjs';
+import { materialize } from './fixtures/public-exports-mapping/tree.mjs';
 
-const FIXTURES = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'judge');
+/** The fixtures, written to disk once for this file. */
+const FIXTURES = materialize(JUDGE_TREE, 'warp-drive-judge-fixtures-');
 const DATA = path.join(FIXTURES, 'data');
 const GIT = path.join(FIXTURES, 'git');
 const VERSIONS = ['1.0.0', '2.0.0', '3.0.0', 'head'];
@@ -111,7 +113,7 @@ function fakeGit() {
 }
 
 function fixtureContext(git = fakeGit()) {
-  const inputs = loadInputs({ from: '1.0.0', to: '3.0.0', versions: VERSIONS, dataRoot: DATA });
+  const inputs = loadInputs({ from: '1.0.0', to: '3.0.0', versions: VERSIONS, dataRoot: DATA, scratchRoot: DATA });
   return { inputs, ctx: buildContext({ ...inputs, git }), git };
 }
 
@@ -120,12 +122,21 @@ function itemOf(ctx, decl) {
   return ctx.residue.find((/** @type {any} */ item) => item.decl === decl) ?? assert.fail(`${decl} is not residue`);
 }
 
-/** A copy of the fixture data directory, with a scratch output directory beside it. */
+/**
+ * A copy of the fixture data directory, used as the data root and the scratch root both, with an
+ * output directory beside it.
+ */
 function copyData(/** @type {any} */ t) {
   const cwd = tempDir(t, 'warp-drive-judge-');
   const dataRoot = path.join(cwd, 'data');
   cpSync(DATA, dataRoot, { recursive: true });
-  return { cwd, dataRoot, out: path.join(cwd, 'out'), decisions: path.join(dataRoot, 'decisions', '1.0.0.json') };
+  return {
+    cwd,
+    dataRoot,
+    scratchRoot: dataRoot,
+    out: path.join(cwd, 'out'),
+    decisions: path.join(dataRoot, 'decisions', '1.0.0.json'),
+  };
 }
 
 /** Collects console output for one test. */
@@ -336,15 +347,23 @@ test('tokens of preferences.ignorePackages are never residue and never candidate
   ]);
 });
 
-test('loadInputs needs the surface of every release between from and to', (t) => {
-  const { dataRoot } = copyData(t);
-  rmSync(path.join(dataRoot, 'surfaces', '2.0.0.json'));
+test('loadInputs derives a surface scratch lacks from the diffs, and needs every diff', (t) => {
+  const { dataRoot, scratchRoot } = copyData(t);
+  const roots = { dataRoot, scratchRoot };
+  const file = path.join(scratchRoot, 'surfaces', '2.0.0.json');
+  const scanned = JSON.parse(readFileSync(file, 'utf8'));
+  rmSync(file);
+  const inputs = loadInputs({ from: '1.0.0', to: '3.0.0', versions: VERSIONS, ...roots });
+  assert.deepEqual(inputs.surfaces['2.0.0'], scanned, 'the diffs rebuild the surface');
+  assert.deepEqual(JSON.parse(readFileSync(file, 'utf8')), scanned, 'and it is kept in scratch');
+
+  rmSync(path.join(dataRoot, 'diffs', '1.0.0-2.0.0.json'));
   assert.throws(
-    () => loadInputs({ from: '1.0.0', to: '3.0.0', versions: VERSIONS, dataRoot }),
-    (error) => error instanceof InputError && error.message.includes('surfaces/2.0.0.json')
+    () => loadInputs({ from: '1.0.0', to: '3.0.0', versions: VERSIONS, ...roots }),
+    (error) => error instanceof InputError && error.message.includes('diffs/1.0.0-2.0.0.json')
   );
   assert.throws(
-    () => loadInputs({ from: '0.9.0', to: '3.0.0', versions: VERSIONS, dataRoot }),
+    () => loadInputs({ from: '0.9.0', to: '3.0.0', versions: VERSIONS, ...roots }),
     /0\.9\.0 is not a covered release/
   );
 });
@@ -963,10 +982,10 @@ test('staleDecisions: a decl the from surface lacks, a choice the to surface lac
       toSurface: inputs.surfaces['3.0.0'],
     }),
     [
-      { decl: 'packages/store/src/gone.ts#gone', problem: 'not a declaration of surfaces/1.0.0.json' },
+      { decl: 'packages/store/src/gone.ts#gone', problem: 'not a declaration of the 1.0.0 surface' },
       {
         decl: FETCH_MANAGER,
-        problem: 'choice @warp-drive/legacy/compat FetchManager is not a token of surfaces/3.0.0.json',
+        problem: 'choice @warp-drive/legacy/compat FetchManager is not a token of the 3.0.0 surface',
       },
     ]
   );
@@ -1383,10 +1402,16 @@ const answering = () =>
   fakeClient((request) => succeeded(ANSWERS[/** @type {keyof typeof ANSWERS} */ (DECL_BY_ID[request.custom_id])]));
 
 test('judge --dry-run writes the bundles and request bodies and prints the summary', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const before = readFileSync(decisions, 'utf8');
   const output = capture(t);
-  const code = await run(['--from', '1.0.0', '--dry-run', '--out', 'out'], { dataRoot, cwd, git: fakeGit(), env: {} });
+  const code = await run(['--from', '1.0.0', '--dry-run', '--out', 'out'], {
+    dataRoot,
+    scratchRoot,
+    cwd,
+    git: fakeGit(),
+    env: {},
+  });
   assert.equal(code, 0);
   assert.deepEqual(output.error, []);
   const histogram = Object.fromEntries(
@@ -1424,10 +1449,10 @@ test('judge --dry-run writes the bundles and request bodies and prints the summa
 });
 
 test('judge asks Claude, writes decisions/<from>.json, and lists what needs review', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const output = capture(t);
   const git = fakeGit();
-  const context = { dataRoot, cwd, git, env: {}, sleep: async () => {} };
+  const context = { dataRoot, scratchRoot, cwd, git, env: {}, sleep: async () => {} };
   const client = answering();
   assert.equal(await run(['--from', '1.0.0', '--out', out], { ...context, client }), 0);
   assert.equal(client.created.length, 1);
@@ -1516,10 +1541,10 @@ test('judge asks Claude, writes decisions/<from>.json, and lists what needs revi
 });
 
 test('judge --calibrate judges what git settled, blind, and writes no decisions', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const before = readFileSync(decisions, 'utf8');
   const output = capture(t);
-  const context = { dataRoot, cwd, git: fakeGit(), env: {}, sleep: async () => {} };
+  const context = { dataRoot, scratchRoot, cwd, git: fakeGit(), env: {}, sleep: async () => {} };
   assert.equal(await run(['--from', '1.0.0', '--calibrate', '--dry-run', '--out', out], context), 0);
   assert.deepEqual(output.log.slice(0, 2), [
     'judge --calibrate 1.0.0 -> 3.0.0: 4 of the 4 declarations git settles, judged blind',
@@ -1553,9 +1578,9 @@ test('judge --calibrate judges what git settled, blind, and writes no decisions'
 });
 
 test('judge --check passes valid decisions and fails stale or malformed ones', async (t) => {
-  const { cwd, dataRoot, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, decisions } = copyData(t);
   const output = capture(t);
-  const context = { dataRoot, cwd };
+  const context = { dataRoot, scratchRoot, cwd };
   assert.equal(await run(['--check'], context), 0);
   assert.deepEqual(output.log, ['judge --check: 1 decision files, 0 problems']);
 
@@ -1591,8 +1616,8 @@ test('judge --check passes valid decisions and fails stale or malformed ones', a
   output.log.length = 0;
   assert.equal(await run(['--check', '--from', '1.0.0'], context), 1);
   assert.deepEqual(output.log, [
-    `judge --check: data/decisions/1.0.0.json: ${FETCH_MANAGER}: stale, choice @warp-drive/legacy/compat FetchManager is not a token of surfaces/3.0.0.json`,
-    'judge --check: data/decisions/1.0.0.json: packages/store/src/gone.ts#gone: stale, not a declaration of surfaces/1.0.0.json',
+    `judge --check: data/decisions/1.0.0.json: ${FETCH_MANAGER}: stale, choice @warp-drive/legacy/compat FetchManager is not a token of the 3.0.0 surface`,
+    'judge --check: data/decisions/1.0.0.json: packages/store/src/gone.ts#gone: stale, not a declaration of the 1.0.0 surface',
     'judge --check: 1 decision files, 2 problems',
   ]);
 
@@ -1616,9 +1641,18 @@ test('judge --check passes valid decisions and fails stale or malformed ones', a
     'judge --check: 1 decision files, 2 problems',
   ]);
 
+  // without the scanned surface the diffs derive it; without the diff too, nothing does
   rmSync(path.join(dataRoot, 'surfaces', '3.0.0.json'));
   writeFileSync(decisions, canonical(doc));
-  await assert.rejects(run(['--check'], context), /needs surfaces\/3\.0\.0\.json/);
+  output.log.length = 0;
+  assert.equal(await run(['--check'], context), 1);
+  assert.equal(output.log.at(-1), 'judge --check: 1 decision files, 2 problems');
+  rmSync(path.join(dataRoot, 'surfaces', '3.0.0.json'));
+  rmSync(path.join(dataRoot, 'diffs', '2.0.0-3.0.0.json'));
+  await assert.rejects(
+    run(['--check'], context),
+    /needs the 1\.0\.0 and 3\.0\.0 surfaces to check its entries: missing surfaces\/3\.0\.0\.json/
+  );
   await assert.rejects(run(['--check', '--from', '9.9.9'], context), /decisions\/9\.9\.9\.json does not exist/);
 });
 
@@ -1638,10 +1672,10 @@ const jevAnswering = () =>
   });
 
 test('judge --judge jev --dry-run writes the Jev request bodies; a live run needs TYPESAFE_API_KEY', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const before = readFileSync(decisions, 'utf8');
   const output = capture(t);
-  const context = { dataRoot, cwd, git: fakeGit(), env: {} };
+  const context = { dataRoot, scratchRoot, cwd, git: fakeGit(), env: {} };
   assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--dry-run', '--out', 'out'], context), 0);
   assert.match(
     output.log.at(-3) ?? '',
@@ -1672,11 +1706,18 @@ test('judge --judge jev --dry-run writes the Jev request bodies; a live run need
 });
 
 test('judge --judge jev writes decisions.jev.json beside the committed decisions and scores what goes to review', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const before = readFileSync(decisions, 'utf8');
   const output = capture(t);
   const fetch = jevAnswering();
-  const context = { dataRoot, cwd, git: fakeGit(), env: { TYPESAFE_API_KEY: JEV_SECRET }, sleep: async () => {} };
+  const context = {
+    dataRoot,
+    scratchRoot,
+    cwd,
+    git: fakeGit(),
+    env: { TYPESAFE_API_KEY: JEV_SECRET },
+    sleep: async () => {},
+  };
   assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--out', out], { ...context, fetch }), 0);
   assert.equal(readFileSync(decisions, 'utf8'), before, 'decisions/1.0.0.json belongs to claude');
   // five successor questions; then one ranking, for the review entry that has candidates
@@ -1764,13 +1805,14 @@ test('judge --judge jev writes decisions.jev.json beside the committed decisions
 });
 
 test('the judge preferences.json names writes decisions/<from>.json; an unknown one is refused', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const preferencesFile = path.join(dataRoot, 'preferences.json');
   const preferences = JSON.parse(readFileSync(preferencesFile, 'utf8'));
   writeFileSync(preferencesFile, canonical({ ...preferences, judge: 'jev' }));
   capture(t);
   const context = {
     dataRoot,
+    scratchRoot,
     cwd,
     git: fakeGit(),
     env: { TYPESAFE_API_KEY: JEV_SECRET },
@@ -1795,14 +1837,14 @@ test('the judge preferences.json names writes decisions/<from>.json; an unknown 
 });
 
 test('judge --calibrate --judge jev judges what git settled, blind, through Jev', async (t) => {
-  const { cwd, dataRoot, out } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out } = copyData(t);
   const output = capture(t);
   const { truth } = calibrationBundles(fixtureContext().ctx);
   const fetch = fakeJev((body) => {
     const { winner } = truth[customIdFor(declOfState(body))];
     return choiceAnswer(body, `${winner.export} from ${winner.module}`);
   });
-  const context = { dataRoot, cwd, git: fakeGit(), env: { TYPESAFE_API_KEY: JEV_SECRET }, fetch };
+  const context = { dataRoot, scratchRoot, cwd, git: fakeGit(), env: { TYPESAFE_API_KEY: JEV_SECRET }, fetch };
   assert.equal(await run(['--from', '1.0.0', '--calibrate', '--judge', 'jev', '--out', out], context), 0);
   const dir = path.join(out, '1.0.0-3.0.0');
   const { report } = JSON.parse(readFileSync(path.join(dir, 'calibration.jev.json'), 'utf8'));
@@ -1823,7 +1865,7 @@ test('judge --calibrate --judge jev judges what git settled, blind, through Jev'
 });
 
 test('judge --import records the answers of the project thread through the same checks as a model answer', async (t) => {
-  const { cwd, dataRoot, out, decisions } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
   const before = readFileSync(decisions, 'utf8');
   const output = capture(t);
   writeFileSync(
@@ -1849,7 +1891,7 @@ test('judge --import records the answers of the project thread through the same 
       'packages/store/src/store-service.ts#default': { choice: null, confidence: 1, reason: 'Git settles it.' },
     })
   );
-  const context = { dataRoot, cwd, git: fakeGit(), env: {} };
+  const context = { dataRoot, scratchRoot, cwd, git: fakeGit(), env: {} };
   const reviewLines = [
     `  review ${IDENTIFIER_ARRAY} [below-threshold]: @warp-drive/core/types LiveArray at 0.5`,
     `  review ${NORMALIZE_MODEL_NAME} [error]: choice is neither null nor { module, export }`,
@@ -1930,7 +1972,7 @@ test('judge --import records the answers of the project thread through the same 
 });
 
 test('judge --compare prints agreement, then the disagreements and low-confidence entries for a person', async (t) => {
-  const { cwd, dataRoot } = copyData(t);
+  const { cwd, dataRoot, scratchRoot } = copyData(t);
   const output = capture(t);
   /** @param {string} decl @param {any} choice @param {number} confidence @param {string} judge */
   const entry = (decl, choice, confidence, judge) => ({ decl, choice, confidence, reason: `${judge} says so.`, judge });
@@ -1968,7 +2010,7 @@ test('judge --compare prints agreement, then the disagreements and low-confidenc
       { decl: PEEK_RECORDS, error: NO_CANDIDATES, why: ['error'] },
     ])
   );
-  assert.equal(await run(['--compare', 'a.json', 'b.json'], { dataRoot, cwd }), 0);
+  assert.equal(await run(['--compare', 'a.json', 'b.json'], { dataRoot, scratchRoot, cwd }), 0);
   assert.deepEqual(output.log, [
     'judge --compare',
     '  A: a.json, 5 entries (claude-opus-5-5)',
@@ -1995,17 +2037,17 @@ test('judge --compare prints agreement, then the disagreements and low-confidenc
     '      A: no entry',
     '      B: removed at 0.85: jev says so.',
   ]);
-  await assert.rejects(run(['--compare', 'a.json'], { dataRoot, cwd }), /--compare takes two files/);
+  await assert.rejects(run(['--compare', 'a.json'], { dataRoot, scratchRoot, cwd }), /--compare takes two files/);
   await assert.rejects(
-    run(['--compare', 'a.json', 'nope.json'], { dataRoot, cwd }),
+    run(['--compare', 'a.json', 'nope.json'], { dataRoot, scratchRoot, cwd }),
     /judge: nope\.json does not exist/
   );
 });
 
 test('judge: usage errors and missing inputs throw', async (t) => {
-  const { cwd, dataRoot, out } = copyData(t);
+  const { cwd, dataRoot, scratchRoot, out } = copyData(t);
   const output = capture(t);
-  const context = { dataRoot, cwd, git: fakeGit(), env: {} };
+  const context = { dataRoot, scratchRoot, cwd, git: fakeGit(), env: {} };
   await assert.rejects(run(['--bogus'], context), /^Error: judge: Unknown option '--bogus'/);
   await assert.rejects(
     run(['--dry-run'], context),

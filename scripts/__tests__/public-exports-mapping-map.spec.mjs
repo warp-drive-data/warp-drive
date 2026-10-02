@@ -1,10 +1,9 @@
 import assert from 'node:assert/strict';
-import { cpSync, existsSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, test } from 'node:test';
 
-import { canonical, REPO_ROOT } from '../public-exports-mapping/artifacts.mjs';
-import * as shipCommand from '../public-exports-mapping/commands/ship.mjs';
+import { REPO_ROOT } from '../public-exports-mapping/artifacts.mjs';
 import {
   applyDiff,
   buildMap,
@@ -19,11 +18,9 @@ import {
   separatingRule,
   SOURCE_TIE_RULE,
 } from '../public-exports-mapping/map.mjs';
-import { MESSAGES, ship } from '../public-exports-mapping/ship.mjs';
-import { tempDir } from './-run-script.mjs';
 
-const FIXTURE = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'map');
-const PLUGIN_FIXTURE = path.join(
+/** The plugin's test data, laid out as the data directory is; the reader's tests read it too. */
+const FIXTURE = path.join(
   REPO_ROOT,
   'packages',
   'eslint-plugin-warp-drive',
@@ -42,7 +39,7 @@ const jsonIn = (dir) => readdirSync(path.join(FIXTURE, dir)).map((name) => read(
 function fixtureData() {
   return {
     releases: read('releases.json'),
-    surfaces: [read('surfaces/4.12.8.json')],
+    surfaces: [read('surface.4.12.8.json')],
     diffs: jsonIn('diffs'),
     decisions: jsonIn('decisions'),
     preferences: read('preferences.json'),
@@ -376,7 +373,7 @@ describe('buildMap', () => {
   const decide = (module, name, typeOnly = false) => map.resolve(module, name, { typeOnly });
 
   test('lists every token of the from surface once, with how it resolved', () => {
-    const surface = read('surfaces/4.12.8.json');
+    const surface = read('surface.4.12.8.json');
     const expected = Object.entries(surface.modules).flatMap(([module, record]) =>
       Object.keys(record.exports).map((name) => `${module} ${name}`)
     );
@@ -734,164 +731,5 @@ describe('buildMap', () => {
       tracking.residue.filter((t) => t.module === 'warp-drive/core').map((t) => t.export),
       ['UmbrellaOnly']
     );
-  });
-});
-
-describe('ship', () => {
-  /** Runs `fn` with console.log captured; returns its result and the printed lines. */
-  async function captured(t, fn) {
-    const lines = [];
-    t.mock.method(console, 'log', (line) => lines.push(String(line)));
-    const result = await fn();
-    t.mock.restoreAll();
-    return { result, lines };
-  }
-
-  /** A writable copy of the fixture data and an empty shipped directory. */
-  function setup(t) {
-    const dataRoot = tempDir(t, 'ship-data-');
-    cpSync(FIXTURE, dataRoot, { recursive: true });
-    return { dataRoot, shippedRoot: tempDir(t, 'ship-out-') };
-  }
-
-  test('is a command module', () => {
-    assert.equal(shipCommand.name, 'ship');
-    assert.match(shipCommand.describe, /^ship \[--check\]/);
-    assert.equal(typeof shipCommand.run, 'function');
-  });
-
-  test('writes the data directory, then --check finds no drift', async (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    const write = await captured(t, () => shipCommand.run([], { dataRoot, shippedRoot }));
-    assert.equal(write.result, 0);
-    assert.match(write.lines.at(-1), /^ship: 9 artifacts, 9 written$/);
-    const files = [
-      'decisions/4.12.8.json',
-      'diffs/4.12.8-5.0.1.json',
-      'diffs/5.0.1-5.6.0.json',
-      'diffs/5.6.0-5.9.1.json',
-      'diffs/5.9.1-head.json',
-      'messages.json',
-      'preferences.json',
-      'releases.json',
-      'surface.4.12.8.json',
-    ];
-    assert.deepEqual(
-      [...readdirSync(shippedRoot, { recursive: true })].filter((f) => f.endsWith('.json')).sort(),
-      files
-    );
-    assert.equal(
-      readFileSync(path.join(shippedRoot, 'surface.4.12.8.json'), 'utf8'),
-      canonical(read('surfaces/4.12.8.json')),
-      'written as canonical JSON, whatever the format of the source'
-    );
-    assert.equal(readFileSync(path.join(shippedRoot, 'messages.json'), 'utf8'), canonical(MESSAGES));
-
-    const check = await captured(t, () => shipCommand.run(['--check'], { dataRoot, shippedRoot }));
-    assert.equal(check.result, 0);
-    assert.deepEqual(check.lines, ['ship: 9 artifacts, 0 drifted']);
-  });
-
-  test('--check reports a changed source and writes nothing', async (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    await captured(t, () => shipCommand.run([], { dataRoot, shippedRoot }));
-    const file = path.join(dataRoot, 'decisions', '4.12.8.json');
-    const decisions = JSON.parse(readFileSync(file, 'utf8'));
-    decisions.entries[0].reviewed = true;
-    writeFileSync(file, canonical(decisions));
-    const before = readFileSync(path.join(shippedRoot, 'decisions', '4.12.8.json'), 'utf8');
-
-    const check = await captured(t, () => shipCommand.run(['--check'], { dataRoot, shippedRoot }));
-    assert.equal(check.result, 1);
-    assert.match(check.lines[0], /^ship: would change .*decisions\/4\.12\.8\.json \(\d+ -> \d+ lines\)$/);
-    assert.equal(readFileSync(path.join(shippedRoot, 'decisions', '4.12.8.json'), 'utf8'), before);
-  });
-
-  test('removes shipped data whose source is gone, and only data', async (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    await captured(t, () => shipCommand.run([], { dataRoot, shippedRoot }));
-    rmSync(path.join(dataRoot, 'decisions', '4.12.8.json'));
-    writeFileSync(path.join(shippedRoot, '5.5.json'), '{}\n');
-    writeFileSync(path.join(shippedRoot, 'index.js'), 'module.exports = {};\n');
-
-    const check = await captured(t, () => shipCommand.run(['--check'], { dataRoot, shippedRoot }));
-    assert.equal(check.result, 1);
-    assert.deepEqual(
-      check.lines.filter((l) => l.includes('would remove')).map((l) => path.basename(l)),
-      ['5.5.json', '4.12.8.json']
-    );
-    assert.equal(existsSync(path.join(shippedRoot, '5.5.json')), true);
-
-    const write = await captured(t, () => shipCommand.run([], { dataRoot, shippedRoot }));
-    assert.equal(write.result, 0);
-    assert.equal(existsSync(path.join(shippedRoot, '5.5.json')), false);
-    assert.equal(existsSync(path.join(shippedRoot, 'decisions', '4.12.8.json')), false);
-    assert.equal(existsSync(path.join(shippedRoot, 'index.js')), true);
-  });
-
-  test('a stale decision fails --check', async (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    const file = path.join(dataRoot, 'decisions', '4.12.8.json');
-    const decisions = JSON.parse(readFileSync(file, 'utf8'));
-    decisions.entries.find((e) => e.choice?.export === 'LiveArray').choice.export = 'NoSuchArray';
-    writeFileSync(file, canonical(decisions));
-
-    const write = await captured(t, () => shipCommand.run([], { dataRoot, shippedRoot }));
-    assert.equal(write.result, 0, 'writing still ships; the reader skips the stale entry');
-    const check = await captured(t, () => shipCommand.run(['--check'], { dataRoot, shippedRoot }));
-    assert.equal(check.result, 1);
-    assert.deepEqual(check.lines, [
-      'ship: 9 artifacts, 0 drifted',
-      'ship: stale decision in decisions/4.12.8.json: packages/store/src/-private/record-arrays/identifier-array.ts#default (@ember-data/store/-private IdentifierArray): choice-not-in-to',
-    ]);
-  });
-
-  test('refuses diffs that do not rebuild a surface, a broken chain and a missing baseline', (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    const file = path.join(dataRoot, 'diffs', '5.6.0-5.9.1.json');
-    const diff = JSON.parse(readFileSync(file, 'utf8'));
-    delete diff.exports['@warp-drive/core/store'];
-    writeFileSync(file, canonical(diff));
-    assert.throws(
-      () => ship({ dataRoot, shippedRoot }),
-      /the diffs up to 5\.9\.1 do not rebuild surfaces\/5\.9\.1\.json/
-    );
-
-    rmSync(file);
-    assert.throws(() => ship({ dataRoot, shippedRoot }), /missing diffs\/5\.6\.0-5\.9\.1\.json/);
-
-    rmSync(path.join(dataRoot, 'surfaces', '4.12.8.json'));
-    assert.throws(
-      () => ship({ dataRoot, shippedRoot }),
-      /missing surfaces\/4\.12\.8\.json \(cli\.mjs surface 4\.12\.8\)/
-    );
-    assert.deepEqual(readdirSync(shippedRoot), [], 'nothing is written');
-  });
-
-  test('takes the context the CLI passes, and throws on usage errors and missing inputs', async (t) => {
-    const { dataRoot, shippedRoot } = setup(t);
-    const write = await captured(t, () => shipCommand.run([], { dataRoot, cwd: dataRoot, shippedRoot }));
-    assert.equal(write.result, 0);
-    await assert.rejects(() => shipCommand.run(['--force'], { dataRoot, shippedRoot }), /Unknown option '--force'/);
-    await assert.rejects(() => shipCommand.run(['5.9.1'], { dataRoot, shippedRoot }), /Unexpected argument '5\.9\.1'/);
-    const empty = tempDir(t, 'ship-empty-');
-    await assert.rejects(() => shipCommand.run([], { dataRoot: empty, shippedRoot }), /ship: missing releases\.json/);
-  });
-
-  // The plugin's fixture is this fixture as ship writes it, formatted by oxfmt. To refresh it, run
-  // ship({ dataRoot: FIXTURE, shippedRoot: PLUGIN_FIXTURE }), then `pnpm exec oxfmt` on it.
-  test("keeps the plugin's test fixture in sync with this fixture", (t) => {
-    const shippedRoot = tempDir(t, 'ship-plugin-');
-    t.mock.method(console, 'log', () => {});
-    ship({ dataRoot: FIXTURE, shippedRoot });
-    t.mock.restoreAll();
-    /** @param {string} root */
-    const files = (root) =>
-      [...readdirSync(root, { recursive: true })].filter((f) => String(f).endsWith('.json')).sort();
-    assert.deepEqual(files(PLUGIN_FIXTURE), files(shippedRoot));
-    for (const file of files(shippedRoot)) {
-      const parse = (/** @type {string} */ root) => JSON.parse(readFileSync(path.join(root, String(file)), 'utf8'));
-      assert.deepEqual(parse(PLUGIN_FIXTURE), parse(shippedRoot), `${file} differs from what ship writes`);
-    }
   });
 });

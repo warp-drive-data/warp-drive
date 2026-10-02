@@ -3,7 +3,7 @@
  * `shapes/<version>.json`.
  *
  * The audit records, per non-private package of a release, what npm has at the version the tag's
- * `package.json` names (see `published.mjs`) and, when `surfaces/<version>.json` exists, how the
+ * `package.json` names (see `published.mjs`) and, when the version has a surface, how the
  * surface disagrees with it, per package the surface covers:
  *
  * - `modulesNotShipped`: modules of the surface the package does not ship;
@@ -22,10 +22,10 @@
  * `<package>/<file in the package>#<local name>` and, when a surface is given, also by the
  * surface's source declaration id when the local names match.
  */
-import { existsSync } from 'node:fs';
 import path from 'node:path';
 
-import { DATA_ROOT, readJson, REPO_ROOT } from './artifacts.mjs';
+import { REPO_ROOT } from './artifacts.mjs';
+import { surfacePath } from './data.mjs';
 import { declarationId, fetchTarball, openPublished, packagesAt, PublishedRelease } from './published.mjs';
 
 /**
@@ -70,25 +70,6 @@ import { declarationId, fetchTarball, openPublished, packagesAt, PublishedReleas
 /** @param {string} a @param {string} b */
 function compare(a, b) {
   return a < b ? -1 : a > b ? 1 : 0;
-}
-
-/**
- * @param {string} version
- * @param {string} [dataRoot]
- */
-export function surfacePath(version, dataRoot = DATA_ROOT) {
-  return path.join(dataRoot, 'surfaces', `${version}.json`);
-}
-
-/**
- * `surfaces/<version>.json`, or `null` while area A has not written it.
- * @param {string} version
- * @param {{ dataRoot?: string }} [options]
- * @returns {Surface | null}
- */
-export function loadSurface(version, { dataRoot = DATA_ROOT } = {}) {
-  const file = surfacePath(version, dataRoot);
-  return existsSync(file) ? readJson(file) : null;
 }
 
 /**

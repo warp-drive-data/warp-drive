@@ -1,7 +1,0 @@
-{
-  "audience": "ember",
-  "ignorePackages": ["eslint-plugin-warp-drive", "@ember-data/codemods", "warp-drive"],
-  "report": {},
-  "schema": 1,
-  "tieBreak": ["@warp-drive/ember"]
-}

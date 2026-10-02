@@ -26,29 +26,37 @@ Consecutive entries form the pairs `4.12.8-5.0.1`, `5.0.1-5.4.1`, ..., `5.9.1-he
 ```
 scripts/public-exports-mapping/
   CONTRACT.md       this file
-  releases.json     covered versions
-  artifacts.mjs     canonical JSON, write/check helpers, repo paths        (shared, exists)
+  artifacts.mjs     canonical JSON, write/check helpers, the data and scratch roots         (shared)
+  data.mjs          where each file lives; the surface of a release, derived from the diffs (shared)
   cli.mjs           `node scripts/public-exports-mapping/cli.mjs <command> ...`; loads commands/*.mjs
   commands/*.mjs    one file per command: `export const name`, `export const describe`, `export async function run(argv, context)`
   resolver.mjs      oxc-resolver configured for a source tree                          area A
   exports.mjs       what one source file exports, from the oxc-parser module record     area A
   worktrees.mjs     a git worktree per release tag, disposed after use                  area A
-  surface.mjs       entry discovery per era; `surfaces/<version>.json`                  area A
+  surface.mjs       entry discovery per era; the surface of one release                 area A
   history.mjs       file renames and symbol moves between two releases, from git        area B
   diff.mjs          `diffs/<a>-<b>.json` from two surfaces and a history                area B
   published.mjs     the package as published on npm, from a cached tarball              area C
   audit.mjs         surface vs published package; `audits/<version>.json`, `shapes/`    area C
   map.mjs           the stages and the ranking; a map for any (from, to)                area D
-  ship.mjs          writes the plugin's data directory                                  area D
-  judge.mjs         evidence bundles, the Claude judge, `decisions/<from>.json`         area E
-  surfaces/  history/  diffs/  audits/  shapes/  decisions/  preferences.json           data
-packages/eslint-plugin-warp-drive/src/legacy-import-mapping/                            area D
-  index.js index.d.ts   the reader: loadMap({ from, to }).resolve(module, name, { typeOnly })
+  judge.mjs         evidence bundles, the judges, `decisions/<from>.json`               area E
+packages/eslint-plugin-warp-drive/src/legacy-import-mapping/                the data directory, area D
+  index.js index.d.ts map-core.js   the reader: loadMap({ from, to }).resolve(module, name, { typeOnly })
   releases.json  surface.4.12.8.json  diffs/*.json  decisions/*.json  preferences.json  messages.json
+tmp/public-exports-mapping/                                                 scratch, git ignored
+  surfaces/<version>.json  history/<a>-<b>.json  audits/  shapes/  judge/<from>-<to>/
 packages/eslint-plugin-warp-drive/src/rules/no-legacy-imports.{js,md}                   area D
 scripts/__tests__/public-exports-mapping-<area>.spec.mjs                                each area
-scripts/__tests__/fixtures/public-exports-mapping/<area>/                               each area
+scripts/__tests__/fixtures/public-exports-mapping/<area>.mjs                            each area
 ```
+
+The data directory is the product and its only copy: what the plugin ships, git-tracked, and
+checked byte-for-byte in CI (`pnpm lint:public-exports`). Scratch holds what rebuilds from the
+tags, git and the registry in seconds: the surface of every release but the baseline (scanned by
+`surface <version>`, or derived by applying the diffs to the baseline surface when no scan is on
+disk; the two are identical), the histories (`history <a> <b>`, or computed from git when the
+judge needs one), the audits and shapes, and the judge's bundles. A scratch file is written
+whenever a command computes it, `--check` included, and never counts as drift.
 
 Each area edits only its own files, its command modules and its spec. A need for a change in
 another area's file is a note in the commit message, not an edit.
@@ -70,7 +78,8 @@ another area's file is a note in the commit message, not an edit.
 - Every JSON artifact is written through `artifacts.mjs`: keys sorted, two-space indent,
   trailing newline, no dates, tool versions or absolute paths inside, so a regeneration that
   changes nothing produces the same bytes. Every command takes `--check`: it computes the same
-  files in memory, prints each file that would change, writes nothing, exits 1 on a difference.
+  files in memory, prints each data file that would change, writes none of them, exits 1 on a
+  difference; scratch files are written either way.
 - Module and export names, declaration ids and paths are repo-relative and POSIX.
 - Commits: Conventional Commits (`feat(scripts): ...`, `chore(scripts): ...`, `test(scripts): ...`),
   imperative subject, no trailing period, a body that says what and why. No agent or model
@@ -130,7 +139,10 @@ judge takes a candidate from them, and the judge never lists them as residue.
 
 ## Files
 
-### `surfaces/<version>.json` (area A)
+### `surface.<baseline>.json` and `surfaces/<version>.json` (area A)
+
+The baseline's surface is data; every other release's surface is scratch, `surfaces/<version>.json`,
+and `data.mjs` derives it from the baseline and the diffs when no scan is on disk.
 
 ```json
 {
@@ -156,7 +168,7 @@ judge takes a candidate from them, and the judge never lists them as residue.
 statement's leading JSDoc carries `@deprecated`. `version` is `head` for the working tree, with
 `tag` null.
 
-### `history/<a>-<b>.json` (area B)
+### `history/<a>-<b>.json` (area B, scratch)
 
 ```json
 {
@@ -195,7 +207,7 @@ can match it, but it still counts as something the commit added outside `b`). No
 means no entry. `history` needs the full commit range: a shallow
 clone makes it throw, so CI checks out full history with tags (`fetch-depth: 0`).
 
-### `diffs/<a>-<b>.json` (area B)
+### `diffs/<a>-<b>.json` (area B, data)
 
 ```json
 {
@@ -244,7 +256,7 @@ declaration of the same kind, but only when the commit added nothing outside sur
 removed no other declaration of that kind that would land on the same target. Anything else maps
 to `null`, and the judge (area E) decides.
 
-### `audits/<version>.json` and `shapes/<version>.json` (area C)
+### `audits/<version>.json` and `shapes/<version>.json` (area C, scratch)
 
 The published package at the version the tag's `package.json` names (`npm pack` into a cache
 directory outside the repository, `$WARP_DRIVE_EXPORTS_CACHE` or `<repo>/../.cache/warp-drive-public-exports`,
@@ -308,8 +320,8 @@ answers without a tool call. Calibration (`--calibrate`) replays the declaration
 truth hidden among the candidates, and reports agreement per confidence bucket and per kind
 (`files`, `symbols`, `same`); the threshold is read from the `symbols` row, the hardest kind.
 Below the threshold, or when the choice is not a token of `to`, the answer goes to
-`judge-review.json` in the output directory (`tmp/public-exports-judge/<from>-<to>/`, git
-ignored) for a person. No model runs in CI.
+`judge-review.json` in the output directory (`tmp/public-exports-mapping/judge/<from>-<to>/`,
+git ignored) for a person. No model runs in CI.
 
 Three judges read the same evidence bundles, and a decision's `judge` field says which one
 answered: `claude-opus-5-5` (above), `jev` and `thread`. `--judge jev` asks TypeSafe AI's Jev
@@ -326,7 +338,7 @@ writes `decisions/<from>.json`, any other judge writes
 two such files (decisions, review or answers) agree, differ and fall below the threshold, so a
 second judge's disagreements go to a person before a shipped decision changes.
 
-### `preferences.json` (shared, area D writes it)
+### `preferences.json` (shared, data)
 
 ```json
 { "schema": 1, "audience": "ember", "tieBreak": ["@warp-drive/ember"],
@@ -425,9 +437,8 @@ cli.mjs diff <a> <b> [--check]                  area B
 cli.mjs audit <version> [--check]               area C
 cli.mjs judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev|thread] [--import answers.json] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
 cli.mjs judge --compare <a.json> <b.json> [--threshold 0.8]   area E: where two judges agree and differ
-cli.mjs ship [--check]                          area D
-cli.mjs update [--check]                        area A: surface head, then history/diff 5.9.1-head and ship when those commands exist
-cli.mjs release <version>                       area A: surface + history + diff + audit for a newly tagged version, then ship
+cli.mjs update [--check]                        area A: surface head, history and diff <newest>-head, judge --check; drops a stale head diff
+cli.mjs release <version> [--keep]              area A: surface + history + diff + audit for a newly tagged version, then the update steps when it is the newest
 ```
 
 `cli.mjs` discovers `commands/*.mjs`; a command module that is missing is reported as "not
@@ -435,12 +446,11 @@ implemented yet" (exit 2) rather than failing the loader. Area A writes `cli.mjs
 every other area adds only its own `commands/<name>.mjs`.
 
 A command exports `run(argv, context)`: `argv` is the argument list after the command name,
-`context` is `{ dataRoot, cwd }` with defaults of the data directory and `process.cwd()` (tests
-pass a temp directory). `run` resolves to the process exit code and throws on a usage error or
+`context` is `{ dataRoot, scratchRoot, cwd }` with defaults of the data directory, the scratch
+directory and `process.cwd()` (tests pass temp directories). `run` resolves to the process exit code and throws on a usage error or
 a missing input; the loader prints the error message and exits 1. `console` output belongs in
 `commands/*.mjs` only (one `no-console` disable per file); library modules return data.
 
-Generated JSON directories (`surfaces/`, `history/`, `diffs/`, `audits/`, `shapes/`,
-`decisions/` and the shipped copies) are excluded from `oxfmt` in `.oxfmtrc.jsonc`, because the
-formatter would collapse short arrays and break the byte-for-byte `--check`. Hand-written
-fixtures and code must pass `pnpm exec oxfmt --check`.
+The data directory's JSON is excluded from `oxfmt` in `.oxfmtrc.jsonc`, because the formatter
+would collapse short arrays and break the byte-for-byte `--check`; scratch is git ignored.
+Hand-written fixtures and code must pass `pnpm exec oxfmt --check`.

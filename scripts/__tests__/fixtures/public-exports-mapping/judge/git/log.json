@@ -1,4 +1,0 @@
-{
-  "StoreRequestInput v1.0.0..v3.0.0 packages/store/src/types.ts": "8888888888\trefactor: move the request types to @warp-drive/core (#9500)",
-  "fetchManager v1.0.0..v2.0.0 packages/store/src/fetch-manager.ts": "7777777777\tchore: drop the fetch manager (#8700)"
-}

@@ -9,7 +9,17 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, REPO_ROOT, canonical, readJson, releases, report, writeArtifact } from '../artifacts.mjs';
+import {
+  DATA_ROOT,
+  REPO_ROOT,
+  SCRATCH_ROOT,
+  canonical,
+  readJson,
+  releases,
+  report,
+  writeArtifact,
+} from '../artifacts.mjs';
+import { decisionsPath, loadSurface } from '../data.mjs';
 import { JEV, JEV_KEY, askJev, jevKey, jevRequests, rankWithJev } from '../jev.mjs';
 import {
   DEFAULT_EFFORT,
@@ -93,7 +103,8 @@ const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
 /**
  * @typedef {object} JudgeContext
- * @property {string} [dataRoot]  the directory the artifacts live in (cli.mjs passes it)
+ * @property {string} [dataRoot]  the data directory (cli.mjs passes it)
+ * @property {string} [scratchRoot]  where the intermediates and, by default, the output go (cli.mjs passes it)
  * @property {string} [cwd]  the directory the command was run from; relative paths resolve against it
  * @property {import('../judge.mjs').Git} [git]  runs git; tests stub it
  * @property {any} [client]  an Anthropic client; tests pass a fake, a live run builds one from `ANTHROPIC_API_KEY`
@@ -109,7 +120,8 @@ const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
  * @returns {Promise<number>} the exit code: 0 done, 1 `--check` found problems
  */
 export async function run(argv, context = {}) {
-  const { dataRoot = DATA_ROOT, cwd = process.cwd(), env = process.env } = context;
+  const { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd(), env = process.env } = context;
+  const roots = { dataRoot, scratchRoot };
   /** @type {Record<string, any>} */
   let args;
   /** @type {string[]} */
@@ -127,10 +139,10 @@ export async function run(argv, context = {}) {
   if (!(threshold >= 0 && threshold <= 1)) throw usageError('--threshold takes a number from 0 to 1');
   if (args.compare) {
     if (positionals.length !== 2) throw usageError('--compare takes two files');
-    return compare({ files: positionals, threshold, dataRoot, cwd, to: args.to });
+    return compare({ files: positionals, threshold, roots, cwd, to: args.to });
   }
   if (positionals.length) throw usageError(`unexpected argument ${positionals[0]}`);
-  if (args.check) return check({ from: args.from, dataRoot, cwd });
+  if (args.check) return check({ from: args.from, roots, cwd });
 
   if (args.judge !== undefined && !JUDGE_NAMES.includes(args.judge)) {
     throw usageError(`unknown judge ${args.judge}; use ${JUDGE_NAMES.join(', ')}`);
@@ -165,7 +177,7 @@ export async function run(argv, context = {}) {
   const to = args.to ?? versions.filter((v) => v !== 'head').at(-1);
   let inputs;
   try {
-    inputs = loadInputs({ from, to, versions, dataRoot });
+    inputs = loadInputs({ from, to, versions, dataRoot, scratchRoot, cwd: REPO_ROOT });
   } catch (error) {
     if (error instanceof InputError) throw new InputError(`judge: ${error.message}`);
     throw error;
@@ -178,7 +190,7 @@ export async function run(argv, context = {}) {
   const official = judgeName === preferred;
   const named = (/** @type {string} */ file) => (official ? file : file.replace(/\.json$/, `.${judgeName}.json`));
   const ctx = buildContext({ ...inputs, git: context.git ?? defaultGit() });
-  const outDir = path.join(path.resolve(cwd, args.out ?? DEFAULT_OUT), `${from}-${to}`);
+  const outDir = path.join(args.out ? path.resolve(cwd, args.out) : path.join(scratchRoot, 'judge'), `${from}-${to}`);
   const shown = display(outDir, cwd);
   const dryRun = args['dry-run'];
 
@@ -253,9 +265,7 @@ export async function run(argv, context = {}) {
     return 0;
   }
 
-  const decisionsFile = official
-    ? path.join(dataRoot, 'decisions', `${from}.json`)
-    : path.join(outDir, `decisions.${judgeName}.json`);
+  const decisionsFile = official ? decisionsPath(from, roots) : path.join(outDir, `decisions.${judgeName}.json`);
   const existing = official ? (inputs.decisions?.entries ?? []) : entriesIn(decisionsFile);
   const stale = staleDecisions({
     decisions: { from, to, entries: existing },
@@ -524,9 +534,9 @@ function sideLine(entry) {
 /**
  * `--compare <a> <b>`: where two judges agree, where they differ, and what is below the threshold,
  * for a person to read. Each file is a decisions file, a review file or an answers file.
- * @param {{ files: string[], threshold: number, dataRoot: string, cwd: string, to?: string }} options
+ * @param {{ files: string[], threshold: number, roots: import('../data.mjs').Roots, cwd: string, to?: string }} options
  */
-function compare({ files, threshold, dataRoot, cwd, to }) {
+function compare({ files, threshold, roots, cwd, to }) {
   const [a, b] = files.map((file) => {
     const absolute = path.resolve(cwd, file);
     const doc = readJsonInput(absolute, cwd);
@@ -540,11 +550,11 @@ function compare({ files, threshold, dataRoot, cwd, to }) {
     return { shown: display(absolute, cwd), entries, judges, to: typeof doc?.to === 'string' ? doc.to : undefined };
   });
   const target = to ?? a.to ?? b.to;
-  const surfaceFile = target && path.join(dataRoot, 'surfaces', `${target}.json`);
+  const surface = target ? loadSurface(target, roots, { optional: true }) : null;
   /** @type {((ref: { module: string, export: string }) => string | undefined) | undefined} */
   let declOf;
-  if (surfaceFile && existsSync(surfaceFile)) {
-    const decls = new Map(indexSurface(readJson(surfaceFile)).tokens.map((t) => [`${t.module} ${t.export}`, t.decl]));
+  if (surface) {
+    const decls = new Map(indexSurface(surface).tokens.map((t) => [`${t.module} ${t.export}`, t.decl]));
     declOf = (ref) => decls.get(`${ref.module} ${ref.export}`);
   }
   const result = compareDecisions(a.entries, b.entries, { threshold, declOf });
@@ -599,10 +609,10 @@ function compare({ files, threshold, dataRoot, cwd, to }) {
 /**
  * `--check`: every decisions file (or the one for `--from`) is canonical, well formed, and not
  * stale against its surfaces. A missing file or surface is a missing input and throws.
- * @param {{ from?: string, dataRoot: string, cwd: string }} options
+ * @param {{ from?: string, roots: import('../data.mjs').Roots, cwd: string }} options
  */
-function check({ from, dataRoot, cwd }) {
-  const dir = path.join(dataRoot, 'decisions');
+function check({ from, roots, cwd }) {
+  const dir = path.join(roots.dataRoot ?? DATA_ROOT, 'decisions');
   const files = from
     ? [`${from}.json`]
     : existsSync(dir)
@@ -612,7 +622,7 @@ function check({ from, dataRoot, cwd }) {
       : [];
   let problems = 0;
   for (const file of files) {
-    const issues = checkFile(path.join(dir, file), file.slice(0, -'.json'.length), dataRoot);
+    const issues = checkFile(path.join(dir, file), file.slice(0, -'.json'.length), roots);
     for (const issue of issues) console.log(`judge --check: ${display(path.join(dir, file), cwd)}: ${issue}`);
     problems += issues.length;
   }
@@ -620,9 +630,10 @@ function check({ from, dataRoot, cwd }) {
   return problems ? 1 : 0;
 }
 
-/** @param {string} file @param {string} from @param {string} dataRoot @returns {string[]} */
-function checkFile(file, from, dataRoot) {
-  if (!existsSync(file)) throw new InputError(`judge --check: ${path.relative(dataRoot, file)} does not exist`);
+/** @param {string} file @param {string} from @param {import('../data.mjs').Roots} roots @returns {string[]} */
+function checkFile(file, from, roots) {
+  const shown = path.relative(roots.dataRoot ?? DATA_ROOT, file);
+  if (!existsSync(file)) throw new InputError(`judge --check: ${shown} does not exist`);
   const text = readFileSync(file, 'utf8');
   let doc;
   try {
@@ -644,13 +655,17 @@ function checkFile(file, from, dataRoot) {
     seen.add(entry?.decl);
   }
   if (doc.entries.length && typeof doc.to === 'string' && typeof doc.from === 'string') {
-    const surfaceFiles = [doc.from, doc.to].map((v) => path.join(dataRoot, 'surfaces', `${v}.json`));
-    const missing = surfaceFiles.filter((f) => !existsSync(f));
-    if (missing.length) {
-      const names = missing.map((f) => path.relative(dataRoot, f)).join(', ');
-      throw new InputError(`judge --check: ${path.relative(dataRoot, file)} needs ${names} to check its entries`);
+    /** @type {any[]} */
+    let surfaces;
+    try {
+      surfaces = [doc.from, doc.to].map((v) => loadSurface(v, roots));
+    } catch (error) {
+      const why = /** @type {Error} */ (error).message;
+      throw new InputError(
+        `judge --check: ${shown} needs the ${doc.from} and ${doc.to} surfaces to check its entries: ${why}`
+      );
     }
-    const [fromSurface, toSurface] = surfaceFiles.map((f) => readJson(f));
+    const [fromSurface, toSurface] = surfaces;
     for (const p of staleDecisions({ decisions: doc, fromSurface, toSurface })) {
       issues.push(`${p.decl}: stale, ${p.problem}`);
     }

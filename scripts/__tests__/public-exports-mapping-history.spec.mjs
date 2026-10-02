@@ -18,17 +18,17 @@ import {
   withoutTemplateTags,
 } from '../public-exports-mapping/history.mjs';
 import { tempDir } from './-run-script.mjs';
+import { tree as FIXTURES } from './fixtures/public-exports-mapping/history.mjs';
 
-const FIXTURES = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'history');
-
-/** @param {string} name */
+/** The text of a fixture file. @param {string} name */
 function fixture(name) {
-  return readFileSync(path.join(FIXTURES, name), 'utf8');
+  const value = FIXTURES[name];
+  return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
-/** @param {string} name */
+/** A fresh copy of a JSON fixture. @param {string} name */
 function fixtureJson(name) {
-  return JSON.parse(fixture(name));
+  return structuredClone(FIXTURES[name]);
 }
 
 /** The hand-written pair 1.0.0 -> 1.1.0: two surfaces and their history. */
@@ -778,25 +778,34 @@ test('the history command writes files only until both surfaces exist, then fill
   const output = captureLog(t);
   const file = path.join(root, 'history', '1.0.0-1.1.0.json');
 
-  assert.equal(await historyCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, cwd: repo }), 0);
+  assert.equal(await historyCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root, cwd: repo }), 0);
   assert.deepEqual(JSON.parse(readFileSync(file, 'utf8')).symbols, {});
   assert.match(output(), /symbols stays empty until both surfaces exist/);
-  assert.equal(await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, cwd: repo }), 0);
+  assert.equal(
+    await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, scratchRoot: root, cwd: repo }),
+    0
+  );
 
   for (const surface of [surfaceA, surfaceB]) {
     mkdirSync(path.join(root, 'surfaces'), { recursive: true });
     writeFileSync(path.join(root, 'surfaces', `${surface.version}.json`), canonical(surface));
   }
   const before = readFileSync(file, 'utf8');
-  assert.equal(await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, cwd: repo }), 1);
-  assert.equal(readFileSync(file, 'utf8'), before, '--check writes nothing');
-  assert.match(output(), /would change .*1\.0\.0-1\.1\.0\.json/);
+  assert.equal(
+    await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, scratchRoot: root, cwd: repo }),
+    0
+  );
+  assert.notEqual(readFileSync(file, 'utf8'), before, 'a scratch file is written in check mode too');
+  assert.match(output(), /wrote .*1\.0\.0-1\.1\.0\.json/);
 
-  assert.equal(await historyCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, cwd: repo }), 0);
+  assert.equal(await historyCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root, cwd: repo }), 0);
   const written = readFileSync(file, 'utf8');
   assert.equal(written, canonical(historyOf('1.0.0', '1.1.0', { surfaceA, surfaceB, cwd: repo })));
   assert.equal(Object.keys(JSON.parse(written).symbols).length, 4);
-  assert.equal(await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, cwd: repo }), 0);
+  assert.equal(
+    await historyCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, scratchRoot: root, cwd: repo }),
+    0
+  );
 });
 
 test('the diff command names the inputs it is missing', async (t) => {
@@ -804,7 +813,7 @@ test('the diff command names the inputs it is missing', async (t) => {
   const root = dataRoot(t, { 'surfaces/1.0.0.json': surfaceA });
 
   await assert.rejects(
-    diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root }),
+    diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root }),
     (/** @type {Error} */ error) =>
       error.message.includes('missing surfaces/1.1.0.json (`cli.mjs surface 1.1.0` writes it)') &&
       error.message.includes('history/1.0.0-1.1.0.json (`cli.mjs history 1.0.0 1.1.0` writes it)') &&
@@ -823,11 +832,11 @@ test('the diff command writes diffs/<a>-<b>.json, and --check passes on it', asy
   const output = captureLog(t);
   const file = path.join(root, 'diffs', '1.0.0-1.1.0.json');
 
-  assert.equal(await diffCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root }), 1);
+  assert.equal(await diffCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, scratchRoot: root }), 1);
   assert.equal(existsSync(file), false);
-  assert.equal(await diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root }), 0);
+  assert.equal(await diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root }), 0);
   assert.equal(readFileSync(file, 'utf8'), canonical(fixtureJson('diff-1.0.0-1.1.0.json')));
-  assert.equal(await diffCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root }), 0);
+  assert.equal(await diffCommand.run(['1.0.0', '1.1.0', '--check'], { dataRoot: root, scratchRoot: root }), 0);
   assert.doesNotMatch(output(), /has no symbols/);
 });
 
@@ -840,7 +849,7 @@ test('the diff command warns when the history was written before the surfaces ex
   });
   const output = captureLog(t);
 
-  assert.equal(await diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root }), 0);
+  assert.equal(await diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root }), 0);
   assert.match(output(), /has no symbols although some declarations of 1\.0\.0 are not in 1\.1\.0/);
 });
 

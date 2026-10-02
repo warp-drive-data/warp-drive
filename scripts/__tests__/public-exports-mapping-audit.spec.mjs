@@ -2,15 +2,10 @@
  * Area C of scripts/public-exports-mapping: the published package (published.mjs), the audit
  * against a surface (audit.mjs) and the `audit` command.
  *
- * Fixtures live in fixtures/public-exports-mapping/audit/:
- * - `kit/package/` is an exports-map package; `kit.tar.gz` is built from it with
- *   `tar --format=pax --pax-option=delete=atime,delete=ctime --sort=name --owner=0 --group=0
- *   --numeric-owner --mtime='2000-01-01 00:00Z' -cf - -C kit package | gzip -9n > kit.tar.gz`
- *   (one file has a path over 100 bytes, so the archive carries a pax header). Its build output
- *   lives in `lib/` and the archive is not named `.tgz` because the repository ignores `dist` and
- *   `*.tgz`;
- * - `addon/package/` is a v1 addon, read as an unpacked directory.
- * No test reaches the network: `fetchTarball` is handed a `pack` that copies the fixture.
+ * The fixture packages come from fixtures/public-exports-mapping/audit.mjs: `kit/package/` is an
+ * exports-map package, `kit.tar.gz` beside that module its packed form, and `addon/package/` a v1
+ * addon read as an unpacked directory. No test reaches the network: `fetchTarball` is handed a
+ * `pack` that copies the fixture tarball.
  */
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -34,9 +29,12 @@ import {
   unpublishedMarkerPath,
 } from '../public-exports-mapping/published.mjs';
 import { tempDir } from './-run-script.mjs';
+import { tree as AUDIT_TREE } from './fixtures/public-exports-mapping/audit.mjs';
+import { materialize } from './fixtures/public-exports-mapping/tree.mjs';
 
-const FIXTURES = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'audit');
-const KIT_TGZ = path.join(FIXTURES, 'kit.tar.gz');
+/** The fixture packages, written to disk once for this file. */
+const FIXTURES = materialize(AUDIT_TREE, 'warp-drive-audit-fixtures-');
+const KIT_TGZ = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'kit.tar.gz');
 const KIT_DIR = path.join(FIXTURES, 'kit', 'package');
 const ADDON_DIR = path.join(FIXTURES, 'addon', 'package');
 const AMBIENT_FILE =
@@ -398,7 +396,11 @@ test('the audit compares the published packages with a contract-shaped surface',
     ['unpublished', 'fetched', 'unpublished']
   );
   assert.equal(audit.tag, 'v1.2.3');
-  assert.equal(audit.surface, 'scripts/public-exports-mapping/surfaces/1.2.3.json');
+  assert.equal(
+    audit.surface,
+    'tmp/public-exports-mapping/surfaces/1.2.3.json',
+    'where a scanned 1.2.3 surface would be'
+  );
   assert.deepEqual(audit.surfacePackagesNotInRelease, ['@fixture/elsewhere']);
   assert.deepEqual(audit.packagesNotInSurface, ['@fixture/new']);
   assert.deepEqual(audit.packages['@fixture/new'], { dir: 'packages/new', version: '3.0.0', published: false });
@@ -553,7 +555,7 @@ test('audits and shapes are canonical: the same bytes whatever the package order
   assert.equal(readFileSync(file, 'utf8'), canonical(one.audit));
 });
 
-test('run writes audits/ and shapes/, and --check exits 1 only when a file would change', async (t) => {
+test('run writes the scratch audits/ and shapes/, in check mode too', async (t) => {
   t.mock.method(console, 'log', () => {});
   const dataRoot = tempDir(t);
   const cacheDir = tempDir(t);
@@ -561,6 +563,7 @@ test('run writes audits/ and shapes/, and --check exits 1 only when a file would
   const lines = [];
   const options = {
     dataRoot,
+    scratchRoot: dataRoot,
     cacheDir,
     pack: fixturePack().pack,
     packages: () => [KIT, GONE],
@@ -581,8 +584,8 @@ test('run writes audits/ and shapes/, and --check exits 1 only when a file would
 
   assert.equal(await run(['--all', '--check'], options), 0);
   writeFileSync(auditFile, readFileSync(auditFile, 'utf8').replace('"removed"', '"renamed"'));
-  assert.equal(await run(['audit', '1.2.3', '--check'], options), 1);
-  assert.match(readFileSync(auditFile, 'utf8'), /"renamed"/, '--check writes nothing');
+  assert.equal(await run(['audit', '1.2.3', '--check'], options), 0, 'scratch is never drift');
+  assert.match(readFileSync(auditFile, 'utf8'), /"removed"/, 'and is written in check mode too');
 
   assert.equal(await run([], options), 2);
   assert.equal(await run(['--all', '1.2.3'], options), 2);

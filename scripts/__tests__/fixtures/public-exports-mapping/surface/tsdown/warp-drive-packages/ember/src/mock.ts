@@ -1,1 +1,0 @@
-export function mock(): void {}

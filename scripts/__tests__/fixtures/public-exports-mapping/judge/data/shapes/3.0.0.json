@@ -1,9 +1,0 @@
-{
-  "kind": "shapes",
-  "schema": 1,
-  "shapes": {
-    "warp-drive-packages/core/src/live-array.ts#LiveArray": "class LiveArray<T = unknown> { readonly type: string; length: number; constructor(options: { type: string; identifiers: string[] }) }",
-    "warp-drive-packages/core/src/live-array.ts#createLiveArray": "function createLiveArray<T>(options: { type: string; identifiers: string[] }): LiveArray<T>"
-  },
-  "version": "3.0.0"
-}

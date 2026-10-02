@@ -14,7 +14,6 @@ import { readdirSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { parseSync } from 'oxc-parser';
 
-import { DATA_ROOT } from './artifacts.mjs';
 import { exportsOfFile } from './exports.mjs';
 import { createResolver, exportTargets, SOURCE_EXTENSIONS, sourceTarget } from './resolver.mjs';
 
@@ -76,14 +75,6 @@ const ENTRY_SOURCE = /\.(ts|gts|tsx|js|gjs|jsx|mjs)$/;
  * @property {Record<string, { dir: string, modules: string[] }>} packages
  * @property {Record<string, SurfaceModule>} modules
  */
-
-/**
- * @param {string} version a release version or `head`
- * @param {string} [dataRoot] the artifacts directory
- */
-export function surfacePath(version, dataRoot = DATA_ROOT) {
-  return path.join(dataRoot, 'surfaces', `${version}.json`);
-}
 
 /**
  * The surface of the tree at `dir`.

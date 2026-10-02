@@ -5,7 +5,7 @@
  *
  * Each command is one module in `commands/` exporting `name`, `describe` and
  * `async run(argv, context)`: `argv` is the argument list after the command name, `context` is
- * `{ dataRoot, cwd }`. `run` resolves to the exit code and throws on a usage error or a missing
+ * `{ dataRoot, scratchRoot, cwd }`. `run` resolves to the exit code and throws on a usage error or a missing
  * input; the loader prints the error's message and exits 1. A command CONTRACT.md lists whose
  * module does not exist yet reports "not implemented yet" and exits 2.
  */
@@ -13,12 +13,12 @@ import { existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 
-import { DATA_ROOT } from './artifacts.mjs';
+import { DATA_ROOT, SCRATCH_ROOT } from './artifacts.mjs';
 
 export const COMMANDS_DIR = path.join(path.dirname(url.fileURLToPath(import.meta.url)), 'commands');
 
 /** The commands CONTRACT.md defines, in pipeline order. */
-export const CONTRACT_COMMANDS = ['surface', 'history', 'diff', 'audit', 'judge', 'ship', 'update', 'release'];
+export const CONTRACT_COMMANDS = ['surface', 'history', 'diff', 'audit', 'judge', 'update', 'release'];
 
 /** Exit code for a command whose module does not exist yet. */
 export const NOT_IMPLEMENTED = 2;
@@ -28,7 +28,8 @@ const COMMAND_NAME = /^[a-z][a-z0-9-]*$/;
 
 /**
  * @typedef {object} Context
- * @property {string} dataRoot the directory the artifacts live in (`scripts/public-exports-mapping`)
+ * @property {string} dataRoot the data directory, the plugin's `legacy-import-mapping/` (see data.mjs)
+ * @property {string} scratchRoot where the intermediates go, `tmp/public-exports-mapping`
  * @property {string} cwd the directory the command was run from
  *
  * @typedef {object} CommandModule
@@ -45,7 +46,7 @@ const COMMAND_NAME = /^[a-z][a-z0-9-]*$/;
  * @returns {Context}
  */
 export function defaultContext() {
-  return { dataRoot: DATA_ROOT, cwd: process.cwd() };
+  return { dataRoot: DATA_ROOT, scratchRoot: SCRATCH_ROOT, cwd: process.cwd() };
 }
 
 /**

@@ -1,17 +1,21 @@
 /* eslint-disable no-console -- a command prints its summary and the surface's diagnostics */
 /**
  * `surface <version|head> [--check] [--keep] [--verbose]`, `surface --all [--check] [--keep]`
+ *
+ * Scans the tag `v<version>` (a detached worktree, removed after) or the working tree for `head`.
+ * The baseline's surface is a product file, `surface.<baseline>.json`, which `--check` compares;
+ * every other surface is scratch and is written whatever the mode.
  */
-import path from 'node:path';
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, readJson, report, writeArtifact } from '../artifacts.mjs';
-import { surfaceOf, surfacePath } from '../surface.mjs';
+import { DATA_ROOT, releases, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mjs';
+import { isBaseline, surfacePath } from '../data.mjs';
+import { surfaceOf } from '../surface.mjs';
 import { tagOf, withReleaseTree } from '../worktrees.mjs';
 
 export const name = 'surface';
 export const describe =
-  'surfaces/<version>.json from the tag v<version>, or from the working tree for head; --all for every release and head';
+  'the surface of a release from its tag, or of the working tree for head; --all for every release and head';
 
 const USAGE = 'usage: surface <version|head> [--check] [--keep] [--verbose] | surface --all [--check] [--keep]';
 
@@ -23,7 +27,7 @@ const SHOWN = 5;
  * @param {Partial<import('../cli.mjs').Context>} [context]
  * @returns {Promise<number>}
  */
-export async function run(argv, { dataRoot = DATA_ROOT } = {}) {
+export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT } = {}) {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -35,9 +39,7 @@ export async function run(argv, { dataRoot = DATA_ROOT } = {}) {
     },
   });
   if (values.all ? positionals.length > 0 : positionals.length !== 1) throw new Error(USAGE);
-  const versions = values.all
-    ? [.../** @type {string[]} */ (readJson(path.join(dataRoot, 'releases.json')).releases), 'head']
-    : positionals;
+  const versions = values.all ? [...releases(dataRoot).releases, 'head'] : positionals;
   for (const version of versions) {
     if (version !== 'head' && !/^\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$/.test(version)) {
       throw new Error(`surface: '${version}' is neither a version nor head\n${USAGE}`);
@@ -46,19 +48,20 @@ export async function run(argv, { dataRoot = DATA_ROOT } = {}) {
 
   const results = [];
   for (const version of versions) {
-    results.push(await writeSurface(version, { ...values, dataRoot }));
+    results.push(await writeSurface(version, { ...values, dataRoot, scratchRoot }));
   }
   return report(results, { check: values.check, command: 'surface' });
 }
 
 /**
- * Computes the surface of `version` and writes (or, with `check`, compares) its artifact.
+ * Computes the surface of `version` and writes its file (the baseline's is compared instead with
+ * `check`).
  * @param {string} version
- * @param {{ check?: boolean, keep?: boolean, verbose?: boolean, dataRoot?: string }} [options]
+ * @param {{ check?: boolean, keep?: boolean, verbose?: boolean, dataRoot?: string, scratchRoot?: string }} [options]
  */
 export async function writeSurface(
   version,
-  { check = false, keep = false, verbose = false, dataRoot = DATA_ROOT } = {}
+  { check = false, keep = false, verbose = false, dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT } = {}
 ) {
   return withReleaseTree(
     version,
@@ -67,7 +70,8 @@ export async function writeSurface(
       const diagnostics = [];
       const surface = surfaceOf(dir, { version, tag: tagOf(version), diagnostics });
       printSummary(version, surface, diagnostics, verbose);
-      return writeArtifact(surfacePath(version, dataRoot), surface, { check });
+      const roots = { dataRoot, scratchRoot };
+      return writeArtifact(surfacePath(version, roots), surface, { check, scratch: !isBaseline(version, dataRoot) });
     },
     { keep }
   );

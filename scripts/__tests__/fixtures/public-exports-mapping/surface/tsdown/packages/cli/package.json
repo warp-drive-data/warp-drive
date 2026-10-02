@@ -1,6 +1,0 @@
-{
-  "name": "fx-cli",
-  "bin": {
-    "fx": "./dist/cli.js"
-  }
-}

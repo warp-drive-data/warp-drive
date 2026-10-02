@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { mkdirSync, readFileSync, realpathSync, symlinkSync, writeFileSync } from 'node:fs';
+import { readdirSync, readFileSync, realpathSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, test } from 'node:test';
 
@@ -12,8 +12,11 @@ import { createResolver } from '../public-exports-mapping/resolver.mjs';
 import { bestExportsKey, discoverWorkspace, globToRegExp, surfaceOf } from '../public-exports-mapping/surface.mjs';
 import { releaseTreeDir, tagOf } from '../public-exports-mapping/worktrees.mjs';
 import { tempDir } from './-run-script.mjs';
+import { tree as SURFACE_TREE } from './fixtures/public-exports-mapping/surface.mjs';
+import { materialize, writeTree } from './fixtures/public-exports-mapping/tree.mjs';
 
-const FIXTURES = path.join(import.meta.dirname, 'fixtures', 'public-exports-mapping', 'surface');
+/** The fixture trees, written to disk once for this file. */
+const FIXTURES = materialize(SURFACE_TREE, 'warp-drive-surface-fixtures-');
 const FIXTURE_COMMANDS = path.join(FIXTURES, 'commands');
 
 /** @type {Map<string, { surface: any, diagnostics: { code: string, message: string }[] }>} */
@@ -33,19 +36,6 @@ function fixture(era) {
     computed.set(era, found);
   }
   return found;
-}
-
-/**
- * Writes `files` under `root`; a value that is not a string is written as JSON.
- * @param {string} root
- * @param {Record<string, unknown>} files
- */
-function writeTree(root, files) {
-  for (const [file, contents] of Object.entries(files)) {
-    const target = path.join(root, file);
-    mkdirSync(path.dirname(target), { recursive: true });
-    writeFileSync(target, typeof contents === 'string' ? contents : JSON.stringify(contents, null, 2));
-  }
 }
 
 /**
@@ -712,18 +702,22 @@ describe('commands', () => {
     await assert.rejects(release([], { dataRoot }), /^Error: usage: release/);
   });
 
-  test('surface head writes into the data root, and --check exits 1 only on drift', async (t) => {
+  test('surface head writes into scratch, in check mode too, since nothing tracks that file', async (t) => {
     const dataRoot = tempDir(t);
-    captureConsole(t);
-    assert.equal(await surfaceCommand(['head'], { dataRoot }), 0);
-    const file = path.join(dataRoot, 'surfaces', 'head.json');
+    const scratchRoot = tempDir(t);
+    const out = captureConsole(t);
+    assert.equal(await surfaceCommand(['head'], { dataRoot, scratchRoot }), 0);
+    const file = path.join(scratchRoot, 'surfaces', 'head.json');
     const written = JSON.parse(readFileSync(file, 'utf8'));
     assert.equal(written.version, 'head');
     assert.equal(written.tag, null);
-    assert.equal(await surfaceCommand(['head', '--check'], { dataRoot }), 0);
+    assert.deepEqual(readdirSync(dataRoot), [], 'the data root gets nothing');
+    assert.equal(await surfaceCommand(['head', '--check'], { dataRoot, scratchRoot }), 0);
     writeFileSync(file, '{}\n');
-    assert.equal(await surfaceCommand(['head', '--check'], { dataRoot }), 1);
-    assert.equal(readFileSync(file, 'utf8'), '{}\n');
+    assert.equal(await surfaceCommand(['head', '--check'], { dataRoot, scratchRoot }), 0);
+    assert.equal(JSON.parse(readFileSync(file, 'utf8')).version, 'head', 'rewritten');
+    assert.ok(out.log.some((line) => /^surface: wrote .*surfaces\/head\.json/.test(line)));
+    assert.ok(out.log.includes('surface: 1 artifacts, 0 drifted'));
   });
 
   test('release trees live next to the main checkout, never inside it', () => {

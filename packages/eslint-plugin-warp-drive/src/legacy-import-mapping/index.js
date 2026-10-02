@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * Reads the mapping data this directory ships (written by
- * `node scripts/public-exports-mapping/cli.mjs ship`) and answers, for an import written against
- * one release, what to do with it so that it works against another. It rebuilds the `to` surface
+ * Reads the mapping data this directory ships (written by `scripts/public-exports-mapping` in the
+ * warp-drive repository, which checks it in CI) and answers, for an import written against one
+ * release, what to do with it so that it works against another. It rebuilds the `to` surface
  * by applying the shipped diffs to the shipped baseline surface, once per `(from, to)`, and never
  * calls the network or a model. The stages and the ranking live in `./map-core.js`.
  */
@@ -65,7 +65,7 @@ function datasetFor(dataDir) {
     const releasesFile = path.join(dir, 'releases.json');
     if (!fs.existsSync(releasesFile)) {
       const error = new Error(
-        `No legacy import mapping data in ${dir}. Run \`node scripts/public-exports-mapping/cli.mjs ship\` in the warp-drive repository to write it.`
+        `No legacy import mapping data in ${dir}: it has no releases.json. The plugin ships the data in src/legacy-import-mapping; a custom dataDir needs the same files.`
       );
       Object.assign(error, { code: NO_DATA });
       throw error;
