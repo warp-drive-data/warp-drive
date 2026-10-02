@@ -113,3 +113,68 @@ it will need to be added manually.
 #### Project Labels
 
 Labels used for tracking work in [various projects](https://github.com/warp-drive-data/warp-drive/projects) are not enforced, but PRs and issues should be labeled for any applicable projects and added to those projects when reviewed.
+
+### Blog Summaries
+
+The changelog lists every labeled PR by title. A release's blog post is different: it explains the
+handful of changes in that release that a user would want to hear about, in prose. To build that
+post from the PRs themselves instead of from memory, a PR making such a change adds a short
+summary file to the
+[`.next-release-post/`](https://github.com/warp-drive-data/warp-drive/tree/main/.next-release-post)
+directory at the repo root. Any stable release's post, patch releases included, is drafted from
+those files before the release ships, and the PR that adds the post clears out the ones it used,
+so the directory only ever holds summaries waiting to be announced (see
+[Draft the Release Blog Post](./RELEASE.md#draft-the-release-blog-post) and the
+[Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) skill). A fix
+backported to a release branch brings its summary with it when its commit is cherry-picked.
+
+The summary lives in the PR's diff rather than its description on purpose: it is reviewed like
+any other change, and once merged it can only change through another reviewed PR. That review is
+also what decides whether a PR gets a summary at all. The author proposes one when the change is
+worth announcing, and the reviewer can ask for one, ask for it to come out, or ask for it to be
+rewritten. Every summary that merges goes into the next post, so read it as carefully as code.
+
+Changes usually worth a summary are new features, breaking changes, deprecations and removals,
+meaningful performance improvements, fixes users would notice (a long-standing, widely reported,
+or data-correctness bug), and new guides or tutorials. Internal refactors, tests, build and CI
+tooling, and dependency bumps usually aren't.
+
+Name the file `<PR number>-<topic>.md`, with the topic in kebab case, such as
+`11394-alien-signals-composition.md`. The number doesn't exist until the PR does, so open the PR
+first and add the file in a commit after it. One PR adds or updates at most one file.
+
+The file starts with frontmatter holding a single `releases` list: the release lines the change
+ships on, each the `major.minor` of a branch's version, quoted so YAML doesn't read `"5.10"` as
+the number `5.1`. A PR to `main` always lists the minor `main` is heading for, plus one line for
+each [backport target label](#backporting-labels) it carries: `:dart: release` adds the `release`
+branch's line, `:dart: lts` and `:dart: lts-prev` the matching `lts-*` branches' lines, and
+`:dart: beta` the `beta` branch's line, which only matters in a cycle that isn't mirroring
+canary. Keep the list in step with those labels until the PR merges. Each release post uses the
+summaries that list its line, then removes that line, deleting a file once its list is empty; so
+a fix listed for `["5.10", "5.9"]` appears in both the next 5.9 patch's post and the 5.10 post.
+
+If a summary for the same topic is already in the directory and its `releases` lists every line
+this PR ships on, update it rather than adding a second one, so the post tells one story, keeping
+its name and list. Otherwise it has already been announced on one of those lines, or the
+original isn't on a branch this PR is backported to, and the PR adds its own file.
+
+After the frontmatter, the file is plain markdown with no headings, written for someone who uses
+***Warp*Drive** and has not read the PR:
+
+```md
+---
+releases: ["5.10"]
+---
+Ember and React components on the same page can now share one store. Import
+`@warp-drive/alien-signals/install` before each framework's own `install`, and every framework
+re-renders when the data it read changes, including when a memo returns a cached value. See
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
+```
+
+- Two to five sentences, or a short bullet list, in the present tense: what changed, who it
+  affects, and anything they need to do.
+- At most one short code example, and only if it shows the change better than a sentence does.
+- Link the guide or API page that covers the change in depth instead of re-explaining it, using
+  the docs site path as above.
+- Name the package if it isn't obvious, and the deprecation ID for a deprecation.
+- Leave out the implementation, the review history, and internal names a user never sees.

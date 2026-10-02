@@ -8,7 +8,9 @@ go looking for them there. Every post's URL is a permanent contract with readers
 rules below exist to keep a post's path, date and version from ever changing under them.
 
 For drafting the prose itself, follow [Write Documentation](./write-documentation.md) as well;
-this skill covers where a post goes and how it gets listed.
+this skill covers where a post goes and how it gets listed. If the post announces a release,
+start from [Draft a Release Blog Post](./draft-a-release-blog-post.md), which gathers its content
+and says when it has to merge.
 
 ## Steps
 

@@ -10,7 +10,9 @@
     "publish-a-blog-post",
     "use-ci-as-the-source-of-truth",
     "extract-test-setup-into-functions",
-    "submit-a-pr"
+    "submit-a-pr",
+    "write-a-pr-blog-summary",
+    "draft-a-release-blog-post"
   ],
   "webIndex": "overview",
   "files": {
@@ -24,6 +26,8 @@
     "publish-a-blog-post": { "title": "Publish a Blog Post" },
     "use-ci-as-the-source-of-truth": { "title": "Use CI as the Source of Truth" },
     "extract-test-setup-into-functions": { "title": "Extract Test Setup Into Functions" },
-    "submit-a-pr": { "title": "Submit a PR" }
+    "submit-a-pr": { "title": "Submit a PR" },
+    "write-a-pr-blog-summary": { "title": "Write a PR Blog Summary" },
+    "draft-a-release-blog-post": { "title": "Draft a Release Blog Post" }
   }
 }
