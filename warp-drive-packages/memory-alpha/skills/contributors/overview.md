@@ -14,6 +14,7 @@ as a dependency in an app.
 | Add a post under `blog/`, start a new major-version section of it, or retire a post | [Publish a Blog Post](/skills/contributors/publish-a-blog-post.md) |
 | Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
 | Share setup/teardown across more than one test in a module | [Extract Test Setup Into Functions](/skills/contributors/extract-test-setup-into-functions.md) |
+| Add a symbol, key an object by one, or fix a `TS9038` isolated-declarations build error | [Create Symbols With getOrSetGlobal](/skills/contributors/create-symbols.md) |
 | Turn a finished change into a pull request — title, labels CI enforces, and backports | [Submit a PR](/skills/contributors/submit-a-pr.md) |
 
 If nothing above matches, the skill you need doesn't exist yet in this category.
