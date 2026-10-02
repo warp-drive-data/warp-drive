@@ -122,8 +122,8 @@ post from the PRs themselves instead of from memory, a PR making such a change a
 summary file to the
 [`.next-release-post/`](https://github.com/warp-drive-data/warp-drive/tree/main/.next-release-post)
 directory at the repo root. Any stable release's post, patch releases included, is drafted from
-those files before the release ships, and the PR that adds the post deletes the ones that ship,
-so the directory only ever holds summaries for changes that haven't shipped yet (see
+those files before the release ships, and the PR that adds the post clears out the ones it used,
+so the directory only ever holds summaries waiting to be announced (see
 [Draft the Release Blog Post](./RELEASE.md#draft-the-release-blog-post) and the
 [Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) skill). A fix
 backported to a release branch brings its summary with it when its commit is cherry-picked.
@@ -141,15 +141,30 @@ tooling, and dependency bumps usually aren't.
 
 Name the file `<PR number>-<topic>.md`, with the topic in kebab case, such as
 `11394-alien-signals-composition.md`. The number doesn't exist until the PR does, so open the PR
-first and add the file in a commit after it. The number keeps every name unique, and the release
-post relies on that to tell which summaries have already shipped. One PR adds or updates at most
-one file. If a summary for the same topic is already in the directory and hasn't shipped in a
-stable release yet, update it rather than adding a second one, so the post tells one story; a
-summary that has already shipped gets a new file named for the new PR instead. An updated file
-keeps its original name. The file is plain markdown with no frontmatter and no headings, written
-for someone who uses ***Warp*Drive** and has not read the PR:
+first and add the file in a commit after it. One PR adds or updates at most one file.
+
+The file starts with frontmatter holding a single `releases` list: the release lines the change
+ships on, each the `major.minor` of a branch's version, quoted so YAML doesn't read `"5.10"` as
+the number `5.1`. A PR to `main` always lists the minor `main` is heading for, plus one line for
+each [backport target label](#backporting-labels) it carries: `:dart: release` adds the `release`
+branch's line, `:dart: lts` and `:dart: lts-prev` the matching `lts-*` branches' lines, and
+`:dart: beta` the `beta` branch's line, which only matters in a cycle that isn't mirroring
+canary. Keep the list in step with those labels until the PR merges. Each release post uses the
+summaries that list its line, then removes that line, deleting a file once its list is empty; so
+a fix listed for `["5.10", "5.9"]` appears in both the next 5.9 patch's post and the 5.10 post.
+
+If a summary for the same topic is already in the directory and its `releases` lists every line
+this PR ships on, update it rather than adding a second one, so the post tells one story, keeping
+its name and list. Otherwise it has already been announced on one of those lines, or the
+original isn't on a branch this PR is backported to, and the PR adds its own file.
+
+After the frontmatter, the file is plain markdown with no headings, written for someone who uses
+***Warp*Drive** and has not read the PR:
 
 ```md
+---
+releases: ["5.10"]
+---
 Ember and React components on the same page can now share one store. Import
 `@warp-drive/alien-signals/install` before each framework's own `install`, and every framework
 re-renders when the data it read changes, including when a memo returns a cached value. See

@@ -15,7 +15,7 @@ as a dependency in an app.
 | Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
 | Share setup/teardown across more than one test in a module | [Extract Test Setup Into Functions](/skills/contributors/extract-test-setup-into-functions.md) |
 | Turn a finished change into a pull request — title, labels CI enforces, and backports | [Submit a PR](/skills/contributors/submit-a-pr.md) |
-| Open a pull request, change what an open one does, or respond to a review about its release summary — decide whether to propose a summary file in `.next-release-post/` and write it | [Write a PR Blog Summary](/skills/contributors/write-a-pr-blog-summary.md) |
+| Open a pull request, change what an open one does or its `:dart:` labels, or respond to a review about its release summary — decide whether to propose a summary file in `.next-release-post/` and write it | [Write a PR Blog Summary](/skills/contributors/write-a-pr-blog-summary.md) |
 | Draft a blog post announcing a release, before the release ships — summarize a version's major changes and notable fixes | [Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) |
 
 If nothing above matches, the skill you need doesn't exist yet in this category.
