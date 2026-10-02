@@ -118,8 +118,8 @@ Labels used for tracking work in [various projects](https://github.com/warp-driv
 
 The changelog lists every labeled PR by title. A release's blog post is different: it explains the
 handful of changes in that release that a user would want to hear about, in prose. To build that
-post from the PRs themselves instead of from memory, a PR that carries one of the labels below
-adds a short summary file to the
+post from the PRs themselves instead of from memory, a PR making such a change adds a short
+summary file to the
 [`.next-release-post/`](https://github.com/warp-drive-data/warp-drive/tree/main/.next-release-post)
 directory at the repo root. Any stable release's post, patch releases included, is drafted from
 those files before the release ships, and the PR that adds the post deletes the ones that ship,
@@ -129,31 +129,25 @@ so the directory only ever holds summaries for changes that haven't shipped yet 
 backported to a release branch brings its summary with it when its commit is cherry-picked.
 
 The summary lives in the PR's diff rather than its description on purpose: it is reviewed like
-any other change, and once merged it can only change through another reviewed PR. Reviewers
-should read it as carefully as code, since it is published nearly as written.
+any other change, and once merged it can only change through another reviewed PR. That review is
+also what decides whether a PR gets a summary at all. The author proposes one when the change is
+worth announcing, and the reviewer can ask for one, ask for it to come out, or ask for it to be
+rewritten. Every summary that merges goes into the next post, so read it as carefully as code.
 
-Whether a PR needs a summary depends on its [changelog label](#changelog-labels):
-
-| Changelog label | Summary file |
-| --- | --- |
-| `:label: breaking`, `:label: feat`, `:label: deprecation`, `:label: cleanup`, `:label: perf` | Required |
-| `:label: bug` | Only for a fix users would notice: a long-standing, widely reported, or data-correctness bug |
-| `:label: doc` | Only for a new guide, tutorial, or other new section of the docs site |
-| `:label: test`, `:label: chore`, `:label: rfc`, `:label: dependencies` | Leave it out |
-
-The label is what decides. If a PR's label changes, add or remove the file to match; when the
-post is drafted, a summary from a PR whose label isn't gated in is left out.
+Changes usually worth a summary are new features, breaking changes, deprecations and removals,
+meaningful performance improvements, fixes users would notice (a long-standing, widely reported,
+or data-correctness bug), and new guides or tutorials. Internal refactors, tests, build and CI
+tooling, and dependency bumps usually aren't.
 
 Name the file `<PR number>-<topic>.md`, with the topic in kebab case, such as
 `11394-alien-signals-composition.md`. The number doesn't exist until the PR does, so open the PR
 first and add the file in a commit after it. The number keeps every name unique, and the release
 post relies on that to tell which summaries have already shipped. One PR adds or updates at most
-one file. If a summary for the same topic is already in the directory and hasn't shipped in
-a stable release yet, update it rather than adding a second one, so the post tells one story; a
+one file. If a summary for the same topic is already in the directory and hasn't shipped in a
+stable release yet, update it rather than adding a second one, so the post tells one story; a
 summary that has already shipped gets a new file named for the new PR instead. An updated file
-keeps its original name. The file is plain markdown with no
-frontmatter and no headings, written for someone who uses ***Warp*Drive** and has not read the
-PR:
+keeps its original name. The file is plain markdown with no frontmatter and no headings, written
+for someone who uses ***Warp*Drive** and has not read the PR:
 
 ```md
 Ember and React components on the same page can now share one store. Import

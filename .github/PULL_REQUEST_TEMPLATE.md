@@ -14,9 +14,8 @@ If this PR is not from a fork and is labeled `:label: doc`, `:label: feat`, or `
 - Read the full [contributing documentation](https://canary.warp-drive.io/guides/contributing/become-a-contributor)
 - Check the [cross-documentation checklist](https://canary.warp-drive.io/guides/contributing/writing-documentation/#cross-documentation-checklist)
   for any guide, API doc, or upgrade page your change affects, and update it in this PR
-- If this PR's changelog label is `:label: breaking`, `:label: feat`, `:label: deprecation`,
-  `:label: cleanup`, or `:label: perf` (or it's a notable `:label: bug` fix or new guide), add a
-  summary file to `.next-release-post/` for the release blog post; see
+- If this PR changes something users would want to hear about in the release blog post, add a
+  summary file to `.next-release-post/` (reviewers decide whether it stays); see
   [Blog Summaries](https://canary.warp-drive.io/guides/contributing/submitting-prs#blog-summaries)
 - A changelog label (e.g. `:label: feat`) is applied automatically if your title starts with
   `feat:`, `feat |`, or `[feat]` (and similarly for the other [changelog labels](https://canary.warp-drive.io/guides/contributing/submitting-prs#changelog-labels)) and no changelog label exists yet. If you do not have
