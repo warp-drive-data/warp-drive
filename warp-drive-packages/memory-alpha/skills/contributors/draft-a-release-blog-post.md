@@ -28,8 +28,9 @@ sets its rules for location, frontmatter, and dating. Read all three before step
    branch that appear nowhere in the previous release's history. The previous release is the
    next lower stable version, whatever its line (`v5.10.0` for `v5.10.1`, `v5.9.1` for `v5.10.0`,
    `v5.8.2` for an LTS `v5.8.3`). Checking history rather than the previous tag's files keeps a
-   summary an earlier post already deleted from being announced twice; summary names are never
-   reused, so a name in that history has shipped.
+   summary an earlier post already deleted from being announced twice. Each name starts with the
+   number of the PR that introduced it, and a backport's cherry-pick keeps that name, so a name in
+   that history has shipped.
 
    ```sh
    git fetch origin --tags
@@ -39,9 +40,9 @@ sets its rules for location, frontmatter, and dating. Read all three before step
      git log -1 --format=%H "$PREV" -- "$f" | grep -q . || echo "$f"
    done
    ```
-3. Check each summary against its PRs. A summary can carry more than one PR, since a later PR on
-   the same topic updates the earlier one's file. Take each PR number from the `(#NNNN)` suffix
-   of the commits that touched the file (`git log --format=%s "$SOURCE" -- <file>`), and read
+3. Check each summary against its PRs: the one in its filename, plus any later PR on the same
+   topic that updated it, from the `(#NNNN)` suffix of the commits that touched the file
+   (`git log --format=%s "$SOURCE" -- <file>`). Read
    those PRs' labels from GitHub with whatever access you have. Keep the summary if at least one
    carries a changelog label the table in
    [Blog Summaries](/guides/contributing/submitting-prs.md#blog-summaries) gates in; a PR
@@ -78,8 +79,7 @@ sets its rules for location, frontmatter, and dating. Read all three before step
    [Organize by Major Version](/guides/contributing/writing-documentation/writing-guides.md#organize-by-major-version)
    puts it — `blog/v5/warp-drive-5-10.md` for a minor or major, `blog/v5/warp-drive-5-10-1.md`
    for a patch — and never rename it once published. Give it a frontmatter `title`,
-   `description`, and `date` (the planned release date), plus `draft: true`, and the
-   `<SinceBadge>` line, as
+   `description`, and `date` (the planned release date), and the `<SinceBadge>` line, as
    [Every Page Is Dated and Versioned](/guides/contributing/writing-documentation/writing-guides.md#every-page-is-dated-and-versioned)
    describes. Add it to its directory's `index.md` list and to the `items` in its `_meta.json`,
    newest first after `index`.
@@ -93,5 +93,3 @@ sets its rules for location, frontmatter, and dating. Read all three before step
    unless that is `main`, then its backport per [Submit a PR](./submit-a-pr.md), both merged
    before the workflow runs. If more PRs land on `$SOURCE` before then, rerun step 2 and fold in
    any new summaries. The post's PRs add no summary file of their own.
-10. After the release ships, open a PR against `main` that removes `draft: true`, which publishes
-    the post. Fix its `date` in the same PR if the release shipped on another day.

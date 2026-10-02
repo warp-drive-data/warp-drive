@@ -29,7 +29,8 @@ writing one.
    of something an earlier PR summarized. Update that file instead of adding a second one, so the
    post tells one story, but only if both of these hold:
    - It hasn't shipped. If the file appears in the latest stable release's history, it's already
-     been announced, and the next post skips any summary that has. Write a new file instead.
+     been announced, and the next post skips any summary that has. Write a new file for this PR
+     instead.
 
      ```sh
      LATEST=$(git tag -l 'v[0-9]*' | grep -v -- '-' | sort -V | tail -1)
@@ -51,12 +52,13 @@ writing one.
 
    When updating, rewrite the summary so it describes the topic as it will ship, not as a list of
    changes: fold this PR's change into the existing text, keep the earlier PR's points that still
-   hold, and drop any this PR makes untrue. Keep the file's name.
-6. Commit it in the same PR as the change, as `.next-release-post/<topic>.md` directly in that
-   directory with no subdirectory. A new file needs a name no summary has used before, even one
-   since deleted: `git log -1 --format=%h origin/main "$LATEST" -- .next-release-post/<name>`
-   must print nothing. The next post skips any name in an earlier release's history. Touch no other summary file than the one this PR adds or
-   updates, and don't edit `README.md`.
+   hold, and drop any this PR makes untrue. Keep the file's name, which carries the PR that
+   introduced it.
+6. Commit it in the same PR as the change. A new file goes directly in that directory, with no
+   subdirectory, as `.next-release-post/<PR number>-<topic>.md` using this PR's number, so open
+   the PR first (as a draft, per [Submit a PR](./submit-a-pr.md)) and push the file in a commit
+   after it. Touch no other summary file than the one this PR adds or updates, and don't edit
+   `README.md`.
 7. Keep it current until the PR merges. When you push a change that alters the public behavior
    the summary describes, or the label changes, run steps 1–6 again: rewrite the file to match,
    or add or delete it. If this PR updated an existing summary and no longer needs to, restore
@@ -66,7 +68,8 @@ writing one.
 ## Example
 
 A PR titled `feat(alien-signals): compose other frameworks' signals into the alien-signals graph`
-carries `:label: feat`, so it adds `.next-release-post/alien-signals-composition.md`:
+carries `:label: feat`, so once it's open as #11394 it adds
+`.next-release-post/11394-alien-signals-composition.md`:
 
 ```md
 Ember and React components on the same page can now share one store. Import
@@ -77,8 +80,8 @@ re-renders when the data it read changes, including when a memo returns a cached
 
 A later PR titled `perf(alien-signals): gate each memo with one signal per framework` carries
 `:label: perf` and changes the same feature. Before that feature has shipped in a stable release,
-it updates `alien-signals-composition.md`, adding a sentence on what gets faster, instead of
-adding a second file. After it has shipped, it adds its own file.
+it updates `11394-alien-signals-composition.md`, adding a sentence on what gets faster, instead of
+adding a second file. After it has shipped, it adds its own file, `11401-<topic>.md`.
 
 A follow-up titled `chore(ci): replace the docs site root on each deploy` carries
 `:label: chore`, so it adds no file.

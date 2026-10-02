@@ -42,10 +42,6 @@ release is built from and ships inside the release rather than after it:
 4. Trigger the release only once both are merged. If more PRs with summaries land on that branch
    first, fold them into the post before releasing.
 
-The docs site deploys from `main` on every push, so merge the post with `draft: true` in its
-frontmatter. That keeps it out of the sidebar, nav, and RSS feed until the release has shipped;
-publishing it is the first step of [Polish the Release!](#polish-the-release).
-
 ## Getting Setup To Do A Release
 
 In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on
@@ -79,11 +75,7 @@ You will find the automated workflows to perform these releases under the action
 
 ## Polish the Release!
 
-First, publish the release's blog post, if it has one: open a PR against `main` that removes
-`draft: true` from its frontmatter, correcting its `date` if the release shipped on a different
-day than planned.
-
-Then, update the Release Notes on Github
+First, update the Release Notes on Github
 
 - Visit [WarpDrive Releases](https://github.com/warp-drive-data/warp-drive/releases)
   - Click on the "more recent tags"
