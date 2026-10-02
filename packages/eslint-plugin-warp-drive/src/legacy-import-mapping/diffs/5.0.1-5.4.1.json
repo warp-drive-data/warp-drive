@@ -8,35 +8,13 @@
     "packages/-ember-data/addon/-private/index.ts#Store": "packages/-ember-data/src/store.ts#default",
     "packages/-ember-data/addon/setup-container.ts#default": "packages/-ember-data/src/setup-container.ts#default",
     "packages/adapter/src/-private/build-url-mixin.ts#default": "packages/adapter/src/-private/build-url-mixin.ts#BuildURLMixin",
-    "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise": "packages/adapter/src/-private/utils/determine-body-promise.ts#determineBodyPromise",
     "packages/adapter/src/-private/utils/fetch.ts#default": "packages/adapter/src/-private/utils/fetch.ts#getFetchFunction",
-    "packages/adapter/src/-private/utils/fetch.ts#setupFastboot": "packages/adapter/src/-private/utils/fetch.ts#setupFastboot",
     "packages/adapter/src/-private/utils/parse-response-headers.ts#default": "packages/adapter/src/-private/utils/parse-response-headers.ts#parseResponseHeaders",
     "packages/adapter/src/-private/utils/serialize-into-hash.ts#default": "packages/adapter/src/-private/utils/serialize-into-hash.ts#serializeIntoHash",
-    "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams": "packages/adapter/src/-private/utils/serialize-query-params.ts#serializeQueryParams",
-    "packages/adapter/src/error.js#AbortError": "packages/adapter/src/error.js#AbortError",
-    "packages/adapter/src/error.js#ConflictError": "packages/adapter/src/error.js#ConflictError",
-    "packages/adapter/src/error.js#ForbiddenError": "packages/adapter/src/error.js#ForbiddenError",
-    "packages/adapter/src/error.js#InvalidError": "packages/adapter/src/error.js#InvalidError",
-    "packages/adapter/src/error.js#NotFoundError": "packages/adapter/src/error.js#NotFoundError",
-    "packages/adapter/src/error.js#ServerError": "packages/adapter/src/error.js#ServerError",
-    "packages/adapter/src/error.js#TimeoutError": "packages/adapter/src/error.js#TimeoutError",
-    "packages/adapter/src/error.js#UnauthorizedError": "packages/adapter/src/error.js#UnauthorizedError",
-    "packages/adapter/src/error.js#default": "packages/adapter/src/error.js#default",
-    "packages/adapter/src/index.ts#default": "packages/adapter/src/index.ts#default",
-    "packages/adapter/src/json-api.ts#default": "packages/adapter/src/json-api.ts#default",
-    "packages/adapter/src/rest.ts#FetchRequestInit": "packages/adapter/src/rest.ts#FetchRequestInit",
-    "packages/adapter/src/rest.ts#JQueryRequestInit": "packages/adapter/src/rest.ts#JQueryRequestInit",
-    "packages/adapter/src/rest.ts#RequestData": "packages/adapter/src/rest.ts#RequestData",
-    "packages/adapter/src/rest.ts#default": "packages/adapter/src/rest.ts#default",
-    "packages/adapter/src/rest.ts#fetchOptions": "packages/adapter/src/rest.ts#fetchOptions",
     "packages/debug/addon/index.js#default": "packages/debug/src/data-adapter.ts#default",
     "packages/graph/src/-private/graph/index.ts#graphFor": null,
     "packages/graph/src/-private/graph/index.ts#peekGraph": null,
-    "packages/json-api/src/-private/cache.ts#default": "packages/json-api/src/-private/cache.ts#default",
-    "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#SaveOp",
     "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#default": "packages/legacy-compat/src/legacy-network-handler/fetch-manager.ts#FetchManager",
-    "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler": "packages/legacy-compat/src/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler",
     "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#default": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray",
     "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#default": "packages/legacy-compat/src/legacy-network-handler/snapshot.ts#Snapshot",
     "packages/model/src/-private/attr.js#default": "packages/model/src/-private/attr.ts#attr",
@@ -49,45 +27,18 @@
     "packages/model/src/-private/model.js#default": "packages/model/src/-private/model.ts#Model",
     "packages/model/src/-private/promise-belongs-to.ts#default": "packages/model/src/-private/promise-belongs-to.ts#PromiseBelongsTo",
     "packages/model/src/-private/promise-many-array.ts#default": "packages/model/src/-private/promise-many-array.ts#PromiseManyArray",
-    "packages/request/src/-private/future.ts#createDeferred": "packages/request/src/-private/future.ts#createDeferred",
-    "packages/request/src/-private/manager.ts#RequestManager": "packages/request/src/-private/manager.ts#RequestManager",
-    "packages/request/src/fetch.ts#default": "packages/request/src/fetch.ts#default",
     "packages/serializer/src/-private/embedded-records-mixin.js#default": "packages/serializer/src/-private/embedded-records-mixin.js#EmbeddedRecordsMixin",
     "packages/serializer/src/-private/transforms/boolean.js#default": null,
     "packages/serializer/src/-private/transforms/date.js#default": null,
     "packages/serializer/src/-private/transforms/number.js#default": null,
     "packages/serializer/src/-private/transforms/string.js#default": null,
-    "packages/serializer/src/index.ts#default": "packages/serializer/src/index.ts#default",
-    "packages/serializer/src/json-api.js#default": "packages/serializer/src/json-api.js#default",
-    "packages/serializer/src/json.js#default": "packages/serializer/src/json.js#default",
-    "packages/serializer/src/rest.js#default": "packages/serializer/src/rest.js#default",
     "packages/store/src/-private/cache-handler.ts#CacheHandler": "packages/store/src/-private/cache-handler/handler.ts#CacheHandler",
     "packages/store/src/-private/caches/cache-utils.ts#default": "packages/store/src/-private/caches/cache-utils.ts#peekCache",
-    "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor": "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor",
-    "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier": "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier",
-    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierForgetMethod",
-    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierGenerationMethod",
-    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierResetMethod",
-    "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod": "packages/store/src/-private/caches/identifier-cache.ts#setIdentifierUpdateMethod",
-    "packages/store/src/-private/caches/instance-cache.ts#_clearCaches": "packages/store/src/-private/caches/instance-cache.ts#_clearCaches",
-    "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor": "packages/store/src/-private/caches/instance-cache.ts#recordIdentifierFor",
-    "packages/store/src/-private/caches/instance-cache.ts#storeFor": "packages/store/src/-private/caches/instance-cache.ts#storeFor",
     "packages/store/src/-private/managers/record-array-manager.ts#default": "packages/store/src/-private/managers/record-array-manager.ts#RecordArrayManager",
-    "packages/store/src/-private/managers/record-array-manager.ts#fastPush": "packages/store/src/-private/managers/record-array-manager.ts#fastPush",
-    "packages/store/src/-private/record-arrays/identifier-array.ts#Collection": "packages/store/src/-private/record-arrays/identifier-array.ts#Collection",
     "packages/store/src/-private/record-arrays/identifier-array.ts#IDENTIFIER_ARRAY_TAG": null,
-    "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE": "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE",
-    "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE": "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE",
     "packages/store/src/-private/record-arrays/identifier-array.ts#default": null,
-    "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray": "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray",
     "packages/store/src/-private/store-service.ts#default": "packages/store/src/-private/store-service.ts#Store",
-    "packages/store/src/-private/utils/coerce-id.ts#default": "packages/store/src/-private/utils/coerce-id.ts#coerceId",
-    "packages/tracking/src/-private.ts#addToTransaction": "packages/tracking/src/-private.ts#addToTransaction",
-    "packages/tracking/src/-private.ts#addTransactionCB": "packages/tracking/src/-private.ts#addTransactionCB",
-    "packages/tracking/src/-private.ts#memoTransact": "packages/tracking/src/-private.ts#memoTransact",
-    "packages/tracking/src/-private.ts#subscribe": "packages/tracking/src/-private.ts#subscribe",
-    "packages/tracking/src/-private.ts#transact": "packages/tracking/src/-private.ts#transact",
-    "packages/tracking/src/-private.ts#untracked": "packages/tracking/src/-private.ts#untracked"
+    "packages/store/src/-private/utils/coerce-id.ts#default": "packages/store/src/-private/utils/coerce-id.ts#coerceId"
   },
   "exports": {
     "@ember-data/active-record/request": {
@@ -112,21 +63,16 @@
           "decl": "packages/active-record/src/-private/builders/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/adapter": {
-      "added": {},
       "changed": {
         "BuildURLMixin": {
           "decl": "packages/adapter/src/-private/build-url-mixin.ts#BuildURLMixin"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/-private": {
-      "added": {},
       "changed": {
         "BuildURLMixin": {
           "decl": "packages/adapter/src/-private/build-url-mixin.ts#BuildURLMixin"
@@ -140,8 +86,7 @@
         "serializeIntoHash": {
           "decl": "packages/adapter/src/-private/utils/serialize-into-hash.ts#serializeIntoHash"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/rest": {
       "added": {
@@ -149,18 +94,14 @@
           "decl": "packages/adapter/src/rest.ts#QueryState",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/debug": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/debug/src/data-adapter.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/debug/_app_/data-adapter": {
       "added": {
@@ -168,9 +109,7 @@
           "decl": "packages/debug/src/data-adapter.ts#default",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/debug/data-adapter": {
       "added": {
@@ -178,9 +117,7 @@
           "decl": "packages/debug/src/data-adapter.ts#default",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/graph/-private": {
       "added": {
@@ -220,8 +157,7 @@
         "peekGraph": {
           "decl": "packages/graph/src/-private.ts#peekGraph"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/json-api/request": {
       "added": {
@@ -261,9 +197,7 @@
           "decl": "packages/json-api/src/-private/builders/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat": {
       "added": {
@@ -315,9 +249,7 @@
           "decl": "packages/legacy-compat/src/index.ts#serializerFor",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/-private": {
       "added": {
@@ -336,8 +268,7 @@
         "SnapshotRecordArray": {
           "decl": "packages/legacy-compat/src/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/builders": {
       "added": {
@@ -366,9 +297,7 @@
           "deprecated": true,
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/utils": {
       "added": {
@@ -404,9 +333,7 @@
           "decl": "packages/legacy-compat/src/utils.ts#isEquivType",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/model": {
       "added": {
@@ -456,8 +383,7 @@
         "hasMany": {
           "decl": "packages/model/src/-private/has-many.ts#hasMany"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/model/-private": {
       "added": {
@@ -521,9 +447,7 @@
           "decl": "packages/model/src/-private/hooks.ts#teardownRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/model/migration-support": {
       "added": {
@@ -543,9 +467,7 @@
           "decl": "packages/model/src/migration-support.ts#withDefaults",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/request": {
       "added": {
@@ -605,9 +527,7 @@
           "decl": "packages/request/src/-private/promise-cache.ts#setPromiseResult",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/request-utils": {
       "added": {
@@ -699,9 +619,7 @@
           "decl": "packages/request-utils/src/index.ts#sortQueryParams",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/request-utils/string": {
       "added": {
@@ -769,9 +687,7 @@
           "decl": "packages/request-utils/src/-private/string/transform.ts#underscore",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/rest/request": {
       "added": {
@@ -795,18 +711,14 @@
           "decl": "packages/rest/src/-private/builders/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/serializer/rest": {
-      "added": {},
       "changed": {
         "EmbeddedRecordsMixin": {
           "decl": "packages/serializer/src/-private/embedded-records-mixin.js#EmbeddedRecordsMixin"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer/transform": {
       "added": {
@@ -831,8 +743,7 @@
         "default": {
           "decl": "packages/serializer/src/-private/transforms/transform.ts#Transform"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store": {
       "added": {
@@ -876,8 +787,7 @@
         "default": {
           "decl": "packages/store/src/-private/store-service.ts#Store"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store/-private": {
       "added": {
@@ -1044,9 +954,7 @@
           "decl": "packages/store/src/-types/q/schema-service.ts#SchemaService",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/tracking": {
       "added": {
@@ -1070,9 +978,7 @@
           "decl": "packages/tracking/src/-private.ts#notifySignal",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@ember-data/tracking/-private": {
       "added": {
@@ -1124,9 +1030,7 @@
           "decl": "packages/tracking/src/-private.ts#subscribed",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config": {
       "added": {
@@ -1138,9 +1042,7 @@
           "decl": "packages/build-config/src/index.ts#setConfig",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/babel-macros": {
       "added": {
@@ -1148,9 +1050,7 @@
           "decl": "packages/build-config/src/babel-macros.ts#macros",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/canary-features": {
       "added": {
@@ -1162,9 +1062,7 @@
           "decl": "packages/build-config/src/canary-features.ts#SAMPLE_FEATURE_FLAG",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/debugging": {
       "added": {
@@ -1208,9 +1106,7 @@
           "decl": "packages/build-config/src/debugging.ts#__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/deprecations": {
       "added": {
@@ -1262,9 +1158,7 @@
           "decl": "packages/build-config/src/deprecations.ts#ENABLE_LEGACY_SCHEMA_SERVICE",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/env": {
       "added": {
@@ -1292,9 +1186,7 @@
           "decl": "packages/build-config/src/env.ts#TESTING",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/build-config/macros": {
       "added": {
@@ -1302,9 +1194,7 @@
           "decl": "packages/build-config/src/macros.ts#assert",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types": {
       "added": {
@@ -1312,9 +1202,7 @@
           "decl": "packages/core-types/src/identifier.ts#StableRecordIdentifier",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/-private": {
       "added": {
@@ -1342,9 +1230,7 @@
           "decl": "packages/core-types/src/-private.ts#setUniversalTransient",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache": {
       "added": {
@@ -1360,9 +1246,7 @@
           "decl": "packages/core-types/src/cache.ts#RelationshipDiff",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/aliases": {
       "added": {
@@ -1370,9 +1254,7 @@
           "decl": "packages/core-types/src/cache/aliases.ts#ResourceBlob",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/change": {
       "added": {
@@ -1380,9 +1262,7 @@
           "decl": "packages/core-types/src/cache/change.ts#Change",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/mutations": {
       "added": {
@@ -1410,9 +1290,7 @@
           "decl": "packages/core-types/src/cache/mutations.ts#SortRelatedRecordsMutation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/operations": {
       "added": {
@@ -1468,9 +1346,7 @@
           "decl": "packages/core-types/src/cache/operations.ts#UpdateResourceRelationshipOperation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/relationship": {
       "added": {
@@ -1486,9 +1362,7 @@
           "decl": "packages/core-types/src/cache/relationship.ts#ResourceRelationship",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/graph": {
       "added": {
@@ -1532,9 +1406,7 @@
           "decl": "packages/core-types/src/graph.ts#UpdateRelationshipOperation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/identifier": {
       "added": {
@@ -1594,9 +1466,7 @@
           "decl": "packages/core-types/src/identifier.ts#StableRecordIdentifier",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/json/raw": {
       "added": {
@@ -1616,9 +1486,7 @@
           "decl": "packages/core-types/src/json/raw.ts#Value",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/params": {
       "added": {
@@ -1638,9 +1506,7 @@
           "decl": "packages/core-types/src/params.ts#SerializablePrimitive",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/record": {
       "added": {
@@ -1680,9 +1546,7 @@
           "decl": "packages/core-types/src/record.ts#createIncludeValidator",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/request": {
       "added": {
@@ -1790,9 +1654,7 @@
           "decl": "packages/core-types/src/request.ts#UpdateRequestOptions",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/runtime": {
       "added": {
@@ -1804,9 +1666,7 @@
           "decl": "packages/core-types/src/runtime.ts#setLogging",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/schema/concepts": {
       "added": {
@@ -1822,9 +1682,7 @@
           "decl": "packages/core-types/src/schema/concepts.ts#Transformation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/schema/fields": {
       "added": {
@@ -1964,9 +1822,7 @@
           "decl": "packages/core-types/src/schema/fields.ts#resourceSchema",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/document": {
       "added": {
@@ -1994,9 +1850,7 @@
           "decl": "packages/core-types/src/spec/document.ts#SingleResourceDataDocument",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/error": {
       "added": {
@@ -2004,9 +1858,7 @@
           "decl": "packages/core-types/src/spec/error.ts#ApiError",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/json-api-raw": {
       "added": {
@@ -2090,9 +1942,7 @@
           "decl": "packages/core-types/src/spec/json-api-raw.ts#SingleResourceRelationship",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/symbols": {
       "added": {
@@ -2116,9 +1966,7 @@
           "decl": "packages/core-types/src/symbols.ts#Type",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/utils": {
       "added": {
@@ -2130,9 +1978,7 @@
           "decl": "packages/core-types/src/utils.ts#WithPartial",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/diagnostic": {
       "added": {
@@ -2172,9 +2018,7 @@
           "decl": "packages/diagnostic/src/-define.ts#todo",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/diagnostic/-types": {
       "added": {
@@ -2242,9 +2086,7 @@
           "decl": "packages/diagnostic/src/-types.ts#TestInfo",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/diagnostic/ember": {
       "added": {
@@ -2292,9 +2134,7 @@
           "decl": "packages/diagnostic/src/ember.ts#todo",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/diagnostic/reporters/dom": {
       "added": {
@@ -2302,9 +2142,7 @@
           "decl": "packages/diagnostic/src/reporters/dom.ts#DOMReporter",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/diagnostic/runners/dom": {
       "added": {
@@ -2312,9 +2150,7 @@
           "decl": "packages/diagnostic/src/runners/dom.ts#start",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/ember": {
       "added": {
@@ -2338,9 +2174,7 @@
           "decl": "packages/ember/src/-private/request-state.ts#getRequestState",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/data-worker": {
       "added": {
@@ -2352,9 +2186,7 @@
           "decl": "packages/experiments/src/data-worker/worker.ts#DataWorker",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/document-storage": {
       "added": {
@@ -2362,9 +2194,7 @@
           "decl": "packages/experiments/src/document-storage/index.ts#DocumentStorage",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/image-fetch": {
       "added": {
@@ -2372,9 +2202,7 @@
           "decl": "packages/experiments/src/image-worker/fetch.ts#ImageFetch",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/image-worker": {
       "added": {
@@ -2382,9 +2210,7 @@
           "decl": "packages/experiments/src/image-worker/worker.ts#ImageWorker",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/persisted-cache": {
       "added": {
@@ -2392,9 +2218,7 @@
           "decl": "packages/experiments/src/persisted-cache/cache.ts#PersistedCache",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/experiments/worker-fetch": {
       "added": {
@@ -2402,9 +2226,7 @@
           "decl": "packages/experiments/src/data-worker/fetch.ts#WorkerFetch",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/holodeck": {
       "added": {
@@ -2432,9 +2254,7 @@
           "decl": "packages/holodeck/src/index.ts#setTestId",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/holodeck/mock": {
       "added": {
@@ -2474,9 +2294,7 @@
           "decl": "packages/holodeck/src/mock.ts#ScaffoldGenerator",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/schema-record": {
       "added": {
@@ -2516,9 +2334,7 @@
           "decl": "packages/schema-record/src/-private/schema.ts#withDefaults",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/schema-record/-private": {
       "added": {
@@ -2530,18 +2346,14 @@
           "decl": "packages/schema-record/src/-private/symbols.ts#Legacy",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "ember-data": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/-ember-data/src/-private/core.ts#DS"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/-private/core": {
       "added": {
@@ -2554,8 +2366,7 @@
         "default": {
           "decl": "packages/-ember-data/src/-private/core.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/-private/index": {
       "added": {
@@ -2603,30 +2414,23 @@
           "decl": "packages/store/src/-private/utils/coerce-id.ts#coerceId",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "ember-data/attr": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/model/src/-private/attr.ts#attr"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/model": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/model/src/-private/model.ts#Model"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/relationships": {
-      "added": {},
       "changed": {
         "belongsTo": {
           "decl": "packages/model/src/-private/belongs-to.ts#belongsTo"
@@ -2634,53 +2438,42 @@
         "hasMany": {
           "decl": "packages/model/src/-private/has-many.ts#hasMany"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializers/embedded-records-mixin": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/serializer/src/-private/embedded-records-mixin.js#EmbeddedRecordsMixin"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/setup-container": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/-ember-data/src/setup-container.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/store": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/-ember-data/src/store.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/test-support": {
-      "added": {},
       "changed": {
         "render": {
           "decl": "packages/-ember-data/src/test-support/index.ts#render"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/transform": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/serializer/src/-private/transforms/transform.ts#Transform"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/version": {
       "added": {
@@ -2688,9 +2481,7 @@
           "decl": "packages/-ember-data/package.json#version",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     }
   },
   "from": "5.0.1",

@@ -1,13 +1,5 @@
 {
   "declarations": {
-    "packages/-ember-data/package.json#version": "packages/-ember-data/package.json#version",
-    "packages/-ember-data/src/-private/core.ts#DS": "packages/-ember-data/src/-private/core.ts#DS",
-    "packages/-ember-data/src/-private/core.ts#default": "packages/-ember-data/src/-private/core.ts#default",
-    "packages/-ember-data/src/-private/index.ts#PromiseArray": "packages/-ember-data/src/-private/index.ts#PromiseArray",
-    "packages/-ember-data/src/-private/index.ts#PromiseObject": "packages/-ember-data/src/-private/index.ts#PromiseObject",
-    "packages/-ember-data/src/setup-container.ts#default": "packages/-ember-data/src/setup-container.ts#default",
-    "packages/-ember-data/src/store.ts#default": "packages/-ember-data/src/store.ts#default",
-    "packages/-ember-data/src/test-support/index.ts#render": "packages/-ember-data/src/test-support/index.ts#render",
     "packages/active-record/src/-private/builders/find-record.ts#findRecord": "warp-drive-packages/utilities/src/-private/active-record/find-record.ts#findRecord",
     "packages/active-record/src/-private/builders/query.ts#query": "warp-drive-packages/utilities/src/-private/active-record/query.ts#query",
     "packages/active-record/src/-private/builders/save-record.ts#createRecord": "warp-drive-packages/utilities/src/-private/active-record/save-record.ts#createRecord",
@@ -246,7 +238,6 @@
     "packages/core-types/src/symbols.ts#Type": "warp-drive-packages/core/src/types/symbols.ts#Type",
     "packages/core-types/src/utils.ts#Mutable": "warp-drive-packages/core/src/types/utils.ts#Mutable",
     "packages/core-types/src/utils.ts#WithPartial": "warp-drive-packages/core/src/types/utils.ts#WithPartial",
-    "packages/debug/src/data-adapter.ts#default": "packages/debug/src/data-adapter.ts#default",
     "packages/ember/src/-private/await.gts#Await": "warp-drive-packages/ember/src/-private/await.gts#Await",
     "packages/ember/src/-private/await.gts#Throw": "warp-drive-packages/ember/src/-private/await.gts#Throw",
     "packages/ember/src/-private/request.gts#Request": "warp-drive-packages/ember/src/-private/request.gts#Request",
@@ -356,7 +347,6 @@
     "packages/request-utils/src/index.ts#FindRelatedCollectionUrlOptions": "warp-drive-packages/utilities/src/index.ts#FindRelatedCollectionUrlOptions",
     "packages/request-utils/src/index.ts#FindRelatedResourceUrlOptions": "warp-drive-packages/utilities/src/index.ts#FindRelatedResourceUrlOptions",
     "packages/request-utils/src/index.ts#GenericUrlOptions": "warp-drive-packages/utilities/src/index.ts#GenericUrlOptions",
-    "packages/request-utils/src/index.ts#LifetimesService": "packages/request-utils/src/index.ts#LifetimesService",
     "packages/request-utils/src/index.ts#NotificationCallback": null,
     "packages/request-utils/src/index.ts#PolicyConfig": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#PolicyConfig",
     "packages/request-utils/src/index.ts#QueryUrlOptions": "warp-drive-packages/utilities/src/index.ts#QueryUrlOptions",
@@ -478,12 +468,10 @@
     "packages/store/src/-types/q/store.ts#FindAllOptions": "warp-drive-packages/core/src/store/-types/q/store.ts#FindAllOptions",
     "packages/store/src/-types/q/store.ts#FindRecordOptions": "warp-drive-packages/core/src/store/-types/q/store.ts#FindRecordOptions",
     "packages/store/src/-types/q/store.ts#LegacyResourceQuery": "warp-drive-packages/core/src/store/-types/q/store.ts#LegacyResourceQuery",
-    "packages/store/src/-types/q/store.ts#QueryOptions": "warp-drive-packages/core/src/store/-types/q/store.ts#QueryOptions",
-    "packages/tracking/src/index.ts#buildSignalConfig": "packages/tracking/src/index.ts#buildSignalConfig"
+    "packages/store/src/-types/q/store.ts#QueryOptions": "warp-drive-packages/core/src/store/-types/q/store.ts#QueryOptions"
   },
   "exports": {
     "@ember-data/active-record/request": {
-      "added": {},
       "changed": {
         "createRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/active-record/save-record.ts#createRecord"
@@ -500,11 +488,9 @@
         "updateRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/active-record/save-record.ts#updateRecord"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter": {
-      "added": {},
       "changed": {
         "BuildURLMixin": {
           "decl": "warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#BuildURLMixin"
@@ -512,11 +498,9 @@
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter.ts#Adapter"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/-private": {
-      "added": {},
       "changed": {
         "determineBodyPromise": {
           "decl": "warp-drive-packages/legacy/src/adapter/-private/utils/determine-body-promise.ts#determineBodyPromise"
@@ -542,7 +526,6 @@
       ]
     },
     "@ember-data/adapter/error": {
-      "added": {},
       "changed": {
         "AbortError": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AbortError"
@@ -571,20 +554,16 @@
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/rest": {
-      "added": {},
       "changed": {
         "FetchRequestInit": {
           "decl": "warp-drive-packages/legacy/src/adapter/rest.ts#FetchRequestInit"
@@ -604,11 +583,9 @@
         "fetchOptions": {
           "decl": "warp-drive-packages/legacy/src/adapter/rest.ts#fetchOptions"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/graph/-private": {
-      "added": {},
       "changed": {
         "CollectionEdge": {
           "decl": "warp-drive-packages/core/src/graph/-private/edges/collection.ts#CollectionEdge"
@@ -637,20 +614,16 @@
         "peekGraph": {
           "decl": "warp-drive-packages/core/src/graph/-private.ts#peekGraph"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/json-api/src/-private/cache.ts#JSONAPICache"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/json-api/request": {
-      "added": {},
       "changed": {
         "createRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/json-api/save-record.ts#createRecord"
@@ -679,11 +652,9 @@
         "updateRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/json-api/save-record.ts#updateRecord"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat": {
-      "added": {},
       "changed": {
         "AdapterPayload": {
           "decl": "warp-drive-packages/legacy/src/compat/legacy-network-handler/minimum-adapter-interface.ts#AdapterPayload"
@@ -724,11 +695,9 @@
         "serializerFor": {
           "decl": "warp-drive-packages/legacy/src/compat.ts#serializerFor"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/-private": {
-      "added": {},
       "changed": {
         "FetchManager": {
           "decl": "warp-drive-packages/legacy/src/compat/legacy-network-handler/fetch-manager.ts#FetchManager"
@@ -745,11 +714,9 @@
         "upgradeStore": {
           "decl": "warp-drive-packages/legacy/src/compat/-private.ts#upgradeStore"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/builders": {
-      "added": {},
       "changed": {
         "findAll": {
           "decl": "warp-drive-packages/legacy/src/compat/builders/find-all.ts#findAllBuilder"
@@ -766,11 +733,9 @@
         "saveRecord": {
           "decl": "warp-drive-packages/legacy/src/compat/builders/save-record.ts#saveRecordBuilder"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat/utils": {
-      "added": {},
       "changed": {
         "configureAssertFn": {
           "decl": "warp-drive-packages/legacy/src/compat/utils.ts#configureAssertFn"
@@ -796,8 +761,7 @@
         "isEquivType": {
           "decl": "warp-drive-packages/legacy/src/compat/utils.ts#isEquivType"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/model": {
       "added": {
@@ -883,7 +847,6 @@
       ]
     },
     "@ember-data/model/hooks": {
-      "added": {},
       "changed": {
         "buildSchema": {
           "decl": "warp-drive-packages/legacy/src/model/-private/schema-provider.ts#buildSchema"
@@ -897,11 +860,9 @@
         "teardownRecord": {
           "decl": "warp-drive-packages/legacy/src/model/-private/hooks.ts#teardownRecord"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/model/migration-support": {
-      "added": {},
       "changed": {
         "DelegatingSchemaService": {
           "decl": "warp-drive-packages/legacy/src/model/migration-support.ts#DelegatingSchemaService"
@@ -918,8 +879,7 @@
         "withDefaults": {
           "decl": "warp-drive-packages/legacy/src/model/migration-support.ts#withDefaults"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request": {
       "added": {
@@ -985,11 +945,9 @@
         "setPromiseResult": {
           "decl": "warp-drive-packages/core/src/request/-private/promise-cache.ts#setPromiseResult"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request-utils": {
-      "added": {},
       "changed": {
         "BuildURLConfig": {
           "decl": "warp-drive-packages/utilities/src/index.ts#BuildURLConfig"
@@ -1090,11 +1048,9 @@
         "SupportsRequestStreams": {
           "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#SupportsRequestStreams"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request-utils/string": {
-      "added": {},
       "changed": {
         "camelize": {
           "decl": "warp-drive-packages/utilities/src/-private/string/transform.ts#camelize"
@@ -1144,20 +1100,16 @@
         "underscore": {
           "decl": "warp-drive-packages/utilities/src/-private/string/transform.ts#underscore"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request/fetch": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/core/src/request/-private/fetch.ts#Fetch"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/rest/request": {
-      "added": {},
       "changed": {
         "createRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/rest/save-record.ts#createRecord"
@@ -1174,38 +1126,30 @@
         "updateRecord": {
           "decl": "warp-drive-packages/utilities/src/-private/rest/save-record.ts#updateRecord"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer.ts#Serializer"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer/json": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/json.ts#JSONSerializer"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/json-api.ts#JSONAPISerializer"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer/rest": {
-      "added": {},
       "changed": {
         "EmbeddedRecordsMixin": {
           "decl": "warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#EmbeddedRecordsMixin"
@@ -1213,11 +1157,9 @@
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/rest.ts#RESTSerializer"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/serializer/transform": {
-      "added": {},
       "changed": {
         "BooleanTransform": {
           "decl": "warp-drive-packages/legacy/src/serializer/-private/transforms/boolean.ts#BooleanTransform"
@@ -1234,11 +1176,9 @@
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/-private/transforms/transform.ts#Transform"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store": {
-      "added": {},
       "changed": {
         "CacheHandler": {
           "decl": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#CacheHandler"
@@ -1289,8 +1229,7 @@
         "storeFor": {
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store/-private": {
       "added": {
@@ -1493,16 +1432,13 @@
       ]
     },
     "@ember-data/store/configure": {
-      "added": {},
       "changed": {
         "setupSignals": {
           "decl": "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#setupSignals"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store/types": {
-      "added": {},
       "changed": {
         "BaseFinderOptions": {
           "decl": "warp-drive-packages/core/src/store/-types/q/store.ts#BaseFinderOptions"
@@ -1528,20 +1464,16 @@
         "SchemaService": {
           "decl": "warp-drive-packages/core/src/store/-types/q/schema-service.ts#SchemaService"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/tracking": {
-      "added": {},
       "changed": {
         "buildSignalConfig": {
           "deprecated": true
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config": {
-      "added": {},
       "changed": {
         "WarpDriveConfig": {
           "decl": "warp-drive-packages/build-config/src/index.ts#WarpDriveConfig"
@@ -1549,20 +1481,16 @@
         "setConfig": {
           "decl": "warp-drive-packages/build-config/src/index.ts#setConfig"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/babel-macros": {
-      "added": {},
       "changed": {
         "macros": {
           "decl": "warp-drive-packages/build-config/src/babel-macros.ts#macros"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/canary-features": {
-      "added": {},
       "changed": {
         "JSON_API_CACHE_VALIDATION_ERRORS": {
           "decl": "warp-drive-packages/build-config/src/canary-features.ts#JSON_API_CACHE_VALIDATION_ERRORS"
@@ -1570,8 +1498,7 @@
         "SAMPLE_FEATURE_FLAG": {
           "decl": "warp-drive-packages/build-config/src/canary-features.ts#SAMPLE_FEATURE_FLAG"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/debugging": {
       "added": {
@@ -1625,11 +1552,9 @@
         "__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS": {
           "decl": "warp-drive-packages/build-config/src/debugging.ts#__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/deprecations": {
-      "added": {},
       "changed": {
         "DEPRECATE_CATCH_ALL": {
           "decl": "warp-drive-packages/build-config/src/deprecations.ts#DEPRECATE_CATCH_ALL"
@@ -1670,11 +1595,9 @@
         "ENABLE_LEGACY_SCHEMA_SERVICE": {
           "decl": "warp-drive-packages/build-config/src/deprecations.ts#ENABLE_LEGACY_SCHEMA_SERVICE"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/env": {
-      "added": {},
       "changed": {
         "DEBUG": {
           "decl": "warp-drive-packages/build-config/src/env.ts#DEBUG"
@@ -1694,17 +1617,14 @@
         "TESTING": {
           "decl": "warp-drive-packages/build-config/src/env.ts#TESTING"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/build-config/macros": {
-      "added": {},
       "changed": {
         "assert": {
           "decl": "warp-drive-packages/build-config/src/macros.ts#assert"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core": {
       "added": {
@@ -1781,9 +1701,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types": {
       "added": {
@@ -1828,11 +1746,9 @@
         "StableRecordIdentifier": {
           "decl": "warp-drive-packages/core/src/types/identifier.ts#StableRecordIdentifier"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/-private": {
-      "added": {},
       "changed": {
         "getOrSetGlobal": {
           "decl": "warp-drive-packages/core/src/types/-private.ts#getOrSetGlobal"
@@ -1852,11 +1768,9 @@
         "setUniversalTransient": {
           "decl": "warp-drive-packages/core/src/types/-private.ts#setUniversalTransient"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache": {
-      "added": {},
       "changed": {
         "Cache": {
           "decl": "warp-drive-packages/core/src/types/cache.ts#Cache"
@@ -1867,29 +1781,23 @@
         "RelationshipDiff": {
           "decl": "warp-drive-packages/core/src/types/cache.ts#RelationshipDiff"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/aliases": {
-      "added": {},
       "changed": {
         "ResourceBlob": {
           "decl": "warp-drive-packages/core/src/types/cache/aliases.ts#ResourceBlob"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/change": {
-      "added": {},
       "changed": {
         "Change": {
           "decl": "warp-drive-packages/core/src/types/cache/change.ts#Change"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/mutations": {
-      "added": {},
       "changed": {
         "AddToResourceRelationshipMutation": {
           "decl": "warp-drive-packages/core/src/types/cache/mutations.ts#AddToResourceRelationshipMutation"
@@ -1909,11 +1817,9 @@
         "SortRelatedRecordsMutation": {
           "decl": "warp-drive-packages/core/src/types/cache/mutations.ts#SortRelatedRecordsMutation"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/operations": {
-      "added": {},
       "changed": {
         "AddResourceOperation": {
           "decl": "warp-drive-packages/core/src/types/cache/operations.ts#AddResourceOperation"
@@ -1954,11 +1860,9 @@
         "UpdateResourceRelationshipOperation": {
           "decl": "warp-drive-packages/core/src/types/cache/operations.ts#UpdateResourceRelationshipOperation"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/cache/relationship": {
-      "added": {},
       "changed": {
         "CollectionRelationship": {
           "decl": "warp-drive-packages/core/src/types/cache/relationship.ts#CollectionRelationship"
@@ -1969,11 +1873,9 @@
         "ResourceRelationship": {
           "decl": "warp-drive-packages/core/src/types/cache/relationship.ts#ResourceRelationship"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/graph": {
-      "added": {},
       "changed": {
         "DeleteRecordOperation": {
           "decl": "warp-drive-packages/core/src/types/graph.ts#DeleteRecordOperation"
@@ -2061,11 +1963,9 @@
         "StableRecordIdentifier": {
           "decl": "warp-drive-packages/core/src/types/identifier.ts#StableRecordIdentifier"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/json/raw": {
-      "added": {},
       "changed": {
         "ArrayValue": {
           "decl": "warp-drive-packages/core/src/types/json/raw.ts#ArrayValue"
@@ -2079,11 +1979,9 @@
         "Value": {
           "decl": "warp-drive-packages/core/src/types/json/raw.ts#Value"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/params": {
-      "added": {},
       "changed": {
         "QueryParamsSerializationOptions": {
           "decl": "warp-drive-packages/core/src/types/params.ts#QueryParamsSerializationOptions"
@@ -2097,11 +1995,9 @@
         "SerializablePrimitive": {
           "decl": "warp-drive-packages/core/src/types/params.ts#SerializablePrimitive"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/record": {
-      "added": {},
       "changed": {
         "ExtractSuggestedCacheTypes": {
           "decl": "warp-drive-packages/core/src/types/record.ts#ExtractSuggestedCacheTypes"
@@ -2130,8 +2026,7 @@
         "createIncludeValidator": {
           "decl": "warp-drive-packages/core/src/types/record.ts#createIncludeValidator"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/request": {
       "added": {
@@ -2219,11 +2114,9 @@
         "UpdateRequestOptions": {
           "decl": "warp-drive-packages/core/src/types/request.ts#UpdateRequestOptions"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/runtime": {
-      "added": {},
       "changed": {
         "getRuntimeConfig": {
           "decl": "warp-drive-packages/core/src/types/runtime.ts#getRuntimeConfig"
@@ -2231,11 +2124,9 @@
         "setLogging": {
           "decl": "warp-drive-packages/core/src/types/runtime.ts#setLogging"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/schema/concepts": {
-      "added": {},
       "changed": {
         "Derivation": {
           "decl": "warp-drive-packages/core/src/types/schema/concepts.ts#Derivation"
@@ -2246,11 +2137,9 @@
         "Transformation": {
           "decl": "warp-drive-packages/core/src/types/schema/concepts.ts#Transformation"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/schema/fields": {
-      "added": {},
       "changed": {
         "ArrayField": {
           "decl": "warp-drive-packages/core/src/types/schema/fields.ts#ArrayField"
@@ -2354,11 +2243,9 @@
         "resourceSchema": {
           "decl": "warp-drive-packages/core/src/types/schema/fields.ts#resourceSchema"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/document": {
-      "added": {},
       "changed": {
         "CollectionResourceDataDocument": {
           "decl": "warp-drive-packages/core/src/types/spec/document.ts#CollectionResourceDataDocument"
@@ -2378,20 +2265,16 @@
         "SingleResourceDataDocument": {
           "decl": "warp-drive-packages/core/src/types/spec/document.ts#SingleResourceDataDocument"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/error": {
-      "added": {},
       "changed": {
         "ApiError": {
           "decl": "warp-drive-packages/core/src/types/spec/error.ts#ApiError"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/spec/json-api-raw": {
-      "added": {},
       "changed": {
         "CollectionResourceDocument": {
           "decl": "warp-drive-packages/core/src/types/spec/json-api-raw.ts#CollectionResourceDocument"
@@ -2453,11 +2336,9 @@
         "SingleResourceRelationship": {
           "decl": "warp-drive-packages/core/src/types/spec/json-api-raw.ts#SingleResourceRelationship"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/symbols": {
-      "added": {},
       "changed": {
         "RecordStore": {
           "decl": "warp-drive-packages/core/src/types/symbols.ts#RecordStore"
@@ -2474,11 +2355,9 @@
         "Type": {
           "decl": "warp-drive-packages/core/src/types/symbols.ts#Type"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core-types/utils": {
-      "added": {},
       "changed": {
         "Mutable": {
           "decl": "warp-drive-packages/core/src/types/utils.ts#Mutable"
@@ -2486,8 +2365,7 @@
         "WithPartial": {
           "decl": "warp-drive-packages/core/src/types/utils.ts#WithPartial"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config": {
       "added": {
@@ -2495,9 +2373,7 @@
           "decl": "warp-drive-packages/build-config/src/index.ts#setConfig",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/babel-macros": {
       "added": {
@@ -2505,9 +2381,7 @@
           "decl": "warp-drive-packages/build-config/src/babel-macros.ts#macros",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/canary-features": {
       "added": {
@@ -2519,9 +2393,7 @@
           "decl": "warp-drive-packages/build-config/src/canary-features.ts#SAMPLE_FEATURE_FLAG",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/debugging": {
       "added": {
@@ -2584,9 +2456,7 @@
           "decl": "warp-drive-packages/build-config/src/debugging.ts#__INTERNAL_LOG_NATIVE_MAP_SET_COUNTS",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/deprecations": {
       "added": {
@@ -2642,9 +2512,7 @@
           "decl": "warp-drive-packages/build-config/src/deprecations.ts#ENABLE_LEGACY_SCHEMA_SERVICE",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/env": {
       "added": {
@@ -2672,9 +2540,7 @@
           "decl": "warp-drive-packages/build-config/src/env.ts#TESTING",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/build-config/macros": {
       "added": {
@@ -2682,9 +2548,7 @@
           "decl": "warp-drive-packages/build-config/src/macros.ts#assert",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/configure": {
       "added": {
@@ -2700,9 +2564,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#setupSignals",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/graph/-private": {
       "added": {
@@ -2742,9 +2604,7 @@
           "decl": "warp-drive-packages/core/src/graph/-private.ts#peekGraph",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/reactive": {
       "added": {
@@ -2796,9 +2656,7 @@
           "decl": "warp-drive-packages/core/src/reactive/-private/schema.ts#withDefaults",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/reactive/-private": {
       "added": {
@@ -2810,9 +2668,7 @@
           "decl": "warp-drive-packages/core/src/reactive/-private/symbols.ts#Legacy",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/request": {
       "added": {
@@ -2860,9 +2716,7 @@
           "decl": "warp-drive-packages/core/src/request/-private/promise-cache.ts#setPromiseResult",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/store": {
       "added": {
@@ -2882,9 +2736,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#parseCacheControl",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/store/-private": {
       "added": {
@@ -3136,9 +2988,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#withSignalStore",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types": {
       "added": {
@@ -3182,9 +3032,7 @@
           "decl": "warp-drive-packages/core/src/types/identifier.ts#StableRecordIdentifier",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/-private": {
       "added": {
@@ -3212,9 +3060,7 @@
           "decl": "warp-drive-packages/core/src/types/-private.ts#setUniversalTransient",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache": {
       "added": {
@@ -3230,9 +3076,7 @@
           "decl": "warp-drive-packages/core/src/types/cache.ts#RelationshipDiff",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache/aliases": {
       "added": {
@@ -3240,9 +3084,7 @@
           "decl": "warp-drive-packages/core/src/types/cache/aliases.ts#ResourceBlob",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache/change": {
       "added": {
@@ -3250,9 +3092,7 @@
           "decl": "warp-drive-packages/core/src/types/cache/change.ts#Change",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache/mutations": {
       "added": {
@@ -3280,9 +3120,7 @@
           "decl": "warp-drive-packages/core/src/types/cache/mutations.ts#SortRelatedRecordsMutation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache/operations": {
       "added": {
@@ -3338,9 +3176,7 @@
           "decl": "warp-drive-packages/core/src/types/cache/operations.ts#UpdateResourceRelationshipOperation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/cache/relationship": {
       "added": {
@@ -3356,9 +3192,7 @@
           "decl": "warp-drive-packages/core/src/types/cache/relationship.ts#ResourceRelationship",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/graph": {
       "added": {
@@ -3398,9 +3232,7 @@
           "decl": "warp-drive-packages/core/src/types/graph.ts#UpdateRelationshipOperation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/identifier": {
       "added": {
@@ -3468,9 +3300,7 @@
           "decl": "warp-drive-packages/core/src/types/identifier.ts#StableRecordIdentifier",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/json/raw": {
       "added": {
@@ -3490,9 +3320,7 @@
           "decl": "warp-drive-packages/core/src/types/json/raw.ts#Value",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/params": {
       "added": {
@@ -3512,9 +3340,7 @@
           "decl": "warp-drive-packages/core/src/types/params.ts#SerializablePrimitive",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/record": {
       "added": {
@@ -3554,9 +3380,7 @@
           "decl": "warp-drive-packages/core/src/types/record.ts#createIncludeValidator",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/request": {
       "added": {
@@ -3668,9 +3492,7 @@
           "decl": "warp-drive-packages/core/src/types/request.ts#withBrand",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/runtime": {
       "added": {
@@ -3682,9 +3504,7 @@
           "decl": "warp-drive-packages/core/src/types/runtime.ts#setLogging",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/schema/concepts": {
       "added": {
@@ -3700,9 +3520,7 @@
           "decl": "warp-drive-packages/core/src/types/schema/concepts.ts#Transformation",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/schema/fields": {
       "added": {
@@ -3842,9 +3660,7 @@
           "decl": "warp-drive-packages/core/src/types/schema/fields.ts#resourceSchema",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/spec/document": {
       "added": {
@@ -3872,9 +3688,7 @@
           "decl": "warp-drive-packages/core/src/types/spec/document.ts#SingleResourceDataDocument",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/spec/error": {
       "added": {
@@ -3882,9 +3696,7 @@
           "decl": "warp-drive-packages/core/src/types/spec/error.ts#ApiError",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/spec/json-api-raw": {
       "added": {
@@ -3968,9 +3780,7 @@
           "decl": "warp-drive-packages/core/src/types/spec/json-api-raw.ts#SingleResourceRelationship",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/symbols": {
       "added": {
@@ -3994,9 +3804,7 @@
           "decl": "warp-drive-packages/core/src/types/symbols.ts#Type",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/utils": {
       "added": {
@@ -4008,9 +3816,7 @@
           "decl": "warp-drive-packages/core/src/types/utils.ts#WithPartial",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/utils/string": {
       "added": {
@@ -4026,12 +3832,9 @@
           "decl": "warp-drive-packages/core/src/utils/string.ts#dasherize",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/ember": {
-      "added": {},
       "changed": {
         "Await": {
           "decl": "warp-drive-packages/ember/src/-private/await.gts#Await"
@@ -4051,20 +3854,16 @@
         "getRequestState": {
           "decl": "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#getRequestState"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/ember/install": {
-      "added": {},
       "changed": {
         "buildSignalConfig": {
           "decl": "warp-drive-packages/ember/src/install.ts#buildSignalConfig"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/data-worker": {
-      "added": {},
       "changed": {
         "CacheHandler": {
           "decl": "warp-drive-packages/experiments/src/data-worker/cache-handler.ts#CacheHandler"
@@ -4072,53 +3871,42 @@
         "DataWorker": {
           "decl": "warp-drive-packages/experiments/src/data-worker/worker.ts#DataWorker"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/document-storage": {
-      "added": {},
       "changed": {
         "DocumentStorage": {
           "decl": "warp-drive-packages/experiments/src/document-storage/index.ts#DocumentStorage"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/image-fetch": {
-      "added": {},
       "changed": {
         "ImageFetch": {
           "decl": "warp-drive-packages/experiments/src/image-worker/fetch.ts#ImageFetch"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/image-worker": {
-      "added": {},
       "changed": {
         "ImageWorker": {
           "decl": "warp-drive-packages/experiments/src/image-worker/worker.ts#ImageWorker"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/persisted-cache": {
-      "added": {},
       "changed": {
         "PersistedCache": {
           "decl": "warp-drive-packages/experiments/src/persisted-cache/cache.ts#PersistedCache"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/experiments/worker-fetch": {
-      "added": {},
       "changed": {
         "WorkerFetch": {
           "decl": "warp-drive-packages/experiments/src/data-worker/fetch.ts#WorkerFetch"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/json-api": {
       "added": {
@@ -4126,9 +3914,7 @@
           "decl": "warp-drive-packages/json-api/src/-private/cache.ts#JSONAPICache",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter": {
       "added": {
@@ -4140,9 +3926,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#BuildURLMixin",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/-private": {
       "added": {
@@ -4170,9 +3954,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/-private/utils/fetch.ts#setupFastboot",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/error": {
       "added": {
@@ -4220,9 +4002,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#UnauthorizedError",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/json-api": {
       "added": {
@@ -4230,9 +4010,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/rest": {
       "added": {
@@ -4260,9 +4038,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/rest.ts#fetchOptions",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat": {
       "added": {
@@ -4318,9 +4094,7 @@
           "decl": "warp-drive-packages/legacy/src/compat.ts#serializerFor",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat/-private": {
       "added": {
@@ -4344,9 +4118,7 @@
           "decl": "warp-drive-packages/legacy/src/compat/-private.ts#upgradeStore",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat/builders": {
       "added": {
@@ -4375,9 +4147,7 @@
           "deprecated": true,
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat/extensions": {
       "added": {
@@ -4405,9 +4175,7 @@
           "decl": "warp-drive-packages/legacy/src/compat/extensions.ts#WithEmberObject",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat/utils": {
       "added": {
@@ -4443,9 +4211,7 @@
           "decl": "warp-drive-packages/legacy/src/compat/utils.ts#isEquivType",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/model": {
       "added": {
@@ -4501,9 +4267,7 @@
           "decl": "warp-drive-packages/legacy/src/model/-private/hooks.ts#teardownRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/model/-private": {
       "added": {
@@ -4539,9 +4303,7 @@
           "decl": "warp-drive-packages/legacy/src/model/-private/legacy-relationships-support.ts#lookupLegacySupport",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/model/migration-support": {
       "added": {
@@ -4565,9 +4327,7 @@
           "decl": "warp-drive-packages/legacy/src/model/migration-support.ts#withDefaults",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/serializer": {
       "added": {
@@ -4575,9 +4335,7 @@
           "decl": "warp-drive-packages/legacy/src/serializer.ts#Serializer",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/serializer/json": {
       "added": {
@@ -4585,9 +4343,7 @@
           "decl": "warp-drive-packages/legacy/src/serializer/json.ts#JSONSerializer",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/serializer/json-api": {
       "added": {
@@ -4595,9 +4351,7 @@
           "decl": "warp-drive-packages/legacy/src/serializer/json-api.ts#JSONAPISerializer",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/serializer/rest": {
       "added": {
@@ -4609,9 +4363,7 @@
           "decl": "warp-drive-packages/legacy/src/serializer/rest.ts#RESTSerializer",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/serializer/transform": {
       "added": {
@@ -4635,12 +4387,9 @@
           "decl": "warp-drive-packages/legacy/src/serializer/-private/transforms/transform.ts#Transform",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/schema-record": {
-      "added": {},
       "changed": {
         "Checkout": {
           "decl": "warp-drive-packages/core/src/reactive/-private/symbols.ts#Checkout"
@@ -4669,11 +4418,9 @@
         "withDefaults": {
           "decl": "warp-drive-packages/core/src/reactive/-private/schema.ts#withDefaults"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/schema-record/-private": {
-      "added": {},
       "changed": {
         "Editable": {
           "decl": "warp-drive-packages/core/src/reactive/-private/symbols.ts#Editable"
@@ -4681,8 +4428,7 @@
         "Legacy": {
           "decl": "warp-drive-packages/core/src/reactive/-private/symbols.ts#Legacy"
         }
-      },
-      "removed": []
+      }
     },
     "@warp-drive/utilities": {
       "added": {
@@ -4750,9 +4496,7 @@
           "decl": "warp-drive-packages/utilities/src/index.ts#sortQueryParams",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/-private": {
       "added": {
@@ -4760,9 +4504,7 @@
           "decl": "warp-drive-packages/utilities/src/-private/string/inflections.ts#defaultRules",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/active-record": {
       "added": {
@@ -4786,9 +4528,7 @@
           "decl": "warp-drive-packages/utilities/src/-private/active-record/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/handlers": {
       "added": {
@@ -4824,9 +4564,7 @@
           "decl": "warp-drive-packages/utilities/src/-private/handlers/utils.ts#assertInvalidUrlLength",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/json-api": {
       "added": {
@@ -4866,9 +4604,7 @@
           "decl": "warp-drive-packages/utilities/src/-private/json-api/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/rest": {
       "added": {
@@ -4892,9 +4628,7 @@
           "decl": "warp-drive-packages/utilities/src/-private/rest/save-record.ts#updateRecord",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/utilities/string": {
       "added": {
@@ -4962,12 +4696,9 @@
           "decl": "warp-drive-packages/utilities/src/-private/string/transform.ts#underscore",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "ember-data/-private/index": {
-      "added": {},
       "changed": {
         "Errors": {
           "decl": "warp-drive-packages/legacy/src/model/-private/errors.ts#Errors"
@@ -4990,20 +4721,16 @@
         "coerceId": {
           "decl": "warp-drive-packages/core/src/store/-private/utils/coerce-id.ts#coerceId"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/adapter": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter.ts#Adapter"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/adapters/errors": {
-      "added": {},
       "changed": {
         "AbortError": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AbortError"
@@ -5032,47 +4759,37 @@
         "UnauthorizedError": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#UnauthorizedError"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/adapters/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/adapters/rest": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/rest.ts#RESTAdapter"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/attr": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/model/-private/attr.ts#attr"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/model": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/model/-private/model.ts#Model"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/relationships": {
-      "added": {},
       "changed": {
         "belongsTo": {
           "decl": "warp-drive-packages/legacy/src/model/-private/belongs-to.ts#belongsTo"
@@ -5080,62 +4797,49 @@
         "hasMany": {
           "decl": "warp-drive-packages/legacy/src/model/-private/has-many.ts#hasMany"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializer": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer.ts#Serializer"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializers/embedded-records-mixin": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#EmbeddedRecordsMixin"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializers/json": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/json.ts#JSONSerializer"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializers/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/json-api.ts#JSONAPISerializer"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/serializers/rest": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/rest.ts#RESTSerializer"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/transform": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/serializer/-private/transforms/transform.ts#Transform"
         }
-      },
-      "removed": []
+      }
     }
   },
   "from": "5.5.0",
@@ -5770,8 +5474,7 @@
       "@warp-drive/experiments": {
         "dir": "warp-drive-packages/experiments"
       }
-    },
-    "removed": []
+    }
   },
   "schema": 1,
   "to": "5.6.0"

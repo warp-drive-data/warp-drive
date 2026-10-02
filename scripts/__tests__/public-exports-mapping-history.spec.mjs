@@ -650,23 +650,26 @@ test('historyOf refuses to search symbols in a range a shallow clone cuts', (t) 
   );
 });
 
-test('diffSurfaces maps every declaration of a: through files, then the tokens that carried it, then the removing commit', () => {
+test('diffSurfaces maps the declarations of a that do not keep their id: through files, then the tokens that carried it, then the removing commit', () => {
   const { surfaceA, surfaceB, history } = handWrittenPair();
 
   const { declarations } = diffSurfaces(surfaceA, surfaceB, history);
 
-  assert.deepEqual(Object.keys(declarations), declarationIds(surfaceA), 'every declaration of a, sorted');
+  const ids = declarationIds(surfaceA);
+  assert.ok(
+    Object.keys(declarations).every((id) => ids.includes(id)),
+    'only declarations of a'
+  );
+  assert.deepEqual(Object.keys(declarations), [...Object.keys(declarations)].sort(), 'sorted');
+  // an id b declares unchanged is not listed: cache.ts#Cache and external:@ember/object#default,
+  // whose files did not move, and utils.ts#assert, declared next to its copy
   assert.deepEqual(declarations, {
-    // files: unchanged, renamed, a .ts twin, a namespace, external ids
-    'packages/store/src/cache.ts#Cache': 'packages/store/src/cache.ts#Cache',
+    // files: renamed, a .ts twin, a namespace, an external id that is gone
     'packages/store/src/request.js#request': 'packages/store/src/request.ts#request',
     'packages/store/src/types.ts#*ns': 'warp-drive-packages/core/src/types.ts#*ns',
-    'external:@ember/object#default': 'external:@ember/object#default',
     'external:rsvp#Promise': null,
-    // files: a copied file that survives as a shim (only the copy declares it now) ...
+    // files: a copied file that survives as a shim (only the copy declares it now)
     'packages/store/src/schema.ts#Schema': 'warp-drive-packages/core/src/schema.ts#Schema',
-    // ... or still declares it next to the copy, which keeps the id
-    'packages/store/src/utils.ts#assert': 'packages/store/src/utils.ts#assert',
     // files: several continuations declare it, the first path wins
     'packages/store/src/graph.ts#Graph': 'warp-drive-packages/core/src/graph.ts#Graph',
     // files: deleted, or still there but no longer in surface b, and no commit removed it; a
@@ -724,9 +727,10 @@ test('applyDiff rebuilds surface b for the reverse pair and for a pair without c
 
   const head = { ...structuredClone(surfaceB), version: 'head', tag: null };
   const same = diffSurfaces(surfaceB, head, noMoves('1.1.0', 'head'));
-  assert.deepEqual(same.modules, { added: {}, removed: [], changed: {} });
-  assert.deepEqual(same.packages, { added: {}, removed: [], changed: {} });
+  assert.deepEqual(same.modules, {}, 'a group without entries has no keys');
+  assert.deepEqual(same.packages, {});
   assert.deepEqual(same.exports, {});
+  assert.deepEqual(same.declarations, {}, 'an id that keeps its id is not listed');
   assert.equal(canonical(applyDiff(surfaceB, same)), canonical(head));
 });
 

@@ -22,7 +22,8 @@ import { canonical } from './artifacts.mjs';
  *   schema: 1, kind: 'history', from: string, to: string,
  *   files: Record<string, string[]>, symbols: Record<string, SymbolMove>,
  * }} History
- * @typedef {{ added: Record<string, any>, removed: string[], changed: Record<string, Record<string, unknown>> }} RecordChanges
+ * @typedef {{ added?: Record<string, any>, removed?: string[], changed?: Record<string, Record<string, unknown>> }} RecordChanges
+ *   one group of changes to a map of records; a key that is absent has no entries
  * @typedef {{
  *   schema: 1, kind: 'diff', from: string, to: string,
  *   packages: RecordChanges, modules: RecordChanges, exports: Record<string, RecordChanges>,
@@ -237,7 +238,7 @@ export function continuationOf(id, context) {
  * @returns {RecordChanges}
  */
 function recordChanges(before, after, omit) {
-  /** @type {RecordChanges} */
+  /** @type {Required<RecordChanges>} */
   const changes = { added: {}, removed: [], changed: {} };
   for (const name of Object.keys(before).sort()) if (!Object.hasOwn(after, name)) changes.removed.push(name);
   for (const name of Object.keys(after).sort()) {
@@ -257,14 +258,19 @@ function recordChanges(before, after, omit) {
     }
     if (Object.keys(changed).length) changes.changed[name] = changed;
   }
-  return changes;
+  /** @type {RecordChanges} */
+  const pruned = {};
+  if (Object.keys(changes.added).length) pruned.added = changes.added;
+  if (Object.keys(changes.changed).length) pruned.changed = changes.changed;
+  if (changes.removed.length) pruned.removed = changes.removed;
+  return pruned;
 }
 
 /**
  * @param {RecordChanges} changes
  */
 function isEmpty(changes) {
-  return !Object.keys(changes.added).length && !changes.removed.length && !Object.keys(changes.changed).length;
+  return !Object.keys(changes).length;
 }
 
 /**
@@ -289,8 +295,9 @@ function tagOf(version) {
 
 /**
  * The diff from `surfaceA` to `surfaceB`. `history` is `history/<a>-<b>.json` for the same
- * pair; its `files` and `symbols` decide `declarations`. Throws rather than return a diff
- * that `applyDiff` would not turn back into `surfaceB`.
+ * pair; its `files` and `symbols` decide `declarations`, which lists only the ids that do not
+ * keep their id. Every group carries only what changed. Throws rather than return a diff that
+ * `applyDiff` would not turn back into `surfaceB`.
  * @param {Surface} surfaceA
  * @param {Surface} surfaceB
  * @param {History} history
@@ -332,7 +339,10 @@ export function diffSurfaces(surfaceA, surfaceB, history) {
   };
   /** @type {Record<string, string | null>} */
   const declarations = {};
-  for (const id of [...context.kindsA.keys()].sort()) declarations[id] = continuationOf(id, context);
+  for (const id of [...context.kindsA.keys()].sort()) {
+    const next = continuationOf(id, context);
+    if (next !== id) declarations[id] = next;
+  }
 
   /** @type {Diff} */
   const diff = {
@@ -359,16 +369,16 @@ export function diffSurfaces(surfaceA, surfaceB, history) {
  * @param {string} where  for error messages
  */
 function applyChanges(records, changes, what, where) {
-  for (const name of changes.removed) {
+  for (const name of changes.removed ?? []) {
     if (!Object.hasOwn(records, name)) throw new Error(`${where}: cannot remove ${what} ${name}, it does not exist`);
     delete records[name];
   }
-  for (const [name, record] of Object.entries(changes.added)) {
+  for (const [name, record] of Object.entries(changes.added ?? {})) {
     if (Object.hasOwn(records, name)) throw new Error(`${where}: cannot add ${what} ${name}, it exists`);
     records[name] = structuredClone(record);
     if (what === 'module') records[name].exports = {};
   }
-  for (const [name, changed] of Object.entries(changes.changed)) {
+  for (const [name, changed] of Object.entries(changes.changed ?? {})) {
     if (!Object.hasOwn(records, name)) throw new Error(`${where}: cannot change ${what} ${name}, it does not exist`);
     for (const [key, value] of Object.entries(changed)) {
       if (value === null && !ALWAYS[what].has(key)) delete records[name][key];

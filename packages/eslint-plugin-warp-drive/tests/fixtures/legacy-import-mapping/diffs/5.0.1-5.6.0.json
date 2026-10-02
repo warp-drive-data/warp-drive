@@ -29,7 +29,6 @@
   },
   "exports": {
     "@ember-data/adapter/error": {
-      "added": {},
       "changed": {
         "InvalidError": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#InvalidError"
@@ -37,20 +36,16 @@
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/adapter/json-api": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/legacy-compat": {
-      "added": {},
       "changed": {
         "LegacyNetworkHandler": {
           "decl": "warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts#LegacyNetworkHandler"
@@ -58,11 +53,9 @@
         "SnapshotRecordArray": {
           "decl": "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/model": {
-      "added": {},
       "changed": {
         "attr": {
           "decl": "warp-drive-packages/legacy/src/model/-private/attr.ts#attr"
@@ -76,11 +69,9 @@
         "hasMany": {
           "decl": "warp-drive-packages/legacy/src/model/-private/has-many.ts#hasMany"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/model/-private": {
-      "added": {},
       "changed": {
         "ManyArray": {
           "decl": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
@@ -89,11 +80,9 @@
         "PromiseManyArray": {
           "decl": "warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#PromiseManyArray"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request": {
-      "added": {},
       "changed": {
         "RequestInfo": {
           "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo"
@@ -104,8 +93,7 @@
         "default": {
           "decl": "warp-drive-packages/core/src/request/-private/manager.ts#RequestManager"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/request-utils": {
       "added": {
@@ -118,11 +106,9 @@
         "CachePolicy": {
           "decl": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy"
         }
-      },
-      "removed": []
+      }
     },
     "@ember-data/store": {
-      "added": {},
       "changed": {
         "CacheHandler": {
           "decl": "warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#CacheHandler"
@@ -143,7 +129,9 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor"
         }
       },
-      "removed": ["setIdentifierUpdateMethod"]
+      "removed": [
+        "setIdentifierUpdateMethod"
+      ]
     },
     "@ember-data/store/-private": {
       "added": {
@@ -179,7 +167,9 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor"
         }
       },
-      "removed": ["IdentifierArray"]
+      "removed": [
+        "IdentifierArray"
+      ]
     },
     "@warp-drive/core": {
       "added": {
@@ -211,9 +201,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core-types/request": {
       "added": {
@@ -221,9 +209,7 @@
           "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/request": {
       "added": {
@@ -231,9 +217,7 @@
           "decl": "warp-drive-packages/core/src/request/-private/future.ts#createDeferred",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/store": {
       "added": {
@@ -241,9 +225,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/default-cache-policy.ts#DefaultCachePolicy",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/store/-private": {
       "added": {
@@ -279,9 +261,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/core/types/request": {
       "added": {
@@ -289,9 +269,7 @@
           "decl": "warp-drive-packages/core/src/types/request/info.ts#RequestInfo",
           "kind": "type"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/error": {
       "added": {
@@ -307,9 +285,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/error.ts#AdapterError",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/adapter/json-api": {
       "added": {
@@ -317,9 +293,7 @@
           "decl": "warp-drive-packages/legacy/src/adapter/json-api.ts#JSONAPIAdapter",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/compat": {
       "added": {
@@ -331,9 +305,7 @@
           "decl": "warp-drive-packages/legacy/src/compat/legacy-network-handler/snapshot-record-array.ts#SnapshotRecordArray",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/model": {
       "added": {
@@ -365,9 +337,7 @@
           "decl": "warp-drive-packages/legacy/src/model/-private/has-many.ts#hasMany",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "@warp-drive/legacy/model/-private": {
       "added": {
@@ -379,27 +349,21 @@
           "decl": "warp-drive-packages/legacy/src/model/-private/promise-many-array.ts#PromiseManyArray",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     },
     "ember-data": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/-ember-data/src/index.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "ember-data/store": {
-      "added": {},
       "changed": {
         "default": {
           "decl": "packages/-ember-data/src/store.ts#default"
         }
-      },
-      "removed": []
+      }
     },
     "warp-drive/core": {
       "added": {
@@ -419,9 +383,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setIdentifierUpdateMethod",
           "kind": "value"
         }
-      },
-      "changed": {},
-      "removed": []
+      }
     }
   },
   "from": "5.0.1",
@@ -508,8 +470,7 @@
       "ember-data/store": {
         "entry": "packages/-ember-data/src/store.ts"
       }
-    },
-    "removed": []
+    }
   },
   "packages": {
     "added": {
@@ -525,7 +486,9 @@
       },
       "@warp-drive/core-types": {
         "dir": "packages/core-types",
-        "modules": ["@warp-drive/core-types/request"]
+        "modules": [
+          "@warp-drive/core-types/request"
+        ]
       },
       "@warp-drive/legacy": {
         "dir": "warp-drive-packages/legacy",
@@ -539,11 +502,11 @@
       },
       "warp-drive": {
         "dir": "packages/-warp-drive",
-        "modules": ["warp-drive/core"]
+        "modules": [
+          "warp-drive/core"
+        ]
       }
-    },
-    "changed": {},
-    "removed": []
+    }
   },
   "schema": 1,
   "to": "5.6.0"

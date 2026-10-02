@@ -16,11 +16,7 @@ export const tree = {
       'packages/adapter/src/error.js#errorsArrayToHash': null,
       'packages/eslint-plugin-warp-drive/src/index.js#rules': null,
       'packages/store/src/fetch-manager.ts#fetchManager': null,
-      'packages/store/src/identifier-array.ts#IdentifierArray':
-        'packages/store/src/identifier-array.ts#IdentifierArray',
       'packages/store/src/identifiers.ts#setIdentifierGenerationMethod': null,
-      'packages/store/src/store-service.ts#default': 'packages/store/src/store-service.ts#default',
-      'packages/store/src/types.ts#StoreRequestInput': 'packages/store/src/types.ts#StoreRequestInput',
       'packages/store/src/utils.ts#normalizeModelName': null,
       'packages/store/src/utils.ts#peekRecords': null,
     },
@@ -35,15 +31,12 @@ export const tree = {
           dasherize: { decl: 'packages/request-utils/src/string.ts#dasherize', kind: 'value' },
           normalizeModelName: { decl: 'packages/request-utils/src/string.ts#normalizeModelName', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@ember-data/store': {
         added: { peekRecord: { decl: 'packages/store/src/peek.ts#peekRecord', kind: 'value' } },
-        changed: {},
         removed: ['normalizeModelName', 'peekRecords', 'setIdentifierGenerationMethod'],
       },
-      '@ember-data/store/-private': { added: {}, changed: {}, removed: ['fetchManager'] },
+      '@ember-data/store/-private': { removed: ['fetchManager'] },
     },
     from: '1.0.0',
     kind: 'diff',
@@ -62,7 +55,6 @@ export const tree = {
       added: {
         '@ember-data/request-utils': { dir: 'packages/request-utils', modules: ['@ember-data/request-utils/string'] },
       },
-      changed: {},
       removed: ['eslint-plugin-warp-drive'],
     },
     schema: 1,
@@ -102,49 +94,35 @@ export const tree = {
           peekRecord: { decl: 'warp-drive-packages/core/src/peek.ts#peekRecord', kind: 'value' },
           recordIdentifierFor: { decl: 'warp-drive-packages/core/src/caches.ts#recordIdentifierFor', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@warp-drive/core/store/-private': {
         added: {
           LiveArray: { decl: 'warp-drive-packages/core/src/live-array.ts#LiveArray', kind: 'value' },
           createLiveArray: { decl: 'warp-drive-packages/core/src/live-array.ts#createLiveArray', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@warp-drive/core/types': {
         added: { LiveArray: { decl: 'warp-drive-packages/core/src/live-array.ts#LiveArray', kind: 'type' } },
-        changed: {},
-        removed: [],
       },
       '@warp-drive/legacy/adapter/error': {
         added: {
           AdapterError: { decl: 'warp-drive-packages/legacy/src/adapter/error.ts#AdapterError', kind: 'value' },
           InvalidError: { decl: 'warp-drive-packages/legacy/src/adapter/error.ts#InvalidError', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@warp-drive/legacy/compat/-private': {
         added: {
           FetchManager: { decl: 'warp-drive-packages/legacy/src/compat/fetch-manager.ts#FetchManager', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@warp-drive/utilities/string': {
         added: {
           dasherize: { decl: 'warp-drive-packages/utilities/src/string.ts#dasherize', kind: 'value' },
           normalizeModelName: { decl: 'warp-drive-packages/utilities/src/string.ts#normalizeModelName', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       'warp-drive/types': {
         added: { LiveArray: { decl: 'warp-drive-packages/core/src/live-array.ts#LiveArray', kind: 'type' } },
-        changed: {},
-        removed: [],
       },
     },
     from: '2.0.0',
@@ -183,7 +161,6 @@ export const tree = {
         },
         'warp-drive/types': { entry: 'packages/-warp-drive/src/types.ts', forward: null, package: 'warp-drive' },
       },
-      changed: {},
       removed: ['@ember-data/adapter/error', '@ember-data/request-utils/string', '@ember-data/store/-private'],
     },
     packages: {

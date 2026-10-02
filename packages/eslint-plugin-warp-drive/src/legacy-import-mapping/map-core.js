@@ -14,7 +14,8 @@
  * @typedef {{ kind: 'value' | 'type', decl: string, deprecated?: true }} ExportRecord
  * @typedef {{ package: string, entry?: string, forward: string | null, exports: Record<string, ExportRecord> }} ModuleRecord
  * @typedef {{ schema: 1, kind: 'surface', version: string, tag?: string | null, packages?: Record<string, unknown>, modules: Record<string, ModuleRecord> }} Surface
- * @typedef {{ added: Record<string, any>, removed: string[], changed: Record<string, Record<string, unknown>> }} RecordChanges
+ * @typedef {{ added?: Record<string, any>, removed?: string[], changed?: Record<string, Record<string, unknown>> }} RecordChanges
+ *   one group of changes to a map of records; a key that is absent has no entries
  * @typedef {{ schema: 1, kind: 'diff', from: string, to: string, packages?: RecordChanges, modules: RecordChanges, exports: Record<string, RecordChanges>, declarations: Record<string, string | null> }} Diff
  * @typedef {{ module: string, export: string }} Target
  * @typedef {{ decl: string, source?: Target, choice: Target | null, removedIn?: string, shim?: string }} DecisionEntry

@@ -7,10 +7,8 @@
 export const tree = {
   'diff-1.0.0-1.1.0.json': {
     declarations: {
-      'external:@ember/object#default': 'external:@ember/object#default',
       'external:rsvp#Promise': null,
       'packages/old/src/index.ts#oldThing': null,
-      'packages/store/src/cache.ts#Cache': 'packages/store/src/cache.ts#Cache',
       'packages/store/src/cache.ts#peekCache': null,
       'packages/store/src/coerce-id.ts#default': 'packages/store/src/coerce-id.ts#coerceId',
       'packages/store/src/flags.ts#FLAG': null,
@@ -30,7 +28,6 @@ export const tree = {
       'packages/store/src/snapshot.ts#default': 'warp-drive-packages/legacy/src/snapshot.ts#Snapshot',
       'packages/store/src/store.ts#default': 'warp-drive-packages/core/src/store.ts#Store',
       'packages/store/src/types.ts#*ns': 'warp-drive-packages/core/src/types.ts#*ns',
-      'packages/store/src/utils.ts#assert': 'packages/store/src/utils.ts#assert',
     },
     exports: {
       '@acme/core': {
@@ -44,8 +41,6 @@ export const tree = {
           assert: { decl: 'warp-drive-packages/core/src/utils.ts#assert', kind: 'value' },
           types: { decl: 'warp-drive-packages/core/src/types.ts#*ns', kind: 'value' },
         },
-        changed: {},
-        removed: [],
       },
       '@acme/store': {
         added: {
@@ -80,12 +75,9 @@ export const tree = {
       },
       '@acme/store/compat': {
         added: { compatHelper: { decl: 'packages/store/src/compat.ts#compatHelper', kind: 'value' } },
-        changed: {},
-        removed: [],
       },
       '@acme/store/legacy': {
         added: { Store: { decl: 'warp-drive-packages/core/src/store.ts#Store', kind: 'value' } },
-        changed: {},
         removed: ['legacyHelper'],
       },
     },

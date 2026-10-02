@@ -244,8 +244,12 @@ an optional attribute (`deprecated`) the value `null` means "absent in `b`"; for
 that is always present (`package`, `entry`, `forward`, `kind`, `decl`, `dir`, `modules`) `null`
 is the value itself.
 
-`declarations` maps every declaration id of surface `a` to its id in surface `b`, or `null` when
-nothing in `b` continues it. An id continues through `files` first. Next, when a token
+Every group carries only what changed: in `packages`, `modules` and each module of `exports`, a
+key of `added`, `removed` or `changed` appears only when it has entries, and a module appears in
+`exports` only when one does. `declarations` maps each declaration id of surface `a` that does
+not keep its id to its id in surface `b`, or to `null` when nothing in `b` continues it; an id
+the map does not list is declared by `b` under the same id. An id continues through `files`
+first. Next, when a token
 `(module, name)` of `a` that carried the id still exists in `b` with a declaration in the same
 file or in a file that `files` says continues it, the id maps to that declaration (a default
 export that became a named one in the same file is the usual case; when several such tokens
