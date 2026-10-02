@@ -1,5 +1,5 @@
 ---
-description: Emulate Model with ReactiveResource in LegacyMode using `attribute`, `belongsTo`, and `hasMany` fields, `registerDerivations` from `@warp-drive/legacy`, and `WithLegacy` types.
+description: What LegacyMode is, why it is the current recommendation for most apps, its drawbacks for non-Ember apps, and how to migrate from Model to it.
 ---
 
 # LegacyMode (recommended)
@@ -36,7 +36,7 @@ In LegacyMode:
 - records have all the APIs of Model (references, state props, currentState, methods etc)
 - limited reactivity for attribute fields (same as Model)
 - the continued use of `@warp-drive/legacy` is required (though most imports from it can be removed)
-- `async: true` relationships are supported (though we recommend transitioning to using them in LinksMode)
+- `async: true` relationships are supported on the legacy `belongsTo` and `hasMany` kinds. For new relationships, and as the end state for existing ones, use the `resource` and `collection` kinds, which behave identically in LegacyMode and PolarisMode (see [Migrating Relationships to resource and collection](/upgrading/v5/relationships.md)). [LinksMode](../../relational-data/features/links-mode.md) is an optional interim step for fields that stay on the legacy kinds.
 
 ### Configuration
 

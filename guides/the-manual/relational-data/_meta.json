@@ -1,3 +1,4 @@
 {
-  "title": "Relational Data"
+  "title": "Relational Data",
+  "items": ["features", "configuration", "mutating", "spec", "advanced"]
 }

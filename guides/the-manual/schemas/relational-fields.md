@@ -1,5 +1,5 @@
 ---
-description: Placeholder for the guide to relational fields such as `resource`, `collection`, `belongsTo`, and `hasMany` on a ResourceSchema; no content yet.
+description: How to declare the resource and collection relationship fields in a schema, what value they produce on a record in LegacyMode and PolarisMode, and how they differ from the legacy belongsTo and hasMany kinds.
 ---
 
 # Relational Fields
@@ -90,8 +90,9 @@ interface User {
 
 ## Mutation
 
-Relationships are changed through the document's `data` on an editable record (any LegacyMode
-record, or a checked-out PolarisMode record). Assigning the field itself asserts.
+Relationships are changed through the document's `data` on an editable record. Every LegacyMode
+record is editable; a PolarisMode record is immutable, so first get an editable copy with
+[`checkout()`](../relational-data/mutating/adding-and-removing.md). Assigning the field itself asserts.
 
 ```ts
 editable.bestFriend.data = otherUser;
@@ -99,7 +100,7 @@ editable.pets.data.push(rex);
 editable.pets.data = [rex, shen];
 ```
 
-See [Adding & Removing](../relational-data/mutating/adding-removing.md).
+See [Adding & Removing](../relational-data/mutating/adding-and-removing.md).
 
 ## Collections Are Not Paginated
 
@@ -111,7 +112,7 @@ be alerted when a relationship payload grows past a chosen size.
 ## Legacy `belongsTo` And `hasMany`
 
 The legacy kinds are documented in the [LegacyMode](./resources/legacy-mode.md) guide and in
-[LinksMode](../misc/links-mode.md). They require `options.async` and `options.inverse` to be set
+[LinksMode](../relational-data/features/links-mode.md). They require `options.async` and `options.inverse` to be set
 explicitly and additionally accept `options.linksMode` and `options.resetOnRemoteUpdate`.
 
 To move a legacy field to `resource` or `collection`, follow
