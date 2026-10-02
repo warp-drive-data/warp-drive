@@ -141,7 +141,8 @@ tooling, and dependency bumps usually aren't.
 
 Name the file `<PR number>-<topic>.md`, with the topic in kebab case, such as
 `11394-alien-signals-composition.md`. The number doesn't exist until the PR does, so open the PR
-first and add the file in a commit after it. One PR adds or updates at most one file.
+first and add the file in a commit after it. One PR adds or updates at most one file, plus one
+[RFC summary](#rfc-summaries) for each RFC it adds or advances.
 
 The file starts with frontmatter holding a single `releases` list: the release lines the change
 ships on, each the `major.minor` of a branch's version, quoted so YAML doesn't read `"5.10"` as
@@ -178,3 +179,30 @@ re-renders when the data it read changes, including when a memo returns a cached
   the docs site path as above.
 - Name the package if it isn't obvious, and the deprecation ID for a deprecation.
 - Leave out the implementation, the review history, and internal names a user never sees.
+
+#### RFC Summaries
+
+Every PR that adds an RFC under [`rfcs/`](/rfcs/index.md) or changes an existing RFC's `stage`
+frontmatter adds a summary too, so the post can list the RFCs that were opened or advanced during
+the release. A PR that only edits an RFC's text, without changing its stage, doesn't. An RFC
+summary is named like any other, and its frontmatter carries two more fields: `rfc`, the RFC's
+`warp-drive-rfc` number, and `stages`, the path its stage took. The first entry is the stage the
+RFC had before the PR, or `"new"` for a PR that adds the RFC, and the last is the stage it has
+after; use the values exactly as the RFC's `stage` frontmatter writes them. The body is one
+sentence on what the RFC proposes, usually its `description`.
+
+```md
+---
+releases: ["5.10"]
+rfc: 6
+stages: ["new", "proposed"]
+---
+Proposes relationship fields that ***Warp*Drive** never fetches: pointers, which assert the
+related resource is loaded, and references, which tolerate its absence.
+```
+
+RFCs live on `main` and their PRs aren't backported, so `releases` is `main`'s line alone. When a
+later PR advances the same RFC while its summary still lists that line, it appends the new stage
+to `stages` (`["new", "proposed", "accepted"]`) instead of adding a second file. Otherwise the
+earlier stages have already been announced, and the PR adds its own file starting from the stage
+the RFC had before it (`["accepted", "released"]`).

@@ -17,6 +17,11 @@ writing one.
    hint, not the rule: a `:label: feat` or `:label: breaking` PR almost always is, a
    `:label: chore` PR almost never. If you can't tell, ask the user rather than guessing; a
    summary on a routine change crowds the post, and a missing one on a notable change drops it.
+   Separately, a PR that adds an RFC under `rfcs/` or changes an RFC's `stage` frontmatter always
+   gets an RFC summary, one per RFC, in addition to any summary its other changes need: the post
+   lists every RFC opened or advanced in the release. Follow
+   [RFC Summaries](/guides/contributing/submitting-prs.md#rfc-summaries) for those files instead of
+   steps 4–6; steps 7 and 8 still apply.
 2. Defer to review. The PR's reviewer decides whether it keeps a summary: if they ask for one,
    write it; if they ask for it to come out, delete the file; if they ask for changes, make them.
    Mention in the PR description that the PR adds a summary, so the reviewer knows to read it.
@@ -58,7 +63,7 @@ writing one.
 7. Commit it in the same PR as the change. A new file goes directly in that directory, with no
    subdirectory, as `.next-release-post/<PR number>-<topic>.md` using this PR's number, so open
    the PR first (as a draft, per [Submit a PR](./submit-a-pr.md)) and push the file in a commit
-   after it. Touch no other summary file than the one this PR adds or updates, and don't edit
+   after it. Touch no other summary file than the ones this PR adds or updates, and don't edit
    `README.md`.
 8. Keep it current until the PR merges. When you push a change that alters the public behavior the
    summary describes, or its `:dart:` labels change, run steps 1–7 again: rewrite the file to
@@ -90,3 +95,8 @@ adds its own file, `11401-<topic>.md`.
 
 A follow-up titled `chore(ci): replace the docs site root on each deploy` changes nothing a user
 sees, so it adds no file.
+
+A PR that adds `rfcs/0006-pointer-and-reference-fields.md` as #11420 adds
+`.next-release-post/11420-rfc-pointer-and-reference-fields.md` with `rfc: 6` and
+`stages: ["new", "proposed"]`. If a later PR in the same cycle moves its `stage` to `accepted`,
+that PR appends `"accepted"` to the same file's `stages` rather than adding a second one.
