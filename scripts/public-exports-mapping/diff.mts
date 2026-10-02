@@ -5,39 +5,69 @@
  * A diff is complete: `applyDiff(surfaceA, diffSurfaces(surfaceA, surfaceB, history))` is
  * surface `b` again, byte for byte once canonicalized, so a reader that ships one baseline
  * surface and the diffs can rebuild every later surface. Nothing in this file touches git or
- * the file system; `history.mjs` produces the `history` it reads.
+ * the file system; `history.mts` produces the `history` it reads.
  */
-import { canonical } from './artifacts.mjs';
+import { canonical } from './artifacts.mts';
 
-/**
- * @typedef {{ kind: 'value' | 'type', decl: string, deprecated?: true }} ExportRecord
- * @typedef {{ package: string, entry: string, forward: string | null, exports: Record<string, ExportRecord> }} ModuleRecord
- * @typedef {{ dir: string, modules: string[] }} PackageRecord
- * @typedef {{
- *   schema: 1, kind: 'surface', version: string, tag: string | null,
- *   packages: Record<string, PackageRecord>, modules: Record<string, ModuleRecord>,
- * }} Surface
- * @typedef {{ commit: string, subject: string, added: string[] }} SymbolMove
- * @typedef {{
- *   schema: 1, kind: 'history', from: string, to: string,
- *   files: Record<string, string[]>, symbols: Record<string, SymbolMove>,
- * }} History
- * @typedef {{ added?: Record<string, any>, removed?: string[], changed?: Record<string, Record<string, unknown>> }} RecordChanges
- *   one group of changes to a map of records; a key that is absent has no entries
- * @typedef {{
- *   schema: 1, kind: 'diff', from: string, to: string,
- *   packages: RecordChanges, modules: RecordChanges, exports: Record<string, RecordChanges>,
- *   declarations: Record<string, string | null>,
- * }} Diff
- * @typedef {{ module: string, name: string }} Token
- * @typedef {{
- *   history: History,
- *   kindsA: Map<string, 'value' | 'type'>,
- *   kindsB: Map<string, 'value' | 'type'>,
- *   tokensA: Map<string, Token[]>,
- *   surfaceB: Surface,
- * }} Context  what `continuationOf` reads for one pair
- */
+export type ExportRecord = { kind: 'value' | 'type'; decl: string; deprecated?: true };
+
+export type ModuleRecord = {
+  package: string;
+  entry: string;
+  forward: string | null;
+  exports: Record<string, ExportRecord>;
+};
+
+export type PackageRecord = { dir: string; modules: string[] };
+
+export type Surface = {
+  schema: 1;
+  kind: 'surface';
+  version: string;
+  tag: string | null;
+  packages: Record<string, PackageRecord>;
+  modules: Record<string, ModuleRecord>;
+};
+
+export type SymbolMove = { commit: string; subject: string; added: string[] };
+
+export type History = {
+  schema: 1;
+  kind: 'history';
+  from: string;
+  to: string;
+  files: Record<string, string[]>;
+  symbols: Record<string, SymbolMove>;
+};
+
+/** One group of changes to a map of records; a key that is absent has no entries. */
+export type RecordChanges = {
+  added?: Record<string, Record<string, unknown>>;
+  removed?: string[];
+  changed?: Record<string, Record<string, unknown>>;
+};
+
+export type Diff = {
+  schema: 1;
+  kind: 'diff';
+  from: string;
+  to: string;
+  packages: RecordChanges;
+  modules: RecordChanges;
+  exports: Record<string, RecordChanges>;
+  declarations: Record<string, string | null>;
+};
+
+export type Token = { module: string; name: string };
+
+/** What `continuationOf` reads for one pair. */
+export type Context = {
+  history: History;
+  kindsA: Map<string, 'value' | 'type'>;
+  kindsB: Map<string, 'value' | 'type'>;
+  tokensA: Map<string, Token[]>;
+  surfaceB: Surface;
+};
 
 /**
  * Top-level keys a surface may carry. `version` and `tag` follow from the diff's `to`; the
@@ -59,22 +89,17 @@ const ALWAYS = {
 
 /**
  * Every declaration id a surface references, sorted.
- * @param {Surface} surface
- * @returns {string[]}
  */
-export function declarationIds(surface) {
+export function declarationIds(surface: Surface): string[] {
   return [...declarationKinds(surface).keys()].sort();
 }
 
 /**
  * The kind of every declaration of a surface: `value` when any export of it is a value,
  * else `type`.
- * @param {Surface} surface
- * @returns {Map<string, 'value' | 'type'>}
  */
-export function declarationKinds(surface) {
-  /** @type {Map<string, 'value' | 'type'>} */
-  const kinds = new Map();
+export function declarationKinds(surface: Surface): Map<string, 'value' | 'type'> {
+  const kinds: Map<string, 'value' | 'type'> = new Map();
   for (const module of Object.values(surface.modules)) {
     for (const { decl, kind } of Object.values(module.exports)) {
       if (kinds.get(decl) !== 'value') kinds.set(decl, kind);
@@ -86,12 +111,9 @@ export function declarationKinds(surface) {
 /**
  * The tokens of a surface by the declaration they carry, each list in module order, then in
  * export name order.
- * @param {Surface} surface
- * @returns {Map<string, Token[]>}
  */
-function tokensByDeclaration(surface) {
-  /** @type {Map<string, Token[]>} */
-  const tokens = new Map();
+function tokensByDeclaration(surface: Surface): Map<string, Token[]> {
+  const tokens: Map<string, Token[]> = new Map();
   for (const module of Object.keys(surface.modules).sort()) {
     for (const name of Object.keys(surface.modules[module].exports).sort()) {
       const { decl } = surface.modules[module].exports[name];
@@ -105,10 +127,8 @@ function tokensByDeclaration(surface) {
 
 /**
  * Splits `<file>#<name>`; `null` for an `external:` id, which names no file of the tree.
- * @param {string} id
- * @returns {{ file: string, name: string } | null}
  */
-export function splitDeclarationId(id) {
+export function splitDeclarationId(id: string): { file: string; name: string } | null {
   const hash = id.lastIndexOf('#');
   if (id.startsWith('external:') || hash < 1) return null;
   return { file: id.slice(0, hash), name: id.slice(hash + 1) };
@@ -117,11 +137,8 @@ export function splitDeclarationId(id) {
 /**
  * The paths of the newer tree that continue `file` of the older one: its `history.files`
  * entry (empty when it was deleted), or the file itself when git saw no move.
- * @param {Record<string, string[]>} files
- * @param {string} file
- * @returns {string[]}
  */
-export function followFiles(files, file) {
+export function followFiles(files: Record<string, string[]>, file: string): string[] {
   return Object.hasOwn(files, file) ? files[file] : [file];
 }
 
@@ -130,15 +147,15 @@ export function followFiles(files, file) {
  * still exists and the declaration lies in the declaring file of `id` or in a file `files`
  * says continues it: how a default export that became a named one continues
  * (`store-service.ts#default` to `store-service.ts#Store`, under `@ember-data/store` `default`).
- * @param {string} id
- * @param {{ file: string, name: string }} parsed  `id`, split
- * @param {Context} context
- * @returns {string | null}
+ * @param parsed  `id`, split
  */
-function keptToken(id, { file, name }, { history, tokensA, surfaceB }) {
+function keptToken(
+  id: string,
+  { file, name }: { file: string; name: string },
+  { history, tokensA, surfaceB }: Context
+): string | null {
   const places = new Set([file, ...followFiles(history.files, file)]);
-  /** @type {string[]} */
-  const kept = [];
+  const kept: string[] = [];
   for (const token of tokensA.get(id) ?? []) {
     const module = Object.hasOwn(surfaceB.modules, token.module) ? surfaceB.modules[token.module] : null;
     const record = module && Object.hasOwn(module.exports, token.name) ? module.exports[token.name] : null;
@@ -155,12 +172,14 @@ function keptToken(id, { file, name }, { history, tokensA, surfaceB }) {
 /**
  * The declarations of surface `b` with the kind `id` has in surface `a` that the commit
  * removing `id` added.
- * @param {string} id  a declaration with a `symbols` entry
- * @param {History} history
- * @param {Map<string, 'value' | 'type'>} kindsA
- * @param {Map<string, 'value' | 'type'>} kindsB
+ * @param id  a declaration with a `symbols` entry
  */
-function addedOfSameKind(id, history, kindsA, kindsB) {
+function addedOfSameKind(
+  id: string,
+  history: History,
+  kindsA: Map<string, 'value' | 'type'>,
+  kindsB: Map<string, 'value' | 'type'>
+) {
   return history.symbols[id].added.filter((added) => kindsB.get(added) === kindsA.get(id));
 }
 
@@ -168,17 +187,18 @@ function addedOfSameKind(id, history, kindsA, kindsB) {
  * The declaration the commit removing `id` moved it to, by name: the only added declaration
  * of the same kind with the same binding name, or for a default export, also the only one in
  * the declaring file or a file continuing it (a default export that became a named one).
- * @param {string} id  a declaration with a `symbols` entry
- * @param {History} history
- * @param {Map<string, 'value' | 'type'>} kindsA
- * @param {Map<string, 'value' | 'type'>} kindsB
- * @returns {string | null}
+ * @param id  a declaration with a `symbols` entry
  */
-function movedByName(id, history, kindsA, kindsB) {
-  const { file, name } = /** @type {{ file: string, name: string }} */ (splitDeclarationId(id));
+function movedByName(
+  id: string,
+  history: History,
+  kindsA: Map<string, 'value' | 'type'>,
+  kindsB: Map<string, 'value' | 'type'>
+): string | null {
+  const { file, name } = splitDeclarationId(id) as { file: string; name: string };
   const places = new Set([file, ...followFiles(history.files, file)]);
   const matches = addedOfSameKind(id, history, kindsA, kindsB).filter((added) => {
-    const target = /** @type {{ file: string, name: string }} */ (splitDeclarationId(added));
+    const target = splitDeclarationId(added) as { file: string; name: string };
     return target.name === name || (name === 'default' && places.has(target.file));
   });
   return matches.length === 1 ? matches[0] : null;
@@ -198,11 +218,8 @@ function movedByName(id, history, kindsA, kindsB) {
  *    of the same kind) and removed no other declaration of that kind that this rule would
  *    also send there (a rename is one to one).
  * 4. Otherwise `null`, and the judge decides.
- * @param {string} id
- * @param {Context} context
- * @returns {string | null}
  */
-export function continuationOf(id, context) {
+export function continuationOf(id: string, context: Context): string | null {
   const { history, kindsA, kindsB } = context;
   const parsed = splitDeclarationId(id);
   if (!parsed) return kindsB.has(id) ? id : null;
@@ -232,14 +249,14 @@ export function continuationOf(id, context) {
  * The `added` / `removed` / `changed` sections for two maps of records. `added` holds the
  * whole record (without `omit`), `changed` every attribute whose value differs, set to its
  * value in `b` (`null` when `b` lacks it).
- * @param {Record<string, any>} before
- * @param {Record<string, any>} after
- * @param {string} [omit]  an attribute that has its own section in the diff
- * @returns {RecordChanges}
+ * @param omit  an attribute that has its own section in the diff
  */
-function recordChanges(before, after, omit) {
-  /** @type {Required<RecordChanges>} */
-  const changes = { added: {}, removed: [], changed: {} };
+function recordChanges(
+  before: Record<string, Record<string, unknown>>,
+  after: Record<string, Record<string, unknown>>,
+  omit?: string
+): RecordChanges {
+  const changes: Required<RecordChanges> = { added: {}, removed: [], changed: {} };
   for (const name of Object.keys(before).sort()) if (!Object.hasOwn(after, name)) changes.removed.push(name);
   for (const name of Object.keys(after).sort()) {
     if (!Object.hasOwn(before, name)) {
@@ -248,8 +265,7 @@ function recordChanges(before, after, omit) {
       changes.added[name] = record;
       continue;
     }
-    /** @type {Record<string, unknown>} */
-    const changed = {};
+    const changed: Record<string, unknown> = {};
     const keys = new Set([...Object.keys(before[name]), ...Object.keys(after[name])]);
     for (const key of [...keys].sort()) {
       if (key === omit) continue;
@@ -258,28 +274,19 @@ function recordChanges(before, after, omit) {
     }
     if (Object.keys(changed).length) changes.changed[name] = changed;
   }
-  /** @type {RecordChanges} */
-  const pruned = {};
+  const pruned: RecordChanges = {};
   if (Object.keys(changes.added).length) pruned.added = changes.added;
   if (Object.keys(changes.changed).length) pruned.changed = changes.changed;
   if (changes.removed.length) pruned.removed = changes.removed;
   return pruned;
 }
 
-/**
- * @param {RecordChanges} changes
- */
-function isEmpty(changes) {
+function isEmpty(changes: RecordChanges) {
   return !Object.keys(changes).length;
 }
 
-/**
- * @param {unknown} surface
- * @param {string} role
- * @returns {asserts surface is Surface}
- */
-function assertSurface(surface, role) {
-  const s = /** @type {any} */ (surface);
+function assertSurface(surface: unknown, role: string): asserts surface is Surface {
+  const s = surface as Partial<Surface> | null | undefined;
   if (!s || s.kind !== 'surface' || s.schema !== 1 || !s.modules || !s.packages) {
     throw new Error(`diff: surface ${role} is not a schema 1 surface`);
   }
@@ -287,9 +294,8 @@ function assertSurface(surface, role) {
 
 /**
  * The tag a surface of `version` carries.
- * @param {string} version
  */
-function tagOf(version) {
+function tagOf(version: string) {
   return version === 'head' ? null : `v${version}`;
 }
 
@@ -298,12 +304,8 @@ function tagOf(version) {
  * pair; its `files` and `symbols` decide `declarations`, which lists only the ids that do not
  * keep their id. Every group carries only what changed. Throws rather than return a diff that
  * `applyDiff` would not turn back into `surfaceB`.
- * @param {Surface} surfaceA
- * @param {Surface} surfaceB
- * @param {History} history
- * @returns {Diff}
  */
-export function diffSurfaces(surfaceA, surfaceB, history) {
+export function diffSurfaces(surfaceA: Surface, surfaceB: Surface, history: History): Diff {
   assertSurface(surfaceA, 'a');
   assertSurface(surfaceB, 'b');
   const { version: from } = surfaceA;
@@ -315,37 +317,33 @@ export function diffSurfaces(surfaceA, surfaceB, history) {
     throw new Error(`diff ${from}-${to}: surface ${to} has the tag ${surfaceB.tag}, not ${tagOf(to)}`);
   }
   for (const key of new Set([...Object.keys(surfaceA), ...Object.keys(surfaceB)])) {
-    const a = /** @type {Record<string, unknown>} */ (surfaceA)[key];
-    const b = /** @type {Record<string, unknown>} */ (surfaceB)[key];
+    const a = (surfaceA as Record<string, unknown>)[key];
+    const b = (surfaceB as Record<string, unknown>)[key];
     if (!SURFACE_KEYS.has(key) && canonical(a ?? null) !== canonical(b ?? null)) {
       throw new Error(`diff ${from}-${to}: the surfaces differ in "${key}", which no section of a diff carries`);
     }
   }
 
-  /** @type {Record<string, RecordChanges>} */
-  const exports = {};
+  const exports: Record<string, RecordChanges> = {};
   for (const module of Object.keys(surfaceB.modules).sort()) {
     const changes = recordChanges(surfaceA.modules[module]?.exports ?? {}, surfaceB.modules[module].exports);
     if (!isEmpty(changes)) exports[module] = changes;
   }
 
-  /** @type {Context} */
-  const context = {
+  const context: Context = {
     history,
     kindsA: declarationKinds(surfaceA),
     kindsB: declarationKinds(surfaceB),
     tokensA: tokensByDeclaration(surfaceA),
     surfaceB,
   };
-  /** @type {Record<string, string | null>} */
-  const declarations = {};
+  const declarations: Record<string, string | null> = {};
   for (const id of [...context.kindsA.keys()].sort()) {
     const next = continuationOf(id, context);
     if (next !== id) declarations[id] = next;
   }
 
-  /** @type {Diff} */
-  const diff = {
+  const diff: Diff = {
     schema: 1,
     kind: 'diff',
     from,
@@ -363,12 +361,14 @@ export function diffSurfaces(surfaceA, surfaceB, history) {
 
 /**
  * Applies one section of a diff to a map of records, in place.
- * @param {Record<string, any>} records
- * @param {RecordChanges} changes
- * @param {'package' | 'module' | 'export'} what
- * @param {string} where  for error messages
+ * @param where  for error messages
  */
-function applyChanges(records, changes, what, where) {
+function applyChanges(
+  records: Record<string, Record<string, unknown>>,
+  changes: RecordChanges,
+  what: 'package' | 'module' | 'export',
+  where: string
+) {
   for (const name of changes.removed ?? []) {
     if (!Object.hasOwn(records, name)) throw new Error(`${where}: cannot remove ${what} ${name}, it does not exist`);
     delete records[name];
@@ -389,11 +389,8 @@ function applyChanges(records, changes, what, where) {
 
 /**
  * Rebuilds surface `b` from surface `a` and the diff from `a` to `b`.
- * @param {Surface} surfaceA
- * @param {Diff} diff
- * @returns {Surface}
  */
-export function applyDiff(surfaceA, diff) {
+export function applyDiff(surfaceA: Surface, diff: Diff): Surface {
   assertSurface(surfaceA, 'a');
   const where = `diff ${diff.from}-${diff.to}`;
   if (diff.kind !== 'diff' || diff.from !== surfaceA.version) {

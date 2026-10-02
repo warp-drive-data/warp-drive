@@ -15,49 +15,36 @@ export const DATA_ROOT = path.join(REPO_ROOT, 'packages', 'eslint-plugin-warp-dr
 /**
  * Where everything else a command computes goes: the surfaces of the other releases and of head,
  * the histories, the audits, the shapes and the judge's bundles. Git ignores `tmp/`; a command
- * that needs one of these files and does not find it computes it again (see data.mjs).
+ * that needs one of these files and does not find it computes it again (see data.mts).
  */
 export const SCRATCH_ROOT = path.join(REPO_ROOT, 'tmp', 'public-exports-mapping');
 
-/**
- * @param {string} [dataRoot]
- * @returns {{ schema: 1, baseline: string, releases: string[] }}
- */
-export function releases(dataRoot = DATA_ROOT) {
+export function releases(dataRoot: string = DATA_ROOT): { schema: 1; baseline: string; releases: string[] } {
   return readJson(path.join(dataRoot, 'releases.json'));
 }
 
 /**
  * Sorts object keys recursively so that equal data serializes to equal bytes. Arrays keep
  * their order, because order is meaningful there (ranking, release order).
- * @template T
- * @param {T} value
- * @returns {T}
  */
-export function sortKeys(value) {
-  if (Array.isArray(value)) return /** @type {T} */ (value.map(sortKeys));
+export function sortKeys<T>(value: T): T {
+  if (Array.isArray(value)) return value.map(sortKeys) as T;
   if (value && typeof value === 'object') {
-    const out = /** @type {Record<string, unknown>} */ ({});
-    for (const key of Object.keys(value).sort())
-      out[key] = sortKeys(/** @type {Record<string, unknown>} */ (value)[key]);
-    return /** @type {T} */ (out);
+    const out: Record<string, unknown> = {};
+    for (const key of Object.keys(value).sort()) out[key] = sortKeys((value as Record<string, unknown>)[key]);
+    return out as T;
   }
   return value;
 }
 
 /**
  * The one serialization every artifact uses: sorted keys, two-space indent, trailing newline.
- * @param {unknown} value
  */
-export function canonical(value) {
+export function canonical(value: unknown) {
   return JSON.stringify(sortKeys(value), null, 2) + '\n';
 }
 
-/**
- * @param {string} file
- * @returns {any}
- */
-export function readJson(file) {
+export function readJson(file: string): any {
   return JSON.parse(readFileSync(file, 'utf8'));
 }
 
@@ -65,12 +52,13 @@ export function readJson(file) {
  * Writes `value` to `file` when the bytes differ. A product file (the default) is not written in
  * check mode: the result says whether it would change, so the caller can print it and exit 1. A
  * `scratch` file is written whatever the mode, since later steps read it and nothing tracks it.
- * @param {string} file  absolute path
- * @param {unknown} value
- * @param {{ check?: boolean, scratch?: boolean }} [options]
- * @returns {{ file: string, changed: boolean, written: boolean, scratch: boolean, before: string | null, after: string }}
+ * @param file  absolute path
  */
-export function writeArtifact(file, value, { check = false, scratch = false } = {}) {
+export function writeArtifact(
+  file: string,
+  value: unknown,
+  { check = false, scratch = false }: { check?: boolean; scratch?: boolean } = {}
+): { file: string; changed: boolean; written: boolean; scratch: boolean; before: string | null; after: string } {
   const after = canonical(value);
   const before = existsSync(file) ? readFileSync(file, 'utf8') : null;
   const changed = before !== after;
@@ -85,13 +73,14 @@ export function writeArtifact(file, value, { check = false, scratch = false } = 
 /**
  * Prints one line per changed artifact and returns the exit code a `--check` run should use: 1
  * when a product file would change. A scratch file is never drift.
- * @param {ReturnType<typeof writeArtifact>[]} results
- * @param {{ check?: boolean, command: string }} options
  */
-export function report(results, { check = false, command }) {
+export function report(
+  results: ReturnType<typeof writeArtifact>[],
+  { check = false, command }: { check?: boolean; command: string }
+) {
   const changed = results.filter((r) => r.changed);
   for (const r of changed) {
-    const lines = (text) => (text === null ? 0 : text.split('\n').length - 1);
+    const lines = (text: string | null) => (text === null ? 0 : text.split('\n').length - 1);
     const verb = r.written ? 'wrote' : 'would change';
     console.log(
       `${command}: ${verb} ${path.relative(REPO_ROOT, r.file)} (${lines(r.before)} -> ${lines(r.after)} lines)`

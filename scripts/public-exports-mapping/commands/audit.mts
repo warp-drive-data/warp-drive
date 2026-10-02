@@ -1,5 +1,5 @@
 /**
- * `cli.mjs audit <version>... [--check]` and `cli.mjs audit --all [--check]`: writes the scratch
+ * `cli.mts audit <version>... [--check]` and `cli.mts audit --all [--check]`: writes the scratch
  * `audits/<version>.json` and `shapes/<version>.json` for each version (every release of
  * `releases.json` with `--all`) from the packages npm has at that version, compared with the
  * version's surface (scanned or derived from the diffs) when there is one. Both files are
@@ -8,9 +8,10 @@
  */
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, releases, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mjs';
-import { auditRelease, summarize } from '../audit.mjs';
-import { auditPath, loadSurface, shapesPath, surfacePath } from '../data.mjs';
+import { DATA_ROOT, releases, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mts';
+import { auditRelease, summarize } from '../audit.mts';
+import { auditPath, loadSurface, shapesPath, surfacePath } from '../data.mts';
+import type { Pack, PackageRef } from '../published.mts';
 
 export const name = 'audit';
 export const describe =
@@ -18,24 +19,22 @@ export const describe =
 
 const USAGE = 'usage: audit <version>... [--check] | audit --all [--check]';
 
-/**
- * @typedef {{
- *   dataRoot?: string,
- *   scratchRoot?: string,
- *   releases?: () => { releases: string[] },
- *   packages?: (version: string) => import('../published.mjs').PackageRef[],
- *   cacheDir?: string,
- *   pack?: import('../published.mjs').Pack,
- *   log?: (line: string) => void,
- * }} RunOptions  overrides for tests; the CLI passes the roots only
- */
+/** Overrides for tests; the CLI passes the roots only. */
+export interface RunOptions {
+  dataRoot?: string;
+  scratchRoot?: string;
+  releases?: () => { releases: string[] };
+  packages?: (version: string) => PackageRef[];
+  cacheDir?: string;
+  pack?: Pack;
+  log?: (line: string) => void;
+}
 
 /**
- * @param {string[]} argv  the arguments after the command name
- * @param {RunOptions} [options]
- * @returns {Promise<number>} the exit code
+ * @param argv  the arguments after the command name
+ * @returns the exit code
  */
-export async function run(argv, options = {}) {
+export async function run(argv: string[], options: RunOptions = {}): Promise<number> {
   // eslint-disable-next-line no-console
   const log = options.log ?? ((line) => console.log(line));
   let parsed;
@@ -46,7 +45,7 @@ export async function run(argv, options = {}) {
       options: { all: { type: 'boolean', default: false }, check: { type: 'boolean', default: false } },
     });
   } catch (error) {
-    log(`audit: ${/** @type {Error} */ (error).message}\n${USAGE}`);
+    log(`audit: ${(error as Error).message}\n${USAGE}`);
     return 2;
   }
   const { values, positionals } = parsed;

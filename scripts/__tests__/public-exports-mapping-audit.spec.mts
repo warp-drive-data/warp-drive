@@ -1,8 +1,8 @@
 /**
- * Area C of scripts/public-exports-mapping: the published package (published.mjs), the audit
- * against a surface (audit.mjs) and the `audit` command.
+ * Area C of scripts/public-exports-mapping: the published package (published.mts), the audit
+ * against a surface (audit.mts) and the `audit` command.
  *
- * The fixture packages come from fixtures/public-exports-mapping/audit.mjs: `kit/package/` is an
+ * The fixture packages come from fixtures/public-exports-mapping/audit.mts: `kit/package/` is an
  * exports-map package, `kit.tar.gz` beside that module its packed form, and `addon/package/` a v1
  * addon read as an unpacked directory. No test reaches the network: `fetchTarball` is handed a
  * `pack` that copies the fixture tarball.
@@ -13,13 +13,15 @@ import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFi
 import path from 'node:path';
 import { test } from 'node:test';
 
-import { canonical, REPO_ROOT, writeArtifact } from '../public-exports-mapping/artifacts.mjs';
-import { auditRelease, compareWithSurface, publishedKinds } from '../public-exports-mapping/audit.mjs';
-import { run } from '../public-exports-mapping/commands/audit.mjs';
+import { canonical, REPO_ROOT, writeArtifact } from '../public-exports-mapping/artifacts.mts';
+import { auditRelease, compareWithSurface, publishedKinds } from '../public-exports-mapping/audit.mts';
+import { run } from '../public-exports-mapping/commands/audit.mts';
 import {
   fetchTarball,
   isChunk,
+  type ModuleRecord,
   openPublished,
+  type Pack,
   packagesAt,
   PublishedPackage,
   PublishedRelease,
@@ -27,10 +29,10 @@ import {
   readTarball,
   tarballPath,
   unpublishedMarkerPath,
-} from '../public-exports-mapping/published.mjs';
+} from '../public-exports-mapping/published.mts';
 import { tempDir } from './-run-script.mjs';
-import { tree as AUDIT_TREE } from './fixtures/public-exports-mapping/audit.mjs';
-import { materialize } from './fixtures/public-exports-mapping/tree.mjs';
+import { tree as AUDIT_TREE } from './fixtures/public-exports-mapping/audit.mts';
+import { materialize } from './fixtures/public-exports-mapping/tree.mts';
 
 /** The fixture packages, written to disk once for this file. */
 const FIXTURES = materialize(AUDIT_TREE, 'warp-drive-audit-fixtures-');
@@ -49,10 +51,8 @@ const NEW = { name: '@fixture/new', dir: 'packages/new', version: '3.0.0' };
  * version as missing from the registry, recording each call.
  */
 function fixturePack() {
-  /** @type {string[]} */
-  const calls = [];
-  /** @type {import('../public-exports-mapping/published.mjs').Pack} */
-  const pack = async ({ name, version, destination }) => {
+  const calls: string[] = [];
+  const pack: Pack = async ({ name, version, destination }) => {
     calls.push(`${name}@${version}`);
     if (name !== KIT.name || version !== KIT.version) return null;
     const file = path.join(destination, 'fixture-kit-1.2.3.tgz');
@@ -132,12 +132,9 @@ function fixtureSurface() {
   };
 }
 
-/** @param {string} root */
-function filesUnder(root) {
-  /** @type {Map<string, Buffer>} */
-  const files = new Map();
-  /** @param {string} dir */
-  const walk = (dir) => {
+function filesUnder(root: string) {
+  const files: Map<string, Buffer> = new Map();
+  const walk = (dir: string) => {
     for (const entry of readdirSync(path.join(root, dir), { withFileTypes: true })) {
       const relative = dir ? `${dir}/${entry.name}` : entry.name;
       if (entry.isDirectory()) walk(relative);
@@ -152,7 +149,7 @@ test('the fixture tarball holds exactly the fixture directory, long paths includ
   const fromTarball = readTarball(KIT_TGZ);
   const fromDirectory = filesUnder(KIT_DIR);
   assert.deepEqual([...fromTarball.keys()].sort(), [...fromDirectory.keys()].sort());
-  for (const [file, bytes] of fromDirectory) assert.ok(bytes.equals(fromTarball.get(file)), `${file} drifted`);
+  for (const [file, bytes] of fromDirectory) assert.ok(bytes.equals(fromTarball.get(file)!), `${file} drifted`);
   assert.ok(fromTarball.has(AMBIENT_FILE), 'the pax path header names the long file');
 });
 
@@ -315,7 +312,7 @@ test('export * from another package of the release resolves there; read alone it
     unresolved: ['@fixture/kit/widget'],
   });
   const release = new PublishedRelease([openPublished(KIT_TGZ), openPublished(ADDON_DIR)]);
-  const together = release.describe(/** @type {any} */ (release.packages.get('@fixture/addon')));
+  const together = release.describe(release.packages.get('@fixture/addon') as any);
   assert.deepEqual(together.modules['@fixture/addon'], {
     runtime: { file: 'addon/index.js', names: ['Widget', 'camelize', 'dasherize', 'default', 'makeWidget'] },
     types: null,
@@ -365,7 +362,7 @@ test('fetchTarball packs once into the cache and remembers a version the registr
     path: path.join(cacheDir, '@fixture+kit', '1.2.3.tgz'),
   });
   assert.equal(first.path, tarballPath(cacheDir, KIT.name, KIT.version));
-  assert.ok(readFileSync(KIT_TGZ).equals(readFileSync(/** @type {string} */ (first.path))));
+  assert.ok(readFileSync(KIT_TGZ).equals(readFileSync(first.path as string)));
   assert.equal(existsSync(path.join(cacheDir, '@fixture+kit', 'fixture-kit-1.2.3.tgz')), false);
 
   const second = await fetchTarball(KIT.name, KIT.version, { cacheDir, pack });
@@ -387,7 +384,7 @@ test('fetchTarball packs once into the cache and remembers a version the registr
 test('the audit compares the published packages with a contract-shaped surface', async (t) => {
   const { audit, shapes, tarballs } = await auditRelease('1.2.3', {
     packages: [GONE, KIT, NEW],
-    surface: /** @type {any} */ (fixtureSurface()),
+    surface: fixtureSurface() as any,
     cacheDir: tempDir(t),
     pack: fixturePack().pack,
   });
@@ -416,7 +413,7 @@ test('the audit compares the published packages with a contract-shaped surface',
       kinds: {},
     },
   });
-  const kit = /** @type {any} */ (audit.packages['@fixture/kit']);
+  const kit = audit.packages['@fixture/kit'] as any;
   assert.equal(kit.dir, 'packages/kit');
   assert.deepEqual(kit.differences, {
     modulesNotShipped: ['@fixture/kit/gone', '@fixture/kit/internal'],
@@ -447,27 +444,24 @@ test('the audit compares the published packages with a contract-shaped surface',
 
 test('a published package the surface does not cover is listed, not compared', async (t) => {
   const surface = fixtureSurface();
-  delete (/** @type {any} */ (surface.packages)['@fixture/kit']);
+  delete (surface.packages as any)['@fixture/kit'];
   for (const module of Object.keys(surface.modules)) {
-    if (module.startsWith('@fixture/kit')) delete (/** @type {any} */ (surface.modules)[module]);
+    if (module.startsWith('@fixture/kit')) delete (surface.modules as any)[module];
   }
   const { audit } = await auditRelease('1.2.3', {
     packages: [KIT, GONE],
-    surface: /** @type {any} */ (surface),
+    surface: surface as any,
     cacheDir: tempDir(t),
     pack: fixturePack().pack,
   });
   assert.deepEqual(audit.packagesNotInSurface, ['@fixture/kit']);
   assert.equal('differences' in audit.packages['@fixture/kit'], false);
-  assert.deepEqual(/** @type {any} */ (audit.packages['@fixture/gone']).differences.modulesNotShipped, [
-    '@fixture/gone',
-  ]);
+  assert.deepEqual((audit.packages['@fixture/gone'] as any).differences.modulesNotShipped, ['@fixture/gone']);
 });
 
 test('a package that publishes no types is compared on its values only', () => {
   const addon = { dir: 'packages/addon', ...readPublished(ADDON_DIR) };
-  /** @param {Record<string, 'value' | 'type'>} kinds */
-  const exports = (kinds) =>
+  const exports = (kinds: Record<string, 'value' | 'type'>) =>
     Object.fromEntries(Object.entries(kinds).map(([name, kind]) => [name, { kind, decl: `src#${name}` }]));
   const surface = {
     packages: { '@fixture/addon': { dir: 'packages/addon', modules: [] } },
@@ -485,10 +479,7 @@ test('a package that publishes no types is compared on its values only', () => {
       '@fixture/addon/register': { package: '@fixture/addon', exports: {} },
     },
   };
-  const { differences, notInSurface } = compareWithSurface(
-    /** @type {any} */ ({ '@fixture/addon': addon }),
-    /** @type {any} */ (surface)
-  );
+  const { differences, notInSurface } = compareWithSurface({ '@fixture/addon': addon } as any, surface as any);
   assert.deepEqual(notInSurface, []);
   assert.deepEqual(differences['@fixture/addon'], {
     // `types` exports only types and is not expected; `register` exports nothing and still is
@@ -504,10 +495,8 @@ test('a package that publishes no types is compared on its values only', () => {
 
 test('compareWithSurface reports nothing for a surface that matches', async (t) => {
   const { audit } = await auditRelease('1.2.3', { packages: [KIT], cacheDir: tempDir(t), pack: fixturePack().pack });
-  /** @type {Record<string, import('../public-exports-mapping/published.mjs').ModuleRecord>} */
-  const published = /** @type {any} */ (audit.packages['@fixture/kit']).modules;
-  /** @type {Record<string, any>} */
-  const modules = {};
+  const published: Record<string, ModuleRecord> = (audit.packages['@fixture/kit'] as any).modules;
+  const modules: Record<string, any> = {};
   for (const [module, record] of Object.entries(published)) {
     if (!record.runtime && !record.types) continue;
     const exports = Object.fromEntries(
@@ -515,7 +504,7 @@ test('compareWithSurface reports nothing for a surface that matches', async (t) 
     );
     modules[module] = { package: '@fixture/kit', exports };
   }
-  const { differences, surfaceOnly } = compareWithSurface(audit.packages, /** @type {any} */ ({ modules }));
+  const { differences, surfaceOnly } = compareWithSurface(audit.packages, { modules } as any);
   assert.deepEqual(surfaceOnly, []);
   assert.deepEqual(differences['@fixture/kit'], {
     modulesNotShipped: [],
@@ -541,7 +530,7 @@ test('without a surface the audit records surface: null and no differences', asy
 test('audits and shapes are canonical: the same bytes whatever the package order, and rewriting changes nothing', async (t) => {
   const cacheDir = tempDir(t);
   const { pack } = fixturePack();
-  const surface = /** @type {any} */ (fixtureSurface());
+  const surface = fixtureSurface() as any;
   const one = await auditRelease('1.2.3', { packages: [KIT, GONE], surface, cacheDir, pack });
   const two = await auditRelease('1.2.3', { packages: [GONE, KIT], surface, cacheDir, pack });
   assert.equal(canonical(one.audit), canonical(two.audit));
@@ -559,8 +548,7 @@ test('run writes the scratch audits/ and shapes/, in check mode too', async (t) 
   t.mock.method(console, 'log', () => {});
   const dataRoot = tempDir(t);
   const cacheDir = tempDir(t);
-  /** @type {string[]} */
-  const lines = [];
+  const lines: string[] = [];
   const options = {
     dataRoot,
     scratchRoot: dataRoot,
@@ -568,7 +556,7 @@ test('run writes the scratch audits/ and shapes/, in check mode too', async (t) 
     pack: fixturePack().pack,
     packages: () => [KIT, GONE],
     releases: () => ({ releases: ['1.2.3'] }),
-    log: (/** @type {string} */ line) => lines.push(line),
+    log: (line: string) => lines.push(line),
   };
   mkdirSync(path.join(dataRoot, 'surfaces'), { recursive: true });
   writeFileSync(path.join(dataRoot, 'surfaces', '1.2.3.json'), canonical(fixtureSurface()));

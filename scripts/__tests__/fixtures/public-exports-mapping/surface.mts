@@ -1,13 +1,13 @@
 /**
- * Fixture trees for the surface tests (surface.mjs, exports.mjs, resolver.mjs and the cli.mjs loader),
+ * Fixture trees for the surface tests (surface.mts, exports.mts, resolver.mts and the cli.mts loader),
  * one per build era of this repository plus two stand-in command modules. `materialize` from
- * ./tree.mjs writes them to disk; the surface scanner reads real files through oxc.
+ * ./tree.mts writes them to disk; the surface scanner reads real files through oxc.
  */
+import type { Tree } from './tree.mts';
 
-/** @type {import('./tree.mjs').Tree} */
-export const tree = {
-  // stand-in commands for the cli.mjs loader tests: one well-behaved, one that names itself wrongly
-  'commands/broken.mjs': `// A command module that names itself wrongly, for the cli.mjs loader tests.
+export const tree: Tree = {
+  // stand-in commands for the cli.mts loader tests: one well-behaved, one that names itself wrongly
+  'commands/broken.mts': `// A command module that names itself wrongly, for the cli.mts loader tests.
 export const name = 'not-broken';
 export const describe = 'exports the wrong name';
 
@@ -15,7 +15,7 @@ export async function run() {
   return 0;
 }
 `,
-  'commands/echo.mjs': `// A stand-in command for the cli.mjs loader tests: records each call, fails on request.
+  'commands/echo.mts': `// A stand-in command for the cli.mts loader tests: records each call, fails on request.
 export const name = 'echo';
 export const describe = 'records its arguments';
 

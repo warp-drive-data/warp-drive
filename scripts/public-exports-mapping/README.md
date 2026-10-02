@@ -46,7 +46,7 @@ the release tags, git and npm in seconds, so nothing in it is committed.
 ## Commands
 
 ```
-node scripts/public-exports-mapping/cli.mjs <command> [...args] [--check]
+node scripts/public-exports-mapping/cli.mts <command> [...args] [--check]
 
 surface <version|head> | --all     surfaces from the release tags (detached worktrees, removed after)
 history <a> <b>                    file renames and symbol moves between two releases, from git
@@ -64,15 +64,16 @@ would change and exits 1 without writing it; scratch files are written either wa
 full checkout, because the history step reads git from the newest release tag to `HEAD`. A
 shallow clone makes `history` refuse to run.
 
-Tests: `pnpm test:scripts` runs `scripts/__tests__/public-exports-mapping-*.spec.mjs`. The
-plugin's reader and rule are tested with `pnpm test:legacy-imports` in
+Tests: `pnpm test:scripts` runs `scripts/__tests__/public-exports-mapping-*.spec.mts`, and
+`pnpm check:types:scripts` type-checks the pipeline (node runs the `.mts` files directly, so
+there is no build). The plugin's reader and rule are tested with `pnpm test:legacy-imports` in
 `packages/eslint-plugin-warp-drive`.
 
 ## Adding a release
 
 1. Add the version to the data directory's `releases.json` (the latest patch of the minor, tag
    `v<version>`).
-2. `node scripts/public-exports-mapping/cli.mjs release <version>`: surfaces the tag, derives
+2. `node scripts/public-exports-mapping/cli.mts release <version>`: surfaces the tag, derives
    history and diff from its predecessor, audits the published packages and, when the version is
    the newest, refreshes `head` the way `update` does.
 3. Read `tmp/public-exports-mapping/audits/<version>.json`: a module the surface has and the
@@ -90,9 +91,9 @@ of writing) need a decision. Judging runs locally, never in CI. The judge of rec
 evidence bundles), and its decisions are the ones that ship:
 
 ```
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --dry-run            # bundles and request bodies, no call
+node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --dry-run            # bundles and request bodies, no call
 # read tmp/public-exports-mapping/judge/4.12.8-5.9.1/bundles.json, write answers.json
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --import answers.json  # -> decisions/4.12.8.json
+node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --import answers.json  # -> decisions/4.12.8.json
 ```
 
 An answers file maps each declaration id to `{ "choice": { "module", "export" } | null,
@@ -102,11 +103,11 @@ for comparison:
 
 ```
 export ANTHROPIC_API_KEY=...                                                  # Claude, Message Batches API
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --calibrate   # agreement on the git-settled tokens
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --judge claude --threshold 0.8
+node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --calibrate   # agreement on the git-settled tokens
+node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --judge claude --threshold 0.8
 export TYPESAFE_API_KEY=...                                                   # TypeSafe AI's Jev
-node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --judge jev
-node scripts/public-exports-mapping/cli.mjs judge --compare \
+node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --judge jev
+node scripts/public-exports-mapping/cli.mts judge --compare \
   packages/eslint-plugin-warp-drive/src/legacy-import-mapping/decisions/4.12.8.json \
   tmp/public-exports-mapping/judge/4.12.8-5.9.1/decisions.jev.json
 ```

@@ -7,10 +7,11 @@
  */
 import { createRequire } from 'node:module';
 
+import type * as MapCore from '../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js';
+
 const require = createRequire(import.meta.url);
 
-/** @type {typeof import('../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js')} */
-const core = require('../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js');
+const core: typeof MapCore = require('../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js');
 
 export const {
   RANKING,
@@ -35,15 +36,17 @@ export const {
   surfaceAt,
 } = core;
 
-/**
- * @typedef {import('../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js').Decision} Decision
- * @typedef {{
- *   module: string, export: string, kind: 'value' | 'type', decl: string,
- *   target: string | null, via: 'declarations' | 'decision' | null,
- *   candidates: { module: string, export: string, kind: 'value' | 'type' }[],
- *   decision: Decision, typeOnlyDecision?: Decision,
- * }} TokenDecision
- */
+export type TokenDecision = {
+  module: string;
+  export: string;
+  kind: 'value' | 'type';
+  decl: string;
+  target: string | null;
+  via: 'declarations' | 'decision' | null;
+  candidates: { module: string; export: string; kind: 'value' | 'type' }[];
+  decision: MapCore.Decision;
+  typeOnlyDecision?: MapCore.Decision;
+};
 
 /**
  * The map from `from` to `to`: for every token of the `from` surface, how it resolved (`via`
@@ -54,24 +57,23 @@ export const {
  *
  * `surfaces` needs at least the baseline surface; the others are rebuilt from `diffs` when they
  * are missing. `from` and `to` take a full version, a `major.minor` or `head`.
- * @param {{
- *   from: string, to: string,
- *   releases: { schema: 1, baseline: string, releases: string[] },
- *   surfaces: object[] | Record<string, object>,
- *   diffs: object[] | Record<string, object>,
- *   decisions?: object[] | Record<string, object>,
- *   preferences?: object,
- *   messages?: object,
- *   headVersion?: string,
- * }} data
  */
-export function buildMap(data) {
-  const map = core.buildMap(/** @type {any} */ (data));
+export function buildMap(data: {
+  from: string;
+  to: string;
+  releases: { schema: 1; baseline: string; releases: string[] };
+  surfaces: object[] | Record<string, object>;
+  diffs: object[] | Record<string, object>;
+  decisions?: object[] | Record<string, object>;
+  preferences?: object;
+  messages?: object;
+  headVersion?: string;
+}) {
+  const map = core.buildMap(data as Parameters<typeof core.buildMap>[0]);
   return {
     from: map.from,
     to: map.to,
-    /** @type {TokenDecision[]} */
-    tokens: map.tokens,
+    tokens: map.tokens as TokenDecision[],
     residue: map.residue,
     stale: map.stale,
     resolve: map.resolve,

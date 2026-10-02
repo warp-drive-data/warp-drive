@@ -2,9 +2,9 @@
  * Fixtures for the history and diff tests: a hand-written pair of surfaces 1.0.0 -> 1.1.0 with the
  * history and the diff between them, and two `git diff --name-status` samples from this repository.
  */
+import type { Tree } from './tree.mts';
 
-/** @type {import('./tree.mjs').Tree} */
-export const tree = {
+export const tree: Tree = {
   'diff-1.0.0-1.1.0.json': {
     declarations: {
       'external:rsvp#Promise': null,

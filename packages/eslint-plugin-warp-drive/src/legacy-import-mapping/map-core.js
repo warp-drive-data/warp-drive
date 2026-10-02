@@ -4,7 +4,7 @@
  * The stages and the ranking of the public exports mapping
  * (`scripts/public-exports-mapping/CONTRACT.md`, "Stages and ranking"). This file is the one
  * implementation: the plugin's reader (`./index.js`) requires it, and
- * `scripts/public-exports-mapping/map.mjs` loads it through `createRequire`.
+ * `scripts/public-exports-mapping/map.mts` loads it through `createRequire`.
  *
  * Everything here works on JSON that is already parsed. Nothing reads files, calls the network
  * or depends on another package.

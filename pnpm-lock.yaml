@@ -654,6 +654,9 @@ importers:
       '@glint/template':
         specifier: 1.9.0
         version: 1.9.0
+      '@types/node':
+        specifier: ^26.6.3
+        version: 26.6.3
       '@warp-drive/internal-docs-viewer':
         specifier: workspace:*
         version: file:docs-viewer

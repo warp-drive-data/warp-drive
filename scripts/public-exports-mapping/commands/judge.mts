@@ -1,13 +1,13 @@
 /* eslint-disable no-console -- a command reports on stdout and stderr */
 /**
- * `cli.mjs judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev|thread] [--threshold 0.8]
- * [--calibrate] [--check] [--import <answers.json>]` and `cli.mjs judge --compare <a> <b>`: judges
- * the residue of a release pair and writes decisions. See judge.mjs for the live procedure and
- * jev.mjs for Jev.
+ * `cli.mts judge --from <v> [--to <v>] [--dry-run] [--judge claude|jev|thread] [--threshold 0.8]
+ * [--calibrate] [--check] [--import <answers.json>]` and `cli.mts judge --compare <a> <b>`: judges
+ * the residue of a release pair and writes decisions. See judge.mts for the live procedure and
+ * jev.mts for Jev.
  */
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { parseArgs } from 'node:util';
+import { parseArgs, type ParseArgsConfig } from 'node:util';
 
 import {
   DATA_ROOT,
@@ -18,9 +18,19 @@ import {
   releases,
   report,
   writeArtifact,
-} from '../artifacts.mjs';
-import { decisionsPath, loadSurface } from '../data.mjs';
-import { JEV, JEV_KEY, askJev, jevKey, jevRequests, rankWithJev } from '../jev.mjs';
+} from '../artifacts.mts';
+import { decisionsPath, loadSurface, type Roots } from '../data.mts';
+import {
+  JEV,
+  JEV_KEY,
+  askJev,
+  jevKey,
+  jevRequests,
+  rankWithJev,
+  type Fetch,
+  type JevOptions,
+  type JevScore,
+} from '../jev.mts';
 import {
   DEFAULT_EFFORT,
   DEFAULT_OUT,
@@ -43,7 +53,16 @@ import {
   requestFor,
   shimFor,
   staleDecisions,
-} from '../judge.mjs';
+  type Answer,
+  type BatchesClient,
+  type Bundle,
+  type Context,
+  type Decision,
+  type Git,
+  type ReviewEntry,
+  type Side,
+  type SurfaceDoc,
+} from '../judge.mts';
 
 export const name = 'judge';
 export const describe =
@@ -51,12 +70,12 @@ export const describe =
 
 /** What each judge writes into a decision's `judge` field. */
 const JUDGE_FIELD = { claude: JUDGE_MODEL, jev: JEV, thread: 'thread' };
-const JUDGE_NAMES = /** @type {Array<keyof typeof JUDGE_FIELD>} */ (Object.keys(JUDGE_FIELD));
+const JUDGE_NAMES = Object.keys(JUDGE_FIELD) as Array<keyof typeof JUDGE_FIELD>;
 
-const SYNOPSIS = `usage: cli.mjs judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev|thread]
+const SYNOPSIS = `usage: cli.mts judge --from <version> [--to <version>] [--dry-run] [--judge claude|jev|thread]
                      [--threshold 0.8] [--calibrate] [--check] [--import <answers.json>] [--limit <n>]
                      [--effort low|medium|high|xhigh|max] [--batch <id>] [--poll <seconds>] [--out <dir>]
-       cli.mjs judge --compare <a.json> <b.json> [--threshold 0.8]`;
+       cli.mts judge --compare <a.json> <b.json> [--threshold 0.8]`;
 
 const USAGE = `${SYNOPSIS}
 
@@ -80,8 +99,7 @@ The judge preferences.json names ("judge", default claude) writes decisions/<fro
 other writes <out>/<from>-<to>/decisions.<judge>.json. A live run reads ANTHROPIC_API_KEY
 (claude) or ${JEV_KEY} (jev) from the environment.`;
 
-/** @type {import('node:util').ParseArgsConfig['options']} */
-const OPTIONS = {
+const OPTIONS: ParseArgsConfig['options'] = {
   from: { type: 'string' },
   to: { type: 'string' },
   'dry-run': { type: 'boolean', default: false },
@@ -101,35 +119,40 @@ const OPTIONS = {
 
 const EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
 
-/**
- * @typedef {object} JudgeContext
- * @property {string} [dataRoot]  the data directory (cli.mjs passes it)
- * @property {string} [scratchRoot]  where the intermediates and, by default, the output go (cli.mjs passes it)
- * @property {string} [cwd]  the directory the command was run from; relative paths resolve against it
- * @property {import('../judge.mjs').Git} [git]  runs git; tests stub it
- * @property {any} [client]  an Anthropic client; tests pass a fake, a live run builds one from `ANTHROPIC_API_KEY`
- * @property {import('../jev.mjs').Fetch} [fetch]  Jev's HTTP layer; tests pass a fake, a live run uses `globalThis.fetch`
- * @property {Record<string, string | undefined>} [env]  where `ANTHROPIC_API_KEY` and `TYPESAFE_API_KEY` are read from
- * @property {(ms: number) => Promise<unknown>} [sleep]  waits between batch polls and before Jev retries
- */
+export interface JudgeContext {
+  /** the data directory (cli.mts passes it) */
+  dataRoot?: string;
+  /** where the intermediates and, by default, the output go (cli.mts passes it) */
+  scratchRoot?: string;
+  /** the directory the command was run from; relative paths resolve against it */
+  cwd?: string;
+  /** runs git; tests stub it */
+  git?: Git;
+  /** an Anthropic client; tests pass a fake, a live run builds one from `ANTHROPIC_API_KEY` */
+  client?: BatchesClient;
+  /** Jev's HTTP layer; tests pass a fake, a live run uses `globalThis.fetch` */
+  fetch?: Fetch;
+  /** where `ANTHROPIC_API_KEY` and `TYPESAFE_API_KEY` are read from */
+  env?: Record<string, string | undefined>;
+  /** waits between batch polls and before Jev retries */
+  sleep?: (ms: number) => Promise<unknown>;
+}
 
 /**
- * Throws on a usage error or a missing input (cli.mjs prints the message and exits 1).
- * @param {string[]} argv  the arguments after `judge`
- * @param {JudgeContext} [context]  `{ dataRoot, cwd }` from cli.mjs, plus what tests inject
- * @returns {Promise<number>} the exit code: 0 done, 1 `--check` found problems
+ * Throws on a usage error or a missing input (cli.mts prints the message and exits 1).
+ * @param argv  the arguments after `judge`
+ * @param context  `{ dataRoot, cwd }` from cli.mts, plus what tests inject
+ * @returns the exit code: 0 done, 1 `--check` found problems
  */
-export async function run(argv, context = {}) {
+export async function run(argv: string[], context: JudgeContext = {}): Promise<number> {
   const { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd(), env = process.env } = context;
   const roots = { dataRoot, scratchRoot };
-  /** @type {Record<string, any>} */
-  let args;
-  /** @type {string[]} */
-  let positionals;
+  let args: Record<string, any>;
+  let positionals: string[];
   try {
     ({ values: args, positionals } = parseArgs({ args: argv, options: OPTIONS, strict: true, allowPositionals: true }));
   } catch (error) {
-    throw usageError(/** @type {Error} */ (error).message);
+    throw usageError((error as Error).message);
   }
   if (args.help) {
     console.log(USAGE);
@@ -152,8 +175,7 @@ export async function run(argv, context = {}) {
       `--import records the answers of a person or the project thread; it takes no --judge ${args.judge}`
     );
   }
-  /** @type {keyof typeof JUDGE_FIELD} */
-  const judgeName = args.import !== undefined ? 'thread' : (args.judge ?? 'claude');
+  const judgeName: keyof typeof JUDGE_FIELD = args.import !== undefined ? 'thread' : (args.judge ?? 'claude');
   if (judgeName === 'thread' && args.import === undefined) {
     throw usageError('--judge thread takes its answers from --import <answers.json>');
   }
@@ -183,25 +205,23 @@ export async function run(argv, context = {}) {
     throw error;
   }
   const preferred = inputs.preferences?.judge ?? 'claude';
-  if (!JUDGE_NAMES.includes(preferred)) {
+  if (!JUDGE_NAMES.includes(preferred as keyof typeof JUDGE_FIELD)) {
     throw new InputError(`judge: preferences.json names judge ${preferred}; use ${JUDGE_NAMES.join(', ')}`);
   }
   // the judge preferences.json names writes decisions/<from>.json; another judge marks its files
   const official = judgeName === preferred;
-  const named = (/** @type {string} */ file) => (official ? file : file.replace(/\.json$/, `.${judgeName}.json`));
+  const named = (file: string) => (official ? file : file.replace(/\.json$/, `.${judgeName}.json`));
   const ctx = buildContext({ ...inputs, git: context.git ?? defaultGit() });
   const outDir = path.join(args.out ? path.resolve(cwd, args.out) : path.join(scratchRoot, 'judge'), `${from}-${to}`);
   const shown = display(outDir, cwd);
   const dryRun = args['dry-run'];
 
-  /** @param {import('../judge.mjs').Bundle[]} bundles @param {string} prefix */
-  const ask = async (bundles, prefix) => {
+  const ask = async (bundles: Bundle[], prefix: string) => {
     if (judgeName === JEV) return askJev(bundles, jevSettings());
     if (!context.client && !env.ANTHROPIC_API_KEY) {
       throw new InputError('judge: ANTHROPIC_API_KEY is not set; export it for a live run, or pass --dry-run');
     }
-    /** @type {Array<{ id: string, round: number, requests: number }>} */
-    const batches = [];
+    const batches: Array<{ id: string; round: number; requests: number }> = [];
     return askClaude(bundles, {
       client: context.client ?? (await clientFrom(env)),
       model: JUDGE_MODEL,
@@ -217,15 +237,14 @@ export async function run(argv, context = {}) {
       },
     });
   };
-  /** @returns {import('../jev.mjs').JevOptions} */
-  const jevSettings = () => ({
+  const jevSettings = (): JevOptions => ({
     fetch: context.fetch ?? globalThis.fetch,
     apiKey: jevKey(env),
     sleep: context.sleep,
     log: (line) => console.log(line),
   });
-  /** The request bodies as a dry run writes them. @param {import('../judge.mjs').Bundle[]} bundles */
-  const requestsOf = (bundles) => {
+  /** The request bodies as a dry run writes them. */
+  const requestsOf = (bundles: Bundle[]) => {
     if (judgeName === JEV) {
       const doc = jevRequests(bundles);
       return { text: `${JSON.stringify(doc, null, 2)}\n`, count: doc.requests.length, unsent: doc.unsent.length };
@@ -274,14 +293,12 @@ export async function run(argv, context = {}) {
   });
   const staleDecls = new Set(stale.map((p) => p.decl));
   for (const p of stale) console.log(`judge: dropping the stale decision for ${p.decl}: ${p.problem}`);
-  const kept = existing.filter((/** @type {any} */ e) => !staleDecls.has(e.decl));
-  const decided = new Set(kept.map((/** @type {any} */ e) => /** @type {string} */ (e.decl)));
+  const kept = existing.filter((e) => !staleDecls.has(e.decl));
+  const decided = new Set(kept.map((e) => e.decl));
   const open = ctx.residue.filter((item) => !decided.has(item.decl));
 
-  /** @type {import('../judge.mjs').Bundle[]} */
-  let bundles;
-  /** @type {import('../judge.mjs').Answer[]} */
-  let answers;
+  let bundles: Bundle[];
+  let answers: Answer[];
   if (judgeName === 'thread') {
     const imported = importedAnswers(readJsonInput(path.resolve(cwd, args.import), cwd), {
       residue: ctx.residue.map((item) => item.decl),
@@ -330,7 +347,7 @@ export async function run(argv, context = {}) {
   const byId = new Map(bundles.map((b) => [b.id, b]));
   for (const answer of answers) {
     if (answer.error !== undefined || answer.choice !== null) continue;
-    const bundle = /** @type {any} */ (byId.get(answer.id));
+    const bundle = byId.get(answer.id) as Bundle & { shim?: string | null };
     const removal =
       bundle.removal ?? (bundle.history?.commit ? { commit: bundle.history.commit, path: bundle.history.path } : null);
     if (removal) bundle.shim = shimFor(bundle, removal, { git: ctx.git, names: bundle.names });
@@ -359,54 +376,49 @@ export async function run(argv, context = {}) {
   return 0;
 }
 
-/** @param {string} message */
-function usageError(message) {
+function usageError(message: string) {
   return new Error(`judge: ${message}\n${SYNOPSIS}`);
 }
 
-/** @param {Record<string, string | undefined>} env */
-async function clientFrom(env) {
+async function clientFrom(env: Record<string, string | undefined>) {
   const { default: Anthropic } = await import('@anthropic-ai/sdk');
   return new Anthropic({ apiKey: env.ANTHROPIC_API_KEY });
 }
 
-/** The covered releases plus `head`. @param {string} dataRoot @returns {string[]} */
-function releaseList(dataRoot) {
+/** The covered releases plus `head`. */
+function releaseList(dataRoot: string): string[] {
   const file = path.join(dataRoot, 'releases.json');
   const doc = existsSync(file) ? readJson(file) : releases();
   return [...doc.releases, 'head'];
 }
 
-/** @param {string} dir @param {string} file @param {string} text */
-function scratch(dir, file, text) {
+function scratch(dir: string, file: string, text: string) {
   mkdirSync(dir, { recursive: true });
   writeFileSync(path.join(dir, file), text);
   return text;
 }
 
-/** @param {string} dir @param {string} cwd */
-function display(dir, cwd) {
+function display(dir: string, cwd: string) {
   const rel = path.relative(cwd, dir);
   return rel && !rel.startsWith('..') && !path.isAbsolute(rel) ? rel : dir;
 }
 
-/** @param {string} body @param {number} count */
-function sizeLine(body, count) {
+function sizeLine(body: string, count: number) {
   return `${count} requests, ${Math.round(body.length / 1024)} KB, about ${Math.round(body.length / 4 / 1000)}k input tokens at 4 characters per token`;
 }
 
-/** A JSON file a person points at: missing or broken is a missing input. @param {string} file @param {string} cwd */
-function readJsonInput(file, cwd) {
+/** A JSON file a person points at: missing or broken is a missing input. */
+function readJsonInput(file: string, cwd: string) {
   if (!existsSync(file)) throw new InputError(`judge: ${display(file, cwd)} does not exist`);
   try {
     return readJson(file);
   } catch (error) {
-    throw new InputError(`judge: ${display(file, cwd)} is not JSON: ${/** @type {Error} */ (error).message}`);
+    throw new InputError(`judge: ${display(file, cwd)} is not JSON: ${(error as Error).message}`);
   }
 }
 
-/** The entries of a decisions file a second judge wrote earlier, if any. @param {string} file */
-function entriesIn(file) {
+/** The entries of a decisions file a second judge wrote earlier, if any. */
+function entriesIn(file: string): Decision[] {
   if (!existsSync(file)) return [];
   const doc = readJson(file);
   return Array.isArray(doc?.entries) ? doc.entries : [];
@@ -415,11 +427,12 @@ function entriesIn(file) {
 /**
  * Scores the candidates of every declaration that goes to review and keeps the scores there. A
  * failed ranking is noted on the entry; the run goes on.
- * @param {any[]} review
- * @param {import('../judge.mjs').Bundle[]} bundles
- * @param {import('../jev.mjs').JevOptions} settings
  */
-async function attachScores(review, bundles, settings) {
+async function attachScores(
+  review: Array<ReviewEntry & { scores?: JevScore[]; scoresError?: string }>,
+  bundles: Bundle[],
+  settings: JevOptions
+) {
   const inReview = new Set(review.map((r) => r.decl));
   const ranked = await rankWithJev(
     bundles.filter((b) => inReview.has(b.decl)),
@@ -440,8 +453,7 @@ async function attachScores(review, bundles, settings) {
   );
 }
 
-/** @param {number} decisions @param {any[]} review @param {number} threshold */
-function printDecided(decisions, review, threshold) {
+function printDecided(decisions: number, review: ReviewEntry[], threshold: number) {
   console.log(`judge: ${decisions} decisions at or above ${threshold}, ${review.length} for review`);
   for (const r of review) {
     const answer = r.error ?? `${r.choice ? `${r.choice.module} ${r.choice.export}` : 'removed'} at ${r.confidence}`;
@@ -449,18 +461,28 @@ function printDecided(decisions, review, threshold) {
   }
 }
 
-/**
- * @param {{ ctx: import('../judge.mjs').Context, from: string, to: string, bundles: import('../judge.mjs').Bundle[], decided: number, open: number }} options
- */
-function printSummary({ ctx, from, to, bundles, decided, open }) {
+function printSummary({
+  ctx,
+  from,
+  to,
+  bundles,
+  decided,
+  open,
+}: {
+  ctx: Context;
+  from: string;
+  to: string;
+  bundles: Bundle[];
+  decided: number;
+  open: number;
+}) {
   const tokens = ctx.residue.reduce((n, item) => n + item.tokens.length, 0);
   const returned = [...ctx.residue, ...ctx.settled].filter((item) => item.chain.returned).length;
   console.log(`judge ${from} -> ${to}`);
   console.log(`  residue: ${ctx.residue.length} declarations (${tokens} tokens); git settles ${ctx.settled.length}`);
   if (returned) console.log(`  chains that resumed in a later release: ${returned}`);
   console.log(`  already decided: ${decided}; open: ${open}; judged in this run: ${bundles.length}`);
-  /** @type {Array<[string, number, number]>} */
-  const buckets = [
+  const buckets: Array<[string, number, number]> = [
     ['0', 0, 0],
     ['1', 1, 1],
     ['2-3', 2, 3],
@@ -487,11 +509,9 @@ function printSummary({ ctx, from, to, bundles, decided, open }) {
   for (const { token, decl } of noneTokens) console.log(`    ${token}  (${decl})`);
 }
 
-/** @param {ReturnType<typeof agreementReport>} result */
-function printCalibration(result) {
-  const pct = (/** @type {number} */ n, /** @type {number} */ d) => (d ? `${Math.round((n / d) * 100)}%` : '-');
-  /** @param {string} label @param {{ answers: number, sameDeclaration: number, sameExport: number }} t */
-  const row = (label, t) =>
+function printCalibration(result: ReturnType<typeof agreementReport>) {
+  const pct = (n: number, d: number) => (d ? `${Math.round((n / d) * 100)}%` : '-');
+  const row = (label: string, t: { answers: number; sameDeclaration: number; sameExport: number }) =>
     `  ${label.padEnd(13)}  ${String(t.answers).padStart(7)}  ${pct(t.sameDeclaration, t.answers).padStart(16)}  ${pct(t.sameExport, t.answers).padStart(11)}`;
   console.log(`judge --calibrate: ${result.answers} answers, ${result.errors} errors`);
   console.log('  confidence     answers  same declaration  same export');
@@ -502,12 +522,11 @@ function printCalibration(result) {
   for (const [kind, t] of Object.entries(result.bySettled)) console.log(row(kind, t));
 }
 
-/** @param {import('../judge.mjs').Answer[]} answers @param {string} judgeName */
-function printUsage(answers, judgeName) {
+function printUsage(answers: Answer[], judgeName: string) {
   if (judgeName === 'thread') return;
   const total = { input_tokens: 0, output_tokens: 0, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 };
   for (const a of answers) {
-    for (const key of /** @type {Array<keyof typeof total>} */ (Object.keys(total))) {
+    for (const key of Object.keys(total) as Array<keyof typeof total>) {
       total[key] += Number(a.usage?.[key] ?? 0);
     }
   }
@@ -522,8 +541,7 @@ function printUsage(answers, judgeName) {
   );
 }
 
-/** @param {any} entry */
-function sideLine(entry) {
+function sideLine(entry: any) {
   if (!entry) return 'no entry';
   if (entry.error !== undefined) return `error: ${entry.error}`;
   if (entry.choice === undefined) return 'no answer';
@@ -534,9 +552,20 @@ function sideLine(entry) {
 /**
  * `--compare <a> <b>`: where two judges agree, where they differ, and what is below the threshold,
  * for a person to read. Each file is a decisions file, a review file or an answers file.
- * @param {{ files: string[], threshold: number, roots: import('../data.mjs').Roots, cwd: string, to?: string }} options
  */
-function compare({ files, threshold, roots, cwd, to }) {
+function compare({
+  files,
+  threshold,
+  roots,
+  cwd,
+  to,
+}: {
+  files: string[];
+  threshold: number;
+  roots: Roots;
+  cwd: string;
+  to?: string;
+}) {
   const [a, b] = files.map((file) => {
     const absolute = path.resolve(cwd, file);
     const doc = readJsonInput(absolute, cwd);
@@ -551,20 +580,19 @@ function compare({ files, threshold, roots, cwd, to }) {
   });
   const target = to ?? a.to ?? b.to;
   const surface = target ? loadSurface(target, roots, { optional: true }) : null;
-  /** @type {((ref: { module: string, export: string }) => string | undefined) | undefined} */
-  let declOf;
+  let declOf: ((ref: { module: string; export: string }) => string | undefined) | undefined;
   if (surface) {
     const decls = new Map(indexSurface(surface).tokens.map((t) => [`${t.module} ${t.export}`, t.decl]));
     declOf = (ref) => decls.get(`${ref.module} ${ref.export}`);
   }
   const result = compareDecisions(a.entries, b.entries, { threshold, declOf });
   const both = result.agree.length + result.sameDeclaration.length + result.disagree.length;
-  const pct = (/** @type {number} */ n) => (both ? ` (${Math.round((n / both) * 100)}%)` : '');
+  const pct = (n: number) => (both ? ` (${Math.round((n / both) * 100)}%)` : '');
   console.log('judge --compare');
-  for (const [label, side] of /** @type {const} */ ([
+  for (const [label, side] of [
     ['A', a],
     ['B', b],
-  ])) {
+  ] as const) {
     console.log(
       `  ${label}: ${side.shown}, ${side.entries.length} entries${side.judges.length ? ` (${side.judges.join(', ')})` : ''}`
     );
@@ -578,8 +606,7 @@ function compare({ files, threshold, roots, cwd, to }) {
     console.log(`  (no ${missing}, so another export of the same declaration counts as a disagreement)`);
   }
   const listed = new Set();
-  /** @param {string} title @param {Array<{ decl: string, a: any, b: any }>} sides */
-  const section = (title, sides) => {
+  const section = (title: string, sides: Side[]) => {
     if (!sides.length) return;
     console.log(`  ${title}:`);
     for (const side of sides) {
@@ -609,9 +636,8 @@ function compare({ files, threshold, roots, cwd, to }) {
 /**
  * `--check`: every decisions file (or the one for `--from`) is canonical, well formed, and not
  * stale against its surfaces. A missing file or surface is a missing input and throws.
- * @param {{ from?: string, roots: import('../data.mjs').Roots, cwd: string }} options
  */
-function check({ from, roots, cwd }) {
+function check({ from, roots, cwd }: { from?: string; roots: Roots; cwd: string }) {
   const dir = path.join(roots.dataRoot ?? DATA_ROOT, 'decisions');
   const files = from
     ? [`${from}.json`]
@@ -630,8 +656,7 @@ function check({ from, roots, cwd }) {
   return problems ? 1 : 0;
 }
 
-/** @param {string} file @param {string} from @param {import('../data.mjs').Roots} roots @returns {string[]} */
-function checkFile(file, from, roots) {
+function checkFile(file: string, from: string, roots: Roots): string[] {
   const shown = path.relative(roots.dataRoot ?? DATA_ROOT, file);
   if (!existsSync(file)) throw new InputError(`judge --check: ${shown} does not exist`);
   const text = readFileSync(file, 'utf8');
@@ -639,7 +664,7 @@ function checkFile(file, from, roots) {
   try {
     doc = JSON.parse(text);
   } catch (error) {
-    return [`not JSON: ${/** @type {Error} */ (error).message}`];
+    return [`not JSON: ${(error as Error).message}`];
   }
   const issues = [];
   if (doc.schema !== 1 || doc.kind !== 'decisions') issues.push('not a schema 1 decisions document');
@@ -655,12 +680,11 @@ function checkFile(file, from, roots) {
     seen.add(entry?.decl);
   }
   if (doc.entries.length && typeof doc.to === 'string' && typeof doc.from === 'string') {
-    /** @type {any[]} */
-    let surfaces;
+    let surfaces: SurfaceDoc[];
     try {
       surfaces = [doc.from, doc.to].map((v) => loadSurface(v, roots));
     } catch (error) {
-      const why = /** @type {Error} */ (error).message;
+      const why = (error as Error).message;
       throw new InputError(
         `judge --check: ${shown} needs the ${doc.from} and ${doc.to} surfaces to check its entries: ${why}`
       );
@@ -673,11 +697,9 @@ function checkFile(file, from, roots) {
   return issues;
 }
 
-/** @param {any} ref */
-const isRef = (ref) => Boolean(ref) && typeof ref.module === 'string' && typeof ref.export === 'string';
+const isRef = (ref: any) => Boolean(ref) && typeof ref.module === 'string' && typeof ref.export === 'string';
 
-/** @param {any} entry @returns {string | null} */
-function entryProblem(entry) {
+function entryProblem(entry: any): string | null {
   if (!entry || typeof entry !== 'object') return 'not an object';
   if (typeof entry.decl !== 'string') return 'decl is not a string';
   if (!isRef(entry.source)) return 'source is not { module, export }';

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /* eslint-disable no-console -- the loader prints usage, step progress and command errors */
 /**
- * `node scripts/public-exports-mapping/cli.mjs <command> [...args] [--check]`
+ * `node scripts/public-exports-mapping/cli.mts <command> [...args] [--check]`
  *
  * Each command is one module in `commands/` exporting `name`, `describe` and
  * `async run(argv, context)`: `argv` is the argument list after the command name, `context` is
@@ -13,7 +13,7 @@ import { existsSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 
-import { DATA_ROOT, SCRATCH_ROOT } from './artifacts.mjs';
+import { DATA_ROOT, SCRATCH_ROOT } from './artifacts.mts';
 
 export const COMMANDS_DIR = path.join(path.dirname(url.fileURLToPath(import.meta.url)), 'commands');
 
@@ -23,65 +23,71 @@ export const CONTRACT_COMMANDS = ['surface', 'history', 'diff', 'audit', 'judge'
 /** Exit code for a command whose module does not exist yet. */
 export const NOT_IMPLEMENTED = 2;
 
-/** A command's file name: what `commands/<name>.mjs` may be called. */
+/** A command's file name: what `commands/<name>.mts` may be called. */
 const COMMAND_NAME = /^[a-z][a-z0-9-]*$/;
 
-/**
- * @typedef {object} Context
- * @property {string} dataRoot the data directory, the plugin's `legacy-import-mapping/` (see data.mjs)
- * @property {string} scratchRoot where the intermediates go, `tmp/public-exports-mapping`
- * @property {string} cwd the directory the command was run from
- *
- * @typedef {object} CommandModule
- * @property {string} name
- * @property {string} describe
- * @property {(argv: string[], context: Context) => Promise<number>} run
- *
- * @typedef {object} LoaderOptions
- * @property {string} [dir] the commands directory; tests point it elsewhere
- * @property {Context} [context] what every command receives; defaults to {@link defaultContext}
- */
+export interface Context {
+  /** the data directory, the plugin's `legacy-import-mapping/` (see data.mts) */
+  dataRoot: string;
+  /** where the intermediates go, `tmp/public-exports-mapping` */
+  scratchRoot: string;
+  /** the directory the command was run from */
+  cwd: string;
+}
 
-/**
- * @returns {Context}
- */
-export function defaultContext() {
+export interface CommandModule {
+  name: string;
+  describe: string;
+  run: (argv: string[], context: Context) => Promise<number>;
+}
+
+/** A module of `commands/`: the same as {@link CommandModule}. */
+export type Command = CommandModule;
+
+export interface LoaderOptions {
+  /** the commands directory; tests point it elsewhere */
+  dir?: string;
+  /** what every command receives; defaults to {@link defaultContext} */
+  context?: Context;
+}
+
+export function defaultContext(): Context {
   return { dataRoot: DATA_ROOT, scratchRoot: SCRATCH_ROOT, cwd: process.cwd() };
 }
 
 /**
- * Loads `commands/<name>.mjs`.
- * @param {string} name
- * @param {LoaderOptions} [options]
- * @returns {Promise<CommandModule | null>} null when the module does not exist
+ * Loads `commands/<name>.mts`.
+ * @returns null when the module does not exist
  */
-export async function loadCommand(name, { dir = COMMANDS_DIR } = {}) {
-  const file = path.join(dir, `${name}.mjs`);
+export async function loadCommand(
+  name: string,
+  { dir = COMMANDS_DIR }: LoaderOptions = {}
+): Promise<CommandModule | null> {
+  const file = path.join(dir, `${name}.mts`);
   if (!COMMAND_NAME.test(name) || !existsSync(file)) return null;
   const mod = await import(url.pathToFileURL(file).href);
   if (typeof mod.run !== 'function' || typeof mod.name !== 'string' || typeof mod.describe !== 'string') {
-    throw new Error(`commands/${name}.mjs must export name, describe and run(argv, context)`);
+    throw new Error(`commands/${name}.mts must export name, describe and run(argv, context)`);
   }
-  if (mod.name !== name) throw new Error(`commands/${name}.mjs exports name '${mod.name}'`);
+  if (mod.name !== name) throw new Error(`commands/${name}.mts exports name '${mod.name}'`);
   return mod;
 }
 
 /**
  * Every command: the contract's, then any other module in `commands/`.
- * @param {LoaderOptions} [options]
- * @returns {Promise<{ name: string, describe: string, implemented: boolean }[]>}
  */
-export async function listCommands({ dir = COMMANDS_DIR } = {}) {
+export async function listCommands({ dir = COMMANDS_DIR }: LoaderOptions = {}): Promise<
+  { name: string; describe: string; implemented: boolean }[]
+> {
   const files = existsSync(dir)
     ? readdirSync(dir)
-        .filter((f) => f.endsWith('.mjs'))
+        .filter((f) => f.endsWith('.mts'))
         .map((f) => f.slice(0, -4))
         .filter((f) => COMMAND_NAME.test(f))
         .sort()
     : [];
   const names = [...CONTRACT_COMMANDS, ...files.filter((f) => !CONTRACT_COMMANDS.includes(f))];
-  /** @type {{ name: string, describe: string, implemented: boolean }[]} */
-  const out = [];
+  const out: { name: string; describe: string; implemented: boolean }[] = [];
   for (const name of names) {
     try {
       const mod = await loadCommand(name, { dir });
@@ -100,12 +106,12 @@ export async function listCommands({ dir = COMMANDS_DIR } = {}) {
 /**
  * Runs one command. A missing module prints "not implemented yet" and returns 2; a command that
  * throws (a usage error, a missing input) has its message printed and returns 1.
- * @param {string} name
- * @param {string[]} argv
- * @param {LoaderOptions} [options]
- * @returns {Promise<number>}
  */
-export async function runCommand(name, argv, { dir = COMMANDS_DIR, context = defaultContext() } = {}) {
+export async function runCommand(
+  name: string,
+  argv: string[],
+  { dir = COMMANDS_DIR, context = defaultContext() }: LoaderOptions = {}
+): Promise<number> {
   try {
     const mod = await loadCommand(name, { dir });
     if (!mod) {
@@ -124,12 +130,14 @@ export async function runCommand(name, argv, { dir = COMMANDS_DIR, context = def
  * Runs `steps` in order for `update` and `release`. A step whose command does not exist yet is
  * skipped with a note. In check mode every step runs and the worst exit code wins; otherwise
  * the first failing step stops the run, since later steps read what earlier ones write.
- * @param {string} caller the command running the steps, for messages
- * @param {[string, string[]][]} steps command name and its arguments
- * @param {LoaderOptions & { check?: boolean }} [options]
- * @returns {Promise<number>}
+ * @param caller the command running the steps, for messages
+ * @param steps command name and its arguments
  */
-export async function runSteps(caller, steps, { check = false, dir = COMMANDS_DIR, context = defaultContext() } = {}) {
+export async function runSteps(
+  caller: string,
+  steps: [string, string[]][],
+  { check = false, dir = COMMANDS_DIR, context = defaultContext() }: LoaderOptions & { check?: boolean } = {}
+): Promise<number> {
   let worst = 0;
   for (const [name, args] of steps) {
     if (!(await loadCommand(name, { dir }))) {
@@ -148,38 +156,30 @@ export async function runSteps(caller, steps, { check = false, dir = COMMANDS_DI
   return worst;
 }
 
-/**
- * @param {{ name: string, describe: string }[]} commands
- */
-function usage(commands) {
+function usage(commands: { name: string; describe: string }[]) {
   const width = Math.max(...commands.map((c) => c.name.length));
   return [
-    'usage: node scripts/public-exports-mapping/cli.mjs <command> [...args] [--check]',
+    'usage: node scripts/public-exports-mapping/cli.mts <command> [...args] [--check]',
     '',
     'commands:',
     ...commands.map((c) => `  ${c.name.padEnd(width)}  ${c.describe}`),
   ].join('\n');
 }
 
-/**
- * @param {unknown} error
- */
-function messageOf(error) {
+function messageOf(error: unknown) {
   return error instanceof Error ? error.message : String(error);
 }
 
-/**
- * @param {string[]} argv
- * @param {LoaderOptions} [options]
- * @returns {Promise<number>}
- */
-export async function main(argv, { dir = COMMANDS_DIR, context = defaultContext() } = {}) {
+export async function main(
+  argv: string[],
+  { dir = COMMANDS_DIR, context = defaultContext() }: LoaderOptions = {}
+): Promise<number> {
   const [name, ...rest] = argv;
   if (!name || name === 'help' || name === '--help' || name === '-h') {
     console.log(usage(await listCommands({ dir })));
     return name ? 0 : 1;
   }
-  if (!CONTRACT_COMMANDS.includes(name) && !(COMMAND_NAME.test(name) && existsSync(path.join(dir, `${name}.mjs`)))) {
+  if (!CONTRACT_COMMANDS.includes(name) && !(COMMAND_NAME.test(name) && existsSync(path.join(dir, `${name}.mts`)))) {
     console.error(`unknown command '${name}'\n`);
     console.error(usage(await listCommands({ dir })));
     return 1;

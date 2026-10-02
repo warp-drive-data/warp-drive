@@ -26,33 +26,44 @@ const OUTPUT_EXTENSION = /(\.d\.ts|\.d\.mts|\.mjs|\.js)$/;
 /** Targets that are modules: script files, or a pattern target whose `*` stands for the file. */
 const MODULE_TARGET = /(\.(js|mjs|ts|mts|gts|gjs|tsx|jsx)|\*)$/;
 
-/**
- * @typedef {object} PackageLayout
- * @property {string} name
- * @property {string} dir absolute package directory
- * @property {unknown} exports `package.json#exports`, undefined when absent
- * @property {string} srcDir directory the build compiles from, relative to `dir` (`src`; `addon` for a v1 addon)
- * @property {string[]} outDirs directories the build writes to, relative to `dir`
- * @property {string | null} [main] for a package with neither `exports` nor a build config: the
- *   source file its `main` names, relative to `dir`, which is what the bare name resolves to
- * @property {string | null} [testSupportDir] for a v1 addon: the directory ember-cli serves as
- *   `<name>/test-support` (`addon-test-support`), relative to `dir`
- *
- * @typedef {object} ExportTarget
- * @property {string} key the exports key (`.`, `./mock`, `./*`)
- * @property {string} target the selected target, package-relative, no leading `./`
- * @property {boolean} pattern the key holds a `*`
- *
- * @typedef {{ path: string } | { external: string } | { error: string }} Resolution
- */
+export interface PackageLayout {
+  name: string;
+  /** absolute package directory */
+  dir: string;
+  /** `package.json#exports`, undefined when absent */
+  exports: unknown;
+  /** directory the build compiles from, relative to `dir` (`src`; `addon` for a v1 addon) */
+  srcDir: string;
+  /** directories the build writes to, relative to `dir` */
+  outDirs: string[];
+  /**
+   * for a package with neither `exports` nor a build config: the source file its `main` names,
+   * relative to `dir`, which is what the bare name resolves to
+   */
+  main?: string | null;
+  /**
+   * for a v1 addon: the directory ember-cli serves as `<name>/test-support` (`addon-test-support`),
+   * relative to `dir`
+   */
+  testSupportDir?: string | null;
+}
+
+export interface ExportTarget {
+  /** the exports key (`.`, `./mock`, `./*`) */
+  key: string;
+  /** the selected target, package-relative, no leading `./` */
+  target: string;
+  /** the key holds a `*` */
+  pattern: boolean;
+}
+
+export type Resolution = { path: string } | { external: string } | { error: string };
 
 /**
  * Picks the target node's resolver would use for `conditions`, honoring key order.
- * @param {unknown} value an exports value
- * @param {string[]} conditions
- * @returns {string | null}
+ * @param value an exports value
  */
-export function selectTarget(value, conditions = CONDITIONS) {
+export function selectTarget(value: unknown, conditions: string[] = CONDITIONS): string | null {
   if (typeof value === 'string') return value;
   if (Array.isArray(value)) {
     for (const item of value) {
@@ -75,17 +86,14 @@ export function selectTarget(value, conditions = CONDITIONS) {
  * The exports keys of a package with the target each selects, in `exports` order. A top-level
  * conditions object or string is the `.` key. Keys whose only targets need other conditions
  * (`node`, `require`) are left out; a key with only a `types` target keeps it.
- * @param {unknown} exports
- * @returns {ExportTarget[]}
  */
-export function exportTargets(exports) {
+export function exportTargets(exports: unknown): ExportTarget[] {
   if (exports === undefined || exports === null) return [];
-  const entries =
+  const entries: [string, unknown][] =
     typeof exports === 'string' || Array.isArray(exports) || !Object.keys(exports).some((k) => k.startsWith('.'))
       ? [['.', exports]]
-      : Object.entries(/** @type {Record<string, unknown>} */ (exports));
-  /** @type {ExportTarget[]} */
-  const out = [];
+      : Object.entries(exports as Record<string, unknown>);
+  const out: ExportTarget[] = [];
   for (const [key, value] of entries) {
     const target = selectTarget(value) ?? selectTarget(value, ['types']);
     if (target === null) continue;
@@ -99,11 +107,9 @@ export function exportTargets(exports) {
  * `dist/foo.js` -> `src/foo`, `dist/*.js` -> `src/*`, `src/index.js` -> `src/index.js`.
  * Returns null for a target that is not a module (`.css`, `.cjs`, `package.json`) or that lies
  * outside both the output and the source directories (`app/*`, `blueprints/*`).
- * @param {PackageLayout} pkg
- * @param {string} target package-relative, no leading `./`
- * @returns {string | null}
+ * @param target package-relative, no leading `./`
  */
-export function sourceTarget(pkg, target) {
+export function sourceTarget(pkg: PackageLayout, target: string): string | null {
   if (!MODULE_TARGET.test(target) && !OUTPUT_EXTENSION.test(target)) return null;
   for (const outDir of pkg.outDirs) {
     if (target.startsWith(outDir + '/')) {
@@ -115,10 +121,7 @@ export function sourceTarget(pkg, target) {
   return null;
 }
 
-/**
- * @param {string} file
- */
-function isFile(file) {
+function isFile(file: string) {
   try {
     return statSync(file).isFile();
   } catch {
@@ -130,10 +133,8 @@ function isFile(file) {
  * The aliases for one package: one per exports key with a source target; for a package
  * without `exports`, the `.` and `./*` keys a classic build gives it (`<srcDir>/index`, or the
  * file `main` names when there is no build, and `<srcDir>/*`).
- * @param {PackageLayout} pkg
- * @returns {{ key: string, alias: string, target: string }[]}
  */
-export function packageAliases(pkg) {
+export function packageAliases(pkg: PackageLayout): { key: string; alias: string; target: string }[] {
   const targets =
     pkg.exports === undefined
       ? [
@@ -141,8 +142,7 @@ export function packageAliases(pkg) {
           { key: './*', target: pkg.srcDir + '/*', pattern: true },
         ]
       : exportTargets(pkg.exports);
-  /** @type {{ key: string, alias: string, target: string }[]} */
-  const out = [];
+  const out: { key: string; alias: string; target: string }[] = [];
   for (const { key, target, pattern } of targets) {
     const source = pkg.exports === undefined ? target : sourceTarget(pkg, target);
     if (source === null) continue;
@@ -157,18 +157,14 @@ export function packageAliases(pkg) {
 }
 
 /**
- * @param {string} root absolute, real path of the source tree
- * @param {PackageLayout[]} packages every workspace package of the tree, private ones included
+ * @param root absolute, real path of the source tree
+ * @param packages every workspace package of the tree, private ones included
  */
-export function createResolver(root, packages) {
-  /** @type {Record<string, string[]>} */
-  const alias = {};
-  /** @type {Map<string, PackageLayout>} */
-  const byName = new Map();
-  /** @param {string} dir */
-  const rel = (dir) => path.relative(root, dir).split(path.sep).join('/');
-  /** @type {{ name: string, message: string }[]} */
-  const conflicts = [];
+export function createResolver(root: string, packages: PackageLayout[]) {
+  const alias: Record<string, string[]> = {};
+  const byName: Map<string, PackageLayout> = new Map();
+  const rel = (dir: string) => path.relative(root, dir).split(path.sep).join('/');
+  const conflicts: { name: string; message: string }[] = [];
   for (const pkg of packages) {
     if (byName.has(pkg.name)) {
       conflicts.push({
@@ -194,10 +190,10 @@ export function createResolver(root, packages) {
     nodePath: false,
   });
 
-  /** @type {Map<string, { path: string } | null>} precedence fixes for exact keys a pattern alias shadows */
-  const exact = new Map();
-  /** @type {Map<string, { alias: string, target: string }[]>} packages whose pattern keys overlap */
-  const ordered = new Map();
+  /** precedence fixes for exact keys a pattern alias shadows */
+  const exact: Map<string, { path: string } | null> = new Map();
+  /** packages whose pattern keys overlap */
+  const ordered: Map<string, { alias: string; target: string }[]> = new Map();
   for (const pkg of byName.values()) {
     const entries = packageAliases(pkg);
     const patterns = entries.filter((e) => !e.alias.endsWith('$'));
@@ -227,11 +223,7 @@ export function createResolver(root, packages) {
     }
   }
 
-  /**
-   * @param {string} specifier
-   * @returns {PackageLayout | undefined}
-   */
-  const workspacePackage = (specifier) => {
+  const workspacePackage = (specifier: string): PackageLayout | undefined => {
     const parts = specifier.split('/');
     const name = specifier.startsWith('@') ? parts.slice(0, 2).join('/') : parts[0];
     return byName.get(name);
@@ -242,11 +234,9 @@ export function createResolver(root, packages) {
     alias,
     conflicts,
     /**
-     * @param {string} fromFile absolute path of the importing file
-     * @param {string} specifier
-     * @returns {Resolution}
+     * @param fromFile absolute path of the importing file
      */
-    resolve(fromFile, specifier) {
+    resolve(fromFile: string, specifier: string): Resolution {
       const fromDir = path.dirname(fromFile);
       if (specifier.startsWith('.') || specifier.startsWith('/')) {
         const result = factory.sync(fromDir, specifier);
@@ -285,24 +275,15 @@ export function createResolver(root, packages) {
 
 /**
  * The file a v1 addon's `<name>/test-support[/<path>]` names, null for any other specifier.
- * @param {PackageLayout} pkg
- * @param {string} specifier
- * @returns {string | null}
  */
-function testSupportPath(pkg, specifier) {
+function testSupportPath(pkg: PackageLayout, specifier: string): string | null {
   if (!pkg.testSupportDir) return null;
   const mount = `${pkg.name}/test-support`;
   if (specifier !== mount && !specifier.startsWith(mount + '/')) return null;
   return path.join(pkg.dir, pkg.testSupportDir, specifier.slice(mount.length + 1) || 'index');
 }
 
-/**
- * @param {string} root
- * @param {string} file
- * @param {string} specifier
- * @returns {Resolution}
- */
-function inside(root, file, specifier) {
+function inside(root: string, file: string, specifier: string): Resolution {
   const rel = path.relative(root, file);
   if (rel.startsWith('..') || path.isAbsolute(rel) || rel.split(path.sep).includes('node_modules')) {
     return { external: specifier };

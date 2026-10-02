@@ -8,10 +8,11 @@
  */
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, releases, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mjs';
-import { isBaseline, surfacePath } from '../data.mjs';
-import { surfaceOf } from '../surface.mjs';
-import { tagOf, withReleaseTree } from '../worktrees.mjs';
+import { DATA_ROOT, releases, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mts';
+import type { Context } from '../cli.mts';
+import { isBaseline, surfacePath } from '../data.mts';
+import { surfaceOf, type Diagnostic, type Surface } from '../surface.mts';
+import { tagOf, withReleaseTree } from '../worktrees.mts';
 
 export const name = 'surface';
 export const describe =
@@ -22,12 +23,10 @@ const USAGE = 'usage: surface <version|head> [--check] [--keep] [--verbose] | su
 /** Diagnostics printed per code unless --verbose. */
 const SHOWN = 5;
 
-/**
- * @param {string[]} argv
- * @param {Partial<import('../cli.mjs').Context>} [context]
- * @returns {Promise<number>}
- */
-export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT } = {}) {
+export async function run(
+  argv: string[],
+  { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT }: Partial<Context> = {}
+): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -56,18 +55,21 @@ export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_RO
 /**
  * Computes the surface of `version` and writes its file (the baseline's is compared instead with
  * `check`).
- * @param {string} version
- * @param {{ check?: boolean, keep?: boolean, verbose?: boolean, dataRoot?: string, scratchRoot?: string }} [options]
  */
 export async function writeSurface(
-  version,
-  { check = false, keep = false, verbose = false, dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT } = {}
+  version: string,
+  {
+    check = false,
+    keep = false,
+    verbose = false,
+    dataRoot = DATA_ROOT,
+    scratchRoot = SCRATCH_ROOT,
+  }: { check?: boolean; keep?: boolean; verbose?: boolean; dataRoot?: string; scratchRoot?: string } = {}
 ) {
   return withReleaseTree(
     version,
     (dir) => {
-      /** @type {import('../surface.mjs').Diagnostic[]} */
-      const diagnostics = [];
+      const diagnostics: Diagnostic[] = [];
       const surface = surfaceOf(dir, { version, tag: tagOf(version), diagnostics });
       printSummary(version, surface, diagnostics, verbose);
       const roots = { dataRoot, scratchRoot };
@@ -77,21 +79,14 @@ export async function writeSurface(
   );
 }
 
-/**
- * @param {string} version
- * @param {import('../surface.mjs').Surface} surface
- * @param {import('../surface.mjs').Diagnostic[]} diagnostics
- * @param {boolean} verbose
- */
-function printSummary(version, surface, diagnostics, verbose) {
+function printSummary(version: string, surface: Surface, diagnostics: Diagnostic[], verbose: boolean) {
   const modules = Object.values(surface.modules);
   const exports = modules.flatMap((m) => Object.values(m.exports));
   const external = exports.filter((e) => e.decl.startsWith('external:')).length;
   console.log(
     `surface ${version}: ${modules.length} modules, ${exports.length} exports (${external} external), ${diagnostics.length} notes`
   );
-  /** @type {Map<string, string[]>} */
-  const byCode = new Map();
+  const byCode: Map<string, string[]> = new Map();
   for (const d of diagnostics) byCode.set(d.code, [...(byCode.get(d.code) ?? []), d.message]);
   for (const [code, messages] of [...byCode].sort(([a], [b]) => (a < b ? -1 : 1))) {
     console.error(`  ${code} (${messages.length})`);

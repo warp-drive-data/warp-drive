@@ -26,28 +26,28 @@ Consecutive entries form the pairs `4.12.8-5.0.1`, `5.0.1-5.4.1`, ..., `5.9.1-he
 ```
 scripts/public-exports-mapping/
   CONTRACT.md       this file
-  artifacts.mjs     canonical JSON, write/check helpers, the data and scratch roots         (shared)
-  data.mjs          where each file lives; the surface of a release, derived from the diffs (shared)
-  cli.mjs           `node scripts/public-exports-mapping/cli.mjs <command> ...`; loads commands/*.mjs
-  commands/*.mjs    one file per command: `export const name`, `export const describe`, `export async function run(argv, context)`
-  resolver.mjs      oxc-resolver configured for a source tree                          area A
-  exports.mjs       what one source file exports, from the oxc-parser module record     area A
-  worktrees.mjs     a git worktree per release tag, disposed after use                  area A
-  surface.mjs       entry discovery per era; the surface of one release                 area A
-  history.mjs       file renames and symbol moves between two releases, from git        area B
-  diff.mjs          `diffs/<a>-<b>.json` from two surfaces and a history                area B
-  published.mjs     the package as published on npm, from a cached tarball              area C
-  audit.mjs         surface vs published package; `audits/<version>.json`, `shapes/`    area C
-  map.mjs           the stages and the ranking; a map for any (from, to)                area D
-  judge.mjs         evidence bundles, the judges, `decisions/<from>.json`               area E
+  artifacts.mts     canonical JSON, write/check helpers, the data and scratch roots         (shared)
+  data.mts          where each file lives; the surface of a release, derived from the diffs (shared)
+  cli.mts           `node scripts/public-exports-mapping/cli.mts <command> ...`; loads commands/*.mts
+  commands/*.mts    one file per command: `export const name`, `export const describe`, `export async function run(argv, context)`
+  resolver.mts      oxc-resolver configured for a source tree                          area A
+  exports.mts       what one source file exports, from the oxc-parser module record     area A
+  worktrees.mts     a git worktree per release tag, disposed after use                  area A
+  surface.mts       entry discovery per era; the surface of one release                 area A
+  history.mts       file renames and symbol moves between two releases, from git        area B
+  diff.mts          `diffs/<a>-<b>.json` from two surfaces and a history                area B
+  published.mts     the package as published on npm, from a cached tarball              area C
+  audit.mts         surface vs published package; `audits/<version>.json`, `shapes/`    area C
+  map.mts           the stages and the ranking; a map for any (from, to)                area D
+  judge.mts         evidence bundles, the judges, `decisions/<from>.json`               area E
 packages/eslint-plugin-warp-drive/src/legacy-import-mapping/                the data directory, area D
   index.js index.d.ts map-core.js   the reader: loadMap({ from, to }).resolve(module, name, { typeOnly })
   releases.json  surface.4.12.8.json  diffs/*.json  decisions/*.json  preferences.json  messages.json
 tmp/public-exports-mapping/                                                 scratch, git ignored
   surfaces/<version>.json  history/<a>-<b>.json  audits/  shapes/  judge/<from>-<to>/
 packages/eslint-plugin-warp-drive/src/rules/no-legacy-imports.{js,md}                   area D
-scripts/__tests__/public-exports-mapping-<area>.spec.mjs                                each area
-scripts/__tests__/fixtures/public-exports-mapping/<area>.mjs                            each area
+scripts/__tests__/public-exports-mapping-<area>.spec.mts                                each area
+scripts/__tests__/fixtures/public-exports-mapping/<area>.mts                            each area
 ```
 
 The data directory is the product and its only copy: what the plugin ships, git-tracked, and
@@ -63,8 +63,14 @@ another area's file is a note in the commit message, not an edit.
 
 ## Rules every part follows
 
-- Node ESM, `.mjs`, JSDoc types, no TypeScript compile step. No `typescript` import anywhere in
-  this directory: parsing is `oxc-parser`, resolving is `oxc-resolver`.
+- TypeScript that node runs directly by stripping the types, with no build step: `.mts`, which
+  marks an ES module by its extension the way the `.mjs` scripts beside it do (`scripts/` has no
+  package.json to declare a module type); erasable syntax only, so no enums, namespaces or
+  parameter properties; `import type` for types; specifiers keep their `.mts` extension. `pnpm check:types:scripts` type-checks the modules, the specs
+  and the fixtures against `scripts/tsconfig.json`. No `typescript` import anywhere in this
+  directory: parsing is `oxc-parser`, resolving is `oxc-resolver`. The plugin's reader stays
+  JavaScript with a hand-written `index.d.ts`, because a published package cannot ship `.ts` for
+  node to run.
 - New dependencies go into `pnpm-workspace.yaml` under `catalog:` and into the root
   `package.json` `devDependencies` as `catalog:`. Allowed: `oxc-parser`, `oxc-resolver`,
   `@anthropic-ai/sdk`. Nothing else without a reason in the commit message.
@@ -72,10 +78,10 @@ another area's file is a note in the commit message, not an edit.
   works (about 30 s); after adding a dependency use `--no-frozen-lockfile`. Workspace packages
   are injected but not built. CI is the source of truth; run what you can locally, and say in
   the commit message what you could not run.
-- Tests: `node --test scripts/__tests__/public-exports-mapping-<area>.spec.mjs`; `pnpm
-  test:scripts` runs them all. A test never shells out to the network; `published.mjs` tests use
+- Tests: `node --test scripts/__tests__/public-exports-mapping-<area>.spec.mts`; `pnpm
+  test:scripts` runs them all. A test never shells out to the network; `published.mts` tests use
   a fixture tarball.
-- Every JSON artifact is written through `artifacts.mjs`: keys sorted, two-space indent,
+- Every JSON artifact is written through `artifacts.mts`: keys sorted, two-space indent,
   trailing newline, no dates, tool versions or absolute paths inside, so a regeneration that
   changes nothing produces the same bytes. Every command takes `--check`: it computes the same
   files in memory, prints each data file that would change, writes none of them, exits 1 on a
@@ -119,11 +125,11 @@ tag (area A), checked against the published package where one exists (area C):
 
 | Era | Source of entries | Module name |
 | --- | --- | --- |
-| 4.12 to 5.4, `packages/*/rollup.config.mjs` | `addon.publicEntrypoints([...])`, patterns relative to `src/` | `<pkg>/<entry without extension>`, `index` dropped |
+| 4.12 to 5.4, `packages/*/rollup.config.ts` | `addon.publicEntrypoints([...])`, patterns relative to `src/` | `<pkg>/<entry without extension>`, `index` dropped |
 | 4.12 and 5.0, v1 addons (no build config, no `exports`) | every `.js`/`.ts` under `addon/` and `addon-test-support/` | `<pkg>/<path under addon/ without extension>`, `index` dropped; `<pkg>/test-support/<path under addon-test-support/>` |
 | any era, no build config | `package.json#exports` targets, else `main` (default `index.js`) | the key with `./` dropped; `<pkg>` for `main` |
-| 5.5 to 5.8, `vite.config.mjs` | `export const entryPoints = [...]`, globs relative to the package | same |
-| 5.9+, `tsdown.config.mjs` | `export const entryPoints = [...]` | same |
+| 5.5 to 5.8, `vite.config.ts` | `export const entryPoints = [...]`, globs relative to the package | same |
+| 5.9+, `tsdown.config.ts` | `export const entryPoints = [...]` | same |
 | 5.4+, `package.json#exports` | subpath keys; a pattern key expands against the entry outputs | the key with `./` dropped |
 
 Private packages (`"private": true`) are skipped; a published package with no modules is listed
@@ -142,7 +148,7 @@ judge takes a candidate from them, and the judge never lists them as residue.
 ### `surface.<baseline>.json` and `surfaces/<version>.json` (area A)
 
 The baseline's surface is data; every other release's surface is scratch, `surfaces/<version>.json`,
-and `data.mjs` derives it from the baseline and the diffs when no scan is on disk.
+and `data.mts` derives it from the baseline and the diffs when no scan is on disk.
 
 ```json
 {
@@ -435,25 +441,25 @@ sheet).
 ## Commands
 
 ```
-cli.mjs surface <version|head> [--check]        area A
-cli.mjs history <a> <b> [--check]               area B
-cli.mjs diff <a> <b> [--check]                  area B
-cli.mjs audit <version> [--check]               area C
-cli.mjs judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev|thread] [--import answers.json] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
-cli.mjs judge --compare <a.json> <b.json> [--threshold 0.8]   area E: where two judges agree and differ
-cli.mjs update [--check]                        area A: surface head, history and diff <newest>-head, judge --check; drops a stale head diff
-cli.mjs release <version> [--keep]              area A: surface + history + diff + audit for a newly tagged version, then the update steps when it is the newest
+cli.mts surface <version|head> [--check]        area A
+cli.mts history <a> <b> [--check]               area B
+cli.mts diff <a> <b> [--check]                  area B
+cli.mts audit <version> [--check]               area C
+cli.mts judge --from <v> [--to <v>] [--dry-run] [--calibrate] [--threshold 0.8] [--judge claude|jev|thread] [--import answers.json] [--limit n] [--effort e] [--batch id] [--out dir] [--check]   area E
+cli.mts judge --compare <a.json> <b.json> [--threshold 0.8]   area E: where two judges agree and differ
+cli.mts update [--check]                        area A: surface head, history and diff <newest>-head, judge --check; drops a stale head diff
+cli.mts release <version> [--keep]              area A: surface + history + diff + audit for a newly tagged version, then the update steps when it is the newest
 ```
 
-`cli.mjs` discovers `commands/*.mjs`; a command module that is missing is reported as "not
-implemented yet" (exit 2) rather than failing the loader. Area A writes `cli.mjs` and the loader;
-every other area adds only its own `commands/<name>.mjs`.
+`cli.mts` discovers `commands/*.mts`; a command module that is missing is reported as "not
+implemented yet" (exit 2) rather than failing the loader. Area A writes `cli.mts` and the loader;
+every other area adds only its own `commands/<name>.mts`.
 
 A command exports `run(argv, context)`: `argv` is the argument list after the command name,
 `context` is `{ dataRoot, scratchRoot, cwd }` with defaults of the data directory, the scratch
 directory and `process.cwd()` (tests pass temp directories). `run` resolves to the process exit code and throws on a usage error or
 a missing input; the loader prints the error message and exits 1. `console` output belongs in
-`commands/*.mjs` only (one `no-console` disable per file); library modules return data.
+`commands/*.mts` only (one `no-console` disable per file); library modules return data.
 
 The data directory's JSON is excluded from `oxfmt` in `.oxfmtrc.jsonc`, because the formatter
 would collapse short arrays and break the byte-for-byte `--check`; scratch is git ignored.

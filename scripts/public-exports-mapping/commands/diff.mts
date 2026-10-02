@@ -1,10 +1,10 @@
 import { existsSync } from 'node:fs';
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, readJson, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mjs';
-import { diffPath, historyPath, loadSurface, surfaceName } from '../data.mjs';
-import { diffSurfaces } from '../diff.mjs';
-import { discontinued } from '../history.mjs';
+import { DATA_ROOT, readJson, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mts';
+import { diffPath, historyPath, loadSurface, surfaceName } from '../data.mts';
+import { diffSurfaces } from '../diff.mts';
+import { discontinued } from '../history.mts';
 
 export const name = 'diff';
 export const describe = 'diff <a> <b> [--check]: diffs/<a>-<b>.json from two surfaces and their history';
@@ -13,12 +13,14 @@ export const describe = 'diff <a> <b> [--check]: diffs/<a>-<b>.json from two sur
  * Writes `diffs/<a>-<b>.json`, a product file, from the two surfaces (scanned, or derived from the
  * diffs before them) and the scratch `history/<a>-<b>.json`. `diffSurfaces` refuses a diff that
  * would not rebuild surface `b`.
- * @param {string[]} argv  the arguments after the command name
- * @param {{ dataRoot?: string, scratchRoot?: string }} [options]  where the data and the scratch
- *   live; tests point them at fixtures
- * @returns {Promise<number>} the exit code
+ * @param argv  the arguments after the command name
+ * @param options  where the data and the scratch live; tests point them at fixtures
+ * @returns the exit code
  */
-export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT } = {}) {
+export async function run(
+  argv: string[],
+  { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT }: { dataRoot?: string; scratchRoot?: string } = {}
+): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -31,11 +33,11 @@ export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_RO
   const roots = { dataRoot, scratchRoot };
   const history = historyPath(a, b, roots);
   const inputs = [
-    { file: surfaceName(a, dataRoot), by: `cli.mjs surface ${a}`, value: loadSurface(a, roots, { optional: true }) },
-    { file: surfaceName(b, dataRoot), by: `cli.mjs surface ${b}`, value: loadSurface(b, roots, { optional: true }) },
+    { file: surfaceName(a, dataRoot), by: `cli.mts surface ${a}`, value: loadSurface(a, roots, { optional: true }) },
+    { file: surfaceName(b, dataRoot), by: `cli.mts surface ${b}`, value: loadSurface(b, roots, { optional: true }) },
     {
       file: `history/${a}-${b}.json`,
-      by: `cli.mjs history ${a} ${b}`,
+      by: `cli.mts history ${a} ${b}`,
       value: existsSync(history) ? readJson(history) : null,
     },
   ];
@@ -49,7 +51,7 @@ export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_RO
     // eslint-disable-next-line no-console -- a command reports on stdout, as report() does
     console.log(
       `diff: history/${a}-${b}.json has no symbols although some declarations of ${a} are not in ${b}; ` +
-        `\`cli.mjs history ${a} ${b}\` fills them in now that both surfaces exist`
+        `\`cli.mts history ${a} ${b}\` fills them in now that both surfaces exist`
     );
   }
   const diff = diffSurfaces(surfaceA, surfaceB, historyDoc);

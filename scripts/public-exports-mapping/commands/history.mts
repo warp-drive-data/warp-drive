@@ -1,8 +1,8 @@
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, REPO_ROOT, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mjs';
-import { historyPath, loadSurface, surfaceName } from '../data.mjs';
-import { historyOf } from '../history.mjs';
+import { DATA_ROOT, REPO_ROOT, report, SCRATCH_ROOT, writeArtifact } from '../artifacts.mts';
+import { historyPath, loadSurface, surfaceName } from '../data.mts';
+import { historyOf } from '../history.mts';
 
 export const name = 'history';
 export const describe =
@@ -12,12 +12,19 @@ export const describe =
  * Writes `history/<a>-<b>.json` in scratch, whatever the mode. `symbols` needs both surfaces;
  * while one is not available (head before `surface head`) the file carries `files` only, and
  * running again once it is fills `symbols` in.
- * @param {string[]} argv  the arguments after the command name
- * @param {{ dataRoot?: string, scratchRoot?: string, cwd?: string }} [options]  where the data and
- *   the scratch live and which repository git reads; tests point them at fixtures
- * @returns {Promise<number>} the exit code
+ * @param argv  the arguments after the command name
+ * @param options  where the data and the scratch live and which repository git reads; tests point
+ *   them at fixtures
+ * @returns the exit code
  */
-export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = REPO_ROOT } = {}) {
+export async function run(
+  argv: string[],
+  {
+    dataRoot = DATA_ROOT,
+    scratchRoot = SCRATCH_ROOT,
+    cwd = REPO_ROOT,
+  }: { dataRoot?: string; scratchRoot?: string; cwd?: string } = {}
+): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,

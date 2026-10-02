@@ -5,9 +5,9 @@
  * repository: `v<version>/` holds what `git show <tag>:<file>` returns, `commits/` the diffs of
  * `git show --format= <sha>`, and `log.json` the answers of `git log -S`.
  */
+import type { Tree } from './tree.mts';
 
-/** @type {import('./tree.mjs').Tree} */
-export const tree = {
+export const tree: Tree = {
   // the data directory
   'data/decisions/1.0.0.json': { entries: [], from: '1.0.0', kind: 'decisions', schema: 1, to: '3.0.0' },
   'data/diffs/1.0.0-2.0.0.json': {

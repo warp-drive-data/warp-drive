@@ -6,14 +6,12 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 
-import { REPO_ROOT } from './artifacts.mjs';
+import { REPO_ROOT } from './artifacts.mts';
 
 /**
- * @param {string[]} args
- * @param {{ cwd?: string }} [options]
- * @returns {string} trimmed stdout
+ * @returns trimmed stdout
  */
-function git(args, { cwd = REPO_ROOT } = {}) {
+function git(args: string[], { cwd = REPO_ROOT }: { cwd?: string } = {}): string {
   return execFileSync('git', args, {
     cwd,
     encoding: 'utf8',
@@ -24,19 +22,16 @@ function git(args, { cwd = REPO_ROOT } = {}) {
 
 /**
  * The main checkout: the first entry of `git worktree list`, whichever worktree this runs in.
- * @returns {string}
  */
-export function mainCheckout() {
+export function mainCheckout(): string {
   const first = git(['worktree', 'list', '--porcelain']).split('\n')[0];
   return first.replace(/^worktree /, '');
 }
 
 /**
  * Where the worktree for `version` lives.
- * @param {string} version
- * @returns {string}
  */
-export function releaseTreeDir(version) {
+export function releaseTreeDir(version: string): string {
   const main = mainCheckout();
   const dir = path.join(path.dirname(main), 'warp-drive-worktrees', 'releases', version);
   for (const repo of new Set([main, REPO_ROOT])) {
@@ -49,29 +44,25 @@ export function releaseTreeDir(version) {
 }
 
 /**
- * @param {string} version
- * @returns {string | null} the git tag of a release, null for `head`
+ * @returns the git tag of a release, null for `head`
  */
-export function tagOf(version) {
+export function tagOf(version: string): string | null {
   return version === 'head' ? null : `v${version}`;
 }
 
 /**
- * @param {string} dir
- * @returns {boolean} whether git knows `dir` as a worktree of this repository
+ * @returns whether git knows `dir` as a worktree of this repository
  */
-function isRegisteredWorktree(dir) {
+function isRegisteredWorktree(dir: string): boolean {
   return git(['worktree', 'list', '--porcelain'])
     .split('\n')
     .some((line) => line === `worktree ${dir}`);
 }
 
 /**
- * @param {string} dir
- * @param {string} commit
- * @returns {boolean} whether `dir` is a clean worktree of this repository at `commit`
+ * @returns whether `dir` is a clean worktree of this repository at `commit`
  */
-function isReusable(dir, commit) {
+function isReusable(dir: string, commit: string): boolean {
   try {
     return (
       isRegisteredWorktree(dir) &&
@@ -86,11 +77,10 @@ function isReusable(dir, commit) {
 /**
  * Checks out `v<version>` as a detached worktree, reusing one an earlier run left at the same
  * commit and replacing anything else found at that path.
- * @param {string} version
- * @returns {string} the worktree directory
+ * @returns the worktree directory
  */
-export function addReleaseTree(version) {
-  const tag = /** @type {string} */ (tagOf(version));
+export function addReleaseTree(version: string): string {
+  const tag = tagOf(version) as string;
   let commit;
   try {
     commit = git(['rev-parse', '--verify', '--quiet', `${tag}^{commit}`]);
@@ -109,9 +99,8 @@ export function addReleaseTree(version) {
 
 /**
  * Removes the worktree for `version` and its directory, tolerating either being gone already.
- * @param {string} version
  */
-export function removeReleaseTree(version) {
+export function removeReleaseTree(version: string) {
   const dir = releaseTreeDir(version);
   try {
     git(['worktree', 'remove', '--force', '--force', dir]);
@@ -125,13 +114,12 @@ export function removeReleaseTree(version) {
 /**
  * Runs `fn` against the tree of `version`: the working tree for `head`, else a worktree of
  * `v<version>` that is removed afterwards unless `keep` is set.
- * @template T
- * @param {string} version
- * @param {(dir: string) => T | Promise<T>} fn
- * @param {{ keep?: boolean }} [options]
- * @returns {Promise<T>}
  */
-export async function withReleaseTree(version, fn, { keep = false } = {}) {
+export async function withReleaseTree<T>(
+  version: string,
+  fn: (dir: string) => T | Promise<T>,
+  { keep = false }: { keep?: boolean } = {}
+): Promise<T> {
   if (version === 'head') return fn(REPO_ROOT);
   const dir = addReleaseTree(version);
   try {

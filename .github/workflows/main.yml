@@ -113,6 +113,8 @@ jobs:
           TURBO_FORCE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
       - name: Root scripts
         run: pnpm test:scripts
+      - name: Root scripts type check
+        run: pnpm check:types:scripts
       - name: Check Uncompiled Packages for TypeScript Compilation Errors
         run: pnpm check:types
         env:

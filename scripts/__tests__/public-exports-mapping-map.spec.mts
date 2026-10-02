@@ -3,7 +3,14 @@ import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, test } from 'node:test';
 
-import { REPO_ROOT } from '../public-exports-mapping/artifacts.mjs';
+import type {
+  Decision,
+  Diff,
+  Preferences,
+  Surface,
+  Token,
+} from '../../packages/eslint-plugin-warp-drive/src/legacy-import-mapping/map-core.js';
+import { REPO_ROOT } from '../public-exports-mapping/artifacts.mts';
 import {
   applyDiff,
   buildMap,
@@ -17,7 +24,7 @@ import {
   resolveVersion,
   separatingRule,
   SOURCE_TIE_RULE,
-} from '../public-exports-mapping/map.mjs';
+} from '../public-exports-mapping/map.mts';
 
 /** The plugin's test data, laid out as the data directory is; the reader's tests read it too. */
 const FIXTURE = path.join(
@@ -28,12 +35,10 @@ const FIXTURE = path.join(
   'fixtures',
   'legacy-import-mapping'
 );
-const PREFERENCES = { schema: 1, audience: 'ember', tieBreak: ['@warp-drive/ember'], report: {} };
+const PREFERENCES: Preferences = { schema: 1, audience: 'ember', tieBreak: ['@warp-drive/ember'], report: {} };
 
-/** @param {string} file */
-const read = (file) => JSON.parse(readFileSync(path.join(FIXTURE, file), 'utf8'));
-/** @param {string} dir */
-const jsonIn = (dir) => readdirSync(path.join(FIXTURE, dir)).map((name) => read(`${dir}/${name}`));
+const read = (file: string) => JSON.parse(readFileSync(path.join(FIXTURE, file), 'utf8'));
+const jsonIn = (dir: string) => readdirSync(path.join(FIXTURE, dir)).map((name) => read(`${dir}/${name}`));
 
 /** The fixture data as `buildMap` takes it: the baseline surface only, the rest from the diffs. */
 function fixtureData() {
@@ -47,16 +52,21 @@ function fixtureData() {
   };
 }
 
-/** @param {string} from @param {string} to */
-const fixtureMap = (from, to) => buildMap({ ...fixtureData(), from, to });
+const fixtureMap = (from: string, to: string) => buildMap({ ...fixtureData(), from, to });
 
 /**
  * A candidate token. `forward` is its module's `forward`: a bare specifier makes the module a shim.
- * @param {string} module
- * @param {string} name
- * @param {{ kind?: 'value' | 'type', deprecated?: boolean, pkg?: string, forward?: string | null }} [options]
  */
-function token(module, name, { kind = 'value', deprecated = false, pkg, forward = null } = {}) {
+function token(
+  module: string,
+  name: string,
+  {
+    kind = 'value',
+    deprecated = false,
+    pkg,
+    forward = null,
+  }: { kind?: 'value' | 'type'; deprecated?: boolean; pkg?: string; forward?: string | null } = {}
+) {
   const scoped = module.startsWith('@');
   const segments = module.split('/');
   const pkgName = pkg ?? (scoped ? segments.slice(0, 2).join('/') : segments[0]);
@@ -102,7 +112,7 @@ describe('ranking', () => {
    * Asserts that `rule` is the first rule separating `better` from `worse`, in both argument
    * orders, and that ranking puts `better` first.
    */
-  function separates(rule, better, worse, preferences = PREFERENCES) {
+  function separates(rule: number, better: Token, worse: Token, preferences = PREFERENCES) {
     assert.deepEqual(separatingRule(better, worse, source, preferences)?.rule, rule);
     assert.deepEqual(separatingRule(better, worse, source, preferences)?.order, -1);
     assert.deepEqual(separatingRule(worse, better, source, preferences)?.order, 1);
@@ -110,7 +120,7 @@ describe('ranking', () => {
   }
 
   test('0: a home before a shim, even with more path segments or in a private module', () => {
-    const shimOf = (module, target) => token(module, 'Thing', { forward: target });
+    const shimOf = (module: string, target: string) => token(module, 'Thing', { forward: target });
     separates(
       0,
       token('@warp-drive/core/types/request', 'Thing'),
@@ -194,7 +204,7 @@ describe('ranking', () => {
 });
 
 describe('diffs and versions', () => {
-  const surface = {
+  const surface: Surface = {
     schema: 1,
     kind: 'surface',
     version: '1.0.0',
@@ -209,7 +219,7 @@ describe('diffs and versions', () => {
       },
     },
   };
-  const diff = (changes) => ({
+  const diff = (changes: Partial<Diff>): Diff => ({
     schema: 1,
     kind: 'diff',
     from: '1.0.0',
@@ -255,7 +265,7 @@ describe('diffs and versions', () => {
       next,
       diff({ from: '2.0.0', to: '3.0.0', packages: { added: {}, removed: ['c'], changed: {} } })
     );
-    assert.deepEqual(Object.keys(gone.packages), ['a']);
+    assert.deepEqual(Object.keys(gone.packages!), ['a']);
     assert.throws(
       () => applyDiff(surface, diff({ packages: { added: {}, removed: ['z'], changed: {} } })),
       /cannot remove package z/
@@ -301,7 +311,7 @@ describe('diffs and versions', () => {
 
   test('a declaration follows the diffs pair by pair, and resumes where a later surface declares it again', () => {
     /** A surface whose module m exports one name per declaration id. */
-    const at = (version, decls) => ({
+    const at = (version: string, decls: string[]): Surface => ({
       schema: 1,
       kind: 'surface',
       version,
@@ -313,7 +323,10 @@ describe('diffs and versions', () => {
         },
       },
     });
-    const step = (from, to, declarations) => ({ ...diff({ from, to }), declarations });
+    const step = (from: string, to: string, declarations: Record<string, string | null>) => ({
+      ...diff({ from, to }),
+      declarations,
+    });
     const dataset = createDataset({
       releases: { schema: 1, baseline: '1.0.0', releases: ['1.0.0', '2.0.0', '3.0.0', '4.0.0'] },
       surfaces: [
@@ -357,10 +370,12 @@ describe('diffs and versions', () => {
       /reports ember-data as "gone"/
     );
     assert.throws(
+      // @ts-expect-error -- not a list
       () => createDataset({ ...fixtureData(), preferences: { schema: 1, ignorePackages: 'warp-drive' } }),
       /ignorePackages must be a list/
     );
     assert.throws(
+      // @ts-expect-error -- not a list of names
       () => createDataset({ ...fixtureData(), preferences: { schema: 1, tieBreak: [1] } }),
       /tieBreak must be a list/
     );
@@ -369,16 +384,15 @@ describe('diffs and versions', () => {
 
 describe('buildMap', () => {
   const map = fixtureMap('4.12', '5.9');
-  /** @param {string} module @param {string} name @param {boolean} [typeOnly] */
-  const decide = (module, name, typeOnly = false) => map.resolve(module, name, { typeOnly });
+  const decide = (module: string, name: string, typeOnly = false) => map.resolve(module, name, { typeOnly });
 
   test('lists every token of the from surface once, with how it resolved', () => {
-    const surface = read('surface.4.12.8.json');
+    const surface: Surface = read('surface.4.12.8.json');
     const expected = Object.entries(surface.modules).flatMap(([module, record]) =>
       Object.keys(record.exports).map((name) => `${module} ${name}`)
     );
     assert.deepEqual(map.tokens.map((t) => `${t.module} ${t.export}`).sort(), expected.sort());
-    const store = map.tokens.find((t) => t.module === '@ember-data/store' && t.export === 'default');
+    const store = map.tokens.find((t) => t.module === '@ember-data/store' && t.export === 'default')!;
     assert.equal(store.via, 'declarations');
     assert.equal(store.target, 'warp-drive-packages/core/src/store/-private/store-service.ts#Store');
     assert.deepEqual(store.candidates[0], { module: '@warp-drive/core', export: 'Store', kind: 'value' });
@@ -431,14 +445,14 @@ describe('buildMap', () => {
   });
 
   test('a declaration the next release lacks and a later one declares again resumes there', () => {
-    const source = ['@ember-data/request-utils', 'setBuildURLConfig'];
+    const source = ['@ember-data/request-utils', 'setBuildURLConfig'] as const;
     assert.deepEqual(fixtureMap('4.12', '5.0').resolve(...source), { action: 'report', reason: 'removed' });
     assert.deepEqual(fixtureMap('4.12', '5.6').resolve(...source), { action: 'keep' });
     assert.deepEqual(decide(...source), {
       action: 'rewrite',
       to: { module: '@warp-drive/utilities', export: 'setBuildURLConfig' },
     });
-    const resumed = map.tokens.find((t) => t.export === 'setBuildURLConfig');
+    const resumed = map.tokens.find((t) => t.export === 'setBuildURLConfig')!;
     assert.equal(resumed.via, 'declarations');
     assert.equal(resumed.target, 'warp-drive-packages/utilities/src/index.ts#setBuildURLConfig');
     assert.equal(
@@ -448,12 +462,15 @@ describe('buildMap', () => {
   });
 
   test('no candidate and a removal decision: removed with removedIn and shim, not residue', () => {
-    const decision = decide('@ember-data/adapter/error', 'errorsArrayToHash');
+    const decision = decide('@ember-data/adapter/error', 'errorsArrayToHash') as Extract<
+      Decision,
+      { action: 'report' }
+    >;
     assert.equal(decision.reason, 'removed');
     assert.equal(decision.removedIn, '#8550');
-    assert.match(decision.shim, /^export function errorsArrayToHash/);
+    assert.match(decision.shim!, /^export function errorsArrayToHash/);
     assert.equal(decision.links, undefined, 'links come from messages.json, which the scripts do not pass');
-    assert.equal(map.tokens.find((t) => t.export === 'errorsArrayToHash').via, 'decision');
+    assert.equal(map.tokens.find((t) => t.export === 'errorsArrayToHash')!.via, 'decision');
   });
 
   test('no candidate and a judged choice: the choice', () => {
@@ -490,7 +507,7 @@ describe('buildMap', () => {
       to: { module: '@warp-drive/legacy/model', export: 'ManyArray' },
     });
     assert.deepEqual(
-      map.tokens.find((t) => t.export === 'ManyArray').typeOnlyDecision,
+      map.tokens.find((t) => t.export === 'ManyArray')!.typeOnlyDecision,
       decide('@ember-data/model/-private', 'ManyArray', true)
     );
   });
@@ -551,7 +568,7 @@ describe('buildMap', () => {
     diff.declarations['packages/-ember-data/addon/store.ts#default'] = null;
     diff.exports['ember-data/store'].changed.default.decl = 'nowhere.ts#default';
     const after = buildMap({ ...data, from: '4.12', to: '5.6' });
-    assert.equal(after.tokens.find((t) => t.module === 'ember-data/store').via, null);
+    assert.equal(after.tokens.find((t) => t.module === 'ember-data/store')!.via, null);
     assert.equal(
       after.residue.some((t) => t.module === 'ember-data/store'),
       false
@@ -559,7 +576,7 @@ describe('buildMap', () => {
   });
 
   test('a value that became a type in place is reported: type-only is checked before keep', () => {
-    const surface = (version, kind) => ({
+    const surface = (version: string, kind: 'value' | 'type'): Surface => ({
       schema: 1,
       kind: 'surface',
       version,
@@ -602,7 +619,7 @@ describe('buildMap', () => {
   });
 
   test('a home ranks before a shim of it, whatever the path segments', () => {
-    const request = map.tokens.find((t) => t.module === '@ember-data/request' && t.export === 'RequestInfo');
+    const request = map.tokens.find((t) => t.module === '@ember-data/request' && t.export === 'RequestInfo')!;
     assert.deepEqual(
       request.candidates.map((c) => c.module),
       ['@warp-drive/core/types/request', '@ember-data/request', '@warp-drive/core-types/request']
@@ -655,8 +672,8 @@ describe('buildMap', () => {
   });
 
   test('preferences.ignorePackages: a module of theirs is never a candidate beside a real home', () => {
-    const source = ['@ember-data/store', 'setIdentifierGenerationMethod'];
-    const shared = map.tokens.find((t) => t.module === source[0] && t.export === source[1]);
+    const source = ['@ember-data/store', 'setIdentifierGenerationMethod'] as const;
+    const shared = map.tokens.find((t) => t.module === source[0] && t.export === source[1])!;
     assert.deepEqual(
       shared.candidates.map((c) => c.module),
       ['@ember-data/store']
@@ -677,8 +694,8 @@ describe('buildMap', () => {
   });
 
   test('preferences.ignorePackages: when their module is the only home, the token has no candidate', () => {
-    const source = ['@ember-data/store', 'setIdentifierUpdateMethod'];
-    const only = map.tokens.find((t) => t.module === source[0] && t.export === source[1]);
+    const source = ['@ember-data/store', 'setIdentifierUpdateMethod'] as const;
+    const only = map.tokens.find((t) => t.module === source[0] && t.export === source[1])!;
     assert.equal(only.via, null);
     assert.deepEqual(only.candidates, []);
     assert.deepEqual(decide(...source), { action: 'report', reason: 'removed' });

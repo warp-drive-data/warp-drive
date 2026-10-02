@@ -1,5 +1,5 @@
 /**
- * Area E of the public exports mapping pipeline (see CONTRACT.md and judge.mjs): TypeSafe AI's
+ * Area E of the public exports mapping pipeline (see CONTRACT.md and judge.mts): TypeSafe AI's
  * Jev as a second judge, `judge --judge jev`.
  *
  * Jev is a "System One" model (https://docs.typesafe.ai/introduction): it answers typed questions
@@ -14,7 +14,7 @@
  * judgment, and picking among one declaration's exports is the ranking's job. A bundle without
  * candidates is not sent; its answer is an error, so it goes to review.
  *
- * `decide` (judge.mjs) turns the answers into decisions entries with `judge: "jev"`: the chosen
+ * `decide` (judge.mts) turns the answers into decisions entries with `judge: "jev"`: the chosen
  * export, or `null` for `removed`; Jev's `confidence` (how concentrated the probabilities are,
  * which is what the docs gate actions on); and a reason that lists where the probability went,
  * since Jev gives none.
@@ -54,7 +54,7 @@
  * ## Live procedure
  *
  * 1. `export TYPESAFE_API_KEY=...`
- * 2. `node scripts/public-exports-mapping/cli.mjs judge --from 4.12.8 --judge jev --dry-run` writes
+ * 2. `node scripts/public-exports-mapping/cli.mts judge --from 4.12.8 --judge jev --dry-run` writes
  *    the bundles and `requests.jev.json`, the exact bodies (the key shows as a placeholder).
  * 3. `... judge --from 4.12.8 --judge jev --calibrate` judges what git settled, blind, and prints
  *    agreement per confidence bucket and per kind; read the threshold from the `symbols` row.
@@ -67,7 +67,7 @@
  */
 import { setTimeout as delay } from 'node:timers/promises';
 
-import { InputError, renderEvidence, validateAnswer } from './judge.mjs';
+import { InputError, renderEvidence, validateAnswer, type Answer, type Bundle, type TokenRef } from './judge.mts';
 
 export const JEV = 'jev';
 export const JEV_MODEL = 'jev-latest';
@@ -92,27 +92,36 @@ const BACKOFF_MS = 1000;
 const MAX_WAIT_MS = 60_000;
 const TIMEOUT_MS = 60_000;
 
-/**
- * @typedef {import('./judge.mjs').Bundle} Bundle
- * @typedef {import('./judge.mjs').Answer} Answer
- * @typedef {import('./judge.mjs').TokenRef} TokenRef
- * @typedef {Answer & { probabilities?: Record<string, number>, model?: string }} JevAnswer
- * @typedef {{ ok: boolean, status: number, headers?: { get(name: string): string | null } | null, text(): Promise<string> }} JevResponse
- * @typedef {(url: string, init: { method: string, headers: Record<string, string>, body: string, signal?: AbortSignal }) => Promise<JevResponse>} Fetch
- *   the HTTP layer: `globalThis.fetch`, or a fake in tests
- * @typedef {{
- *   fetch: Fetch, apiKey: string, model?: string, endpoint?: string, retries?: number, backoffMs?: number,
- *   timeoutMs?: number, sleep?: (ms: number) => Promise<unknown>, log?: (line: string) => void,
- * }} JevOptions
- * @typedef {{ candidate: number, decl: string, token: TokenRef, via?: string[] }} SuccessorOption
- * @typedef {{ candidate: number, choice: TokenRef, decl: string, score: number, confidence: number }} JevScore
- */
+export type JevAnswer = Answer & { probabilities?: Record<string, number>; model?: string };
+export type JevResponse = {
+  ok: boolean;
+  status: number;
+  headers?: { get(name: string): string | null } | null;
+  text(): Promise<string>;
+};
+/** The HTTP layer: `globalThis.fetch`, or a fake in tests. */
+export type Fetch = (
+  url: string,
+  init: { method: string; headers: Record<string, string>; body: string; signal?: AbortSignal }
+) => Promise<JevResponse>;
+export type JevOptions = {
+  fetch: Fetch;
+  apiKey: string;
+  model?: string;
+  endpoint?: string;
+  retries?: number;
+  backoffMs?: number;
+  timeoutMs?: number;
+  sleep?: (ms: number) => Promise<unknown>;
+  log?: (line: string) => void;
+};
+export type SuccessorOption = { candidate: number; decl: string; token: TokenRef; via?: string[] };
+export type JevScore = { candidate: number; choice: TokenRef; decl: string; score: number; confidence: number };
 
 /**
  * The key, from the environment only.
- * @param {Record<string, string | undefined>} env
  */
-export function jevKey(env) {
+export function jevKey(env: Record<string, string | undefined>) {
   const key = env[JEV_KEY];
   if (!key) {
     throw new InputError(`judge: ${JEV_KEY} is not set; export it for a live --judge jev run, or pass --dry-run`);
@@ -120,52 +129,45 @@ export function jevKey(env) {
   return key;
 }
 
-/** @param {TokenRef} token */
-const optionName = (token) => `${token.export} from ${token.module}`;
+const optionName = (token: TokenRef) => `${token.export} from ${token.module}`;
 
-/** @param {number} value @param {number} digits */
-const round = (value, digits) => Math.round(value * 10 ** digits) / 10 ** digits;
+const round = (value: number, digits: number) => Math.round(value * 10 ** digits) / 10 ** digits;
 
 /**
  * The candidate options of the successor Choice, by option name: one per candidate declaration,
  * named after the export the ranking puts first (`evidenceFor` sorts a candidate's tokens).
- * @param {Bundle} bundle
- * @returns {Map<string, SuccessorOption>}
  */
-export function successorOptions(bundle) {
-  /** @type {Map<string, SuccessorOption>} */
-  const options = new Map();
+export function successorOptions(bundle: Bundle): Map<string, SuccessorOption> {
+  const options = new Map<string, SuccessorOption>();
   bundle.candidates.slice(0, MAX_CANDIDATES).forEach((candidate, i) => {
     const best = candidate.tokens[0];
     if (!best) return;
-    /** @type {SuccessorOption} */
-    const option = { candidate: i + 1, decl: candidate.decl, token: { module: best.module, export: best.export } };
+    const option: SuccessorOption = {
+      candidate: i + 1,
+      decl: candidate.decl,
+      token: { module: best.module, export: best.export },
+    };
     if (candidate.via?.length) option.via = candidate.via;
     options.set(optionName(best), option);
   });
   return options;
 }
 
-/** @param {SuccessorOption} option */
-function describeOption({ candidate, decl, via }) {
+function describeOption({ candidate, decl, via }: SuccessorOption) {
   return `Candidate [${candidate}] in the state, declaration \`${decl}\`${via?.length ? `, found by ${via.join(', ')}` : ''}.`;
 }
 
-/** @param {Bundle} bundle */
-function successorInstructions(bundle) {
+function successorInstructions(bundle: Bundle) {
   return `The state describes a declaration that WarpDrive (formerly EmberData) ${bundle.from} exported and that git could not follow into ${bundle.to}, and candidate declarations of ${bundle.to}. Which candidate continues it: the same class, function, constant or type renamed or moved, or a drop-in replacement that code importing it can switch to? A replacement that needs different calling code, or that covers only part of it, does not continue it.`;
 }
 
 /**
  * The body of the successor request for one bundle, or null when it has no candidates.
- * @param {Bundle} bundle
- * @param {{ model?: string }} [options]
  */
-export function jevRequestFor(bundle, { model = JEV_MODEL } = {}) {
+export function jevRequestFor(bundle: Bundle, { model = JEV_MODEL }: { model?: string } = {}) {
   const options = successorOptions(bundle);
   if (!options.size) return null;
-  /** @type {Record<string, string>} */
-  const criteria = {};
+  const criteria: Record<string, string> = {};
   for (const [name, option] of options) criteria[name] = describeOption(option);
   criteria[REMOVED] = REMOVED_DESCRIPTION;
   return {
@@ -180,14 +182,11 @@ export function jevRequestFor(bundle, { model = JEV_MODEL } = {}) {
 /**
  * The body of the ranking request for one bundle: one Score per candidate, or null when it has
  * no candidates.
- * @param {Bundle} bundle
- * @param {{ model?: string }} [options]
  */
-export function jevRankRequestFor(bundle, { model = JEV_MODEL } = {}) {
+export function jevRankRequestFor(bundle: Bundle, { model = JEV_MODEL }: { model?: string } = {}) {
   const options = successorOptions(bundle);
   if (!options.size) return null;
-  /** @type {Record<string, { type: 'score', instructions: string, criteria: string[] }>} */
-  const questions = {};
+  const questions: Record<string, { type: 'score'; instructions: string; criteria: string[] }> = {};
   for (const [name, option] of options) {
     questions[`candidate_${option.candidate}`] = {
       type: 'score',
@@ -200,13 +199,13 @@ export function jevRankRequestFor(bundle, { model = JEV_MODEL } = {}) {
 
 /**
  * What a dry run writes: every request as it is sent, the key replaced by a placeholder.
- * @param {Bundle[]} bundles
- * @param {{ model?: string, endpoint?: string }} [options]
  */
-export function jevRequests(bundles, { model = JEV_MODEL, endpoint = JEV_ENDPOINT } = {}) {
+export function jevRequests(
+  bundles: Bundle[],
+  { model = JEV_MODEL, endpoint = JEV_ENDPOINT }: { model?: string; endpoint?: string } = {}
+) {
   const requests = [];
-  /** @type {string[]} */
-  const unsent = [];
+  const unsent: string[] = [];
   for (const bundle of bundles) {
     const body = jevRequestFor(bundle, { model });
     if (body) requests.push({ id: bundle.id, decl: bundle.decl, body });
@@ -221,10 +220,9 @@ export function jevRequests(bundles, { model = JEV_MODEL, endpoint = JEV_ENDPOIN
   };
 }
 
-/** Numeric entries of a response map, rounded. @param {unknown} map */
-function numbers(map) {
-  /** @type {Record<string, number>} */
-  const out = {};
+/** Numeric entries of a response map, rounded. */
+function numbers(map: unknown) {
+  const out: Record<string, number> = {};
   if (!map || typeof map !== 'object') return out;
   for (const [key, value] of Object.entries(map)) {
     if (typeof value === 'number' && Number.isFinite(value)) out[key] = round(value, 3);
@@ -235,13 +233,14 @@ function numbers(map) {
 /**
  * Jev gives no reasons, so the reason says where it put its probability: the leading options,
  * with how each candidate was found.
- * @param {string} model
- * @param {Record<string, number>} probabilities
- * @param {Map<string, SuccessorOption>} options
- * @param {string} choice
  */
-export function jevReason(model, probabilities, options, choice) {
-  const label = (/** @type {string} */ name) => {
+export function jevReason(
+  model: string,
+  probabilities: Record<string, number>,
+  options: Map<string, SuccessorOption>,
+  choice: string
+) {
+  const label = (name: string) => {
     const option = options.get(name);
     if (!option) return name;
     return `[${option.candidate}] ${name}${option.via?.length ? ` (found by ${option.via.join(', ')})` : ''}`;
@@ -254,11 +253,8 @@ export function jevReason(model, probabilities, options, choice) {
 
 /**
  * Reads the successor answer of a response body. A choice that is not an option is an error.
- * @param {any} response
- * @param {Bundle} bundle
- * @returns {Omit<JevAnswer, 'decl' | 'id'>}
  */
-export function parseJevChoice(response, bundle) {
+export function parseJevChoice(response: any, bundle: Bundle): Omit<JevAnswer, 'decl' | 'id'> {
   const usage = response?.usage && typeof response.usage === 'object' ? numbers(response.usage) : undefined;
   const answer = response?.answers?.[SUCCESSOR_QUESTION];
   if (!answer || typeof answer.choice !== 'string') {
@@ -282,13 +278,9 @@ export function parseJevChoice(response, bundle) {
 
 /**
  * Reads the Score answers of a ranking response, best first.
- * @param {any} response
- * @param {Bundle} bundle
- * @returns {{ scores: JevScore[] } | { error: string }}
  */
-export function parseJevScores(response, bundle) {
-  /** @type {JevScore[]} */
-  const scores = [];
+export function parseJevScores(response: any, bundle: Bundle): { scores: JevScore[] } | { error: string } {
+  const scores: JevScore[] = [];
   for (const option of successorOptions(bundle).values()) {
     const answer = response?.answers?.[`candidate_${option.candidate}`];
     if (typeof answer?.score !== 'number' || !Number.isFinite(answer.score)) continue;
@@ -305,8 +297,8 @@ export function parseJevScores(response, bundle) {
   return { scores: scores.sort((a, b) => b.score - a.score || a.candidate - b.candidate) };
 }
 
-/** The message of an error body: `error.message`, `message` or `detail`, else the text. @param {string} text */
-function errorDetail(text) {
+/** The message of an error body: `error.message`, `message` or `detail`, else the text. */
+function errorDetail(text: string) {
   let detail = text;
   try {
     const body = JSON.parse(text);
@@ -319,8 +311,7 @@ function errorDetail(text) {
   return flat.length > 300 ? `${flat.slice(0, 300)}...` : flat;
 }
 
-/** @param {JevResponse['headers']} headers */
-function retryAfterMs(headers) {
+function retryAfterMs(headers: JevResponse['headers']) {
   const value = headers?.get('retry-after');
   const seconds = Number(value);
   return value && Number.isFinite(seconds) && seconds >= 0 ? Math.min(seconds * 1000, MAX_WAIT_MS) : null;
@@ -331,11 +322,11 @@ function retryAfterMs(headers) {
  * other 5xx statuses and network failures are retried with exponential backoff, or after the
  * `retry-after` the response names; 401 and 403 throw, since every later request would fail the
  * same way; any other status is this request's error. No message carries the key.
- * @param {object} body
- * @param {JevOptions} options
- * @returns {Promise<{ json: any } | { error: string, retryable: boolean }>}
  */
-export async function postJev(body, options) {
+export async function postJev(
+  body: object,
+  options: JevOptions
+): Promise<{ json: unknown } | { error: string; retryable: boolean }> {
   const {
     fetch,
     apiKey,
@@ -346,13 +337,12 @@ export async function postJev(body, options) {
     sleep = delay,
     log = () => {},
   } = options;
-  const scrub = (/** @type {string} */ text) => (apiKey ? text.split(apiKey).join(`$${JEV_KEY}`) : text);
+  const scrub = (text: string) => (apiKey ? text.split(apiKey).join(`$${JEV_KEY}`) : text);
   for (let attempt = 0; ; attempt++) {
     let failure = '';
     let status = 0;
     let text = '';
-    /** @type {JevResponse['headers']} */
-    let headers = null;
+    let headers: JevResponse['headers'] = null;
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -391,15 +381,11 @@ export async function postJev(body, options) {
 /**
  * Asks Jev which candidate continues each bundle's declaration, one request at a time (the rate
  * limit is 40 requests per second, and there is no batch endpoint to use instead).
- * @param {Bundle[]} bundles
- * @param {JevOptions} options
- * @returns {Promise<JevAnswer[]>}
  */
-export async function askJev(bundles, options) {
+export async function askJev(bundles: Bundle[], options: JevOptions): Promise<JevAnswer[]> {
   if (typeof options?.fetch !== 'function' || !options.apiKey) throw new Error('askJev needs fetch and apiKey');
   const { model = JEV_MODEL } = options;
-  /** @type {JevAnswer[]} */
-  const answers = [];
+  const answers: JevAnswer[] = [];
   for (const bundle of bundles) {
     const body = jevRequestFor(bundle, { model });
     const result = body ? await postJev(body, options) : { error: NO_CANDIDATES, retryable: false };
@@ -412,14 +398,14 @@ export async function askJev(bundles, options) {
 /**
  * Scores every candidate of each bundle with a second request (one Score per candidate). A
  * failure, a refused key included, is recorded for that declaration and never thrown.
- * @param {Bundle[]} bundles
- * @param {JevOptions} options
- * @returns {Promise<Map<string, { scores: JevScore[] } | { error: string }>>} by declaration id
+ * @returns by declaration id
  */
-export async function rankWithJev(bundles, options) {
+export async function rankWithJev(
+  bundles: Bundle[],
+  options: JevOptions
+): Promise<Map<string, { scores: JevScore[] } | { error: string }>> {
   const { model = JEV_MODEL } = options;
-  /** @type {Map<string, { scores: JevScore[] } | { error: string }>} */
-  const ranked = new Map();
+  const ranked = new Map<string, { scores: JevScore[] } | { error: string }>();
   for (const bundle of bundles) {
     const body = jevRankRequestFor(bundle, { model });
     if (!body) continue;

@@ -14,18 +14,18 @@ import { readdirSync, readFileSync, realpathSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { parseSync } from 'oxc-parser';
 
-import { exportsOfFile } from './exports.mjs';
-import { createResolver, exportTargets, SOURCE_EXTENSIONS, sourceTarget } from './resolver.mjs';
+import { exportsOfFile, type ExportKind, type ExportRecord, type FileExports } from './exports.mts';
+import { createResolver, exportTargets, SOURCE_EXTENSIONS, sourceTarget, type PackageLayout } from './resolver.mts';
 
 /** Directories that hold the workspace packages, in any era. */
 export const PACKAGE_ROOTS = ['packages', 'warp-drive-packages'];
 
 /** Build configs, newest era first; the first one a package has decides its era. */
-const BUILD_CONFIGS = /** @type {const} */ ([
+const BUILD_CONFIGS = [
   ['tsdown', 'tsdown.config.mjs'],
   ['vite', 'vite.config.mjs'],
   ['rollup', 'rollup.config.mjs'],
-]);
+] as const;
 
 /** Output directories of the vite and tsdown builds: JS in `dist/`, types in one of these. */
 const MODERN_OUT_DIRS = ['dist', 'declarations', 'unstable-preview-types'];
@@ -33,59 +33,67 @@ const MODERN_OUT_DIRS = ['dist', 'declarations', 'unstable-preview-types'];
 /** Source files a build can take as an entry. */
 const ENTRY_SOURCE = /\.(ts|gts|tsx|js|gjs|jsx|mjs)$/;
 
-/**
- * @typedef {import('./exports.mjs').ExportKind} ExportKind
- * @typedef {import('./exports.mjs').ExportRecord} ExportRecord
- * @typedef {import('./exports.mjs').FileExports} FileExports
- * @typedef {import('./resolver.mjs').PackageLayout} PackageLayout
- *
- * @typedef {'rollup' | 'vite' | 'tsdown' | 'v1' | 'none'} Build
- *
- * @typedef {object} Entry
- * @property {string} source absolute path of the entry's source file
- * @property {string} name the entry's output name without extension, relative to the output directory
- *
- * @typedef {PackageLayout & { rel: string, private: boolean, build: Build, config: string | null, entries: Entry[] }} WorkspacePackage
- *
- * @typedef {object} Token
- * @property {ExportKind} kind
- * @property {string} decl
- * @property {boolean} deprecated
- *
- * @typedef {object} Diagnostic
- * @property {string} code a stable identifier for the kind of finding
- * @property {string} message
- *
- * @typedef {object} SurfaceExport
- * @property {ExportKind} kind
- * @property {string} decl
- * @property {true} [deprecated]
- *
- * @typedef {object} SurfaceModule
- * @property {string} package
- * @property {string} entry
- * @property {string | null} forward
- * @property {Record<string, SurfaceExport>} exports
- *
- * @typedef {object} Surface
- * @property {1} schema
- * @property {'surface'} kind
- * @property {string} version
- * @property {string | null} tag
- * @property {Record<string, { dir: string, modules: string[] }>} packages
- * @property {Record<string, SurfaceModule>} modules
- */
+export type Build = 'rollup' | 'vite' | 'tsdown' | 'v1' | 'none';
+
+export interface Entry {
+  /** absolute path of the entry's source file */
+  source: string;
+  /** the entry's output name without extension, relative to the output directory */
+  name: string;
+}
+
+export type WorkspacePackage = PackageLayout & {
+  rel: string;
+  private: boolean;
+  build: Build;
+  config: string | null;
+  entries: Entry[];
+};
+
+export interface Token {
+  kind: ExportKind;
+  decl: string;
+  deprecated: boolean;
+}
+
+export interface Diagnostic {
+  /** a stable identifier for the kind of finding */
+  code: string;
+  message: string;
+}
+
+export interface SurfaceExport {
+  kind: ExportKind;
+  decl: string;
+  deprecated?: true;
+}
+
+export interface SurfaceModule {
+  package: string;
+  entry: string;
+  forward: string | null;
+  exports: Record<string, SurfaceExport>;
+}
+
+export interface Surface {
+  schema: 1;
+  kind: 'surface';
+  version: string;
+  tag: string | null;
+  packages: Record<string, { dir: string; modules: string[] }>;
+  modules: Record<string, SurfaceModule>;
+}
 
 /**
  * The surface of the tree at `dir`.
- * @param {string} dir the root of a checkout of this repository
- * @param {{ version: string, tag: string | null, diagnostics?: Diagnostic[] }} options
- * @returns {Surface}
+ * @param dir the root of a checkout of this repository
  */
-export function surfaceOf(dir, { version, tag, diagnostics = [] }) {
+export function surfaceOf(
+  dir: string,
+  { version, tag, diagnostics = [] }: { version: string; tag: string | null; diagnostics?: Diagnostic[] }
+): Surface {
   const root = realpathSync(dir);
-  /** @param {string} code @param {string} message */
-  const report = (code, message) => diagnostics.push({ code, message });
+  const report = (code: string, message: string) => diagnostics.push({ code, message });
 
   const workspace = discoverWorkspace(root, report);
   const resolver = createResolver(root, workspace);
@@ -95,10 +103,8 @@ export function surfaceOf(dir, { version, tag, diagnostics = [] }) {
   }
   const graph = new ExportGraph(root, resolver, report);
 
-  /** @type {Surface['packages']} */
-  const packages = {};
-  /** @type {Surface['modules']} */
-  const modules = {};
+  const packages: Surface['packages'] = {};
+  const modules: Surface['modules'] = {};
   for (const pkg of workspace) {
     // a second package of the same name was reported as a resolver conflict; the first wins
     if (pkg.private || packages[pkg.name]) continue;
@@ -122,13 +128,9 @@ export function surfaceOf(dir, { version, tag, diagnostics = [] }) {
 
 /**
  * Every workspace package of the tree, private ones included (the resolver needs them all).
- * @param {string} root
- * @param {(code: string, message: string) => void} report
- * @returns {WorkspacePackage[]}
  */
-export function discoverWorkspace(root, report) {
-  /** @type {WorkspacePackage[]} */
-  const out = [];
+export function discoverWorkspace(root: string, report: (code: string, message: string) => void): WorkspacePackage[] {
+  const out: WorkspacePackage[] = [];
   for (const base of PACKAGE_ROOTS) {
     const baseDir = path.join(root, base);
     if (!isDir(baseDir)) continue;
@@ -146,13 +148,14 @@ export function discoverWorkspace(root, report) {
 }
 
 /**
- * @param {string} root
- * @param {string} dir
- * @param {any} json the parsed package.json
- * @param {(code: string, message: string) => void} report
- * @returns {WorkspacePackage}
+ * @param json the parsed package.json
  */
-function describePackage(root, dir, json, report) {
+function describePackage(
+  root: string,
+  dir: string,
+  json: any,
+  report: (code: string, message: string) => void
+): WorkspacePackage {
   const rel = relative(root, dir);
   const base = { name: json.name, dir, rel, private: json.private === true, exports: json.exports };
   const found = BUILD_CONFIGS.find(([, file]) => isFile(path.join(dir, file)));
@@ -160,10 +163,10 @@ function describePackage(root, dir, json, report) {
   if (!found) {
     if (isDir(path.join(dir, 'addon'))) {
       /**
-       * @param {string} tree a directory of the addon
-       * @param {string} mount where ember-cli puts it under the package name
+       * @param tree a directory of the addon
+       * @param mount where ember-cli puts it under the package name
        */
-      const sources = (tree, mount) =>
+      const sources = (tree: string, mount: string) =>
         walk(path.join(dir, tree))
           .filter((f) => /\.(js|ts)$/.test(f) && !f.endsWith('.d.ts'))
           .map((f) => ({ source: path.join(dir, tree, f), name: mount + stripExtension(f) }));
@@ -172,8 +175,15 @@ function describePackage(root, dir, json, report) {
       const entries = [...sources('addon', ''), ...(testSupportDir ? sources(testSupportDir, 'test-support/') : [])];
       return { ...base, build: 'v1', config: null, srcDir: 'addon', outDirs: [], testSupportDir, entries };
     }
-    /** @type {WorkspacePackage} */
-    const layout = { ...base, build: 'none', config: null, srcDir: 'src', outDirs: ['dist'], main: null, entries: [] };
+    const layout: WorkspacePackage = {
+      ...base,
+      build: 'none',
+      config: null,
+      srcDir: 'src',
+      outDirs: ['dist'],
+      main: null,
+      entries: [],
+    };
     if (json.exports === undefined) {
       // published as is: the bare name resolves through `main`, `index.js` when it is absent
       const main = typeof json.main === 'string' ? json.main : 'index.js';
@@ -199,8 +209,7 @@ function describePackage(root, dir, json, report) {
     const destDir = config.addon.destDir ?? 'dist';
     if (!config.entryPoints) report('no-entry-points', `${configRel}: no addon.publicEntrypoints([...]) call`);
     const patterns = (config.entryPoints ?? []).map((p) => globToRegExp(p.replace(/^\.\//, '')));
-    /** @type {Entry[]} */
-    const entries = [];
+    const entries: Entry[] = [];
     for (const f of walk(path.join(dir, srcDir))) {
       if (!/\.(ts|gts|gjs|js|hbs)$/.test(f) || f.endsWith('.d.ts')) continue;
       // @embroider/addon-dev matches the output name: the source with its extension swapped for .js
@@ -226,14 +235,11 @@ function describePackage(root, dir, json, report) {
       `${configRel}: builds from \`${config.otherEntry}\`, not entryPoints; only package.json#exports targets in the source tree count`
     );
   }
-  /** @type {Entry[]} */
-  const entries = [];
-  /** @type {Set<string>} */
-  const seen = new Set();
+  const entries: Entry[] = [];
+  const seen: Set<string> = new Set();
   for (const pattern of config.entryPoints ?? []) {
     const clean = pattern.replace(/^\.\//, '');
-    /** @type {string[]} */
-    let files;
+    let files: string[];
     if (/[*{]/.test(clean)) {
       const re = globToRegExp(clean);
       const staticPart = clean.split('/').filter((_, i, all) => !/[*?{[]/.test(all.slice(0, i + 1).join('/')));
@@ -275,13 +281,10 @@ function describePackage(root, dir, json, report) {
 
 /**
  * The modules of one package and the entry file each starts at.
- * @param {WorkspacePackage} pkg
- * @param {(code: string, message: string) => void} report
- * @returns {Map<string, string>} module name -> absolute entry file
+ * @returns module name -> absolute entry file
  */
-export function modulesOf(pkg, report) {
-  /** @type {Map<string, string>} */
-  const modules = new Map();
+export function modulesOf(pkg: WorkspacePackage, report: (code: string, message: string) => void): Map<string, string> {
+  const modules: Map<string, string> = new Map();
   const byExports =
     (pkg.build === 'vite' || pkg.build === 'tsdown' || pkg.build === 'none') && pkg.exports !== undefined;
 
@@ -292,7 +295,7 @@ export function modulesOf(pkg, report) {
       if (modules.has(module)) {
         report(
           'duplicate-entry',
-          `${module}: both ${relative(pkg.dir, /** @type {string} */ (modules.get(module)))} and ${relative(pkg.dir, entry.source)}; the first wins`
+          `${module}: both ${relative(pkg.dir, modules.get(module) as string)} and ${relative(pkg.dir, entry.source)}; the first wins`
         );
         continue;
       }
@@ -301,8 +304,8 @@ export function modulesOf(pkg, report) {
     return modules;
   }
 
-  /** @type {Map<string, Entry>} build output path (package-relative) -> entry */
-  const outputs = new Map();
+  /** build output path (package-relative) -> entry */
+  const outputs: Map<string, Entry> = new Map();
   for (const entry of pkg.entries) {
     for (const outDir of pkg.outDirs) {
       outputs.set(`${outDir}/${entry.name}.js`, entry);
@@ -318,8 +321,8 @@ export function modulesOf(pkg, report) {
       : ['.'];
   const targets = exportTargets(pkg.exports);
 
-  /** @type {Set<string>} entry sources an exact key already names */
-  const claimed = new Set();
+  /** entry sources an exact key already names */
+  const claimed: Set<string> = new Set();
   for (const { key, target } of targets.filter((t) => !t.pattern)) {
     const module = key === '.' ? pkg.name : `${pkg.name}/${key.slice(2)}`;
     let source = outputs.get(target)?.source;
@@ -371,11 +374,8 @@ export function modulesOf(pkg, report) {
 /**
  * The exports key node's resolver picks for `./<subpath>`: an exact key, else the pattern key
  * with the longest prefix (then the longest key).
- * @param {string[]} keys
- * @param {string} subpath
- * @returns {string | null}
  */
-export function bestExportsKey(keys, subpath) {
+export function bestExportsKey(keys: string[], subpath: string): string | null {
   const request = './' + subpath;
   if (keys.includes(request) && !request.includes('*')) return request;
   let best = null;
@@ -399,26 +399,28 @@ export function bestExportsKey(keys, subpath) {
  * Re-export chains, resolved lazily per (file, name) as ECMAScript's ResolveExport does.
  */
 class ExportGraph {
-  /**
-   * @param {string} root
-   * @param {ReturnType<typeof createResolver>} resolver
-   * @param {(code: string, message: string) => void} report
-   */
-  constructor(root, resolver, report) {
+  declare root: string;
+  declare resolver: ReturnType<typeof createResolver>;
+  declare report: (code: string, message: string) => void;
+  declare files: Map<string, FileExports>;
+  declare resolved: Map<string, Token | null>;
+
+  constructor(
+    root: string,
+    resolver: ReturnType<typeof createResolver>,
+    report: (code: string, message: string) => void
+  ) {
     this.root = root;
     this.resolver = resolver;
     this.report = report;
-    /** @type {Map<string, FileExports>} */
     this.files = new Map();
-    /** @type {Map<string, Token | null>} */
     this.resolved = new Map();
   }
 
   /**
-   * @param {string} file absolute
-   * @returns {FileExports}
+   * @param file absolute
    */
-  fileExports(file) {
+  fileExports(file: string): FileExports {
     let found = this.files.get(file);
     if (!found) {
       try {
@@ -432,23 +434,17 @@ class ExportGraph {
     return found;
   }
 
-  /**
-   * @param {string} file
-   * @param {string} specifier
-   */
-  resolve(file, specifier) {
+  resolve(file: string, specifier: string) {
     return this.resolver.resolve(file, specifier);
   }
 
   /**
    * Every export of an entry module, keyed by export name.
-   * @param {string} entry absolute
-   * @param {string} module the module name, for messages
-   * @returns {Record<string, SurfaceExport>}
+   * @param entry absolute
+   * @param module the module name, for messages
    */
-  moduleExports(entry, module) {
-    /** @type {Record<string, SurfaceExport>} */
-    const out = {};
+  moduleExports(entry: string, module: string): Record<string, SurfaceExport> {
+    const out: Record<string, SurfaceExport> = {};
     for (const name of this.exportedNames(entry, new Set())) {
       const token = this.resolveExport(entry, name, new Set());
       if (!token) {
@@ -464,13 +460,9 @@ class ExportGraph {
 
   /**
    * ECMAScript GetExportedNames: explicit names, then the names every `export *` brings in.
-   * @param {string} file
-   * @param {Set<string>} visited
-   * @returns {Set<string>}
    */
-  exportedNames(file, visited) {
-    /** @type {Set<string>} */
-    const names = new Set();
+  exportedNames(file: string, visited: Set<string>): Set<string> {
+    const names: Set<string> = new Set();
     if (visited.has(file)) return names;
     visited.add(file);
     const { exports } = this.fileExports(file);
@@ -492,27 +484,22 @@ class ExportGraph {
 
   /**
    * ECMAScript ResolveExport: the declaration behind `name` as `file` exports it.
-   * @param {string} file
-   * @param {string} name
-   * @param {Set<string>} resolveSet the (file, name) pairs on the current chain
-   * @returns {Token | null}
+   * @param resolveSet the (file, name) pairs on the current chain
    */
-  resolveExport(file, name, resolveSet) {
+  resolveExport(file: string, name: string, resolveSet: Set<string>): Token | null {
     const key = `${file}\0${name}`;
-    if (this.resolved.has(key)) return /** @type {Token | null} */ (this.resolved.get(key));
+    if (this.resolved.has(key)) return this.resolved.get(key) as Token | null;
     if (resolveSet.has(key)) return null;
     resolveSet.add(key);
     const { exports } = this.fileExports(file);
 
-    /** @type {Token | null} */
-    let token = null;
+    let token: Token | null = null;
     for (const record of exports) {
       if (record.form === 'star' || record.name !== name) continue;
       token = mergeSameName(token, this.tokenOf(file, record, resolveSet));
     }
     if (!token && name !== 'default') {
-      /** @type {string | null} */
-      let opaque = null;
+      let opaque: string | null = null;
       for (const record of exports) {
         if (record.form !== 'star') continue;
         const target = this.resolve(file, record.from);
@@ -522,7 +509,7 @@ class ExportGraph {
         }
         const found = this.resolveExport(target.path, name, resolveSet);
         if (!found) continue;
-        const typed = record.kind === 'type' ? { ...found, kind: /** @type {ExportKind} */ ('type') } : found;
+        const typed = record.kind === 'type' ? { ...found, kind: 'type' as ExportKind } : found;
         if (token && token.decl !== typed.decl) {
           this.report(
             'ambiguous-star',
@@ -542,13 +529,7 @@ class ExportGraph {
     return token;
   }
 
-  /**
-   * @param {string} file
-   * @param {Exclude<ExportRecord, { form: 'star' }>} record
-   * @param {Set<string>} resolveSet
-   * @returns {Token | null}
-   */
-  tokenOf(file, record, resolveSet) {
+  tokenOf(file: string, record: Exclude<ExportRecord, { form: 'star' }>, resolveSet: Set<string>): Token | null {
     if (record.form === 'local') {
       return { kind: record.kind, decl: `${relative(this.root, file)}#${record.local}`, deprecated: record.deprecated };
     }
@@ -590,11 +571,8 @@ class ExportGraph {
 
 /**
  * A value and a type under one name are one export of kind value.
- * @param {Token | null} a
- * @param {Token | null} b
- * @returns {Token | null}
  */
-function mergeSameName(a, b) {
+function mergeSameName(a: Token | null, b: Token | null): Token | null {
   if (!a) return b;
   if (!b) return a;
   const value = a.kind === 'value' ? a : b.kind === 'value' ? b : a;
@@ -604,36 +582,30 @@ function mergeSameName(a, b) {
 /**
  * Reads what the surface needs from a build config without running it: the entry list and the
  * options handed to `createConfig` (or, for rollup, to `new Addon`).
- * @param {string} file
- * @returns {{ entryPoints: string[] | null, otherEntry: string | null, options: { srcDir?: string, flatten?: boolean }, addon: { srcDir?: string, destDir?: string } }}
  */
-export function readBuildConfig(file) {
+export function readBuildConfig(file: string): {
+  entryPoints: string[] | null;
+  otherEntry: string | null;
+  options: { srcDir?: string; flatten?: boolean };
+  addon: { srcDir?: string; destDir?: string };
+} {
   const source = readFileSync(file, 'utf8');
   const { program } = parseSync(file, source, { lang: 'js', sourceType: 'module' });
-  /** @type {string[] | null} */
-  let entryPoints = null;
-  /** @type {string | null} */
-  let otherEntry = null;
-  /** @type {{ srcDir?: string, flatten?: boolean }} */
-  const options = {};
-  /** @type {{ srcDir?: string, destDir?: string }} */
-  const addon = {};
+  let entryPoints: string[] | null = null;
+  let otherEntry: string | null = null;
+  const options: { srcDir?: string; flatten?: boolean } = {};
+  const addon: { srcDir?: string; destDir?: string } = {};
 
-  /** @param {any} node */
-  const strings = (node) =>
+  const strings = (node: any) =>
     node?.type === 'ArrayExpression'
-      ? node.elements
-          .filter((/** @type {any} */ e) => e?.type === 'Literal' && typeof e.value === 'string')
-          .map((/** @type {any} */ e) => e.value)
+      ? node.elements.filter((e: any) => e?.type === 'Literal' && typeof e.value === 'string').map((e: any) => e.value)
       : null;
-  /** @param {any} object @param {string} key */
-  const property = (object, key) =>
+  const property = (object: any, key: string) =>
     object?.type === 'ObjectExpression'
-      ? object.properties.find((/** @type {any} */ p) => p.type === 'Property' && (p.key.name ?? p.key.value) === key)
-          ?.value
+      ? object.properties.find((p: any) => p.type === 'Property' && (p.key.name ?? p.key.value) === key)?.value
       : undefined;
 
-  walkAst(program, (/** @type {any} */ node) => {
+  walkAst(program, (node: any) => {
     if (node.type === 'VariableDeclarator' && node.id?.name === 'entryPoints' && node.init) {
       entryPoints = strings(node.init) ?? entryPoints;
     }
@@ -656,7 +628,7 @@ export function readBuildConfig(file) {
       }
     }
     if (node.type === 'NewExpression' && node.callee.name === 'Addon') {
-      for (const key of /** @type {const} */ (['srcDir', 'destDir'])) {
+      for (const key of ['srcDir', 'destDir'] as const) {
         const value = property(node.arguments[0], key);
         if (value?.type === 'Literal' && typeof value.value === 'string') addon[key] = value.value;
       }
@@ -665,11 +637,7 @@ export function readBuildConfig(file) {
   return { entryPoints, otherEntry: entryPoints ? null : otherEntry, options, addon };
 }
 
-/**
- * @param {any} node
- * @param {(node: any) => void} visit
- */
-function walkAst(node, visit) {
+function walkAst(node: any, visit: (node: any) => void) {
   if (!node || typeof node !== 'object') return;
   if (Array.isArray(node)) {
     for (const child of node) walkAst(child, visit);
@@ -687,10 +655,9 @@ function walkAst(node, visit) {
  * node-glob semantics for the patterns build configs use: `**` as a whole segment spans any
  * number of directories, `*` (or `**` inside a segment) stays within one, `?` is one
  * character, `{a,b}` picks one; wildcards do not match a leading dot.
- * @param {string} pattern a POSIX path pattern
- * @returns {RegExp}
+ * @param pattern a POSIX path pattern
  */
-export function globToRegExp(pattern) {
+export function globToRegExp(pattern: string): RegExp {
   const parts = pattern.split('/');
   let out = '';
   for (let i = 0; i < parts.length; i++) {
@@ -704,11 +671,7 @@ export function globToRegExp(pattern) {
   return new RegExp(`^${out}$`);
 }
 
-/**
- * @param {string} segment
- * @returns {string}
- */
-function segmentPattern(segment) {
+function segmentPattern(segment: string): string {
   let out = '';
   for (let i = 0; i < segment.length; i++) {
     const ch = segment[i];
@@ -742,14 +705,10 @@ function segmentPattern(segment) {
 /**
  * Every file below `dir`, as sorted POSIX paths relative to it; skips `node_modules` and dot
  * directories.
- * @param {string} dir
- * @returns {string[]}
  */
-function walk(dir) {
-  /** @type {string[]} */
-  const out = [];
-  /** @param {string} current @param {string} prefix */
-  const visit = (current, prefix) => {
+function walk(dir: string): string[] {
+  const out: string[] = [];
+  const visit = (current: string, prefix: string) => {
     let names;
     try {
       names = readdirSync(current, { withFileTypes: true });
@@ -771,10 +730,9 @@ function walk(dir) {
 /**
  * The source file a mapped target names: the path itself, or with a source extension, or its
  * `index` file.
- * @param {string} base absolute path, possibly without extension
- * @returns {string | null}
+ * @param base absolute path, possibly without extension
  */
-function findSource(base) {
+function findSource(base: string): string | null {
   if (isFile(base) && ENTRY_SOURCE.test(base)) return base;
   for (const ext of SOURCE_EXTENSIONS) if (isFile(base + ext)) return base + ext;
   for (const ext of SOURCE_EXTENSIONS) {
@@ -783,26 +741,18 @@ function findSource(base) {
   return null;
 }
 
-/**
- * @param {string} file
- */
-function stripExtension(file) {
+function stripExtension(file: string) {
   return file.replace(/(\.d)?\.(ts|gts|tsx|js|gjs|jsx|mjs|hbs)$/, '');
 }
 
 /**
- * @param {string} root
- * @param {string} file
- * @returns {string} POSIX, relative to root
+ * @returns POSIX, relative to root
  */
-function relative(root, file) {
+function relative(root: string, file: string): string {
   return path.relative(root, file).split(path.sep).join('/');
 }
 
-/**
- * @param {string} file
- */
-function isFile(file) {
+function isFile(file: string) {
   try {
     return statSync(file).isFile();
   } catch {
@@ -810,10 +760,7 @@ function isFile(file) {
   }
 }
 
-/**
- * @param {string} dir
- */
-function isDir(dir) {
+function isDir(dir: string) {
   try {
     return statSync(dir).isDirectory();
   } catch {

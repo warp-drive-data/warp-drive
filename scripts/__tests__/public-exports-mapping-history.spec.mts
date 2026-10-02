@@ -2,12 +2,18 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { test } from 'node:test';
+import { test, type TestContext } from 'node:test';
 
-import { canonical } from '../public-exports-mapping/artifacts.mjs';
-import * as diffCommand from '../public-exports-mapping/commands/diff.mjs';
-import * as historyCommand from '../public-exports-mapping/commands/history.mjs';
-import { applyDiff, declarationIds, diffSurfaces } from '../public-exports-mapping/diff.mjs';
+import { canonical } from '../public-exports-mapping/artifacts.mts';
+import * as diffCommand from '../public-exports-mapping/commands/diff.mts';
+import * as historyCommand from '../public-exports-mapping/commands/history.mts';
+import {
+  applyDiff,
+  declarationIds,
+  diffSurfaces,
+  type History,
+  type Surface,
+} from '../public-exports-mapping/diff.mts';
 import {
   declaredExports,
   fileMoves,
@@ -16,18 +22,18 @@ import {
   parseNameStatus,
   twinsOf,
   withoutTemplateTags,
-} from '../public-exports-mapping/history.mjs';
+} from '../public-exports-mapping/history.mts';
 import { tempDir } from './-run-script.mjs';
-import { tree as FIXTURES } from './fixtures/public-exports-mapping/history.mjs';
+import { tree as FIXTURES } from './fixtures/public-exports-mapping/history.mts';
 
-/** The text of a fixture file. @param {string} name */
-function fixture(name) {
+/** The text of a fixture file. */
+function fixture(name: string) {
   const value = FIXTURES[name];
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
 
-/** A fresh copy of a JSON fixture. @param {string} name */
-function fixtureJson(name) {
+/** A fresh copy of a JSON fixture. */
+function fixtureJson(name: string): any {
   return structuredClone(FIXTURES[name]);
 }
 
@@ -42,10 +48,8 @@ function handWrittenPair() {
 
 /**
  * A deep copy of `value` whose objects list their keys in reverse order; arrays keep theirs.
- * @param {any} value
- * @returns {any}
  */
-function reverseKeys(value) {
+function reverseKeys(value: any): any {
   if (Array.isArray(value)) return value.map(reverseKeys);
   if (value && typeof value === 'object') {
     return Object.fromEntries(
@@ -59,19 +63,14 @@ function reverseKeys(value) {
 
 /** Git for fixture repositories, isolated from the user's configuration. */
 const GIT_ENV = (() => {
-  const env = { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
+  const env: NodeJS.ProcessEnv = { ...process.env, GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1' };
   for (const key of ['GIT_DIR', 'GIT_WORK_TREE', 'GIT_INDEX_FILE', 'GIT_COMMON_DIR', 'GIT_OBJECT_DIRECTORY']) {
     delete env[key];
   }
   return env;
 })();
 
-/**
- * @param {string} cwd
- * @param {string[]} args
- * @param {Record<string, string>} [env]
- */
-function git(cwd, args, env = {}) {
+function git(cwd: string, args: string[], env: Record<string, string> = {}) {
   return execFileSync('git', ['-c', 'commit.gpgsign=false', '-c', 'tag.gpgsign=false', ...args], {
     cwd,
     encoding: 'utf8',
@@ -96,9 +95,8 @@ const B_TS = [
 /**
  * The commits of the fixture repository, oldest first. `files` maps a path to its new
  * contents, or to `null` to delete it.
- * @type {{ subject: string, tag?: string, files: Record<string, string | null> }[]}
  */
-const COMMITS = [
+const COMMITS: { subject: string; tag?: string; files: Record<string, string | null> }[] = [
   {
     subject: 'feat: first release',
     tag: 'v1.0.0',
@@ -172,9 +170,8 @@ const COMMITS = [
 /**
  * Another history, where the commit moving foo out of a.ts adds b.ts and scratch.ts, and
  * before the release b.ts moves under utils/ and scratch.ts is deleted.
- * @type {typeof COMMITS}
  */
-const MOVED_TWICE = [
+const MOVED_TWICE: typeof COMMITS = [
   {
     subject: 'feat: first release',
     tag: 'v1.0.0',
@@ -211,16 +208,12 @@ const MOVED_TWICE = [
 /**
  * A git repository with the commits of `log` (`COMMITS` unless told otherwise), tagged as
  * they say.
- * @param {import('node:test').TestContext} t
- * @param {typeof COMMITS} [log]
- * @returns {{ repo: string, commits: Record<string, string> }} the repository and the full
- *   hash of each commit by subject
+ * @returns the repository and the full hash of each commit by subject
  */
-function fixtureRepo(t, log = COMMITS) {
+function fixtureRepo(t: TestContext, log: typeof COMMITS = COMMITS): { repo: string; commits: Record<string, string> } {
   const repo = tempDir(t, 'public-exports-mapping-history-');
   git(repo, ['init', '--quiet', '--initial-branch=main']);
-  /** @type {Record<string, string>} */
-  const commits = {};
+  const commits: Record<string, string> = {};
   log.forEach(({ subject, tag, files }, i) => {
     for (const [file, contents] of Object.entries(files)) {
       const absolute = path.join(repo, file);
@@ -250,10 +243,8 @@ function fixtureRepo(t, log = COMMITS) {
 
 /**
  * Surfaces of the fixture repository's two releases, one module each.
- * @param {string} version
- * @param {Record<string, { kind: 'value' | 'type', decl: string }>} exports
  */
-function libSurface(version, exports) {
+function libSurface(version: string, exports: Record<string, { kind: 'value' | 'type'; decl: string }>): Surface {
   return {
     schema: 1,
     kind: 'surface',
@@ -286,10 +277,9 @@ function libSurfaces() {
 
 /**
  * A data root for the commands, with the given artifacts written canonically.
- * @param {import('node:test').TestContext} t
- * @param {Record<string, unknown>} artifacts  by path relative to the data root
+ * @param artifacts  by path relative to the data root
  */
-function dataRoot(t, artifacts = {}) {
+function dataRoot(t: TestContext, artifacts: Record<string, unknown> = {}) {
   const root = tempDir(t, 'public-exports-mapping-data-');
   for (const [file, value] of Object.entries(artifacts)) {
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true });
@@ -300,9 +290,8 @@ function dataRoot(t, artifacts = {}) {
 
 /**
  * Silences `console.log` for the rest of the test and returns what it printed.
- * @param {import('node:test').TestContext} t
  */
-function captureLog(t) {
+function captureLog(t: TestContext) {
   const log = t.mock.method(console, 'log', () => {});
   return () => log.mock.calls.map((call) => call.arguments.join(' ')).join('\n');
 }
@@ -383,7 +372,7 @@ test('fileMoves turns a deletion into a rename when its .ts or src/ twin was add
   });
   assert.deepEqual(counts, { renamed: 2, copied: 2, deleted: 1, twins: 3 });
   // a path outside src/ and addon/ (addon-test-support/) has no entry, even when it moved into src/
-  assert.equal(files['packages/-ember-data/addon-test-support/index.js'], undefined);
+  assert.equal((files as Record<string, string[]>)['packages/-ember-data/addon-test-support/index.js'], undefined);
 });
 
 test('twinsOf lists the .ts twin, the src/ twin of an addon/ file, and both', () => {
@@ -509,7 +498,7 @@ test('declaredExports reads .gts files around their <template> tags', () => {
 test('historyOf finds the commit that removed each declaration and what it added', (t) => {
   const { repo, commits } = fixtureRepo(t);
   const { surfaceA, surfaceB } = libSurfaces();
-  const short = (/** @type {string} */ subject) => commits[subject].slice(0, 10);
+  const short = (subject: string) => commits[subject].slice(0, 10);
 
   const history = historyOf('1.0.0', '1.1.0', { surfaceA, surfaceB, cwd: repo });
 
@@ -713,7 +702,7 @@ test('diffSurfaces writes the expected diff, and applyDiff rebuilds surface b fr
 
 test('applyDiff rebuilds surface b for the reverse pair and for a pair without changes', () => {
   const { surfaceA, surfaceB } = handWrittenPair();
-  const noMoves = (/** @type {string} */ from, /** @type {string} */ to) => ({
+  const noMoves = (from: string, to: string): History => ({
     schema: 1,
     kind: 'history',
     from,
@@ -749,10 +738,10 @@ test('applyDiff refuses a diff that does not fit the surface', () => {
 
   assert.throws(() => applyDiff(surfaceB, diff), /does not apply to surface 1\.1\.0/);
   const stale = structuredClone(diff);
-  stale.modules.removed.push('@acme/missing');
+  stale.modules.removed!.push('@acme/missing');
   assert.throws(() => applyDiff(surfaceA, stale), /cannot remove module @acme\/missing/);
   const doubled = structuredClone(diff);
-  doubled.exports['@acme/store'].added.Cache = { kind: 'type', decl: 'packages/store/src/cache.ts#Cache' };
+  doubled.exports['@acme/store'].added!.Cache = { kind: 'type', decl: 'packages/store/src/cache.ts#Cache' };
   assert.throws(() => applyDiff(surfaceA, doubled), /cannot add export Cache/);
 });
 
@@ -818,9 +807,9 @@ test('the diff command names the inputs it is missing', async (t) => {
 
   await assert.rejects(
     diffCommand.run(['1.0.0', '1.1.0'], { dataRoot: root, scratchRoot: root }),
-    (/** @type {Error} */ error) =>
-      error.message.includes('missing surfaces/1.1.0.json (`cli.mjs surface 1.1.0` writes it)') &&
-      error.message.includes('history/1.0.0-1.1.0.json (`cli.mjs history 1.0.0 1.1.0` writes it)') &&
+    (error: Error) =>
+      error.message.includes('missing surfaces/1.1.0.json (`cli.mts surface 1.1.0` writes it)') &&
+      error.message.includes('history/1.0.0-1.1.0.json (`cli.mts history 1.0.0 1.1.0` writes it)') &&
       !error.message.includes('surfaces/1.0.0.json')
   );
   assert.equal(existsSync(path.join(root, 'diffs')), false);

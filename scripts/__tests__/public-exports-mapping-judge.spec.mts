@@ -1,18 +1,20 @@
 /**
  * The judge, area E of the public exports mapping pipeline. Nothing here runs git or reaches the
- * network. The fixtures come from fixtures/public-exports-mapping/judge.mjs: `data/` is a
+ * network. The fixtures come from fixtures/public-exports-mapping/judge.mts: `data/` is a
  * contract-shaped data directory for three releases, and `git/` stands in for the repository:
  * `v<version>/` holds what `git show v<version>:<path>` prints, `log.json` the `git log -S`
  * answers, and `commits/` what `git show <commit>` prints. Claude is a fake Message Batches client
  * and Jev a fake `fetch` that answers in the shapes https://docs.typesafe.ai/api.md documents.
  */
+
+import type Anthropic from '@anthropic-ai/sdk';
 import assert from 'node:assert/strict';
 import { cpSync, existsSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { test } from 'node:test';
+import { test, type TestContext } from 'node:test';
 
-import { canonical } from '../public-exports-mapping/artifacts.mjs';
-import { run } from '../public-exports-mapping/commands/judge.mjs';
+import { canonical } from '../public-exports-mapping/artifacts.mts';
+import { run } from '../public-exports-mapping/commands/judge.mts';
 import {
   JEV_ENDPOINT,
   NO_CANDIDATES,
@@ -23,7 +25,9 @@ import {
   parseJevChoice,
   postJev,
   rankWithJev,
-} from '../public-exports-mapping/jev.mjs';
+  type Fetch,
+  type JevOptions,
+} from '../public-exports-mapping/jev.mts';
 import {
   InputError,
   JUDGE_MODEL,
@@ -50,10 +54,16 @@ import {
   shimFor,
   shimFromDiff,
   staleDecisions,
-} from '../public-exports-mapping/judge.mjs';
+  type BatchStatus,
+  type Bundle,
+  type Context,
+  type Diff,
+  type SurfaceDoc,
+  type TokenRef,
+} from '../public-exports-mapping/judge.mts';
 import { tempDir } from './-run-script.mjs';
-import { tree as JUDGE_TREE } from './fixtures/public-exports-mapping/judge.mjs';
-import { materialize } from './fixtures/public-exports-mapping/tree.mjs';
+import { tree as JUDGE_TREE } from './fixtures/public-exports-mapping/judge.mts';
+import { materialize } from './fixtures/public-exports-mapping/tree.mts';
 
 /** The fixtures, written to disk once for this file. */
 const FIXTURES = materialize(JUDGE_TREE, 'warp-drive-judge-fixtures-');
@@ -76,23 +86,19 @@ const RESIDUE = [
   PEEK_RECORDS,
 ];
 
-/** @param {string} rel */
-const fixture = (rel) => readFileSync(path.join(FIXTURES, rel), 'utf8');
+const fixture = (rel: string) => readFileSync(path.join(FIXTURES, rel), 'utf8');
 
 /**
  * A `git` that answers from the fixtures and records every call; anything else throws.
  */
 function fakeGit() {
   const log = JSON.parse(fixture('git/log.json'));
-  /** @type {string[][]} */
-  const calls = [];
-  /** @param {string} file @param {string} what */
-  const read = (file, what) => {
+  const calls: string[][] = [];
+  const read = (file: string, what: string) => {
     if (!existsSync(file)) throw new Error(`fatal: ${what} does not exist`);
     return readFileSync(file, 'utf8');
   };
-  /** @param {string[]} args */
-  const git = (args) => {
+  const git = (args: string[]) => {
     calls.push(args);
     const [command, ...rest] = args;
     if (command === 'show' && rest[0] === '--format=') {
@@ -117,16 +123,15 @@ function fixtureContext(git = fakeGit()) {
   return { inputs, ctx: buildContext({ ...inputs, git }), git };
 }
 
-/** @param {any} ctx @param {string} decl */
-function itemOf(ctx, decl) {
-  return ctx.residue.find((/** @type {any} */ item) => item.decl === decl) ?? assert.fail(`${decl} is not residue`);
+function itemOf(ctx: Context, decl: string) {
+  return ctx.residue.find((item) => item.decl === decl) ?? assert.fail(`${decl} is not residue`);
 }
 
 /**
  * A copy of the fixture data directory, used as the data root and the scratch root both, with an
  * output directory beside it.
  */
-function copyData(/** @type {any} */ t) {
+function copyData(t: TestContext) {
   const cwd = tempDir(t, 'warp-drive-judge-');
   const dataRoot = path.join(cwd, 'data');
   cpSync(DATA, dataRoot, { recursive: true });
@@ -140,17 +145,17 @@ function copyData(/** @type {any} */ t) {
 }
 
 /** Collects console output for one test. */
-function capture(/** @type {any} */ t) {
-  const out = { log: /** @type {string[]} */ ([]), error: /** @type {string[]} */ ([]) };
-  t.mock.method(console, 'log', (/** @type {unknown[]} */ ...args) => out.log.push(args.join(' ')));
-  t.mock.method(console, 'error', (/** @type {unknown[]} */ ...args) => out.error.push(args.join(' ')));
+function capture(t: TestContext) {
+  const out = { log: [] as string[], error: [] as string[] };
+  t.mock.method(console, 'log', (...args: unknown[]) => out.log.push(args.join(' ')));
+  t.mock.method(console, 'error', (...args: unknown[]) => out.error.push(args.join(' ')));
   return out;
 }
 
 const USAGE = { input_tokens: 1200, output_tokens: 300, cache_read_input_tokens: 0, cache_creation_input_tokens: 0 };
 
-/** A `succeeded` batch result whose message calls the tool with `input`. @param {unknown} input */
-function succeeded(input) {
+/** A `succeeded` batch result whose message calls the tool with `input`. */
+function succeeded(input: unknown) {
   return {
     type: 'succeeded',
     message: {
@@ -165,7 +170,7 @@ function succeeded(input) {
       ],
       usage: USAGE,
     },
-  };
+  } as Anthropic.Messages.MessageBatchSucceededResult;
 }
 
 /** A `succeeded` batch result whose message ends without calling the tool. */
@@ -173,24 +178,20 @@ function noToolCall() {
   return {
     type: 'succeeded',
     message: { stop_reason: 'end_turn', content: [{ type: 'text', text: 'LiveArray.' }], usage: USAGE },
-  };
+  } as Anthropic.Messages.MessageBatchSucceededResult;
 }
 
 /**
  * The part of the Anthropic client the judge uses. `respond(request, round)` gives one request's
  * `result`. A batch ends on its second status check, and results come back in reverse order,
  * since batches do not keep order.
- * @param {(request: any, round: number) => any} respond
  */
-function fakeClient(respond) {
-  /** @type {any[][]} */
-  const created = [];
-  /** @type {string[]} */
-  const retrieved = [];
-  /** @type {Map<string, { requests: any[], round: number, polls: number }>} */
-  const batches = new Map();
-  const status = (/** @type {string} */ id) => {
-    const batch = /** @type {{ requests: any[], polls: number }} */ (batches.get(id));
+function fakeClient(respond: (request: any, round: number) => any) {
+  const created: any[][] = [];
+  const retrieved: string[] = [];
+  const batches = new Map<string, { requests: any[]; round: number; polls: number }>();
+  const status = (id: string): BatchStatus => {
+    const batch = batches.get(id)!;
     const ended = batch.polls > 1;
     return {
       id,
@@ -201,26 +202,26 @@ function fakeClient(respond) {
   return {
     created,
     retrieved,
-    /** Registers a batch created earlier, for resuming. @param {string} id @param {any[]} requests */
-    seed(id, requests) {
+    /** Registers a batch created earlier, for resuming. */
+    seed(id: string, requests: any[]) {
       batches.set(id, { requests, round: 0, polls: 0 });
     },
     messages: {
       batches: {
-        async create(/** @type {{ requests: any[] }} */ { requests }) {
+        async create({ requests }: { requests: any[] }) {
           const id = `msgbatch_${created.length + 1}`;
           batches.set(id, { requests, round: created.length, polls: 0 });
           created.push(requests);
           return status(id);
         },
-        async retrieve(/** @type {string} */ id) {
+        async retrieve(id: string) {
           retrieved.push(id);
-          /** @type {any} */ (batches.get(id)).polls++;
+          batches.get(id)!.polls++;
           return status(id);
         },
-        async results(/** @type {string} */ id) {
-          const { requests, round } = /** @type {any} */ (batches.get(id));
-          const lines = requests.map((/** @type {any} */ r) => ({ custom_id: r.custom_id, result: respond(r, round) }));
+        async results(id: string) {
+          const { requests, round } = batches.get(id)!;
+          const lines = requests.map((r) => ({ custom_id: r.custom_id, result: respond(r, round) }));
           return (async function* () {
             yield* lines.reverse();
           })();
@@ -234,12 +235,12 @@ function fakeClient(respond) {
 // Residue
 
 test('chainDecl follows ids pair by pair and resumes when a later surface declares a dropped id again', () => {
-  const diffs = [
+  const diffs: Diff[] = [
     { from: 'a', to: 'b', declarations: { 'f.ts#x': null, 'f.ts#y': 'g.ts#y', 'f.ts#z': null, 'f.ts#w': null } },
     { from: 'b', to: 'c', declarations: { 'g.ts#y': 'h.ts#y' } },
     { from: 'c', to: 'd', declarations: { 'f.ts#x': 'k.ts#x', 'f.ts#z': null } },
   ];
-  const surfaces = {
+  const surfaces: Record<string, SurfaceDoc> = {
     c: {
       modules: {
         m: {
@@ -332,8 +333,7 @@ test('tokens of preferences.ignorePackages are never residue and never candidate
   assert.ok(!residueOf(inputs).some((item) => item.decl === rules));
   assert.ok(residueOf({ ...inputs, preferences: null }).some((item) => item.decl === rules));
 
-  /** @param {any} context */
-  const liveArrays = (context) =>
+  const liveArrays = (context: Context) =>
     candidatesFor(itemOf(context, IDENTIFIER_ARRAY), context)
       .filter((c) => c.export === 'LiveArray')
       .map((c) => c.module);
@@ -373,8 +373,7 @@ test('loadInputs derives a surface scratch lacks from the diffs, and needs every
 
 test('candidatesFor finds successors through history, by name and through file moves', () => {
   const { ctx } = fixtureContext();
-  /** @param {string} decl */
-  const candidates = (decl) =>
+  const candidates = (decl: string) =>
     candidatesFor(itemOf(ctx, decl), ctx).map((c) => `${c.module} ${c.export} [${c.via.join(',')}]`);
   assert.deepEqual(candidates(IDENTIFIER_ARRAY), [
     '@warp-drive/core/store/-private createLiveArray [history,file]',
@@ -408,22 +407,20 @@ test('name candidates: exact names before case-insensitive ones; an edit needs s
       },
     },
   });
-  /** @param {string} local */
-  const item = (local) => ({
+  const item = (local: string) => ({
     decl: `old/x.ts#${local}`,
     tokens: [
       {
         module: '@old/pkg',
         export: local,
-        kind: /** @type {const} */ ('value'),
+        kind: 'value' as const,
         decl: `old/x.ts#${local}`,
         package: '@old/pkg',
       },
     ],
     chain: { id: null, brokeAt: null },
   });
-  /** @param {string} local */
-  const found = (local) =>
+  const found = (local: string) =>
     candidatesFor(item(local), { toIndex, diffs: [] }).map((c) => `${c.export} ${c.via.join(',')}`);
   assert.deepEqual(found('fetchManager'), ['fetchManager name:exact']);
   assert.deepEqual(found('FETCHMANAGER'), ['FetchManager name:case', 'fetchManager name:case']);
@@ -433,7 +430,7 @@ test('name candidates: exact names before case-insensitive ones; an edit needs s
 
 test('a broad commit cannot flood a bundle: each source keeps at most its cap and counts the rest', () => {
   const added = Array.from({ length: 12 }, (_, i) => `new/many.ts#thing${String(i).padStart(2, '0')}`);
-  const exports = Object.fromEntries(added.map((decl) => [decl.split('#')[1], { kind: 'value', decl }]));
+  const exports = Object.fromEntries(added.map((decl) => [decl.split('#')[1], { kind: 'value' as const, decl }]));
   const ctx = {
     from: '1.0.0',
     to: '2.0.0',
@@ -457,7 +454,7 @@ test('a broad commit cannot flood a bundle: each source keeps at most its cap an
       {
         module: '@old/pkg',
         export: 'gone',
-        kind: /** @type {const} */ ('value'),
+        kind: 'value' as const,
         decl: 'old/x.ts#gone',
         package: '@old/pkg',
       },
@@ -493,8 +490,8 @@ test('declarationText: the declaring statements with their JSDoc, the @deprecate
     file: 'packages/adapter/src/error.js',
   });
   assert.equal(error.declaredName, 'AdapterError');
-  assert.match(error.text, /^\/\*\*\n {2}A base class for the errors an adapter raises\./);
-  assert.match(error.text, /\nfunction AdapterError\(errors, message = 'Adapter operation failed'\) \{\n/);
+  assert.match(error.text!, /^\/\*\*\n {2}A base class for the errors an adapter raises\./);
+  assert.match(error.text!, /\nfunction AdapterError\(errors, message = 'Adapter operation failed'\) \{\n/);
   const store = fixture('git/v1.0.0/packages/store/src/store-service.ts');
   assert.equal(
     declarationText(store, 'default', { file: 'packages/store/src/store-service.ts' }).declaredName,
@@ -506,8 +503,8 @@ test('declarationText caps a long statement at 120 lines and scans text it canno
   const long = `export const table = {\n${Array.from({ length: 200 }, (_, i) => `  key${i}: ${i},`).join('\n')}\n};\n`;
   const capped = declarationText(long, 'table', { file: 'table.ts' });
   assert.equal(capped.truncated, 82);
-  assert.equal(capped.text.split('\n').length, 121);
-  assert.equal(capped.text.split('\n').at(-1), '// … 82 more lines');
+  assert.equal(capped.text!.split('\n').length, 121);
+  assert.equal(capped.text!.split('\n').at(-1), '// … 82 more lines');
 
   const broken =
     'const = ;\n/** Doc.\n * @deprecated gone soon\n */\nexport function rescued(a: number) {\n  return a;\n}\nexport const other = 1;\n';
@@ -523,7 +520,7 @@ test('declarationText caps a long statement at 120 lines and scans text it canno
   const card = declarationText(gts, 'default', { file: 'card.gts' });
   assert.equal(card.declaredName, 'Card');
   assert.equal(card.scanned, true);
-  assert.match(card.text, /^\/\*\* A card\. \*\/\nexport default class Card/);
+  assert.match(card.text!, /^\/\*\* A card\. \*\/\nexport default class Card/);
 });
 
 // ---------------------------------------------------------------------------------------------
@@ -731,7 +728,7 @@ test('requestFor: claude-opus-5-5, the answer tool, auto tool_choice, the bundle
 test('renderBundle notes a declaration that came back, and hides git entirely in a blind bundle', () => {
   const { ctx } = fixtureContext();
   const bundle = evidenceFor(itemOf(ctx, PEEK_RECORDS), ctx);
-  const returned = { ...bundle, chain: { ...bundle.chain, returned: [{ left: '1.0.0-2.0.0', back: '3.0.0' }] } };
+  const returned = { ...bundle, chain: { ...bundle.chain!, returned: [{ left: '1.0.0-2.0.0', back: '3.0.0' }] } };
   assert.match(
     renderBundle(returned),
     /It was gone in 1\.0\.0 to 2\.0\.0 and came back in 3\.0\.0 under the same id\./
@@ -757,7 +754,7 @@ test('parseResult reads answers, refusals, missing tool calls and errors', () =>
       result: {
         type: 'succeeded',
         message: { stop_reason: 'refusal', stop_details: { category: 'cyber' }, content: [], usage: USAGE },
-      },
+      } as unknown as Anthropic.Messages.MessageBatchSucceededResult,
     }),
     { custom_id: 'b', error: 'refusal (cyber)', retryable: false, usage: USAGE }
   );
@@ -776,9 +773,12 @@ test('parseResult reads answers, refusals, missing tool calls and errors', () =>
       usage: USAGE,
     }
   );
-  const errored = (/** @type {string} */ type) => ({
+  const errored = (type: string) => ({
     custom_id: 'e',
-    result: { type: 'errored', error: { type: 'error', error: { type, message: 'nope' } } },
+    result: {
+      type: 'errored',
+      error: { type: 'error', error: { type, message: 'nope' } },
+    } as Anthropic.Messages.MessageBatchErroredResult,
   });
   assert.deepEqual(parseResult(errored('invalid_request_error')), {
     custom_id: 'e',
@@ -810,12 +810,9 @@ test('askClaude creates a batch, polls it, reads the results, and retries what h
               }
         )
   );
-  /** @type {number[]} */
-  const sleeps = [];
-  /** @type {any[]} */
-  const batches = [];
-  /** @type {string[]} */
-  const lines = [];
+  const sleeps: number[] = [];
+  const batches: Array<{ id: string; round: number; requests: number }> = [];
+  const lines: string[] = [];
   const answers = await askClaude(bundles, {
     client,
     pollIntervalMs: 5,
@@ -878,6 +875,7 @@ test('askClaude gives up after its retries, resumes a batch by id, and needs a c
   assert.equal(resumed.retrieved[0], 'msgbatch_earlier');
   assert.equal(again.choice, null);
 
+  // @ts-expect-error a missing client is what this checks
   await assert.rejects(askClaude(bundles, { client: null }), /askClaude needs a client/);
 });
 
@@ -887,10 +885,9 @@ test('askClaude gives up after its retries, resumes a batch by id, and needs a c
 test('decide writes confident answers and sends the rest to review', () => {
   const { ctx } = fixtureContext();
   const bundles = ctx.residue.map((item) => evidenceFor(item, ctx));
-  const errorsBundle = /** @type {any} */ (bundles.find((b) => b.decl === ERRORS_ARRAY_TO_HASH));
+  const errorsBundle = bundles.find((b) => b.decl === ERRORS_ARRAY_TO_HASH) as Bundle & { shim?: string };
   errorsBundle.shim = 'export function errorsArrayToHash(errors) {}';
-  /** @param {string} decl @param {object} fields */
-  const answer = (decl, fields) => ({ decl, id: customIdFor(decl), ...fields });
+  const answer = (decl: string, fields: object) => ({ decl, id: customIdFor(decl), ...fields });
   const { entries, review } = decide({
     residue: bundles,
     toSurface: ctx.toIndex,
@@ -1052,11 +1049,11 @@ test('calibrationBundles hides the truth among the candidates; agreementReport s
     assert.ok(bundle.candidates.some((c) => c.decl === truth[bundle.id].decl));
     assert.ok(bundle.candidates.every((c) => c.via === undefined));
   }
-  const adapter = /** @type {any} */ (bundles.find((b) => b.decl === 'packages/adapter/src/error.js#default'));
+  const adapter = bundles.find((b) => b.decl === 'packages/adapter/src/error.js#default')!;
   assert.deepEqual(truth[adapter.id].winner, { module: '@warp-drive/legacy/adapter/error', export: 'AdapterError' });
   // history starts where the symbols entry moved it, so what that commit added is there too
-  const store = /** @type {any} */ (bundles.find((b) => b.decl === 'packages/store/src/store-service.ts#default'));
-  assert.deepEqual(store.candidates.map((/** @type {any} */ c) => c.decl).sort(), [
+  const store = bundles.find((b) => b.decl === 'packages/store/src/store-service.ts#default')!;
+  assert.deepEqual(store.candidates.map((c) => c.decl).sort(), [
     'warp-drive-packages/core/src/peek.ts#peekRecord',
     'warp-drive-packages/core/src/store-service.ts#Store',
   ]);
@@ -1116,19 +1113,18 @@ test('calibrationBundles hides the truth among the candidates; agreementReport s
 
 const JEV_SECRET = 'tsk-test-0123456789';
 
-/** The declaration a Jev request is about, from the first line of its state. @param {any} body */
-const declOfState = (body) => /** @type {string} */ (/^# Declaration `([^`]+)`/.exec(body.state)?.[1]);
+/** The declaration a Jev request is about, from the first line of its state. */
+const declOfState = (body: any) => /^# Declaration `([^`]+)`/.exec(body.state)?.[1] as string;
 
 /**
  * Jev's endpoint as a `fetch`: `respond(body, n)` gives the n-th call's `{ status?, body, headers? }`,
  * or throws for a network failure. Every call is recorded with its parsed body.
- * @param {(body: any, n: number) => { status?: number, body: unknown, headers?: Record<string, string> }} respond
  */
-function fakeJev(respond) {
-  /** @type {Array<{ url: string, method: string, headers: Record<string, string>, body: any }>} */
-  const calls = [];
-  /** @type {import('../public-exports-mapping/jev.mjs').Fetch} */
-  const fetch = async (url, init) => {
+function fakeJev(
+  respond: (body: any, n: number) => { status?: number; body: unknown; headers?: Record<string, string> }
+) {
+  const calls: Array<{ url: string; method: string; headers: Record<string, string>; body: any }> = [];
+  const fetch: Fetch = async (url, init) => {
     const body = JSON.parse(init.body);
     calls.push({ url, method: init.method, headers: init.headers, body });
     const reply = respond(body, calls.length);
@@ -1140,11 +1136,13 @@ function fakeJev(respond) {
 
 /**
  * A successor answer as the docs show it: probability `p` on `option`, the rest spread evenly.
- * @param {any} body  the request
- * @param {string} option
- * @param {{ p?: number, confidence?: number }} [options]
+ * @param body  the request
  */
-function choiceAnswer(body, option, { p = 0.94, confidence = 0.9 } = {}) {
+function choiceAnswer(
+  body: any,
+  option: string,
+  { p = 0.94, confidence = 0.9 }: { p?: number; confidence?: number } = {}
+) {
   const names = Object.keys(body.questions.successor.criteria);
   const rest = (1 - p) / (names.length - 1);
   const probabilities = Object.fromEntries(names.map((n) => [n, n === option ? p : rest]));
@@ -1157,8 +1155,8 @@ function choiceAnswer(body, option, { p = 0.94, confidence = 0.9 } = {}) {
   };
 }
 
-/** Score answers for the questions of a ranking request, in order. @param {any} body @param {number[]} scores */
-function scoreAnswer(body, scores) {
+/** Score answers for the questions of a ranking request, in order. */
+function scoreAnswer(body: any, scores: number[]) {
   const answers = Object.fromEntries(
     Object.keys(body.questions).map((id, i) => [
       id,
@@ -1172,7 +1170,7 @@ test('jevRequestFor: the evidence as the state, one Choice over the candidate de
   const { ctx } = fixtureContext();
   const bundle = evidenceFor(itemOf(ctx, IDENTIFIER_ARRAY), ctx);
   assert.equal(renderBundle(bundle), `${renderEvidence(bundle)}\nCall ${TOOL_NAME} once with your answer.`);
-  const body = /** @type {any} */ (jevRequestFor(bundle));
+  const body = jevRequestFor(bundle)!;
   assert.deepEqual(Object.keys(body), ['model', 'state', 'questions']);
   assert.equal(body.model, 'jev-latest');
   assert.equal(body.state, renderEvidence(bundle).trimEnd());
@@ -1228,7 +1226,7 @@ test('parseJevChoice: the export of the chosen declaration, removed as null, a r
     [null, 1, 'Jev (jev-1.13.0) put 1.00 on removed.']
   );
 
-  const answer = (/** @type {object} */ fields) => ({ answers: { successor: { type: 'choice', ...fields } } });
+  const answer = (fields: object) => ({ answers: { successor: { type: 'choice', ...fields } } });
   assert.deepEqual(
     parseJevChoice(answer({ choice: 'LiveArray from @warp-drive/core/store/-private', confidence: 0.9 }), bundle),
     {
@@ -1254,10 +1252,8 @@ test('askJev posts one request per declaration with the key as a bearer token an
   const bundles = [IDENTIFIER_ARRAY, STORE_REQUEST_INPUT, PEEK_RECORDS].map((decl) =>
     evidenceFor(itemOf(ctx, decl), ctx)
   );
-  /** @type {number[]} */
-  const waits = [];
-  /** @type {string[]} */
-  const lines = [];
+  const waits: number[] = [];
+  const lines: string[] = [];
   const fetch = fakeJev((body, n) => {
     if (n === 1) return { status: 429, body: { error: { message: 'slow down' } }, headers: { 'retry-after': '2' } };
     if (n === 2) return { status: 529, body: 'overloaded' };
@@ -1316,7 +1312,7 @@ test('postJev gives up after its retries; a refused key stops the run and the me
     return true;
   });
   assert.equal(refused.calls.length, 1);
-  await assert.rejects(askJev([], /** @type {any} */ ({ apiKey: JEV_SECRET })), /askJev needs fetch and apiKey/);
+  await assert.rejects(askJev([], { apiKey: JEV_SECRET } as JevOptions), /askJev needs fetch and apiKey/);
 });
 
 test('rankWithJev scores every candidate, best first, and records a failure instead of throwing', async () => {
@@ -1326,7 +1322,7 @@ test('rankWithJev scores every candidate, best first, and records a failure inst
     STORE_REQUEST_INPUT,
     NORMALIZE_MODEL_NAME,
   ].map((decl) => evidenceFor(itemOf(ctx, decl), ctx));
-  const body = /** @type {any} */ (jevRankRequestFor(identifierArray));
+  const body = jevRankRequestFor(identifierArray)!;
   assert.equal(body.state, renderEvidence(identifierArray).trimEnd());
   assert.deepEqual(Object.keys(body.questions), ['candidate_1', 'candidate_2']);
   assert.deepEqual(body.questions.candidate_2, {
@@ -1399,7 +1395,7 @@ const ANSWERS = {
 };
 const DECL_BY_ID = Object.fromEntries(RESIDUE.map((decl) => [customIdFor(decl), decl]));
 const answering = () =>
-  fakeClient((request) => succeeded(ANSWERS[/** @type {keyof typeof ANSWERS} */ (DECL_BY_ID[request.custom_id])]));
+  fakeClient((request) => succeeded(ANSWERS[DECL_BY_ID[request.custom_id] as keyof typeof ANSWERS]));
 
 test('judge --dry-run writes the bundles and request bodies and prints the summary', async (t) => {
   const { cwd, dataRoot, scratchRoot, out, decisions } = copyData(t);
@@ -1439,7 +1435,7 @@ test('judge --dry-run writes the bundles and request bodies and prints the summa
 
   const bundles = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'bundles.json'), 'utf8'));
   assert.deepEqual(
-    bundles.map((/** @type {any} */ b) => b.decl),
+    bundles.map((b: any) => b.decl),
     RESIDUE
   );
   const { requests } = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'requests.json'), 'utf8'));
@@ -1509,7 +1505,7 @@ test('judge asks Claude, writes decisions/<from>.json, and lists what needs revi
   ]);
   const review = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'judge-review.json'), 'utf8'));
   assert.deepEqual(
-    review.map((/** @type {any} */ r) => [r.decl, r.why, r.removedIn ?? null]),
+    review.map((r: any) => [r.decl, r.why, r.removedIn ?? null]),
     [
       [STORE_REQUEST_INPUT, ['below-threshold'], '#9500'],
       [PEEK_RECORDS, ['choice-not-in-to'], null],
@@ -1584,8 +1580,7 @@ test('judge --check passes valid decisions and fails stale or malformed ones', a
   assert.equal(await run(['--check'], context), 0);
   assert.deepEqual(output.log, ['judge --check: 1 decision files, 0 problems']);
 
-  /** @param {object} fields */
-  const entry = (fields) => ({
+  const entry = (fields: object) => ({
     choice: null,
     confidence: 0.9,
     reason: 'Checked.',
@@ -1667,8 +1662,8 @@ const JEV_PICKS = {
 const jevAnswering = () =>
   fakeJev((body) => {
     if (!body.questions.successor) return scoreAnswer(body, [1.3]);
-    const [option, confidence] = JEV_PICKS[/** @type {keyof typeof JEV_PICKS} */ (declOfState(body))];
-    return choiceAnswer(body, /** @type {string} */ (option), { confidence: /** @type {number} */ (confidence) });
+    const [option, confidence] = JEV_PICKS[declOfState(body) as keyof typeof JEV_PICKS];
+    return choiceAnswer(body, option as string, { confidence: confidence as number });
   });
 
 test('judge --judge jev --dry-run writes the Jev request bodies; a live run needs TYPESAFE_API_KEY', async (t) => {
@@ -1687,7 +1682,7 @@ test('judge --judge jev --dry-run writes the Jev request bodies; a live run need
   ]);
   const doc = JSON.parse(readFileSync(path.join(out, '1.0.0-3.0.0', 'requests.jev.json'), 'utf8'));
   assert.deepEqual(
-    { ...doc, requests: doc.requests.map((/** @type {any} */ r) => r.decl) },
+    { ...doc, requests: doc.requests.map((r: any) => r.decl) },
     {
       method: 'POST',
       endpoint: JEV_ENDPOINT,
@@ -1739,7 +1734,7 @@ test('judge --judge jev writes decisions.jev.json beside the committed decisions
     { schema: 1, kind: 'decisions', from: '1.0.0', to: '3.0.0', entries: undefined }
   );
   assert.deepEqual(
-    written.entries.map((/** @type {any} */ e) => [e.decl, e.choice, e.confidence, e.judge, e.removedIn ?? null]),
+    written.entries.map((e: any) => [e.decl, e.choice, e.confidence, e.judge, e.removedIn ?? null]),
     [
       [ERRORS_ARRAY_TO_HASH, null, 0.95, 'jev', '#8550'],
       [FETCH_MANAGER, { module: '@warp-drive/legacy/compat/-private', export: 'FetchManager' }, 0.83, 'jev', null],
@@ -1760,7 +1755,7 @@ test('judge --judge jev writes decisions.jev.json beside the committed decisions
   );
   const review = JSON.parse(readFileSync(path.join(dir, 'judge-review.jev.json'), 'utf8'));
   assert.deepEqual(
-    review.map((/** @type {any} */ r) => [r.decl, r.why, r.error ?? null, r.scores ?? null]),
+    review.map((r: any) => [r.decl, r.why, r.error ?? null, r.scores ?? null]),
     [
       [STORE_REQUEST_INPUT, ['error'], NO_CANDIDATES, null],
       [
@@ -1822,7 +1817,7 @@ test('the judge preferences.json names writes decisions/<from>.json; an unknown 
   assert.equal(await run(['--from', '1.0.0', '--judge', 'jev', '--out', out], context), 0);
   const doc = JSON.parse(readFileSync(decisions, 'utf8'));
   assert.deepEqual(
-    doc.entries.map((/** @type {any} */ e) => [e.decl, e.judge]),
+    doc.entries.map((e: any) => [e.decl, e.judge]),
     [ERRORS_ARRAY_TO_HASH, FETCH_MANAGER, IDENTIFIER_ARRAY, NORMALIZE_MODEL_NAME].map((decl) => [decl, 'jev'])
   );
   assert.ok(existsSync(path.join(out, '1.0.0-3.0.0', 'judge-review.json')));
@@ -1937,7 +1932,7 @@ test('judge --import records the answers of the project thread through the same 
   ]);
   const review = JSON.parse(readFileSync(path.join(dir, 'judge-review.thread.json'), 'utf8'));
   assert.deepEqual(
-    review.map((/** @type {any} */ r) => [r.decl, r.why]),
+    review.map((r: any) => [r.decl, r.why]),
     [
       [IDENTIFIER_ARRAY, ['below-threshold']],
       [NORMALIZE_MODEL_NAME, ['error']],
@@ -1974,8 +1969,13 @@ test('judge --import records the answers of the project thread through the same 
 test('judge --compare prints agreement, then the disagreements and low-confidence entries for a person', async (t) => {
   const { cwd, dataRoot, scratchRoot } = copyData(t);
   const output = capture(t);
-  /** @param {string} decl @param {any} choice @param {number} confidence @param {string} judge */
-  const entry = (decl, choice, confidence, judge) => ({ decl, choice, confidence, reason: `${judge} says so.`, judge });
+  const entry = (decl: string, choice: TokenRef | null, confidence: number, judge: string) => ({
+    decl,
+    choice,
+    confidence,
+    reason: `${judge} says so.`,
+    judge,
+  });
   const claude = 'claude-opus-5-5';
   writeFileSync(
     path.join(cwd, 'a.json'),
@@ -2051,7 +2051,7 @@ test('judge: usage errors and missing inputs throw', async (t) => {
   await assert.rejects(run(['--bogus'], context), /^Error: judge: Unknown option '--bogus'/);
   await assert.rejects(
     run(['--dry-run'], context),
-    /judge: --from is required\nusage: cli\.mjs judge --from <version>/
+    /judge: --from is required\nusage: cli\.mts judge --from <version>/
   );
   await assert.rejects(
     run(['--from', '1.0.0', '--threshold', '1.5'], context),
@@ -2082,5 +2082,5 @@ test('judge: usage errors and missing inputs throw', async (t) => {
   await assert.rejects(run(['--from', '1.0.0', '--out', out], context), /ANTHROPIC_API_KEY is not set/);
   output.log.length = 0;
   assert.equal(await run(['--help'], context), 0);
-  assert.match(output.log[0], /^usage: cli\.mjs judge --from <version>/);
+  assert.match(output.log[0], /^usage: cli\.mts judge --from <version>/);
 });

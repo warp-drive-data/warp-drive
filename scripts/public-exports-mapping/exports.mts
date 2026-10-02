@@ -14,56 +14,77 @@
 import { readFileSync } from 'node:fs';
 import { parseSync } from 'oxc-parser';
 
+export type ExportKind = 'value' | 'type';
+
 /**
- * @typedef {'value' | 'type'} ExportKind
- *
- * @typedef {object} LocalExport A binding declared in this file: `export const a`, `export { a as b }`,
- *   `export default class A {}`. A default export's `local` is `default` whatever its local name.
- * @property {'local'} form
- * @property {string} name the exported name, `default` included
- * @property {ExportKind} kind
- * @property {string} local the local binding name
- * @property {boolean} deprecated the declaring statement (or the export specifier) carries `@deprecated`
- *
- * @typedef {object} ReExport A binding of another module: `export { a as b } from './x'`,
- *   `import { a } from './x'; export { a }`, `import a from './x'; export default a`.
- * @property {'reexport'} form
- * @property {string} name
- * @property {ExportKind} kind `type` when this file re-exports it type-only
- * @property {string} from the module specifier as written
- * @property {string} imported the name imported from `from`, `default` included
- * @property {boolean} deprecated the export specifier's own JSDoc carries `@deprecated`
- *
- * @typedef {object} NamespaceExport A namespace object: `export * as ns from './x'`,
- *   `import * as ns from './x'; export { ns }`.
- * @property {'namespace'} form
- * @property {string} name
- * @property {ExportKind} kind
- * @property {string} from
- * @property {boolean} deprecated
- *
- * @typedef {object} StarExport `export * from './x'`, `export type * from './x'`.
- * @property {'star'} form
- * @property {ExportKind} kind
- * @property {string} from
- *
- * @typedef {LocalExport | ReExport | NamespaceExport | StarExport} ExportRecord
- *
- * @typedef {object} FileExports
- * @property {ExportRecord[]} exports in source order
- * @property {string | null} forward the specifier when the file's only statements are `export *` (and
- *   `export type *`) of that one specifier
- * @property {string[]} errors parse errors, empty when the file parsed cleanly
+ * A binding declared in this file: `export const a`, `export { a as b }`,
+ * `export default class A {}`. A default export's `local` is `default` whatever its local name.
  */
+export interface LocalExport {
+  form: 'local';
+  /** the exported name, `default` included */
+  name: string;
+  kind: ExportKind;
+  /** the local binding name */
+  local: string;
+  /** the declaring statement (or the export specifier) carries `@deprecated` */
+  deprecated: boolean;
+}
+
+/**
+ * A binding of another module: `export { a as b } from './x'`,
+ * `import { a } from './x'; export { a }`, `import a from './x'; export default a`.
+ */
+export interface ReExport {
+  form: 'reexport';
+  name: string;
+  /** `type` when this file re-exports it type-only */
+  kind: ExportKind;
+  /** the module specifier as written */
+  from: string;
+  /** the name imported from `from`, `default` included */
+  imported: string;
+  /** the export specifier's own JSDoc carries `@deprecated` */
+  deprecated: boolean;
+}
+
+/**
+ * A namespace object: `export * as ns from './x'`,
+ * `import * as ns from './x'; export { ns }`.
+ */
+export interface NamespaceExport {
+  form: 'namespace';
+  name: string;
+  kind: ExportKind;
+  from: string;
+  deprecated: boolean;
+}
+
+/** `export * from './x'`, `export type * from './x'`. */
+export interface StarExport {
+  form: 'star';
+  kind: ExportKind;
+  from: string;
+}
+
+export type ExportRecord = LocalExport | ReExport | NamespaceExport | StarExport;
+
+export interface FileExports {
+  /** in source order */
+  exports: ExportRecord[];
+  /**
+   * the specifier when the file's only statements are `export *` (and `export type *`) of that one
+   * specifier
+   */
+  forward: string | null;
+  /** parse errors, empty when the file parsed cleanly */
+  errors: string[];
+}
 
 /** Files that may carry `<template>` tags. */
 const TEMPLATE_TAG_FILE = /\.g[jt]s$/;
 
-/**
- * @param {string} file
- * @returns {'js' | 'jsx' | 'ts' | 'tsx' | 'dts'}
- */
-export function langFor(file) {
+export function langFor(file: string): 'js' | 'jsx' | 'ts' | 'tsx' | 'dts' {
   if (file.endsWith('.d.ts')) return 'dts';
   if (/\.(c|m)?ts$/.test(file) || file.endsWith('.gts')) return 'ts';
   if (file.endsWith('.tsx')) return 'tsx';
@@ -72,10 +93,9 @@ export function langFor(file) {
 }
 
 /**
- * @param {string} file absolute path
- * @returns {FileExports}
+ * @param file absolute path
  */
-export function exportsOfFile(file) {
+export function exportsOfFile(file: string): FileExports {
   const source = readFileSync(file, 'utf8');
   return file.endsWith('.json') ? exportsOfJson(source) : exportsOfSource(file, source);
 }
@@ -83,19 +103,17 @@ export function exportsOfFile(file) {
 /**
  * A JSON module as bundlers expose it: the parsed value as `default`, and each top-level key
  * that is a valid identifier as a named export (`import { version } from './package.json'`).
- * @param {string} source
- * @returns {FileExports}
  */
-export function exportsOfJson(source) {
-  /** @type {unknown} */
-  let value;
+export function exportsOfJson(source: string): FileExports {
+  let value: unknown;
   try {
     value = JSON.parse(source);
   } catch (error) {
     return { exports: [], forward: null, errors: [String(error)] };
   }
-  /** @type {ExportRecord[]} */
-  const exports = [{ form: 'local', name: 'default', kind: 'value', local: 'default', deprecated: false }];
+  const exports: ExportRecord[] = [
+    { form: 'local', name: 'default', kind: 'value', local: 'default', deprecated: false },
+  ];
   if (value && typeof value === 'object' && !Array.isArray(value)) {
     for (const key of Object.keys(value)) {
       if (/^[A-Za-z_$][\w$]*$/.test(key)) {
@@ -107,11 +125,9 @@ export function exportsOfJson(source) {
 }
 
 /**
- * @param {string} file the file name; its extension picks the language
- * @param {string} source
- * @returns {FileExports}
+ * @param file the file name; its extension picks the language
  */
-export function exportsOfSource(file, source) {
+export function exportsOfSource(file: string, source: string): FileExports {
   const text = TEMPLATE_TAG_FILE.test(file) ? blankTemplateTags(source) : source;
   const lang = langFor(file);
   const result = parseSync(file, text, { lang, sourceType: 'module' });
@@ -119,13 +135,12 @@ export function exportsOfSource(file, source) {
   const errors = result.errors.map((e) => e.message);
   const typesOnly = lang === 'dts';
 
-  /** @type {Map<number, any>} top-level statements by start offset */
-  const statements = new Map();
+  /** top-level statements by start offset */
+  const statements: Map<number, any> = new Map();
   for (const stmt of program.body) statements.set(stmt.start, stmt);
   const jsdoc = deprecationReader(comments, program.body);
 
-  /** @type {Map<string, { from: string, imported: string, isType: boolean }>} */
-  const imports = new Map();
+  const imports: Map<string, { from: string; imported: string; isType: boolean }> = new Map();
   for (const entry of module.staticImports) {
     for (const binding of entry.entries) {
       imports.set(binding.localName.value, {
@@ -136,8 +151,8 @@ export function exportsOfSource(file, source) {
     }
   }
 
-  /** @type {Map<number, { spec: any, stmt: any }>} export specifiers by the start of their exported name */
-  const specifiers = new Map();
+  /** export specifiers by the start of their exported name */
+  const specifiers: Map<number, { spec: any; stmt: any }> = new Map();
   for (const stmt of program.body) {
     if (stmt.type !== 'ExportNamedDeclaration' || stmt.declaration) continue;
     for (const spec of stmt.specifiers) specifiers.set(spec.exported.start, { spec, stmt });
@@ -145,10 +160,8 @@ export function exportsOfSource(file, source) {
 
   const locals = localDeclarations(program.body, typesOnly);
 
-  /** @type {ExportRecord[]} */
-  const exports = [];
-  /** @param {boolean} isType */
-  const kindOf = (isType) => (typesOnly || isType ? 'type' : 'value');
+  const exports: ExportRecord[] = [];
+  const kindOf = (isType: boolean): ExportKind => (typesOnly || isType ? 'type' : 'value');
 
   for (const group of module.staticExports) {
     const stmt = statements.get(group.start);
@@ -159,7 +172,7 @@ export function exportsOfSource(file, source) {
         exports.push({
           form: 'star',
           kind: kindOf(entry.isType || stmt?.exportKind === 'type'),
-          from: /** @type {string} */ (from),
+          from: from as string,
         });
         continue;
       }
@@ -167,17 +180,16 @@ export function exportsOfSource(file, source) {
       if (entry.importName.kind === 'All') {
         exports.push({
           form: 'namespace',
-          name: /** @type {string} */ (entry.exportName.name),
+          name: entry.exportName.name as string,
           kind: kindOf(entry.isType || stmt?.exportKind === 'type'),
-          from: /** @type {string} */ (from),
+          from: from as string,
           deprecated: jsdoc.statement(stmt),
         });
         continue;
       }
 
-      const name = entry.exportName.kind === 'Default' ? 'default' : /** @type {string} */ (entry.exportName.name);
-      const found =
-        entry.exportName.kind === 'Name' ? specifiers.get(/** @type {number} */ (entry.exportName.start)) : undefined;
+      const name = entry.exportName.kind === 'Default' ? 'default' : (entry.exportName.name as string);
+      const found = entry.exportName.kind === 'Name' ? specifiers.get(entry.exportName.start as number) : undefined;
       const specIsType = found ? found.stmt.exportKind === 'type' || found.spec.exportKind === 'type' : false;
       const specDeprecated = found ? jsdoc.specifier(found.spec, found.stmt) : false;
 
@@ -263,15 +275,13 @@ export function exportsOfSource(file, source) {
   return { exports, forward: forwardOf(program.body), errors };
 }
 
-/**
- * @param {string} name
- * @param {{ from: string, imported: string }} binding
- * @param {boolean} isType
- * @param {boolean} deprecated
- * @param {(isType: boolean) => ExportKind} kindOf
- * @returns {ReExport | NamespaceExport}
- */
-function bindingExport(name, binding, isType, deprecated, kindOf) {
+function bindingExport(
+  name: string,
+  binding: { from: string; imported: string },
+  isType: boolean,
+  deprecated: boolean,
+  kindOf: (isType: boolean) => ExportKind
+): ReExport | NamespaceExport {
   if (binding.imported === '*') {
     return { form: 'namespace', name, kind: kindOf(isType), from: binding.from, deprecated };
   }
@@ -279,22 +289,19 @@ function bindingExport(name, binding, isType, deprecated, kindOf) {
 }
 
 /**
- * @param {{ kind: string, name: string | null }} importName
- * @returns {string} `default`, `*` for a namespace, else the name
+ * @returns `default`, `*` for a namespace, else the name
  */
-function importedName(importName) {
+function importedName(importName: { kind: string; name: string | null }): string {
   if (importName.kind === 'Default') return 'default';
   if (importName.kind === 'NamespaceObject' || importName.kind === 'All') return '*';
-  return /** @type {string} */ (importName.name);
+  return importName.name as string;
 }
 
 /**
  * `forward` per the contract: every statement is `export *` / `export type *` of one specifier.
- * @param {any[]} body
- * @returns {string | null}
  */
-function forwardOf(body) {
-  let specifier = null;
+function forwardOf(body: any[]): string | null {
+  let specifier: string | null = null;
   let count = 0;
   for (const stmt of body) {
     if (stmt.type === 'EmptyStatement') continue;
@@ -308,19 +315,10 @@ function forwardOf(body) {
 
 /**
  * Top-level bindings declared in this file, with the statements that declare them.
- * @param {any[]} body
- * @param {boolean} typesOnly
- * @returns {Map<string, { kind: ExportKind, statements: any[] }>}
  */
-function localDeclarations(body, typesOnly) {
-  /** @type {Map<string, { kind: ExportKind, statements: any[] }>} */
-  const locals = new Map();
-  /**
-   * @param {string} name
-   * @param {ExportKind} kind
-   * @param {any} stmt
-   */
-  const add = (name, kind, stmt) => {
+function localDeclarations(body: any[], typesOnly: boolean): Map<string, { kind: ExportKind; statements: any[] }> {
+  const locals: Map<string, { kind: ExportKind; statements: any[] }> = new Map();
+  const add = (name: string, kind: ExportKind, stmt: any) => {
     const known = locals.get(name);
     if (!known) locals.set(name, { kind, statements: [stmt] });
     else {
@@ -341,11 +339,10 @@ function localDeclarations(body, typesOnly) {
 }
 
 /**
- * @param {any} node a declaration node
- * @param {boolean} typesOnly
- * @returns {ExportKind | null} null when the node declares nothing
+ * @param node a declaration node
+ * @returns null when the node declares nothing
  */
-function declarationKind(node, typesOnly) {
+function declarationKind(node: any, typesOnly: boolean): ExportKind | null {
   switch (node.type) {
     case 'TSInterfaceDeclaration':
     case 'TSTypeAliasDeclaration':
@@ -373,14 +370,13 @@ function declarationKind(node, typesOnly) {
 
 /**
  * A namespace that only holds types emits no runtime object.
- * @param {any} node a TSModuleDeclaration
- * @returns {boolean}
+ * @param node a TSModuleDeclaration
  */
-function isInstantiated(node) {
+function isInstantiated(node: any): boolean {
   const body = node.body;
   if (!body) return false;
   if (body.type === 'TSModuleDeclaration') return isInstantiated(body);
-  return body.body.some((/** @type {any} */ stmt) => {
+  return body.body.some((stmt: any) => {
     const inner = stmt.type === 'ExportNamedDeclaration' && stmt.declaration ? stmt.declaration : stmt;
     if (inner.type === 'TSInterfaceDeclaration' || inner.type === 'TSTypeAliasDeclaration') return false;
     if (inner.type === 'TSModuleDeclaration') return !inner.declare && isInstantiated(inner);
@@ -390,33 +386,26 @@ function isInstantiated(node) {
   });
 }
 
-/**
- * @param {any} node
- * @returns {string[]}
- */
-function declaredNames(node) {
+function declaredNames(node: any): string[] {
   if (node.type === 'VariableDeclaration') {
-    return node.declarations.flatMap((/** @type {any} */ d) => patternNames(d.id));
+    return node.declarations.flatMap((d: any) => patternNames(d.id));
   }
   if (node.type === 'TSModuleDeclaration') return node.id?.type === 'Identifier' ? [node.id.name] : [];
   return node.id?.name ? [node.id.name] : [];
 }
 
 /**
- * @param {any} pattern a binding pattern
- * @returns {string[]}
+ * @param pattern a binding pattern
  */
-function patternNames(pattern) {
+function patternNames(pattern: any): string[] {
   if (!pattern) return [];
   switch (pattern.type) {
     case 'Identifier':
       return [pattern.name];
     case 'ObjectPattern':
-      return pattern.properties.flatMap((/** @type {any} */ p) =>
-        patternNames(p.type === 'RestElement' ? p.argument : p.value)
-      );
+      return pattern.properties.flatMap((p: any) => patternNames(p.type === 'RestElement' ? p.argument : p.value));
     case 'ArrayPattern':
-      return pattern.elements.flatMap((/** @type {any} */ e) => patternNames(e));
+      return pattern.elements.flatMap((e: any) => patternNames(e));
     case 'RestElement':
       return patternNames(pattern.argument);
     case 'AssignmentPattern':
@@ -429,23 +418,17 @@ function patternNames(pattern) {
 /**
  * Reads `@deprecated` from the JSDoc blocks that lead a statement or an export specifier.
  * Every `/** ... *\/` block between the previous sibling and the node counts, as for TypeScript.
- * @param {{ type: string, value: string, start: number, end: number }[]} comments sorted by start
- * @param {any[]} body
+ * @param comments sorted by start
  */
-function deprecationReader(comments, body) {
-  /** @type {Map<any, number>} */
-  const previousEnd = new Map();
+function deprecationReader(comments: { type: string; value: string; start: number; end: number }[], body: any[]) {
+  const previousEnd: Map<any, number> = new Map();
   let end = 0;
   for (const stmt of body) {
     previousEnd.set(stmt, end);
     end = stmt.end;
   }
 
-  /**
-   * @param {number} floor
-   * @param {number} start
-   */
-  const deprecatedBetween = (floor, start) => {
+  const deprecatedBetween = (floor: number, start: number) => {
     // binary search for the first comment that starts at or after `floor`
     let lo = 0;
     let hi = comments.length;
@@ -462,16 +445,16 @@ function deprecationReader(comments, body) {
   };
 
   return {
-    /** @param {any} stmt a top-level statement */
-    statement(stmt) {
+    /** @param stmt a top-level statement */
+    statement(stmt: any) {
       if (!stmt || !previousEnd.has(stmt)) return false;
-      return deprecatedBetween(/** @type {number} */ (previousEnd.get(stmt)), stmt.start);
+      return deprecatedBetween(previousEnd.get(stmt) as number, stmt.start);
     },
     /**
-     * @param {any} spec an ExportSpecifier
-     * @param {any} stmt its ExportNamedDeclaration
+     * @param spec an ExportSpecifier
+     * @param stmt its ExportNamedDeclaration
      */
-    specifier(spec, stmt) {
+    specifier(spec: any, stmt: any) {
       const index = stmt.specifiers.indexOf(spec);
       const floor = index > 0 ? stmt.specifiers[index - 1].end : stmt.start;
       return deprecatedBetween(floor, spec.start);
@@ -486,13 +469,10 @@ function deprecationReader(comments, body) {
  * `0` where an expression is expected, `0;` in a class body or a block, and
  * `export default 0;` for a template-only component at the top level, which `content-tag`
  * turns into the module's default export.
- * @param {string} source
- * @returns {string}
  */
-export function blankTemplateTags(source) {
+export function blankTemplateTags(source: string): string {
   const out = source.split('');
-  /** @type {('{' | '(' | '[' | '${')[]} */
-  const stack = [];
+  const stack: ('{' | '(' | '[' | '${')[] = [];
   let lastSignificant = '';
   let lastWord = '';
   let i = 0;
@@ -532,8 +512,7 @@ export function blankTemplateTags(source) {
     'throw',
   ]);
 
-  /** @param {number} from */
-  const skipString = (from) => {
+  const skipString = (from: number) => {
     const quote = source[from];
     let j = from + 1;
     while (j < n && source[j] !== quote) {

@@ -1,5 +1,5 @@
 /**
- * Fixture packages for the audit tests (published.mjs, audit.mjs and the `audit` command):
+ * Fixture packages for the audit tests (published.mts, audit.mts and the `audit` command):
  * - `kit/package/` is an exports-map package whose build output lives in `lib/`. `kit.tar.gz` beside
  *   this module is built from it with
  *   `tar --format=pax --pax-option=delete=atime,delete=ctime --sort=name --owner=0 --group=0
@@ -8,9 +8,9 @@
  *   `.tgz` because the repository ignores `dist` and `*.tgz`;
  * - `addon/package/` is a v1 addon, read as an unpacked directory.
  */
+import type { Tree } from './tree.mts';
 
-/** @type {import('./tree.mjs').Tree} */
-export const tree = {
+export const tree: Tree = {
   // a v1 addon, as `npm pack` unpacks it
   'addon/package/addon-test-support/index.js': 'export function setupTest() {}\n',
   'addon/package/addon/-private/index.ts': `export interface Options {

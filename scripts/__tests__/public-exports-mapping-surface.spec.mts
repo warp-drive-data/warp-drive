@@ -1,36 +1,46 @@
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync, realpathSync, symlinkSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { describe, test } from 'node:test';
+import { describe, test, type TestContext } from 'node:test';
 
-import { canonical, REPO_ROOT, writeArtifact } from '../public-exports-mapping/artifacts.mjs';
-import { CONTRACT_COMMANDS, listCommands, main, NOT_IMPLEMENTED, runSteps } from '../public-exports-mapping/cli.mjs';
-import { run as release } from '../public-exports-mapping/commands/release.mjs';
-import { run as surfaceCommand } from '../public-exports-mapping/commands/surface.mjs';
-import { blankTemplateTags, exportsOfSource } from '../public-exports-mapping/exports.mjs';
-import { createResolver } from '../public-exports-mapping/resolver.mjs';
-import { bestExportsKey, discoverWorkspace, globToRegExp, surfaceOf } from '../public-exports-mapping/surface.mjs';
-import { releaseTreeDir, tagOf } from '../public-exports-mapping/worktrees.mjs';
+import { canonical, REPO_ROOT, writeArtifact } from '../public-exports-mapping/artifacts.mts';
+import {
+  CONTRACT_COMMANDS,
+  listCommands,
+  main,
+  NOT_IMPLEMENTED,
+  runSteps,
+  type Context,
+} from '../public-exports-mapping/cli.mts';
+import { run as release } from '../public-exports-mapping/commands/release.mts';
+import { run as surfaceCommand } from '../public-exports-mapping/commands/surface.mts';
+import { blankTemplateTags, exportsOfSource, type ExportRecord } from '../public-exports-mapping/exports.mts';
+import { createResolver } from '../public-exports-mapping/resolver.mts';
+import {
+  bestExportsKey,
+  discoverWorkspace,
+  globToRegExp,
+  surfaceOf,
+  type Surface,
+} from '../public-exports-mapping/surface.mts';
+import { releaseTreeDir, tagOf } from '../public-exports-mapping/worktrees.mts';
 import { tempDir } from './-run-script.mjs';
-import { tree as SURFACE_TREE } from './fixtures/public-exports-mapping/surface.mjs';
-import { materialize, writeTree } from './fixtures/public-exports-mapping/tree.mjs';
+import { tree as SURFACE_TREE } from './fixtures/public-exports-mapping/surface.mts';
+import { materialize, writeTree } from './fixtures/public-exports-mapping/tree.mts';
 
 /** The fixture trees, written to disk once for this file. */
 const FIXTURES = materialize(SURFACE_TREE, 'warp-drive-surface-fixtures-');
 const FIXTURE_COMMANDS = path.join(FIXTURES, 'commands');
 
-/** @type {Map<string, { surface: any, diagnostics: { code: string, message: string }[] }>} */
-const computed = new Map();
+const computed: Map<string, { surface: Surface; diagnostics: { code: string; message: string }[] }> = new Map();
 
 /**
  * The surface of one fixture tree (computed once) and the diagnostics it reported.
- * @param {'rollup' | 'vite' | 'tsdown'} era
  */
-function fixture(era) {
+function fixture(era: 'rollup' | 'vite' | 'tsdown') {
   let found = computed.get(era);
   if (!found) {
-    /** @type {{ code: string, message: string }[]} */
-    const diagnostics = [];
+    const diagnostics: { code: string; message: string }[] = [];
     const surface = surfaceOf(path.join(FIXTURES, era), { version: '0.0.0', tag: 'v0.0.0', diagnostics });
     found = { surface, diagnostics };
     computed.set(era, found);
@@ -40,13 +50,11 @@ function fixture(era) {
 
 /**
  * Collects what the code under test prints, for the rest of the test.
- * @param {import('node:test').TestContext} t
  */
-function captureConsole(t) {
-  /** @type {{ log: string[], error: string[] }} */
-  const out = { log: [], error: [] };
-  t.mock.method(console, 'log', (/** @type {unknown[]} */ ...args) => out.log.push(args.join(' ')));
-  t.mock.method(console, 'error', (/** @type {unknown[]} */ ...args) => out.error.push(args.join(' ')));
+function captureConsole(t: TestContext) {
+  const out: { log: string[]; error: string[] } = { log: [], error: [] };
+  t.mock.method(console, 'log', (...args: unknown[]) => out.log.push(args.join(' ')));
+  t.mock.method(console, 'error', (...args: unknown[]) => out.error.push(args.join(' ')));
   return out;
 }
 
@@ -285,9 +293,8 @@ describe('tsdown era: entryPoints, exports precedence, forward', () => {
 describe('resolver', () => {
   /**
    * A workspace with a decoy copy of @t/b in node_modules.
-   * @param {import('node:test').TestContext} t
    */
-  function workspace(t) {
+  function workspace(t: TestContext) {
     const root = realpathSync(tempDir(t));
     writeTree(root, {
       'packages/a/package.json': {
@@ -354,8 +361,7 @@ describe('resolver', () => {
 
   test('a chain that leaves the tree ends in an external: declaration', (t) => {
     const root = workspace(t);
-    /** @type {{ code: string, message: string }[]} */
-    const diagnostics = [];
+    const diagnostics: { code: string; message: string }[] = [];
     const surface = surfaceOf(root, { version: 'head', tag: null, diagnostics });
     assert.deepEqual(surface.modules['@t/a'].exports, {
       b: { kind: 'value', decl: 'packages/b/src/index.ts#b' },
@@ -386,8 +392,7 @@ describe('resolver', () => {
       'warp-drive-packages/dup/package.json': { name: 'dup' },
       'warp-drive-packages/dup/addon/index.js': 'export const second = 2;\n',
     });
-    /** @type {{ code: string, message: string }[]} */
-    const diagnostics = [];
+    const diagnostics: { code: string; message: string }[] = [];
     const surface = surfaceOf(root, { version: 'head', tag: null, diagnostics });
     assert.deepEqual(surface.packages, { dup: { dir: 'packages/dup', modules: ['dup'] } });
     assert.deepEqual(Object.keys(surface.modules.dup.exports), ['first']);
@@ -401,11 +406,7 @@ describe('resolver', () => {
 });
 
 describe('exports of one file', () => {
-  /**
-   * @param {string} file
-   * @param {string} source
-   */
-  const records = (file, source) => exportsOfSource(file, source).exports;
+  const records = (file: string, source: string) => exportsOfSource(file, source).exports;
 
   test('the kind comes from the import side and from export type, not from oxc-parser alone', () => {
     const source = [
@@ -446,7 +447,7 @@ describe('exports of one file', () => {
       '',
     ].join('\n');
     assert.deepEqual(
-      records('/x/f.ts', source).map((r) => [r.name, r.kind]),
+      (records('/x/f.ts', source) as Exclude<ExportRecord, { form: 'star' }>[]).map((r) => [r.name, r.kind]),
       [
         ['N', 'type'],
         ['V', 'value'],
@@ -488,7 +489,7 @@ describe('exports of one file', () => {
       '',
     ].join('\n');
     assert.deepEqual(
-      records('/x/e.ts', source).map((r) => [r.name, r.deprecated]),
+      (records('/x/e.ts', source) as Exclude<ExportRecord, { form: 'star' }>[]).map((r) => [r.name, r.deprecated]),
       [
         ['a', true],
         ['b', false],
@@ -501,7 +502,7 @@ describe('exports of one file', () => {
   });
 
   test('forward', () => {
-    const forward = (/** @type {string} */ source) => exportsOfSource('/x/m.ts', source).forward;
+    const forward = (source: string) => exportsOfSource('/x/m.ts', source).forward;
     assert.equal(forward("/** @module */\nexport * from './a';\nexport type * from './a';\n"), './a');
     assert.equal(forward("export * from './a';\n"), './a');
     assert.equal(forward("export * from './a';\nexport * from './b';\n"), null);
@@ -551,7 +552,7 @@ describe('canonical output', () => {
   test('is byte-identical on every run and wherever the tree is reached from', (t) => {
     const link = path.join(tempDir(t), 'tree');
     symlinkSync(path.join(FIXTURES, 'tsdown'), link);
-    for (const era of /** @type {const} */ (['rollup', 'vite', 'tsdown'])) {
+    for (const era of ['rollup', 'vite', 'tsdown'] as const) {
       const first = canonical(surfaceOf(path.join(FIXTURES, era), { version: '0.0.0', tag: 'v0.0.0' }));
       assert.equal(canonical(surfaceOf(path.join(FIXTURES, era), { version: '0.0.0', tag: 'v0.0.0' })), first);
       assert.equal(first, canonical(fixture(era).surface));
@@ -619,7 +620,7 @@ describe('cli', () => {
     assert.equal(await main(['help'], { dir: FIXTURE_COMMANDS }), 0);
     for (const name of CONTRACT_COMMANDS) assert.match(out.log[0], new RegExp(`\\n  ${name} +not implemented yet`));
     assert.match(out.log[0], /\n {2}echo +records its arguments/);
-    assert.match(out.log[0], /\n {2}broken +failed to load: commands\/broken\.mjs exports name 'not-broken'/);
+    assert.match(out.log[0], /\n {2}broken +failed to load: commands\/broken\.mts exports name 'not-broken'/);
 
     const real = await listCommands();
     assert.deepEqual(
@@ -632,10 +633,10 @@ describe('cli', () => {
   });
 
   test('passes the arguments and the context to the command and returns its exit code', async (t) => {
-    const { calls } = await import(path.join(FIXTURE_COMMANDS, 'echo.mjs'));
+    const { calls } = await import(path.join(FIXTURE_COMMANDS, 'echo.mts'));
     calls.length = 0;
     captureConsole(t);
-    const context = { dataRoot: '/data', cwd: '/cwd' };
+    const context = { dataRoot: '/data', cwd: '/cwd' } as Context;
     assert.equal(await main(['echo', 'a', '--x'], { dir: FIXTURE_COMMANDS, context }), 0);
     assert.equal(await main(['echo', '--fail'], { dir: FIXTURE_COMMANDS, context }), 3);
     assert.deepEqual(calls, [
@@ -653,16 +654,15 @@ describe('cli', () => {
     assert.deepEqual(out.error.slice(0, 4), [
       'history: not implemented yet',
       'usage: echo [--fail] [--usage]',
-      "commands/broken.mjs exports name 'not-broken'",
+      "commands/broken.mts exports name 'not-broken'",
       "unknown command 'nope'\n",
     ]);
   });
 
   test('runSteps skips missing commands, stops at a failure, and in check mode runs every step', async (t) => {
-    const { calls } = await import(path.join(FIXTURE_COMMANDS, 'echo.mjs'));
+    const { calls } = await import(path.join(FIXTURE_COMMANDS, 'echo.mts'));
     const out = captureConsole(t);
-    /** @type {[string, string[]][]} */
-    const steps = [
+    const steps: [string, string[]][] = [
       ['echo', ['a']],
       ['history', ['b']],
       ['echo', ['--fail']],
@@ -672,7 +672,7 @@ describe('cli', () => {
     calls.length = 0;
     assert.equal(await runSteps('release', steps, { dir: FIXTURE_COMMANDS }), 3);
     assert.deepEqual(
-      calls.map((/** @type {{ argv: string[] }} */ c) => c.argv),
+      calls.map((c: { argv: string[] }) => c.argv),
       [['a'], ['--fail']]
     );
     assert.ok(out.log.includes('release: skipping history b (not implemented yet)'));
@@ -681,7 +681,7 @@ describe('cli', () => {
     calls.length = 0;
     assert.equal(await runSteps('release', steps, { dir: FIXTURE_COMMANDS, check: true }), 3);
     assert.deepEqual(
-      calls.map((/** @type {{ argv: string[] }} */ c) => c.argv),
+      calls.map((c: { argv: string[] }) => c.argv),
       [
         ['a', '--check'],
         ['--fail', '--check'],

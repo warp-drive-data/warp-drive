@@ -6,20 +6,18 @@
  */
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, releases, SCRATCH_ROOT } from '../artifacts.mjs';
-import { runSteps } from '../cli.mjs';
-import { pruneHeadDiffs, steps as updateSteps } from './update.mjs';
+import { DATA_ROOT, releases, SCRATCH_ROOT } from '../artifacts.mts';
+import { runSteps, type Context } from '../cli.mts';
+import { pruneHeadDiffs, steps as updateSteps } from './update.mts';
 
 export const name = 'release';
 export const describe =
   'for a version releases.json lists: surface, history and diff from its predecessor, audit, then the update steps';
 
-/**
- * @param {string[]} argv
- * @param {Partial<import('../cli.mjs').Context>} [context]
- * @returns {Promise<number>}
- */
-export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd() } = {}) {
+export async function run(
+  argv: string[],
+  { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd() }: Partial<Context> = {}
+): Promise<number> {
   const { values, positionals } = parseArgs({
     args: argv,
     allowPositionals: true,
@@ -38,8 +36,7 @@ export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_RO
   const newest = listed.at(-1);
   const keep = values.keep ? ['--keep'] : [];
 
-  /** @type {[string, string[]][]} */
-  const steps = [['surface', [version, ...keep]]];
+  const steps: [string, string[]][] = [['surface', [version, ...keep]]];
   if (previous) {
     steps.push(['history', [previous, version]]);
     steps.push(['diff', [previous, version]]);

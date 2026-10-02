@@ -9,18 +9,16 @@ import { existsSync, readdirSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 
-import { DATA_ROOT, releases, SCRATCH_ROOT } from '../artifacts.mjs';
-import { runSteps } from '../cli.mjs';
+import { DATA_ROOT, releases, SCRATCH_ROOT } from '../artifacts.mts';
+import { runSteps, type Context } from '../cli.mts';
 
 export const name = 'update';
 export const describe = 'surface head, history and diff <newest release> head, judge --check';
 
-/**
- * @param {string[]} argv
- * @param {Partial<import('../cli.mjs').Context>} [context]
- * @returns {Promise<number>}
- */
-export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd() } = {}) {
+export async function run(
+  argv: string[],
+  { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_ROOT, cwd = process.cwd() }: Partial<Context> = {}
+): Promise<number> {
   const { values } = parseArgs({ args: argv, options: { check: { type: 'boolean', default: false } } });
   const newest = releases(dataRoot).releases.at(-1);
   if (!newest) throw new Error(`update: ${path.join(dataRoot, 'releases.json')} lists no release`);
@@ -34,10 +32,9 @@ export async function run(argv, { dataRoot = DATA_ROOT, scratchRoot = SCRATCH_RO
 
 /**
  * The steps `update` runs, which `release` runs too once a release has landed.
- * @param {string} newest  the newest release
- * @returns {[string, string[]][]}
+ * @param newest  the newest release
  */
-export function steps(newest) {
+export function steps(newest: string): [string, string[]][] {
   return [
     ['surface', ['head']],
     ['history', [newest, 'head']],
@@ -51,10 +48,8 @@ export function steps(newest) {
 /**
  * Removes `diffs/<v>-head.json` for every `v` but the newest release: head follows the newest
  * release only. In check mode it prints what it would remove and returns 1.
- * @param {string} newest
- * @param {{ dataRoot: string, check: boolean }} options
  */
-export function pruneHeadDiffs(newest, { dataRoot, check }) {
+export function pruneHeadDiffs(newest: string, { dataRoot, check }: { dataRoot: string; check: boolean }) {
   const dir = path.join(dataRoot, 'diffs');
   if (!existsSync(dir)) return 0;
   const stale = readdirSync(dir)
