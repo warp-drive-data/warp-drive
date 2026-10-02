@@ -37,7 +37,7 @@
       "default": "./dist/image-fetch.js"
     },
     "./pagination": {
-      "types": "./declarations/pagination.d.ts",
+      "types": "./dist/pagination.d.ts",
       "default": "./dist/pagination.js"
     }
   },
