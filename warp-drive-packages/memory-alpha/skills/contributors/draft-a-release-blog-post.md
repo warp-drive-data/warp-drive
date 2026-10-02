@@ -12,9 +12,8 @@ release is built from;
 [Draft the Release Blog Post](/guides/contributing/RELEASE.md#draft-the-release-blog-post) in the
 release guide owns that ordering. The post is a page under `blog/`, so
 [Write Documentation](./write-documentation.md) governs how to draft it with the user and check
-it, and
-[Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages)
-sets its rules for location, frontmatter, and dating. Read all three before step 5.
+it, and [Publish a Blog Post](./publish-a-blog-post.md) governs where it goes and how it's listed.
+Read the release guide section and Write Documentation before step 5.
 
 ## Steps
 
@@ -75,14 +74,10 @@ sets its rules for location, frontmatter, and dating. Read all three before step
    overlapping summaries, keep their links, and link each change to its PRs (`[#11394](...)`) so a
    reader can dig in. Don't add claims a summary or PR doesn't support — no invented benchmark
    numbers, dates, or roadmap promises; ask the user if the post seems to need one.
-7. Write the page where
-   [Organize by Major Version](/guides/contributing/writing-documentation/writing-guides.md#organize-by-major-version)
-   puts it — `blog/v5/warp-drive-5-10.md` for a minor or major, `blog/v5/warp-drive-5-10-1.md`
-   for a patch — and never rename it once published. Give it a frontmatter `title`,
-   `description`, and `date` (the planned release date), and the `<SinceBadge>` line, as
-   [Every Page Is Dated and Versioned](/guides/contributing/writing-documentation/writing-guides.md#every-page-is-dated-and-versioned)
-   describes. Add it to its directory's `index.md` list and to the `items` in its `_meta.json`,
-   newest first after `index`.
+7. Write the page by following [Publish a Blog Post](./publish-a-blog-post.md), which owns where
+   a post goes, its frontmatter, and how it gets listed. Name it `warp-drive-5-10.md` for a minor
+   or major and `warp-drive-5-10-1.md` for a patch, and set its `date` to the planned release
+   date.
 8. In the same PR, delete from `main` every summary file that exists on `$SOURCE`, including any
    you left out in step 3 and any an earlier release left behind: all of them ship in this
    release. Leave files that are only on `main`, and `README.md`, in place.
