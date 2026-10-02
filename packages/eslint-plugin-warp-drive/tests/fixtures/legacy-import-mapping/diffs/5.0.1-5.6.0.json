@@ -129,9 +129,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#storeFor"
         }
       },
-      "removed": [
-        "setIdentifierUpdateMethod"
-      ]
+      "removed": ["setIdentifierUpdateMethod"]
     },
     "@ember-data/store/-private": {
       "added": {
@@ -167,9 +165,7 @@
           "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor"
         }
       },
-      "removed": [
-        "IdentifierArray"
-      ]
+      "removed": ["IdentifierArray"]
     },
     "@warp-drive/core": {
       "added": {
@@ -486,9 +482,7 @@
       },
       "@warp-drive/core-types": {
         "dir": "packages/core-types",
-        "modules": [
-          "@warp-drive/core-types/request"
-        ]
+        "modules": ["@warp-drive/core-types/request"]
       },
       "@warp-drive/legacy": {
         "dir": "warp-drive-packages/legacy",
@@ -502,9 +496,7 @@
       },
       "warp-drive": {
         "dir": "packages/-warp-drive",
-        "modules": [
-          "warp-drive/core"
-        ]
+        "modules": ["warp-drive/core"]
       }
     }
   },

@@ -7,9 +7,7 @@
   },
   "exports": {
     "@ember-data/adapter/error": {
-      "removed": [
-        "errorsArrayToHash"
-      ]
+      "removed": ["errorsArrayToHash"]
     },
     "@ember-data/model": {
       "changed": {
@@ -19,31 +17,21 @@
       }
     },
     "@ember-data/request-utils": {
-      "removed": [
-        "setBuildURLConfig"
-      ]
+      "removed": ["setBuildURLConfig"]
     },
     "@ember-data/store": {
-      "removed": [
-        "normalizeModelName"
-      ]
+      "removed": ["normalizeModelName"]
     }
   },
   "from": "4.12.8",
   "kind": "diff",
   "modules": {
-    "removed": [
-      "ember-data/adapters/errors",
-      "ember-data/adapters/json-api"
-    ]
+    "removed": ["ember-data/adapters/errors", "ember-data/adapters/json-api"]
   },
   "packages": {
     "changed": {
       "ember-data": {
-        "modules": [
-          "ember-data",
-          "ember-data/store"
-        ]
+        "modules": ["ember-data", "ember-data/store"]
       }
     }
   },

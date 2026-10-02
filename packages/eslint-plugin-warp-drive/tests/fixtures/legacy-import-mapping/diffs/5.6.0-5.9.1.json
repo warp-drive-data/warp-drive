@@ -14,10 +14,7 @@
       }
     },
     "@ember-data/store/-private": {
-      "removed": [
-        "getPromiseState",
-        "getRequestState"
-      ]
+      "removed": ["getPromiseState", "getRequestState"]
     },
     "@warp-drive/core": {
       "changed": {
@@ -44,10 +41,7 @@
       }
     },
     "@warp-drive/core/store/-private": {
-      "removed": [
-        "getPromiseState",
-        "getRequestState"
-      ]
+      "removed": ["getPromiseState", "getRequestState"]
     },
     "@warp-drive/ember": {
       "added": {
@@ -82,9 +76,7 @@
       }
     },
     "warp-drive/core": {
-      "removed": [
-        "UmbrellaOnly"
-      ]
+      "removed": ["UmbrellaOnly"]
     }
   },
   "from": "5.6.0",
@@ -122,22 +114,15 @@
     "added": {
       "@warp-drive/ember": {
         "dir": "warp-drive-packages/ember",
-        "modules": [
-          "@warp-drive/ember",
-          "@warp-drive/ember/reactive"
-        ]
+        "modules": ["@warp-drive/ember", "@warp-drive/ember/reactive"]
       },
       "@warp-drive/react": {
         "dir": "warp-drive-packages/react",
-        "modules": [
-          "@warp-drive/react"
-        ]
+        "modules": ["@warp-drive/react"]
       },
       "@warp-drive/utilities": {
         "dir": "warp-drive-packages/utilities",
-        "modules": [
-          "@warp-drive/utilities"
-        ]
+        "modules": ["@warp-drive/utilities"]
       }
     },
     "changed": {

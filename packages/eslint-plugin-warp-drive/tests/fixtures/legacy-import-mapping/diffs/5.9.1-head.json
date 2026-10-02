@@ -18,9 +18,7 @@
           "kind": "value"
         }
       },
-      "removed": [
-        "LiveArray"
-      ]
+      "removed": ["LiveArray"]
     },
     "@warp-drive/core": {
       "added": {
@@ -37,9 +35,7 @@
           "kind": "value"
         }
       },
-      "removed": [
-        "LiveArray"
-      ]
+      "removed": ["LiveArray"]
     }
   },
   "from": "5.9.1",
