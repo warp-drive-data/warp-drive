@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from 'vue';
-import { withBase } from 'vitepress';
+import { withBase } from "vitepress";
+import { computed, onBeforeUnmount, onMounted, ref, useTemplateRef } from "vue";
 
-import { data as allPosts } from '../data/blog.data.ts';
+import { data as allPosts } from "../data/blog.data.ts";
 
 const props = withDefaults(
   defineProps<{
@@ -22,10 +22,10 @@ const pageCount = computed(() => Math.max(1, Math.ceil(posts.value.length / prop
 // The static build renders page 1; the query is read once the page is in the browser.
 const page = ref(1);
 const visible = computed(() => posts.value.slice((page.value - 1) * props.pageSize, page.value * props.pageSize));
-const list = useTemplateRef<HTMLElement>('list');
+const list = useTemplateRef<HTMLElement>("list");
 
 function pageFromUrl(): number {
-  const requested = Number(new URLSearchParams(window.location.search).get('page'));
+  const requested = Number(new URLSearchParams(window.location.search).get("page"));
   return Number.isInteger(requested) && requested >= 1 && requested <= pageCount.value ? requested : 1;
 }
 
@@ -37,26 +37,26 @@ function goTo(next: number) {
   if (next === page.value || next < 1 || next > pageCount.value) return;
   page.value = next;
   const url = new URL(window.location.href);
-  if (next === 1) url.searchParams.delete('page');
-  else url.searchParams.set('page', String(next));
-  window.history.pushState(window.history.state, '', url);
-  list.value?.scrollIntoView({ block: 'start' });
+  if (next === 1) url.searchParams.delete("page");
+  else url.searchParams.set("page", String(next));
+  window.history.pushState(window.history.state, "", url);
+  list.value?.scrollIntoView({ block: "start" });
 }
 
 onMounted(() => {
   syncFromUrl();
-  window.addEventListener('popstate', syncFromUrl);
+  window.addEventListener("popstate", syncFromUrl);
 });
-onBeforeUnmount(() => window.removeEventListener('popstate', syncFromUrl));
+onBeforeUnmount(() => window.removeEventListener("popstate", syncFromUrl));
 
 const majorVersion = (source: string) => /^blog\/v(\d+)\//.exec(source)?.[1];
-const postUrl = (source: string) => withBase(`/${source.replace(/\.md$/, '')}`);
+const postUrl = (source: string) => withBase(`/${source.replace(/\.md$/, "")}`);
 const formatDate = (date: string) =>
-  new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    timeZone: 'UTC',
+  new Date(`${date}T00:00:00Z`).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    timeZone: "UTC",
   });
 </script>
 
