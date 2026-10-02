@@ -104,7 +104,7 @@ The template decides when relationships are read, so it also decides what gets f
 what order. Users found out from their network tab: "that category has 112 products in it. […]
 it's going to trigger 113 xhr's"
 ([Ember Discuss, 2017](https://discuss.emberjs.com/t/ember-data-and-json-api-why-handle-relationships-client-side/12675/1)).
-Even `{{invoice.payer.id}}`, reading an id the client already had, fetched the whole payer, 50
+Even rendering `invoice.payer.id`, an id the client already had, fetched the whole payer, 50
 requests for a table of 50 invoices, because EmberData "never has a chance to detect that you are
 only attempting to access a property that is already loaded"
 ([#2705](https://github.com/warp-drive-data/warp-drive/issues/2705#issuecomment-70269202)).
@@ -140,7 +140,7 @@ and the stand-in leaks:
 
 - It is never `===` to the record it wraps, so components comparing values miss changes
   ([#5575](https://github.com/warp-drive-data/warp-drive/issues/5575)).
-- `{{#if this.book.authors}}` is always true, because the proxy is always there
+- An `#if` on `this.book.authors` is always true, because the proxy is always there
   ([#8847](https://github.com/warp-drive-data/warp-drive/issues/8847)).
 - TypeScript can't describe it: "typescript makes it impossible to have an async getter with a
   sync setter" ([#8817](https://github.com/warp-drive-data/warp-drive/issues/8817#issuecomment-1703088270)).
@@ -232,9 +232,8 @@ import Comment from './comment';
 </template>
 ```
 
-Give each level its own `<Await>`: here the `Comment` component would render
-`<Await @promise={{@comment.author}}>` itself, instead of chaining `comment.author.name` through
-two proxies. In JavaScript, `await` the relationship before using it, or derive its state with
+Give each level its own `<Await>`: here the `Comment` component would await `@comment.author`
+itself, instead of chaining `comment.author.name` through two proxies. In JavaScript, `await` the relationship before using it, or derive its state with
 [`getPromiseState`](/api/@warp-drive/core/reactive/functions/getPromiseState) in a getter instead
 of reading `isPending` or `.content`.
 [Async as Reactive State](/guides/the-manual/reactivity/derivation.md) covers both patterns.
@@ -360,7 +359,7 @@ Storefront's ideas carry over almost one for one:
 | `async: false` everywhere, enforced by lint | LinksMode relationships, then `resource` and `collection`; reading never fetches |
 | `store.loadRecords` / `loadRecord` with include-aware caching | Requests with `include`, cached per request |
 | `model.load('comments')` | `<Request>` on the relationship's link today; `fetch()` on `resource` and `collection` |
-| `{{assert-must-preload}}` | LinksMode's payload checks in development builds |
+| the `assert-must-preload` component | LinksMode's payload checks in development builds |
 | data-provider components | `<Request>` and `<Await>` |
 
 ## Further Reading
