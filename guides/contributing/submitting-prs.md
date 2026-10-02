@@ -145,8 +145,12 @@ The label is what decides. If a PR's label changes, add or remove the file to ma
 post is drafted, a summary from a PR whose label isn't gated in is left out.
 
 Name the file for its topic in kebab case, such as `alien-signals-composition.md`; the PR number
-doesn't exist yet when you write it. One PR adds at most one file. The file is plain markdown with
-no frontmatter and no headings, written for someone who uses ***Warp*Drive** and has not read the
+doesn't exist yet when you write it. Don't reuse the name of a summary that has already shipped,
+even after it's been deleted, or the next post won't see the new file. One PR adds or updates at
+most one file. If a summary for the same topic is already in the directory and hasn't shipped in
+a stable release yet, update it rather than adding a second one, so the post tells one story; a
+summary that has already shipped gets a new file instead. The file is plain markdown with no
+frontmatter and no headings, written for someone who uses ***Warp*Drive** and has not read the
 PR:
 
 ```md
