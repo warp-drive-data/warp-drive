@@ -4,10 +4,10 @@ Use this skill whenever you open a pull request against WarpDrive, change what a
 change its `:dart:` labels, or a reviewer asks for a summary or asks for one to come out. Some PRs
 add a short summary file to `.next-release-post/`: a few sentences, written for users, that the
 next release blog post is drafted from. This skill decides whether to propose one and writes it.
-The rules for the file itself — which changes are usually worth one, how to name it, its `releases`
-frontmatter, and what goes in it — live in [Blog
-Summaries](/guides/contributing/submitting-prs.md#blog-summaries); read that section before writing
-one.
+The rules for the file itself — which changes are usually worth one, how to name it, its
+`releases` frontmatter, and what goes in it — live in
+[Blog Summaries](/guides/contributing/submitting-prs.md#blog-summaries); read that section before
+writing one.
 
 ## Steps
 
