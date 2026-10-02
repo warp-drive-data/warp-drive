@@ -63,15 +63,33 @@ Read the release guide section and Write Documentation before step 5.
    hurts most. For each one the user wants in, write a summary from its title, diff, and the docs
    it changed, following the [Blog Summaries](/guides/contributing/submitting-prs.md#blog-summaries)
    rules, or fold it into a summary on the same topic.
+
+   Then check the RFCs the same way. List every RFC whose `stage` changed, or that was added,
+   since the previous release:
+
+   ```sh
+   stage() { git show "$1:$2" 2>/dev/null | sed -n 's/^stage: *//p' | head -1; }
+   for f in $(git diff --name-only --diff-filter=AM "$PREV" "$SOURCE" -- 'rfcs/0*.md'); do
+     FROM=$(stage "$PREV" "$f"); TO=$(stage "$SOURCE" "$f")
+     if [ "$FROM" != "$TO" ]; then echo "$f: ${FROM:-new} -> $TO"; fi
+   done
+   ```
+
+   Unlike other gaps, these aren't a judgment call: every RFC opened or advanced in the release
+   is listed. For one with no [RFC summary](/guides/contributing/submitting-prs.md#rfc-summaries)
+   listing `$LINE`, write its entry from the stage path shown, its `description`, and the PRs in
+   `git log --format=%s "$PREV..$SOURCE" -- <file>`; where a summary's `stages` ends at a
+   different stage than the RFC has on `$SOURCE`, trust the RFC. Tell the user which entries had
+   no summary.
 5. Agree the outline with the user before drafting prose, as step 4 of
    [Write Documentation](./write-documentation.md) asks. Propose which summaries lead and which
    go — a post with twenty equally weighted items is a changelog. The default shape:
    - An opening paragraph: the version, who the post is for, and the one or two changes that
      matter most.
    - `## Breaking Changes`, `## New Features`, `## Performance`, `## Deprecations`,
-     `## Removals`, `## Notable Fixes`, `## Documentation`, in that order, each only if it has
-     entries. Group related PRs under one `###` heading per change rather than one per PR; a
-     feature and its follow-up fixes are one story.
+     `## Removals`, `## Notable Fixes`, `## Documentation`, `## RFCs`, in that order, each only
+     if it has entries. Group related PRs under one `###` heading per change rather than one per
+     PR; a feature and its follow-up fixes are one story.
    - `## Upgrading`: link the upgrade and deprecation guides any entry above needs. Leave this
      section out if no entry asks users to change anything.
    - `## Thanks`: the authors of the PRs from step 4, and a link to the version's release notes,
@@ -81,6 +99,11 @@ Read the release guide section and Write Documentation before step 5.
    overlapping summaries, keep their links, and link each change to its PRs (`[#11394](...)`) so a
    reader can dig in. Don't add claims a summary or PR doesn't support — no invented benchmark
    numbers, dates, or roadmap promises; ask the user if the post seems to need one.
+   RFC summaries are the exception: they aren't prose, and they don't compete for space. `## RFCs`
+   is a bullet list with one entry per RFC, in RFC-number order: its title linked to its page,
+   its stage path from `stages` with `new` written as "opened" (opened → proposed, or accepted →
+   released), its one-sentence summary, and its PRs. An RFC that also has a feature entry above
+   links to that entry rather than repeating it.
 7. Write the page by following [Publish a Blog Post](./publish-a-blog-post.md), which owns where
    a post goes, its frontmatter, and how it gets listed. Name it `warp-drive-5-10.md` for a minor
    or major and `warp-drive-5-10-1.md` for a patch, and set its `date` to the planned release
