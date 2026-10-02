@@ -625,6 +625,14 @@ export class LegacySupport {
             method: 'GET' as const,
             records: identifier ? [identifier] : [],
             data: request,
+            // the cache reads the parent record and field from `options`
+            // to update the relationship from the response
+            options: {
+              field,
+              identifier: parentIdentifier,
+              links: resource.links,
+              meta: resource.meta,
+            },
             [EnableHydration]: false,
           }
         : {

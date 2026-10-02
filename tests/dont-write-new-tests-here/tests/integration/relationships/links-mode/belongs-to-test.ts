@@ -398,20 +398,9 @@ module('integration/relationship/belongs-to BelongsTo Relationships (linksMode)'
     const handler: Handler = {
       request<T>(context): Promise<T> {
         assert.step(`op=${context.request.op ?? 'UNKNOWN OP CODE'}, url=${context.request.url ?? 'UNKNOWN URL'}`);
+        // the related link of an empty to-one relationship responds with null primary data
         return Promise.resolve({
-          data: {
-            type: 'user',
-            id: '1',
-            attributes: {
-              name: 'Chris',
-            },
-            relationships: {
-              bestFriend: {
-                links: { related: '/user/1/bestFriend' },
-                data: null,
-              },
-            },
-          },
+          data: null,
         } as T);
       },
     };
