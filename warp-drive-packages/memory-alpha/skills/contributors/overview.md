@@ -11,6 +11,7 @@ as a dependency in an app.
 | Add or change a test that mocks HTTP, then commit it | [Commit Mock Cache Fixtures](/skills/contributors/commit-mock-cache-fixtures.md) |
 | Write a new RFC, or implement one that's already been accepted | [Writing and Implementing RFCs](/skills/contributors/writing-and-implementing-rfcs.md) |
 | Write or change documentation — a doc comment (TSDoc), a guide, an `upgrading/` or `blog/` page, a package README or `src/index.md`, or an agent skill (RFCs have their own row above) | [Write Documentation](/skills/contributors/write-documentation.md) |
+| Add a post under `blog/`, start a new major-version section of it, or retire a post | [Publish a Blog Post](/skills/contributors/publish-a-blog-post.md) |
 | Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
 | Share setup/teardown across more than one test in a module | [Extract Test Setup Into Functions](/skills/contributors/extract-test-setup-into-functions.md) |
 | Turn a finished change into a pull request — title, labels CI enforces, and backports | [Submit a PR](/skills/contributors/submit-a-pr.md) |
