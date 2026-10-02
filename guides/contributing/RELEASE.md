@@ -20,6 +20,32 @@ updated on `main` and `beta` so that it will be accurate when the new release br
 created. To do this you likely need to reach out to WarpDrive core team members to ensure
 all recent planning discussions and work is properly accounted for.
 
+## Draft the Release Blog Post
+
+Every stable release (`release`, `lts`, `lts-prev`, `release-prev`) can have a blog post under
+[`blog/`](/blog/), drafted from the summaries PRs leave in `.next-release-post/` (see
+[Blog Summaries](./submitting-prs.md#blog-summaries)). The
+[Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) skill walks through
+writing it. Canary and beta releases don't get one.
+
+Draft and merge the post **before** triggering the release, so that it is part of the commit the
+release is built from and ships inside the release rather than after it:
+
+1. Work out which branch the workflow will build from: for a new major or minor, the
+   `stable_source-branch` the release branch is reset from (`beta` by default, or `main`); for a
+   patch, `release`; for an LTS release, its LTS branch.
+2. Open the post's PR against `main` with `:label: doc` and the `:dart:` label for that branch,
+   per [Submitting PRs](./submitting-prs.md). The same PR deletes the summary files that ship in
+   this release.
+3. After it merges, open the backport PR to that branch. Skip this when the release is built from
+   `main`.
+4. Trigger the release only once both are merged. If more PRs with summaries land on that branch
+   first, fold them into the post before releasing.
+
+The docs site deploys from `main` on every push, so merge the post with `draft: true` in its
+frontmatter. That keeps it out of the sidebar, nav, and RSS feed until the release has shipped;
+publishing it is the first step of [Polish the Release!](#polish-the-release).
+
 ## Getting Setup To Do A Release
 
 In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on
@@ -53,7 +79,11 @@ You will find the automated workflows to perform these releases under the action
 
 ## Polish the Release!
 
-First, update the Release Notes on Github
+First, publish the release's blog post, if it has one: open a PR against `main` that removes
+`draft: true` from its frontmatter, correcting its `date` if the release shipped on a different
+day than planned.
+
+Then, update the Release Notes on Github
 
 - Visit [WarpDrive Releases](https://github.com/warp-drive-data/warp-drive/releases)
   - Click on the "more recent tags"

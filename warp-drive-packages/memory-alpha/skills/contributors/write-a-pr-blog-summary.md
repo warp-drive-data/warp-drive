@@ -28,13 +28,12 @@ writing one.
    covers the feature, API, or fix this PR changes — a follow-up fix, a perf pass, or an extension
    of something an earlier PR summarized. Update that file instead of adding a second one, so the
    post tells one story, but only if both of these hold:
-   - It hasn't shipped. If the file exists at the latest stable release's tag, it's already been
-     announced, and the next post only picks up files added since that tag. Write a new file
-     instead.
+   - It hasn't shipped. If the file appears in the latest stable release's history, it's already
+     been announced, and the next post skips any summary that has. Write a new file instead.
 
      ```sh
      LATEST=$(git tag -l 'v[0-9]*' | grep -v -- '-' | sort -V | tail -1)
-     git cat-file -e "$LATEST:.next-release-post/<file>" 2>/dev/null && echo shipped
+     git log -1 --format=%h "$LATEST" -- .next-release-post/<file> | grep -q . && echo shipped
      ```
    - This PR isn't being backported where the original wasn't. A PR carrying a `:dart:` label is
      cherry-picked onto release branches that may not have the file, and the cherry-pick then
@@ -54,9 +53,9 @@ writing one.
    changes: fold this PR's change into the existing text, keep the earlier PR's points that still
    hold, and drop any this PR makes untrue. Keep the file's name.
 6. Commit it in the same PR as the change, as `.next-release-post/<topic>.md` directly in that
-   directory with no subdirectory. A new file needs a name that doesn't exist at `$LATEST` from
-   step 4; reusing a shipped summary's name makes the new file look like an edit to an announced
-   one, and the next post skips it. Touch no other summary file than the one this PR adds or
+   directory with no subdirectory. A new file needs a name no summary has used before, even one
+   since deleted: `git log -1 --format=%h origin/main "$LATEST" -- .next-release-post/<name>`
+   must print nothing. The next post skips any name in an earlier release's history. Touch no other summary file than the one this PR adds or
    updates, and don't edit `README.md`.
 7. Keep it current until the PR merges. When you push a change that alters the public behavior
    the summary describes, or the label changes, run steps 1–6 again: rewrite the file to match,
