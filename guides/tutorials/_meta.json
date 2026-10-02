@@ -1,3 +1,4 @@
 {
-  "title": "Tutorials"
+  "title": "Tutorials",
+  "items": ["todomvc"]
 }

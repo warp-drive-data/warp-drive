@@ -46,6 +46,9 @@
   "references": [
     {
       "path": "../core"
+    },
+    {
+      "path": "../alien-signals"
     }
   ]
 }

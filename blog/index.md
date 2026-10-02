@@ -13,6 +13,9 @@ Like [Upgrading](/upgrading/), posts here have permanent URLs: a post's URL is n
 never unpublished, and every post is tagged with the version and date it was written for. Posts
 are organized into sub-sections by major version.
 
+To follow along, subscribe to the [RSS feed](https://warp-drive.io/blog/feed.xml) in your feed
+reader.
+
 See [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages)
 for the authoring rules that keep these guarantees true.
 

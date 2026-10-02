@@ -30,6 +30,7 @@ const config = {
     '../warp-drive-packages/ember',
     '../warp-drive-packages/react',
     '../warp-drive-packages/tc39-proposal-signals',
+    '../warp-drive-packages/alien-signals',
     '../warp-drive-packages/json-api',
     '../warp-drive-packages/experiments',
     '../warp-drive-packages/schema-dsl',

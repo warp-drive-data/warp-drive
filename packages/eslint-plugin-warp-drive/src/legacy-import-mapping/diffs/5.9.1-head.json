@@ -699,11 +699,89 @@
       "changed": {},
       "removed": []
     },
+    "@warp-drive/alien-signals/install": {
+      "added": {
+        "ComposingSignalHooks": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#ComposingSignalHooks",
+          "kind": "type"
+        },
+        "SignalIntegration": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#SignalIntegration",
+          "kind": "type"
+        },
+        "buildSignalConfig": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#buildSignalConfig",
+          "kind": "value"
+        },
+        "registerSignalIntegration": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#registerSignalIntegration",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/alien-signals/primitives": {
+      "added": {
+        "MemoNode": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#MemoNode",
+          "kind": "type"
+        },
+        "SignalNode": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#SignalNode",
+          "kind": "type"
+        },
+        "Watcher": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#Watcher",
+          "kind": "value"
+        },
+        "consumeSignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#consumeSignal",
+          "kind": "value"
+        },
+        "createMemo": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#createMemo",
+          "kind": "value"
+        },
+        "createSignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#createSignal",
+          "kind": "value"
+        },
+        "hasSubscribers": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#hasSubscribers",
+          "kind": "value"
+        },
+        "isTracking": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#isTracking",
+          "kind": "value"
+        },
+        "notifySignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#notifySignal",
+          "kind": "value"
+        },
+        "readMemo": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#readMemo",
+          "kind": "value"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
     "@warp-drive/core-types/runtime": {
       "added": {
         "LOG_CONFIG": {
           "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
           "kind": "type"
+        }
+      },
+      "changed": {},
+      "removed": []
+    },
+    "@warp-drive/core/configure": {
+      "added": {
+        "registerSignals": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#registerSignals",
+          "kind": "value"
         }
       },
       "changed": {},
@@ -976,6 +1054,16 @@
   "kind": "diff",
   "modules": {
     "added": {
+      "@warp-drive/alien-signals/install": {
+        "entry": "warp-drive-packages/alien-signals/src/install.ts",
+        "forward": null,
+        "package": "@warp-drive/alien-signals"
+      },
+      "@warp-drive/alien-signals/primitives": {
+        "entry": "warp-drive-packages/alien-signals/src/primitives.ts",
+        "forward": null,
+        "package": "@warp-drive/alien-signals"
+      },
       "@warp-drive/experiments/storage": {
         "entry": "warp-drive-packages/experiments/src/storage.ts",
         "forward": null,
@@ -1001,7 +1089,15 @@
     "removed": []
   },
   "packages": {
-    "added": {},
+    "added": {
+      "@warp-drive/alien-signals": {
+        "dir": "warp-drive-packages/alien-signals",
+        "modules": [
+          "@warp-drive/alien-signals/install",
+          "@warp-drive/alien-signals/primitives"
+        ]
+      }
+    },
     "changed": {
       "@warp-drive/experiments": {
         "modules": [

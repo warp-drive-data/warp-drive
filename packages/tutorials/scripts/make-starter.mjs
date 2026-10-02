@@ -16,6 +16,10 @@
  * - `// #replace-in-starter <text>` … `// #end-replace-in-starter` is replaced, markers
  *   and all, with `// <text>`.
  * - `// #remove-from-starter` … `// #end-remove-from-starter` is removed.
+ * - A block comment that opens with `/* #add-to-starter` on its own line is starter-only
+ *   code: a comment in the solution, and its lines, without the comment's opening and
+ *   closing lines, in the starter. In templates, write it as `{{!-- #add-to-starter` …
+ *   `--}}`. Indent the lines as the starter should have them.
  * - In templates, write each marker as `{{! … }}`.
  * - Blocks can't nest.
  * - `// #omit-file-from-starter` as a file's first line leaves the file out.
@@ -41,6 +45,10 @@ const BLOCKS = {
 };
 const ENDS = Object.values(BLOCKS);
 const OMIT = /^\s*\/\/ #omit-file-from-starter\s*$/;
+// Starter-only code, commented out in the solution: a `/* #add-to-starter` block comment,
+// or `{{!-- #add-to-starter` … `--}}` in a template.
+const ADD_OPEN = /^\s*(?:\/\* #add-to-starter|\{\{!-- #add-to-starter)\s*$/;
+const ADD_CLOSE = { '/*': /^\s*\*\/\s*$/, '{{': /^\s*--\}\}\s*$/ };
 // Any line naming something like a directive, so a misspelled, malformed or outdated one fails
 // instead of leaking into the starter.
 const DIRECTIVE = /#[\w-]*-starter\b/;
@@ -72,6 +80,25 @@ function transform(file, source) {
     const collapse = closed && line.trim() === '' && (out.length === 0 || out.at(-1).trim() === '');
     closed = false;
     if (collapse) continue;
+    if (open?.name === 'add-to-starter') {
+      if (ADD_CLOSE[open.syntax].test(line)) {
+        open = null;
+        closed = true;
+      } else {
+        if (DIRECTIVE.test(line))
+          throw new Error(`${where}: directive inside the #add-to-starter block from line ${open.line}`);
+        out.push(line);
+      }
+      continue;
+    }
+    if (ADD_OPEN.test(line)) {
+      if (open)
+        throw new Error(
+          `${where}: #add-to-starter inside the #${open.name} block from line ${open.line}; blocks can't nest`
+        );
+      open = { name: 'add-to-starter', line: i + 1, syntax: line.trim().slice(0, 2) };
+      continue;
+    }
     const marker = MARKER_LINE.exec(line);
     const name = marker && (marker[2] ?? marker[4]);
     const text = marker && (marker[3] ?? marker[5]);

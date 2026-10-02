@@ -43,6 +43,9 @@
       "path": "../../warp-drive-packages/react"
     },
     {
+      "path": "../../warp-drive-packages/alien-signals"
+    },
+    {
       "path": "../../warp-drive-packages/core"
     },
     {

@@ -54,38 +54,59 @@ jobs:
           # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
           # the whole GitHub Actions runner pool and fails intermittently under load
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # pr-preview.yml pushes to this same gh-pages branch from its own workflow, with its
-      # own concurrency group, so its push can land between one of these steps' fetch of
-      # gh-pages and its own push, rejecting ours as a non-fast-forward. peaceiris/actions-gh-pages
-      # re-fetches gh-pages fresh on every invocation, so retrying the whole step (rather than
-      # just the underlying `git push`) succeeds once the branch stops moving. This repeats the
-      # same pinned step instead of reaching for a third-party retry-wrapper action, since those
-      # tend to invoke their own dependencies by tag internally and so can't be pinned to a SHA
-      # themselves, which this org's Actions policy requires.
-      - name: Deploy to GitHub Pages (attempt 1)
-        id: deploy-1
-        continue-on-error: true
-        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-        with: &gh-pages-deploy-inputs
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
-          cname: canary.warp-drive.io
-          # keep_files stops this production deploy from wiping out the pr-preview/
-          # folders that pr-preview.yml keeps on this same gh-pages branch.
-          keep_files: true
-      - name: Wait before deploy attempt 2
-        if: steps.deploy-1.outcome == 'failure'
-        run: sleep 5
-      - name: Deploy to GitHub Pages (attempt 2)
-        id: deploy-2
-        if: steps.deploy-1.outcome == 'failure'
-        continue-on-error: true
-        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-        with: *gh-pages-deploy-inputs
-      - name: Wait before deploy attempt 3
-        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
-        run: sleep 10
-      - name: Deploy to GitHub Pages (attempt 3)
-        if: steps.deploy-1.outcome == 'failure' && steps.deploy-2.outcome == 'failure'
-        uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-        with: *gh-pages-deploy-inputs
+      # Publishes the fresh build as the whole site root of gh-pages, carrying over only the
+      # pr-preview/ folder that pr-preview.yml owns on the same branch. Anything else from the
+      # previous deploy (content-hashed assets/ chunks, pages that no longer exist) is dropped,
+      # so the root never holds more than one build. Layering each build over the last one
+      # instead (peaceiris/actions-gh-pages' `keep_files`) kept every old chunk forever and
+      # pushed the Pages artifact past its size limit.
+      #
+      # The new commit is assembled from trees rather than a checkout, so none of pr-preview/'s
+      # blobs are downloaded (`--filter=blob:none`). That only holds for the exact commands
+      # used here: `mktree` reuses pr-preview/'s tree by id, where `read-tree` would lazily
+      # fetch every blob under it, and `push --no-thin` stops pack-objects from fetching the
+      # previous build's blobs to use as delta bases.
+      #
+      # pr-preview.yml can push to gh-pages between this script's fetch and its push, which
+      # rejects ours as a non-fast-forward. Each retry re-fetches gh-pages and rebuilds the
+      # commit on top of it, so a preview deployed or removed in between is never undone.
+      - name: Deploy to GitHub Pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          dist="$GITHUB_WORKSPACE/docs-viewer/docs.warp-drive.io/.vitepress/dist"
+          echo 'canary.warp-drive.io' > "$dist/CNAME"
+
+          site="$RUNNER_TEMP/gh-pages"
+          git init -q "$site"
+          cd "$site"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
+          for attempt in 1 2 3; do
+            if [ "$attempt" -gt 1 ]; then
+              echo "deploy attempt $((attempt - 1)) failed (most likely gh-pages moved); retrying" >&2
+              sleep $((attempt * 5))
+            fi
+            git fetch -q --depth=1 --filter=blob:none origin gh-pages || continue
+            base_sha="$(git rev-parse FETCH_HEAD)"
+
+            rm -f .git/index
+            # --force: publish everything in the build, even if it ships a .gitignore
+            git --work-tree="$dist" add -A --force
+            tree="$(git write-tree)"
+            preview="$(git ls-tree "$base_sha" pr-preview)"
+            if [ -n "$preview" ]; then
+              tree="$({ git ls-tree "$tree"; printf '%s\n' "$preview"; } | git mktree)"
+            fi
+            commit="$(git commit-tree "$tree" -p "$base_sha" -m "deploy: $GITHUB_SHA")"
+
+            if git push --no-thin -q origin "$commit:refs/heads/gh-pages"; then
+              exit 0
+            fi
+          done
+          echo "push to gh-pages failed after 3 attempts" >&2
+          exit 1

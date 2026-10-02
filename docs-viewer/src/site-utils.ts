@@ -319,6 +319,46 @@ export function legacyGuidePages(docsRoot: string = DOCS_ROOT): LegacyGuidePage[
   return pages.sort((a, b) => a.source.localeCompare(b.source));
 }
 
+export interface BlogPost {
+  /** path relative to the docs root, e.g. `blog/v5/introducing-upgrading-and-blog.md` */
+  source: string;
+  title: string;
+  description?: string;
+  /** the frontmatter `date`, as `YYYY-MM-DD` */
+  date: string;
+}
+
+/**
+ * Every published post under `blog/`, newest first (ties broken by path). Section landing pages
+ * (each directory's `index.md`) and drafts are not posts. Reads the synced copies, so call it after
+ * `prepare-website.ts` has run.
+ *
+ * Each post must have a frontmatter `title` or an H1, and a frontmatter `date` written as
+ * `YYYY-MM-DD`: the RSS feed (see `emitBlogFeed`) orders and dates its items by it, and a feed item
+ * without a date sorts arbitrarily in readers, so a post missing one fails the build.
+ */
+export function blogPosts(docsRoot: string = DOCS_ROOT): BlogPost[] {
+  const posts: BlogPost[] = [];
+  for (const { source, text, draft } of contentFiles(docsRoot, 'blog')) {
+    if (draft || source.endsWith('/index.md')) continue;
+    const { attributes, body } = fm<{ title?: string; description?: string; date?: unknown }>(text);
+
+    const title = attributes.title ?? markdownTitle(body);
+    if (!title) throw new Error(`${source} is a blog post but has neither a frontmatter \`title\` nor an H1`);
+
+    // YAML parses an unquoted `2026-09-05` into a Date at UTC midnight; a quoted one stays a string
+    const date =
+      attributes.date instanceof Date && !Number.isNaN(attributes.date.getTime())
+        ? attributes.date.toISOString().slice(0, 10)
+        : attributes.date;
+    if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      throw new Error(`${source} is a blog post but has no frontmatter \`date\` written as YYYY-MM-DD`);
+    }
+    posts.push({ source, title, description: attributes.description, date });
+  }
+  return posts.sort((a, b) => b.date.localeCompare(a.date) || a.source.localeCompare(b.source));
+}
+
 /**
  * Adds a Legacy badge and a `:::warning` callout to the top of every non-draft page in a synced
  * content directory whose frontmatter sets `legacy: true`, matching the badge and warning

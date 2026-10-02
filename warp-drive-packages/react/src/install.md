@@ -2,8 +2,8 @@
 import '@warp-drive/react/install';
 ```
 
-This module is used to import and install a reactive signals implementation based on 
-[TC39 Signals](https://github.com/tc39/proposal-signals) that is capable of being integrated into React applications, allowing
+This module is used to import and install a reactive signals implementation built on
+[`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/primitives/) that is capable of being integrated into React applications, allowing
 all of ***Warp*Drive**'s fine-grained reactive state to correctly update the rendered output
 of React applications.
 

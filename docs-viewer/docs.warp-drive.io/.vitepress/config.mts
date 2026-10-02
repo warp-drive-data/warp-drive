@@ -5,6 +5,7 @@ import { defineConfig, type DefaultTheme, type Plugin } from 'vitepress';
 import { withMermaid } from 'vitepress-plugin-mermaid';
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs';
 
+import { BLOG_FEED_PATH, emitBlogFeed } from '../../src/emit-blog-feed.ts';
 import {
   draftPages,
   getBlogStructure,
@@ -32,6 +33,9 @@ const LEGACY_PACKAGE_LIST = legacyDocsPackageNames()
   .map((name) => `\`${name}\``)
   .join(', ');
 const SITE_ORIGIN = (process.env.HOSTNAME || 'https://canary.warp-drive.io').replace(/\/$/, '');
+// VitePress doesn't prefix `head` hrefs with `base`, so the feed link carries it explicitly to stay
+// correct on PR previews, which are served from a sub-path.
+const SITE_BASE = (process.env.BASE || '/').replace(/\/?$/, '/');
 
 const TypeDocSidebar = await postProcessApiDocs();
 
@@ -290,6 +294,15 @@ export default withPwa(
         ['link', { rel: 'icon', href: '/logos/warp-drive/prefers-color-w.svg', type: 'image/svg+xml' }],
         ['link', { rel: 'apple-touch-icon', href: '/logos/favicon/logo-yellow-square-180x180.png', type: 'image/png' }],
         [
+          'link',
+          {
+            rel: 'alternate',
+            type: 'application/rss+xml',
+            title: 'WarpDrive Blog',
+            href: `${SITE_ORIGIN}${SITE_BASE}${BLOG_FEED_PATH}`,
+          },
+        ],
+        [
           'meta',
           {
             name: 'keywords',
@@ -359,6 +372,11 @@ export default withPwa(
 
       sitemap: {
         hostname: process.env.HOSTNAME || 'https://canary.warp-drive.io',
+      },
+
+      buildEnd(siteConfig) {
+        const posts = emitBlogFeed(siteConfig.outDir, `${SITE_ORIGIN}${SITE_BASE}`);
+        console.log(`emitted ${BLOG_FEED_PATH} with ${posts} posts`);
       },
 
       themeConfig: {

@@ -19,10 +19,15 @@ const StoreContext = createContext<Store | null>(null);
  * @example
  * ```tsx
  * import { useStore } from "@warp-drive/react";
+ * import { findRecord } from "@warp-drive/utilities/json-api";
  *
- * export function ReloadButton({ request }) {
+ * export function ReloadButton({ userId }: { userId: string }) {
  *   const store = useStore();
- *   return <button onClick={() => store.request(request)}>Reload</button>;
+ *   return (
+ *     <button onClick={() => store.request(findRecord("user", userId, { reload: true }))}>
+ *       Reload
+ *     </button>
+ *   );
  * }
  * ```
  *
@@ -68,6 +73,8 @@ export type StoreProviderProps =
   | {
       /**
        * A Store class the provider creates an instance of for you and provides.
+       * Changing the class creates a new store, so import it from a module
+       * rather than defining it inside a component.
        */
       Store: typeof Store;
       /**
@@ -98,6 +105,20 @@ export type StoreProviderProps =
  *     </StoreProvider>
  *   );
  * }
+ * ```
+ *
+ * To provide a store created outside React, such as one a host app already
+ * uses, pass the instance instead:
+ *
+ * ```tsx
+ * import { StoreProvider } from "@warp-drive/react";
+ * import { store } from "./services/store";
+ *
+ * root.render(
+ *   <StoreProvider store={store}>
+ *     <UserPreview id="1" />
+ *   </StoreProvider>
+ * );
  * ```
  *
  * @summary Component that provides a Store to its children, either the instance passed in or a new instance of the

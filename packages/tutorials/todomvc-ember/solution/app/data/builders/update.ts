@@ -1,37 +1,31 @@
 // #omit-file-from-starter
+import { recordIdentifierFor } from '@warp-drive/core';
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withReactiveResponse } from '@warp-drive/core/request';
+import type { PersistedResourceKey } from '@warp-drive/core/types/identifier';
 import type { RequestInfo } from '@warp-drive/core/types/request';
 import { buildBaseURL } from '@warp-drive/utilities';
 
-import type { Todo, TodoAttributes } from '../schemas/todo.ts';
+import type { Todo, TodoAttributes, TodosDocument } from '../schemas/todo.ts';
 import type Store from '../store.ts';
 import { getActiveTodos, getCompletedTodos } from './query.ts';
-import { keyForRequest, keyForSavedResource } from './utils.ts';
+import { serverIndex } from './utils.ts';
 
 /** PATCH /api/todo/:id */
 export function patchTodo(todo: Todo, attributes: Partial<TodoAttributes>): RequestInfo<ReactiveDataDocument<Todo>> {
-  const key = keyForSavedResource(todo);
-
   return withReactiveResponse<Todo>({
     method: 'PATCH',
-    url: buildBaseURL({ resourcePath: `todo/${key.id}` }),
-    body: JSON.stringify({ data: { type: 'todo', id: key.id, attributes } }),
+    url: buildBaseURL({ op: 'updateRecord', identifier: { type: 'todo', id: todo.id } }),
+    body: JSON.stringify({ data: { type: 'todo', id: todo.id, attributes } }),
 
-    // The response updates this todo in the cache, and every list holding it
-    // re-renders with the new attributes.
-    records: [key],
+    // 'updateRecord' plus the todo's key: on success the cache commits the
+    // response to this todo, and every list holding it re-renders.
+    op: 'updateRecord',
+    records: [recordIdentifierFor(todo)],
   });
 }
 
-/**
- * Moves a todo from the cached "active" list to the cached "completed" list.
- *
- * The cache patches a todo's *attributes* into every list that already holds
- * it, but it can't move a todo between lists: a list only tracks the records
- * it returned, not the ones it didn't. So when a todo's completion changes we
- * patch the two list documents ourselves instead of refetching them.
- */
+/** Moves a todo from the cached "active" list to the cached "completed" list. */
 export function patchCacheTodoCompleted(store: Store, todo: Todo): void {
   moveBetweenLists(store, todo, { from: getActiveTodos(), to: getCompletedTodos() });
 }
@@ -44,18 +38,18 @@ export function patchCacheTodoActivated(store: Store, todo: Todo): void {
 function moveBetweenLists(
   store: Store,
   todo: Todo,
-  lists: { from: ReturnType<typeof getActiveTodos>; to: ReturnType<typeof getActiveTodos> }
+  lists: { from: RequestInfo<TodosDocument>; to: RequestInfo<TodosDocument> }
 ): void {
-  const value = keyForSavedResource(todo);
-  const from = keyForRequest(store, lists.from);
-  const to = keyForRequest(store, lists.to);
+  // A saved todo always has an id; the cast tells TypeScript so.
+  const value = recordIdentifierFor(todo) as PersistedResourceKey<'todo'>;
+  const from = store.cacheKeyManager.getOrCreateDocumentIdentifier(lists.from);
+  const to = store.cacheKeyManager.getOrCreateDocumentIdentifier(lists.to);
 
   // Only patch lists that have been requested; the others will fetch fresh.
-  // FIXME: Set a real index on these.
-  if (store.cache.peekRequest(to)) {
-    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: 0 });
+  if (to && store.cache.peekRequest(to)) {
+    store.cache.patch({ record: to, op: 'add', field: 'data', value, index: serverIndex(store, lists.to, value) });
   }
-  if (store.cache.peekRequest(from)) {
+  if (from && store.cache.peekRequest(from)) {
     store.cache.patch({ record: from, op: 'remove', field: 'data', value });
   }
 }
