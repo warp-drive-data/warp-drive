@@ -16,7 +16,7 @@ function createMemo<T>(
 ): MemoNode<T>;
 ```
 
-Defined in: [primitives.ts:259](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/alien-signals/src/primitives.ts#L259)
+Defined in: [primitives.ts:259](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/alien-signals/src/primitives.ts#L259)
 
 Creates a [MemoNode](../types/MemoNode.md) that caches the result of `fn`. Read it with [readMemo](readMemo.md): the
 first read runs `fn`, and later reads return the cached result until a signal or memo `fn` read

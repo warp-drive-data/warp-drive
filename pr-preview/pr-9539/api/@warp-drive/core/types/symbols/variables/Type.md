@@ -12,7 +12,7 @@ description: >-
 const Type: "___(unique) Symbol($type)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:60](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/symbols.ts#L60)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:60](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/types/symbols.ts#L60)
 
 Symbol for the name of a resource, transformation
 or derivation.

@@ -12,7 +12,7 @@ description: >-
 type Trait = LegacyTrait | PolarisTrait;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2622](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/schema/fields.ts#L2622)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2622](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/types/schema/fields.ts#L2622)
 
 A union of
 

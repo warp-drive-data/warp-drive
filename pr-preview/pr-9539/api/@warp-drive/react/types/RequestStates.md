@@ -29,7 +29,7 @@ interface RequestStates<RT, E> {
 }
 ```
 
-Defined in: [-private/request.tsx:173](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L173)
+Defined in: [-private/request.tsx:173](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L173)
 
 The components the [\`\<Request />\`](../functions/Request.md) component renders for
 each state of its request, passed as its `states` prop.
@@ -74,7 +74,7 @@ optional cancelled?: FC<{
 }>;
 ```
 
-Defined in: [-private/request.tsx:191](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L191)
+Defined in: [-private/request.tsx:191](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L191)
 
 The component to render when the request was cancelled.
 
@@ -89,7 +89,7 @@ content: FC<{
 }>;
 ```
 
-Defined in: [-private/request.tsx:222](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L222)
+Defined in: [-private/request.tsx:222](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L222)
 
 The component to render when the request succeeded. It receives the
 response as `result`, and the ContentFeatures used to refresh,
@@ -106,7 +106,7 @@ error: FC<{
 }>;
 ```
 
-Defined in: [-private/request.tsx:205](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L205)
+Defined in: [-private/request.tsx:205](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L205)
 
 The component to render when the request failed.
 
@@ -118,7 +118,7 @@ The component to render when the request failed.
 optional idle?: FC<object>;
 ```
 
-Defined in: [-private/request.tsx:178](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L178)
+Defined in: [-private/request.tsx:178](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L178)
 
 The component to render when the component is idle and waiting to be given a request.
 
@@ -132,7 +132,7 @@ optional loading?: FC<{
 }>;
 ```
 
-Defined in: [-private/request.tsx:185](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/request.tsx#L185)
+Defined in: [-private/request.tsx:185](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/request.tsx#L185)
 
 The component to render when the request is loading. It receives the
 RequestLoadingState.

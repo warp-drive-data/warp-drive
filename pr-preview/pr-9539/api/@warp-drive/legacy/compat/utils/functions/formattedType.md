@@ -15,7 +15,7 @@ description: >-
 function formattedType<T extends string>(type: string | T): T;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:115](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/legacy/src/compat/utils.ts#L115)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:115](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/legacy/src/compat/utils.ts#L115)
 
 Converts a potentially unnormalized type into the format expected
 by our WarpDrive Cache. Currently this is singular-dasherized.

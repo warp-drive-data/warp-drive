@@ -12,7 +12,7 @@ description: >-
 function withDefaults(schema: WithPartial<PolarisResourceSchema, "identity">): PolarisResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:449](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/reactive/-private/schema.ts#L449)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:449](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/reactive/-private/schema.ts#L449)
 
 Utility for constructing a ResourceSchema with the recommended
 fields for the PolarisMode experience.

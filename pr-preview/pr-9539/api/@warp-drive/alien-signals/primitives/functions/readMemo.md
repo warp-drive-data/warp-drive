@@ -12,7 +12,7 @@ description: >-
 function readMemo<T>(memo: MemoNode<T>): T;
 ```
 
-Defined in: [primitives.ts:307](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/alien-signals/src/primitives.ts#L307)
+Defined in: [primitives.ts:307](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/alien-signals/src/primitives.ts#L307)
 
 Returns the latest result of `memo`, running its function only if something it read changed
 since the last run. Inside another memo, that memo now depends on `memo`.

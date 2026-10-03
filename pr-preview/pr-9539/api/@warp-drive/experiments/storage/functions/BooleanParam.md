@@ -14,7 +14,7 @@ description: >-
 function BooleanParam(): ParamConfig;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:49](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/experiments/src/storage/query-params.ts#L49)
+Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:49](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/experiments/src/storage/query-params.ts#L49)
 
 Creates a [ParamConfig](../types/ParamConfig.md) for boolean fields that serialize to '1' or null.
 

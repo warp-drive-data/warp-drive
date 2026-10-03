@@ -12,7 +12,7 @@ description: >-
 type TypeFromInstanceOrString<T> = T extends TypedRecordInstance ? T[typeof Type] : string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:55](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/record.ts#L55)
+Defined in: [warp-drive-packages/core/src/types/record.ts:55](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/types/record.ts#L55)
 
 A type utility that extracts the Type if available,
 otherwise it returns string

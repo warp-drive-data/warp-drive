@@ -14,7 +14,7 @@ function serializePatch(cache: Cache, identifier: ResourceKey): {
 };
 ```
 
-Defined in: [-private/json-api/serialize.ts:168](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L168)
+Defined in: [-private/json-api/serialize.ts:168](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L168)
 
 :::warning ⚠️ **This util often won't produce the necessary body for a {json:api} request**
 

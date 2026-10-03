@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;\<Await />
 
-Defined in: [warp-drive-packages/ember/src/-private/await.gts:143](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/await.gts#L143)
+Defined in: [warp-drive-packages/ember/src/-private/await.gts:143](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/await.gts#L143)
 
 The `<Await />` component allow you to utilize reactive control flow
 for asynchronous states in your application.
@@ -106,7 +106,7 @@ Component<AwaitSignature<T, E>>.constructor
 get error(): E;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/await.gts:154](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/await.gts#L154)
+Defined in: [warp-drive-packages/ember/src/-private/await.gts:154](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/await.gts#L154)
 
 The rejection reason, once [state](#state) has errored.
 
@@ -124,7 +124,7 @@ The rejection reason, once [state](#state) has errored.
 get result(): T;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/await.gts:161](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/await.gts#L161)
+Defined in: [warp-drive-packages/ember/src/-private/await.gts:161](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/await.gts#L161)
 
 The resolved value, once [state](#state) has succeeded.
 
@@ -142,7 +142,7 @@ The resolved value, once [state](#state) has succeeded.
 get state(): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/await.gts:147](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/await.gts#L147)
+Defined in: [warp-drive-packages/ember/src/-private/await.gts:147](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/await.gts#L147)
 
 The reactive PromiseState for the awaited promise.
 

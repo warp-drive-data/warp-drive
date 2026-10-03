@@ -12,7 +12,7 @@ description: >-
 function schemaArray(options: SchemaArrayOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/schema-array.ts:136](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L136)
+Defined in: [fields/schema-array.ts:136](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/schema-dsl/src/fields/schema-array.ts#L136)
 
 **`Decorator`**
 

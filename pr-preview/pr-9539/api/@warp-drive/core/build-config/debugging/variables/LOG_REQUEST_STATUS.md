@@ -12,7 +12,7 @@ description: >-
 const LOG_REQUEST_STATUS: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/debugging.ts#L98)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:98](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/build-config/src/debugging.ts#L98)
 
 log updates to requests the store has issued to
 the network (adapter) to fulfill.

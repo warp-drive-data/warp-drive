@@ -20,7 +20,7 @@ type WithArrayLike<T> = T extends infer U[] ? U & Omit<typeof EmberArrayLikeFeat
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:410](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/legacy/src/compat/extensions.ts#L410)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:410](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/legacy/src/compat/extensions.ts#L410)
 
 Adds Ember's classic array-like API (as registered by [EmberArrayLikeExtension](../variables/EmberArrayLikeExtension.md))
 to the type of a reactive array resource.

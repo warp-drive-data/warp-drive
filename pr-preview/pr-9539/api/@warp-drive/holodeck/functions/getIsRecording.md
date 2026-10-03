@@ -13,7 +13,7 @@ description: >-
 function getIsRecording(): boolean;
 ```
 
-Defined in: [index.ts:266](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/packages/holodeck/src/index.ts#L266)
+Defined in: [index.ts:266](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/packages/holodeck/src/index.ts#L266)
 
 ## Returns
 

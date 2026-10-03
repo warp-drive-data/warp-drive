@@ -15,7 +15,7 @@ interface RequestSignature<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:132](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/request.gts#L132)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:132](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/request.gts#L132)
 
 The Glint signature of the [\`\<Request />\`](../classes/Request.md) component: the
 [args](EmberRequestArgs.md) it accepts and the blocks it yields to.
@@ -47,7 +47,7 @@ type UserRequestArgs = RequestSignature<User, unknown>['Args'];
 Args: EmberRequestArgs<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:136](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/request.gts#L136)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:136](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/request.gts#L136)
 
 The args the component accepts, see [EmberRequestArgs](EmberRequestArgs.md).
 
@@ -66,7 +66,7 @@ Blocks: {
 };
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:137](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/ember/src/-private/request.gts#L137)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:137](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/ember/src/-private/request.gts#L137)
 
 #### always
 

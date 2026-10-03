@@ -15,7 +15,7 @@ interface FieldOptions {
 }
 ```
 
-Defined in: [fields/field.ts:12](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/schema-dsl/src/fields/field.ts#L12)
+Defined in: [fields/field.ts:12](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/schema-dsl/src/fields/field.ts#L12)
 
 Options accepted by the [field](../functions/field.md) decorator.
 
@@ -27,7 +27,7 @@ Options accepted by the [field](../functions/field.md) decorator.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/field.ts:26](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/schema-dsl/src/fields/field.ts#L26)
+Defined in: [fields/field.ts:26](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/schema-dsl/src/fields/field.ts#L26)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the field's `sourceKey`.
@@ -40,6 +40,6 @@ decorated property's name. Compiles onto the field's `sourceKey`.
 optional type?: string;
 ```
 
-Defined in: [fields/field.ts:18](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/schema-dsl/src/fields/field.ts#L18)
+Defined in: [fields/field.ts:18](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/schema-dsl/src/fields/field.ts#L18)
 
 The name of a [Transformation](../../core/types/schema/concepts/types/Transformation.md) to compile onto the field's `type`.

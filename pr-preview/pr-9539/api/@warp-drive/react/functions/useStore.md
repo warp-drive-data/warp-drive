@@ -12,7 +12,7 @@ description: >-
 function useStore(): Store$1;
 ```
 
-Defined in: [-private/store-provider.tsx:37](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/store-provider.tsx#L37)
+Defined in: [-private/store-provider.tsx:37](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/-private/store-provider.tsx#L37)
 
 Returns the Store provided by the nearest [StoreProvider](StoreProvider.md). In development
 builds, calling it outside a `<StoreProvider />` throws an error.

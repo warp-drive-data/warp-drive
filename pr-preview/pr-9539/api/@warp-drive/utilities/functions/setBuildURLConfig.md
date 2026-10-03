@@ -12,7 +12,7 @@ description: >-
 function setBuildURLConfig(config: BuildURLConfig): void;
 ```
 
-Defined in: [index.ts:78](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/index.ts#L78)
+Defined in: [index.ts:78](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/utilities/src/index.ts#L78)
 
 Sets the global configuration for `buildBaseURL`
 for host and namespace values for the application.

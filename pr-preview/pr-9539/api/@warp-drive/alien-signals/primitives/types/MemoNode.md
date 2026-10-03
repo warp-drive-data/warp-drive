@@ -12,7 +12,7 @@ description: >-
 interface MemoNode<T = unknown> extends ReactiveNode {}
 ```
 
-Defined in: [primitives.ts:85](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/alien-signals/src/primitives.ts#L85)
+Defined in: [primitives.ts:85](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/alien-signals/src/primitives.ts#L85)
 
 A memo created by [createMemo](../functions/createMemo.md). Read it with [readMemo](../functions/readMemo.md).
 

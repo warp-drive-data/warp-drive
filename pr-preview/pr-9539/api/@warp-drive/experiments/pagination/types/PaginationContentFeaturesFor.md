@@ -14,7 +14,7 @@ description: >-
 type PaginationContentFeaturesFor<RT = unknown, M extends PaginateMode = "paged"> = M extends "infinite" ? InfinitePaginationContentFeatures<RT> : PagedPaginationContentFeatures<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:82](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/pagination-subscription.ts#L82)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:82](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/signals/pagination-subscription.ts#L82)
 
 Resolves a [PaginateMode](PaginateMode.md) to the content features it exposes. Mirror of
 [PaginationStateFor](PaginationStateFor.md).

@@ -12,7 +12,7 @@ description: >-
 const DEPRECATE_COMPUTED_CHAINS: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/deprecations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/deprecations.ts#L133)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:133](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/build-config/src/deprecations.ts#L133)
 
 This is a planned deprecation which will trigger when observer or computed
 chains are used to watch for changes on any WarpDrive LiveArray, CollectionRecordArray,

@@ -12,7 +12,7 @@ description: >-
 const DISABLE_7X_DEPRECATIONS: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/deprecations.ts:571](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/deprecations.ts#L571)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:571](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/build-config/src/deprecations.ts#L571)
 
 This is a special flag that can be used to opt-in early to receiving deprecations introduced in 6.x
 which have had their infra backported to 5.x versions of ***Warp*Drive**.

@@ -12,7 +12,7 @@ description: >-
 function assertInvalidUrlLength(url: string | undefined): void;
 ```
 
-Defined in: [-private/handlers/utils.ts:85](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L85)
+Defined in: [-private/handlers/utils.ts:85](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L85)
 
 This assertion takes a URL and throws an error if the URL is longer than the maximum URL length.
 

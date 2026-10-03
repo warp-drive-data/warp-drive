@@ -12,7 +12,7 @@ description: >-
 const ENABLE_LEGACY_SCHEMA_SERVICE: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/deprecations.ts:463](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/deprecations.ts#L463)
+Defined in: [warp-drive-packages/build-config/src/deprecations.ts:463](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/build-config/src/deprecations.ts#L463)
 
 When the flag is `true` (default), the legacy schema
 service features will be enabled on the store and

@@ -12,7 +12,7 @@ description: >-
 function hasMany(options: HasManyOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/has-many.ts:102](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L102)
+Defined in: [fields/has-many.ts:102](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L102)
 
 **`Decorator`**
 

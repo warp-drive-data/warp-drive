@@ -14,6 +14,6 @@ description: >-
 type AbortError = AdapterRequestError<"AbortError">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:334](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/legacy/src/adapter/error.ts#L334)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:334](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/legacy/src/adapter/error.ts#L334)
 
 The [AdapterRequestError](AdapterRequestError.md) shape thrown by the [AbortError](../variables/AbortError.md) constructor.

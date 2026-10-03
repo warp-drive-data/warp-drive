@@ -12,7 +12,7 @@ description: >-
 function getRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:855](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/request-state.ts#L855)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:855](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/signals/request-state.ts#L855)
 
 `getRequestState` can be used in both JavaScript and Template contexts.
 

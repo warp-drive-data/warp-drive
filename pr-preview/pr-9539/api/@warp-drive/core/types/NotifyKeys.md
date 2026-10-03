@@ -12,7 +12,7 @@ description: >-
 type NotifyKeys = Set<string>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:54](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L54)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:54](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L54)
 
 The shape accepted by NotificationManager.notify and
 CacheCapabilitiesManager.notifyChange for delivering many keys for

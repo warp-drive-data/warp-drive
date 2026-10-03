@@ -15,7 +15,7 @@ description: >-
 type PaginateMode = "paged" | "infinite";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:22](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/pagination-state.ts#L22)
+Defined in: [warp-drive-packages/core/src/signals/pagination-state.ts:22](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/core/src/signals/pagination-state.ts#L22)
 
 The two navigation surfaces a `<Paginate />` component can drive. Selecting
 one (via the component's `@mode` arg) narrows the yielded state so the two

@@ -12,7 +12,7 @@ description: >-
 function buildSignalConfig(_options: HooksOptions): SignalIntegration;
 ```
 
-Defined in: [install.ts:95](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/install.ts#L95)
+Defined in: [install.ts:95](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/react/src/install.ts#L95)
 
 Builds the [SignalIntegration](../../../alien-signals/install/types/SignalIntegration.md) that connects the
 [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/install/) graph to React rendering

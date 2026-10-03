@@ -12,7 +12,7 @@ description: >-
 const TAB_ID: string;
 ```
 
-Defined in: [-private/handlers/utils.ts:38](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L38)
+Defined in: [-private/handlers/utils.ts:38](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/utilities/src/-private/handlers/utils.ts#L38)
 
 A unique identifier for the current browser tab
 useful for observability/tracing and deduping

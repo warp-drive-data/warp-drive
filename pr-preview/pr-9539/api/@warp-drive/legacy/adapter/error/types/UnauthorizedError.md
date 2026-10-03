@@ -14,6 +14,6 @@ description: >-
 type UnauthorizedError = AdapterRequestError<"UnauthorizedError">;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:378](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/legacy/src/adapter/error.ts#L378)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:378](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/legacy/src/adapter/error.ts#L378)
 
 The [AdapterRequestError](AdapterRequestError.md) shape thrown by the [UnauthorizedError](../variables/UnauthorizedError.md) constructor.

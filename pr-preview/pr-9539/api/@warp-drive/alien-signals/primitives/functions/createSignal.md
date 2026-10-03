@@ -12,7 +12,7 @@ description: >-
 function createSignal(obj: object, key: string | symbol): SignalNode;
 ```
 
-Defined in: [primitives.ts:169](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/alien-signals/src/primitives.ts#L169)
+Defined in: [primitives.ts:169](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/alien-signals/src/primitives.ts#L169)
 
 Creates a [SignalNode](../types/SignalNode.md) for `key` on `obj`. This is the `createSignal` hook of the
 [SignalHooks](../../../core/configure/types/SignalHooks.md) that the `install` entry point configures.

@@ -12,7 +12,7 @@ description: >-
 function registerSignalIntegration<T>(buildConfig: (options: HooksOptions) => SignalIntegration<T>): void;
 ```
 
-Defined in: [install.ts:356](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/alien-signals/src/install.ts#L356)
+Defined in: [install.ts:356](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/warp-drive-packages/alien-signals/src/install.ts#L356)
 
 Adds a [SignalIntegration](../types/SignalIntegration.md) to the graph that `@warp-drive/alien-signals/install`
 configured. Use it to build a framework integration on

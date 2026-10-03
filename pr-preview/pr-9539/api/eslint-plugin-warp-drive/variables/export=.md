@@ -15,7 +15,7 @@ export=: {
 };
 ```
 
-Defined in: [index.js:12](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/packages/eslint-plugin-warp-drive/src/index.js#L12)
+Defined in: [index.js:12](https://github.com/warp-drive-data/warp-drive/blob/5170dc70aa623ae44619aaae720347349150ad1a/packages/eslint-plugin-warp-drive/src/index.js#L12)
 
 ## Type Declaration
 
