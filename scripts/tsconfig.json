@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "lib": ["ES2024"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "moduleDetection": "force",
+    "allowImportingTsExtensions": true,
+    "strict": true,
+    "pretty": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "noEmit": true,
+    // Node runs these files with type stripping: only erasable syntax, and
+    // type-only imports must be marked `type` so they are removed.
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
+    "types": ["@types/node"]
+  },
+  "include": [
+    "public-exports-mapping/**/*.mts",
+    "__tests__/public-exports-mapping-*.spec.mts",
+    "__tests__/fixtures/public-exports-mapping/*.mts"
+  ]
+}

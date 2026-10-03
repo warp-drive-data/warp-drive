@@ -1,0 +1,437 @@
+{
+  "declarations": {},
+  "exports": {
+    "@ember-data/json-api/request": {
+      "added": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
+          "kind": "type"
+        }
+      }
+    },
+    "@ember-data/request-utils/handlers": {
+      "added": {
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
+        }
+      }
+    },
+    "@ember-data/store/-private": {
+      "added": {
+        "FieldValueIdentity": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#FieldValueIdentity",
+          "kind": "type"
+        },
+        "fieldValueIdentity": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#fieldValueIdentity",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/alien-signals/install": {
+      "added": {
+        "ComposingSignalHooks": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#ComposingSignalHooks",
+          "kind": "type"
+        },
+        "SignalIntegration": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#SignalIntegration",
+          "kind": "type"
+        },
+        "buildSignalConfig": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#buildSignalConfig",
+          "kind": "value"
+        },
+        "registerSignalIntegration": {
+          "decl": "warp-drive-packages/alien-signals/src/install.ts#registerSignalIntegration",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/alien-signals/primitives": {
+      "added": {
+        "MemoNode": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#MemoNode",
+          "kind": "type"
+        },
+        "SignalNode": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#SignalNode",
+          "kind": "type"
+        },
+        "Watcher": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#Watcher",
+          "kind": "value"
+        },
+        "consumeSignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#consumeSignal",
+          "kind": "value"
+        },
+        "createMemo": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#createMemo",
+          "kind": "value"
+        },
+        "createSignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#createSignal",
+          "kind": "value"
+        },
+        "hasSubscribers": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#hasSubscribers",
+          "kind": "value"
+        },
+        "isTracking": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#isTracking",
+          "kind": "value"
+        },
+        "notifySignal": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#notifySignal",
+          "kind": "value"
+        },
+        "readMemo": {
+          "decl": "warp-drive-packages/alien-signals/src/primitives.ts#readMemo",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core-types/runtime": {
+      "added": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/configure": {
+      "added": {
+        "registerSignals": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#registerSignals",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/reactive": {
+      "added": {
+        "AutorefreshBehaviorCombos": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#AutorefreshBehaviorCombos",
+          "kind": "type"
+        },
+        "AutorefreshBehaviorType": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#AutorefreshBehaviorType",
+          "kind": "type"
+        },
+        "CancelledRequest": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#CancelledRequest",
+          "kind": "type"
+        },
+        "ContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#ContentFeatures",
+          "kind": "type"
+        },
+        "PendingRequest": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#PendingRequest",
+          "kind": "type"
+        },
+        "RecoveryFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RecoveryFeatures",
+          "kind": "type"
+        },
+        "RejectedRequest": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#RejectedRequest",
+          "kind": "type"
+        },
+        "RequestArgs": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RequestArgs",
+          "kind": "type"
+        },
+        "ResolvedRequest": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#ResolvedRequest",
+          "kind": "type"
+        },
+        "SubscriptionArgs": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#SubscriptionArgs",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/store/-private": {
+      "added": {
+        "FieldValueIdentity": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#FieldValueIdentity",
+          "kind": "type"
+        },
+        "fieldValueIdentity": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#fieldValueIdentity",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/types/runtime": {
+      "added": {
+        "LOG_CONFIG": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#LOG_CONFIG",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/ember": {
+      "added": {
+        "EmberRequestArgs": {
+          "decl": "warp-drive-packages/ember/src/-private/request.gts#EmberRequestArgs",
+          "kind": "type"
+        },
+        "RequestSignature": {
+          "decl": "warp-drive-packages/ember/src/-private/request.gts#RequestSignature",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/experiments/storage": {
+      "added": {
+        "BooleanParam": {
+          "decl": "warp-drive-packages/experiments/src/storage/query-params.ts#BooleanParam",
+          "kind": "value"
+        },
+        "CacheResource": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#CacheResource",
+          "kind": "value"
+        },
+        "CacheStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/cache.ts#CacheStorage",
+          "kind": "value"
+        },
+        "CacheStorageEvent": {
+          "decl": "warp-drive-packages/experiments/src/storage/cache.ts#CacheStorageEvent",
+          "kind": "type"
+        },
+        "DEFAULT_CACHE_ID": {
+          "decl": "warp-drive-packages/experiments/src/storage/cache.ts#DEFAULT_CACHE_ID",
+          "kind": "value"
+        },
+        "EffectStorageEvent": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#EffectStorageEvent",
+          "kind": "type"
+        },
+        "InternalCacheStorageEvent": {
+          "decl": "warp-drive-packages/experiments/src/storage/cache.ts#InternalCacheStorageEvent",
+          "kind": "type"
+        },
+        "KeyFn": {
+          "decl": "warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#KeyFn",
+          "kind": "type"
+        },
+        "LocalResource": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#LocalResource",
+          "kind": "value"
+        },
+        "NumberParam": {
+          "decl": "warp-drive-packages/experiments/src/storage/query-params.ts#NumberParam",
+          "kind": "value"
+        },
+        "ParamConfig": {
+          "decl": "warp-drive-packages/experiments/src/storage/query-params.ts#ParamConfig",
+          "kind": "type"
+        },
+        "ReactiveStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#ReactiveStorage",
+          "kind": "type"
+        },
+        "ReactiveStorageOptions": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#ReactiveStorageOptions",
+          "kind": "type"
+        },
+        "SessionResource": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#SessionResource",
+          "kind": "value"
+        },
+        "ValueTransition": {
+          "decl": "warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#ValueTransition",
+          "kind": "type"
+        },
+        "_getParamCompanion": {
+          "decl": "warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#getParamCompanion",
+          "kind": "value"
+        },
+        "_initMeta": {
+          "decl": "warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#initMeta",
+          "kind": "value"
+        },
+        "_initializeFields": {
+          "decl": "warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#initializeFields",
+          "kind": "value"
+        },
+        "configureLocalStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#configureLocalStorage",
+          "kind": "value"
+        },
+        "configureSessionStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#configureSessionStorage",
+          "kind": "value"
+        },
+        "effect": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#effect",
+          "kind": "value"
+        },
+        "field": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#field",
+          "kind": "value"
+        },
+        "getCacheStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#getCacheStorage",
+          "kind": "value"
+        },
+        "getLocalStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#getLocalStorage",
+          "kind": "value"
+        },
+        "getSessionStorage": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#getSessionStorage",
+          "kind": "value"
+        },
+        "input": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage-resource.ts#input",
+          "kind": "value"
+        },
+        "onStorageEvent": {
+          "decl": "warp-drive-packages/experiments/src/storage/storage.ts#onStorageEvent",
+          "kind": "value"
+        },
+        "param": {
+          "decl": "warp-drive-packages/experiments/src/storage/query-params.ts#param",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/holodeck/mock": {
+      "added": {
+        "LazyScaffold": {
+          "decl": "packages/holodeck/src/mock.ts#LazyScaffold",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/react": {
+      "added": {
+        "ChromeComponentProps": {
+          "decl": "warp-drive-packages/react/src/-private/request.tsx#ChromeComponentProps",
+          "kind": "type"
+        },
+        "RequestProps": {
+          "decl": "warp-drive-packages/react/src/-private/request.tsx#RequestProps",
+          "kind": "type"
+        },
+        "RequestStates": {
+          "decl": "warp-drive-packages/react/src/-private/request.tsx#RequestStates",
+          "kind": "type"
+        },
+        "StoreProviderProps": {
+          "decl": "warp-drive-packages/react/src/-private/store-provider.tsx#StoreProviderProps",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/utilities/handlers": {
+      "added": {
+        "CompressionOptions": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#CompressionOptions",
+          "kind": "type"
+        },
+        "Constraints": {
+          "decl": "warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#Constraints",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/utilities/json-api": {
+      "added": {
+        "JSONAPIConfig": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/-utils.ts#JSONAPIConfig",
+          "kind": "type"
+        },
+        "JsonApiResourcePatch": {
+          "decl": "warp-drive-packages/utilities/src/-private/json-api/serialize.ts#JsonApiResourcePatch",
+          "kind": "type"
+        }
+      }
+    }
+  },
+  "from": "5.9.1",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@warp-drive/alien-signals/install": {
+        "entry": "warp-drive-packages/alien-signals/src/install.ts",
+        "forward": null,
+        "package": "@warp-drive/alien-signals"
+      },
+      "@warp-drive/alien-signals/primitives": {
+        "entry": "warp-drive-packages/alien-signals/src/primitives.ts",
+        "forward": null,
+        "package": "@warp-drive/alien-signals"
+      },
+      "@warp-drive/experiments/storage": {
+        "entry": "warp-drive-packages/experiments/src/storage.ts",
+        "forward": null,
+        "package": "@warp-drive/experiments"
+      },
+      "eslint-plugin-warp-drive/legacy-import-mapping": {
+        "entry": "packages/eslint-plugin-warp-drive/src/legacy-import-mapping/index.js",
+        "forward": null,
+        "package": "eslint-plugin-warp-drive"
+      },
+      "eslint-plugin-warp-drive/recommended-internal": {
+        "entry": "packages/eslint-plugin-warp-drive/src/recommended-internal.js",
+        "forward": null,
+        "package": "eslint-plugin-warp-drive"
+      },
+      "eslint-plugin-warp-drive/recommended-react": {
+        "entry": "packages/eslint-plugin-warp-drive/src/recommended-react.js",
+        "forward": null,
+        "package": "eslint-plugin-warp-drive"
+      }
+    }
+  },
+  "packages": {
+    "added": {
+      "@warp-drive/alien-signals": {
+        "dir": "warp-drive-packages/alien-signals",
+        "modules": [
+          "@warp-drive/alien-signals/install",
+          "@warp-drive/alien-signals/primitives"
+        ]
+      }
+    },
+    "changed": {
+      "@warp-drive/experiments": {
+        "modules": [
+          "@warp-drive/experiments/data-worker",
+          "@warp-drive/experiments/document-storage",
+          "@warp-drive/experiments/image-fetch",
+          "@warp-drive/experiments/image-worker",
+          "@warp-drive/experiments/pagination",
+          "@warp-drive/experiments/storage",
+          "@warp-drive/experiments/worker-fetch"
+        ]
+      },
+      "eslint-plugin-warp-drive": {
+        "modules": [
+          "eslint-plugin-warp-drive",
+          "eslint-plugin-warp-drive/legacy-import-mapping",
+          "eslint-plugin-warp-drive/recommended",
+          "eslint-plugin-warp-drive/recommended-internal",
+          "eslint-plugin-warp-drive/recommended-react",
+          "eslint-plugin-warp-drive/recommended-templates"
+        ]
+      }
+    }
+  },
+  "schema": 1,
+  "to": "head"
+}

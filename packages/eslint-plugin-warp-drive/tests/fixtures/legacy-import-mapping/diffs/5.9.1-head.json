@@ -1,0 +1,47 @@
+{
+  "declarations": {
+    "warp-drive-packages/core/src/store/-private/record-arrays/live-array.ts#LiveArray": "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray"
+  },
+  "exports": {
+    "@ember-data/store": {
+      "added": {
+        "setKeyInfoForResource": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setKeyInfoForResource",
+          "kind": "value"
+        }
+      }
+    },
+    "@ember-data/store/-private": {
+      "added": {
+        "ReactiveResourceArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+          "kind": "value"
+        }
+      },
+      "removed": ["LiveArray"]
+    },
+    "@warp-drive/core": {
+      "added": {
+        "setKeyInfoForResource": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#setKeyInfoForResource",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/store/-private": {
+      "added": {
+        "ReactiveResourceArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+          "kind": "value"
+        }
+      },
+      "removed": ["LiveArray"]
+    }
+  },
+  "from": "5.9.1",
+  "kind": "diff",
+  "modules": {},
+  "packages": {},
+  "schema": 1,
+  "to": "head"
+}

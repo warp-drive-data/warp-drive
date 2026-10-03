@@ -1,0 +1,498 @@
+{
+  "entries": [
+    {
+      "choice": {
+        "export": "Transform",
+        "module": "@warp-drive/legacy/serializer/transform"
+      },
+      "confidence": 0.95,
+      "decl": "external:@ember/object#default",
+      "judge": "thread",
+      "reason": "At 4.12 the Transform base class was a re-export of EmberObject; 5.x declares Transform (typed as EmberObject, with the serialize/deserialize interface) in the legacy serializer package, and @ember-data/serializer/transform still forwards its default to it. Same role, direct import rewrite.",
+      "reviewed": false,
+      "source": {
+        "export": "default",
+        "module": "ember-data/transform"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.95,
+      "decl": "packages/adapter/src/error.js#errorsArrayToHash",
+      "judge": "thread",
+      "reason": "Deprecated in 4.x and deleted by #8550 (remove 4.x deprecations) with nothing taking its place; the 5.x error module only keeps the AdapterError classes. Apps keep their own copy.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "/**\n  Convert an array of errors in JSON-API format into an object.\n\n  ```javascript\n  import { errorsArrayToHash } from '@ember-data/adapter/error';\n\n  let errorsArray = [\n    {\n      title: 'Invalid Attribute',\n      detail: 'Must be present',\n      source: { pointer: '/data/attributes/name' }\n    },\n    {\n      title: 'Invalid Attribute',\n      detail: 'Must be present',\n      source: { pointer: '/data/attributes/age' }\n    },\n    {\n      title: 'Invalid Attribute',\n      detail: 'Must be a number',\n      source: { pointer: '/data/attributes/age' }\n    }\n  ];\n\n  let errors = errorsArrayToHash(errorsArray);\n  // {\n  //   \"name\": [\"Must be present\"],\n  //   \"age\":  [\"Must be present\", \"must be a number\"]\n  // }\n  ```\n\n  @method errorsArrayToHash\n  @static\n  @for @ember-data/adapter/error\n  @deprecated\n  @public\n  @param {Array} errors array of errors in JSON-API format\n  @return {Object}\n*/\nexport function errorsArrayToHash(errors) {\n  if (DEPRECATE_HELPERS) {\n    deprecate(`errorsArrayToHash helper has been deprecated.`, false, {\n      id: 'ember-data:deprecate-errors-array-to-hash-helper',\n      for: 'ember-data',\n      until: '5.0',\n      since: { available: '4.7', enabled: '4.7' },\n    });\n    let out = {};\n\n    if (errors) {\n      errors.forEach((error) => {\n        if (error.source && error.source.pointer) {\n          let key = error.source.pointer.match(SOURCE_POINTER_REGEXP);\n\n          if (key) {\n            key = key[2];\n          } else if (error.source.pointer.search(SOURCE_POINTER_PRIMARY_REGEXP) !== -1) {\n            key = PRIMARY_ATTRIBUTE_KEY;\n          }\n\n          if (key) {\n            out[key] = out[key] || [];\n            out[key].push(error.detail || error.title);\n          }\n        }\n      });\n    }\n\n    return out;\n  }\n  assert(`errorsArrayToHash helper has been removed`);\n}",
+      "source": {
+        "export": "errorsArrayToHash",
+        "module": "@ember-data/adapter/error"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.95,
+      "decl": "packages/adapter/src/error.js#errorsHashToArray",
+      "judge": "thread",
+      "reason": "Deprecated in 4.x and deleted by #8550 (remove 4.x deprecations) with nothing taking its place; the 5.x error module only keeps the AdapterError classes. Apps keep their own copy.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "/**\n  Convert an hash of errors into an array with errors in JSON-API format.\n   ```javascript\n   import { errorsHashToArray } from '@ember-data/adapter/error';\n\n   let errors = {\n    base: 'Invalid attributes on saving this record',\n    name: 'Must be present',\n    age: ['Must be present', 'Must be a number']\n  };\n   let errorsArray = errorsHashToArray(errors);\n  // [\n  //   {\n  //     title: \"Invalid Document\",\n  //     detail: \"Invalid attributes on saving this record\",\n  //     source: { pointer: \"/data\" }\n  //   },\n  //   {\n  //     title: \"Invalid Attribute\",\n  //     detail: \"Must be present\",\n  //     source: { pointer: \"/data/attributes/name\" }\n  //   },\n  //   {\n  //     title: \"Invalid Attribute\",\n  //     detail: \"Must be present\",\n  //     source: { pointer: \"/data/attributes/age\" }\n  //   },\n  //   {\n  //     title: \"Invalid Attribute\",\n  //     detail: \"Must be a number\",\n  //     source: { pointer: \"/data/attributes/age\" }\n  //   }\n  // ]\n  ```\n  @method errorsHashToArray\n  @for @ember-data/adapter/error\n  @static\n  @deprecated\n  @public\n  @param {Object} errors hash with errors as properties\n  @return {Array} array of errors in JSON-API format\n*/\nexport function errorsHashToArray(errors) {\n  if (DEPRECATE_HELPERS) {\n    deprecate(`errorsHashToArray helper has been deprecated.`, false, {\n      id: 'ember-data:deprecate-errors-hash-to-array-helper',\n      for: 'ember-data',\n      until: '5.0',\n      since: { available: '4.7', enabled: '4.7' },\n    });\n    let out = [];\n\n    if (errors) {\n      Object.keys(errors).forEach((key) => {\n        let messages = makeArray(errors[key]);\n        for (let i = 0; i < messages.length; i++) {\n          let title = 'Invalid Attribute';\n          let pointer = `/data/attributes/${key}`;\n          if (key === PRIMARY_ATTRIBUTE_KEY) {\n            title = 'Invalid Document';\n            pointer = `/data`;\n          }\n          out.push({\n            title: title,\n            detail: messages[i],\n            source: {\n              pointer: pointer,\n            },\n          });\n        }\n      });\n    }\n\n    return out;\n  }\n  assert(`errorsHashToArray helper has been removed`);\n}",
+      "source": {
+        "export": "errorsHashToArray",
+        "module": "@ember-data/adapter/error"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/debug/addon/setup.js#default",
+      "judge": "thread",
+      "reason": "The data-adapter initializer object was deleted by #8550 (remove 4.x deprecations); 5.x registers the debug adapter from the @ember-data/debug package itself and has no setup module to import.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "export default {\n  name: '@ember-data/data-adapter',\n  initialize() {},\n};",
+      "source": {
+        "export": "default",
+        "module": "@ember-data/debug/setup"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/debug/addon/setup.js#typesMapFor",
+      "judge": "thread",
+      "reason": "Deleted by #8550 with the rest of the 4.x debug setup module; no 5.x export keeps a per-store types map for the data adapter.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "export function typesMapFor(store) {\n  let typesMap = StoreTypesMap.get(store);\n\n  if (typesMap === undefined) {\n    typesMap = new Map();\n    StoreTypesMap.set(store, typesMap);\n  }\n\n  return typesMap;\n}",
+      "source": {
+        "export": "typesMapFor",
+        "module": "@ember-data/debug/setup"
+      }
+    },
+    {
+      "choice": {
+        "export": "graphFor",
+        "module": "@warp-drive/core/graph/-private"
+      },
+      "confidence": 0.98,
+      "decl": "packages/graph/src/-private/graph/index.ts#graphFor",
+      "judge": "thread",
+      "reason": "graphFor moved from graph/index.ts into graph/-private.ts when #8755 flattened the graph package; 5.9.1 still exports the same function under the same name from the private graph entry (and the @ember-data/graph/-private shim forwards it).",
+      "reviewed": false,
+      "source": {
+        "export": "graphFor",
+        "module": "@ember-data/graph/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "peekGraph",
+        "module": "@warp-drive/core/graph/-private"
+      },
+      "confidence": 0.98,
+      "decl": "packages/graph/src/-private/graph/index.ts#peekGraph",
+      "judge": "thread",
+      "reason": "peekGraph moved with graphFor into graph/-private.ts in #8755; same function, same name, exported from the private graph entry at 5.9.1.",
+      "reviewed": false,
+      "source": {
+        "export": "peekGraph",
+        "module": "@ember-data/graph/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/model/src/-private/diff-array.ts#default",
+      "judge": "thread",
+      "reason": "The diffArray helper was deleted by #8550 (remove 4.x deprecations) together with the computed-chains code that used it; 5.x has no array diff helper in its surface.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "/**\n  @method diffArray\n  @internal\n  @param {Array} oldArray the old array\n  @param {Array} newArray the new array\n  @return {hash} {\n      firstChangeIndex: <integer>,  // null if no change\n      addedCount: <integer>,        // 0 if no change\n      removedCount: <integer>       // 0 if no change\n    }\n*/\nexport default function diffArray(oldArray: unknown[], newArray: unknown[]): ArrayDiffResult {\n  const oldLength = oldArray.length;\n  const newLength = newArray.length;\n\n  const shortestLength = Math.min(oldLength, newLength);\n  let firstChangeIndex: number | null = null; // null signifies no changes\n\n  // find the first change\n  for (let i = 0; i < shortestLength; i++) {\n    // compare each item in the array\n    if (oldArray[i] !== newArray[i]) {\n      firstChangeIndex = i;\n      break;\n    }\n  }\n\n  if (firstChangeIndex === null && newLength !== oldLength) {\n    // no change found in the overlapping block\n    // and array lengths differ,\n    // so change starts at end of overlap\n    firstChangeIndex = shortestLength;\n  }\n\n  let addedCount = 0;\n  let removedCount = 0;\n  if (firstChangeIndex !== null) {\n    // we found a change, find the end of the change\n    let unchangedEndBlockLength = shortestLength - firstChangeIndex;\n    // walk back from the end of both arrays until we find a change\n    for (let i = 1; i <= shortestLength; i++) {\n      // compare each item in the array\n      if (oldArray[oldLength - i] !== newArray[newLength - i]) {\n        unchangedEndBlockLength = i - 1;\n        break;\n      }\n    }\n    addedCount = newLength - unchangedEndBlockLength - firstChangeIndex;\n    removedCount = oldLength - unchangedEndBlockLength - firstChangeIndex;\n  }\n\n  return {\n    firstChangeIndex,\n    addedCount,\n    removedCount,\n  };\n}",
+      "source": {
+        "export": "diffArray",
+        "module": "@ember-data/model/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "ManyArray",
+        "module": "@warp-drive/legacy/model"
+      },
+      "confidence": 0.85,
+      "decl": "packages/model/src/-private/many-array.ts#default",
+      "judge": "thread",
+      "reason": "The ManyArray class became the LegacyManyArray interface (the runtime object is built by the store), exported as ManyArray from @warp-drive/legacy/model. It continues the declaration in type positions; value uses such as instanceof have no successor, which the type-only report says.",
+      "reviewed": false,
+      "source": {
+        "export": "ManyArray",
+        "module": "ember-data/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/model/src/-private/model-for-mixin.ts#default",
+      "judge": "thread",
+      "reason": "modelForMixin moved into the legacy package with #10005 but is no longer exported: 5.9.1 exports no _modelForMixin from any model entry. It was an internal helper for mixin-based polymorphic lookups; nothing public replaces it.",
+      "removedIn": "#10005",
+      "reviewed": false,
+      "shim": "/*\n    In case someone defined a relationship to a mixin, for example:\n    ```ts\n      class CommentModel extends Model {\n        @belongsTo('commentable', { polymorphic: true }) owner;\n      }\n\n      let Commentable = Mixin.create({\n        @hasMany('comment') comments;\n      });\n    ```\n    we want to look up a Commentable class which has all the necessary\n    relationship meta data. Thus, we look up the mixin and create a mock\n    Model, so we can access the relationship CPs of the mixin (`comments`)\n    in this case\n  */\nexport default function modelForMixin(store: Store, normalizedModelName: string): ModelFactory | undefined {\n  const owner = getOwner(store)!;\n  const MaybeMixin = owner.factoryFor(`mixin:${normalizedModelName}`);\n  const mixin = MaybeMixin && MaybeMixin.class;\n  if (mixin) {\n    const ModelForMixin = Model.extend(mixin) as unknown as { __isMixin: boolean; __mixin: typeof mixin };\n    ModelForMixin.__isMixin = true;\n    ModelForMixin.__mixin = mixin;\n    //Cache the class as a model\n    owner.register(`model:${normalizedModelName}`, ModelForMixin);\n  }\n  return owner.factoryFor(`model:${normalizedModelName}`) as ModelFactory | undefined;\n}",
+      "source": {
+        "export": "_modelForMixin",
+        "module": "@ember-data/model/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "PolicyConfig",
+        "module": "@warp-drive/core/store"
+      },
+      "confidence": 0.9,
+      "decl": "packages/request-utils/src/index.ts#LifetimesConfig",
+      "judge": "thread",
+      "reason": "LifetimesConfig was the options type of LifetimesService; #9444 renamed the service to CachePolicy (now DefaultCachePolicy) and its options type to PolicyConfig, which keeps apiCacheSoftExpires and apiCacheHardExpires and adds more fields. Exported as a type from @warp-drive/core/store.",
+      "reviewed": false,
+      "source": {
+        "export": "LifetimesConfig",
+        "module": "@ember-data/request-utils"
+      }
+    },
+    {
+      "choice": {
+        "export": "SkipCache",
+        "module": "@warp-drive/core/types/request"
+      },
+      "confidence": 0.98,
+      "decl": "packages/request/src/-private/types.ts#SkipCache",
+      "judge": "thread",
+      "reason": "The SkipCache symbol moved from the request package private types into the shared request types (core/src/types/request.ts) when the types were split per package in #9032; same symbol, same name, same role.",
+      "reviewed": false,
+      "source": {
+        "export": "SkipCache",
+        "module": "@ember-data/request"
+      }
+    },
+    {
+      "choice": {
+        "export": "BooleanTransform",
+        "module": "@warp-drive/legacy/serializer/transform"
+      },
+      "confidence": 0.98,
+      "decl": "packages/serializer/src/-private/transforms/boolean.js#default",
+      "judge": "thread",
+      "reason": "The BooleanTransform class moved with the serializer package into @warp-drive/legacy (#9292 onwards) and became a named export of the public transform entry; same class, same serialize/deserialize role.",
+      "reviewed": false,
+      "source": {
+        "export": "BooleanTransform",
+        "module": "@ember-data/serializer/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "DateTransform",
+        "module": "@warp-drive/legacy/serializer/transform"
+      },
+      "confidence": 0.98,
+      "decl": "packages/serializer/src/-private/transforms/date.js#default",
+      "judge": "thread",
+      "reason": "The DateTransform class moved with the serializer package into @warp-drive/legacy (#9292 onwards) and became a named export of the public transform entry; same class, same serialize/deserialize role.",
+      "reviewed": false,
+      "source": {
+        "export": "DateTransform",
+        "module": "@ember-data/serializer/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "NumberTransform",
+        "module": "@warp-drive/legacy/serializer/transform"
+      },
+      "confidence": 0.98,
+      "decl": "packages/serializer/src/-private/transforms/number.js#default",
+      "judge": "thread",
+      "reason": "The NumberTransform class moved with the serializer package into @warp-drive/legacy (#9292 onwards) and became a named export of the public transform entry; same class, same serialize/deserialize role.",
+      "reviewed": false,
+      "source": {
+        "export": "NumberTransform",
+        "module": "@ember-data/serializer/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "StringTransform",
+        "module": "@warp-drive/legacy/serializer/transform"
+      },
+      "confidence": 0.98,
+      "decl": "packages/serializer/src/-private/transforms/string.js#default",
+      "judge": "thread",
+      "reason": "The StringTransform class moved with the serializer package into @warp-drive/legacy (#9292 onwards) and became a named export of the public transform entry; same class, same serialize/deserialize role.",
+      "reviewed": false,
+      "source": {
+        "export": "StringTransform",
+        "module": "@ember-data/serializer/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/store/src/-private/caches/cache-utils.ts#default",
+      "judge": "thread",
+      "reason": "peekCache(identifier) returned the per-identifier cache instance; #10055 removed it with the cache-utils module because a 5.x store has one cache, reachable as store.cache, which is different calling code rather than an import rewrite.",
+      "removedIn": "#10055",
+      "reviewed": false,
+      "shim": "export function peekCache(instance: StableRecordIdentifier): Cache | null;",
+      "source": {
+        "export": "peekCache",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/store/src/-private/caches/cache-utils.ts#removeRecordDataFor",
+      "judge": "thread",
+      "reason": "Deleted by #10055 with the cache-utils module; the per-identifier cache map it cleared no longer exists in 5.x, so there is nothing to call instead.",
+      "removedIn": "#10055",
+      "reviewed": false,
+      "shim": "export function removeRecordDataFor(identifier: StableRecordIdentifier | OpaqueRecordInstance): void {\n  CacheForIdentifierCache.delete(identifier);\n}",
+      "source": {
+        "export": "removeRecordDataFor",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "isResourceKey",
+        "module": "@warp-drive/core/store/-private"
+      },
+      "confidence": 0.95,
+      "decl": "packages/store/src/-private/caches/identifier-cache.ts#isStableIdentifier",
+      "judge": "thread",
+      "reason": "Renamed in #10077 when StableRecordIdentifier became ResourceKey: isResourceKey is the same type guard over the same identifier set, declared in the file identifier-cache.ts became (cache-key-manager.ts).",
+      "reviewed": false,
+      "source": {
+        "export": "isStableIdentifier",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/store/src/-private/index.ts#normalizeModelName",
+      "judge": "thread",
+      "reason": "The deprecated public helper (an alias for dasherize) was deleted by #8550; 5.9.1 only keeps a private _deprecatingNormalize for internal use. Apps use dasherize from @ember/string or their own helper.",
+      "removedIn": "#8550",
+      "reviewed": false,
+      "shim": "export function normalizeModelName(modelName: string) {\n  if (DEPRECATE_HELPERS) {\n    deprecate(\n      `the helper function normalizeModelName is deprecated. You should use model names that are already normalized, or use string helpers of your own. This function is primarily an alias for dasherize from @ember/string.`,\n      false,\n      {\n        id: 'ember-data:deprecate-normalize-modelname-helper',\n        for: 'ember-data',\n        until: '5.0',\n        since: { available: '4.7', enabled: '4.7' },\n      }\n    );\n    return _normalize(modelName);\n  }\n  assert(`normalizeModelName support has been removed`);\n}",
+      "source": {
+        "export": "normalizeModelName",
+        "module": "@ember-data/store"
+      }
+    },
+    {
+      "choice": {
+        "export": "LegacyQueryArray",
+        "module": "@warp-drive/core/reactive"
+      },
+      "confidence": 0.85,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#Collection",
+      "judge": "thread",
+      "reason": "The Collection class (exported as AdapterPopulatedRecordArray) became the LegacyQueryArray interface when #10064 moved record arrays onto a single ArrayHandler; CollectionRecordArray is its deprecated alias. It continues the declaration for type positions; the class itself has no runtime successor, which the type-only report says.",
+      "reviewed": false,
+      "source": {
+        "export": "AdapterPopulatedRecordArray",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#IDENTIFIER_ARRAY_TAG",
+      "judge": "thread",
+      "reason": "An internal tag symbol of the 4.x IdentifierArray proxy; #8949 replaced that tagging with signals and 5.x exports no equivalent symbol.",
+      "removedIn": "#8949",
+      "reviewed": false,
+      "shim": "export const IDENTIFIER_ARRAY_TAG = Symbol('#tag');",
+      "source": {
+        "export": "IDENTIFIER_ARRAY_TAG",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#MUTATE",
+      "judge": "thread",
+      "reason": "An internal symbol of the 4.x IdentifierArray proxy; #10064 folded the array implementation into a single ArrayHandler and 5.x exports no equivalent symbol.",
+      "removedIn": "#10064",
+      "reviewed": false,
+      "shim": "export const MUTATE: '___(unique) Symbol(#update)' = getOrSetGlobal('#update', Symbol('#update'));",
+      "source": {
+        "export": "MUTATE",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.9,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#SOURCE",
+      "judge": "thread",
+      "reason": "An internal symbol of the 4.x IdentifierArray proxy; #10064 folded the array implementation into a single ArrayHandler and 5.x exports no equivalent symbol.",
+      "removedIn": "#10064",
+      "reviewed": false,
+      "shim": "export const SOURCE: '___(unique) Symbol(#source)' = getOrSetGlobal('#source', Symbol('#source'));",
+      "source": {
+        "export": "SOURCE",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "LegacyLiveArray",
+        "module": "@warp-drive/core/reactive"
+      },
+      "confidence": 0.8,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#default",
+      "judge": "thread",
+      "reason": "IdentifierArray (also exported as RecordArray), the base record array class, became the LegacyLiveArray interface once #9292 and #10064 moved record arrays onto the shared ArrayHandler; LiveArray is its deprecated alias. It continues the declaration for type positions, and the type-only report covers runtime uses, which now go through RecordArrayManager.",
+      "reviewed": false,
+      "source": {
+        "export": "IdentifierArray",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray",
+      "judge": "thread",
+      "reason": "notifyArray(arr) dirtied the internal tag of a 4.x IdentifierArray; #9965 replaced the tag with signals. The nearest function, notifyInternalSignal in @warp-drive/core/signals/-leaked, takes a signal rather than an array, so it is not an import rewrite.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "export function notifyArray(arr: IdentifierArray) {\n  addToTransaction(arr[ARRAY_SIGNAL]);\n}",
+      "source": {
+        "export": "notifyArray",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": {
+        "export": "constructResource",
+        "module": "@warp-drive/core/store/-private"
+      },
+      "confidence": 0.95,
+      "decl": "packages/store/src/-private/utils/construct-resource.ts#default",
+      "judge": "thread",
+      "reason": "constructResource is the same function in the same file, exported by name instead of as default since 5.4; the 5.0.1 release simply did not export it, which broke the pairwise chain.",
+      "reviewed": false,
+      "source": {
+        "export": "constructResource",
+        "module": "@ember-data/store/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#Tag",
+      "judge": "thread",
+      "reason": "The Tag type of the 4.x tracking package went away with #9965 (universal reactivity hooks); 5.x keeps its signal type internal and lets an app plug its reactivity in through SignalHooks and setupSignals from @warp-drive/core/configure.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "export type Tag = { ref: null; t: boolean };",
+      "source": {
+        "export": "Tag",
+        "module": "@ember-data/tracking/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#addToTransaction",
+      "judge": "thread",
+      "reason": "Removed by #9965 with the tracking package transaction machinery; the nearest 5.x function, notifyInternalSignal in @warp-drive/core/signals/-leaked, takes a signal rather than a tag and is not an import rewrite.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "export function addToTransaction(obj: Tag | Signal): void {\n  const transaction = peekTransient<Transaction>('TRANSACTION');\n\n  if (transaction) {\n    transaction.props.add(obj);\n  } else {\n    updateRef(obj);\n  }\n}",
+      "source": {
+        "export": "addToTransaction",
+        "module": "@ember-data/tracking/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#addTransactionCB",
+      "judge": "thread",
+      "reason": "Removed by #9965 with the tracking package transaction machinery; 5.x batches signal notifications internally and exposes no callback hook for it.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "export function addTransactionCB(method: OpaqueFn): void {\n  const transaction = peekTransient<Transaction>('TRANSACTION');\n\n  if (transaction) {\n    transaction.cbs.add(method);\n  } else {\n    method();\n  }\n}",
+      "source": {
+        "export": "addTransactionCB",
+        "module": "@ember-data/tracking/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#memoTransact",
+      "judge": "thread",
+      "reason": "Removed by #9965 (the tracking package is deprecated behind DEPRECATE_TRACKING_PACKAGE); the memoized decorator in @warp-drive/core/signals/-leaked serves a different shape, so there is no import rewrite.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "/**\n * A helpful utility for creating a new function that\n * always runs in a transaction. E.G. this \"memoizes\"\n * calling `transact(fn)`, currying args as necessary.\n *\n * @method memoTransact\n * @public\n * @static\n * @for @ember-data/tracking\n * @param method\n * @return a function that will invoke method in a transaction with any provided args and return its result\n */\nexport function memoTransact<T extends OpaqueFn>(method: T): (...args: unknown[]) => ReturnType<T> {\n  return function (...args: unknown[]) {\n    createTransaction();\n    const ret = method(...args);\n    flushTransaction();\n    return ret as ReturnType<T>;\n  };\n}",
+      "source": {
+        "export": "memoTransact",
+        "module": "@ember-data/tracking"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#subscribe",
+      "judge": "thread",
+      "reason": "Removed by #9965; consuming a signal is internal to 5.x and apps configure reactivity through setupSignals and buildSignalConfig instead.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "/**\n * If there is a current transaction, ensures that the relevant tag (and any\n * array computed chains symbols, if applicable) will be consumed during the\n * transaction.\n *\n * If there is no current transaction, will consume the tag(s) immediately.\n *\n * @internal\n * @param obj\n */\nexport function subscribe(obj: Tag | Signal): void {\n  const TRANSACTION = peekTransient<Transaction | null>('TRANSACTION');\n\n  if (TRANSACTION) {\n    TRANSACTION.sub.add(obj);\n  } else if ('tag' in obj) {\n    if (DEPRECATE_COMPUTED_CHAINS) {\n      maybeConsume(obj['[]']);\n      maybeConsume(obj['@length']);\n    }\n    consumeTag(obj.tag);\n  } else {\n    // eslint-disable-next-line @typescript-eslint/no-unused-expressions\n    obj.ref;\n  }\n}",
+      "source": {
+        "export": "subscribe",
+        "module": "@ember-data/tracking/-private"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#transact",
+      "judge": "thread",
+      "reason": "Removed by #9965 (the tracking package is deprecated behind DEPRECATE_TRACKING_PACKAGE); 5.x batches signal updates internally and exposes no transact helper.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "/**\n * Run the method, subscribing to any tracked properties\n * managed by EmberData that were accessed or written during\n * the method's execution as per-normal but while allowing\n * interleaving of reads and writes.\n *\n * This is useful when for instance you want to perform\n * a mutation based on existing state that must be read first.\n *\n * @function transact\n * @public\n * @static\n * @for @ember-data/tracking\n * @param method\n * @return result of invoking method\n */\nexport function transact<T extends OpaqueFn>(method: T): ReturnType<T> {\n  createTransaction();\n  const ret = method();\n  flushTransaction();\n  return ret as ReturnType<T>;\n}",
+      "source": {
+        "export": "transact",
+        "module": "@ember-data/tracking"
+      }
+    },
+    {
+      "choice": null,
+      "confidence": 0.85,
+      "decl": "packages/tracking/src/-private.ts#untracked",
+      "judge": "thread",
+      "reason": "Removed by #9965 (the tracking package is deprecated behind DEPRECATE_TRACKING_PACKAGE); 5.x exposes no untracked helper, and the gate and memoized decorators in @warp-drive/core/signals/-leaked serve a different shape.",
+      "removedIn": "#9965",
+      "reviewed": false,
+      "shim": "/**\n * Run `method` without subscribing to any tracked properties\n * controlled by EmberData.\n *\n * This should rarely be used except by libraries that really\n * know what they are doing. It is most useful for wrapping\n * certain kinds of fetch/query logic from within a `Resource`\n * `hook` or other similar pattern.\n *\n * @function untracked\n * @public\n * @static\n * @for @ember-data/tracking\n * @param method\n * @return result of invoking method\n */\nexport function untracked<T extends OpaqueFn>(method: T): ReturnType<T> {\n  createTransaction();\n  const ret = method();\n  void untrack();\n  return ret as ReturnType<T>;\n}",
+      "source": {
+        "export": "untracked",
+        "module": "@ember-data/tracking"
+      }
+    }
+  ],
+  "from": "4.12.8",
+  "kind": "decisions",
+  "schema": 1,
+  "to": "5.9.1"
+}

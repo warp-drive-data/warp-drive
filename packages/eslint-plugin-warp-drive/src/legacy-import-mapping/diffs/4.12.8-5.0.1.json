@@ -1,0 +1,119 @@
+{
+  "declarations": {
+    "packages/adapter/src/error.js#errorsArrayToHash": null,
+    "packages/adapter/src/error.js#errorsHashToArray": null,
+    "packages/debug/addon/setup.js#default": null,
+    "packages/debug/addon/setup.js#typesMapFor": null,
+    "packages/legacy-compat/src/builders/find-all.ts#findAllBuilder": null,
+    "packages/legacy-compat/src/builders/find-record.ts#findRecordBuilder": null,
+    "packages/legacy-compat/src/builders/query.ts#queryBuilder": null,
+    "packages/legacy-compat/src/builders/query.ts#queryRecordBuilder": null,
+    "packages/legacy-compat/src/builders/save-record.ts#saveRecordBuilder": null,
+    "packages/model/src/-private/diff-array.ts#default": null,
+    "packages/request-utils/src/index.ts#CacheControlValue": null,
+    "packages/request-utils/src/index.ts#CreateRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#DeleteRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindManyUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRelatedCollectionUrlOptions": null,
+    "packages/request-utils/src/index.ts#FindRelatedResourceUrlOptions": null,
+    "packages/request-utils/src/index.ts#GenericUrlOptions": null,
+    "packages/request-utils/src/index.ts#LifetimesConfig": null,
+    "packages/request-utils/src/index.ts#LifetimesService": null,
+    "packages/request-utils/src/index.ts#QueryUrlOptions": null,
+    "packages/request-utils/src/index.ts#UpdateRecordUrlOptions": null,
+    "packages/request-utils/src/index.ts#UrlOptions": null,
+    "packages/request-utils/src/index.ts#buildBaseURL": null,
+    "packages/request-utils/src/index.ts#buildQueryParams": null,
+    "packages/request-utils/src/index.ts#filterEmpty": null,
+    "packages/request-utils/src/index.ts#parseCacheControl": null,
+    "packages/request-utils/src/index.ts#setBuildURLConfig": null,
+    "packages/request-utils/src/index.ts#sortQueryParams": null,
+    "packages/request/src/-private/promise-cache.ts#Awaitable": null,
+    "packages/request/src/-private/promise-cache.ts#getPromiseResult": null,
+    "packages/request/src/-private/promise-cache.ts#setPromiseResult": null,
+    "packages/request/src/-private/types.ts#SkipCache": null,
+    "packages/store/src/-private/index.ts#normalizeModelName": null,
+    "packages/store/src/-private/utils/coerce-id.ts#ensureStringId": null,
+    "packages/store/src/-private/utils/construct-resource.ts#default": null,
+    "packages/tracking/src/-private.ts#Tag": null
+  },
+  "exports": {
+    "@ember-data/adapter/error": {
+      "removed": [
+        "errorsArrayToHash",
+        "errorsHashToArray"
+      ]
+    },
+    "@ember-data/model/-private": {
+      "removed": [
+        "diffArray"
+      ]
+    },
+    "@ember-data/request": {
+      "removed": [
+        "Awaitable",
+        "SkipCache",
+        "getPromiseResult",
+        "setPromiseResult"
+      ]
+    },
+    "@ember-data/store": {
+      "removed": [
+        "normalizeModelName"
+      ]
+    },
+    "@ember-data/store/-private": {
+      "removed": [
+        "constructResource",
+        "ensureStringId",
+        "normalizeModelName"
+      ]
+    },
+    "@ember-data/tracking/-private": {
+      "removed": [
+        "Tag"
+      ]
+    },
+    "ember-data/-private": {
+      "removed": [
+        "normalizeModelName"
+      ]
+    },
+    "ember-data/adapters/errors": {
+      "removed": [
+        "errorsArrayToHash",
+        "errorsHashToArray"
+      ]
+    }
+  },
+  "from": "4.12.8",
+  "kind": "diff",
+  "modules": {
+    "removed": [
+      "@ember-data/debug/setup",
+      "@ember-data/legacy-compat/builders",
+      "@ember-data/request-utils"
+    ]
+  },
+  "packages": {
+    "changed": {
+      "@ember-data/debug": {
+        "modules": [
+          "@ember-data/debug"
+        ]
+      },
+      "@ember-data/legacy-compat": {
+        "modules": [
+          "@ember-data/legacy-compat",
+          "@ember-data/legacy-compat/-private"
+        ]
+      }
+    },
+    "removed": [
+      "@ember-data/request-utils"
+    ]
+  },
+  "schema": 1,
+  "to": "5.0.1"
+}

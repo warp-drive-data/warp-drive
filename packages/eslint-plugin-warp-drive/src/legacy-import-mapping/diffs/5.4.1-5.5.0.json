@@ -1,0 +1,338 @@
+{
+  "declarations": {
+    "external:@ember/object/compat#dependentKeyCompat": null,
+    "external:@glimmer/tracking/primitives/cache#createCache": null,
+    "external:@glimmer/tracking/primitives/cache#getValue": null,
+    "packages/diagnostic/src/-define.ts#module": null,
+    "packages/diagnostic/src/-define.ts#skip": null,
+    "packages/diagnostic/src/-define.ts#test": null,
+    "packages/diagnostic/src/-define.ts#todo": null,
+    "packages/diagnostic/src/-types.ts#CompatTestReport": null,
+    "packages/diagnostic/src/-types.ts#Diagnostic": null,
+    "packages/diagnostic/src/-types.ts#Emitter": null,
+    "packages/diagnostic/src/-types.ts#GlobalCallback": null,
+    "packages/diagnostic/src/-types.ts#GlobalConfig": null,
+    "packages/diagnostic/src/-types.ts#GlobalHooks": null,
+    "packages/diagnostic/src/-types.ts#GlobalHooksStorage": null,
+    "packages/diagnostic/src/-types.ts#Hooks": null,
+    "packages/diagnostic/src/-types.ts#HooksCallback": null,
+    "packages/diagnostic/src/-types.ts#ModuleCallback": null,
+    "packages/diagnostic/src/-types.ts#ModuleInfo": null,
+    "packages/diagnostic/src/-types.ts#OrderedMap": null,
+    "packages/diagnostic/src/-types.ts#ParamConfig": null,
+    "packages/diagnostic/src/-types.ts#TestCallback": null,
+    "packages/diagnostic/src/-types.ts#TestContext": null,
+    "packages/diagnostic/src/-types.ts#TestInfo": null,
+    "packages/diagnostic/src/ember.ts#RenderingTestContext": null,
+    "packages/diagnostic/src/ember.ts#TestContext": null,
+    "packages/diagnostic/src/ember.ts#configure": null,
+    "packages/diagnostic/src/ember.ts#isRenderingTestContext": null,
+    "packages/diagnostic/src/ember.ts#module": null,
+    "packages/diagnostic/src/ember.ts#render": null,
+    "packages/diagnostic/src/ember.ts#setupRenderingTest": null,
+    "packages/diagnostic/src/ember.ts#setupTest": null,
+    "packages/diagnostic/src/ember.ts#skip": null,
+    "packages/diagnostic/src/ember.ts#test": null,
+    "packages/diagnostic/src/ember.ts#todo": null,
+    "packages/diagnostic/src/index.ts#start": null,
+    "packages/diagnostic/src/internals/config.ts#configure": null,
+    "packages/diagnostic/src/internals/config.ts#setupGlobalHooks": null,
+    "packages/diagnostic/src/internals/delegating-reporter.ts#registerReporter": null,
+    "packages/diagnostic/src/internals/run.ts#PublicTestInfo": null,
+    "packages/diagnostic/src/reporters/dom.ts#DOMReporter": null,
+    "packages/diagnostic/src/runners/dom.ts#start": null,
+    "packages/ember/src/-private/promise-state.ts#getPromiseState": "packages/store/src/-private/new-core-tmp/promise-state.ts#getPromiseState",
+    "packages/ember/src/-private/request-state.ts#getRequestState": "packages/store/src/-private/new-core-tmp/request-state.ts#getRequestState",
+    "packages/holodeck/src/index.ts#MockServerHandler": null,
+    "packages/holodeck/src/index.ts#getIsRecording": null,
+    "packages/holodeck/src/index.ts#mock": null,
+    "packages/holodeck/src/index.ts#setConfig": null,
+    "packages/holodeck/src/index.ts#setIsRecording": null,
+    "packages/holodeck/src/index.ts#setTestId": null,
+    "packages/holodeck/src/mock.ts#DELETE": null,
+    "packages/holodeck/src/mock.ts#GET": null,
+    "packages/holodeck/src/mock.ts#PATCH": null,
+    "packages/holodeck/src/mock.ts#POST": null,
+    "packages/holodeck/src/mock.ts#PUT": null,
+    "packages/holodeck/src/mock.ts#QUERY": null,
+    "packages/holodeck/src/mock.ts#ResponseGenerator": null,
+    "packages/holodeck/src/mock.ts#Scaffold": null,
+    "packages/holodeck/src/mock.ts#ScaffoldGenerator": null,
+    "packages/store/src/-private/network/request-cache.ts#RequestState": null,
+    "packages/store/src/-private/record-arrays/identifier-array.ts#ARRAY_SIGNAL": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#ARRAY_SIGNAL",
+    "packages/store/src/-private/record-arrays/identifier-array.ts#notifyArray": null,
+    "packages/tracking/src/-private.ts#Signal": null,
+    "packages/tracking/src/-private.ts#Signals": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#Signals",
+    "packages/tracking/src/-private.ts#addToTransaction": null,
+    "packages/tracking/src/-private.ts#addTransactionCB": null,
+    "packages/tracking/src/-private.ts#createArrayTags": null,
+    "packages/tracking/src/-private.ts#createSignal": null,
+    "packages/tracking/src/-private.ts#defineSignal": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#defineSignal",
+    "packages/tracking/src/-private.ts#defineSubscription": null,
+    "packages/tracking/src/-private.ts#entangleSignal": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#entangleSignal",
+    "packages/tracking/src/-private.ts#getSignal": null,
+    "packages/tracking/src/-private.ts#memoTransact": null,
+    "packages/tracking/src/-private.ts#notifySignal": null,
+    "packages/tracking/src/-private.ts#peekSignal": null,
+    "packages/tracking/src/-private.ts#subscribe": null,
+    "packages/tracking/src/-private.ts#subscribed": null,
+    "packages/tracking/src/-private.ts#transact": null,
+    "packages/tracking/src/-private.ts#untracked": null,
+    "packages/tracking/src/index.ts#cached": null
+  },
+  "exports": {
+    "@ember-data/model/migration-support": {
+      "added": {
+        "WithLegacy": {
+          "decl": "packages/model/src/migration-support.ts#WithLegacy",
+          "kind": "type"
+        }
+      }
+    },
+    "@ember-data/request-utils/handlers": {
+      "added": {
+        "AutoCompress": {
+          "decl": "packages/request-utils/src/-private/handlers/auto-compress.ts#AutoCompress",
+          "kind": "value"
+        },
+        "SupportsRequestStreams": {
+          "decl": "packages/request-utils/src/-private/handlers/auto-compress.ts#SupportsRequestStreams",
+          "kind": "value"
+        }
+      }
+    },
+    "@ember-data/store/-private": {
+      "added": {
+        "OBJECT_SIGNAL": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#OBJECT_SIGNAL",
+          "kind": "value"
+        },
+        "PromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#PromiseState",
+          "kind": "type"
+        },
+        "RequestCacheRequestState": {
+          "decl": "packages/store/src/-private/network/request-cache.ts#RequestCacheRequestState",
+          "kind": "type"
+        },
+        "RequestLoadingState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestLoadingState",
+          "kind": "type"
+        },
+        "SignalHooks": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#SignalHooks",
+          "kind": "type"
+        },
+        "Signals": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#Signals",
+          "kind": "value"
+        },
+        "WarpDriveSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#WarpDriveSignal",
+          "kind": "type"
+        },
+        "consumeInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#consumeInternalSignal",
+          "kind": "value"
+        },
+        "createMemo": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#createMemo",
+          "kind": "value"
+        },
+        "defineNonEnumerableSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#defineNonEnumerableSignal",
+          "kind": "value"
+        },
+        "defineSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#defineSignal",
+          "kind": "value"
+        },
+        "entangleSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#entangleSignal",
+          "kind": "value"
+        },
+        "gate": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#gate",
+          "kind": "value"
+        },
+        "getOrCreateInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#getOrCreateInternalSignal",
+          "kind": "value"
+        },
+        "getPromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#getPromiseState",
+          "kind": "value"
+        },
+        "getRequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#getRequestState",
+          "kind": "value"
+        },
+        "memoized": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/signal.ts#memoized",
+          "kind": "value"
+        },
+        "notifyInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#notifyInternalSignal",
+          "kind": "value"
+        },
+        "peekInternalSignal": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#peekInternalSignal",
+          "kind": "value"
+        },
+        "withSignalStore": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/internal.ts#withSignalStore",
+          "kind": "value"
+        }
+      },
+      "changed": {
+        "ARRAY_SIGNAL": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#ARRAY_SIGNAL"
+        },
+        "RequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestCacheRequestState"
+        }
+      },
+      "removed": [
+        "notifyArray"
+      ]
+    },
+    "@ember-data/store/configure": {
+      "added": {
+        "setupSignals": {
+          "decl": "packages/store/src/-private/new-core-tmp/reactivity/configure.ts#setupSignals",
+          "kind": "value"
+        }
+      }
+    },
+    "@ember-data/tracking": {
+      "added": {
+        "buildSignalConfig": {
+          "decl": "packages/tracking/src/index.ts#buildSignalConfig",
+          "kind": "value"
+        }
+      },
+      "removed": [
+        "cached",
+        "compat",
+        "createCache",
+        "getValue",
+        "memoTransact",
+        "notifySignal",
+        "transact",
+        "untracked"
+      ]
+    },
+    "@warp-drive/build-config/debugging": {
+      "added": {
+        "LOG_CACHE_POLICY": {
+          "decl": "packages/build-config/src/debugging.ts#LOG_CACHE_POLICY",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/build-config/deprecations": {
+      "added": {
+        "DEPRECATE_TRACKING_PACKAGE": {
+          "decl": "packages/build-config/src/deprecations.ts#DEPRECATE_TRACKING_PACKAGE",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/ember": {
+      "added": {
+        "RequestLoadingState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#RequestLoadingState",
+          "kind": "type"
+        }
+      },
+      "changed": {
+        "getPromiseState": {
+          "decl": "packages/store/src/-private/new-core-tmp/promise-state.ts#getPromiseState"
+        },
+        "getRequestState": {
+          "decl": "packages/store/src/-private/new-core-tmp/request-state.ts#getRequestState"
+        }
+      }
+    },
+    "@warp-drive/ember/install": {
+      "added": {
+        "buildSignalConfig": {
+          "decl": "packages/ember/src/install.ts#buildSignalConfig",
+          "kind": "value"
+        }
+      }
+    }
+  },
+  "from": "5.4.1",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@ember-data/request-utils/handlers": {
+        "entry": "packages/request-utils/src/handlers.ts",
+        "forward": null,
+        "package": "@ember-data/request-utils"
+      },
+      "@ember-data/store/configure": {
+        "entry": "packages/store/src/configure.ts",
+        "forward": null,
+        "package": "@ember-data/store"
+      },
+      "@warp-drive/ember/install": {
+        "entry": "packages/ember/src/install.ts",
+        "forward": null,
+        "package": "@warp-drive/ember"
+      }
+    },
+    "removed": [
+      "@ember-data/tracking/-private",
+      "@warp-drive/diagnostic",
+      "@warp-drive/diagnostic/-types",
+      "@warp-drive/diagnostic/ember",
+      "@warp-drive/diagnostic/reporters/dom",
+      "@warp-drive/diagnostic/runners/dom",
+      "@warp-drive/holodeck",
+      "@warp-drive/holodeck/mock",
+      "eslint-plugin-warp-drive",
+      "warp-drive/warp-drive"
+    ]
+  },
+  "packages": {
+    "changed": {
+      "@ember-data/request-utils": {
+        "modules": [
+          "@ember-data/request-utils",
+          "@ember-data/request-utils/deprecation-support",
+          "@ember-data/request-utils/handlers",
+          "@ember-data/request-utils/string"
+        ]
+      },
+      "@ember-data/store": {
+        "modules": [
+          "@ember-data/store",
+          "@ember-data/store/-private",
+          "@ember-data/store/configure",
+          "@ember-data/store/types"
+        ]
+      },
+      "@ember-data/tracking": {
+        "modules": [
+          "@ember-data/tracking"
+        ]
+      },
+      "@warp-drive/ember": {
+        "modules": [
+          "@warp-drive/ember",
+          "@warp-drive/ember/install"
+        ]
+      }
+    },
+    "removed": [
+      "@warp-drive/diagnostic",
+      "@warp-drive/holodeck",
+      "eslint-plugin-warp-drive",
+      "warp-drive"
+    ]
+  },
+  "schema": 1,
+  "to": "5.5.0"
+}

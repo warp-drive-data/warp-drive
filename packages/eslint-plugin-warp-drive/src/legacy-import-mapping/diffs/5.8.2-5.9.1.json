@@ -1,0 +1,668 @@
+{
+  "declarations": {
+    "packages/-ember-data/package.json#version": null,
+    "packages/codemods/src/index.ts#Codemods": null,
+    "packages/codemods/src/index.ts#Logs": null
+  },
+  "exports": {
+    "@ember-data/codemods": {
+      "added": {
+        "legacyCompatBuilders": {
+          "decl": "packages/codemods/src/legacy-compat-builders/index.ts#default",
+          "kind": "value"
+        },
+        "legacyCompatBuildersLog": {
+          "decl": "packages/codemods/src/legacy-compat-builders/log.ts#log",
+          "kind": "value"
+        }
+      },
+      "removed": [
+        "Codemods",
+        "Logs"
+      ]
+    },
+    "@ember-data/store/-private": {
+      "added": {
+        "PrivateRequestStateService": {
+          "decl": "warp-drive-packages/core/src/store/-private/network/request-cache.ts#PrivateRequestStateService",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core": {
+      "added": {
+        "NotificationChannel": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#NotificationChannel",
+          "kind": "type"
+        },
+        "NotifyKeys": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#NotifyKeys",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core-types/runtime": {
+      "added": {
+        "setIsMaybeMirage": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#setIsMaybeMirage",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/reactive/-private": {
+      "added": {
+        "ExtensibleField": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/schema.ts#ExtensibleField",
+          "kind": "type"
+        },
+        "ManagedArray": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/fields/managed-array.ts#ManagedArray",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/signals/-leaked": {
+      "added": {
+        "InfinitePaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#InfinitePaginationContentFeatures",
+          "kind": "type"
+        },
+        "InfinitePaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#InfinitePaginationState",
+          "kind": "type"
+        },
+        "PageCache": {
+          "decl": "warp-drive-packages/core/src/signals/page-cache.ts#PageCache",
+          "kind": "type"
+        },
+        "PageHints": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PageHints",
+          "kind": "type"
+        },
+        "PagedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PagedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "PagedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PagedPaginationState",
+          "kind": "type"
+        },
+        "PaginateArgs": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginateArgs",
+          "kind": "type"
+        },
+        "PaginateMode": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginateMode",
+          "kind": "type"
+        },
+        "PaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PaginationCache",
+          "kind": "type"
+        },
+        "PaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeatures",
+          "kind": "type"
+        },
+        "PaginationContentFeaturesFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeaturesFor",
+          "kind": "type"
+        },
+        "PaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLink",
+          "kind": "type"
+        },
+        "PaginationLinks": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLinks",
+          "kind": "type"
+        },
+        "PaginationLinksSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links-subscription.ts#PaginationLinksSubscription",
+          "kind": "type"
+        },
+        "PaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationState",
+          "kind": "type"
+        },
+        "PaginationStateFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationStateFor",
+          "kind": "type"
+        },
+        "PaginationSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationSubscription",
+          "kind": "type"
+        },
+        "PlaceholderPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PlaceholderPaginationLink",
+          "kind": "type"
+        },
+        "RealPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RealPaginationLink",
+          "kind": "type"
+        },
+        "RelationalPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RelationalPaginationLink",
+          "kind": "type"
+        },
+        "SharedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#SharedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "SharedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#SharedPaginationState",
+          "kind": "type"
+        },
+        "SignalStore": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#SignalStore",
+          "kind": "type"
+        },
+        "clearPaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#clearPaginationCache",
+          "kind": "value"
+        },
+        "createPaginationLinksSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links-subscription.ts#createPaginationLinksSubscription",
+          "kind": "value"
+        },
+        "createPaginationSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#createPaginationSubscription",
+          "kind": "value"
+        },
+        "defaultPageHints": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#defaultPageHints",
+          "kind": "value"
+        },
+        "getOrCreateInternalSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#getOrCreateInternalSignal",
+          "kind": "value"
+        },
+        "getPaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#getPaginationCache",
+          "kind": "value"
+        },
+        "getPaginationLinks": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#getPaginationLinks",
+          "kind": "value"
+        },
+        "getPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#getPaginationState",
+          "kind": "value"
+        },
+        "makeInitializer": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#makeInitializer",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/store/-private": {
+      "added": {
+        "PrivateRequestStateService": {
+          "decl": "warp-drive-packages/core/src/store/-private/network/request-cache.ts#PrivateRequestStateService",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/types/runtime": {
+      "added": {
+        "setIsMaybeMirage": {
+          "decl": "warp-drive-packages/core/src/types/runtime.ts#setIsMaybeMirage",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/ember/experiments": {
+      "added": {
+        "EachLink": {
+          "decl": "warp-drive-packages/ember/src/-private/each-link.gts#EachLink",
+          "kind": "value"
+        },
+        "InfinitePaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#InfinitePaginationContentFeatures",
+          "kind": "type"
+        },
+        "InfinitePaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#InfinitePaginationState",
+          "kind": "type"
+        },
+        "PageCache": {
+          "decl": "warp-drive-packages/core/src/signals/page-cache.ts#PageCache",
+          "kind": "type"
+        },
+        "PageHints": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PageHints",
+          "kind": "type"
+        },
+        "PagedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PagedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "PagedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PagedPaginationState",
+          "kind": "type"
+        },
+        "Paginate": {
+          "decl": "warp-drive-packages/ember/src/-private/paginate.gts#Paginate",
+          "kind": "value"
+        },
+        "PaginateMode": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginateMode",
+          "kind": "type"
+        },
+        "PaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PaginationCache",
+          "kind": "type"
+        },
+        "PaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeatures",
+          "kind": "type"
+        },
+        "PaginationContentFeaturesFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeaturesFor",
+          "kind": "type"
+        },
+        "PaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLink",
+          "kind": "type"
+        },
+        "PaginationLinks": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLinks",
+          "kind": "type"
+        },
+        "PaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationState",
+          "kind": "type"
+        },
+        "PaginationStateFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationStateFor",
+          "kind": "type"
+        },
+        "PlaceholderPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PlaceholderPaginationLink",
+          "kind": "type"
+        },
+        "RealPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RealPaginationLink",
+          "kind": "type"
+        },
+        "RelationalPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RelationalPaginationLink",
+          "kind": "type"
+        },
+        "SharedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#SharedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "SharedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#SharedPaginationState",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/experiments/pagination": {
+      "added": {
+        "InfinitePaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#InfinitePaginationContentFeatures",
+          "kind": "type"
+        },
+        "InfinitePaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#InfinitePaginationState",
+          "kind": "type"
+        },
+        "PageCache": {
+          "decl": "warp-drive-packages/core/src/signals/page-cache.ts#PageCache",
+          "kind": "type"
+        },
+        "PageHints": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PageHints",
+          "kind": "type"
+        },
+        "PagedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PagedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "PagedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PagedPaginationState",
+          "kind": "type"
+        },
+        "PaginateArgs": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginateArgs",
+          "kind": "type"
+        },
+        "PaginateMode": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginateMode",
+          "kind": "type"
+        },
+        "PaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#PaginationCache",
+          "kind": "type"
+        },
+        "PaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeatures",
+          "kind": "type"
+        },
+        "PaginationContentFeaturesFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationContentFeaturesFor",
+          "kind": "type"
+        },
+        "PaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLink",
+          "kind": "type"
+        },
+        "PaginationLinks": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PaginationLinks",
+          "kind": "type"
+        },
+        "PaginationLinksSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links-subscription.ts#PaginationLinksSubscription",
+          "kind": "type"
+        },
+        "PaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationState",
+          "kind": "type"
+        },
+        "PaginationStateFor": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#PaginationStateFor",
+          "kind": "type"
+        },
+        "PaginationSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#PaginationSubscription",
+          "kind": "type"
+        },
+        "PlaceholderPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#PlaceholderPaginationLink",
+          "kind": "type"
+        },
+        "RealPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RealPaginationLink",
+          "kind": "type"
+        },
+        "RelationalPaginationLink": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#RelationalPaginationLink",
+          "kind": "type"
+        },
+        "SharedPaginationContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#SharedPaginationContentFeatures",
+          "kind": "type"
+        },
+        "SharedPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#SharedPaginationState",
+          "kind": "type"
+        },
+        "clearPaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#clearPaginationCache",
+          "kind": "value"
+        },
+        "createPaginationLinksSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links-subscription.ts#createPaginationLinksSubscription",
+          "kind": "value"
+        },
+        "createPaginationSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-subscription.ts#createPaginationSubscription",
+          "kind": "value"
+        },
+        "defaultPageHints": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#defaultPageHints",
+          "kind": "value"
+        },
+        "getPaginationCache": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-cache.ts#getPaginationCache",
+          "kind": "value"
+        },
+        "getPaginationLinks": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-links.ts#getPaginationLinks",
+          "kind": "value"
+        },
+        "getPaginationState": {
+          "decl": "warp-drive-packages/core/src/signals/pagination-state.ts#getPaginationState",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/holodeck/mock": {
+      "added": {
+        "HEAD": {
+          "decl": "packages/holodeck/src/mock.ts#HEAD",
+          "kind": "value"
+        }
+      }
+    },
+    "ember-data/version": {
+      "changed": {
+        "default": {
+          "decl": "packages/-ember-data/src/version.ts#default"
+        }
+      }
+    },
+    "warp-drive/generators/adapter": {
+      "added": {
+        "AdapterOptions": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/adapter.ts#AdapterOptions",
+          "kind": "type"
+        },
+        "generateAdapterSource": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/adapter.ts#generateAdapterSource",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/model": {
+      "added": {
+        "generateModelSource": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/model.ts#generateModelSource",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/paths": {
+      "added": {
+        "DESTINATIONS": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/paths.ts#DESTINATIONS",
+          "kind": "value"
+        },
+        "GENERATOR_TYPES": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/paths.ts#GENERATOR_TYPES",
+          "kind": "value"
+        },
+        "GeneratorType": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/paths.ts#GeneratorType",
+          "kind": "type"
+        }
+      }
+    },
+    "warp-drive/generators/serializer": {
+      "added": {
+        "SerializerOptions": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/serializer.ts#SerializerOptions",
+          "kind": "type"
+        },
+        "generateSerializerSource": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/serializer.ts#generateSerializerSource",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/shared": {
+      "added": {
+        "BaseClassResult": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/shared.ts#BaseClassResult",
+          "kind": "type"
+        },
+        "EntityKind": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/shared.ts#EntityKind",
+          "kind": "type"
+        },
+        "extendFromApplicationEntity": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/shared.ts#extendFromApplicationEntity",
+          "kind": "value"
+        },
+        "isAddonProject": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/shared.ts#isAddonProject",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/strings": {
+      "added": {
+        "camelize": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#camelize",
+          "kind": "value"
+        },
+        "capitalize": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#capitalize",
+          "kind": "value"
+        },
+        "classify": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#classify",
+          "kind": "value"
+        },
+        "dasherize": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#dasherize",
+          "kind": "value"
+        },
+        "decamelize": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#decamelize",
+          "kind": "value"
+        },
+        "friendlyTestDescription": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#friendlyTestDescription",
+          "kind": "value"
+        },
+        "getRelativePath": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts#getRelativePath",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/tests": {
+      "added": {
+        "TestKind": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/tests.ts#TestKind",
+          "kind": "type"
+        },
+        "generateUnitTestSource": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/tests.ts#generateUnitTestSource",
+          "kind": "value"
+        }
+      }
+    },
+    "warp-drive/generators/transform": {
+      "added": {
+        "generateTransformSource": {
+          "decl": "packages/-warp-drive/src/-private/warp-drive/generators/transform.ts#generateTransformSource",
+          "kind": "value"
+        }
+      }
+    }
+  },
+  "from": "5.8.2",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@warp-drive/ember/experiments": {
+        "entry": "warp-drive-packages/ember/src/experiments.ts",
+        "forward": null,
+        "package": "@warp-drive/ember"
+      },
+      "@warp-drive/experiments/pagination": {
+        "entry": "warp-drive-packages/experiments/src/pagination.ts",
+        "forward": null,
+        "package": "@warp-drive/experiments"
+      },
+      "eslint-plugin-warp-drive/recommended-templates": {
+        "entry": "packages/eslint-plugin-warp-drive/src/recommended-templates.js",
+        "forward": null,
+        "package": "eslint-plugin-warp-drive"
+      },
+      "warp-drive/generators/adapter": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/adapter.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/model": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/model.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/paths": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/paths.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/serializer": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/serializer.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/shared": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/shared.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/strings": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/strings.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/tests": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/tests.ts",
+        "forward": null,
+        "package": "warp-drive"
+      },
+      "warp-drive/generators/transform": {
+        "entry": "packages/-warp-drive/src/-private/warp-drive/generators/transform.ts",
+        "forward": null,
+        "package": "warp-drive"
+      }
+    },
+    "removed": [
+      "warp-drive/warp-drive"
+    ]
+  },
+  "packages": {
+    "added": {
+      "@warp-drive/memory-alpha": {
+        "dir": "warp-drive-packages/memory-alpha",
+        "modules": []
+      }
+    },
+    "changed": {
+      "@warp-drive/ember": {
+        "modules": [
+          "@warp-drive/ember",
+          "@warp-drive/ember/experiments",
+          "@warp-drive/ember/install"
+        ]
+      },
+      "@warp-drive/experiments": {
+        "modules": [
+          "@warp-drive/experiments/data-worker",
+          "@warp-drive/experiments/document-storage",
+          "@warp-drive/experiments/image-fetch",
+          "@warp-drive/experiments/image-worker",
+          "@warp-drive/experiments/pagination",
+          "@warp-drive/experiments/worker-fetch"
+        ]
+      },
+      "eslint-plugin-warp-drive": {
+        "modules": [
+          "eslint-plugin-warp-drive",
+          "eslint-plugin-warp-drive/recommended",
+          "eslint-plugin-warp-drive/recommended-templates"
+        ]
+      },
+      "warp-drive": {
+        "modules": [
+          "warp-drive/generators/adapter",
+          "warp-drive/generators/model",
+          "warp-drive/generators/paths",
+          "warp-drive/generators/serializer",
+          "warp-drive/generators/shared",
+          "warp-drive/generators/strings",
+          "warp-drive/generators/tests",
+          "warp-drive/generators/transform"
+        ]
+      }
+    }
+  },
+  "schema": 1,
+  "to": "5.9.1"
+}

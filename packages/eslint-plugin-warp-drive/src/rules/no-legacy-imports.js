@@ -1,299 +1,420 @@
 /**
  * {@include ./no-legacy-imports.md}
  *
- * @summary Lint rule, with autofix, that rewrites imports from legacy EmberData module paths to their modern
- * replacements.
+ * @summary Lint rule, with autofix, that rewrites imports written against an older EmberData or WarpDrive release to
+ * the modules that hold those exports in a newer one, and reports the imports it cannot rewrite.
  * @module
  */
 'use strict';
 
-const path = require('path');
+const mapping = require('../legacy-import-mapping/index.js');
 
 const RULE_ID = 'warp-drive.no-legacy-imports';
-const UNMAPPED_EXPORT_ID = 'warp-drive.no-legacy-imports.unmapped-export';
+const PRIVATE_TARGET_ID = 'warp-drive.no-legacy-imports.private-target';
+const REMOVED_ID = 'warp-drive.no-legacy-imports.removed';
+const UNTRACKED_ID = 'warp-drive.no-legacy-imports.untracked';
+const TYPE_ONLY_TARGET_ID = 'warp-drive.no-legacy-imports.type-only-target';
+const SIDE_EFFECT_ID = 'warp-drive.no-legacy-imports.side-effect';
 
-// TODO: determine where this thing should live long-term
-function buildMapping() {
-  // Attempt to load the enriched mapping JSON from the repo root.
-  // In this monorepo, this file lives at: <repoRoot>/public-exports-mapping-5.5.enriched.json
-  const candidates = [
-    // from this file at packages/eslint-plugin-warp-drive/src/rules/, walk up to repo root
-    path.join(__dirname, '../public-exports-mapping-5.5.enriched.json'),
-    // from package root (if tests change CWD)
-    path.join(process.cwd(), 'public-exports-mapping-5.5.enriched.json'),
-  ];
+/** @type {Record<string, string>} */
+const REPORT_MESSAGE = {
+  removed: REMOVED_ID,
+  untracked: UNTRACKED_ID,
+  'type-only': TYPE_ONLY_TARGET_ID,
+  'side-effect': SIDE_EFFECT_ID,
+};
 
-  let mappingArray = null;
-  for (const candidate of candidates) {
-    try {
-      mappingArray = require(candidate);
-      break;
-    } catch (_e) {
-      // continue
-    }
-  }
+const IDENTIFIER = /^[A-Za-z_$][\w$]*$/u;
 
-  /**
-   * Map key: `${module}::${exportName}` where exportName can be 'default'.
-   * Map value: `{ module, export }` describing the replacement module and the
-   * (possibly renamed, possibly default<->named) export to use from it.
-   */
-  const lookup = new Map();
-  // All legacy module specifiers we have any bookkeeping for at all, whether or not
-  // every export of theirs has a known replacement yet.
-  const knownModules = new Set();
-  // module -> Set<replacement module>, used to derive a fallback below.
-  const moduleTargets = new Map();
-
-  if (Array.isArray(mappingArray)) {
-    for (const entry of mappingArray) {
-      if (!entry || !entry.module || !entry.export) continue;
-      knownModules.add(entry.module);
-
-      const replModule = entry.replacement && entry.replacement.module;
-      const replExport = entry.replacement && entry.replacement.export;
-      if (!replModule || !replExport) continue;
-
-      lookup.set(`${entry.module}::${entry.export}`, { module: replModule, export: replExport });
-
-      let targets = moduleTargets.get(entry.module);
-      if (!targets) {
-        targets = new Set();
-        moduleTargets.set(entry.module, targets);
-      }
-      targets.add(replModule);
-    }
-  }
-
-  // A module-level fallback: only safe when every export we know about for a given
-  // legacy module funnels into the exact same replacement module. This lets us route
-  // exports added since the mapping was last generated (e.g. new types exposed via
-  // `export *`) without having to enumerate every token by name. Modules that
-  // legitimately split across multiple replacement modules (e.g. some tokens go to
-  // `@warp-drive/core`, others to `@warp-drive/ember`) are left out on purpose —
-  // guessing wrong there would silently produce an incorrect rewrite.
-  const moduleFallback = new Map();
-  for (const [mod, targets] of moduleTargets) {
-    if (targets.size === 1) {
-      moduleFallback.set(mod, [...targets][0]);
-    }
-  }
-
-  return { lookup, moduleFallback, knownModules };
-}
-
-const { lookup: MAPPING, moduleFallback: MODULE_FALLBACK, knownModules: KNOWN_MODULES } = buildMapping();
-
-/** @param {import('eslint').Rule.RuleContext} context */
-function createHelpers(context) {
-  const sourceCode = context.sourceCode || context.getSourceCode();
-
-  function getQuoteChar(node) {
-    const raw = sourceCode.getText(node.source);
-    return raw.startsWith('"') ? '"' : "'";
-  }
-
-  function getImportExportNameFromImportSpecifier(spec) {
-    // default import
-    if (spec.type === 'ImportDefaultSpecifier') return 'default';
-    if (spec.type === 'ImportSpecifier') return spec.imported && spec.imported.name;
-    // namespace import – not supported in v1
-    return null;
-  }
-
-  /**
-   * @typedef {{ spec: any, originalExportName: string | null, targetExportName: string | null, isType: boolean, unresolved: boolean }} SpecifierDescriptor
-   */
-
-  /** @returns {Record<string, SpecifierDescriptor[]>} */
-  function groupImportSpecifiersByTarget(moduleName, specifiers, declarationIsTypeOnly) {
-    const groups = Object.create(null);
-    for (const spec of specifiers) {
-      const expName = getImportExportNameFromImportSpecifier(spec);
-      // A specifier is type-only if the whole declaration is `import type ...`
-      // or if it carries its own inline `type` modifier (e.g. `{ type Foo }`).
-      const isType = declarationIsTypeOnly || spec.importKind === 'type';
-      if (!expName) {
-        // namespace or unknown – keep under original module, verbatim
-        groups[moduleName] ||= [];
-        groups[moduleName].push({ spec, originalExportName: null, targetExportName: null, isType, unresolved: false });
-        continue;
-      }
-
-      const target = MAPPING.get(`${moduleName}::${expName}`);
-      let targetModule = moduleName;
-      let targetExportName = expName;
-      let unresolved = false;
-
-      if (target) {
-        targetModule = target.module;
-        targetExportName = target.export;
-      } else {
-        const fallbackModule = MODULE_FALLBACK.get(moduleName);
-        if (fallbackModule) {
-          // Not individually tracked, but this legacy module's known exports all funnel
-          // into a single replacement module, so route this one the same way.
-          targetModule = fallbackModule;
-        } else if (KNOWN_MODULES.has(moduleName)) {
-          // We actively track this legacy module but have no idea where this particular
-          // export goes (added after the mapping was generated, or genuinely ambiguous).
-          unresolved = true;
-        }
-      }
-
-      groups[targetModule] ||= [];
-      groups[targetModule].push({ spec, originalExportName: expName, targetExportName, isType, unresolved });
-    }
-    return groups;
-  }
-
-  function hasAnyMappedTarget(groups, originalModule) {
-    return Object.keys(groups).some((mod) => {
-      if (mod !== originalModule) return true;
-      // Module didn't change, but the export itself may still have been renamed
-      // (e.g. default -> a named export, or a named export -> a different name).
-      return groups[mod].some((d) => d.originalExportName && d.targetExportName !== d.originalExportName);
-    });
-  }
-
-  function collectUnresolvedExportNames(groups) {
-    const names = [];
-    for (const mod of Object.keys(groups)) {
-      for (const d of groups[mod]) {
-        if (d.unresolved) names.push(d.originalExportName);
-      }
-    }
-    return names;
-  }
-
-  function buildSpecifierText(descriptor) {
-    if (descriptor.targetExportName == null) {
-      // namespace or unrecognized specifier – keep it exactly as written
-      return { kind: 'verbatim', text: sourceCode.getText(descriptor.spec), isType: descriptor.isType };
-    }
-    const localName = descriptor.spec.local.name;
-    if (descriptor.targetExportName === 'default') {
-      return { kind: 'default', text: localName, isType: descriptor.isType };
-    }
-    const text =
-      descriptor.targetExportName === localName
-        ? descriptor.targetExportName
-        : `${descriptor.targetExportName} as ${localName}`;
-    return { kind: 'named', text, isType: descriptor.isType };
-  }
-
-  function buildImportTextForGroup(groupModule, descriptors, quote) {
-    const rendered = descriptors.map(buildSpecifierText);
-    // If every specifier landing in this group is type-only, hoist the `type`
-    // modifier onto the declaration itself instead of repeating it per-specifier.
-    const wholeImportIsType = rendered.length > 0 && rendered.every((r) => r.isType);
-
-    const defaults = rendered.filter((r) => r.kind === 'default').map((r) => r.text);
-    const verbatim = rendered.filter((r) => r.kind === 'verbatim').map((r) => r.text);
-    const named = rendered
-      .filter((r) => r.kind === 'named')
-      .map((r) => (r.isType && !wholeImportIsType ? `type ${r.text}` : r.text));
-
-    const segments = [];
-    if (defaults.length) segments.push(defaults.join(', '));
-    if (verbatim.length) segments.push(verbatim.join(', '));
-    if (named.length) segments.push(`{ ${named.join(', ')} }`);
-    if (!segments.length) {
-      // Should not happen, but avoid generating invalid code
-      return '';
-    }
-
-    const importKeyword = wholeImportIsType ? 'import type ' : 'import ';
-    return [importKeyword, segments.join(', '), ' from ', quote, groupModule, quote, ';'].join('');
-  }
-
-  return {
-    getQuoteChar,
-    groupImportSpecifiersByTarget,
-    hasAnyMappedTarget,
-    collectUnresolvedExportNames,
-    buildImportTextForGroup,
-  };
+/**
+ * @param {string} version
+ */
+function label(version) {
+  return version === 'head' ? mapping.HEAD_VERSION : version;
 }
 
 /**
- * @summary ESLint rule object that autofixes imports from legacy EmberData module paths to their modern replacements.
+ * The name a specifier imports: an export name, `default`, or `*` for a namespace import.
+ * @param {any} spec
+ * @returns {string}
+ */
+function importedName(spec) {
+  if (spec.type === 'ImportDefaultSpecifier') return 'default';
+  if (spec.type === 'ImportNamespaceSpecifier') return '*';
+  return spec.imported.type === 'Identifier' ? spec.imported.name : String(spec.imported.value);
+}
+
+/**
+ * @typedef {{ spec: any, name: string, local: string, isType: boolean, decision: any }} Item
+ * @typedef {Item & { module: string, exportName: string }} Entry  an item placed in its target module
+ */
+
+/**
+ * One specifier of a rendered declaration, keeping the local binding name.
+ * @param {Entry} entry
+ * @param {boolean} inlineType  whether to write `type` before a type-only specifier
+ * @param {string} quote
+ */
+function specifierText(entry, inlineType, quote) {
+  const type = inlineType && entry.isType ? 'type ' : '';
+  if (entry.exportName === entry.local) return `${type}${entry.local}`;
+  const exported = IDENTIFIER.test(entry.exportName) ? entry.exportName : `${quote}${entry.exportName}${quote}`;
+  return `${type}${exported} as ${entry.local}`;
+}
+
+/**
+ * The import declarations that bring `entries` in from `module`. Type-only entries alone become
+ * `import type`; mixed with values they keep an inline `type`. A namespace import gets its own
+ * declaration, because it cannot share one with named specifiers.
+ * @param {string} module
+ * @param {Entry[]} entries
+ * @param {string} quote
+ * @param {string} semi
+ * @returns {string[]}
+ */
+function renderDeclarations(module, entries, quote, semi) {
+  const from = ` from ${quote}${module}${quote}${semi}`;
+  /** @type {string[]} */
+  const declarations = [];
+  const rest = entries.filter((entry) => entry.exportName !== '*');
+  if (rest.length) {
+    if (rest.every((entry) => entry.isType)) {
+      const [only] = rest;
+      declarations.push(
+        rest.length === 1 && only.exportName === 'default'
+          ? `import type ${only.local}${from}`
+          : `import type { ${rest.map((entry) => specifierText(entry, false, quote)).join(', ')} }${from}`
+      );
+    } else {
+      const head = rest.find((entry) => entry.exportName === 'default' && !entry.isType);
+      const named = rest.filter((entry) => entry !== head).map((entry) => specifierText(entry, true, quote));
+      const clause = [...(head ? [head.local] : []), ...(named.length ? [`{ ${named.join(', ')} }`] : [])];
+      declarations.push(`import ${clause.join(', ')}${from}`);
+    }
+  }
+  for (const entry of entries.filter((item) => item.exportName === '*')) {
+    declarations.push(`import ${entry.isType ? 'type ' : ''}* as ${entry.local}${from}`);
+  }
+  return declarations;
+}
+
+/**
+ * Whether `entries` can be added to the existing import declaration `target`.
+ * @param {any} target
+ * @param {Entry[]} entries
+ */
+function canMerge(target, entries) {
+  if (entries.some((entry) => entry.exportName === '*')) return false;
+  if ((target.attributes && target.attributes.length) || (target.assertions && target.assertions.length)) return false;
+  const specs = target.specifiers;
+  if (!specs.length || specs.some((/** @type {any} */ spec) => spec.type === 'ImportNamespaceSpecifier')) return false;
+  if (target.importKind === 'type') {
+    return (
+      entries.every((entry) => entry.isType) &&
+      specs.every((/** @type {any} */ spec) => spec.type === 'ImportSpecifier')
+    );
+  }
+  return true;
+}
+
+/**
+ * The range that removes `node`, with its line when nothing else is on it.
+ * @param {any} sourceCode
+ * @param {any} node
+ * @returns {[number, number]}
+ */
+function removalRange(sourceCode, node) {
+  const { text } = sourceCode;
+  const [start, end] = node.range;
+  let lineStart = start;
+  while (lineStart > 0 && (text[lineStart - 1] === ' ' || text[lineStart - 1] === '\t')) lineStart--;
+  let lineEnd = end;
+  while (lineEnd < text.length && (text[lineEnd] === ' ' || text[lineEnd] === '\t')) lineEnd++;
+  const startsLine = lineStart === 0 || text[lineStart - 1] === '\n';
+  const endsLine = lineEnd === text.length || text[lineEnd] === '\n' || text[lineEnd] === '\r';
+  if (!startsLine || !endsLine) return [start, end];
+  if (text[lineEnd] === '\r') lineEnd++;
+  if (text[lineEnd] === '\n') lineEnd++;
+  return [lineStart, lineEnd];
+}
+
+/**
+ * @param {Entry[]} entries
+ */
+function describeMoves(entries) {
+  return entries
+    .map((entry) => {
+      if (entry.name === '*') return `the whole module to "${entry.module}"`;
+      if (entry.name === entry.exportName) return `${entry.name} to "${entry.module}"`;
+      return `${entry.name} to ${entry.exportName} in "${entry.module}"`;
+    })
+    .join(', ');
+}
+
+/**
+ * @param {readonly { title: string, url: string }[] | undefined} links
+ */
+function describeLinks(links) {
+  return links && links.length ? ` See: ${links.map((link) => `${link.title} (${link.url})`).join(', ')}.` : '';
+}
+
+/**
+ * @summary ESLint rule object that autofixes imports written against an older EmberData or WarpDrive release and
+ * reports the imports it cannot rewrite.
  * @type {import('eslint').Rule.RuleModule}
  */
 module.exports = {
   meta: {
     type: 'suggestion',
     fixable: 'code',
-    schema: false,
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          from: { type: 'string' },
+          to: { type: 'string' },
+        },
+        additionalProperties: false,
+      },
+    ],
     docs: {
       description:
-        'Rewrites legacy WarpDrive import module specifiers to their modern replacements using an embedded mapping.',
+        'Rewrites imports written against an older EmberData or WarpDrive release to the modules that hold them now.',
       recommended: false,
       url: 'https://warp-drive.io/api/eslint-plugin-warp-drive/rules/no-legacy-imports/',
     },
     messages: {
-      [RULE_ID]: 'Rewrite import from "{{from}}" to modern modules.',
-      [UNMAPPED_EXPORT_ID]:
-        'Import{{plural}} "{{tokens}}" from legacy module "{{from}}" ha{{pluralVerb}} no known modern replacement yet. ' +
-        'This import was left as-is and needs manual migration.',
+      [RULE_ID]: 'Imports from "{{module}}" moved in {{to}}: {{moves}}.',
+      [PRIVATE_TARGET_ID]:
+        'Imports from "{{module}}" moved in {{to}} to a private module: {{moves}}. The fix imports from there, but a ' +
+        'private module can change in any release; prefer a public API if one covers your use.',
+      [REMOVED_ID]:
+        '{{subject}} has no replacement in {{to}}{{removedIn}}. The import is left as written.{{shim}}{{links}}',
+      [UNTRACKED_ID]:
+        '"{{module}}" did not export "{{name}}" in {{from}}, so there is no record of where it went. The import is left ' +
+        'as written. Check the name, or set the `from` option to the release this code was written against.',
+      [TYPE_ONLY_TARGET_ID]:
+        '"{{name}}" from "{{module}}" is a value, but {{to}} only has a type for it: {{target}}. The import is left as ' +
+        'written. Use `import type` if it is only used as a type{{typeThen}}; otherwise it needs manual migration.',
+      [SIDE_EFFECT_ID]:
+        'Importing "{{module}}" also sets things up as a side effect, so it cannot be rewritten to another module. ' +
+        'The import is left as written; set up what it provided by hand.{{links}}',
     },
   },
 
   create(context) {
-    const helpers = createHelpers(context);
+    const options = context.options[0] || {};
+    let map;
+    try {
+      map = mapping.loadMap({ from: options.from, to: options.to });
+    } catch (error) {
+      // Without shipped data there is nothing to check against; the rule stays silent.
+      if (error && /** @type {any} */ (error).code === mapping.NO_DATA) return {};
+      throw new Error(`no-legacy-imports: ${/** @type {Error} */ (error).message}`, { cause: error });
+    }
+    const sourceCode = context.sourceCode || context.getSourceCode();
+    const versions = { from: label(map.from), to: label(map.to) };
 
-    function handleImportDeclaration(node) {
-      if (!node.source || !node.source.value || !node.specifiers || node.specifiers.length === 0) return;
-      const fromModule = String(node.source.value);
-      const declarationIsTypeOnly = node.importKind === 'type';
+    /**
+     * @param {any} node
+     */
+    function plan(node) {
+      const module = String(node.source.value);
+      const declarationType = node.importKind === 'type';
+      if (!node.specifiers.length) {
+        const decision = map.resolve(module, '*', { typeOnly: declarationType });
+        return { node, module, bare: true, decision, items: [], rewrites: decision.action === 'rewrite' };
+      }
+      /** @type {Item[]} */
+      const items = node.specifiers.map((/** @type {any} */ spec) => {
+        const name = importedName(spec);
+        const isType = declarationType || spec.importKind === 'type';
+        return {
+          spec,
+          name,
+          local: spec.local.name,
+          isType,
+          decision: map.resolve(module, name, { typeOnly: isType }),
+        };
+      });
+      const rewrites = items.some((item) => item.decision.action === 'rewrite');
+      return { node, module, bare: false, decision: null, items, rewrites };
+    }
 
-      const groups = helpers.groupImportSpecifiersByTarget(fromModule, node.specifiers, declarationIsTypeOnly);
-      const hasMapped = helpers.hasAnyMappedTarget(groups, fromModule);
-      const unresolvedNames = helpers.collectUnresolvedExportNames(groups);
+    /**
+     * Reports one item the map leaves in place but has something to say about.
+     * @param {ReturnType<typeof plan>} declaration
+     * @param {Item | null} item  null for a whole-module decision
+     * @param {any} decision
+     */
+    function reportItem(declaration, item, decision) {
+      const { module } = declaration;
+      const name = item ? item.name : '*';
+      const subject = name === '*' ? `"${module}"` : `"${name}" from "${module}"`;
+      context.report({
+        node: item ? item.spec : declaration.node,
+        messageId: REPORT_MESSAGE[decision.reason] || REMOVED_ID,
+        data: {
+          ...versions,
+          module,
+          name,
+          subject,
+          target: decision.to ? `${decision.to.export} in "${decision.to.module}"` : '',
+          // a type that kept the module and the name needs no rewrite once the import is type-only
+          typeThen:
+            decision.to && (decision.to.module !== module || decision.to.export !== name)
+              ? ', and the rule then rewrites it'
+              : '',
+          removedIn: decision.removedIn ? ` (removed in ${decision.removedIn})` : '',
+          shim: decision.shim ? `\n\nA shim that restores it:\n${decision.shim}\n` : '',
+          // after a shim, the links start their own line
+          links: decision.shim ? describeLinks(decision.links).trimStart() : describeLinks(decision.links),
+        },
+      });
+    }
 
-      if (!hasMapped && !unresolvedNames.length) return;
+    /**
+     * The reports, and the fix they share, for a declaration with at least one rewrite.
+     * @param {ReturnType<typeof plan>} declaration
+     * @param {ReturnType<typeof plan>[]} plans
+     * @param {Map<string, ReturnType<typeof plan>>} createdBy  the first declaration that writes a
+     *   new import of each module
+     */
+    function reportRewrites(declaration, plans, createdBy) {
+      const { node, module } = declaration;
+      const quote = sourceCode.getText(node.source)[0];
+      const semi = sourceCode.getText(node).trimEnd().endsWith(';') ? ';' : '';
 
-      const quote = helpers.getQuoteChar(node);
-
-      if (hasMapped) {
-        const groupKeys = Object.keys(groups);
-        // Rebuild every group's specifier text from scratch (rather than only swapping the
-        // module string) since a replacement export may differ in name and/or default-vs-named
-        // kind from the original specifier.
-        context.report({
-          node,
-          messageId: RULE_ID,
-          data: { kind: 'import', from: fromModule },
-          fix(fixer) {
-            const pieces = [];
-            for (const mod of groupKeys) {
-              const text = helpers.buildImportTextForGroup(mod, groups[mod], quote);
-              if (text) pieces.push(text);
-            }
-            const replacement = pieces.join('\n');
-            return fixer.replaceText(node, replacement);
-          },
-        });
+      /** @type {Entry[]} */
+      const moved = [];
+      /** @type {Map<string, Entry[]>} */
+      const groups = new Map();
+      const items = declaration.bare
+        ? [{ spec: null, name: '*', local: '', isType: node.importKind === 'type', decision: declaration.decision }]
+        : declaration.items;
+      for (const item of items) {
+        const target = item.decision.action === 'rewrite' ? item.decision.to : { module, export: item.name };
+        /** @type {Entry} */
+        const entry = { ...item, module: target.module, exportName: target.export };
+        if (item.decision.action === 'rewrite') moved.push(entry);
+        const group = groups.get(target.module);
+        if (group) group.push(entry);
+        else groups.set(target.module, [entry]);
       }
 
-      if (unresolvedNames.length) {
-        // No fixer: we don't know where these tokens belong, so flag them for a human
-        // instead of silently leaving the legacy import in place.
+      /** @type {(fixer: any) => any[]} */
+      let fix;
+      if (declaration.bare) {
+        const [entry] = moved;
+        fix = (fixer) => [fixer.replaceText(node.source, `${quote}${entry.module}${quote}`)];
+      } else {
+        /** @type {{ target: any, entries: Entry[] }[]} */
+        const merges = [];
+        /** @type {Set<any>} */
+        const deferTo = new Set();
+        /** @type {string[]} */
+        const rendered = [];
+        for (const [target, entries] of groups) {
+          if (target !== module) {
+            const existing = plans.find(
+              (other) =>
+                other !== declaration && !other.rewrites && other.module === target && canMerge(other.node, entries)
+            );
+            if (existing) {
+              merges.push({ target: existing.node, entries });
+              continue;
+            }
+            // Another declaration earlier in the file writes a new import of this module too. This
+            // fix overlaps that one, so ESLint applies it first and the next pass merges into it.
+            const first = createdBy.get(target);
+            if (first && first !== declaration) deferTo.add(first.node);
+            else createdBy.set(target, declaration);
+          }
+          rendered.push(...renderDeclarations(target, entries, quote, semi));
+        }
+        const line = sourceCode.lines[node.loc.start.line - 1];
+        const indent = /^\s*/u.exec(line.slice(0, node.loc.start.column))[0];
+        fix = (fixer) => {
+          const ops = [...deferTo].map((other) => fixer.replaceText(other, sourceCode.getText(other)));
+          ops.push(
+            rendered.length
+              ? fixer.replaceText(node, rendered.join(`\n${indent}`))
+              : fixer.removeRange(removalRange(sourceCode, node))
+          );
+          for (const { target, entries } of merges) ops.push(...mergeInto(fixer, target, entries, quote));
+          return ops;
+        };
+      }
+
+      const plain = moved.filter((entry) => entry.decision.reason !== 'private-target');
+      const hidden = moved.filter((entry) => entry.decision.reason === 'private-target');
+      if (plain.length) {
+        context.report({ node, messageId: RULE_ID, data: { ...versions, module, moves: describeMoves(plain) }, fix });
+      }
+      if (hidden.length) {
         context.report({
           node,
-          messageId: UNMAPPED_EXPORT_ID,
-          data: {
-            from: fromModule,
-            tokens: unresolvedNames.join(', '),
-            plural: unresolvedNames.length > 1 ? 's' : '',
-            pluralVerb: unresolvedNames.length > 1 ? 've' : 's',
-          },
+          messageId: PRIVATE_TARGET_ID,
+          data: { ...versions, module, moves: describeMoves(hidden) },
+          fix,
         });
       }
     }
 
+    /**
+     * The edits that add `entries` to the existing declaration `target`.
+     * @param {any} fixer
+     * @param {any} target
+     * @param {Entry[]} entries
+     * @param {string} quote
+     */
+    function mergeInto(fixer, target, entries, quote) {
+      const typeTarget = target.importKind === 'type';
+      const specs = target.specifiers;
+      const hasDefault = specs.some((/** @type {any} */ spec) => spec.type === 'ImportDefaultSpecifier');
+      const head =
+        typeTarget || hasDefault ? undefined : entries.find((entry) => entry.exportName === 'default' && !entry.isType);
+      const named = entries.filter((entry) => entry !== head).map((entry) => specifierText(entry, !typeTarget, quote));
+      const firstNamed = specs.find((/** @type {any} */ spec) => spec.type === 'ImportSpecifier');
+      const lastNamed = [...specs].reverse().find((/** @type {any} */ spec) => spec.type === 'ImportSpecifier');
+      const ops = [];
+      if (head) ops.push(fixer.insertTextBefore(sourceCode.getTokenBefore(firstNamed), `${head.local}, `));
+      if (named.length && lastNamed) {
+        const brace = sourceCode.getTokenBefore(firstNamed);
+        const multiline = brace.loc.start.line !== lastNamed.loc.start.line;
+        const indent = multiline ? /^\s*/u.exec(sourceCode.lines[lastNamed.loc.start.line - 1])[0] : '';
+        const separator = multiline ? `,\n${indent}` : ', ';
+        ops.push(fixer.insertTextAfter(lastNamed, named.map((text) => `${separator}${text}`).join('')));
+      } else if (named.length) {
+        ops.push(fixer.insertTextAfter(specs[specs.length - 1], `, { ${named.join(', ')} }`));
+      }
+      return ops;
+    }
+
     return {
-      ImportDeclaration: handleImportDeclaration,
+      Program(program) {
+        const plans = program.body
+          .filter((/** @type {any} */ node) => node.type === 'ImportDeclaration')
+          .map((/** @type {any} */ node) => plan(node));
+        /** @type {Map<string, ReturnType<typeof plan>>} */
+        const createdBy = new Map();
+        for (const declaration of plans) {
+          if (declaration.rewrites) reportRewrites(declaration, plans, createdBy);
+          if (declaration.bare) {
+            if (declaration.decision.action === 'report') reportItem(declaration, null, declaration.decision);
+            continue;
+          }
+          const sideEffect = declaration.items.find(
+            (item) => item.decision.action === 'report' && item.decision.reason === 'side-effect'
+          );
+          if (sideEffect) reportItem(declaration, null, sideEffect.decision);
+          for (const item of declaration.items) {
+            if (item.decision.action === 'report' && item.decision.reason !== 'side-effect') {
+              reportItem(declaration, item, item.decision);
+            }
+          }
+        }
+      },
     };
   },
 };

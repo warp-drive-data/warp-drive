@@ -1,0 +1,841 @@
+{
+  "declarations": {
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/expensive-subscription.ts#getExpensiveRequestSubscription": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/promise-state.ts#PromiseState": "warp-drive-packages/core/src/signals/promise-state.ts#PromiseState",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/promise-state.ts#getPromiseState": "warp-drive-packages/core/src/signals/promise-state.ts#getPromiseState",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#ARRAY_SIGNAL": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#HooksOptions": "warp-drive-packages/core/src/signals/reactivity/configure.ts#HooksOptions",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#OBJECT_SIGNAL": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#SignalHooks": "warp-drive-packages/core/src/signals/reactivity/configure.ts#SignalHooks",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#setupSignals": "warp-drive-packages/core/src/signals/reactivity/configure.ts#setupSignals",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/configure.ts#waitFor": "warp-drive-packages/core/src/signals/reactivity/configure.ts#waitFor",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#Signals": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#WarpDriveSignal": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#consumeInternalSignal": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#createInternalMemo": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#getOrCreateInternalSignal": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#notifyInternalSignal": "warp-drive-packages/core/src/signals/reactivity/internal.ts#notifyInternalSignal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#peekInternalSignal": "warp-drive-packages/core/src/signals/reactivity/internal.ts#peekInternalSignal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/internal.ts#withSignalStore": "warp-drive-packages/core/src/signals/reactivity/internal.ts#withSignalStore",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#defineGate": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineGate",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#defineNonEnumerableSignal": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineNonEnumerableSignal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#defineSignal": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineSignal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#entangleInitiallyStaleSignal": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#entangleSignal": "warp-drive-packages/core/src/signals/reactivity/signal.ts#entangleSignal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#gate": "warp-drive-packages/core/src/signals/reactivity/signal.ts#gate",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#memoized": "warp-drive-packages/core/src/signals/reactivity/signal.ts#memoized",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/reactivity/signal.ts#signal": "warp-drive-packages/core/src/signals/reactivity/signal.ts#signal",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#RequestCacheRequestState": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#RequestLoadingState": "warp-drive-packages/core/src/signals/request-state.ts#RequestLoadingState",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-state.ts#getRequestState": "warp-drive-packages/core/src/signals/request-state.ts#getRequestState",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#AutorefreshBehaviorCombos": "warp-drive-packages/core/src/signals/request-subscription.ts#AutorefreshBehaviorCombos",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#AutorefreshBehaviorType": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#ContentFeatures": "warp-drive-packages/core/src/signals/request-subscription.ts#ContentFeatures",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#DISPOSE": "warp-drive-packages/core/src/signals/request-subscription.ts#DISPOSE",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#RecoveryFeatures": "warp-drive-packages/core/src/signals/request-subscription.ts#RecoveryFeatures",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#RequestArgs": "warp-drive-packages/core/src/signals/request-subscription.ts#RequestArgs",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#RequestComponentArgs": null,
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#RequestSubscription": "warp-drive-packages/core/src/signals/request-subscription.ts#RequestSubscription",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#SubscriptionArgs": "warp-drive-packages/core/src/signals/request-subscription.ts#SubscriptionArgs",
+    "warp-drive-packages/core/src/store/-private/new-core-tmp/request-subscription.ts#createRequestSubscription": "warp-drive-packages/core/src/signals/request-subscription.ts#createRequestSubscription",
+    "warp-drive-packages/core/src/store/-types/q/schema-service.ts#SchemaService": "warp-drive-packages/core/src/types/schema/schema-service.ts#SchemaService",
+    "warp-drive-packages/core/src/types/request.ts#withBrand": "warp-drive-packages/core/src/request.ts#withResponseType"
+  },
+  "exports": {
+    "@ember-data/codemods": {
+      "added": {
+        "Codemods": {
+          "decl": "packages/codemods/src/index.ts#Codemods",
+          "kind": "value"
+        },
+        "Logs": {
+          "decl": "packages/codemods/src/index.ts#Logs",
+          "kind": "value"
+        }
+      }
+    },
+    "@ember-data/legacy-compat": {
+      "changed": {
+        "CompatStore": {
+          "deprecated": true
+        }
+      }
+    },
+    "@ember-data/model/migration-support": {
+      "added": {
+        "PrivateDelegatingSchemaService": {
+          "decl": "warp-drive-packages/legacy/src/model/migration-support.ts#PrivateDelegatingSchemaService",
+          "kind": "type"
+        }
+      }
+    },
+    "@ember-data/request": {
+      "added": {
+        "withBrand": {
+          "decl": "warp-drive-packages/core/src/request.ts#withBrand",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "withReactiveResponse": {
+          "decl": "warp-drive-packages/core/src/request.ts#withReactiveResponse",
+          "kind": "value"
+        },
+        "withResponseType": {
+          "decl": "warp-drive-packages/core/src/request.ts#withResponseType",
+          "kind": "value"
+        }
+      }
+    },
+    "@ember-data/store/-private": {
+      "removed": [
+        "ARRAY_SIGNAL",
+        "AutorefreshBehaviorCombos",
+        "AutorefreshBehaviorType",
+        "ContentFeatures",
+        "DISPOSE",
+        "OBJECT_SIGNAL",
+        "PromiseState",
+        "RecoveryFeatures",
+        "RequestArgs",
+        "RequestComponentArgs",
+        "RequestLoadingState",
+        "RequestState",
+        "RequestSubscription",
+        "SignalHooks",
+        "Signals",
+        "SubscriptionArgs",
+        "WarpDriveSignal",
+        "consumeInternalSignal",
+        "createInternalMemo",
+        "createRequestSubscription",
+        "defineGate",
+        "defineNonEnumerableSignal",
+        "defineSignal",
+        "entangleInitiallyStaleSignal",
+        "entangleSignal",
+        "gate",
+        "getOrCreateInternalSignal",
+        "getPromiseState",
+        "getRequestState",
+        "memoized",
+        "notifyInternalSignal",
+        "peekInternalSignal",
+        "signal",
+        "waitFor",
+        "withSignalStore"
+      ]
+    },
+    "@ember-data/store/configure": {
+      "changed": {
+        "setupSignals": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#setupSignals"
+        }
+      }
+    },
+    "@ember-data/store/types": {
+      "changed": {
+        "SchemaService": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#SchemaService"
+        }
+      }
+    },
+    "@warp-drive/build-config": {
+      "added": {
+        "babelPlugin": {
+          "decl": "warp-drive-packages/build-config/src/index.ts#babelPlugin",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core": {
+      "added": {
+        "ConfiguredStore": {
+          "decl": "warp-drive-packages/core/src/index.ts#ConfiguredStore",
+          "kind": "type"
+        },
+        "StoreSetupOptions": {
+          "decl": "warp-drive-packages/core/src/index.ts#StoreSetupOptions",
+          "kind": "type"
+        },
+        "cacheKeyFor": {
+          "decl": "warp-drive-packages/core/src/store/-private/caches/instance-cache.ts#recordIdentifierFor",
+          "kind": "value"
+        },
+        "useRecommendedStore": {
+          "decl": "warp-drive-packages/core/src/index.ts#useRecommendedStore",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core-types": {
+      "changed": {
+        "SchemaService": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#SchemaService"
+        }
+      }
+    },
+    "@warp-drive/core-types/record": {
+      "added": {
+        "Mask": {
+          "decl": "warp-drive-packages/core/src/types/record.ts#Mask",
+          "kind": "type"
+        },
+        "Validate": {
+          "decl": "warp-drive-packages/core/src/types/record.ts#Validate",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core-types/request": {
+      "added": {
+        "FetchError": {
+          "decl": "warp-drive-packages/core/src/request/-private/utils.ts#FetchError",
+          "kind": "type"
+        }
+      },
+      "removed": [
+        "withBrand"
+      ]
+    },
+    "@warp-drive/core/build-config": {
+      "added": {
+        "WarpDriveConfig": {
+          "decl": "warp-drive-packages/build-config/src/index.ts#WarpDriveConfig",
+          "kind": "type"
+        },
+        "babelPlugin": {
+          "decl": "warp-drive-packages/build-config/src/index.ts#babelPlugin",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/configure": {
+      "changed": {
+        "HooksOptions": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#HooksOptions"
+        },
+        "SignalHooks": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#SignalHooks"
+        },
+        "setupSignals": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#setupSignals"
+        }
+      }
+    },
+    "@warp-drive/core/reactive": {
+      "added": {
+        "LegacyLiveArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-live-array.ts#LegacyLiveArray",
+          "kind": "type"
+        },
+        "LegacyManyArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-many-array.ts#LegacyManyArray",
+          "kind": "type"
+        },
+        "LegacyQueryArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/legacy-query.ts#LegacyQueryArray",
+          "kind": "type"
+        },
+        "PendingPromise": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#PendingPromise",
+          "kind": "type"
+        },
+        "PromiseState": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#PromiseState",
+          "kind": "type"
+        },
+        "ReactiveDataDocument": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/document.ts#ReactiveDataDocument",
+          "kind": "type"
+        },
+        "ReactiveErrorDocument": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/document.ts#ReactiveErrorDocument",
+          "kind": "type"
+        },
+        "ReactiveResourceArray": {
+          "decl": "warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#ReactiveResourceArray",
+          "kind": "type"
+        },
+        "RejectedPromise": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#RejectedPromise",
+          "kind": "type"
+        },
+        "RequestLoadingState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#RequestLoadingState",
+          "kind": "type"
+        },
+        "RequestState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#RequestState",
+          "kind": "type"
+        },
+        "RequestSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RequestSubscription",
+          "kind": "type"
+        },
+        "ResolvedPromise": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#ResolvedPromise",
+          "kind": "type"
+        },
+        "createRequestSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#createRequestSubscription",
+          "kind": "value"
+        },
+        "getPromiseState": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#getPromiseState",
+          "kind": "value"
+        },
+        "getRequestState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#getRequestState",
+          "kind": "value"
+        }
+      },
+      "removed": [
+        "getExpensiveRequestSubscription"
+      ]
+    },
+    "@warp-drive/core/reactive/-private": {
+      "added": {
+        "PrivateReactiveResource": {
+          "decl": "warp-drive-packages/core/src/reactive/-private/record.ts#PrivateReactiveResource",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/request": {
+      "added": {
+        "withBrand": {
+          "decl": "warp-drive-packages/core/src/request.ts#withBrand",
+          "deprecated": true,
+          "kind": "value"
+        },
+        "withReactiveResponse": {
+          "decl": "warp-drive-packages/core/src/request.ts#withReactiveResponse",
+          "kind": "value"
+        },
+        "withResponseType": {
+          "decl": "warp-drive-packages/core/src/request.ts#withResponseType",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/signals/-leaked": {
+      "added": {
+        "AutorefreshBehaviorCombos": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#AutorefreshBehaviorCombos",
+          "kind": "type"
+        },
+        "ContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#ContentFeatures",
+          "kind": "type"
+        },
+        "DISPOSE": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#DISPOSE",
+          "kind": "value"
+        },
+        "RecoveryFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RecoveryFeatures",
+          "kind": "type"
+        },
+        "RequestArgs": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RequestArgs",
+          "kind": "type"
+        },
+        "SubscriptionArgs": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#SubscriptionArgs",
+          "kind": "type"
+        },
+        "defineGate": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineGate",
+          "kind": "value"
+        },
+        "defineNonEnumerableSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineNonEnumerableSignal",
+          "kind": "value"
+        },
+        "defineSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#defineSignal",
+          "kind": "value"
+        },
+        "entangleSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#entangleSignal",
+          "kind": "value"
+        },
+        "gate": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#gate",
+          "kind": "value"
+        },
+        "memoized": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#memoized",
+          "kind": "value"
+        },
+        "notifyInternalSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#notifyInternalSignal",
+          "kind": "value"
+        },
+        "peekInternalSignal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#peekInternalSignal",
+          "kind": "value"
+        },
+        "signal": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/signal.ts#signal",
+          "kind": "value"
+        },
+        "waitFor": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/configure.ts#waitFor",
+          "kind": "value"
+        },
+        "withSignalStore": {
+          "decl": "warp-drive-packages/core/src/signals/reactivity/internal.ts#withSignalStore",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/core/store": {
+      "added": {
+        "NotificationManager": {
+          "decl": "warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#NotificationManager",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/store/-private": {
+      "removed": [
+        "ARRAY_SIGNAL",
+        "AutorefreshBehaviorCombos",
+        "AutorefreshBehaviorType",
+        "ContentFeatures",
+        "DISPOSE",
+        "OBJECT_SIGNAL",
+        "PromiseState",
+        "RecoveryFeatures",
+        "RequestArgs",
+        "RequestComponentArgs",
+        "RequestLoadingState",
+        "RequestState",
+        "RequestSubscription",
+        "SignalHooks",
+        "Signals",
+        "SubscriptionArgs",
+        "WarpDriveSignal",
+        "consumeInternalSignal",
+        "createInternalMemo",
+        "createRequestSubscription",
+        "defineGate",
+        "defineNonEnumerableSignal",
+        "defineSignal",
+        "entangleInitiallyStaleSignal",
+        "entangleSignal",
+        "gate",
+        "getOrCreateInternalSignal",
+        "getPromiseState",
+        "getRequestState",
+        "memoized",
+        "notifyInternalSignal",
+        "peekInternalSignal",
+        "signal",
+        "waitFor",
+        "withSignalStore"
+      ]
+    },
+    "@warp-drive/core/types": {
+      "changed": {
+        "SchemaService": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#SchemaService"
+        }
+      }
+    },
+    "@warp-drive/core/types/record": {
+      "added": {
+        "Mask": {
+          "decl": "warp-drive-packages/core/src/types/record.ts#Mask",
+          "kind": "type"
+        },
+        "Validate": {
+          "decl": "warp-drive-packages/core/src/types/record.ts#Validate",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/core/types/request": {
+      "added": {
+        "FetchError": {
+          "decl": "warp-drive-packages/core/src/request/-private/utils.ts#FetchError",
+          "kind": "type"
+        }
+      },
+      "removed": [
+        "withBrand"
+      ]
+    },
+    "@warp-drive/core/types/schema/schema-service": {
+      "added": {
+        "AttributesSchema": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#AttributesSchema",
+          "kind": "type"
+        },
+        "RelationshipsSchema": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#RelationshipsSchema",
+          "kind": "type"
+        },
+        "SchemaService": {
+          "decl": "warp-drive-packages/core/src/types/schema/schema-service.ts#SchemaService",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/ember": {
+      "added": {
+        "PromiseState": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#PromiseState",
+          "kind": "type"
+        },
+        "RequestState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#RequestState",
+          "kind": "type"
+        }
+      },
+      "changed": {
+        "ContentFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#ContentFeatures"
+        },
+        "RecoveryFeatures": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#RecoveryFeatures"
+        },
+        "RequestLoadingState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#RequestLoadingState"
+        },
+        "createRequestSubscription": {
+          "decl": "warp-drive-packages/core/src/signals/request-subscription.ts#createRequestSubscription"
+        },
+        "getPromiseState": {
+          "decl": "warp-drive-packages/core/src/signals/promise-state.ts#getPromiseState"
+        },
+        "getRequestState": {
+          "decl": "warp-drive-packages/core/src/signals/request-state.ts#getRequestState"
+        }
+      }
+    },
+    "@warp-drive/holodeck": {
+      "added": {
+        "MockServerHandler": {
+          "decl": "packages/holodeck/src/index.ts#MockServerHandler",
+          "kind": "value"
+        },
+        "getIsRecording": {
+          "decl": "packages/holodeck/src/index.ts#getIsRecording",
+          "kind": "value"
+        },
+        "installAdapterFor": {
+          "decl": "packages/holodeck/src/index.ts#installAdapterFor",
+          "kind": "value"
+        },
+        "mock": {
+          "decl": "packages/holodeck/src/index.ts#mock",
+          "kind": "value"
+        },
+        "setConfig": {
+          "decl": "packages/holodeck/src/index.ts#setConfig",
+          "kind": "value"
+        },
+        "setIsRecording": {
+          "decl": "packages/holodeck/src/index.ts#setIsRecording",
+          "kind": "value"
+        },
+        "setTestId": {
+          "decl": "packages/holodeck/src/index.ts#setTestId",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/holodeck/mock": {
+      "added": {
+        "DELETE": {
+          "decl": "packages/holodeck/src/mock.ts#DELETE",
+          "kind": "value"
+        },
+        "GET": {
+          "decl": "packages/holodeck/src/mock.ts#GET",
+          "kind": "value"
+        },
+        "PATCH": {
+          "decl": "packages/holodeck/src/mock.ts#PATCH",
+          "kind": "value"
+        },
+        "POST": {
+          "decl": "packages/holodeck/src/mock.ts#POST",
+          "kind": "value"
+        },
+        "PUT": {
+          "decl": "packages/holodeck/src/mock.ts#PUT",
+          "kind": "value"
+        },
+        "ResponseGenerator": {
+          "decl": "packages/holodeck/src/mock.ts#ResponseGenerator",
+          "kind": "type"
+        },
+        "Scaffold": {
+          "decl": "packages/holodeck/src/mock.ts#Scaffold",
+          "kind": "type"
+        },
+        "ScaffoldGenerator": {
+          "decl": "packages/holodeck/src/mock.ts#ScaffoldGenerator",
+          "kind": "type"
+        }
+      }
+    },
+    "@warp-drive/legacy": {
+      "added": {
+        "ConfiguredStore": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#ConfiguredStore",
+          "kind": "type"
+        },
+        "LegacyModelAndNetworkAndRequestStoreSetupOptions": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#LegacyModelAndNetworkAndRequestStoreSetupOptions",
+          "kind": "type"
+        },
+        "LegacyModelAndNetworkStoreSetupOptions": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#LegacyModelAndNetworkStoreSetupOptions",
+          "kind": "type"
+        },
+        "LegacyModelStoreSetupOptions": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#LegacyModelStoreSetupOptions",
+          "kind": "type"
+        },
+        "LegacyStoreSetupOptions": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#LegacyStoreSetupOptions",
+          "kind": "type"
+        },
+        "useLegacyStore": {
+          "decl": "warp-drive-packages/legacy/src/index.ts#useLegacyStore",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/legacy/compat": {
+      "changed": {
+        "CompatStore": {
+          "deprecated": true
+        }
+      }
+    },
+    "@warp-drive/legacy/model-fragments": {
+      "added": {
+        "Fragment": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#Fragment",
+          "kind": "value"
+        },
+        "FragmentArray": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#FragmentArray",
+          "kind": "value"
+        },
+        "FragmentArrayExtension": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/extensions/fragment-array.ts#FragmentArrayExtension",
+          "kind": "value"
+        },
+        "FragmentExtension": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/extensions/fragment.ts#FragmentExtension",
+          "kind": "value"
+        },
+        "WithFragment": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/index.ts#WithFragment",
+          "kind": "type"
+        },
+        "WithFragmentArray": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/index.ts#WithFragmentArray",
+          "kind": "type"
+        },
+        "modelFor": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/hooks/model-for.ts#modelFor",
+          "kind": "value"
+        },
+        "registerFragmentExtensions": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts#registerFragmentExtensions",
+          "kind": "value"
+        },
+        "withArrayDefaults": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#withArrayDefaults",
+          "kind": "value"
+        },
+        "withFragmentArrayDefaults": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-array-defaults.ts#withFragmentArrayDefaults",
+          "kind": "value"
+        },
+        "withFragmentDefaults": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/utilities/with-fragment-defaults.ts#withFragmentDefaults",
+          "kind": "value"
+        },
+        "withLegacy": {
+          "decl": "warp-drive-packages/legacy/src/model-fragments/utilities/with-legacy.ts#withLegacy",
+          "kind": "value"
+        }
+      }
+    },
+    "@warp-drive/legacy/model/migration-support": {
+      "added": {
+        "PrivateDelegatingSchemaService": {
+          "decl": "warp-drive-packages/legacy/src/model/migration-support.ts#PrivateDelegatingSchemaService",
+          "kind": "type"
+        }
+      }
+    }
+  },
+  "from": "5.7.0",
+  "kind": "diff",
+  "modules": {
+    "added": {
+      "@ember-data/active-record/index": {
+        "entry": "packages/active-record/src/index.ts",
+        "forward": null,
+        "package": "@ember-data/active-record"
+      },
+      "@ember-data/codemods": {
+        "entry": "packages/codemods/src/index.ts",
+        "forward": null,
+        "package": "@ember-data/codemods"
+      },
+      "@warp-drive/core/signals/-leaked": {
+        "entry": "warp-drive-packages/core/src/signals/-leaked.ts",
+        "forward": null,
+        "package": "@warp-drive/core"
+      },
+      "@warp-drive/core/types/schema/schema-service": {
+        "entry": "warp-drive-packages/core/src/types/schema/schema-service.ts",
+        "forward": null,
+        "package": "@warp-drive/core"
+      },
+      "@warp-drive/holodeck": {
+        "entry": "packages/holodeck/src/index.ts",
+        "forward": null,
+        "package": "@warp-drive/holodeck"
+      },
+      "@warp-drive/holodeck/mock": {
+        "entry": "packages/holodeck/src/mock.ts",
+        "forward": null,
+        "package": "@warp-drive/holodeck"
+      },
+      "@warp-drive/legacy": {
+        "entry": "warp-drive-packages/legacy/src/index.ts",
+        "forward": null,
+        "package": "@warp-drive/legacy"
+      },
+      "@warp-drive/legacy/model-fragments": {
+        "entry": "warp-drive-packages/legacy/src/model-fragments.ts",
+        "forward": null,
+        "package": "@warp-drive/legacy"
+      },
+      "warp-drive/warp-drive": {
+        "entry": "packages/-warp-drive/src/warp-drive.ts",
+        "forward": null,
+        "package": "warp-drive"
+      }
+    },
+    "changed": {
+      "@ember-data/legacy-compat": {
+        "forward": null
+      }
+    }
+  },
+  "packages": {
+    "added": {
+      "@ember-data/codemods": {
+        "dir": "packages/codemods",
+        "modules": [
+          "@ember-data/codemods"
+        ]
+      },
+      "@warp-drive/holodeck": {
+        "dir": "packages/holodeck",
+        "modules": [
+          "@warp-drive/holodeck",
+          "@warp-drive/holodeck/mock"
+        ]
+      },
+      "warp-drive": {
+        "dir": "packages/-warp-drive",
+        "modules": [
+          "warp-drive/warp-drive"
+        ]
+      }
+    },
+    "changed": {
+      "@ember-data/active-record": {
+        "modules": [
+          "@ember-data/active-record/index",
+          "@ember-data/active-record/request"
+        ]
+      },
+      "@warp-drive/core": {
+        "modules": [
+          "@warp-drive/core",
+          "@warp-drive/core/build-config",
+          "@warp-drive/core/build-config/babel-macros",
+          "@warp-drive/core/build-config/canary-features",
+          "@warp-drive/core/build-config/debugging",
+          "@warp-drive/core/build-config/deprecations",
+          "@warp-drive/core/build-config/env",
+          "@warp-drive/core/build-config/macros",
+          "@warp-drive/core/configure",
+          "@warp-drive/core/graph/-private",
+          "@warp-drive/core/reactive",
+          "@warp-drive/core/reactive/-private",
+          "@warp-drive/core/request",
+          "@warp-drive/core/signals/-leaked",
+          "@warp-drive/core/store",
+          "@warp-drive/core/store/-private",
+          "@warp-drive/core/types",
+          "@warp-drive/core/types/-private",
+          "@warp-drive/core/types/cache",
+          "@warp-drive/core/types/cache/aliases",
+          "@warp-drive/core/types/cache/change",
+          "@warp-drive/core/types/cache/mutations",
+          "@warp-drive/core/types/cache/operations",
+          "@warp-drive/core/types/cache/relationship",
+          "@warp-drive/core/types/graph",
+          "@warp-drive/core/types/identifier",
+          "@warp-drive/core/types/json/raw",
+          "@warp-drive/core/types/params",
+          "@warp-drive/core/types/record",
+          "@warp-drive/core/types/request",
+          "@warp-drive/core/types/runtime",
+          "@warp-drive/core/types/schema/concepts",
+          "@warp-drive/core/types/schema/fields",
+          "@warp-drive/core/types/schema/fields.type-test",
+          "@warp-drive/core/types/schema/schema-service",
+          "@warp-drive/core/types/spec/document",
+          "@warp-drive/core/types/spec/error",
+          "@warp-drive/core/types/spec/json-api-raw",
+          "@warp-drive/core/types/symbols",
+          "@warp-drive/core/types/utils",
+          "@warp-drive/core/utils/string"
+        ]
+      },
+      "@warp-drive/legacy": {
+        "modules": [
+          "@warp-drive/legacy",
+          "@warp-drive/legacy/adapter",
+          "@warp-drive/legacy/adapter/-private",
+          "@warp-drive/legacy/adapter/error",
+          "@warp-drive/legacy/adapter/json-api",
+          "@warp-drive/legacy/adapter/rest",
+          "@warp-drive/legacy/compat",
+          "@warp-drive/legacy/compat/-private",
+          "@warp-drive/legacy/compat/builders",
+          "@warp-drive/legacy/compat/extensions",
+          "@warp-drive/legacy/compat/utils",
+          "@warp-drive/legacy/model",
+          "@warp-drive/legacy/model-fragments",
+          "@warp-drive/legacy/model/-private",
+          "@warp-drive/legacy/model/migration-support",
+          "@warp-drive/legacy/serializer",
+          "@warp-drive/legacy/serializer/json",
+          "@warp-drive/legacy/serializer/json-api",
+          "@warp-drive/legacy/serializer/rest",
+          "@warp-drive/legacy/serializer/transform",
+          "@warp-drive/legacy/store"
+        ]
+      }
+    }
+  },
+  "schema": 1,
+  "to": "5.8.2"
+}

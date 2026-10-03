@@ -1,0 +1,40 @@
+{
+  "declarations": {
+    "packages/adapter/src/error.js#errorsArrayToHash": null,
+    "packages/model/src/-private/attr.js#default": "packages/model/src/-private/attr.ts#default",
+    "packages/request-utils/src/index.ts#setBuildURLConfig": null,
+    "packages/store/src/-private/index.ts#normalizeModelName": null
+  },
+  "exports": {
+    "@ember-data/adapter/error": {
+      "removed": ["errorsArrayToHash"]
+    },
+    "@ember-data/model": {
+      "changed": {
+        "attr": {
+          "decl": "packages/model/src/-private/attr.ts#default"
+        }
+      }
+    },
+    "@ember-data/request-utils": {
+      "removed": ["setBuildURLConfig"]
+    },
+    "@ember-data/store": {
+      "removed": ["normalizeModelName"]
+    }
+  },
+  "from": "4.12.8",
+  "kind": "diff",
+  "modules": {
+    "removed": ["ember-data/adapters/errors", "ember-data/adapters/json-api"]
+  },
+  "packages": {
+    "changed": {
+      "ember-data": {
+        "modules": ["ember-data", "ember-data/store"]
+      }
+    }
+  },
+  "schema": 1,
+  "to": "5.0.1"
+}
