@@ -19,7 +19,7 @@ To move to the latest WarpDrive one route at a time instead, running it beside y
 
 This version of WarpDrive, published as the `ember-data` package, is the first version that supports the new APIs. It is also an LTS version, so you can stay on it for a while. See the [compatibility table](https://github.com/warp-drive-data/warp-drive/blob/main/README.md#ember-compatibility) for the Ember versions each WarpDrive release supports.
 
-Everything below is written against 4.12.8, the last 4.12 release. The request builders (`findRecord`, `query` and the rest) and the `@ember-data/rest` and `@ember-data/active-record` packages arrived in 5.3, so on 4.12 you build each request yourself.
+Everything below is written against 4.12.8, the last 4.12 release. The request builders ([`findRecord`](/api/@warp-drive/utilities/json-api/functions/findRecord), [`query`](/api/@warp-drive/utilities/json-api/functions/query) and the rest) and the `@ember-data/rest` and `@ember-data/active-record` packages arrived in 5.3, so on 4.12 you build each request yourself.
 
 ## Step 2: Add a `Store` service to your application
 
@@ -32,7 +32,7 @@ import Store from 'ember-data/store';
 export default class AppStore extends Store {}
 ```
 
-Import the `Store` class from `ember-data/store`, even if a lint rule tells you not to, and disable the rule for this import. That class keeps your models, adapters and serializers working while you start using the new APIs beside them.
+Import the [`Store`](/api/@warp-drive/core/classes/Store) class from `ember-data/store`, even if a lint rule tells you not to, and disable the rule for this import. That class keeps your models, adapters and serializers working while you start using the new APIs beside them.
 
 > Note: You can extend `@ember-data/store` instead, but then you have to configure the legacy APIs yourself. `ember-data/store` does it for you.
 
@@ -40,7 +40,7 @@ Import the `Store` class from `ember-data/store`, even if a lint rule tells you 
 
 ## Step 3: Add your own handlers to the `RequestManager`
 
-The store sends requests through a `RequestManager`, which fulfills them with a chain-of-responsibility pipeline of handlers. The store from `ember-data/store` already sets one up with `LegacyNetworkHandler`, `Fetch` and `CacheHandler`. To add handlers of your own, you replace it with one that lists yours too.
+The store sends requests through a [`RequestManager`](/api/@warp-drive/core/classes/RequestManager), which fulfills them with a chain-of-responsibility pipeline of handlers. The store from `ember-data/store` already sets one up with [`LegacyNetworkHandler`](/api/@warp-drive/legacy/compat/variables/LegacyNetworkHandler), [`Fetch`](/api/@warp-drive/core/variables/Fetch) and [`CacheHandler`](/api/@warp-drive/core/variables/CacheHandler). To add handlers of your own, you replace it with one that lists yours too.
 
 `ember-data` already depends on `@ember-data/request`, `@ember-data/legacy-compat` and `@ember-data/store`. Add them to your app's own `package.json`, at the same version as `ember-data`, so that your app can import from them:
 
@@ -100,9 +100,9 @@ pnpm add @ember-data/request-utils@4.12.8
 
 In 4.12 it provides the building blocks for URLs:
 
-- `setBuildURLConfig` sets the default `host` and `namespace`.
-- `buildBaseURL` builds the URL for an operation on a resource type.
-- `buildQueryParams` serializes query params in a stable order, so that the same query always produces the same URL and the same cache key.
+- [`setBuildURLConfig`](/api/@warp-drive/utilities/functions/setBuildURLConfig) sets the default `host` and `namespace`.
+- [`buildBaseURL`](/api/@warp-drive/utilities/functions/buildBaseURL) builds the URL for an operation on a resource type.
+- [`buildQueryParams`](/api/@warp-drive/utilities/functions/buildQueryParams) serializes query params in a stable order, so that the same query always produces the same URL and the same cache key.
 
 Configure the default host and namespace once, as the app boots. `app/app.js` is a good place:
 
