@@ -22,7 +22,7 @@ interface SignalIntegration<T =
 }
 ```
 
-Defined in: [install.ts:76](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L76)
+Defined in: [install.ts:76](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L76)
 
 Hooks that add another signals implementation, or a framework integration built on
 [`@warp-drive/alien-signals/primitives`](/api/@warp-drive/alien-signals/primitives/), to the
@@ -64,7 +64,7 @@ Memos always come from the graph, so a `createMemo` hook is ignored. This means 
 optional consumeSignal?: (signal: T) => void;
 ```
 
-Defined in: [install.ts:88](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L88)
+Defined in: [install.ts:88](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L88)
 
 Called when a signal is consumed. For an integration with its own signals, it is also called
 with the integration's signal for a memo each time that memo is read. For an integration that
@@ -88,7 +88,7 @@ observes the graph, it is also called with each memo just before the memo is rea
 optional createMemo?: unknown;
 ```
 
-Defined in: [install.ts:114](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L114)
+Defined in: [install.ts:114](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L114)
 
 Ignored: memos always come from the graph.
 
@@ -100,7 +100,7 @@ Ignored: memos always come from the graph.
 optional createSignal?: (obj: object, key: string | symbol) => T;
 ```
 
-Defined in: [install.ts:82](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L82)
+Defined in: [install.ts:82](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L82)
 
 Creates this integration's own signal for `key` on `obj`, paired with the graph signal created
 for the same key. Omit it to receive the graph's own nodes in `consumeSignal` and
@@ -128,7 +128,7 @@ for the same key. Omit it to receive the graph's own nodes in `consumeSignal` an
 optional isTracking?: () => boolean;
 ```
 
-Defined in: [install.ts:100](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L100)
+Defined in: [install.ts:100](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L100)
 
 For an integration with its own signals: whether a signal consumed now would be tracked. When
 this returns `false`, reading a memo neither consumes the integration's signal for it nor
@@ -146,7 +146,7 @@ subscribes that signal to the memo's changes. Omit it to treat every read as tra
 optional notifySignal?: (signal: T) => void;
 ```
 
-Defined in: [install.ts:94](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L94)
+Defined in: [install.ts:94](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L94)
 
 Called when a signal is notified, after the graph has been notified. For an integration with
 its own signals, it is also called with the integration's signal for a memo once something the
@@ -170,7 +170,7 @@ memo depends on changes.
 optional waitFor?: <K>(promise: Promise<K>) => Promise<K>;
 ```
 
-Defined in: [install.ts:110](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L110)
+Defined in: [install.ts:110](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L110)
 
 See [SignalHooks.waitFor](../../../core/configure/types/SignalHooks.md#waitfor). The graph passes each promise through every integration's
 `waitFor`, in the order they were registered.
@@ -199,7 +199,7 @@ See [SignalHooks.waitFor](../../../core/configure/types/SignalHooks.md#waitfor).
 optional willSyncFlushWatchers?: () => boolean;
 ```
 
-Defined in: [install.ts:105](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/install.ts#L105)
+Defined in: [install.ts:105](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/install.ts#L105)
 
 See [SignalHooks.willSyncFlushWatchers](../../../core/configure/types/SignalHooks.md#willsyncflushwatchers). The graph's `willSyncFlushWatchers` returns
 `true` if any integration's does.

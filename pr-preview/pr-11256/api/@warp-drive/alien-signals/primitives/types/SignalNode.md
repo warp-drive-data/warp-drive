@@ -12,7 +12,7 @@ description: >-
 interface SignalNode extends ReactiveNode {}
 ```
 
-Defined in: [primitives.ts:55](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/primitives.ts#L55)
+Defined in: [primitives.ts:55](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/primitives.ts#L55)
 
 A signal created by [createSignal](../functions/createSignal.md). It carries no value: it only records which memos and
 watchers depend on it, so that [notifySignal](../functions/notifySignal.md) can tell them the value it guards changed.

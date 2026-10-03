@@ -14,7 +14,7 @@ description: >-
 function registerDerivations(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:450](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/legacy/src/model/migration-support.ts#L450)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:450](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/legacy/src/model/migration-support.ts#L450)
 
 A function which registers the necessary derivations to support
 the LegacyMode features of @warp-drive/legacy/model while migrating to WarpDrive.

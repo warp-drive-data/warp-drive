@@ -15,7 +15,7 @@ interface RemoveDocumentOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:72](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:72](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/types/cache/operations.ts#L72)
 
 Removes a document and its associated request from
 the cache.
@@ -32,7 +32,7 @@ the cache.
 op: "remove";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:73](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L73)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:73](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/types/cache/operations.ts#L73)
 
 The name of the [operation](Op.md)
 
@@ -48,6 +48,6 @@ The name of the [operation](Op.md)
 record: RequestKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:77](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L77)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:77](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/types/cache/operations.ts#L77)
 
 The cache key for the request

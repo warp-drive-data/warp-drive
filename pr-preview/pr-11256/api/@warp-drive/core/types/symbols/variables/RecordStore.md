@@ -12,7 +12,7 @@ description: >-
 const RecordStore: "___(unique) Symbol(Store)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:18](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/symbols.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:18](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/types/symbols.ts#L18)
 
 Symbol used internally to stash a reference to the owning
 [Store](../../../classes/Store.md) on a record instance.

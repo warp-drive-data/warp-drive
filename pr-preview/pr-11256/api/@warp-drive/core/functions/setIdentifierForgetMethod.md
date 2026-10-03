@@ -12,7 +12,7 @@ description: >-
 function setIdentifierForgetMethod(method: ForgetMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:321](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L321)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:321](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L321)
 
 Configure a callback for when the identifier cache is going to release an identifier.
 

@@ -14,7 +14,7 @@ type ResourceKey<T extends string = string> =
 | NewResourceKey<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:162](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/identifier.ts#L162)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:162](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/types/identifier.ts#L162)
 
 A referentially stable object with a unique string (lid) that can be used
 as a reference to data in the cache.

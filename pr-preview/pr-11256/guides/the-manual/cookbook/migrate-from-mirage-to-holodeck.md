@@ -23,7 +23,7 @@ Check these before you convert the first test.
   package, its peer dependencies, and the Node version it needs.
 * `mkcert` is installed and the local certificate exists. See
   [Trust a local certificate](/guides/the-manual/testing/server-setup.md#trust-a-local-certificate).
-* Every request you want to mock goes through the `RequestManager`, with `MockServerHandler` in the
+* Every request you want to mock goes through the [`RequestManager`](/api/@warp-drive/core/classes/RequestManager), with `MockServerHandler` in the
   chain, or through a legacy adapter patched with `installAdapterFor`.
   [Client setup](/guides/the-manual/testing/client-setup.md) shows both.
 * This page replaces Mirage in tests. If Mirage also serves your app under `ember serve`, that
@@ -58,7 +58,7 @@ Holodeck treats an unused mock as a mistake.
 ## Convert one test
 
 Pick a rendering test that seeds data with `server.createList` and renders a component that makes
-one `GET`. Here is the Mirage version.
+one [`GET`](/api/@warp-drive/holodeck/mock/functions/GET). Here is the Mirage version.
 
 ```js
 import { setupMirage } from 'ember-cli-mirage/test-support';
@@ -113,9 +113,9 @@ The URL is the path the app requests, without the origin and without a leading s
 it is, run the test. Through `MockServerHandler`, the failure message names the URL the app really
 requested. Through a legacy adapter it does not, so read the request in the browser's network panel.
 
-The mock helpers `GET`, `POST`, `PATCH`, `PUT`, `DELETE`, and `HEAD` come from
+The mock helpers `GET`, [`POST`](/api/@warp-drive/holodeck/mock/functions/POST), [`PATCH`](/api/@warp-drive/holodeck/mock/functions/PATCH), [`PUT`](/api/@warp-drive/holodeck/mock/functions/PUT), [`DELETE`](/api/@warp-drive/holodeck/mock/functions/DELETE), and [`HEAD`](/api/@warp-drive/holodeck/mock/functions/HEAD) come from
 `@warp-drive/holodeck/mock`.
-`setConfig`, `setTestId`, and `installAdapterFor` come from `@warp-drive/holodeck`. The module no
+[`setConfig`](/api/@warp-drive/holodeck/functions/setConfig), `setTestId`, and `installAdapterFor` come from `@warp-drive/holodeck`. The module no
 longer calls `setupMirage`. Instead, the test suite registers a test id once, in
 `tests/test-helper.js`, and points Holodeck at the mock server.
 

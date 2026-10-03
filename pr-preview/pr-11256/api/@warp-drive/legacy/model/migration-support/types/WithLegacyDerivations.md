@@ -17,7 +17,7 @@ type WithLegacyDerivations<T extends TypedRecordInstance> = T & MinimalLegacyRec
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:92](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/legacy/src/model/migration-support.ts#L92)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:92](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/legacy/src/model/migration-support.ts#L92)
 
 Adds the `Model`-style `belongsTo`/`hasMany` reference methods to a
 [TypedRecordInstance](../../../../core/types/record/types/TypedRecordInstance.md), for use when migrating a resource from

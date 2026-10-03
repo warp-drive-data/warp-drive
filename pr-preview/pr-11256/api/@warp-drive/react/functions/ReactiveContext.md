@@ -14,7 +14,7 @@ function ReactiveContext(__namedParameters: {
 }): Element;
 ```
 
-Defined in: [-private/reactive-context.tsx:192](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/react/src/-private/reactive-context.tsx#L192)
+Defined in: [-private/reactive-context.tsx:192](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/react/src/-private/reactive-context.tsx#L192)
 
 Re-renders its `children` when a WarpDrive signal they read changes.
 `<Request />` already wraps its content in one; wrap any other component

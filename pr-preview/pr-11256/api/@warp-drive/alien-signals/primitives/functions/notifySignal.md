@@ -12,7 +12,7 @@ description: >-
 function notifySignal(signal: SignalNode): void;
 ```
 
-Defined in: [primitives.ts:221](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/alien-signals/src/primitives.ts#L221)
+Defined in: [primitives.ts:221](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/alien-signals/src/primitives.ts#L221)
 
 Tells everything that depends on `signal` that the value it guards changed: memos that read it
 recompute on their next read, and each [Watcher](../classes/Watcher.md) watching it, or a memo that read it, is

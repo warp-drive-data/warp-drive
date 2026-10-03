@@ -25,7 +25,7 @@ type JsonApiResourcePatch =
 };
 ```
 
-Defined in: [-private/json-api/serialize.ts:17](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L17)
+Defined in: [-private/json-api/serialize.ts:17](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/utilities/src/-private/json-api/serialize.ts#L17)
 
 The resource object [serializePatch](../functions/serializePatch.md) produces: the resource's `type` and `id` (or `lid`
 for a new record) with only its changed attributes and relationships.

@@ -17,7 +17,7 @@ type Transformation<T extends Value = Value, PT = unknown> = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:657](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/reactive/-private/schema.ts#L657)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:657](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/reactive/-private/schema.ts#L657)
 
 Defines how to convert a `GenericField`, `ObjectField`, or `ArrayField`
 between the raw value `T` stored in the cache and the presentation value
@@ -43,7 +43,7 @@ optional defaultValue(options:
   | null, identifier: ResourceKey): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:663](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/reactive/-private/schema.ts#L663)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:663](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/reactive/-private/schema.ts#L663)
 
 Computes the value to use when the cache has no value for the field.
 
@@ -76,7 +76,7 @@ hydrate(
 ): PT;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:661](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/reactive/-private/schema.ts#L661)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:661](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/reactive/-private/schema.ts#L661)
 
 Converts the raw cache value into its presentation value.
 
@@ -113,7 +113,7 @@ serialize(
 ): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:659](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/reactive/-private/schema.ts#L659)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:659](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/reactive/-private/schema.ts#L659)
 
 Converts the presentation value into the raw value to store in the cache.
 
@@ -144,6 +144,6 @@ Converts the presentation value into the raw value to store in the cache.
 ___(unique) Symbol($type): string;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:665](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/reactive/-private/schema.ts#L665)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:665](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/core/src/reactive/-private/schema.ts#L665)
 
 The name under which this transformation is registered and looked up.

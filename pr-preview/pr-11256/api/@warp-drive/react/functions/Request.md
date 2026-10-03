@@ -12,7 +12,7 @@ description: >-
 function Request<RT, E>($props: RequestProps<RT, E>): Element;
 ```
 
-Defined in: [-private/request.tsx:316](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/react/src/-private/request.tsx#L316)
+Defined in: [-private/request.tsx:316](https://github.com/warp-drive-data/warp-drive/blob/41678da1c5bd74d59e0480c935451b5e027be0fb/warp-drive-packages/react/src/-private/request.tsx#L316)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your React application. It provides a declarative approach to reactive
