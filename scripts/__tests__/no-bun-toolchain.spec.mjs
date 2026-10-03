@@ -52,8 +52,8 @@ const CONTENT_ALLOWLIST = [
 
   // ---- Consumers who use bun as their package manager or runtime -----------
   {
-    path: /^(guides\/(installation|configuration\/legacy-package-setup|linting)\/index\.md|guides\/the-manual\/testing\/server-setup\.md|upgrading\/v5\/index\.md|packages\/active-record\/src\/index\.md|warp-drive-packages\/build-config\/src\/canary-features\.ts)$/,
-    lines: [/```sh \[bun\]/, /\bbun add\b/],
+    path: /^(guides\/(installation|configuration\/legacy-package-setup|linting)\/index\.md|guides\/the-manual\/testing\/server-setup\.md|upgrading\/v5\/index\.md|upgrading\/ember-data\/in-place\.md|packages\/active-record\/src\/index\.md|warp-drive-packages\/build-config\/src\/canary-features\.ts)$/,
+    lines: [/```sh \[bun\]/, /\bbun add\b/, /\bbun remove\b/],
     why: 'Install instructions show a bun tab next to npm/pnpm/yarn for apps that use bun.',
   },
   {
