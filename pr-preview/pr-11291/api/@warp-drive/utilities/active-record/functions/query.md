@@ -39,7 +39,7 @@ function query<T, M extends
 ): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/active-record/query.ts:62](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/active-record/query.ts#L62)
+Defined in: [-private/active-record/query.ts:62](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/active-record/query.ts#L62)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most ActiveRecord APIs.
@@ -131,7 +131,7 @@ function query(
 ): QueryRequestOptions;
 ```
 
-Defined in: [-private/active-record/query.ts:67](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/active-record/query.ts#L67)
+Defined in: [-private/active-record/query.ts:67](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/active-record/query.ts#L67)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most ActiveRecord APIs.

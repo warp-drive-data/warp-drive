@@ -12,6 +12,6 @@ description: >-
 type FindAllOptions = BaseFinderOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:85](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/store/-types/q/store.ts#L85)
+Defined in: [warp-drive-packages/core/src/store/-types/q/store.ts:85](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/store/-types/q/store.ts#L85)
 
 Options for `store.findAll()`.

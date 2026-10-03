@@ -17,7 +17,7 @@ interface CompressionOptions {
 }
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:79](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L79)
+Defined in: [-private/handlers/auto-compress.ts:79](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L79)
 
 Options for configuring the [AutoCompress](../classes/AutoCompress.md) handler.
 
@@ -29,7 +29,7 @@ Options for configuring the [AutoCompress](../classes/AutoCompress.md) handler.
 optional allowStreaming?: boolean;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:115](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L115)
+Defined in: [-private/handlers/auto-compress.ts:115](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L115)
 
 Some browsers support `ReadableStream` as a request body. This option
 enables passing the compression stream as the request body instead of
@@ -68,7 +68,7 @@ false
 optional constraints?: Constraints;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:157](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L157)
+Defined in: [-private/handlers/auto-compress.ts:157](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L157)
 
 The constraints for the request body. This is used to determine
 whether to compress the request body or not.
@@ -108,7 +108,7 @@ disable compression.
 optional forceStreaming?: boolean;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:124](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L124)
+Defined in: [-private/handlers/auto-compress.ts:124](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L124)
 
 If `true`, the request will be forced into streaming mode even
 if the browser does not support it. This is useful if later handlers
@@ -128,7 +128,7 @@ false
 optional format?: CompressionFormat;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:87](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L87)
+Defined in: [-private/handlers/auto-compress.ts:87](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L87)
 
 The compression format to use. Must be a valid
 compression format supported by [CompressionStream](https://developer.mozilla.org/en-US/docs/Web/API/CompressionStream)

@@ -19,7 +19,7 @@ function PUT(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:205](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/packages/holodeck/src/mock.ts#L205)
+Defined in: [mock.ts:205](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/packages/holodeck/src/mock.ts#L205)
 
 mock a PUT request
 

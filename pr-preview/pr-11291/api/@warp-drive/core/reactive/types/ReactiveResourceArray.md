@@ -68,7 +68,7 @@ interface ReactiveResourceArray<T = unknown> extends Omit<T[], "[]"> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts:127](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#L127)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts:127](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#L127)
 
 A reactive Array of records, backed by a [ResourceKey](../../types/identifier/types/ResourceKey.md) array in the
 cache. Returned by [Store.request](../../classes/Store.md#request) for collection responses and used

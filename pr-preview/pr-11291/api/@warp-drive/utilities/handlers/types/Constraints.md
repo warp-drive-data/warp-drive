@@ -18,7 +18,7 @@ interface Constraints {
 }
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:40](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L40)
+Defined in: [-private/handlers/auto-compress.ts:40](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L40)
 
 The minimum body size, per body type, at which [AutoCompress](../classes/AutoCompress.md) compresses a request
 body. Passed as [CompressionOptions.constraints](CompressionOptions.md#constraints).
@@ -31,7 +31,7 @@ body. Passed as [CompressionOptions.constraints](CompressionOptions.md#constrain
 optional ArrayBuffer?: number;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:52](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L52)
+Defined in: [-private/handlers/auto-compress.ts:52](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L52)
 
 The minimum size at which to compress array buffers
 
@@ -49,7 +49,7 @@ The minimum size at which to compress array buffers
 optional Blob?: number;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:46](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L46)
+Defined in: [-private/handlers/auto-compress.ts:46](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L46)
 
 The minimum size at which to compress blobs
 
@@ -67,7 +67,7 @@ The minimum size at which to compress blobs
 optional DataView?: number;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:64](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L64)
+Defined in: [-private/handlers/auto-compress.ts:64](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L64)
 
 The minimum size at which to compress data views
 
@@ -85,7 +85,7 @@ The minimum size at which to compress data views
 optional String?: number;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:70](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L70)
+Defined in: [-private/handlers/auto-compress.ts:70](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L70)
 
 The minimum size at which to compress strings
 
@@ -103,7 +103,7 @@ The minimum size at which to compress strings
 optional TypedArray?: number;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:58](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L58)
+Defined in: [-private/handlers/auto-compress.ts:58](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L58)
 
 The minimum size at which to compress typed arrays
 

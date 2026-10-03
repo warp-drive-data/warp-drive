@@ -12,7 +12,7 @@ description: >-
 function singular(regex: RegExp, string: string): void;
 ```
 
-Defined in: [-private/string/inflect.ts:194](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/string/inflect.ts#L194)
+Defined in: [-private/string/inflect.ts:194](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/string/inflect.ts#L194)
 
 Adds a singularization rule.
 

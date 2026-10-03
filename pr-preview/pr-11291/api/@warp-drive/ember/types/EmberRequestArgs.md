@@ -22,7 +22,7 @@ interface EmberRequestArgs<RT, E> extends RequestArgs<RT, E> {
 }
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:87](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L87)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:87](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/ember/src/-private/request.gts#L87)
 
 The args accepted by the [\`\<Request />\`](../classes/Request.md) component.
 
@@ -93,7 +93,7 @@ optional chrome?: ComponentLike<{
 }>;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:110](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L110)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:110](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/ember/src/-private/request.gts#L110)
 
 A component that wraps whichever block is rendered, so shared UI such as
 a layout or a refresh indicator stays mounted as the request moves

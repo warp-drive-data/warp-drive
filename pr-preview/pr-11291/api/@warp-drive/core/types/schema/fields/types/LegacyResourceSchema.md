@@ -19,7 +19,7 @@ interface LegacyResourceSchema {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2361](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2361)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2361](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2361)
 
 Represents a schema for a primary resource in LegacyMode
 
@@ -38,7 +38,7 @@ response documents.
 fields: LegacyModeFieldSchema[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2405](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2405)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2405](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2405)
 
 The fields that make up the shape of the resource
 
@@ -50,7 +50,7 @@ The fields that make up the shape of the resource
 identity: IdentityField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2378](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2378)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2378](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2378)
 
 This should be an IdentityField.
 
@@ -66,7 +66,7 @@ for records in legacy mode, but this is not required.
 legacy: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2367](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2367)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2367](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2367)
 
 A flag indicating that this is a legacy resource schema
 
@@ -78,7 +78,7 @@ A flag indicating that this is a legacy resource schema
 optional objectExtensions?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2432](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2432)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2432](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2432)
 
 ::: warning ⚠️ Dangerous Feature Ahead
 :::
@@ -100,7 +100,7 @@ like custom getters, computeds, and methods
 optional traits?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2417](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2417)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2417](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2417)
 
 A list of traits that this resource implements. The fields for these
 traits should still be defined in the fields array.
@@ -117,7 +117,7 @@ type that is never defined as a schema.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2398](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2398)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2398](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2398)
 
 The name of the schema
 

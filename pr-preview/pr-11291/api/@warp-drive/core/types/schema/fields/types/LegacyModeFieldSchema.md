@@ -23,7 +23,7 @@ type LegacyModeFieldSchema =
   | LegacyHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2150](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2150)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2150](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2150)
 
 A union of all possible LegacyMode field schemas.
 

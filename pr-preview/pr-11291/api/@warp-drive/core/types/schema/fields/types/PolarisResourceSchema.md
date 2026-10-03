@@ -18,7 +18,7 @@ interface PolarisResourceSchema {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2287](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2287)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2287](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2287)
 
 Represents a schema for a primary resource in PolarisMode.
 
@@ -34,7 +34,7 @@ response documents.
 fields: PolarisModeFieldSchema[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2332](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2332)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2332](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2332)
 
 The fields that make up the shape of the resource
 
@@ -46,7 +46,7 @@ The fields that make up the shape of the resource
 identity: IdentityField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2302](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2302)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2302](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2302)
 
 For primary resources, this should be an IdentityField
 
@@ -60,7 +60,7 @@ for schema-objects, this should be either a HashField or null
 optional legacy?: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2293](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2293)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2293](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2293)
 
 A flag indicating that this is not a legacy resource schema.
 
@@ -72,7 +72,7 @@ A flag indicating that this is not a legacy resource schema.
 optional traits?: string[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2344](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2344)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2344](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2344)
 
 A list of traits that this resource implements. The fields for these
 traits should still be defined in the fields array.
@@ -89,7 +89,7 @@ type that is never defined as a schema.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2325](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2325)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2325](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/schema/fields.ts#L2325)
 
 The name of the schema
 

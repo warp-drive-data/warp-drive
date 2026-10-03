@@ -12,7 +12,7 @@ description: >-
 function buildSignalConfig(options: HooksOptions): ComposingSignalHooks;
 ```
 
-Defined in: [install.ts:171](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/alien-signals/src/install.ts#L171)
+Defined in: [install.ts:171](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/install.ts#L171)
 
 Builds the [SignalHooks](../../../core/configure/types/SignalHooks.md) that back ***Warp*Drive**'s reactivity with the graph in
 [`@warp-drive/alien-signals/primitives`](/api/@warp-drive/alien-signals/primitives/). Each

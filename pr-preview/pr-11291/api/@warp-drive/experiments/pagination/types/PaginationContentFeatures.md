@@ -14,7 +14,7 @@ description: >-
 type PaginationContentFeatures<RT> = PagedPaginationContentFeatures<RT> & InfinitePaginationContentFeatures<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:73](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/pagination-subscription.ts#L73)
+Defined in: [warp-drive-packages/core/src/signals/pagination-subscription.ts:73](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/pagination-subscription.ts#L73)
 
 The full set of content features a [PaginationSubscription](PaginationSubscription.md) builds —
 both modes' surfaces. The `<Paginate />` component narrows this to one mode

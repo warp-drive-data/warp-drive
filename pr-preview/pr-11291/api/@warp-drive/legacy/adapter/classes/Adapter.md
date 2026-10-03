@@ -10,7 +10,7 @@ description: >-
 
 # &#x20;Adapter
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:293](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L293)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:293](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L293)
 
 An adapter is an object that receives requests from a store and
 translates them into the appropriate action to take against your
@@ -108,7 +108,7 @@ createRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:546](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L546)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:546](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L546)
 
 Implement this method in a subclass to handle the creation of
 new records.
@@ -177,7 +177,7 @@ deleteRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:650](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L650)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:650](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L650)
 
 Implement this method in a subclass to handle the deletion of
 a record.
@@ -252,7 +252,7 @@ findAll(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:366](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L366)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:366](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L366)
 
 The `findAll()` method is used to retrieve all records for a given type.
 
@@ -317,7 +317,7 @@ findRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:334](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L334)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:334](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L334)
 
 The `findRecord()` method is invoked when the store is asked for a record that
 has not previously been loaded. In response to `findRecord()` being called, you
@@ -379,7 +379,7 @@ export default class ApplicationAdapter extends Adapter {
 groupRecordsForFindMany(store: Store$1, snapshots: Snapshot<unknown>[]): Snapshot<unknown>[][];
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:730](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L730)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:730](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L730)
 
 Organize records into groups, each of which is to be passed to separate
 calls to `findMany`.
@@ -422,7 +422,7 @@ query(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:404](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L404)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:404](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L404)
 
 This method is called when you call `query` on the store.
 
@@ -481,7 +481,7 @@ queryRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:435](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L435)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:435](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L435)
 
 The `queryRecord()` method is invoked when the store is asked for a single
 record through a query object.
@@ -539,7 +539,7 @@ export default class ApplicationAdapter extends Adapter.extend(BuildURLMixin) {
 serialize(snapshot: Snapshot, options: SerializerOptions): Record<string, unknown>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:500](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L500)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:500](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L500)
 
 Proxies to the serializer's `serialize` method.
 
@@ -580,7 +580,7 @@ export default class ApplicationAdapter extends Adapter {
 shouldBackgroundReloadAll(store: Store$1, snapshotRecordArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:907](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L907)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:907](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L907)
 
 This method is used by the store to determine if the store should
 reload a record array after the `store.findAll` method resolves
@@ -633,7 +633,7 @@ should always be triggered.
 shouldBackgroundReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:871](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L871)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:871](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L871)
 
 This method is used by the store to determine if the store should
 reload a record after the `store.findRecord` method resolves a
@@ -686,7 +686,7 @@ in the background.
 shouldReloadAll(store: Store$1, snapshotRecordArray: SnapshotRecordArray): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:835](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L835)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:835](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L835)
 
 This method is used by the store to determine if the store should
 reload all records from the adapter when records are requested by
@@ -758,7 +758,7 @@ your use case.
 shouldReloadRecord(store: Store$1, snapshot: Snapshot): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:780](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L780)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:780](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L780)
 
 This method is used by the store to determine if the store should
 reload a record from the adapter when a record is requested by
@@ -829,7 +829,7 @@ updateRecord(
 ): Promise<AdapterPayload>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:602](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L602)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:602](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L602)
 
 Implement this method in a subclass to handle the updating of
 a record.
@@ -907,7 +907,7 @@ promise
 store: Store$1;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:297](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L297)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:297](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L297)
 
 The Store service instance that owns this Adapter.
 
@@ -919,7 +919,7 @@ The Store service instance that owns this Adapter.
 get coalesceFindRequests(): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:666](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L666)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:666](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L666)
 
 By default the store will try to coalesce all `findRecord` calls within the same runloop
 into as few requests as possible by calling groupRecordsForFindMany and passing it into a findMany call.
@@ -936,7 +936,7 @@ coalesceFindRequests to false.
 set coalesceFindRequests(value: boolean): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter.ts:674](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter.ts#L674)
+Defined in: [warp-drive-packages/legacy/src/adapter.ts:674](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter.ts#L674)
 
 **`Optional`**
 

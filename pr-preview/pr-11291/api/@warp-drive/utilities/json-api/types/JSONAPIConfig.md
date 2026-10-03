@@ -17,7 +17,7 @@ interface JSONAPIConfig extends BuildURLConfig {
 }
 ```
 
-Defined in: [-private/json-api/-utils.ts:13](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L13)
+Defined in: [-private/json-api/-utils.ts:13](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L13)
 
 The configuration [setBuildURLConfig](../functions/setBuildURLConfig.md) accepts: the [BuildURLConfig](../../types/BuildURLConfig.md) fields, plus
 the {json:api} profile and extension URIs to send in the `Accept` header.
@@ -37,7 +37,7 @@ optional extensions?: {
 };
 ```
 
-Defined in: [-private/json-api/-utils.ts:18](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L18)
+Defined in: [-private/json-api/-utils.ts:18](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L18)
 
 #### Index Signature
 
@@ -59,7 +59,7 @@ optional atomic?: string;
 host: string | null;
 ```
 
-Defined in: [index.ts:26](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/index.ts#L26)
+Defined in: [index.ts:26](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/index.ts#L26)
 
 The scheme, domain and port (if any) to prefix built URLs with, e.g. `'https://api.example.com'`.
 
@@ -75,7 +75,7 @@ The scheme, domain and port (if any) to prefix built URLs with, e.g. `'https://a
 namespace: string | null;
 ```
 
-Defined in: [index.ts:30](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/index.ts#L30)
+Defined in: [index.ts:30](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/index.ts#L30)
 
 The path segment to insert between `host` and the resource path, e.g. `'api/v1'`.
 
@@ -94,7 +94,7 @@ optional profiles?: {
 };
 ```
 
-Defined in: [-private/json-api/-utils.ts:14](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L14)
+Defined in: [-private/json-api/-utils.ts:14](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L14)
 
 #### Index Signature
 

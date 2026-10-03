@@ -15,7 +15,7 @@ description: >-
 ConflictError: AdapterRequestErrorConstructor<ConflictError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:512](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/adapter/error.ts#L512)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:512](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/adapter/error.ts#L512)
 
 A `ConflictError` equates to an HTTP `409 Conflict` response status.
 It is used by an adapter to indicate that the request could not be

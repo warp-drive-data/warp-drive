@@ -30,7 +30,7 @@ interface ResolvedRequest<RT> extends ResolvedPromise<RT> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:374](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L374)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:374](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L374)
 
 The state of a request in the "fulfilled" state.
 This is the state of a request that has resolved
@@ -56,7 +56,7 @@ Extends the [ResolvedPromise](ResolvedPromise.md) interface.
 refresh(usePolicy?: boolean): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:410](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L410)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:410](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L410)
 
 Retries the request with low (non-blocking) priority. This is the
 same as having passed `cacheOptions.backgroundReload = true` on the original
@@ -92,7 +92,7 @@ as its context is bound.
 reload(): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:392](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L392)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:392](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L392)
 
 Retries the request with high (blocking) priority. This is the
 same as having passed `cacheOptions.reload = true` on the original
@@ -122,7 +122,7 @@ as its context is bound.
 error: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:144](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L144)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:144](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L144)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -143,7 +143,7 @@ use `reason` instead
 isCancelled: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:416](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L416)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:416](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L416)
 
 Whether the request is cancelled.
 
@@ -155,7 +155,7 @@ Whether the request is cancelled.
 isError: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:120](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L120)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:120](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L120)
 
 Whether the promise has rejected
 with an error.
@@ -172,7 +172,7 @@ with an error.
 isLoading: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:107](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L107)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:107](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L107)
 
 Whether the promise is pending.
 
@@ -192,7 +192,7 @@ use `isPending` instead
 isPending: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:100](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L100)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:100](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L100)
 
 Whether the promise is pending.
 
@@ -208,7 +208,7 @@ Whether the promise is pending.
 isSuccess: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:113](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L113)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:113](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L113)
 
 Whether the promise has resolved
 successfully.
@@ -225,7 +225,7 @@ successfully.
 loadingState: RequestLoadingState;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:423](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L423)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:423](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L423)
 
 A lazily created [RequestLoadingState](RequestLoadingState.md) instance
 which provides a number of reactive properties that can be used
@@ -239,7 +239,7 @@ to build UIs that respond to the progress of a request.
 reason: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:151](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L151)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:151](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L151)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -258,7 +258,7 @@ request:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:424](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L424)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:424](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L424)
 
 ***
 
@@ -271,7 +271,7 @@ response:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:425](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L425)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:425](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/request-state.ts#L425)
 
 ***
 
@@ -281,7 +281,7 @@ Defined in: [warp-drive-packages/core/src/signals/request-state.ts:425](https://
 result: RT;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:135](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L135)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:135](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L135)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.
@@ -302,7 +302,7 @@ use `value` instead
 status: "fulfilled";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:94](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L94)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:94](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L94)
 
 The status of the promise.
 
@@ -318,7 +318,7 @@ The status of the promise.
 value: RT;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:127](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/promise-state.ts#L127)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:127](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/promise-state.ts#L127)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.

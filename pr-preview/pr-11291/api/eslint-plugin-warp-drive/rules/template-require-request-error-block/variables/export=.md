@@ -12,4 +12,4 @@ description: >-
 export=: RuleModule;
 ```
 
-Defined in: [rules/template-require-request-error-block.js:24](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/packages/eslint-plugin-warp-drive/src/rules/template-require-request-error-block.js#L24)
+Defined in: [rules/template-require-request-error-block.js:24](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/packages/eslint-plugin-warp-drive/src/rules/template-require-request-error-block.js#L24)
