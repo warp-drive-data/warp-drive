@@ -10,6 +10,6 @@ description: A JSON array whose members are all JSON values.
 type ArrayValue = Value[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/json/raw.ts:30](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/types/json/raw.ts#L30)
+Defined in: [warp-drive-packages/core/src/types/json/raw.ts:30](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/json/raw.ts#L30)
 
 A JSON array whose members are valid [Value](Value.md)s.

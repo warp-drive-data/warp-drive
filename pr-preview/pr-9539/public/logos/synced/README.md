@@ -4,4 +4,4 @@ url: https://canary.warp-drive.io/pr-preview/pr-9539/public/logos/synced/README.
 # Autogeneration Notice
 
 This directory is maintained in the root of the monorepo in `/logos/synced` and sync'd
-to public repositories by running `bun sync-logos`
+to public repositories by running `pnpm sync-logos`

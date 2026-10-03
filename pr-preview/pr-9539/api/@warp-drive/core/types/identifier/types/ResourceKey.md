@@ -14,13 +14,16 @@ type ResourceKey<T extends string = string> =
 | NewResourceKey<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:156](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/types/identifier.ts#L156)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:162](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/identifier.ts#L162)
 
 A referentially stable object with a unique string (lid) that can be used
 as a reference to data in the cache.
 
 Every resource has a unique ResourceKey, and ResourceKeys may refer
 to data that has never been loaded (for instance, in an async relationship).
+
+The [Key Terminology](/guides/the-manual/caching/key-terms#resources) guide explains
+the resources it identifies.
 
 ## Type Parameters
 

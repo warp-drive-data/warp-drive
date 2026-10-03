@@ -91,7 +91,8 @@ not, and without the line `fetch` fails with `UNABLE_TO_VERIFY_LEAF_SIGNATURE`. 
 process with `NODE_EXTRA_CA_CERTS="$(mkcert -CAROOT)/rootCA.pem"` does the same job from outside.
 The two `tls` functions exist from Node 24.21, the oldest Node holodeck runs on.
 
-The `if` forwards only the requests that are holodeck's. `MockServerHandler`, the handler
+The `if` forwards only the requests that are holodeck's.
+[`MockServerHandler`](/api/@warp-drive/holodeck/classes/MockServerHandler), the handler
 [client setup](../client-setup.md) adds to the request chain, appends `__xTestId` to every mocked
 request, and the mock helpers post each fixture to `/__record`. Everything else falls through to
 whatever the server would have done with it. If holodeck is not running, a forwarded request
@@ -119,7 +120,9 @@ setBuildURLConfig({ host: MOCK_HOST, namespace: 'api' });
 setConfig({ host: MOCK_HOST });
 ```
 
-`setBuildURLConfig` then builds root-relative URLs such as `/api/users`, and `setConfig` posts
+[`setBuildURLConfig`](/api/@warp-drive/utilities/functions/setBuildURLConfig) then builds
+root-relative URLs such as `/api/users`, and
+[`setConfig`](/api/@warp-drive/holodeck/functions/setConfig) posts
 recordings to `/__record`. Whatever serves the page forwards both. `/api` is the `namespace`
 your app already uses; the forwarder does not care what it is, because it matches on
 `__xTestId` rather than on the path.

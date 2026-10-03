@@ -38,7 +38,7 @@ interface WarpDriveConfig {
 }
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:82](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L82)
+Defined in: [warp-drive-packages/build-config/src/index.ts:85](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L85)
 
 Build Configuration options for WarpDrive that
 allow adjusting logging, deprecations, canary features
@@ -52,7 +52,7 @@ and optional features.
 optional compatWith?: `${number}.${number}`;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:137](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L137)
+Defined in: [warp-drive-packages/build-config/src/index.ts:140](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L140)
 
 The most recent version of the library from which all
 deprecations have been resolved.
@@ -79,7 +79,7 @@ See DEPRECATIONS | deprecations for more details.
 optional debug?: Partial<typeof t>;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:96](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L96)
+Defined in: [warp-drive-packages/build-config/src/index.ts:99](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L99)
 
 An object of key/value pairs of logging flags
 
@@ -114,7 +114,7 @@ optional deprecations?: Partial<{
 }>;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:152](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L152)
+Defined in: [warp-drive-packages/build-config/src/index.ts:155](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L155)
 
 An object of key/value pairs of logging flags
 
@@ -138,7 +138,7 @@ optional features?: Partial<{
 }>;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:169](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L169)
+Defined in: [warp-drive-packages/build-config/src/index.ts:172](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L172)
 
 An object of key/value pairs of canary feature flags
 for use when testing new features gated behind a flag
@@ -160,7 +160,7 @@ see FEATURES | features for the available flags.
 optional includeDataAdapterInProduction?: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:117](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L117)
+Defined in: [warp-drive-packages/build-config/src/index.ts:120](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L120)
 
 By default, the integration required to support the ember-inspector
 browser extension is included in production builds only when using
@@ -177,7 +177,7 @@ enable/disable it in production builds.
 optional polyfillUUID?: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:105](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/index.ts#L105)
+Defined in: [warp-drive-packages/build-config/src/index.ts:108](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/index.ts#L108)
 
 If you are using the library in an environment that does not
 support `window.crypto.randomUUID` you can enable a polyfill

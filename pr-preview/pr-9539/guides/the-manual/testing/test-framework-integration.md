@@ -14,7 +14,8 @@ As part of running tests concurrently, holodeck scopes requests to individual te
 tests making the same request get their own responses, and neither leaks into the other. The id is
 also what names the fixture directory on disk.
 
-Register it in a global `beforeEach`, and clear it afterwards.
+Register it with [`setTestId`](/api/@warp-drive/holodeck/functions/setTestId) in a global
+`beforeEach`, and clear it afterwards.
 
 ### With Diagnostic
 
@@ -72,7 +73,9 @@ setBuildURLConfig({ host: MockHost, namespace: '' });
 setConfig({ host: MockHost });
 ```
 
-`setBuildURLConfig` aims the requests your application makes. `setConfig` aims only the internal
+[`setBuildURLConfig`](/api/@warp-drive/utilities/functions/setBuildURLConfig) aims the requests
+your application makes. [`setConfig`](/api/@warp-drive/holodeck/functions/setConfig) aims only the
+internal
 request that records a fixture. Setting the second without the first records fixtures that no
 request ever reads, and the tests fail as though the mocks were never declared.
 

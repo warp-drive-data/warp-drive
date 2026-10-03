@@ -20,8 +20,8 @@ A test that lets it escape prints the request and, under it, the server's explan
 No meta was found for POST https://localhost:7358/api/user/ops/bulk.create. The expected cacheKey was /path/to/tests/json-api/.mock-cache/36ff0af3/POST::api_user_ops_bulk.create::0/f6c45fa65d57493c31a4f1b85eddcf6f. You may need to record a mock for this request.
 ```
 
-The second paragraph is the `detail` of the server's `MOCK_NOT_FOUND` response. `MockServerHandler`
-lifts it into the thrown error, with holodeck's own `__xTestId` query stripped out of the URL, so it
+The second paragraph is the `detail` of the server's `MOCK_NOT_FOUND` response.
+[`MockServerHandler`](/api/@warp-drive/holodeck/classes/MockServerHandler) lifts it into the thrown error, with holodeck's own `__xTestId` query stripped out of the URL, so it
 reaches the terminal and the CI log. Searching a failed run for `No meta was found` finds it.
 
 A test that catches the error and asserts against it prints only the assertions that failed. The
@@ -69,7 +69,7 @@ which half of the mock is wrong.
 A mock that is never requested proves nothing. Remove it, or make the request it describes.
 ```
 
-When `setTestId(this, null)` runs from `afterEach`, holodeck compares the mocks the test declared
+When [`setTestId(this, null)`](/api/@warp-drive/holodeck/functions/setTestId) runs from `afterEach`, holodeck compares the mocks the test declared
 against the requests it made, per method and URL, and fails the test over any mock left over. The
 report is added alongside the body's own assertions rather than in place of them, so a test whose
 body already failed shows both. It fires in record and replay alike.
@@ -130,8 +130,10 @@ MISSING_X_TEST_ID_HEADER
 
 The server received a request carrying no `__xTestId` query parameter, which means the request did
 not go through `MockServerHandler`. The code keeps its historical name, but the message names the
-query parameter and says what to do. Put the handler in the chain ahead of `Fetch`, and check that
-the code under test goes through that `RequestManager` rather than calling `fetch` directly.
+query parameter and says what to do. Put the handler in the chain ahead of
+[`Fetch`](/api/@warp-drive/core/variables/Fetch), and check that the code under test goes through
+that [`RequestManager`](/api/@warp-drive/core/classes/RequestManager) rather than calling `fetch`
+directly.
 
 ## The certificate is missing
 
@@ -200,7 +202,8 @@ that builds first, which at this repository's root is `pnpm test`. The wait is
 Promise rejected during "…": Failed to fetch
 ```
 
-Every mock fails this way when nothing is listening on the host passed to `setConfig`. Safari words
+Every mock fails this way when nothing is listening on the host passed to
+[`setConfig`](/api/@warp-drive/holodeck/functions/setConfig). Safari words
 it as `Load failed`. Each test also fails from `afterEach` with a report that its mocks were never
 requested, which follows from the first error.
 

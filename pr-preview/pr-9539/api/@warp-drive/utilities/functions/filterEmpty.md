@@ -12,10 +12,13 @@ description: >-
 function filterEmpty(source: Record<string, Serializable>): Record<string, Serializable>;
 ```
 
-Defined in: [index.ts:647](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/utilities/src/index.ts#L647)
+Defined in: [index.ts:657](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/index.ts#L657)
 
 filter out keys of an object that have falsy values or point to empty arrays
 returning a new object with only those keys that have truthy values / non-empty arrays
+
+See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+why builders need stable query params.
 
 ## Parameters
 

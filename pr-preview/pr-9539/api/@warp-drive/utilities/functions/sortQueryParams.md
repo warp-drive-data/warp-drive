@@ -12,10 +12,13 @@ description: >-
 function sortQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): URLSearchParams;
 ```
 
-Defined in: [index.ts:684](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/utilities/src/index.ts#L684)
+Defined in: [index.ts:697](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/utilities/src/index.ts#L697)
 
 Sorts query params by both key and value returning a new URLSearchParams
 object with the keys inserted in sorted order.
+
+See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+why builders need stable query params.
 
 Treats `included` specially, splicing it into an array if it is a string and sorting the array.
 

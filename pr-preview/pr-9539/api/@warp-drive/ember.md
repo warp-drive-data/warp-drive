@@ -128,6 +128,23 @@ export { Await as default } from '@warp-drive/ember';
 
 :::
 
+## Guides
+
+* [Installation](/guides/installation/#ember): install `@warp-drive/ember` and add the
+  `@warp-drive/ember/install` import to your app and tests.
+* [Setup](/guides/configuration/): configure the build plugin in `ember-cli-build` and create a
+  Store.
+* [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses your framework's signals.
+* [Making Requests](/guides/the-manual/requests/): make a request with `<Request />` or
+  `getRequestState`.
+* [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  loading, error and content states.
+* [Async as Reactive State](/guides/the-manual/reactivity/derivation.md): derive a promise's state
+  with `getPromiseState` and `<Await />`.
+* [Testing](/guides/the-manual/testing/): mock your app's requests in tests with holodeck.
+* [Pagination](/guides/the-manual/experiments/pagination.md): the experimental `<Paginate />` and
+  `<EachLink />` components.
+
 ## Components
 
 * [Await](classes/Await.md)
@@ -138,3 +155,5 @@ export { Await as default } from '@warp-drive/ember';
 
 * [experiments](experiments/index.md)
 * [install](install/index.md)
+* [EmberRequestArgs](types/EmberRequestArgs.md)
+* [RequestSignature](types/RequestSignature.md)

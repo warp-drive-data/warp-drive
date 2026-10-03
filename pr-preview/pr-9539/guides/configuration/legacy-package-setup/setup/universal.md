@@ -88,13 +88,11 @@ module.exports = async function (defaults) {
 {
   compilerOptions: {
     types: [
-      "@ember-data/debug/unstable-preview-types", // [!code ++]
       "@ember-data/graph/unstable-preview-types", // [!code ++]
       "@ember-data/json-api/unstable-preview-types", // [!code ++]
       "@ember-data/request/unstable-preview-types", // [!code ++]
       "@ember-data/request-utils/unstable-preview-types", // [!code ++]
       "@ember-data/store/unstable-preview-types", // [!code ++]
-      "@warp-drive/build-config/declarations", // [!code ++]
       "@warp-drive/core-types/unstable-preview-types", // [!code ++]
       "@warp-drive/schema-record/unstable-preview-types", // [!code ++]
     ]
@@ -107,7 +105,6 @@ module.exports = async function (defaults) {
   compilerOptions: {
     types: [
       "@ember-data/adapter/unstable-preview-types", // [!code ++]
-      "@ember-data/debug/unstable-preview-types", // [!code ++]
       "@ember-data/graph/unstable-preview-types", // [!code ++]
       "@ember-data/json-api/unstable-preview-types", // [!code ++]
       "@ember-data/legacy-compat/unstable-preview-types", // [!code ++]
@@ -116,7 +113,6 @@ module.exports = async function (defaults) {
       "@ember-data/request-utils/unstable-preview-types", // [!code ++]
       "@ember-data/serializer/unstable-preview-types", // [!code ++]
       "@ember-data/store/unstable-preview-types", // [!code ++]
-      "@warp-drive/build-config/declarations", // [!code ++]
       "@warp-drive/core-types/unstable-preview-types", // [!code ++]
       "@warp-drive/schema-record/unstable-preview-types", // [!code ++]
     ]
@@ -124,9 +120,14 @@ module.exports = async function (defaults) {
 }
 ```
 
+:::
+
+`@warp-drive/build-config` and `@ember-data/debug` need no entry in this list. On
+`@warp-drive/build-config` 5.6 through 5.8 only, also add `"@warp-drive/build-config/declarations"`.
+
 ## Configure the Store
 
-To get up and running we need to configure a `Store` to understand how we want
+To get up and running we need to configure a [`Store`](/api/@warp-drive/core/classes/Store) to understand how we want
 to handle requests, what our data looks like, how to cache it, and what sort of
 reactive objects to create for that data.
 
@@ -356,7 +357,7 @@ export default class AppStore extends Store {}
 
 ### Add Basic Request Management
 
-`RequestManager` provides a chain-of-responsibility style pipeline for helping
+[`RequestManager`](/api/@warp-drive/core/classes/RequestManager) provides a chain-of-responsibility style pipeline for helping
 you handle centralized concerns around requesting and updating data from your
 backend.
 
@@ -707,7 +708,7 @@ notifications. The `<Request />` component subscribes to these notifications and
 trigger a reload if necessary if an invalidated request is in active use, letting you
 craft advanced policies that meet your product's needs.
 
-***Warp*Drive** provides a basic CachePolicy with a number of great defaults that
+***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy), [`DefaultCachePolicy`](/api/@warp-drive/core/store/classes/DefaultCachePolicy) (re-exported by `@ember-data/request-utils` as `CachePolicy`), with a number of great defaults that
 is a great starting point for most applications. We configure this basic policy
 below.
 

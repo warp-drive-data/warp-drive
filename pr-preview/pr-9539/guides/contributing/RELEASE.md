@@ -23,6 +23,28 @@ updated on `main` and `beta` so that it will be accurate when the new release br
 created. To do this you likely need to reach out to WarpDrive core team members to ensure
 all recent planning discussions and work is properly accounted for.
 
+## Draft the Release Blog Post
+
+Every stable release (`release`, `lts`, `lts-prev`, `release-prev`) can have a blog post under
+[`blog/`](/blog/), drafted from the summaries PRs leave in `.next-release-post/` (see
+[Blog Summaries](./submitting-prs.md#blog-summaries)). The
+[Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) skill walks through
+writing it. Canary and beta releases don't get one.
+
+Draft and merge the post **before** triggering the release, so that it is part of the commit the
+release is built from and ships inside the release rather than after it:
+
+1. Work out which branch the workflow will build from: for a new major or minor, the
+   `stable_source-branch` the release branch is reset from (`beta` by default, or `main`); for a
+   patch, `release`; for an LTS release, its LTS branch.
+2. Open the post's PR against `main` with `:label: doc` and the `:dart:` label for that branch,
+   per [Submitting PRs](./submitting-prs.md). The same PR deletes the summary files that ship in
+   this release.
+3. After it merges, open the backport PR to that branch. Skip this when the release is built from
+   `main`.
+4. Trigger the release only once both are merged. If more PRs with summaries land on that branch
+   first, fold them into the post before releasing.
+
 ## Getting Setup To Do A Release
 
 In order to release WarpDrive you must have commit rights to `warp-drive-data/warp-drive` on
@@ -32,12 +54,12 @@ by automation.
 Publishing to npm requires npm's [Trusted Publishing](https://docs.npmjs.com/trusted-publishers/)
 (OIDC), which is only available from within that GitHub Actions workflow -- there is no manual
 or local publish path, and no npm account, access token, or 2FA setup is needed to perform a
-release. For more information run `bun release about` in the repository.
+release. For more information run `pnpm release about` in the repository.
 
 If you want to run a release step locally for review (e.g. a `--dry-run`, or generating a
 release strategy) rather than actually publishing, you will additionally need:
 
-* `bun`, `pnpm` and `node` installed globally (or better, via `mise`)
+* `pnpm` and `node` installed globally (or better, via `mise`)
 * A `GITHUB_AUTH` token configured for `lerna-changelog`, to gather info for the release notes
 
 ## Release Order

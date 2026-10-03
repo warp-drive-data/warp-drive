@@ -16,7 +16,7 @@ type PaginationLink =
   | PlaceholderPaginationLink;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:211](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/pagination-links.ts#L211)
+Defined in: [warp-drive-packages/core/src/signals/pagination-links.ts:211](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/pagination-links.ts#L211)
 
 A member of [PaginationLinks.links](PaginationLinks.md#links): either a numbered
 [RealPaginationLink](RealPaginationLink.md) or a [PlaceholderPaginationLink](PlaceholderPaginationLink.md) standing in

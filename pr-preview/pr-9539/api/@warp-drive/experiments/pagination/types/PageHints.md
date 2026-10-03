@@ -15,7 +15,7 @@ description: >-
 interface PageHints {}
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:31](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/pagination-cache.ts#L31)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:31](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/pagination-cache.ts#L31)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the
@@ -38,7 +38,7 @@ PageHints(document: ReactiveDocument<unknown>): {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:32](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/pagination-cache.ts#L32)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:32](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/pagination-cache.ts#L32)
 
 A hint function for extracting the `currentPage` and `totalPages` from a loaded
 document, for when the response does not expose these values through the

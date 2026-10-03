@@ -12,10 +12,11 @@ description: >-
 function setupSignals<T>(buildConfig: (options: HooksOptions) => SignalHooks<T>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:170](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/reactivity/configure.ts#L170)
+Defined in: [warp-drive-packages/core/src/signals/reactivity/configure.ts:192](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/reactivity/configure.ts#L192)
 
-Configures the signals implementation to use. Supports multiple
-implementations simultaneously.
+Configures the signals implementation to use, replacing any configured
+before. To add a framework's hooks alongside those of other frameworks, use
+[registerSignals](registerSignals.md) instead.
 
 See [HooksOptions](../types/HooksOptions.md) for the options passed to the provided function
 when called.

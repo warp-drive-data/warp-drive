@@ -26,10 +26,13 @@ function useRecommendedStore<T extends Cache, Policy extends CachePolicy>(option
 }, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:277](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/index.ts#L277)
+Defined in: [warp-drive-packages/core/src/index.ts:280](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/index.ts#L280)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
+
+The [Setup](/guides/configuration/#configure-the-store) guide walks through
+configuring the store with it.
 
 ```ts
 import { useRecommendedStore } from '@warp-drive/core';
@@ -168,10 +171,13 @@ function useRecommendedStore<T extends Cache>(options: StoreSetupOptions<T> & {
 }, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:281](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/index.ts#L281)
+Defined in: [warp-drive-packages/core/src/index.ts:284](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/index.ts#L284)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
+
+The [Setup](/guides/configuration/#configure-the-store) guide walks through
+configuring the store with it.
 
 ```ts
 import { useRecommendedStore } from '@warp-drive/core';
@@ -304,10 +310,13 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useRecommendedStore<T extends Cache>(options: StoreSetupOptions<T>, StoreKlass?: typeof Store): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:285](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/index.ts#L285)
+Defined in: [warp-drive-packages/core/src/index.ts:288](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/index.ts#L288)
 
 Creates a configured Store class with recommended defaults
 for schema handling, reactivity, caching, and request management.
+
+The [Setup](/guides/configuration/#configure-the-store) guide walks through
+configuring the store with it.
 
 ```ts
 import { useRecommendedStore } from '@warp-drive/core';

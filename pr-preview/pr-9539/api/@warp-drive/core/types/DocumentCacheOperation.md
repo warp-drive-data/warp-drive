@@ -12,6 +12,6 @@ description: >-
 type DocumentCacheOperation = "invalidated" | "added" | "removed" | "updated" | "state";
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:26](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L26)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:26](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L26)
 
 The kinds of change notifications the [NotificationManager](../store/types/NotificationManager.md) can emit for a request document.

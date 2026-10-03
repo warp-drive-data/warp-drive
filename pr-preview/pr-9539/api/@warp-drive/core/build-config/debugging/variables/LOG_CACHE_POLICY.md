@@ -12,6 +12,6 @@ description: >-
 const LOG_CACHE_POLICY: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/debugging.ts:73](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/debugging.ts#L73)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:73](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/debugging.ts#L73)
 
 Log decisions made by the Basic CachePolicy

@@ -21,7 +21,7 @@ WarpDrive provides automated codemods to help migrate your EmberData application
 
 > \[!NOTE]
 > The codemods require Node.js `>= 22.2` and run on macOS, Linux (glibc and musl/Alpine),
-> and Windows, on both x64 and arm64. `pnpm dlx` and `bunx` work as well as `npx`.
+> and Windows, on both x64 and arm64. `pnpm dlx` works as well as `npx`.
 
 ### Listing Available Codemods
 
@@ -52,7 +52,7 @@ npx @ember-data/codemods apply <codemod-name> --help
 
 This codemod transforms EmberData models and mixins into WarpDrive's schema format. For each model it generates:
 
-* **Schema files** - Define the data structure using `LegacyResourceSchema`
+* **Schema files** - Define the data structure using [`LegacyResourceSchema`](/api/@warp-drive/core/types/schema/fields/types/LegacyResourceSchema)
 * **Type files** - TypeScript interfaces for the resource
 * **Extension files** - Preserve computed properties, methods, and other non-data logic
 * **Trait files** - Reusable schema components extracted from mixins
@@ -161,7 +161,7 @@ Key configuration options:
 * **`projectName`** - The Ember app name, used for resolving classic module imports like `example-app/models/user`.
 * **`emberDataImportSource`** / **`warpDriveImports`** - Tell the codemod where your app imports EmberData and WarpDrive APIs from, when they differ from the defaults (`@ember-data/model`, `@warp-drive/core`, etc.).
 * **`typeMapping`** - Maps custom EmberData transform names (e.g., `@attr('uuid')`) to TypeScript types for the generated type files.
-* **`intermediateModelPaths`** - Import paths of base classes between `Model` and your concrete models. The codemod will analyze these and convert them to traits.
+* **`intermediateModelPaths`** - Import paths of base classes between [`Model`](/api/@warp-drive/legacy/model/classes/Model) and your concrete models. The codemod will analyze these and convert them to traits.
 * **`importSubstitutes`** - For base classes whose source can't be analyzed, tells the codemod what trait/extension names to reference.
 * **`additionalModelSources`** / **`additionalMixinSources`** - Maps import patterns to on-disk directories so the codemod can locate source files that live outside the main `app/` directory (e.g., in a monorepo's shared libraries).
 
@@ -361,7 +361,7 @@ Each module's default or named export contains the schema/trait/extension object
 
 #### Registering with `useLegacyStore`
 
-`useLegacyStore` accepts `schemas`, `traits`, and `CAUTION_MEGA_DANGER_ZONE_extensions` arrays directly:
+[`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore) accepts `schemas`, `traits`, and `CAUTION_MEGA_DANGER_ZONE_extensions` arrays directly:
 
 ```ts
 import { useLegacyStore } from '@warp-drive/legacy';
@@ -385,7 +385,7 @@ export default useLegacyStore({
 
 #### Registering with a custom store
 
-If you are using a custom `Store` subclass with `createSchemaService()`, register manually on the `SchemaService`:
+If you are using a custom [`Store`](/api/@warp-drive/core/classes/Store) subclass with `createSchemaService()`, register manually on the [`SchemaService`](/api/@warp-drive/core/reactive/classes/SchemaService):
 
 ```ts
 createSchemaService() {

@@ -12,4 +12,4 @@ description: >-
 export=: Config<RulesConfig>[];
 ```
 
-Defined in: [recommended.js:13](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/packages/eslint-plugin-warp-drive/src/recommended.js#L13)
+Defined in: [recommended.js:13](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/packages/eslint-plugin-warp-drive/src/recommended.js#L13)

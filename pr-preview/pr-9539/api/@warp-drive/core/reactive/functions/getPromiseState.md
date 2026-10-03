@@ -14,9 +14,12 @@ function getPromiseState<T = unknown, E = unknown>(promise:
 | Awaitable<T, E>): Readonly<PromiseState<T, E>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:369](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/promise-state.ts#L369)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:372](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/promise-state.ts#L372)
 
 Returns a reactive state-machine for the provided promise or awaitable.
+
+The [Async as Reactive State](/guides/the-manual/reactivity/derivation) guide shows
+how to use it in place of tracked loading and error state.
 
 Repeat calls to `getPromiseState` with the same promise will return the same state object
 making is safe and easy to use in templates and JavaScript code to produce reactive

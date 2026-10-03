@@ -16,7 +16,7 @@ type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredEr
 | CancelledRequest<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:642](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/request-state.ts#L642)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:644](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/request-state.ts#L644)
 
 RequestState extends the concept of [PromiseState](PromiseState.md) to provide a reactive
 wrapper for a request [Future](../../request/types/Future.md) which allows you write declarative code
@@ -44,10 +44,10 @@ To get the state of a request, use [getRequestState](../functions/getRequestStat
 
 See also:
 
-* PendingRequest
-* ResolvedRequest
-* RejectedRequest
-* CancelledRequest
+* [PendingRequest](PendingRequest.md)
+* [ResolvedRequest](ResolvedRequest.md)
+* [RejectedRequest](RejectedRequest.md)
+* [CancelledRequest](CancelledRequest.md)
 
 ## Type Parameters
 

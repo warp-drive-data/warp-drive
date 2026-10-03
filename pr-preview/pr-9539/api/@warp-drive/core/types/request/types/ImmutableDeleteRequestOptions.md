@@ -12,6 +12,6 @@ description: >-
 type ImmutableDeleteRequestOptions = ImmutableRequest<DeleteRequestOptions>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:401](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/types/request.ts#L401)
+Defined in: [warp-drive-packages/core/src/types/request.ts:401](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/types/request.ts#L401)
 
 The immutable, handler-facing form of [DeleteRequestOptions](DeleteRequestOptions.md).

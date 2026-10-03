@@ -18,6 +18,32 @@ Start with the [Installation](/guides/installation/) and [Setup](/guides/configu
 The API docs assume that context.
 :::
 
+## How the Pieces Connect
+
+Your app talks to the Store. The Store keeps resource data in the Cache and hands requests to the
+RequestManager, whose handlers fetch data from a source such as your API or a local persistence
+layer.
+
+```mermaid
+flowchart LR
+    A[App] ===> D{Store}
+    B{{RequestManager}} <--> C[(Source)]
+    D <--> E[(Cache)]
+    D <--> B
+```
+
+The Store also presents cached data to your app as reactive records. It creates each record with
+its [instantiateRecord](classes/Store.md#instantiaterecord) hook; the Store that
+`useRecommendedStore` produces presents every resource as a
+[ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource).
+
+```mermaid
+flowchart LR
+    A[App] --- B(ReactiveResource)
+    A === C{Store}
+    B --- C
+```
+
 ## Setup
 
 [useRecommendedStore](functions/useRecommendedStore.md) produces a Store class with the
@@ -59,6 +85,55 @@ writing them.
   configures deprecations, optional features, and debug logging.
 * [`@warp-drive/core/configure`](/api/@warp-drive/core/configure/): the API for telling
   ***Warp*Drive** which framework's reactivity system to use.
+
+## Guides
+
+* [Installation](/guides/installation/): install `@warp-drive/core`, a cache and the reactivity
+  package for your framework.
+* [Setup](/guides/configuration/): configure the build plugin and create a Store with
+  `useRecommendedStore`.
+* [Advanced Store Configuration](/guides/configuration/advanced.md): build a Store class by hand,
+  one piece at a time.
+* [Making Requests](/guides/the-manual/requests/): `store.request`, request options and the
+  handler chain.
+* [Builders](/guides/the-manual/requests/builders.md): functions that return a request and a
+  stable cache key.
+* [Handlers](/guides/the-manual/requests/handlers.md): write a handler that transforms a response.
+* [Auth Handler](/guides/the-manual/cookbook/auth-handlers.md): add JWT or CSRF tokens to outgoing
+  requests with a handler.
+* [Typing Requests](/guides/the-manual/requests/typing-requests.md): `withResponseType` and
+  `withReactiveResponse`.
+* [Using the Response](/guides/the-manual/requests/using-the-response.md): the `Future` a request
+  returns, its errors and its content.
+* [Schemas](/guides/the-manual/schemas/): how a schema turns cached data into reactive
+  properties.
+* [ResourceSchemas](/guides/the-manual/schemas/resources/): define a resource with `withDefaults`,
+  choose its field kinds and register it.
+* [SimpleFields](/guides/the-manual/schemas/simple-fields.md): declare primitive attributes as
+  `field` kinds.
+* [Complex Fields](/guides/the-manual/schemas/complex-fields.md): embed nested objects and lists
+  with `schema-object` and `schema-array` fields.
+* [ObjectSchemas](/guides/the-manual/schemas/object-schemas.md): define the identity-less schema
+  a `schema-object` field points at.
+* [Traits](/guides/the-manual/schemas/traits.md): share a group of fields across resources.
+* [Transformations](/guides/the-manual/schemas/transformations.md): convert a field between its
+  cache and app shapes.
+* [Derivations](/guides/the-manual/schemas/derivations.md): define memoized, read-only `derived`
+  fields.
+* [Caching](/guides/the-manual/caching/): how the `CacheHandler` and the cache policy decide what
+  to fetch and what to keep.
+* [Key Terminology](/guides/the-manual/caching/key-terms.md): documents, resources and the names
+  of their types.
+* [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+* [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  states with `getRequestState`.
+* [Async as Reactive State](/guides/the-manual/reactivity/derivation.md): derive a promise's state
+  with `getPromiseState`.
+* [Relationships](/guides/the-manual/relational-data/): configure each kind of relationship.
+* [Debugging](/guides/the-manual/debugging/): turn on debug logging at runtime or in the build
+  config.
+* [TypeScript](/guides/the-manual/typescript/): opt in to the alpha types, then follow the setup
+  pages in order.
 
 ## Classes
 

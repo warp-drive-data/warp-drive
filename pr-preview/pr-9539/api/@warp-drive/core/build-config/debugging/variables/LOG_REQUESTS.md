@@ -10,6 +10,6 @@ description: Debug logging flag that logs each request issued through the Reques
 const LOG_REQUESTS: boolean;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/debugging.ts:89](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/build-config/src/debugging.ts#L89)
+Defined in: [warp-drive-packages/build-config/src/debugging.ts:89](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/build-config/src/debugging.ts#L89)
 
 log requests issued by the RequestManager

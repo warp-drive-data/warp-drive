@@ -9,6 +9,8 @@ description: >-
 
 :::warning Legacy package
 `@ember-data/request` is a legacy package. New code should use [`@warp-drive/core`](/api/@warp-drive/core/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 This package used to provide the RequestManager and its related

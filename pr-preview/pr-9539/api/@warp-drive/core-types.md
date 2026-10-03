@@ -10,6 +10,8 @@ description: >-
 
 :::warning Legacy package
 `@warp-drive/core-types` is a legacy package. New code should use [`@warp-drive/core/types`](/api/@warp-drive/core/types/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 Every entry point in this package is a type-only re-export of the matching

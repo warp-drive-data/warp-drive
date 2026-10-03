@@ -48,3 +48,12 @@ Each experiment is its own entry point.
   implementation lives in `@warp-drive/core`, but the API is published only from here while it is
   experimental. The `<Paginate />` and `<EachLink />` components that build on it are published from
   [`@warp-drive/ember/experiments`](/api/@warp-drive/ember/experiments/).
+
+## Guides
+
+* [Experiments](/guides/the-manual/experiments/): what "experimental" means here, and the list of
+  experiments that have a guide.
+* [Storage Resources](/guides/the-manual/experiments/storage-resources.md): persist reactive class
+  fields with the `storage` entry point.
+* [Pagination](/guides/the-manual/experiments/pagination.md): paginate a collection with the
+  `pagination` entry point, in paged or infinite mode.

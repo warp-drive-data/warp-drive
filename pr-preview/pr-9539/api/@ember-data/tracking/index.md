@@ -10,6 +10,8 @@ description: >-
 
 :::warning Deprecated package
 `@ember-data/tracking` is deprecated. Deprecated since 5.5: the Ember reactivity bindings it provided now come from [`@warp-drive/ember`](/api/@warp-drive/ember/), so remove it and install that instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 Historically, this package configured ***Warp*Drive** to use EmberJS's reactivity system.

@@ -14,7 +14,16 @@ function ReactiveContext(__namedParameters: {
 }): Element;
 ```
 
-Defined in: [-private/reactive-context.tsx:171](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/react/src/-private/reactive-context.tsx#L171)
+Defined in: [-private/reactive-context.tsx:192](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/react/src/-private/reactive-context.tsx#L192)
+
+Re-renders its `children` when a WarpDrive signal they read changes.
+`<Request />` already wraps its content in one; wrap any other component
+that reads reactive WarpDrive data, such as a record's fields.
+
+The JS API example in [Reactive Control Flow](/guides/the-manual/reactivity/control-flow)
+shows it wrapping a component that reads request state with `getRequestState`.
+
+It accepts a single prop, `children`.
 
 ## Parameters
 
@@ -27,3 +36,17 @@ Defined in: [-private/reactive-context.tsx:171](https://github.com/warp-drive-da
 ## Returns
 
 `Element`
+
+## Example
+
+```tsx
+import { ReactiveContext } from "@warp-drive/react";
+
+export function UserName({ user }: { user: User }) {
+  return (
+    <ReactiveContext>
+      <span>{user.name}</span>
+    </ReactiveContext>
+  );
+}
+```

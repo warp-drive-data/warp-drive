@@ -14,19 +14,26 @@ function withReactiveResponse<T, M extends ObjectValue | undefined = ObjectValue
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:84](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request.ts#L84)
+Defined in: [warp-drive-packages/core/src/request.ts:103](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request.ts#L103)
 
 Brands the supplied object with the supplied response type
 wrapped in [ReactiveDataDocument](../../reactive/types/ReactiveDataDocument.md). This is a convenience for
 the common case of using [withResponseType](withResponseType.md) with `ReactiveDataDocument`.
 
+Like `withResponseType`, call it inside a [builder](/guides/the-manual/requests/builders)
+rather than where the request is made. The
+[Typing Requests](/guides/the-manual/requests/typing-requests#typing-reactive-responses)
+guide shows how to use it.
+
 ```ts
 import { withReactiveResponse } from '@warp-drive/core/request';
 import type { User } from '#/data/user.ts'
 
-const result = await store.request(
-  withReactiveResponse<User>({ url: '/users/1' })
-);
+export function getUser(id: string) {
+  return withReactiveResponse<User>({ url: `/users/${id}` });
+}
+
+const result = await store.request(getUser('1'));
 
 result.content.data; // will have type User
 ```
@@ -36,9 +43,11 @@ Pass a second type param to declare the `meta` the endpoint returns:
 ```ts
 type PageMeta = { page: { limit: number; offset: number }; total?: number };
 
-const result = await store.request(
-  withReactiveResponse<User[], PageMeta>({ url: '/users' })
-);
+export function getUsers() {
+  return withReactiveResponse<User[], PageMeta>({ url: '/users' });
+}
+
+const result = await store.request(getUsers());
 
 result.content.meta?.total; // number | undefined
 ```

@@ -12,7 +12,7 @@ description: >-
 type AutorefreshBehaviorType = "online" | "interval" | "invalid";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:31](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/signals/request-subscription.ts#L31)
+Defined in: [warp-drive-packages/core/src/signals/request-subscription.ts:31](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/signals/request-subscription.ts#L31)
 
 The individual autorefresh strategies a [RequestSubscription](RequestSubscription.md)
 may combine, see [AutorefreshBehaviorCombos](AutorefreshBehaviorCombos.md).

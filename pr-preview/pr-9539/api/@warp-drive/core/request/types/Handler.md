@@ -18,11 +18,13 @@ interface Handler {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:259](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/types.ts#L259)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:266](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/types.ts#L266)
 
 Requests are fulfilled by handlers. A handler receives the request context
 as well as a `next` function with which to pass along a request to the next
 handler if it so chooses.
+
+The [Handlers](/guides/the-manual/requests/handlers) guide walks through writing one.
 
 A handler may be any object with a `request` method. This allows both stateful and non-stateful
 handlers to be utilized.
@@ -60,7 +62,7 @@ response content before passing along the chunk downstream.
 const FetchHandler = {
  async request(context) {
    const response = await fetch(context.request);
-   context.setResponse(reponse);
+   context.setResponse(response);
    context.setStream(response.clone().body);
 
    return response.json();
@@ -138,7 +140,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:267](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/types.ts#L267)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:274](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/types.ts#L274)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to

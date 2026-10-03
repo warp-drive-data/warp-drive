@@ -48,6 +48,24 @@ export class AppStore extends Store {
 }
 ```
 
+## Guides
+
+* [Installation](/guides/installation/): install `@warp-drive/json-api` alongside
+  `@warp-drive/core`.
+* [Setup](/guides/configuration/#configure-the-store): pass `JSONAPICache` to the Store.
+* [Advanced Store Configuration](/guides/configuration/advanced.md#add-a-cache): add the cache to
+  a Store you build by hand.
+* [Caching](/guides/the-manual/caching/): how the `JSONAPICache` stores responses, resources,
+  fields and relationships, and which of them a new value replaces rather than merges into.
+* [Schemas](/guides/the-manual/schemas/): how a resource in the `{json:api}` format maps onto a
+  schema.
+* [Handlers](/guides/the-manual/requests/handlers.md): normalize a REST response into a
+  `{json:api}` document the cache can consume.
+* [Relationships](/guides/the-manual/relational-data/): configure the relationships the cache
+  keeps consistent.
+* [Polymorphism](/guides/the-manual/relational-data/features/polymorphism.md): polymorphic
+  relationships and resolving an abstract type to a concrete one.
+
 ## Classes
 
 * [JSONAPICache](classes/JSONAPICache.md)

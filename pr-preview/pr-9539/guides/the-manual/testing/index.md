@@ -58,7 +58,7 @@ await GET(this, 'users/1', () => ({
 const { content } = await store.request({ url: buildBaseURL({ resourcePath: 'users/1' }) });
 ```
 
-What that `GET` call does depends on which mode the build is in.
+What that [`GET`](/api/@warp-drive/holodeck/mock/functions/GET) call does depends on which mode the build is in.
 
 In **record** mode it runs your response function, posts the result to the mock server, and the
 server writes two files under `.mock-cache/`. One holds the response metadata as JSON. The other

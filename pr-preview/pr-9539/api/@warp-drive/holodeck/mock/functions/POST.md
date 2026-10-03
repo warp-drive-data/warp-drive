@@ -19,7 +19,7 @@ function POST(
 ): Promise<void>;
 ```
 
-Defined in: [mock.ts:169](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/packages/holodeck/src/mock.ts#L169)
+Defined in: [mock.ts:169](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/packages/holodeck/src/mock.ts#L169)
 
 Mock a POST request
 

@@ -12,7 +12,7 @@ description: >-
 const fromIdentity: FromIdentityDerivation;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:494](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/reactive/-private/schema.ts#L494)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:497](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/reactive/-private/schema.ts#L497)
 
 A derivation that computes its value from the
 record's identity.

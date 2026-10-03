@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;RequestManager
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:104](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/manager.ts#L104)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:149](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/manager.ts#L149)
 
 ## Import
 
@@ -16,7 +16,8 @@ Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:104](https
 import { RequestManager } from '@warp-drive/core';
 ```
 
-For complete usage guide see the [RequestManager Documentation](/guides/).
+For a complete usage guide see [Making Requests](/guides/the-manual/requests/), and
+[Handlers](/guides/the-manual/requests/handlers) for writing the handlers it runs.
 
 ## How It Works
 
@@ -37,11 +38,28 @@ For example:
 ```ts [Setup.ts]
 import { RequestManager, Fetch } from '@warp-drive/core';
 import { AutoCompress } from '@warp-drive/utilities/handlers';
-import Auth from 'ember-simple-auth/handler';
+import { AuthHandler } from './auth-handler';
 
 // ... create manager
 const manager = new RequestManager()
-   .use([Auth, new AutoCompress(), Fetch]); // [!code focus]
+   .use([AuthHandler, new AutoCompress(), Fetch]); // [!code focus]
+```
+
+```ts [auth-handler.ts]
+import type { Handler, NextFn } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
+
+const token = '<token>';
+
+// adds a bearer token to every request, then passes it along
+export const AuthHandler: Handler = {
+  request<T>(context: RequestContext, next: NextFn<T>) {
+    const headers = new Headers(context.request.headers);
+    headers.append('Authorization', `Bearer ${token}`);
+
+    return next(Object.assign({}, context.request, { headers }));
+  },
+};
 ```
 
 ```ts [Usage.ts]
@@ -56,6 +74,20 @@ const response = await manager.request({
 ```
 
 :::
+
+### RequestManager vs [Store.request](Store.md#request)
+
+A bare `RequestManager` is the low-level primitive: it runs a request through the configured
+[handler chain](../request/types/Handler.md) and settles with the raw [StructuredDocument](../types/request/types/StructuredDocument.md). It has no
+cache and does not hydrate [ReactiveDocuments](../reactive/types/ReactiveDocument.md) unless you register a
+cache handler yourself via [RequestManager.useCache](#usecache) and the request opts in.
+
+[Store.request](Store.md#request) issues requests through this same `RequestManager`, but with the Store's
+cache handler and hydration already wired up — inserting the response into the Store's cache
+and resolving with a `ReactiveDocument` instead. Use `store.request` for anything the Store's
+cache should own, which is nearly all app code. Reach for `requestManager.request` directly
+only when there is no [Store](Store.md) involved, or you specifically want the unprocessed
+`StructuredDocument`.
 
 ### Futures
 
@@ -103,7 +135,7 @@ type StructuredDocument<T> = StructuredDataDocument<T> | StructuredErrorDocument
 new RequestManager(options?: GenericCreateArgs): RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:121](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/manager.ts#L121)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:166](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/manager.ts#L166)
 
 #### Parameters
 
@@ -123,11 +155,22 @@ Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:121](https
 request<RT>(request: RequestInfo<RT>): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:197](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/manager.ts#L197)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:258](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/manager.ts#L258)
 
 Issue a Request.
 
-Returns a Future that fulfills with a StructuredDocument
+Runs `request` through the configured [handler chain](../request/types/Handler.md) and settles with the
+[StructuredDocument](../types/request/types/StructuredDocument.md) the chain produces — a plain `{ request, response, content }`
+object, not a [ReactiveDocument](../reactive/types/ReactiveDocument.md). Caching and hydration only happen if a cache handler
+has been registered via [RequestManager.useCache](#usecache) and the request opts in; a
+`RequestManager` created on its own has neither.
+
+Most app code should use [Store.request](Store.md#request) instead, which calls this same method with
+the Store's cache handler and hydration already configured. Reach for `requestManager.request`
+directly when there is no [Store](Store.md) involved, or when you want the unprocessed
+`StructuredDocument`. The `<RT>` generic can be set explicitly or inferred from a request
+built with [withResponseType](../request/functions/withResponseType.md) or [withReactiveResponse](../request/functions/withReactiveResponse.md) — see
+[Typing Requests](/guides/the-manual/requests/typing-requests.md).
 
 #### Type Parameters
 
@@ -145,6 +188,12 @@ Returns a Future that fulfills with a StructuredDocument
 
 [`Future`](../request/types/Future.md)<`RT`>
 
+#### Example
+
+```ts
+const { content } = await requestManager.request({ url: '/users' });
+```
+
 ***
 
 ### use()
@@ -153,7 +202,7 @@ Returns a Future that fulfills with a StructuredDocument
 use(newHandlers: Handler[]): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:163](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/manager.ts#L163)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:208](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/manager.ts#L208)
 
 Register handler(s) to use when a request is issued.
 
@@ -181,7 +230,7 @@ useCache(cacheHandler: CacheHandler & {
 }): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:137](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/request/-private/manager.ts#L137)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:182](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/request/-private/manager.ts#L182)
 
 Register a handler to use for primary cache intercept.
 

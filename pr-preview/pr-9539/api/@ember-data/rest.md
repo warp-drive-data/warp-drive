@@ -10,6 +10,8 @@ description: >-
 
 :::warning Legacy package
 `@ember-data/rest` is a legacy package. New code should use [`@warp-drive/utilities/rest`](/api/@warp-drive/utilities/rest/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 Request builders for **REST**ful APIs.

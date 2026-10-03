@@ -11,7 +11,12 @@ test, before the code under test makes the request.
 ## Declare a mock
 
 Import the helper for the HTTP method you need from `@warp-drive/holodeck/mock`. There is one for
-`GET`, `POST`, `PUT`, `PATCH`, `DELETE`, and `HEAD`, and they all take the same four arguments.
+[`GET`](/api/@warp-drive/holodeck/mock/functions/GET),
+[`POST`](/api/@warp-drive/holodeck/mock/functions/POST),
+[`PUT`](/api/@warp-drive/holodeck/mock/functions/PUT),
+[`PATCH`](/api/@warp-drive/holodeck/mock/functions/PATCH),
+[`DELETE`](/api/@warp-drive/holodeck/mock/functions/DELETE) and
+[`HEAD`](/api/@warp-drive/holodeck/mock/functions/HEAD), and they all take the same four arguments.
 
 ```ts
 import { GET } from '@warp-drive/holodeck/mock';
@@ -28,7 +33,9 @@ test('it renders a user', async function (assert) {
 
 The first argument is the test context. Pass `this` from inside a `function` test body, never an
 arrow function, because holodeck looks the test up by object identity. The same object has to reach
-`setTestId`, the `MockServerHandler` constructor, and every mock helper. See
+[`setTestId`](/api/@warp-drive/holodeck/functions/setTestId), the
+[`MockServerHandler`](/api/@warp-drive/holodeck/classes/MockServerHandler) constructor, and every
+mock helper. See
 [Test framework integration](./test-framework-integration.md) and
 [Client setup](./client-setup.md) for where the first two happen.
 
@@ -53,7 +60,7 @@ await GET(this, 'users/1', () => ({
 ```
 
 Leave `statusText` out. It is stored in the fixture but never reaches the browser, because HTTP/2
-has no reason phrase, and `Fetch` fills an error's `statusText` in from its status code. A
+has no reason phrase, and [`Fetch`](/api/@warp-drive/core/variables/Fetch) fills an error's `statusText` in from its status code. A
 `status: 404` mock produces an error whose `statusText` is `Not Found` either way.
 
 `Content-Type` defaults to `application/vnd.api+json`. Override it through `headers` when you mock
@@ -143,7 +150,7 @@ legacy adapters bypass the request chain. See
 
 ## Build a scaffold by hand
 
-The six helpers are wrappers around `mock`, which takes the whole scaffold at once. Reach for it
+The six helpers are wrappers around [`mock`](/api/@warp-drive/holodeck/functions/mock), which takes the whole scaffold at once. Reach for it
 when you need a method the helpers do not cover.
 
 ```ts

@@ -17,9 +17,10 @@ result is cached, deduplicated, and reactively available to the rest of the app.
 const { content } = await store.request({ url: '/api/users' });
 ```
 
-3. For a resource that already has a registered schema, prefer a builder over hand-writing the
-   request. `findRecord` from `@warp-drive/utilities/json-api` is the built-in builder for
-   fetching a single resource by type and id:
+3. Prefer a builder over hand-writing the request. `findRecord` from
+   `@warp-drive/utilities/json-api` is a general-purpose builder for fetching a single resource by
+   type and id. It is fine for getting started, but in a mature app wrap it in a specific builder,
+   as step 4 describes, instead of calling it from the app directly:
 
 ```ts
 import { findRecord } from '@warp-drive/utilities/json-api';
@@ -27,13 +28,21 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 const { content } = await store.request(findRecord('user', userId));
 ```
 
-4. To reuse a request shape, write your own builder — a plain function returning a request
-   object:
+4. For any other request, call the app's own builder for it, or write one — a documented, typed
+   function in the app's builders directory that returns a request object. Follow
+   [Write a Request Builder](./write-a-request-builder.md) when writing or changing one; don't
+   write a request object inline at the call site.
 
 ```ts
 // builders/get-users.ts
+import { withReactiveResponse } from '@warp-drive/core/request';
+import type { User } from '#/data/types';
+
+/**
+ * Gets every user. Endpoint: `GET /api/users`
+ */
 export function getUsers() {
-  return { url: '/api/users' };
+  return withReactiveResponse<User[]>({ url: '/api/users' });
 }
 
 // elsewhere
@@ -62,6 +71,30 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 </template>
 ```
 
+To read the request's state in JavaScript instead, pass the `Future` that `store.request` returns
+to `getRequestState` from `@warp-drive/ember`. Cache the request with `@cached`: a plain getter
+calls `store.request` again on every read.
+
+```ts
+import { cached } from '@glimmer/tracking';
+import { getRequestState } from '@warp-drive/ember';
+import { findRecord } from '@warp-drive/utilities/json-api';
+
+// inside a component with `@service declare store: Store;`
+@cached
+get userRequest() {
+  return this.store.request(findRecord('user', this.args.userId));
+}
+
+get user() {
+  return getRequestState(this.userRequest).value?.data;
+}
+```
+
+For a promise that doesn't come from `store.request`, use `getPromiseState` or the `<Await />`
+component from `@warp-drive/ember` instead. Both take any promise. See
+[Async as Reactive State](/guides/the-manual/reactivity/derivation.md).
+
 ## Notes
 
 * `store.request` works with any resource type, not just ones with schemas registered — for
@@ -72,4 +105,5 @@ import { findRecord } from '@warp-drive/utilities/json-api';
 ## Related
 
 * Full guide: [Making Requests](/guides/the-manual/requests/index.md)
+* Reactive state for requests: [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md)
 * Related skill: [Define a Resource Schema](/skills/schemas/define-a-resource-schema)

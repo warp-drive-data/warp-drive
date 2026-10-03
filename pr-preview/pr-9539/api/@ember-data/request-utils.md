@@ -11,6 +11,8 @@ description: >-
 
 :::warning Legacy package
 `@ember-data/request-utils` is a legacy package. New code should use [`@warp-drive/utilities`](/api/@warp-drive/utilities/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 Simple utility functions to assist in url building,

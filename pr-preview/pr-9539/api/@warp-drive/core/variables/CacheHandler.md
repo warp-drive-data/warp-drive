@@ -12,9 +12,12 @@ description: >-
 const CacheHandler: CacheHandler;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:102](https://github.com/warp-drive-data/warp-drive/blob/6d8462857f57c6682cc698dbfcf9b3ece5d8bfd2/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L102)
+Defined in: [warp-drive-packages/core/src/store/-private/cache-handler/handler.ts:105](https://github.com/warp-drive-data/warp-drive/blob/ff37f72fbdeb94e94f014e7fffe480e3aae5ae44/warp-drive-packages/core/src/store/-private/cache-handler/handler.ts#L105)
 
 A CacheHandler that adds support for using an WarpDrive Cache with a RequestManager.
+
+The [Caching](/guides/the-manual/caching/) guide explains how it decides whether a
+request can use the cache.
 
 This handler will only run when a request has supplied a `store` instance. Requests
 issued by the store via `store.request()` will automatically have the `store` instance
