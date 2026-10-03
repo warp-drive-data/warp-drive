@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/storage/functions/field.md
+description: >-
+  Experimental decorator that makes a storage resource property a reactive field
+  persisted to local, session, or cache storage.
 ---
 
 &#x20;
@@ -22,7 +25,7 @@ function field(
 function field(type: "cache" | "local" | "session"): PropertyDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:105](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/storage-resource.ts#L105)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:116](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L116)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource
@@ -73,7 +76,7 @@ function field(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:106](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/storage-resource.ts#L106)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:117](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L117)
 
 Decorator which marks a property as a field on
 a LocalResource or SessionResource

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/FieldSchema.md
+description: >-
+  Union of every LegacyMode and PolarisMode field schema; prefer the
+  mode-specific unions for more precise type-checking.
 ---
 
 # &#x20;FieldSchema
@@ -25,7 +28,7 @@ type FieldSchema =
   | LinksModeHasManyField;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2126](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L2126)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2214](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L2214)
 
 A union of all possible LegacyMode and PolarisMode
 field schemas.

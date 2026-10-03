@@ -1,16 +1,22 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/ember/experiments/classes/Paginate.md
+description: >-
+  Component that monitors the request for a paginated collection and yields its
+  pages, in paged or infinite mode, for navigating and rendering them.
 ---
 
 # &#x20;\<Paginate />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:199](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/ember/dist/experiments.d.ts#L199)
+Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:254](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/paginate.gts#L254)
 
 The `<Paginate />` component provides declarative, reactive control-flow for
 rendering a paginated collection: it monitors the request that loads the
 collection's entry page and yields a pagination state for navigating and
 rendering the collection's pages.
+
+See the [Pagination guide](/guides/the-manual/experiments/pagination) for how
+paged and infinite pagination work.
 
 ## Blocks
 
@@ -161,8 +167,6 @@ component then uses it instead of creating and disposing its own.
 new Paginate<RT, E, M extends PaginateMode = "paged">(owner: Owner, args: EmberPaginateArgs<RT>): Paginate<RT, E, M>;
 ```
 
-Defined in: [node\_modules/.pnpm/@glimmer+component@2.1.1/node\_modules/@glimmer/component/dist/index.d.ts:389](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/node_modules/.pnpm/@glimmer+component@2.1.1/node_modules/@glimmer/component/dist/index.d.ts#L389)
-
 #### Parameters
 
 ##### owner
@@ -191,7 +195,7 @@ Component<PaginateSignature<RT, E, M>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:235](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/ember/dist/experiments.d.ts#L235)
+Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:334](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/paginate.gts#L334)
 
 Called before the component has been removed from the DOM.
 

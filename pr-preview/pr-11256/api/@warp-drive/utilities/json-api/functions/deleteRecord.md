@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/json-api/functions/deleteRecord.md
+description: >-
+  Builds a JSON:API `DELETE` request that persists deletion of an existing
+  record.
 ---
 
 # &#x20;deleteRecord()
@@ -16,7 +19,7 @@ function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): Del
 function deleteRecord<T>(record: T, options?: ConstrainedRequestOptions): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/json-api/save-record.ts:83](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L83)
+Defined in: [-private/json-api/save-record.ts:87](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L87)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -25,6 +28,9 @@ desired and correctly formatted data is sent with the request.
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of most JSON:API APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 
@@ -93,7 +99,7 @@ const data = await store.request(options);
 function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): DeleteRequestOptions;
 ```
 
-Defined in: [-private/json-api/save-record.ts:84](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L84)
+Defined in: [-private/json-api/save-record.ts:88](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/json-api/save-record.ts#L88)
 
 :::warning ⚠️ **These Mutation Builders DO NOT Set The Request Body**
 While this may come as a surprise, the app providing the body ensures that only
@@ -102,6 +108,9 @@ desired and correctly formatted data is sent with the request.
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of most JSON:API APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 

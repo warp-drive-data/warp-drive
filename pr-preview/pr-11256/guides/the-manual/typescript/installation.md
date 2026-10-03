@@ -7,6 +7,10 @@ description: >-
   -types packages.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. `@warp-drive/core` and the other current packages ship their own types, so new apps can skip this page and follow [Installation](/guides/installation/index.md) instead.
+:::
+
 # Installation
 
 WarpDrive now provides a cli that will handle installation and configuration for you
@@ -66,7 +70,7 @@ The following versions supply their own type definitions. These type definitions
 
 In order to use the types for these versions, the dependencies of `ember-data` (and their peer-dependencies) must also be added to `package.json`.
 
-Generally that means the following packages are needed, though you may need fewer (or more!) depending on if you have migrated away from Adapter/Serializer and replaced Model with ReactiveResource:
+Generally that means the following packages are needed, though you may need fewer (or more!) depending on if you have migrated away from Adapter/Serializer and replaced [Model](/api/@warp-drive/legacy/model/classes/Model) with [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource):
 
 | Name | Latest | Canary | V4 |
 | ---- | -------| ------ | -- |

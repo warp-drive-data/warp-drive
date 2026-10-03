@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/handlers.md
+description: >-
+  Ready-made request handlers for body compression, conditional handling, and
+  meta-only responses, plus tracing helpers.
 ---
 
 A selection of pre-built request handlers for handling common
@@ -23,3 +26,8 @@ request scenarios.
 
 * [addTraceHeader](functions/addTraceHeader.md)
 * [assertInvalidUrlLength](functions/assertInvalidUrlLength.md)
+
+## Types
+
+* [CompressionOptions](types/CompressionOptions.md)
+* [Constraints](types/Constraints.md)

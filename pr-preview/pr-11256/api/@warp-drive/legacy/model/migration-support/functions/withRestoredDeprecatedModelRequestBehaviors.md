@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/model/migration-support/functions/withRestoredDeprecatedModelRequestBehaviors.md
+description: >-
+  Legacy alternative to `withDefaults` that makes a LegacyMode schema whose
+  `save`, `reload`, and `destroyRecord` run without deprecation warnings.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function withRestoredDeprecatedModelRequestBehaviors(schema: WithPartial<LegacyResourceSchema, "identity" | "legacy">): LegacyResourceSchema;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:391](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/model/migration-support.ts#L391)
+Defined in: [warp-drive-packages/legacy/src/model/migration-support.ts:403](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/model/migration-support.ts#L403)
 
 Adds the necessasary fields to the schema for supporting
 the deprecated request methods on LegacyMode schemas.

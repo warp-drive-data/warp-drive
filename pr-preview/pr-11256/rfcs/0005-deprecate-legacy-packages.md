@@ -191,7 +191,7 @@ under `DEPRECATE_EMBER_DATA_DEBUG_PACKAGE`, pointing at the extension instead of
 if (DEPRECATE_EMBER_DATA_DEBUG_PACKAGE) {
   deprecate(
     `'@ember-data/debug' is deprecated. Uninstall it and install the WarpDrive DevTools ` +
-      `browser extension instead: https://docs.warp-drive.io/guides/devtools`,
+      `browser extension instead: https://warp-drive.io/guides/devtools`,
     false,
     {
       id: 'warp-drive.deprecate-ember-data-debug-package',

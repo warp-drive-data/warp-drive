@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/model/functions/restoreDeprecatedModelRequestBehaviors.md
+description: >-
+  Legacy opt-in that restores the pre-`RequestManager` `save`, `destroyRecord`,
+  `reload`, and `isReloading` onto a `Model` class without deprecation warnings.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function restoreDeprecatedModelRequestBehaviors(ModelKlass: typeof Model): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1952](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/model/-private/model.ts#L1952)
+Defined in: [warp-drive-packages/legacy/src/model/-private/model.ts:1957](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/model/-private/model.ts#L1957)
 
 Restores the pre-`RequestManager` implementations of `save`,
 `destroyRecord`, and `reload` onto the given `Model` subclass, for

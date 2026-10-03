@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy.md
+description: >-
+  Opt-in support for features deprecated out of `@warp-drive/core`, such as
+  Models, Adapters, Serializers and legacy store APIs, for apps that still need
+  to migrate away from them.
 ---
 
 &#x20;
@@ -26,6 +30,23 @@ able to be restored from legacy at all.
 
 Our policy is to always attempt to provide restoration of a deprecated feature via
 @warp-drive/legacy, but the decision to provide this long-tail support ultimately depends on how easy a feature is to maintain weighed against the costs to the community and project of keeping it around.
+
+## Guides
+
+* [Setup](/guides/configuration/#configure-the-store): create a Store with `useLegacyStore` in
+  the LegacyMode tab.
+* [Legacy Feature Setup for Ember Apps](/guides/configuration/ember.md): which legacy features
+  `@warp-drive/legacy` restores, and when you still need the `LegacyNetworkHandler`.
+* [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md): emulate `Model` with a schema,
+  using `withDefaults` and `registerDerivations` from this package.
+* [Relationships](/guides/the-manual/relational-data/): the relationship configuration pages show
+  each relationship defined with `@warp-drive/legacy/model` as well as with schemas.
+* [Typing Models & Transforms](/guides/the-manual/typescript/typing-models.md): type `Model`
+  classes, their fields and their transforms.
+* [Migrating 4.x to 5.x](/upgrading/v5/index.md): move an EmberData 4.x app to 5.x with
+  `useLegacyStore`.
+* [Using Codemods](/upgrading/v5/codemods.md): convert Models into schemas that use
+  `withDefaults` from this package.
 
 ## Classes
 

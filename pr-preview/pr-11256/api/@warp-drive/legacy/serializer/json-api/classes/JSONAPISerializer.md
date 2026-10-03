@@ -1,13 +1,16 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/serializer/json-api/classes/JSONAPISerializer.md
+description: >-
+  Legacy serializer that normalizes and serializes record payloads following the
+  JSON:API spec.
 ---
 
 &#x20;
 
 # &#x20;JSONAPISerializer&#x20;
 
-Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:142](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/serializer/json-api.ts#L142)
+Defined in: [warp-drive-packages/legacy/src/serializer/json-api.ts:148](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/serializer/json-api.ts#L148)
 
 :::danger
 ⚠️ This is LEGACY documentation for a feature that is no longer encouraged to be used.

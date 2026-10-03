@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/cache/types/ChangedAttributesHash.md
+description: >-
+  Map of attribute name to `[oldValue, newValue]` for a resource's uncommitted
+  attribute changes, as returned by `cache.changedAttrs`.
 ---
 
 # &#x20;ChangedAttributesHash
@@ -9,7 +12,7 @@ url: >-
 type ChangedAttributesHash = Record<string, [Value | undefined, Value]>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache.ts:19](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/cache.ts#L19)
+Defined in: [warp-drive-packages/core/src/types/cache.ts:27](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache.ts#L27)
 
 A hash of changed attributes with the key being the attribute name and the value being an
 array of `[oldValue, newValue]`.

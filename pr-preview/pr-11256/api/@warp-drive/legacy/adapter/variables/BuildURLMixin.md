@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/adapter/variables/BuildURLMixin.md
+description: >-
+  Legacy `Mixin` that adds `buildURL` and the `urlFor*` hooks to an adapter so
+  it can turn a model name, id, snapshot, and request type into a request URL.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 BuildURLMixin: Mixin;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:26](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L26)
+Defined in: [warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts:29](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/-private/build-url-mixin.ts#L29)
 
 The `Mixin` implementation of BuildURLMixin, ready to be applied
 to an `EmberObject` subclass such as an `Adapter`.

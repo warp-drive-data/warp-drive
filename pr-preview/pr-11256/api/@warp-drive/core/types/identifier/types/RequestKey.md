@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/identifier/types/RequestKey.md
+description: >-
+  Stable object with a unique `lid` that references a cached request document,
+  letting that request's result be retrieved or replayed.
 ---
 
 # &#x20;RequestKey
@@ -12,13 +15,16 @@ interface RequestKey {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:43](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L43)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:56](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L56)
 
 A referentially stable object with a unique string (lid) that can be used
 as a reference to request data in the cache.
 
 Only requests that are assigned a RequestKey are retrievable/replayable from
 the cache, though requests without RequestKeys may still update cache state.
+
+The [Key Terminology](/guides/the-manual/caching/key-terms#documents) guide explains
+the documents it identifies.
 
 ## Properties
 
@@ -28,7 +34,7 @@ the cache, though requests without RequestKeys may still update cache state.
 lid: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:47](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L47)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:60](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L60)
 
 A string representing a unique identity.
 
@@ -40,6 +46,6 @@ A string representing a unique identity.
 type: "@document";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:51](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L51)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:64](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L64)
 
 Discriminates a RequestKey from a [ResourceKey](ResourceKey.md).

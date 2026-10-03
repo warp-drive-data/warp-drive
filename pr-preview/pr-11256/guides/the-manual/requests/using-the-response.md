@@ -38,7 +38,7 @@ the error will be a [FetchError](/api/@warp-drive/core/types/request/types/Fetch
 On their own, `Futures` may appear to have an overly verbose return shape and the value of the features they enhance promises with may not be immediately clear. But this is because in the
 general case it is expected that you **won't** resolve the future yourself with `await`, but instead will pass it around your app as a value.
 
-Maintaining access to the `Future's` reference allows you to use it with declarative reactive paradigms using utilities such as `getRequestState` or components like `<Request />`.
+Maintaining access to the `Future's` reference allows you to use it with declarative reactive paradigms using utilities such as [`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) or components like `<Request />` ([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)).
 
 We call this `Reactive Control Flow`, you may want to [watch the talk where we introduced this feature](https://youtu.be/HQiKFaTAahM?si=Ng8lCpSQkwrHzGd5\&t=312).
 
@@ -48,6 +48,11 @@ The `content` property contains whatever the [request handler pipeline](/api/@wa
 not use the cache, this will be whatever the last handler to process the response returns.
 
 For requests that do use the cache (most requests), the content property will be a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument).
+
+A `ReactiveDocument` exposes the response's `links` and `meta` alongside its `data`. When the
+response is one page of a collection, its `next()`, `prev()`, `first()` and `last()` methods request
+the page the matching link points to, so later pages never need a request built by hand. See
+[Paginating With Links](./builders.md#paginating-with-links).
 
 ::: tip 💡 TIP
 Whether a request uses the cache (or doesn't) **is not** governed by whether the request is cacheable (has a [RequestKey](/api/@warp-drive/core/types/identifier/types/RequestKey)) but by whether the request should interact with the Cache. See the [caching guide](../caching/index.md#determining-if-a-request-can-use-the-cache) for more info.

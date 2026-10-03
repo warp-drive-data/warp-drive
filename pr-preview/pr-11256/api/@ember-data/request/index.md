@@ -1,9 +1,16 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11256/api/@ember-data/request.md
+description: >-
+  (Legacy) Package that once provided the `RequestManager` and its related
+  facilities; new apps should import them from `@warp-drive/core` instead.
 ---
 
-:::warning ⚠️ This package only exists for backwards compatibility
-Newer apps should use [@warp-drive/core](../../@warp-drive/core/index.md)
+&#x20;
+
+:::warning Legacy package
+`@ember-data/request` is a legacy package. New code should use [`@warp-drive/core`](/api/@warp-drive/core/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 This package used to provide the RequestManager and its related

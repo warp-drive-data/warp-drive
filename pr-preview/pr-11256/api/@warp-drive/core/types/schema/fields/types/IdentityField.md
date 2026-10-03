@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/IdentityField.md
+description: >-
+  Field schema of kind `@id` naming which field holds a resource's primary key,
+  with an optional `sourceKey` when the API uses another name like `uuid`.
 ---
 
 # &#x20;IdentityField
@@ -13,10 +16,13 @@ interface IdentityField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:298](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L298)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:326](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L326)
 
 Represents a field whose value is the primary
 key of the resource.
+
+The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows where it
+sits in a schema.
 
 This allows any field to serve as the primary
 key while still being able to drive identity
@@ -34,7 +40,7 @@ primary key field instead of 'id'.
 kind: "@id";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:304](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L304)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:332](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L332)
 
 The kind of field this is.
 
@@ -46,7 +52,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:312](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L312)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:340](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L340)
 
 The name of the field that serves as the
 primary key for the resource.
@@ -59,7 +65,7 @@ primary key for the resource.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:334](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L334)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:362](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L362)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs

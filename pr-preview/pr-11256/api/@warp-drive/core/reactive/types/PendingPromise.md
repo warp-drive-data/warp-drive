@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive/types/PendingPromise.md
+description: >-
+  The `getPromiseState` state for a promise that has not yet settled, with
+  `isPending` true and no value or reason.
 ---
 
 # &#x20;PendingPromise
@@ -19,10 +22,14 @@ interface PendingPromise {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:14](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L14)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:16](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L16)
 
 The state of a promise in the "pending"
 state. This is the default initial state.
+
+## Extended by
+
+* [`PendingRequest`](PendingRequest.md)
 
 ## Properties
 
@@ -32,7 +39,7 @@ state. This is the default initial state.
 error: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:69](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L69)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:71](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L71)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -49,7 +56,7 @@ use `reason` instead
 isError: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:46](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L46)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:48](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L48)
 
 Whether the promise has rejected
 with an error.
@@ -62,7 +69,7 @@ with an error.
 isLoading: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:32](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L32)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:34](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L34)
 
 Whether the promise is pending.
 
@@ -78,7 +85,7 @@ use `isPending` instead
 isPending: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:25](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L25)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:27](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L27)
 
 Whether the promise is pending.
 
@@ -90,7 +97,7 @@ Whether the promise is pending.
 isSuccess: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:39](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L39)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:41](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L41)
 
 Whether the promise has resolved
 successfully.
@@ -103,7 +110,7 @@ successfully.
 reason: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:76](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L76)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:78](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L78)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -116,7 +123,7 @@ be the error the promise rejected with.
 result: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:60](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L60)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:62](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L62)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.
@@ -133,7 +140,7 @@ use `value` instead
 status: "pending";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:19](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L19)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:21](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L21)
 
 The status of the promise.
 
@@ -145,7 +152,7 @@ The status of the promise.
 value: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:53](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L53)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:55](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L55)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.

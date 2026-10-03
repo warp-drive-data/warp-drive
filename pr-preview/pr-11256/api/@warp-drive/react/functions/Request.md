@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/react/functions/Request.md
+description: >-
+  Component that renders idle, loading, error, cancelled, or content states for
+  a request as it progresses, with retry and refresh support.
 ---
 
 # &#x20;Request()
@@ -9,7 +12,7 @@ url: >-
 function Request<RT, E>($props: RequestProps<RT, E>): Element;
 ```
 
-Defined in: [-private/request.tsx:180](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/react/src/-private/request.tsx#L180)
+Defined in: [-private/request.tsx:316](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/react/src/-private/request.tsx#L316)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your React application. It provides a declarative approach to reactive
@@ -17,6 +20,21 @@ control-flow for managing requests and state in your application.
 
 The `<Request />` component is ideal for handling "boundaries", outside which some
 state is still allowed to be unresolved and within which it MUST be resolved.
+
+See [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) for how it
+works together with the JS API.
+
+## Props
+
+Pass a `states` object with a component for each state (see below). Then
+pass either `request`, a request already made with `store.request`, or
+`query`, a request for the component to make. The store comes from the
+`store` prop, else from the nearest [StoreProvider](StoreProvider.md). The component
+also accepts `subscription`, `autorefresh`, `autorefreshThreshold`,
+`autorefreshBehavior`, and `chrome`.
+
+See [RequestProps](../types/RequestProps.md) for the full list of props, and
+[RequestStates](../types/RequestStates.md) for the components you can pass in `states`.
 
 ## Request States
 
@@ -36,6 +54,7 @@ the `content` state.
 
 ```tsx
 import { Request } from "@warp-drive/react";
+import { findRecord } from "@warp-drive/utilities/json-api";
 
 export function UserPreview($props: { id: string | null }) {
   return (
@@ -84,7 +103,7 @@ export function UserPreview($props: { id: string | null }) {
 
 ### $props
 
-`RequestProps`<`RT`, `E`>
+[`RequestProps`](../types/RequestProps.md)<`RT`, `E`>
 
 ## Returns
 

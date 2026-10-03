@@ -9,6 +9,8 @@ description: >-
 # Cookbook
 
 * [Holodeck in Dev Mode](./holodeck-in-dev-mode.md)
-* [Incremental Adoption Guide](./incremental-adoption-guide.md)
+* [Incremental Adoption Guide](/upgrading/v5/incremental-adoption.md)
 * [Migrating from Mirage to Holodeck](./migrate-from-mirage-to-holodeck.md)
+* [Paginating `POST` Queries With A Handler](./paginating-post-queries.md)
+* [Using Ember and React on the Same Page](./multiple-frameworks-on-one-page.md)
 * [Naming Conventions: Should resource types be singular or plural? What to choose? Why is that?](./naming-conventions.md)

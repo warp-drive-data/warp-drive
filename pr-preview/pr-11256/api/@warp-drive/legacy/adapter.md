@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/adapter.md
+description: >-
+  Legacy adapter layer through which the store fetches and saves data from an
+  API, superseded by `RequestManager` handlers.
 ---
 
 &#x20;
@@ -18,6 +21,38 @@ needs to understand how to connect to your API.
 
 `Adapters` accept various kinds of requests from the store
 and manage fulfillment of the request from your API.
+
+### Why It's Legacy
+
+The Adapter pattern was designed for class-based architectures in which each resource type
+could have its own data-fetching logic:
+
+* `store.adapterFor` resolves an adapter by resource type at runtime, looking up
+  `adapter:<type>` and then `adapter:application` through Ember's owner.
+* Each request is fulfilled by a single adapter, so sharing behavior across resource types
+  means extending a common base class rather than composing request logic.
+* The provided adapter classes extend `EmberObject`, which, together with the owner lookup,
+  ties the pattern to Ember.
+* Adapter methods resolve with an untyped `AdapterPayload`, so nothing ties the response's
+  type to the request that produced it.
+
+### Modern Alternative
+
+Use [Handlers](/api/@warp-drive/core/request/types/Handler) with the [RequestManager](../../core/classes/RequestManager.md).
+Each request passes through a chain of handlers, any of which can fulfill it, modify it or
+pass it along. Handlers support:
+
+* request builders, which return a request typed with its expected response, so
+  `store.request` resolves with that type
+* composition: `RequestManager.use` takes a list of handlers, such as the built-in `Fetch`
+  handler, and wrappers such as `Gate` from `@warp-drive/utilities/handlers` run another
+  handler only for the requests it accepts
+* explicit imports rather than lookup by name at runtime
+* any framework ***Warp*Drive** supports, since `@warp-drive/core` has no runtime
+  dependency on Ember (see [Installation](/guides/installation/))
+
+For an alternative modern pattern to Adapters, see the
+[Request Handlers Guide](/guides/the-manual/requests/handlers).
 
 ### Request Flow
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/functions/setIdentifierUpdateMethod.md
+description: >-
+  Registers a callback run when an existing resource key receives new data, for
+  updating your own secondary lookup tables.
 ---
 
 # &#x20;setIdentifierUpdateMethod()
@@ -9,7 +12,7 @@ url: >-
 function setIdentifierUpdateMethod(method: UpdateMethod | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:297](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L297)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts:301](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/managers/cache-key-manager.ts#L301)
 
 Configure a callback for when the identifier cache encounters new resource
 data for an existing resource.

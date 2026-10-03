@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/record/types/Validate.md
+description: >-
+  Type utility that checks a hand-written preview type `K` is a valid subset of
+  the full type `T`, resolving to `K` if so and `never` otherwise.
 ---
 
 # &#x20;Validate\<K *extends* `object`, T *extends* `K`>
@@ -9,7 +12,7 @@ url: >-
 type Validate<K extends object, T extends K> = T extends K ? K : never;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:359](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/record.ts#L359)
+Defined in: [warp-drive-packages/core/src/types/record.ts:385](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/record.ts#L385)
 
 A utility that takes two types, K and T, and ensures that K is a valid subset of T.
 

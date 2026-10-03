@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/compat/functions/normalize.md
+description: >-
+  Legacy store method that converts a raw payload into the normalized document
+  `store.push` expects, using the serializer for the given model type.
 ---
 
 &#x20;
@@ -15,7 +18,7 @@ function normalize(
 ): SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:228](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/compat.ts#L228)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:278](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/compat.ts#L278)
 
 **`Legacy`**
 

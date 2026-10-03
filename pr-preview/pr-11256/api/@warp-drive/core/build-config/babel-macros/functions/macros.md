@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/build-config/babel-macros/functions/macros.md
+description: >-
+  Returns the Babel plugin entries that turn WarpDrive deprecation,
+  canary-feature, debug-logging, env, and assert imports into build-time
+  code-stripping macros.
 ---
 
 # &#x20;macros()
@@ -9,7 +13,7 @@ url: >-
 function macros(): BabelPlugin[];
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/babel-macros.d.ts:13](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/babel-macros.d.ts#L13)
+Defined in: [warp-drive-packages/build-config/src/babel-macros.ts:58](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/build-config/src/babel-macros.ts#L58)
 
 ## Returns
 

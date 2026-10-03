@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/spec/json-api-raw/types/CollectionResourceDocument.md
+description: >-
+  A raw {json:api} document whose `data` is an array of existing resource
+  objects, with optional `included`, `meta`, and `links`.
 ---
 
 # &#x20;CollectionResourceDocument\<T *extends* `string` = `string`>
@@ -11,7 +14,7 @@ type CollectionResourceDocument<T extends string = string> = Document & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:389](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L389)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:437](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L437)
 
 Represents a {json:api} document containing a collection of resources.
 

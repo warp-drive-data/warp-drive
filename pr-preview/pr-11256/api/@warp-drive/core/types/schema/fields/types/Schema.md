@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/Schema.md
+description: >-
+  Union of resource and object schemas, covering any schema that can be
+  registered with or returned by the schema service.
 ---
 
 # &#x20;Schema
@@ -9,7 +12,7 @@ url: >-
 type Schema = ResourceSchema | ObjectSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2417](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L2417)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2526](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L2526)
 
 A union of [ResourceSchema](ResourceSchema.md) and [ObjectSchema](ObjectSchema.md) representing
 any schema that can be registered with or returned by the SchemaService.

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/holodeck/functions/installAdapterFor.md
+description: >-
+  Patches a legacy store so its adapters send `_fetchRequest` calls through the
+  Holodeck mock server for the given test context.
 ---
 
 # &#x20;installAdapterFor()
@@ -9,7 +12,7 @@ url: >-
 function installAdapterFor(owner: object, store: Store$1): void;
 ```
 
-Defined in: [index.ts:413](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/packages/holodeck/src/index.ts#L413)
+Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/packages/holodeck/src/index.ts#L426)
 
 Creates an adapterFor function that wraps the provided adapterFor function
 to override the adapter's \_fetchRequest method to route requests through

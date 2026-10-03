@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/DocumentCacheOperation.md
+description: >-
+  The notification kinds sent to request document subscribers, such as `updated`
+  or `invalidated`.
 ---
 
 # &#x20;DocumentCacheOperation
@@ -9,6 +12,6 @@ url: >-
 type DocumentCacheOperation = "invalidated" | "added" | "removed" | "updated" | "state";
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:20](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L20)
+Defined in: [warp-drive-packages/core/src/store/-private/managers/notification-manager.ts:26](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/managers/notification-manager.ts#L26)
 
 The kinds of change notifications the [NotificationManager](../store/types/NotificationManager.md) can emit for a request document.

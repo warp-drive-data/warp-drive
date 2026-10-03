@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/record/types/TypeFromInstanceOrString.md
+description: >-
+  Type utility giving a record type's `[Type]` resource type string, or `string`
+  if it declares none.
 ---
 
 # &#x20;TypeFromInstanceOrString\<T>
@@ -9,7 +12,7 @@ url: >-
 type TypeFromInstanceOrString<T> = T extends TypedRecordInstance ? T[typeof Type] : string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:45](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/record.ts#L45)
+Defined in: [warp-drive-packages/core/src/types/record.ts:55](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/record.ts#L55)
 
 A type utility that extracts the Type if available,
 otherwise it returns string

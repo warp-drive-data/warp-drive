@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/adapter/error/variables/TimeoutError.md
+description: >-
+  Legacy adapter error constructor for signaling that a request to the API timed
+  out without receiving a response.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 TimeoutError: AdapterRequestErrorConstructor<TimeoutError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:270](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/error.ts#L270)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:293](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/error.ts#L293)
 
 A `TimeoutError` is used by an adapter to signal that a request to the
 external API has timed out, i.e. no response was received from the

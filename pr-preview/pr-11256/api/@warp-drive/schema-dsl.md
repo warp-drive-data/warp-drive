@@ -1,5 +1,9 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/schema-dsl.md
+description: >-
+  TypeScript decorators such as `@Resource` and `@field` for authoring WarpDrive
+  schemas as classes, compiled to plain JSON schemas at build time by a Vite
+  plugin.
 ---
 
 &#x20;
@@ -93,6 +97,11 @@ Properties on the class are decorated to describe how each field should be
 compiled, for instance `@field` for a plain value, `@local` for local-only
 state, or `@derived` for a computed value. See each decorator's own
 documentation below for its exact compiled output.
+
+## Guides
+
+* [Schemas](/guides/the-manual/schemas/): the `JSON` schemas this package compiles to, and how a
+  Store uses them.
 
 ## Entity Decorators
 

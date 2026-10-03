@@ -1,12 +1,17 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/build-config/debugging.md
+description: >-
+  Debug-only logging flags, such as `LOG_CACHE` and `LOG_REQUESTS`, set in build
+  config or at runtime via `setWarpDriveLogging`.
 ---
 
 # Log Instrumentation&#x20;
 
 Many portions of the internals are helpfully instrumented with logging.
 This instrumentation is always removed from production builds.
+
+The [Debugging](/guides/the-manual/debugging/) guide explains what each flag logs.
 
 Log instrumentation is "regionalized" to specific concepts and concerns
 to enable you to enable/disable just the areas you are interested in.

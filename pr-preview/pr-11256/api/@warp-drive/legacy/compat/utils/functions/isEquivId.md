@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/compat/utils/functions/isEquivId.md
+description: >-
+  Legacy migration helper that reports whether two resource ids match after
+  normalization, so `1` and `'1'` are equivalent.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function isEquivId(expected: string | number, actual: string | number | null): boolean;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:245](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/compat/utils.ts#L245)
+Defined in: [warp-drive-packages/legacy/src/compat/utils.ts:263](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/compat/utils.ts#L263)
 
 Compares two IDs for strict equality, converting them to
 the format expected by the WarpDrive Cache to ensure

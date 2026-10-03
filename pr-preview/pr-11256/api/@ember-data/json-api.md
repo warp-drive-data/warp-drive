@@ -1,11 +1,17 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11256/api/@ember-data/json-api.md
+description: >-
+  (Legacy) JSON:API document and resource cache for the `@ember-data/*`
+  packages, re-exporting `JSONAPICache`; new apps should import it from
+  `@warp-drive/json-api` instead.
 ---
 
-:::warning ⚠️ Legacy Package
-**This package only exists for backwards compatibility.**
+&#x20;
 
-**For new projects:** Use [@warp-drive/json-api](../../@warp-drive/json-api/index.md) for the cache and [@warp-drive/utilities](../../@warp-drive/utilities/index.md) for the request builders.
+:::warning Legacy package
+`@ember-data/json-api` is a legacy package. New code should use [`@warp-drive/json-api`](/api/@warp-drive/json-api/) for the cache and [`@warp-drive/utilities`](/api/@warp-drive/utilities/) for the request builders instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 ## Overview
@@ -22,7 +28,7 @@ This package provides an in-memory [{json:api}](https://jsonapi.org/) document a
 
 **When you still need this:** Only use this package if you're maintaining an existing Ember application that hasn't migrated to the modern WarpDrive packages.
 
-For guidance on migration, see the [Migration Guide](/guides/migrating/).
+For guidance on migration, see the [Migration Guide](/upgrading/v5/).
 
 ## Installation
 

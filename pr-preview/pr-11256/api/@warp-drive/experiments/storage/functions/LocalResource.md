@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/storage/functions/LocalResource.md
+description: >-
+  Experimental class decorator that turns a class into a reactive resource whose
+  fields persist in localStorage.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function LocalResource(id: string | KeyFn): ClassDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:29](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/storage-resource.ts#L29)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:32](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L32)
 
 Decorator which transforms a class into a StorageResource
 persisted in localStorage.

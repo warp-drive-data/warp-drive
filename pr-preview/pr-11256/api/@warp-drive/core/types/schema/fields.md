@@ -1,7 +1,14 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields.md
+description: >-
+  Types for every field schema kind and for PolarisMode and LegacyMode resource,
+  object and trait schemas, plus the `resourceSchema` and `objectSchema` helpers
+  and type guards.
 ---
+
+The [Schemas](/guides/the-manual/schemas/) guide teaches how these schemas and
+fields fit together.
 
 ## Functions
 

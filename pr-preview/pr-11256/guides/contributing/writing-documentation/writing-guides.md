@@ -57,6 +57,16 @@ It leaves signatures and per-member details to the generated [API Docs](/api/) a
 rather than restating them. Use it when the reader already knows what they want and needs the
 details.
 
+## Linking to the API Docs
+
+The first time a guide names an exported API in prose, such as `useRecommendedStore`, `findRecord`
+or `CachePolicy`, link its page in the [API Docs](/api/) with a root-relative URL copied from the
+rendered page, such as `[findRecord](/api/@warp-drive/utilities/json-api/functions/findRecord)`.
+Code blocks don't need links, but a symbol a reader needs to look up should be linked in the prose
+around them. The API docs link back: each symbol's doc comment links the guide that teaches it,
+and each package's landing page lists its guides, as
+[Link the Guide That Teaches It](./writing-api-docs.md#link-the-guide-that-teaches-it) describes.
+
 ## Where Files Live
 
 Guides are markdown files under `guides/`. Add a new page's slug to the `items` list in its
@@ -65,15 +75,30 @@ preview are covered in [How the Docs Site Is Built](./index.md#how-the-docs-site
 
 ## Frontmatter and Agent-Only Content
 
-Every page is also published as plain Markdown for coding agents and indexed in `llms.txt` (see
-[LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Two things in the source affect
-what those agents get:
+Every page is also published as plain Markdown for coding agents and, unless it is a draft,
+indexed in `llms.txt` (see [LLM Optimized Documentation](https://warp-drive.io/llm-docs)). Four
+things in the source affect what those agents get:
 
+* **An `#` heading at the top.** Start every page with one H1 naming it. It is the page's title in
+  the browser tab, the outline, and `llms.txt`; a page that opens with `##`, prose, or a `:::`
+  callout is listed there as `Untitled`, and its tab reads only "WarpDrive". The sidebar label
+  comes from `_meta.json` or the file name instead, so a page can look fine in the sidebar and
+  still have no title.
 * **`description` in the frontmatter.** The `llms.txt` entry for a page is its title alone unless
   the frontmatter sets `description`, in which case the entry reads
   `- [Title](url): description`. An agent choosing which of 900 pages to fetch has only that line
   to go on, so give every new page a one-sentence `description` that says what a reader can do
   after reading it, and add one to any page you touch that lacks it.
+* **`legacy: true` in the frontmatter.** Set it on a page under `guides/`, `upgrading/` or `blog/`
+  that is only about a legacy setup, such as Models, Adapters or the pre-unification packages. The
+  page moves out of `llms.txt` and `llms-full.txt` into `llms-legacy.txt` and
+  `llms-legacy-full.txt`, and the website shows a Legacy badge and a warning at its top. The
+  warning's second sentence defaults to pointing at the current guides; set `legacyAdvice` to
+  markdown naming the modern equivalent instead, with root-relative links. Its `llms-legacy.txt`
+  entry is titled the same way `llms.txt` would title it. A draft legacy page gets no badge. Don't
+  flag a page that mixes modern and legacy content, or one about
+  [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode.md), which is a current,
+  recommended schema mode rather than a legacy setup.
 * **`<llm-only>` and `<llm-exclude>` tags.** Content wrapped in `<llm-only>` appears only in the
   Markdown outputs, never on the website; `<llm-exclude>` is the reverse. Use `<llm-only>` for an
   instruction that only makes sense to an agent ("always pair this with the schema from the
@@ -114,7 +139,8 @@ factually wrong, etc.), don't delete or move it. Instead:
 
 2. Add `draft: true` to its frontmatter. This hides the page from the sidebar and nav while
    leaving it published at its original URL (see
-   [Sidebar and `_meta.json`](./index.md#sidebar-and-meta-json)).
+   [Sidebar and `_meta.json`](./index.md#sidebar-and-meta-json)). Drafts, including a page in a
+   `draft` directory, stay out of the llms files, though each keeps its `.md` twin.
 
 ### Every page is dated and versioned
 
@@ -128,6 +154,23 @@ revised:
 
 This lets a reader who lands on an old search result or bookmark know immediately whether the
 page still applies to the version they're using.
+
+A blog post also sets the date it was published as a frontmatter `date`, written `YYYY-MM-DD`.
+The blog's RSS feed (`/blog/feed.xml`), the [Blog](/blog/) page, and each major version's page
+list every published post that isn't a draft or a section `index.md`, newest first, and use `date`
+to order and date them, so the docs build fails on a post without one:
+
+```md
+---
+title: Introducing Upgrading & Blog
+description: Learn why WarpDrive 5.10 added the permanent Upgrading and Blog sections.
+date: 2026-09-05
+---
+```
+
+A post's feed entry uses its frontmatter `title` (or its H1) and `description`. Its link is also
+its ID in feed readers, which is one more reason a post's URL must never change: renaming it would
+show subscribers the post a second time as new.
 
 ### Organize by major version
 

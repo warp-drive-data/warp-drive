@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/types/UrlOptions.md
+description: >-
+  Any of the option shapes `buildBaseURL` accepts, one per request `op` plus a
+  generic `resourcePath` form.
 ---
 
 # &#x20;UrlOptions
@@ -18,7 +21,7 @@ type UrlOptions =
   | GenericUrlOptions;
 ```
 
-Defined in: [index.ts:426](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/index.ts#L426)
+Defined in: [index.ts:446](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/index.ts#L446)
 
 The union of all `op`-specific option shapes accepted by [buildBaseURL](../functions/buildBaseURL.md), one of:
 

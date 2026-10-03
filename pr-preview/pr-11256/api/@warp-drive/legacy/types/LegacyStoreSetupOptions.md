@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/types/LegacyStoreSetupOptions.md
+description: >-
+  Options accepted by `useLegacyStore`, choosing via `linksMode` and
+  `legacyRequests` how much of the legacy `Model`, adapter, and request support
+  to enable.
 ---
 
 &#x20;
@@ -14,7 +18,7 @@ type LegacyStoreSetupOptions<T extends Cache = Cache> =
 | LegacyModelAndNetworkAndRequestStoreSetupOptions<T>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:154](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/index.ts#L154)
+Defined in: [warp-drive-packages/legacy/src/index.ts:165](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/index.ts#L165)
 
 The available options when setting up the legacy store,
 one of:

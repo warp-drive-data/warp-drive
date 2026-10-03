@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/storage/functions/effect.md
+description: >-
+  Experimental field decorator for storage resources that runs a callback when
+  the stored value changes in another tab or window.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function effect(fn: <K>(update: ValueTransition<K>) => void, type?: "local" | "session"): PropertyDecorator;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:206](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/storage-resource.ts#L206)
+Defined in: [warp-drive-packages/experiments/src/storage/storage-resource.ts:220](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/storage-resource.ts#L220)
 
 Effects are fields that run a side-effecting function.
 

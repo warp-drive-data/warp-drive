@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/rest/functions/updateRecord.md
+description: >-
+  Builds a `PUT` (or `PATCH`) request that saves changes to an existing record,
+  using REST-style URLs.
 ---
 
 # &#x20;updateRecord()
@@ -30,10 +33,13 @@ function updateRecord<T extends TypedRecordInstance, RT extends TypedRecordInsta
 }): UpdateRequestOptions<ReactiveDataDocument<RT, M, E>, T>;
 ```
 
-Defined in: [-private/rest/save-record.ts:218](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L218)
+Defined in: [-private/rest/save-record.ts:230](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L230)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 
@@ -115,10 +121,13 @@ function updateRecord(record: unknown, options?: ConstrainedRequestOptions & {
 }): UpdateRequestOptions;
 ```
 
-Defined in: [-private/rest/save-record.ts:227](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L227)
+Defined in: [-private/rest/save-record.ts:239](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/rest/save-record.ts#L239)
 
 Builds request options to update existing record for resources,
 configured for the url, method and header expectations of most REST APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 

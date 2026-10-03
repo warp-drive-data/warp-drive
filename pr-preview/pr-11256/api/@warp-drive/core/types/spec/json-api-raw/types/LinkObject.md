@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/spec/json-api-raw/types/LinkObject.md
+description: >-
+  The object form of a {json:api} link: an `href` URI-reference plus optional
+  `meta`.
 ---
 
 # &#x20;LinkObject
@@ -12,7 +15,7 @@ type LinkObject = {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:18](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L18)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:29](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L29)
 
 The object form of a [Link](Link.md), allowing a link to carry
 additional [meta](Meta.md) information alongside its `href`.
@@ -27,7 +30,7 @@ additional [meta](Meta.md) information alongside its `href`.
 href: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:22](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L22)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:33](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L33)
 
 the URI-reference for the link
 
@@ -39,6 +42,6 @@ the URI-reference for the link
 optional meta?: Meta;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:26](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L26)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:37](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L37)
 
 meta information about the link

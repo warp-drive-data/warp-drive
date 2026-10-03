@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/spec/document/types/ResourceErrorDocument.md
+description: >-
+  A raw {json:api} document carrying an `errors` array for a failed request, as
+  stored in and returned by the cache.
 ---
 
 # &#x20;ResourceErrorDocument
@@ -16,7 +19,7 @@ interface ResourceErrorDocument {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:104](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/document.ts#L104)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:125](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/document.ts#L125)
 
 A type useful for representing the raw {json:api} Error documents that
 the cache may use.
@@ -31,7 +34,7 @@ For the Reactive value returned by a request using the store, use [ReactiveError
 errors: ApiError[];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:120](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/document.ts#L120)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:141](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/document.ts#L141)
 
 the errors the document represents
 
@@ -43,7 +46,7 @@ the errors the document represents
 optional lid?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:108](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/document.ts#L108)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:129](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/document.ts#L129)
 
 the url or cache-key associated with the structured document
 
@@ -57,7 +60,7 @@ optional links?:
   | PaginationLinks;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:112](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/document.ts#L112)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:133](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/document.ts#L133)
 
 links related to the document
 
@@ -69,6 +72,6 @@ links related to the document
 optional meta?: ObjectValue;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/document.ts:116](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/spec/document.ts#L116)
+Defined in: [warp-drive-packages/core/src/types/spec/document.ts:137](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/document.ts#L137)
 
 meta information about the document

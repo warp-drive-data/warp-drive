@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/identifier/types/PersistedResourceKey.md
+description: >-
+  Resource key whose `id` is a known string, the form keys for server-loaded
+  resources take.
 ---
 
 # &#x20;PersistedResourceKey\<T *extends* `string` = `string`>
@@ -13,7 +16,7 @@ interface PersistedResourceKey<T extends string = string> extends ResourceKeyBas
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:94](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L94)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:112](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L112)
 
 Used when a ResourceKey was not created locally as part
 of a call to store.createRecord
@@ -40,7 +43,7 @@ at runtime, so anything with an ID typically narrows to this.
 id: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:100](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L100)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:118](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L118)
 
 the PrimaryKey for the resource this ResourceKey represents.
 
@@ -52,7 +55,7 @@ the PrimaryKey for the resource this ResourceKey represents.
 lid: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:68](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:84](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L84)
 
 A string representing a unique identity.
 
@@ -70,7 +73,7 @@ ResourceKeyBase.lid
 type: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:75](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L75)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:91](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L91)
 
 the primary `ResourceType` or "model name" this ResourceKey belongs to.
 

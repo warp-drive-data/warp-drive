@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/image-worker.md
+description: >-
+  Experimental worker-side image loader that fetches and caches images for
+  main-thread `ImageFetch` clients.
 ---
 
 &#x20;
@@ -102,7 +105,7 @@ document.body.appendChild(img);
 
 Registering `ImageFetch` as a service makes it easy to inject anywhere you
 need to load or preload an image, and to pair with
-[`getPromiseState`](https://docs.warp-drive.io/guides/the-manual/reactivity/derivation)
+[`getPromiseState`](https://warp-drive.io/guides/the-manual/reactivity/derivation)
 from `@warp-drive/ember` to render its result reactively.
 
 ```ts

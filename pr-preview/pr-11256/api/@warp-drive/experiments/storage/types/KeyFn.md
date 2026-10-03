@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/storage/types/KeyFn.md
+description: >-
+  Experimental function type that derives a unique storage key from a storage
+  resource instance, so each instance persists its own data.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 type KeyFn = (obj: any) => string;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/-private/storage-infra.ts:43](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L43)
+Defined in: [warp-drive-packages/experiments/src/storage/-private/storage-infra.ts:46](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L46)
 
 A function which generates a unique primary-key
 string for a given LocalResource or SessionResource

@@ -12,9 +12,9 @@ description: >-
 ResourceSchemas define the top level resources in your data layer.\
 They describe your application’s data structure in one place, including fields, relationships and embedded objects, without hidden magic.
 
-A ResourceSchema is the backbone of how WarpDrive understands your data.
+A [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema) is the backbone of how WarpDrive understands your data.
 
-A ResourceSchema has a "mode" which instructs WarpDrive on how a ReactiveResource should behave.
+A ResourceSchema has a "mode" which instructs WarpDrive on how a [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource) should behave.
 There are currently two modes:
 
 * [LegacyMode (recommended)](./legacy-mode.md)
@@ -26,7 +26,7 @@ ResourceSchemas give you clarity by making every field and relationship explicit
 
 ## Creating a ResourceSchema
 
-The easiest way to create a ResourceSchema is to use `withDefaults`. This sets up sensible defaults such as the primary key.
+The easiest way to create a ResourceSchema is to use [`withDefaults`](/api/@warp-drive/core/reactive/functions/withDefaults). This sets up sensible defaults such as the primary key.
 
 ```ts [schemas/user.ts]
 import { withDefaults } from '@warp-drive/core/reactive';

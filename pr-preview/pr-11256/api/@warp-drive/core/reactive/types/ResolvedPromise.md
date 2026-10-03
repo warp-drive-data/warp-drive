@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive/types/ResolvedPromise.md
+description: >-
+  The `getPromiseState` state for a promise that resolved, with `isSuccess` true
+  and the resolved `value`.
 ---
 
 # &#x20;ResolvedPromise\<T>
@@ -19,11 +22,15 @@ interface ResolvedPromise<T> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:85](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L85)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:89](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L89)
 
 The state of a promise in the "fulfilled" state.
 This is the state of a promise that has resolved
 successfully.
+
+## Extended by
+
+* [`ResolvedRequest`](ResolvedRequest.md)
 
 ## Type Parameters
 
@@ -39,7 +46,7 @@ successfully.
 error: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:140](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L140)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:144](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L144)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -56,7 +63,7 @@ use `reason` instead
 isError: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:116](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L116)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:120](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L120)
 
 Whether the promise has rejected
 with an error.
@@ -69,7 +76,7 @@ with an error.
 isLoading: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:103](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L103)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:107](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L107)
 
 Whether the promise is pending.
 
@@ -85,7 +92,7 @@ use `isPending` instead
 isPending: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:96](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L96)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:100](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L100)
 
 Whether the promise is pending.
 
@@ -97,7 +104,7 @@ Whether the promise is pending.
 isSuccess: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:109](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L109)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:113](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L113)
 
 Whether the promise has resolved
 successfully.
@@ -110,7 +117,7 @@ successfully.
 reason: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:147](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L147)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:151](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L151)
 
 Once the promise has rejected, this will
 be the error the promise rejected with.
@@ -123,7 +130,7 @@ be the error the promise rejected with.
 result: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:131](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L131)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:135](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L135)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.
@@ -140,7 +147,7 @@ use `value` instead
 status: "fulfilled";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:90](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L90)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:94](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L94)
 
 The status of the promise.
 
@@ -152,7 +159,7 @@ The status of the promise.
 value: T;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:123](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/promise-state.ts#L123)
+Defined in: [warp-drive-packages/core/src/signals/promise-state.ts:127](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/promise-state.ts#L127)
 
 Once the promise has resolved, this will
 be the value the promise resolved to.

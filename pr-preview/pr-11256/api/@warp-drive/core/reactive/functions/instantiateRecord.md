@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive/functions/instantiateRecord.md
+description: >-
+  Default store `instantiateRecord` hook that creates a `ReactiveResource` for a
+  resource key from its registered schema.
 ---
 
 # &#x20;instantiateRecord()
@@ -13,7 +16,7 @@ function instantiateRecord(
 ): ReactiveResource;
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:21](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/reactive/-private/hooks.ts#L21)
+Defined in: [warp-drive-packages/core/src/reactive/-private/hooks.ts:23](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/reactive/-private/hooks.ts#L23)
 
 The store's default `instantiateRecord` hook implementation, which
 produces a [ReactiveResource](../types/ReactiveResource.md) for `identifier` using the resource

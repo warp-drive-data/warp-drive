@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/record/types/TypedRecordInstance.md
+description: >-
+  Shape of a record type that declares its resource type via the `[Type]`
+  symbol, letting WarpDrive APIs infer types for better type safety.
+  TypedRecordInstance
 ---
 
 # &#x20;TypedRecordInstance
@@ -11,7 +15,7 @@ interface TypedRecordInstance {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:14](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/record.ts#L14)
+Defined in: [warp-drive-packages/core/src/types/record.ts:22](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/record.ts#L22)
 
 Records may be anything, They don't even
 have to be objects.
@@ -21,8 +25,6 @@ property, that property will be used by WarpDrive
 and WarpDrive to provide better type safety and
 intellisense.
 
-TypedRecordInstance
-
 ## Properties
 
 ### \_\_\_(unique) Symbol($type)
@@ -31,7 +33,7 @@ TypedRecordInstance
 ___(unique) Symbol($type): string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/record.ts:30](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/record.ts#L30)
+Defined in: [warp-drive-packages/core/src/types/record.ts:38](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/record.ts#L38)
 
 The type of the resource.
 

@@ -108,7 +108,7 @@ module.exports = async function (defaults) {
 
 ## Configure The Store
 
-The `Store` is the central piece of the ***Warp*Drive** experience, linking
+The [`Store`](/api/@warp-drive/core/classes/Store) is the central piece of the ***Warp*Drive** experience, linking
 together how we handle requests, the schemas for what our data looks like,
 how to cache it, and what sort of reactive objects to create for that data.
 

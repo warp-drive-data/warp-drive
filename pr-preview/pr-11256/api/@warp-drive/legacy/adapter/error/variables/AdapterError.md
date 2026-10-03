@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/adapter/error/variables/AdapterError.md
+description: >-
+  Legacy base error constructor an adapter uses to signal a failed API request;
+  call `extend` on it to define app-specific error types.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 AdapterError: AdapterRequestErrorConstructor<AdapterError>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:74](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/error.ts#L74)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:89](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/error.ts#L89)
 
 :::danger
 ⚠️ **This is LEGACY documentation** for a feature that is no longer encouraged to be used.

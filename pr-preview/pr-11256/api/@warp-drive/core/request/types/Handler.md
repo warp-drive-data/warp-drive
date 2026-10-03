@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/request/types/Handler.md
+description: >-
+  An object with a `request` method that a RequestManager calls to fulfill a
+  request, either itself or by calling `next` to pass it along.
 ---
 
 # &#x20;Handler
@@ -15,11 +18,13 @@ interface Handler {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:249](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/request/-private/types.ts#L249)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:266](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/request/-private/types.ts#L266)
 
 Requests are fulfilled by handlers. A handler receives the request context
 as well as a `next` function with which to pass along a request to the next
 handler if it so chooses.
+
+The [Handlers](/guides/the-manual/requests/handlers) guide walks through writing one.
 
 A handler may be any object with a `request` method. This allows both stateful and non-stateful
 handlers to be utilized.
@@ -57,7 +62,7 @@ response content before passing along the chunk downstream.
 const FetchHandler = {
  async request(context) {
    const response = await fetch(context.request);
-   context.setResponse(reponse);
+   context.setResponse(response);
    context.setStream(response.clone().body);
 
    return response.json();
@@ -135,7 +140,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:257](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/request/-private/types.ts#L257)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:274](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/request/-private/types.ts#L274)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to

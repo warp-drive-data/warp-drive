@@ -120,8 +120,9 @@ Members don't need one. A method, property, or accessor renders on its parent's 
   TypeDoc tag, not a TSDoc one; TSDoc treats everything before `@remarks` as the summary and has
   no `@summary`.
 * For an overloaded function, put it on the implementation's comment or the first overload's.
-* A package landing page built from `src/index.md` has no doc comment, so it can't carry one
-  and is listed by name only.
+* A package landing page built from `src/index.md` has no doc comment, so it can't carry one.
+  Its entry comes from the `description` in the package's `package.json` instead; see
+  [README vs `src/index.md`](#readme-vs-src-index-md).
 
 ### Every Public API Should Have a Usage Example
 
@@ -169,6 +170,17 @@ target from the label.
  */
 function updateUserName(user: User, name: string): void {}
 ```
+
+### Link the Guide That Teaches It
+
+When a guide teaches the concept behind a symbol, link that guide from the symbol's doc comment,
+usually in the paragraph after the summary, with a root-relative URL such as
+`[Request Builders](/guides/the-manual/requests/builders)`. Readers who land on an API page from a
+search are the ones who most need the concept. The link runs both ways: a guide links the API
+pages it names, as [Linking to the API Docs](./writing-guides.md#linking-to-the-api-docs)
+describes, and each package's landing page lists its guides, as
+[README vs `src/index.md`](#readme-vs-src-index-md) describes. Link only published guides; drafts
+are hidden from the sidebar and left out of `llms.txt`.
 
 ### Link Every Member of a Union or Object-as-Enum
 
@@ -355,7 +367,7 @@ object is actively being removed, not merely out of favor (that is
 
 * Whenever possible, link the replacement, and tag that replacement
   [`@recommended`](#the-recommended-tag).
-* If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/build-config/deprecations/)
+* If the deprecation is tracked by [the deprecations guide](/api/@warp-drive/core/build-config/deprecations/)
   (i.e. it has a deprecation id like `ember-data:deprecate-store-extends-ember-object`
   and a corresponding `DEPRECATE_*` flag), link the guide and name the
   deprecation id so readers can find its entry there.
@@ -1033,7 +1045,12 @@ ones the shape is taken from; copy from them.
   followed by a link to the package's own landing page in the [API docs](/api/) when the docs
   build publishes the package (`@ember-data/store` has both; `@ember-data/debug` is not in the
   build and has only the first). Both are absolute URLs: the README is rendered by GitHub and
-  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here.
+  npm, so the root-relative `/guides/` links the rest of the docs use do not resolve here. A
+  non-legacy package also lists the guides that teach it, mirroring the guides its own landing
+  page in [README vs `src/index.md`](#readme-vs-src-index-md) lists, with the same absolute
+  URLs, as `@warp-drive/core`'s README does. A legacy package's *Get Started* link points at
+  [Legacy Package Setup](/guides/configuration/legacy-package-setup/) instead of the generic
+  Guides landing page, since that page is the one a still-legacy app actually needs.
 * **`## Code of Conduct` and `### License`**, linking the repo's `CODE_OF_CONDUCT.md` on GitHub
   and the package's own `LICENSE.md`, which ships in `files` alongside the README.
 
@@ -1076,6 +1093,21 @@ The split follows from where each file renders:
 
 Some packages still duplicate paragraphs between the two. When you touch one, read the other and
 move each sentence to the file that answers its question.
+
+End every non-legacy package's `src/index.md` with a `## Guides` section: a list of the published
+guides that teach the package, each with a short phrase saying what it covers, as
+`warp-drive-packages/json-api/src/index.md` does. Guides and packages aren't one-to-one; several
+packages can list the same guide, and one package can list many. Don't link a draft. If no
+published guide teaches the package, link the nearest guide that covers what it does, and write
+one if nothing does.
+
+The landing page's entry in `llms.txt`, the index coding agents read to decide which page to
+fetch, is the `description` in the package's `package.json`: the same role `@summary` plays for a
+symbol's page. Write it as one sentence saying what the package provides and when to use it. For
+a legacy package, start it with `(Legacy)` and say what replaces it; mark an internal package
+`(Internal)` and a deprecated one `(Deprecated)` the same way. npm shows the same text, so it
+serves both readers. Don't
+put frontmatter in `src/index.md`: TypeDoc renders a package readme's `---` block as page text.
 
 ### Keep READMEs short
 

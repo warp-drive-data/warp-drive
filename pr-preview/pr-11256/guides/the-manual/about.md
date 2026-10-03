@@ -6,6 +6,8 @@ description: >-
   EmberData.
 ---
 
+# About WarpDrive
+
 ## Why WarpDrive?
 
 WarpDrive is the data framework for building ambitious applications.

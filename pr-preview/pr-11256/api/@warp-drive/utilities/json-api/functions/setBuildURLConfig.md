@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/json-api/functions/setBuildURLConfig.md
+description: >-
+  Sets the JSON:API extensions and profiles sent in the `Accept` header, plus
+  the global URL host and namespace.
 ---
 
 # &#x20;setBuildURLConfig()
@@ -9,12 +12,15 @@ url: >-
 function setBuildURLConfig(config: JSONAPIConfig): void;
 ```
 
-Defined in: [-private/json-api/-utils.ts:61](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L61)
+Defined in: [-private/json-api/-utils.ts:73](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L73)
 
 Allows setting extensions and profiles to be used in the `Accept` header.
 
 Extensions and profiles are keyed by their namespace with the value being
 their URI.
+
+The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+guide uses it to configure a host, a namespace and a pagination profile.
 
 Example:
 
@@ -49,7 +55,7 @@ type BuildURLConfig = {
 
 ### config
 
-`JSONAPIConfig`
+[`JSONAPIConfig`](../types/JSONAPIConfig.md)
 
 ## Returns
 

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/storage/functions/BooleanParam.md
+description: >-
+  Experimental helper that creates a query-param config serializing a boolean
+  field as '1' when true and omitting it when false.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function BooleanParam(): ParamConfig;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:44](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/storage/query-params.ts#L44)
+Defined in: [warp-drive-packages/experiments/src/storage/query-params.ts:49](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/storage/query-params.ts#L49)
 
 Creates a [ParamConfig](../types/ParamConfig.md) for boolean fields that serialize to '1' or null.
 

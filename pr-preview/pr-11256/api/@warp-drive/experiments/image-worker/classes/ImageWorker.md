@@ -1,13 +1,16 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/experiments/image-worker/classes/ImageWorker.md
+description: >-
+  Experimental worker-side image loader that fetches images for connected
+  `ImageFetch` clients and returns deduped, cached object urls.
 ---
 
 &#x20;
 
 # &#x20;ImageWorker
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/worker.ts:32](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/image-worker/worker.ts#L32)
+Defined in: [warp-drive-packages/experiments/src/image-worker/worker.ts:34](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/image-worker/worker.ts#L34)
 
 Runs inside a `Worker` or `SharedWorker` to fetch images on behalf of
 one or more [ImageFetch](../../image-fetch/classes/ImageFetch.md) instances running on the main thread(s)
@@ -35,7 +38,7 @@ new ImageWorker(options?: {
 }): ImageWorker;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/image-worker/worker.ts:42](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/experiments/src/image-worker/worker.ts#L42)
+Defined in: [warp-drive-packages/experiments/src/image-worker/worker.ts:44](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/image-worker/worker.ts#L44)
 
 #### Parameters
 

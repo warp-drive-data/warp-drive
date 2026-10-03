@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive/types/RequestState.md
+description: >-
+  The reactive pending, fulfilled, rejected, or cancelled state of a request
+  `Future`, as returned by `getRequestState`.
 ---
 
 # &#x20;RequestState\<RT = `unknown`, E *extends* [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md) = [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md)>
@@ -13,7 +16,7 @@ type RequestState<RT = unknown, E extends StructuredErrorDocument = StructuredEr
 | CancelledRequest<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:638](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/signals/request-state.ts#L638)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:644](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L644)
 
 RequestState extends the concept of [PromiseState](PromiseState.md) to provide a reactive
 wrapper for a request [Future](../../request/types/Future.md) which allows you write declarative code
@@ -41,10 +44,10 @@ To get the state of a request, use [getRequestState](../functions/getRequestStat
 
 See also:
 
-* PendingRequest
-* ResolvedRequest
-* RejectedRequest
-* CancelledRequest
+* [PendingRequest](PendingRequest.md)
+* [ResolvedRequest](ResolvedRequest.md)
+* [RejectedRequest](RejectedRequest.md)
+* [CancelledRequest](CancelledRequest.md)
 
 ## Type Parameters
 

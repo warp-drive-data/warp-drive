@@ -6,6 +6,10 @@ description: >-
   still needed.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should create their store with `useRecommendedStore` as shown in [Setup](/guides/configuration/index.md#configure-the-store), without `@warp-drive/legacy`.
+:::
+
 :::warning caution
 Older legacy features of WarpDrive (inherited from when the library was named EmberData) should only be used with Ember.
 :::
@@ -56,9 +60,9 @@ Some example APIs you may still be using that are reasons to configure this lega
 
 You may also find you want to use Legacy Requests if you are creating a new application and [LinksMode](../the-manual/misc/links-mode.md) is not sufficient
 
-* add the LegacyNetworkHandler
+* add the [LegacyNetworkHandler](/api/@warp-drive/legacy/compat/variables/LegacyNetworkHandler)
 * add the Legacy Request APIs back
-* add the adapterFor, serializerFor, modelFor, pushPayload, and normalize hooks back
+* add the [adapterFor](/api/@warp-drive/legacy/compat/functions/adapterFor), [serializerFor](/api/@warp-drive/legacy/compat/functions/serializerFor), [modelFor](/api/@warp-drive/legacy/model/functions/modelFor), [pushPayload](/api/@warp-drive/legacy/compat/functions/pushPayload) and [normalize](/api/@warp-drive/legacy/compat/functions/normalize) hooks back
 * caveat: serialization/normalization of newer field schemas
 
 ## Model

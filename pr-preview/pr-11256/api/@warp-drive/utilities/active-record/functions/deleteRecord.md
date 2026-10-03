@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/active-record/functions/deleteRecord.md
+description: >-
+  Builds a `DELETE` request that persists deletion of an existing record, using
+  ActiveRecord-style URLs.
 ---
 
 # &#x20;deleteRecord()
@@ -16,10 +19,13 @@ function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): Del
 function deleteRecord<T>(record: T, options?: ConstrainedRequestOptions): DeleteRequestOptions<T>;
 ```
 
-Defined in: [-private/active-record/save-record.ts:76](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L76)
+Defined in: [-private/active-record/save-record.ts:80](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L80)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 
@@ -88,10 +94,13 @@ const data = await store.request(options);
 function deleteRecord(record: unknown, options?: ConstrainedRequestOptions): DeleteRequestOptions;
 ```
 
-Defined in: [-private/active-record/save-record.ts:77](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L77)
+Defined in: [-private/active-record/save-record.ts:81](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/active-record/save-record.ts#L81)
 
 Builds request options to delete record for resources,
 configured for the url, method and header expectations of ActiveRecord APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 

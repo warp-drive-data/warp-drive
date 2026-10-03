@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/schema-dsl/functions/hasMany.md
+description: >-
+  LEGACY property decorator that compiles to a hasMany relationship field, valid
+  only on resources declared with `@Resource({ legacy: true })`.
 ---
 
 # &#x20;hasMany()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function hasMany(options: HasManyOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/has-many.ts:98](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L98)
+Defined in: [fields/has-many.ts:102](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/has-many.ts#L102)
 
 **`Decorator`**
 

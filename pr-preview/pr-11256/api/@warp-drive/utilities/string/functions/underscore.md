@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/string/functions/underscore.md
+description: >-
+  Converts camelCase, dashed, or spaced strings to lowercase snake_case, such as
+  `innerHTML` to `inner_html`.
 ---
 
 # &#x20;underscore()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function underscore(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:79](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/string/transform.ts#L79)
+Defined in: [-private/string/transform.ts:83](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/string/transform.ts#L83)
 
 Returns the lower\_case\_and\_underscored form of a string.
 

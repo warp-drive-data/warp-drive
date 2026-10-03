@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/compat/extensions/variables/EmberArrayLikeExtension.md
+description: >-
+  Legacy schema extension that gives reactive arrays Ember array methods such as
+  `pushObject`, `mapBy`, `filterBy`, and `firstObject`.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 const EmberArrayLikeExtension: CAUTION_MEGA_DANGER_ZONE_Extension;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:367](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/compat/extensions.ts#L367)
+Defined in: [warp-drive-packages/legacy/src/compat/extensions.ts:382](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/compat/extensions.ts#L382)
 
 A schema extension that adds Ember's classic `MutableArray`/`Enumerable`
 style methods (`pushObject`, `removeObject`, `mapBy`, `filterBy`,

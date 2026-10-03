@@ -7,6 +7,10 @@ description: >-
   tradeoffs to expect.
 ---
 
+:::warning Legacy guide
+This guide covers a legacy setup. New apps should start from [Installation](/guides/installation/index.md) and [Setup](/guides/configuration/index.md) instead.
+:::
+
 # Migrating Between Versions Using The Two Store Approach
 
 &#x20;  authored 2023-06-10
@@ -51,8 +55,8 @@ Utilizing the two-store approach has a few tradeoffs:
 
 In fact, it is likely that if you want TypeScript for the v2 store that you are *forced* to remove the `@types/ember*` packages from your project entirely and upgrade to using native types for ember-source and ember-data. This is because the native types for WarpDrive depend on ember's native types.
 
-2. You should not use both `ember-data` and `ember-data-mirror` or there will be an unresolveable race condition for which one is the `store` service. Instead one of the stores, usually the mirror, MUST import and fully configure the store. The [4.x → 5.x guide](./index.md#step-4-configure-the-store) does this with `useLegacyStore`, which reproduces the store that `ember-data` configured "by default" historically. Its options let you drop pieces of that default you no longer want, such as adapters and serializers, or Model itself.
+2. You should not use both `ember-data` and `ember-data-mirror` or there will be an unresolveable race condition for which one is the `store` service. Instead one of the stores, usually the mirror, MUST import and fully configure the store. The [4.x → 5.x guide](./index.md#step-4-configure-the-store) does this with [`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore), which reproduces the store that `ember-data` configured "by default" historically. Its options let you drop pieces of that default you no longer want, such as adapters and serializers, or Model itself.
 
-3. Due to (#2) above, your build MUST call `setConfig` from the mirror package so the mirror gets its own build config. See [Configure The Build](./index.md#step-2-configure-the-build) in the 4.x → 5.x guide.
+3. Due to (#2) above, your build MUST call [`setConfig`](/api/@warp-drive/core/build-config/functions/setConfig) from the mirror package so the mirror gets its own build config. See [Configure The Build](./index.md#step-2-configure-the-build) in the 4.x → 5.x guide.
 
 4. Record instances created by one store may not be used by another store, this primarily means they cannot be set as values of relationships. The records (and data) of each store is a wholly distinct context. You may find [ember-provide-consume-context](https://github.com/customerio/ember-provide-consume-context) useful for helping to manage this. Migrating "leaf first" or well-encapsulated parts of your app will generally lead to the pit-of-success.

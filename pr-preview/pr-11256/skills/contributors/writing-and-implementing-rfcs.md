@@ -15,6 +15,25 @@ or behavior, it needs an RFC before implementation begins — see
 [The RFC Process](/guides/contributing/rfc-process.md) for the full discussion-and-consensus
 workflow leading up to drafting.
 
+### Keep deprecations in their own RFC, separate from the feature that replaces them
+
+When a new feature makes existing public API or behavior obsolete, the feature and the
+deprecation of what it replaces belong in **two separate RFCs**, not one combined proposal. The
+feature RFC comes first and stands on its own. The deprecation is a distinct RFC that follows,
+and deprecates the old behavior only once the replacement has shipped and reached the Recommended
+stage — the point at which we're confident the successor is the right one to steer people toward.
+
+Combining them couples two decisions the team needs to make independently: whether the new API is
+right, and whether (and when) the old one should go. It also forces the deprecation's timeline to
+track the feature's before either is settled, and tends to bloat the feature RFC with flag ids and
+migration mechanics that distract from the design under review.
+
+So: keep the feature RFC to the feature. It's fine — often helpful — to note in its "Detailed
+design" ecosystem section that a follow-on deprecation is expected, but put the deprecation's flag
+id, `since`/`until` versions, and migration path in its own RFC. See
+[`0005-deprecate-legacy-packages.md`](/rfcs/0005-deprecate-legacy-packages.md) for the shape a
+deprecation RFC takes.
+
 ## Drafting
 
 WarpDrive-specific RFCs live in [`rfcs/`](/rfcs/index.md) in this repository, which is the
@@ -40,7 +59,8 @@ of any `emberjs/rfcs` number:
 4. Open a PR labeled `:label: rfc` (see
    [Pull Request Labeling](/guides/contributing/submitting-prs.md#pull-request-labeling) for the
    PR mechanics). That label also triggers a docs-site PR preview so reviewers can read the
-   rendered RFC, not just the raw markdown diff.
+   rendered RFC, not just the raw markdown diff. Once it's open, add its RFC summary per
+   [Write a PR Blog Summary](./write-a-pr-blog-summary.md), so the next release post lists it.
 5. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.
@@ -85,4 +105,5 @@ lets it open a fresh PR — ask in `#dev-ember-data` if you hit this.
   Follow [Write Documentation](./write-documentation.md) for those.
 * Once landed, `stage` in the RFC's frontmatter (both here and, via the sync bot, upstream)
   advances the same way `emberjs/rfcs` advancement PRs do today — this repo does not add a
-  separate advancement mechanism.
+  separate advancement mechanism. A PR that changes `stage` adds or updates an RFC summary too,
+  per [Write a PR Blog Summary](./write-a-pr-blog-summary.md).

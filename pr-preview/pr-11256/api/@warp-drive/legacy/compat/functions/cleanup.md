@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/compat/functions/cleanup.md
+description: >-
+  Legacy store teardown hook that destroys every adapter and serializer instance
+  the store has cached.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function cleanup(this: Store$1): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:342](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/compat.ts#L342)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:398](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/compat.ts#L398)
 
 Destroys any adapters/serializers the legacy network layer has created
 for this store, invoked when the store itself is destroyed.

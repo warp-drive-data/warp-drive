@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/functions/sortQueryParams.md
+description: >-
+  Builds a `URLSearchParams` with keys and array values sorted, so equivalent
+  queries produce identical params.
 ---
 
 # &#x20;sortQueryParams()
@@ -9,10 +12,13 @@ url: >-
 function sortQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): URLSearchParams;
 ```
 
-Defined in: [index.ts:663](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/index.ts#L663)
+Defined in: [index.ts:697](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/index.ts#L697)
 
 Sorts query params by both key and value returning a new URLSearchParams
 object with the keys inserted in sorted order.
+
+See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+why builders need stable query params.
 
 Treats `included` specially, splicing it into an array if it is a string and sorting the array.
 

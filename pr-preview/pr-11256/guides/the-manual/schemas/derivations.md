@@ -9,7 +9,7 @@ description: >-
 
 # Derivations
 
-Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the ReactiveResource and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.
+Derivations are computed, read-only fields on a resource. When a derived field is accessed, the runtime looks up a registered function by name and calls it with the [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource) and any configured options. The result is memoized — subsequent reads return the cached value without recomputation until one of the reactive fields the derivation read has changed.
 
 The computed result is never stored in cache and is never serialized.
 
@@ -52,7 +52,7 @@ APIs commonly return different field sets depending on the request (sparse field
 
 ### What To Do Instead
 
-**Use a `<Request />` boundary.** Calculations that require a particular "view" of the data — a specific set of relationships loaded, a specific set of fields included — belong inside a component or utility that makes an explicit request for that data. A `<Request />` component (or equivalent data-fetching boundary) guarantees what was loaded and makes it safe to derive values from that data within its scope. This keeps correctness coupled to the data contract of the request rather than silently relying on ambient cache state.
+**Use a `<Request />` boundary.** Calculations that require a particular "view" of the data — a specific set of relationships loaded, a specific set of fields included — belong inside a component or utility that makes an explicit request for that data. A `<Request />` component ([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)) or equivalent data-fetching boundary guarantees what was loaded and makes it safe to derive values from that data within its scope. This keeps correctness coupled to the data contract of the request rather than silently relying on ambient cache state.
 
 In short: if you would need to say *"this derivation is only correct after calling X endpoint"*, it should not be a derivation — it should be a computed value defined inside the boundary that makes that request.
 
@@ -134,7 +134,7 @@ user.fullName; // → 'Finn Skybarker' (recomputed because firstName changed)
 
 :::
 
-The `type` field in the schema entry is how the runtime looks up the registered function. The `[Type]` symbol property on the function is what `registerDerivation` uses as the lookup key — they must match.
+The `type` field in the schema entry is how the runtime looks up the registered function. The `[Type]` symbol property on the function is what [`registerDerivation`](/api/@warp-drive/core/reactive/classes/SchemaService#registerderivation) uses as the lookup key — they must match.
 
 ## Read-Only by Design
 
@@ -162,9 +162,9 @@ A derivation that has never been accessed costs nothing. It is only run on first
 
 ## About Built-in Derivations
 
-`withDefaults` adds a few built-in derived fields to every schema it configures. The most notable is `@identity`, which surfaces the resource's identity — its `id`, `lid`, and `type` — as readable fields on the record.
+[`withDefaults`](/api/@warp-drive/core/reactive/functions/withDefaults) adds a few built-in derived fields to every schema it configures. The most notable is `@identity`, which surfaces the resource's identity — its `id`, `lid`, and `type` — as readable fields on the record.
 
-These are registered automatically when using the recommended store setup. If you are composing a custom store, call `registerDerivations` to wire them in:
+These are registered automatically when using the recommended store setup. If you are composing a custom store, call [`registerDerivations`](/api/@warp-drive/core/reactive/functions/registerDerivations) to wire them in:
 
 ```ts [store/index.ts]
 import { registerDerivations, SchemaService } from '@warp-drive/core/reactive';

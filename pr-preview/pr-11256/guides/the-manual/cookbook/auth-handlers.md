@@ -184,7 +184,7 @@ This way every request that was made using this request manager will have `X-CSR
 
 Secure cookies are automatically managed by the browser, so we don't
 need to do anything special to send them with our requests when using
-native fetch (as for instance the provided `Fetch` handler does).
+native fetch (as for instance the provided [`Fetch`](/api/@warp-drive/core/variables/Fetch) handler does).
 We just need to make sure that we are requesting our API from the same
 domain that it is served from.
 

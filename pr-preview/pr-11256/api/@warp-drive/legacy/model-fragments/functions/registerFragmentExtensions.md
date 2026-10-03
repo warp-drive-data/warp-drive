@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/model-fragments/functions/registerFragmentExtensions.md
+description: >-
+  Legacy setup function that registers the fragment and fragment-array schema
+  extensions on a `SchemaService` to support migrating off ModelFragments.
 ---
 
 &#x20;
@@ -11,7 +14,7 @@ url: >-
 function registerFragmentExtensions(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts:15](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts#L15)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts:17](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts#L17)
 
 Registers the [FragmentExtension](../variables/FragmentExtension.md)/[FragmentArrayExtension](../variables/FragmentArrayExtension.md) schema
 extensions on the given `SchemaService`, enabling ModelFragments migration support.

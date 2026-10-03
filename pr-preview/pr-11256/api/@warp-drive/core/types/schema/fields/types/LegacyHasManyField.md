@@ -1,6 +1,10 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/LegacyHasManyField.md
+description: >-
+  Legacy field schema of kind `hasMany` for a reference to many related
+  resources, with required `async` and `inverse` options and optional
+  `linksMode`.
 ---
 
 # &#x20;LegacyHasManyField
@@ -15,7 +19,7 @@ interface LegacyHasManyField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1666](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1666)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1746](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1746)
 
 > \[!CAUTION]
 > This Field is LEGACY
@@ -25,6 +29,9 @@ a collection of other resources.
 
 This is the legacy version of the `CollectionField`.
 
+The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+guide shows how to use it.
+
 ## Properties
 
 ### kind
@@ -33,7 +40,7 @@ This is the legacy version of the `CollectionField`.
 kind: "hasMany";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1672](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1672)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1752](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1752)
 
 The kind of field this is.
 
@@ -45,7 +52,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1679](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1679)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1759](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1759)
 
 The name of the field.
 
@@ -65,7 +72,7 @@ options: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1720](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1720)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1800](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1800)
 
 Options for hasMany are mandatory.
 
@@ -213,7 +220,7 @@ leaving any remaining changes in local state still.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1703](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1703)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1783](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1783)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs
@@ -244,7 +251,7 @@ This option is only needed when the value differs from name.
 type: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1713](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1713)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1793](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1793)
 
 the name of the resource that this field
 refers to. In the case of a polymorphic

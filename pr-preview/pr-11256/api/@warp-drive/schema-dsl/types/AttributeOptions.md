@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/schema-dsl/types/AttributeOptions.md
+description: >-
+  Options for the legacy `@attribute` decorator that set the compiled attribute
+  field's `sourceKey` and legacy transform `type`.
 ---
 
 # &#x20;AttributeOptions
@@ -12,7 +15,7 @@ interface AttributeOptions {
 }
 ```
 
-Defined in: [fields/attribute.ts:10](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L10)
+Defined in: [fields/attribute.ts:12](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L12)
 
 Options accepted by the [attribute](../functions/attribute.md) decorator.
 
@@ -24,7 +27,7 @@ Options accepted by the [attribute](../functions/attribute.md) decorator.
 optional sourceKey?: string;
 ```
 
-Defined in: [fields/attribute.ts:18](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L18)
+Defined in: [fields/attribute.ts:20](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L20)
 
 The name of the field as returned by the API, if it differs from the
 decorated property's name. Compiles onto the
@@ -38,6 +41,6 @@ decorated property's name. Compiles onto the
 optional type?: string;
 ```
 
-Defined in: [fields/attribute.ts:25](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L25)
+Defined in: [fields/attribute.ts:27](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/attribute.ts#L27)
 
 The name of a legacy transform to compile onto the field's `type`.

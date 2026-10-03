@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/symbols/variables/Type.md
+description: >-
+  Symbol key that brands a record with its resource type for TypeScript, and
+  names a derivation or transformation when it is registered.
 ---
 
 # &#x20;Type
@@ -9,7 +12,7 @@ url: >-
 const Type: "___(unique) Symbol($type)";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/symbols.ts:51](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/symbols.ts#L51)
+Defined in: [warp-drive-packages/core/src/types/symbols.ts:60](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/symbols.ts#L60)
 
 Symbol for the name of a resource, transformation
 or derivation.

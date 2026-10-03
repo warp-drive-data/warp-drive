@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/string/functions/capitalize.md
+description: >-
+  Uppercases the first letter of a string, and of each `/`-separated path
+  segment, leaving the rest unchanged.
 ---
 
 # &#x20;capitalize()&#x20;
@@ -9,7 +12,7 @@ url: >-
 function capitalize(str: string): string;
 ```
 
-Defined in: [-private/string/transform.ts:99](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/string/transform.ts#L99)
+Defined in: [-private/string/transform.ts:104](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/string/transform.ts#L104)
 
 Returns the Capitalized form of a string
 

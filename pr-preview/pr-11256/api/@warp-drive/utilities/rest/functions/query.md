@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/rest/functions/query.md
+description: >-
+  Builds a `GET` request that queries a resource type with query params, using
+  REST-style URLs.
 ---
 
 # &#x20;query()
@@ -36,10 +39,13 @@ function query<T, M extends
 ): QueryRequestOptions<ReactiveDataDocument<T[], M, E>>;
 ```
 
-Defined in: [-private/rest/query.ts:58](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/rest/query.ts#L58)
+Defined in: [-private/rest/query.ts:62](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/rest/query.ts#L62)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most REST APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 
@@ -125,10 +131,13 @@ function query(
 ): QueryRequestOptions;
 ```
 
-Defined in: [-private/rest/query.ts:63](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/-private/rest/query.ts#L63)
+Defined in: [-private/rest/query.ts:67](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/rest/query.ts#L67)
 
 Builds request options to query for resources, usually by a primary
 type, configured for the url and header expectations of most REST APIs.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and
+when to use one.
 
 **Basic Usage**
 

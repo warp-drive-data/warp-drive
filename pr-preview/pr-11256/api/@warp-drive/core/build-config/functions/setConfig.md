@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/build-config/functions/setConfig.md
+description: >-
+  Applies a WarpDrive build config through `@embroider/macros`, controlling env
+  behavior, logging, deprecated-code stripping, and canary features.
 ---
 
 # &#x20;setConfig()
@@ -20,13 +23,16 @@ function setConfig(
 function setConfig(macros: object, config: WarpDriveConfig): void;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/index.d.ts:202](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/index.d.ts#L202)
+Defined in: [warp-drive-packages/build-config/src/index.ts:260](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/build-config/src/index.ts#L260)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
 and enables adjusting log instrumentation, removing code
 that supports deprecated features, enabling canary features
 and enabling/disabling optional features.
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 The library uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 to perform this final configuration code transform.
@@ -95,13 +101,16 @@ function setConfig(
 ): void;
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/index.d.ts:203](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/index.d.ts#L203)
+Defined in: [warp-drive-packages/build-config/src/index.ts:261](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/build-config/src/index.ts#L261)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
 and enables adjusting log instrumentation, removing code
 that supports deprecated features, enabling canary features
 and enabling/disabling optional features.
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 The library uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 to perform this final configuration code transform.

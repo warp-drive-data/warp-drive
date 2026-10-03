@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/LegacyAttributeField.md
+description: >-
+  Legacy field schema of kind `attribute` for a primitive value whose `type`
+  names a legacy transform a serializer may apply; LegacyMode only.
 ---
 
 # &#x20;LegacyAttributeField
@@ -15,7 +18,7 @@ interface LegacyAttributeField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1258](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1258)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1326](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1326)
 
 > \[!CAUTION]
 > This Field is LEGACY
@@ -26,6 +29,9 @@ primitive value fields.
 
 If the field points to an object or array,
 it will not be deep-tracked.
+
+The [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode#defining-legacy-schemas)
+guide shows how to use it.
 
 Transforms when defined are legacy transforms
 that a serializer *might* use, but their usage
@@ -39,7 +45,7 @@ is not guaranteed.
 kind: "attribute";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1264](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1264)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1332](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1332)
 
 The kind of field this is.
 
@@ -51,7 +57,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1271](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1271)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1339](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1339)
 
 The name of the field.
 
@@ -63,7 +69,7 @@ The name of the field.
 optional options?: AttrOptions;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1311](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1311)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1379](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1379)
 
 Options to pass to the transform, if any
 
@@ -80,7 +86,7 @@ See [AttrOptions](AttrOptions.md) for more info.
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1295](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1295)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1363](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1363)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs
@@ -111,6 +117,6 @@ This option is only needed when the value differs from name.
 optional type?: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1302](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L1302)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:1370](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L1370)
 
 The name of the transform to use, if any

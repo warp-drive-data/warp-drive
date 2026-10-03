@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/functions/setBuildURLConfig.md
+description: >-
+  Sets the app-wide default `host` and `namespace` used by `buildBaseURL` and
+  the request builders.
 ---
 
 # &#x20;setBuildURLConfig()
@@ -9,13 +12,17 @@ url: >-
 function setBuildURLConfig(config: BuildURLConfig): void;
 ```
 
-Defined in: [index.ts:71](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/index.ts#L71)
+Defined in: [index.ts:78](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/index.ts#L78)
 
 Sets the global configuration for `buildBaseURL`
 for host and namespace values for the application.
 
 These values may still be overridden by passing
 them to buildBaseURL directly.
+
+The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+guide sets these defaults through the `@warp-drive/utilities/json-api` version of this function,
+which also sets this global configuration.
 
 This method may be called as many times as needed.
 host values of `''` or `'/'` are equivalent.

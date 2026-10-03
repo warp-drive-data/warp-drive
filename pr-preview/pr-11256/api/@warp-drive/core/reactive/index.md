@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive.md
+description: >-
+  Schema-driven reactive records, arrays, and documents the store builds from
+  cached data, plus the `SchemaService` and schema types that define them.
 ---
 
 # About
@@ -192,9 +195,9 @@ in the process gaining access to an editable copy. The immutable version will
 not show any in-process edits made to this editable copy.
 
 ```ts
-import { Checkout } from '@warp-drive/schema-record';
+import { checkout } from '@warp-drive/core/reactive';
 
-const editable = await user[Checkout]();
+const editable = await checkout<EditableUser>(user);
 ```
 
 ## Utilities
@@ -296,21 +299,25 @@ store.schema.registerResources([
 
 ## Types
 
+* [CancelledRequest](types/CancelledRequest.md)
 * [CAUTION\_MEGA\_DANGER\_ZONE\_Extension](types/CAUTION_MEGA_DANGER_ZONE_Extension.md)
 * [ContentFeatures](types/ContentFeatures.md)
 * [LegacyLiveArray](types/LegacyLiveArray.md)
 * [LegacyManyArray](types/LegacyManyArray.md)
 * [LegacyQueryArray](types/LegacyQueryArray.md)
 * [PendingPromise](types/PendingPromise.md)
+* [PendingRequest](types/PendingRequest.md)
 * [ProcessedExtension](types/ProcessedExtension.md)
 * [ReactiveResource](types/ReactiveResource.md)
 * [ReactiveResourceArray](types/ReactiveResourceArray.md)
 * [RecoveryFeatures](types/RecoveryFeatures.md)
 * [RejectedPromise](types/RejectedPromise.md)
+* [RejectedRequest](types/RejectedRequest.md)
 * [RequestArgs](types/RequestArgs.md)
 * [RequestLoadingState](types/RequestLoadingState.md)
 * [RequestSubscription](types/RequestSubscription.md)
 * [ResolvedPromise](types/ResolvedPromise.md)
+* [ResolvedRequest](types/ResolvedRequest.md)
 * [SubscriptionArgs](types/SubscriptionArgs.md)
 * [AutorefreshBehaviorCombos](types/AutorefreshBehaviorCombos.md)
 * [AutorefreshBehaviorType](types/AutorefreshBehaviorType.md)

@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/identifier/types/StableRecordIdentifier.md
+description: >-
+  Deprecated alias for `ResourceKey`, the stable cache reference to a single
+  resource.
 ---
 
 # &#x20;~~StableRecordIdentifier\<T *extends* `string` = `string`>~~&#x20;
@@ -9,7 +12,7 @@ url: >-
 type StableRecordIdentifier<T extends string = string> = ResourceKey<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/identifier.ts:137](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/identifier.ts#L137)
+Defined in: [warp-drive-packages/core/src/types/identifier.ts:168](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/identifier.ts#L168)
 
 ## Type Parameters
 

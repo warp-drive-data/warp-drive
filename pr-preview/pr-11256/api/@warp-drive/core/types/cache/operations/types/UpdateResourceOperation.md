@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/cache/operations/types/UpdateResourceOperation.md
+description: >-
+  Cache operation passed to `cache.patch` that merges new remote state into a
+  persisted resource.
 ---
 
 # &#x20;UpdateResourceOperation
@@ -13,7 +16,7 @@ interface UpdateResourceOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:101](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/cache/operations.ts#L101)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:118](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L118)
 
 Upserts (merges) new state for a resource
 
@@ -29,7 +32,7 @@ Upserts (merges) new state for a resource
 op: "update";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:102](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/cache/operations.ts#L102)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:119](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L119)
 
 The name of the [operation](Op.md)
 
@@ -45,7 +48,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:106](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/cache/operations.ts#L106)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:123](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L123)
 
 The cache key for the resource
 
@@ -57,6 +60,6 @@ The cache key for the resource
 value: ExistingResourceObject;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:110](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/cache/operations.ts#L110)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:127](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L127)
 
 The new state to merge into the resource

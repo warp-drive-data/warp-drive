@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/build-config/functions/babelPlugin.md
+description: >-
+  Creates the Babel plugins that apply a WarpDrive build config, for projects
+  not already using `@embroider/macros`.
 ---
 
 # &#x20;babelPlugin()
@@ -12,9 +15,12 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [node\_modules/.pnpm/@warp-d\_25f56f2729dd79700790d78740333f27/node\_modules/@warp-drive/build-config/dist/index.d.ts:41](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/node_modules/.pnpm/@warp-d_25f56f2729dd79700790d78740333f27/node_modules/@warp-drive/build-config/dist/index.d.ts#L41)
+Defined in: [warp-drive-packages/build-config/src/index.ts:34](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/build-config/src/index.ts#L34)
 
 Create the Babel plugin for WarpDrive
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 Note: If your project already uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 then you should use [setConfig](setConfig.md) instead of this function.

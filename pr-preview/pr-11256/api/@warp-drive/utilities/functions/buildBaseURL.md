@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/utilities/functions/buildBaseURL.md
+description: >-
+  Joins host, namespace, resource path, id, and relationship field into a
+  request URL without query params.
 ---
 
 # &#x20;buildBaseURL()
@@ -9,11 +12,14 @@ url: >-
 function buildBaseURL(urlOptions: UrlOptions): string;
 ```
 
-Defined in: [index.ts:504](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/utilities/src/index.ts#L504)
+Defined in: [index.ts:528](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/index.ts#L528)
 
 Builds a URL for a request based on the provided options.
 Does not include support for building query params (see `buildQueryParams`)
 so that it may be composed cleanly with other query-params strategies.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for writing your own request
+builders.
 
 Usage:
 

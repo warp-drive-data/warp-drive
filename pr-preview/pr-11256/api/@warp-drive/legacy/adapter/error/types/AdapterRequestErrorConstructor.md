@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/adapter/error/types/AdapterRequestErrorConstructor.md
+description: >-
+  Static side of the legacy adapter error constructors: `new (errors?,
+  message?)` plus `extend({ message })` for creating further error subclasses.
 ---
 
 &#x20;
@@ -14,7 +17,7 @@ interface AdapterRequestErrorConstructor<Instance extends AdapterRequestError = 
 }
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:58](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/error.ts#L58)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:70](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/error.ts#L70)
 
 The static interface shared by [AdapterError](../variables/AdapterError.md) and its subclasses,
 allowing further subclassing via [extend](#extend).
@@ -33,7 +36,7 @@ allowing further subclassing via [extend](#extend).
 new AdapterRequestErrorConstructor(errors?: unknown[], message?: string): Instance;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:59](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/error.ts#L59)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:71](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/error.ts#L71)
 
 #### Parameters
 
@@ -59,7 +62,7 @@ extend(options: {
 }): AdapterRequestErrorConstructor;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:63](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/legacy/src/adapter/error.ts#L63)
+Defined in: [warp-drive-packages/legacy/src/adapter/error.ts:75](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/adapter/error.ts#L75)
 
 Creates a new AdapterRequestErrorConstructor that inherits from this one.
 

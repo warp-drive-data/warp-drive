@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/reactive/types/ExtensionDef.md
+description: >-
+  One normalized feature of a schema extension, tagged by kind as a method, a
+  readonly or mutable value, or a getter/setter accessor.
 ---
 
 # &#x20;ExtensionDef
@@ -34,7 +37,7 @@ type ExtensionDef =
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:190](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/reactive/-private/schema.ts#L190)
+Defined in: [warp-drive-packages/core/src/reactive/-private/schema.ts:196](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/reactive/-private/schema.ts#L196)
 
 Describes one feature added to a resource by a schema extension, as
 classified by processExtension from the property descriptor it

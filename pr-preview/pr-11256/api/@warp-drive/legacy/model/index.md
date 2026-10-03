@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/legacy/model.md
+description: >-
+  Legacy `Model` base class and `attr`, `belongsTo`, and `hasMany` decorators
+  that define resource schemas as classes and present records.
 ---
 
 &#x20;
@@ -19,6 +22,34 @@ specifically to the class definition and the static schema methods present on it
 
 When we refer to a `record` we refer to a specific class instance presenting
 the resource data for a given `type` and `id`.
+
+### Why It's Legacy
+
+The `Model` pattern uses class inheritance and decorators to define your data schema:
+
+* The `attr`, `belongsTo` and `hasMany` decorators are Ember computed properties, and the
+  schema is read at runtime by walking each Model class's computed properties.
+* Every record is an instance of its own `Model` subclass, and `Model` extends `EmberObject`,
+  which ties your data layer to Ember and its object model.
+
+### Modern Alternative
+
+Use **schemas** with `@warp-drive/core`. Modern ***Warp*Drive**:
+
+* defines each resource's schema as a plain object, a `ResourceSchema`, registered with the
+  store's SchemaService, with no class or decorators
+* presents every resource type through one record implementation,
+  [ReactiveResource](/api/@warp-drive/core/reactive/types/ReactiveResource), which reads
+  its fields from the registered schema
+* shares fields across schemas with [traits](/guides/the-manual/schemas/traits), and adds
+  memoized read-only fields with [derivations](/guides/the-manual/schemas/derivations) and
+  value conversions with [transformations](/guides/the-manual/schemas/transformations),
+  instead of inheritance
+* works in any framework ***Warp*Drive** supports, since `@warp-drive/core` has no runtime
+  dependency on Ember (see [Installation](/guides/installation/))
+
+For guidance on migrating from Model classes to schemas, see the
+[Schemas Guide](/guides/the-manual/schemas/) and the [Migration Guide](/upgrading/v5/).
 
 ### Defining a Model
 

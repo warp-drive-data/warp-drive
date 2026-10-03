@@ -1,6 +1,9 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/core/types/schema/fields/types/LocalField.md
+description: >-
+  Field schema of kind `@local` for memoized, writable per-record state that is
+  never cached or sent to the server; currently private to built-in fields.
 ---
 
 # &#x20;LocalField
@@ -14,7 +17,7 @@ interface LocalField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:426](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L426)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:458](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L458)
 
 Represents a field whose value is a local
 value that is not stored in the cache, nor
@@ -50,7 +53,7 @@ Don't make us regret this decision.
 kind: "@local";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:432](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L432)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:464](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L464)
 
 The kind of field this is.
 
@@ -62,7 +65,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:439](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L439)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:471](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L471)
 
 The name of the field.
 
@@ -76,7 +79,7 @@ optional options?: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:453](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L453)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:485](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L485)
 
 Options for the field.
 
@@ -97,7 +100,7 @@ has yet been set.
 optional type?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:446](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/core/src/types/schema/fields.ts#L446)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:478](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/schema/fields.ts#L478)
 
 Not currently utilized, we are considering
 allowing transforms to operate on local fields

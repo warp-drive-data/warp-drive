@@ -1,12 +1,12 @@
 ---
 url: https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/react.md
+description: >-
+  React bindings for WarpDrive, providing `StoreProvider`, `useStore` and the
+  `<Request />` component for rendering request states with React reactivity.
 ---
 
-This package provides a React-specific reactivity integration,
-components and hooks for ***Warp*Drive**.
-
-* [Installation](/guides/installation/)
-* [Configuration](/guides/configuration/)
+This package provides a React-specific reactivity integration, components and hooks for
+***Warp*Drive**. The [Guides](#guides) at the end of this page cover installing and using it.
 
 ## The Basics
 
@@ -69,9 +69,10 @@ what signals they consume the way that reactive frameworks do, but by building
 overtop of other Signal libraries we can provide this.
 
 Due to the above limitations, the React Signals integration is built
-overtop the polyfill for [TC39 Proposal Signals](https://github.com/tc39/proposal-signals)
+overtop [`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/primitives/), a signals graph
+built on [alien-signals](https://github.com/stackblitz/alien-signals).
 
-The TC39 Proposal's `Watcher` especially is valuable here, as it allows us to subscribe to changes
+Its `Watcher` especially is valuable here, as it allows us to subscribe to changes
 to the dependency graph of a memo and not just a signal.
 
 Every [\<ReactiveContext />](functions/ReactiveContext.md) provides a `Watcher` and subscribes to it as
@@ -125,7 +126,30 @@ function UserList() {
 
 ## Using React Embedded In Another Reactive Framework
 
-show signals composition by running both configs and combining them
+When React components share a page and a store with another framework, such as an Ember app that
+renders some React components, import `@warp-drive/alien-signals/install` before either
+framework's `install` import:
+
+```ts
+import '@warp-drive/alien-signals/install';
+import '@warp-drive/ember/install';
+import '@warp-drive/react/install';
+```
+
+The other framework then registers its signals with the same graph React watches, and memoized
+values come from that graph, so components in both frameworks re-render when the data they read
+changes. See
+[Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md)
+for the full setup.
+
+::: tip Derivations only track WarpDrive's signals
+With `@warp-drive/alien-signals/install`, memoized values such as
+[derived fields](/guides/the-manual/schemas/derivations.md) only recompute when a signal
+***Warp*Drive** manages changes. If a derivation reads state that only a framework tracks, such
+as an Ember `@tracked` property or a React `useState` value, it keeps returning its cached value
+when that state changes. Keep the state a derivation reads in ***Warp*Drive**, for instance as a
+field on the resource it derives from.
+:::
 
 ## Tips & Tricks aka "The Rule of WarpDrive"
 
@@ -192,6 +216,19 @@ an external dependency of the app, and thus the access of it will only occur onc
 
 By moving the access inside of `MyApp`, our reactive state is now a dependency of the component's render, and will work as expected.
 
+## Guides
+
+* [Installation](/guides/installation/#react): install `@warp-drive/react` and add the
+  `@warp-drive/react/install` import to your app.
+* [Configuration](/guides/configuration/): configure the build plugin and create a Store.
+* [Setup - React](/guides/configuration/react): provide the store to your components with
+  `<StoreProvider />` and read it with `useStore`.
+* [Reactivity](/guides/the-manual/reactivity/): how ***Warp*Drive** uses signals to notify your UI.
+* [Making Requests](/guides/the-manual/requests/): make a request with `<Request />`, or with
+  `getRequestState` inside a `<ReactiveContext />`.
+* [Reactive Control Flow](/guides/the-manual/reactivity/control-flow.md): render a request's
+  loading, error and content states.
+
 ## Components
 
 * [ReactiveContext](functions/ReactiveContext.md)
@@ -209,3 +246,7 @@ By moving the access inside of `MyApp`, our reactive state is now a dependency o
 ## Other
 
 * [install](install/index.md)
+* [ChromeComponentProps](types/ChromeComponentProps.md)
+* [RequestProps](types/RequestProps.md)
+* [RequestStates](types/RequestStates.md)
+* [StoreProviderProps](types/StoreProviderProps.md)

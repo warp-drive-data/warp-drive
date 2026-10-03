@@ -1,26 +1,34 @@
 ---
 url: >-
   https://canary.warp-drive.io/pr-preview/pr-11256/api/@warp-drive/react/install/functions/buildSignalConfig.md
+description: >-
+  Builds the hooks that connect the `@warp-drive/alien-signals` graph to React
+  rendering and test waiters.
 ---
 
 # &#x20;buildSignalConfig()
 
 ```ts
-function buildSignalConfig(options: HooksOptions): SignalHooks;
+function buildSignalConfig(_options: HooksOptions): SignalIntegration;
 ```
 
-Defined in: [install.ts:72](https://github.com/warp-drive-data/warp-drive/blob/eaabe67f41c439777a4aea3b876394f6f0c3bd02/warp-drive-packages/react/src/install.ts#L72)
+Defined in: [install.ts:95](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/react/src/install.ts#L95)
 
-Builds the [SignalHooks](../../../core/configure/types/SignalHooks.md) implementation backed by the
-[Signal Polyfill](https://github.com/proposal-signals/signal-polyfill),
-used to wire WarpDrive's reactivity primitives into React.
+Builds the [SignalIntegration](../../../alien-signals/install/types/SignalIntegration.md) that connects the
+[`@warp-drive/alien-signals`](/api/@warp-drive/alien-signals/install/) graph to React rendering
+and test waiters. Signals and memos read while a component renders are watched by the watcher of
+its nearest `ReactiveContext`.
+
+Importing `@warp-drive/react/install` imports `@warp-drive/alien-signals/install` and passes
+this function to `registerSignalIntegration`, so React components re-render alongside any other
+framework registered with the same graph.
 
 ## Parameters
 
-### options
+### \_options
 
 [`HooksOptions`](../../../core/configure/types/HooksOptions.md)
 
 ## Returns
 
-[`SignalHooks`](../../../core/configure/types/SignalHooks.md)
+[`SignalIntegration`](../../../alien-signals/install/types/SignalIntegration.md)
