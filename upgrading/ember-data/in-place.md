@@ -75,7 +75,7 @@ as a dependency of `@warp-drive/core`. Two optional packages:
 
 ## Step 2 - Configure the build
 
-WarpDrive reads its build-time configuration from `setConfig`. `compatWith` names the newest
+WarpDrive reads its build-time configuration from [`setConfig`](/api/@warp-drive/core/build-config/functions/setConfig). `compatWith` names the newest
 version whose deprecations your app has resolved. Set it to `4.12`: every deprecation WarpDrive
 introduced after 4.12 then stays supported, so the deprecated code still runs and prints its
 warning instead of being stripped from the build.
@@ -150,7 +150,7 @@ This is the store `ember-data` configured for you, spelled out:
 
 If the app already has an `app/services/store.js`, because it extended `ember-data/store` to add
 request handlers as [Adopting the Request APIs on 4.12](/upgrading/ember-data/incremental-adoption.md)
-describes, keep its members and change what it extends. `useLegacyStore` returns a class, so:
+describes, keep its members and change what it extends. [`useLegacyStore`](/api/@warp-drive/legacy/functions/useLegacyStore) returns a class, so:
 
 ```ts [app/services/store.ts]
 import { useLegacyStore } from '@warp-drive/legacy';
@@ -171,14 +171,14 @@ export default class Store extends AppStore {
 }
 ```
 
-Drop the constructor that built a `RequestManager` by hand. `useLegacyStore` builds it, and the
+Drop the constructor that built a [`RequestManager`](/api/@warp-drive/core/classes/RequestManager) by hand. `useLegacyStore` builds it, and the
 `handlers` option is where your own handlers go.
 
 ## Step 5 - Rewrite the imports
 
 Every module that came from `ember-data` now has a home in `@warp-drive/*`. Two things changed
 besides the module names: `Model` keeps its default export, but the adapter, serializer and
-transform base classes are named exports in 5.x, and the store, request manager and `Fetch`
+transform base classes are named exports in 5.x, and the store, request manager and [`Fetch`](/api/@warp-drive/core/variables/Fetch)
 handler all live in `@warp-drive/core`.
 
 | On 4.12 | On 5.x |
@@ -241,6 +241,6 @@ can ship on its own:
 - **Move requests to builders** with the [`legacy-compat-builders` codemod](/upgrading/v5/codemods.md#legacy-compat-builders).
   They still go through your adapters and serializers, so nothing changes on the wire.
 - **Turn off what is left.** Once no adapter or serializer is used, set `linksMode: true` and drop
-  `legacyRequests`, or move to `useRecommendedStore` from `@warp-drive/core`. See the
+  `legacyRequests`, or move to [`useRecommendedStore`](/api/@warp-drive/core/functions/useRecommendedStore) from `@warp-drive/core`. See the
   [useLegacyStore](/api/@warp-drive/legacy/functions/useLegacyStore) options for the store
   shapes in between.
