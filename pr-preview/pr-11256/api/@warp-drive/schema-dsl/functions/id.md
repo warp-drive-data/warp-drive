@@ -19,7 +19,7 @@ function id(options: IdOptions): (target: object, key: string) => void;
 function id(target: object, key: string): void;
 ```
 
-Defined in: [fields/id.ts:58](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/id.ts#L58)
+Defined in: [fields/id.ts:58](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/schema-dsl/src/fields/id.ts#L58)
 
 **`Decorator`**
 
@@ -73,7 +73,7 @@ export class Post {
 function id(options: IdOptions): (target: object, key: string) => void;
 ```
 
-Defined in: [fields/id.ts:59](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/schema-dsl/src/fields/id.ts#L59)
+Defined in: [fields/id.ts:59](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/schema-dsl/src/fields/id.ts#L59)
 
 **`Decorator`**
 

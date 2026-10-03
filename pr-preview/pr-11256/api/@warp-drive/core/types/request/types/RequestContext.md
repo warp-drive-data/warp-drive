@@ -24,7 +24,7 @@ interface RequestContext {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:845](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/request.ts#L845)
+Defined in: [warp-drive-packages/core/src/types/request.ts:845](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/request.ts#L845)
 
 The object a [Handler](../../../request/types/Handler.md) uses to fulfill a request: it provides a
 readonly view of the [request](#request) and methods
@@ -47,7 +47,7 @@ setResponse(response:
   | null): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:863](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/request.ts#L863)
+Defined in: [warp-drive-packages/core/src/types/request.ts:863](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/request.ts#L863)
 
 Supplies the response for the request.
 
@@ -75,7 +75,7 @@ setStream(stream:
   | null>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:859](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/request.ts#L859)
+Defined in: [warp-drive-packages/core/src/types/request.ts:859](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/request.ts#L859)
 
 Supplies the stream of the response's content, if available, enabling
 consumers to monitor download progress via [RequestLoadingState](../../../reactive/types/RequestLoadingState.md).
@@ -101,7 +101,7 @@ consumers to monitor download progress via [RequestLoadingState](../../../reacti
 id: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:853](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/request.ts#L853)
+Defined in: [warp-drive-packages/core/src/types/request.ts:853](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/request.ts#L853)
 
 a unique id for this request
 
@@ -113,7 +113,7 @@ a unique id for this request
 request: ImmutableRequestInfo;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:849](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/request.ts#L849)
+Defined in: [warp-drive-packages/core/src/types/request.ts:849](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/request.ts#L849)
 
 #### See
 

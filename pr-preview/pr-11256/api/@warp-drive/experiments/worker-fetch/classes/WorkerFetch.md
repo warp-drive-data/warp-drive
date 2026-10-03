@@ -7,7 +7,7 @@ url: >-
 
 # &#x20;WorkerFetch
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:49](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L49)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:49](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L49)
 
 ## Constructors
 
@@ -20,7 +20,7 @@ new WorkerFetch(worker:
   | null): WorkerFetch;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:55](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L55)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:55](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L55)
 
 #### Parameters
 
@@ -42,7 +42,7 @@ Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:55](https:
 cleanupRequest(id: number): PendingItem | undefined;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:107](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L107)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:107](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L107)
 
 #### Parameters
 
@@ -64,7 +64,7 @@ request<T>(context: Context$1, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:123](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L123)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:123](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L123)
 
 #### Type Parameters
 
@@ -95,7 +95,7 @@ Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:123](https
 send(event: RequestEventData | AbortEventData): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:118](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L118)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:118](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L118)
 
 #### Parameters
 
@@ -115,7 +115,7 @@ Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:118](https
 channel: MessageChannel;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:53](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L53)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:53](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L53)
 
 ***
 
@@ -125,7 +125,7 @@ Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:53](https:
 pending: Map<number, PendingItem>;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:52](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L52)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:52](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L52)
 
 ***
 
@@ -135,7 +135,7 @@ Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:52](https:
 threadId: string;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:51](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L51)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:51](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L51)
 
 ***
 
@@ -147,4 +147,4 @@ worker:
   | SharedWorker;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:50](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/experiments/src/data-worker/fetch.ts#L50)
+Defined in: [warp-drive-packages/experiments/src/data-worker/fetch.ts:50](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/experiments/src/data-worker/fetch.ts#L50)

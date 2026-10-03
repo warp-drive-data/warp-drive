@@ -18,7 +18,7 @@ interface Handler {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:266](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/request/-private/types.ts#L266)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:266](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/request/-private/types.ts#L266)
 
 Requests are fulfilled by handlers. A handler receives the request context
 as well as a `next` function with which to pass along a request to the next
@@ -140,7 +140,7 @@ request<T = unknown>(context: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/types.ts:274](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/request/-private/types.ts#L274)
+Defined in: [warp-drive-packages/core/src/request/-private/types.ts:274](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/request/-private/types.ts#L274)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to

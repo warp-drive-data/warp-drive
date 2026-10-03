@@ -12,7 +12,7 @@ description: >-
 function resetToDefaults(): void;
 ```
 
-Defined in: [-private/string/inflect.ts:109](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/utilities/src/-private/string/inflect.ts#L109)
+Defined in: [-private/string/inflect.ts:109](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/utilities/src/-private/string/inflect.ts#L109)
 
 Resets the inflection rules to the defaults.
 

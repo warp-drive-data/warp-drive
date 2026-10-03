@@ -19,7 +19,7 @@ interface PaginationCache<RT = unknown, E = unknown> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/pagination-cache.ts#L67)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:67](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/pagination-cache.ts#L67)
 
 **`Hideconstructor`**
 
@@ -50,7 +50,7 @@ classes.
 totalPages: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:85](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/pagination-cache.ts#L85)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:85](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/pagination-cache.ts#L85)
 
 The total number of pages in the collection, or `0` when unknown. Consumers
 should read this via [PaginationState.totalPages](PaginationState.md#totalpages).
@@ -63,7 +63,7 @@ should read this via [PaginationState.totalPages](PaginationState.md#totalpages)
 get data(): Iterable<ContentItem<RT>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:237](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/pagination-cache.ts#L237)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:237](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/pagination-cache.ts#L237)
 
 The items of every loaded page in the shared graph, flattened into one
 contiguous iterable in page order. Pages that are known but not loaded
@@ -86,7 +86,7 @@ viewing, use [PaginationState.data](PaginationState.md#data).
 get pages(): Iterable<Readonly<PageCache<RT, E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:215](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/pagination-cache.ts#L215)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:215](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/pagination-cache.ts#L215)
 
 Every page known to the shared graph, in order — loaded pages and pages
 known only from links — across all components sharing the collection.

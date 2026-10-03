@@ -16,7 +16,7 @@ interface AddResourceOperation extends Op {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:102](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L102)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:102](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L102)
 
 Adds a resource to the cache.
 
@@ -32,7 +32,7 @@ Adds a resource to the cache.
 op: "add";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:103](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L103)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:103](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L103)
 
 The name of the [operation](Op.md)
 
@@ -48,7 +48,7 @@ The name of the [operation](Op.md)
 record: PersistedResourceKey;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:107](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L107)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:107](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L107)
 
 The cache key for the resource
 
@@ -60,6 +60,6 @@ The cache key for the resource
 value: ExistingResourceObject;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:111](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/cache/operations.ts#L111)
+Defined in: [warp-drive-packages/core/src/types/cache/operations.ts:111](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/cache/operations.ts#L111)
 
 The data for the resource

@@ -12,7 +12,7 @@ description: >-
 type Document<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M> = ReactiveDocument<T, M, E, EM>;
 ```
 
-Defined in: [warp-drive-packages/core/src/index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/index.ts#L53)
+Defined in: [warp-drive-packages/core/src/index.ts:53](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/index.ts#L53)
 
 ## Type Parameters
 

@@ -15,7 +15,7 @@ description: >-
 const LegacyNetworkHandler: Handler;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts:60](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts#L60)
+Defined in: [warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts:60](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/legacy/src/compat/legacy-network-handler/legacy-network-handler.ts#L60)
 
 A Handler that fulfills legacy `findRecord`/`findAll`/`query`/
 `queryRecord`/`findBelongsTo`/`findHasMany`/`createRecord`/`updateRecord`/

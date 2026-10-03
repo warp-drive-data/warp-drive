@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;Store
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:360](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L360)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:360](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L360)
 
 ```ts
 import { Store } from '@warp-drive/core';
@@ -50,7 +50,7 @@ is possible.
 createCache(capabilities: CacheCapabilitiesManager): Cache;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:370](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L370)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:370](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L370)
 
 Instantiation hook allowing applications or addons to configure the store
 to utilize a custom Cache implementation.
@@ -82,7 +82,7 @@ createRecord<T>(
 ): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1918](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1918)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1918](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1918)
 
 Creates a new record in the current store.
 
@@ -186,7 +186,7 @@ createRecord(
 ): unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1919](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1919)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1919](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1919)
 
 Creates a new record in the current store.
 
@@ -282,7 +282,7 @@ a record in the "isNew" state
 createSchemaService(): SchemaService;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:477](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L477)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:477](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L477)
 
 This hook enables an app to supply a SchemaService
 for use when information about a resource's schema needs
@@ -350,7 +350,7 @@ to sourcing a schema from available models if no schema is found.
 deleteRecord<T>(record: T): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2003](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2003)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2003](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2003)
 
 For symmetry, a record can be deleted via the store.
 
@@ -390,7 +390,7 @@ store.deleteRecord(post);
 findAll<T>(type: TypeFromInstance<T>, options?: BaseFinderOptions): Promise<LegacyLiveArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1167](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1167)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1167](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1167)
 
 `findAll` asks the adapter's `findAll` method to find the records for the
 given type, and returns a promise which will resolve with all records of
@@ -599,7 +599,7 @@ use [Store.request](#request) instead
 findAll(type: string, options?: BaseFinderOptions): Promise<LegacyLiveArray<unknown>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1169](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1169)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1169](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1169)
 
 ##### Parameters
 
@@ -631,7 +631,7 @@ findRecord<T>(
 ): Promise<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:981](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L981)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:981](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L981)
 
 This method returns a record for a given identifier or type and id combination.
 
@@ -1035,7 +1035,7 @@ findRecord(
 ): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:983](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L983)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:983](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L983)
 
 ##### Parameters
 
@@ -1063,7 +1063,7 @@ Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:983](h
 findRecord<T>(resource: ResourceIdentifierObject<TypeFromInstance<T>>, options?: FindRecordOptions): Promise<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:985](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L985)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:985](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L985)
 
 ##### Type Parameters
 
@@ -1093,7 +1093,7 @@ Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:985](h
 findRecord(resource: ResourceIdentifierObject, options?: FindRecordOptions): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:987](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L987)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:987](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L987)
 
 ##### Parameters
 
@@ -1121,7 +1121,7 @@ getReference(resource:
   | ResourceIdentifierObject, id: string | number): RecordReference;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1369](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1369)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1369](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1369)
 
 Get the reference for the specified record.
 
@@ -1186,7 +1186,7 @@ use [Store.request](#request) for loading and [Store.cache](#cache) for direct d
 getRequestStateService(): RequestStateService;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1675](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1675)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1675](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1675)
 
 Retrieve the RequestStateService instance
 associated with this Store.
@@ -1206,7 +1206,7 @@ that have been initiated for a given identifier.
 getSchemaDefinitionService(): SchemaService;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:491](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L491)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:491](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L491)
 
 DEPRECATED - Use the property `store.schema` instead.
 
@@ -1232,7 +1232,7 @@ instantiateRecord<T>(identifier: ResourceKey, createRecordArgs: {
 }): unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:407](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L407)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:407](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L407)
 
 A hook which an app or addon may implement. Called when
 the Store is attempting to create a Record Instance for
@@ -1301,7 +1301,7 @@ modelFor(type: string): ModelSchema;
 modelFor<T>(type: TypeFromInstance<T>): ModelSchema<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1391](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1391)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1391](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1391)
 
 Returns the schema for a particular resource type (modelName).
 
@@ -1347,7 +1347,7 @@ use [Store.schema](#schema) instead
 modelFor(type: string): ModelSchema;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1393](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1393)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1393](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1393)
 
 ##### Parameters
 
@@ -1376,7 +1376,7 @@ peekAll(type: string): LegacyLiveArray;
 peekAll<T>(type: TypeFromInstance<T>): LegacyLiveArray<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2139](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2139)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2139](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2139)
 
 This method returns the [LegacyLiveArray](../reactive/types/LegacyLiveArray.md) that contains all of the
 known records for a given type in the store. Each ResourceType has only
@@ -1417,7 +1417,7 @@ the name of the resource
 peekAll(type: string): LegacyLiveArray;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2140](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2140)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2140](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2140)
 
 This method returns the [LegacyLiveArray](../reactive/types/LegacyLiveArray.md) that contains all of the
 known records for a given type in the store. Each ResourceType has only
@@ -1463,7 +1463,7 @@ peekRecord(identifier: ResourceIdentifierObject): unknown;
 peekRecord<T>(type: TypeFromInstance<T>, id: string | number): T | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2085](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2085)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2085](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2085)
 
 Get a record by a given type and ID without triggering a fetch.
 
@@ -1530,7 +1530,7 @@ optional only if the first param is a ResourceIdentifier, else the string id of 
 peekRecord(type: string, id: string | number): unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2086](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2086)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2086](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2086)
 
 Get a record by a given type and ID without triggering a fetch.
 
@@ -1591,7 +1591,7 @@ optional only if the first param is a ResourceIdentifier, else the string id of 
 peekRecord<T>(identifier: ResourceIdentifierObject<TypeFromInstance<T>>): T | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2087](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2087)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2087](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2087)
 
 Get a record by a given type and ID without triggering a fetch.
 
@@ -1650,7 +1650,7 @@ post.id; // '1'
 peekRecord(identifier: ResourceIdentifierObject): unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2088](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2088)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2088](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2088)
 
 Get a record by a given type and ID without triggering a fetch.
 
@@ -1715,7 +1715,7 @@ push(data: CollectionResourceDocument): unknown[];
 push(data: EmptyResourceDocument): null;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2346](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2346)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2346](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2346)
 
 Push some data for a given type into the store.
 
@@ -1876,7 +1876,7 @@ the primary record(s) that created or updated.
 push<T>(data: SingleResourceDocument<TypeFromInstance<T>>): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2347](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2347)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2347](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2347)
 
 Push some data for a given type into the store.
 
@@ -2043,7 +2043,7 @@ the primary record(s) that created or updated.
 push(data: SingleResourceDocument): unknown;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2348](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2348)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2348](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2348)
 
 Push some data for a given type into the store.
 
@@ -2204,7 +2204,7 @@ the primary record(s) that created or updated.
 push<T>(data: CollectionResourceDocument<TypeFromInstance<T>>): T[];
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2349](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2349)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2349](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2349)
 
 Push some data for a given type into the store.
 
@@ -2371,7 +2371,7 @@ the primary record(s) that created or updated.
 push(data: CollectionResourceDocument): unknown[];
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2350](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2350)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2350](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2350)
 
 Push some data for a given type into the store.
 
@@ -2553,7 +2553,7 @@ query<T>(
 ): Promise<LegacyQueryArray<T>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1221](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1221)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1221](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1221)
 
 This method delegates a query to the adapter. This is the one place where
 adapter-level semantics are exposed to the application.
@@ -2644,7 +2644,7 @@ query(
 ): Promise<LegacyQueryArray<unknown>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1223](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1223)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1223](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1223)
 
 ##### Parameters
 
@@ -2693,7 +2693,7 @@ queryRecord<T>(
 ): Promise<T | null>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1327](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1327)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1327](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1327)
 
 This method makes a request for one record, where the `id` is not known
 beforehand (if the `id` is known, use [findRecord](#findrecord)
@@ -2835,7 +2835,7 @@ queryRecord(
 ): Promise<unknown>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1329](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1329)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1329](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1329)
 
 ##### Parameters
 
@@ -2865,7 +2865,7 @@ Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1329](
 registerSchema(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:599](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L599)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:599](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L599)
 
 DEPRECATED - Use `createSchemaService` instead.
 
@@ -2935,7 +2935,7 @@ export default class extends Store {
 registerSchemaDefinitionService(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:545](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L545)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:545](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L545)
 
 DEPRECATED - Use `createSchemaService` instead.
 
@@ -3005,7 +3005,7 @@ export default class extends Store {
 request<RT>(requestConfig: StoreRequestInput<RT>): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1786](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1786)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1786](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1786)
 
 ::: tip 💡 For a more complete overview see the [Request Guide](/guides/the-manual/requests/)
 :::
@@ -3118,7 +3118,7 @@ content.data; // ReactiveResource, typed from the builder's response type
 saveRecord<T>(record: T, options?: Record<string, unknown>): Promise<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1406](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1406)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1406](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1406)
 
 Trigger a save for a Record.
 
@@ -3160,7 +3160,7 @@ use [Store.request](#request) instead
 teardownRecord(record: unknown): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:418](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L418)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:418](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L418)
 
 A hook which an app or addon may implement. Called when
 the Store is destroying a Record Instance. This hook should
@@ -3192,7 +3192,7 @@ unloadAll(type?: string): void;
 unloadAll<T>(type: TypeFromInstance<T>): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2168](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2168)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2168](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2168)
 
 This method unloads all records in the store.
 It schedules unloading to happen during the next run loop.
@@ -3228,7 +3228,7 @@ the name of the resource
 unloadAll(type?: string): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2169](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2169)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2169](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2169)
 
 This method unloads all records in the store.
 It schedules unloading to happen during the next run loop.
@@ -3260,7 +3260,7 @@ the name of the resource
 unloadRecord<T>(record: T): void;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2034](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2034)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2034](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2034)
 
 For symmetry, a record can be unloaded via the store.
 This will cause the record to be destroyed and freed up for garbage collection.
@@ -3296,7 +3296,7 @@ store.unloadRecord(post);
 readonly cacheKeyManager: CacheKeyManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1475](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1475)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1475](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1475)
 
 Provides access to the CacheKeyManager
 for this store.
@@ -3313,7 +3313,7 @@ or request.
 optional lifetimes?: CachePolicy;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1527](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1527)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1527](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1527)
 
 A Property which an App may set to provide a CachePolicy
 to control when a cached request becomes stale.
@@ -3348,7 +3348,7 @@ store.lifetimes = {
 readonly notifications: NotificationManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1445](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1445)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1445](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1445)
 
 Provides access to the [NotificationManager](../store/types/NotificationManager.md) associated
 with this Store instance.
@@ -3364,7 +3364,7 @@ changes to the cache.
 requestManager: RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1497](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1497)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1497](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1497)
 
 Provides access to the [RequestManager](RequestManager.md) instance associated
 with this Store instance.
@@ -3393,7 +3393,7 @@ class AppStore extends Store {
 get cache(): ReturnType<this["createCache"]>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2399](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L2399)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:2399](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L2399)
 
 Returns the cache instance associated to this Store, instantiates the Cache
 if necessary via `Store.createCache`
@@ -3412,7 +3412,7 @@ if necessary via `Store.createCache`
 get identifierCache(): CacheKeyManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1580](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1580)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1580](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1580)
 
 ##### Deprecated
 
@@ -3432,7 +3432,7 @@ use [Store.cacheKeyManager](ConfiguredStore.md#cachekeymanager)
 get schema(): ReturnType<this["createSchemaService"]>;
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1456](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/store/-private/store-service.ts#L1456)
+Defined in: [warp-drive-packages/core/src/store/-private/store-service.ts:1456](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/store/-private/store-service.ts#L1456)
 
 Provides access to the SchemaService instance
 for this Store instance.

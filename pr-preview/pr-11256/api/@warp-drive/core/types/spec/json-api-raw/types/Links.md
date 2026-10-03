@@ -15,7 +15,7 @@ interface Links {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:64](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L64)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:64](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L64)
 
 The `links` member of a {json:api} resource or document.
 
@@ -33,7 +33,7 @@ The `links` member of a {json:api} resource or document.
 optional related?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:68](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L68)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:68](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L68)
 
 a link for retrieving the related resource(s)
 
@@ -45,6 +45,6 @@ a link for retrieving the related resource(s)
 optional self?: Link | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:72](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L72)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:72](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L72)
 
 a link for retrieving the resource or document itself

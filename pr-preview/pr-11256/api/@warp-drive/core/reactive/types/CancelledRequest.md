@@ -30,7 +30,7 @@ interface CancelledRequest<RT, E extends StructuredErrorDocument = StructuredErr
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:494](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L494)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:494](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L494)
 
 The state of a request that was aborted before it settled.
 
@@ -56,7 +56,7 @@ so check `status` or `isCancelled` to tell the two apart.
 refresh(usePolicy?: boolean): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:530](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L530)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:530](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L530)
 
 Retries the request with low (non-blocking) priority. This is the
 same as having passed `cacheOptions.backgroundReload = true` on the original
@@ -92,7 +92,7 @@ as its context is bound.
 reload(): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:512](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L512)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:512](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L512)
 
 Retries the request with high (blocking) priority. This is the
 same as having passed `cacheOptions.reload = true` on the original
@@ -122,7 +122,7 @@ as its context is bound.
 error: E;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:585](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L585)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:585](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L585)
 
 Once the request has rejected, this will
 be the error the request rejected with.
@@ -139,7 +139,7 @@ use `reason` instead
 isCancelled: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:598](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L598)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:598](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L598)
 
 Whether the request is cancelled.
 
@@ -151,7 +151,7 @@ Whether the request is cancelled.
 isError: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:562](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L562)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:562](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L562)
 
 Whether the request has rejected
 with an error.
@@ -164,7 +164,7 @@ with an error.
 isLoading: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:548](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L548)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:548](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L548)
 
 Whether the request is pending.
 
@@ -176,7 +176,7 @@ Whether the request is pending.
 isPending: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:542](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L542)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:542](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L542)
 
 Whether the request is pending.
 
@@ -188,7 +188,7 @@ Whether the request is pending.
 isSuccess: false;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:555](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L555)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:555](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L555)
 
 Whether the request has resolved
 successfully.
@@ -201,7 +201,7 @@ successfully.
 loadingState: RequestLoadingState;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:600](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L600)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:600](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L600)
 
 ***
 
@@ -211,7 +211,7 @@ Defined in: [warp-drive-packages/core/src/signals/request-state.ts:600](https://
 reason: E;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:592](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L592)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:592](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L592)
 
 Once the request has rejected, this will
 be the error the request rejected with.
@@ -226,7 +226,7 @@ request:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:601](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L601)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:601](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L601)
 
 ***
 
@@ -239,7 +239,7 @@ response:
   | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:602](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L602)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:602](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L602)
 
 ***
 
@@ -249,7 +249,7 @@ Defined in: [warp-drive-packages/core/src/signals/request-state.ts:602](https://
 result: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:576](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L576)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:576](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L576)
 
 Once the request has resolved, this will
 be the value the request resolved to.
@@ -266,7 +266,7 @@ use `value` instead
 status: "cancelled";
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:536](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L536)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:536](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L536)
 
 The status of the request.
 
@@ -278,7 +278,7 @@ The status of the request.
 value: null;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:569](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/core/src/signals/request-state.ts#L569)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:569](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/core/src/signals/request-state.ts#L569)
 
 Once the request has resolved, this will
 be the value the request resolved to.

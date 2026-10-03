@@ -29,7 +29,7 @@ function withArrayDefaults<ArrayName extends string, PrimitiveType extends strin
 };
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L11)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts:11](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/legacy/src/model-fragments/utilities/with-array-defaults.ts#L11)
 
 Used as a helper to setup the relevant parts of an array
 schema and add extensions etc.

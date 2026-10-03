@@ -11,7 +11,7 @@ description: >-
 
 # &#x20;EmbeddedRecordsMixin
 
-Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:104](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L104)
+Defined in: [warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts:104](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/legacy/src/serializer/-private/embedded-records-mixin.ts#L104)
 
 ## Using Embedded Records
 

@@ -9,7 +9,7 @@ description: >-
 
 # &#x20;Request\<RT, E>
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:434](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/request.gts#L434)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:434](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/ember/src/-private/request.gts#L434)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your Ember application. It provides a declarative approach to reactive
@@ -290,7 +290,7 @@ Component<RequestSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:499](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/request.gts#L499)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:499](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/ember/src/-private/request.gts#L499)
 
 Called before the component has been removed from the DOM.
 
@@ -314,7 +314,7 @@ Component.willDestroy
 get state(): RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:466](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/request.gts#L466)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:466](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/ember/src/-private/request.gts#L466)
 
 The active RequestSubscription for this component's request,
 created lazily and recreated if the store changes or a `@subscription` is provided.
@@ -333,7 +333,7 @@ created lazily and recreated if the store changes or a `@subscription` is provid
 get store(): Store$1 | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/request.gts:447](https://github.com/warp-drive-data/warp-drive/blob/946e8e508ccc518b884ee84085a229c80a7f5eb4/warp-drive-packages/ember/src/-private/request.gts#L447)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:447](https://github.com/warp-drive-data/warp-drive/blob/c095d2e6f55c70ee964e1a33fb501af9507bd094/warp-drive-packages/ember/src/-private/request.gts#L447)
 
 The store or request manager used to make the request, resolved from
 either the `@store` arg or the consumed context/service.
