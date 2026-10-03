@@ -14,7 +14,7 @@ interface LocalOptions {
 }
 ```
 
-Defined in: [fields/local.ts:13](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/schema-dsl/src/fields/local.ts#L13)
+Defined in: [fields/local.ts:13](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/schema-dsl/src/fields/local.ts#L13)
 
 Options accepted by the [local](../functions/local.md) decorator.
 
@@ -26,7 +26,7 @@ Options accepted by the [local](../functions/local.md) decorator.
 optional defaultValue?: PrimitiveValue;
 ```
 
-Defined in: [fields/local.ts:20](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/schema-dsl/src/fields/local.ts#L20)
+Defined in: [fields/local.ts:20](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/schema-dsl/src/fields/local.ts#L20)
 
 The value to use for the field until it is first set. Compiles onto
 the [LocalField](../../core/types/schema/fields/types/LocalField.md)'s `options.defaultValue`.

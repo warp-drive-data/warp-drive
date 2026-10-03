@@ -23,13 +23,16 @@ function setConfig(
 function setConfig(macros: object, config: WarpDriveConfig): void;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:254](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/build-config/src/index.ts#L254)
+Defined in: [warp-drive-packages/build-config/src/index.ts:260](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/build-config/src/index.ts#L260)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
 and enables adjusting log instrumentation, removing code
 that supports deprecated features, enabling canary features
 and enabling/disabling optional features.
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 The library uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 to perform this final configuration code transform.
@@ -98,13 +101,16 @@ function setConfig(
 ): void;
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:255](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/build-config/src/index.ts#L255)
+Defined in: [warp-drive-packages/build-config/src/index.ts:261](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/build-config/src/index.ts#L261)
 
 Sets the build configuration for WarpDrive that ensures
 environment specific behaviors are activated/deactivated
 and enables adjusting log instrumentation, removing code
 that supports deprecated features, enabling canary features
 and enabling/disabling optional features.
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 The library uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 to perform this final configuration code transform.

@@ -22,14 +22,14 @@ be considered a remote source of data for your application.
 ***Warp*Drive** offers both a JavaScript API and a Component API for working with
 requests. Both APIs offer a clean way of working with asynchronous data via reactive
 values and states instead of needing to switch into imperative code or async/await. This
-approach enables enables automatic cleanup when components dismount, unlocking [Intelligent Lifecycle Management]()
+approach enables automatic cleanup when components dismount, unlocking [Intelligent Lifecycle Management]()
 
 :::tabs
 
 \== Component API
 
 With the component API, any builder function can be used to produce the query
-the `<Request />` component should make.
+the `<Request />` component ([Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)) should make.
 
 ::: code-group
 
@@ -57,7 +57,7 @@ export default <template>
 ```
 
 ```tsx:line-numbers [React]
-import { Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/react';
 import { findRecord } from '@warp-drive/utilities/json-api';
 import { Spinner } from './spinner';
 
@@ -304,7 +304,7 @@ Of course, writing requests so manually quickly gets repetitive.
 
 ***Warp*Drive** offers two abstractions for helping to write organized, reusable requests.
 
-* [Builders](./builders.md) - simple functions that produce a json request object
+* [Builders](./builders.md) - documented, reusable functions that produce a json request object, sometimes as simple as just a `{ url }`
 * [Handlers](./handlers.md) - middleware that enable enhancing, modifying, or responding to requests
 
 Here's an example of how the requests above could be expressed as builders:
@@ -386,7 +386,12 @@ const { content } = await store.request(createContentLike({
 
 :::
 
-Builders make it easy to quickly write shareable, reusable requests with [typed responses](./typing-requests.md) that mirror your application's capabilities and critical business logic.
+Together, an app's builders form an [SDK for its API](./builders.md#an-sdk-for-your-api): named,
+documented functions that capture what each endpoint does and the business logic around it, that
+editors autocomplete, and that work the same in any framework. They are also the only way to give a
+request a [typed response](./typing-requests.md) without a cast, and because a builder produces the
+same RequestKey every time, components can make the same request wherever they need the data and
+share one response instead of passing it down.
 
 We build on this foundation to give access to a powerful pipeline for managing requests.
 
@@ -423,7 +428,7 @@ The [File System](https://developer.mozilla.org/en-US/docs/Web/API/File_System_A
 
 ### The Chain of Responsibility
 
-When we configured the `RequestManager` above, you may have noticed that when we gave it an array of handlers with which to respond to requests.
+When we configured the [`RequestManager`](/api/@warp-drive/core/classes/RequestManager) above, you may have noticed that when we gave it an array of handlers with which to respond to requests.
 
 `RequestManager` follows the [chain-of-responsibility pattern](https://en.wikipedia.org/wiki/Chain-of-responsibility_pattern): each handler in our array may choose to respond to the request, modify it, or pass it along unchanged to the next handler in the array, in array order.
 
@@ -439,6 +444,8 @@ As well as a suite of useful [utilities](/api/@warp-drive/utilities/handlers/) f
 
 :::tip Paginated collections
 A request that loads one page of a collection can drive a whole pager or infinite list. The
-experimental [Pagination](../experiments/pagination.md) primitives and the `<Paginate />` component
-build on the requests described here.
+experimental [Pagination](../experiments/pagination.md) primitives and the Ember [`<Paginate />`](/api/@warp-drive/ember/experiments/classes/Paginate) component
+build on the requests described here. A builder for a paginated collection requests only the first
+page, and the rest are loaded by following the response's links; see
+[Paginating With Links](./builders.md#paginating-with-links).
 :::

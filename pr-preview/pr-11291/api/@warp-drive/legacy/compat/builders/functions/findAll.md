@@ -21,7 +21,7 @@ function findAll(type: string, options?: BaseFinderOptions): FindAllRequestInput
 function findAll<T extends TypedRecordInstance>(type: TypeFromInstance<T>, options?: BaseFinderOptions): FindAllRequestInput<TypeFromInstance<T>, T[]>;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:38](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L38)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:38](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L38)
 
 This function builds a request config to perform a `findAll` request for the given type.
 When passed to `store.request`, this config will result in the same behavior as a `store.findAll` request.
@@ -65,7 +65,7 @@ request config
 function findAll(type: string, options?: BaseFinderOptions): FindAllRequestInput;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:42](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L42)
+Defined in: [warp-drive-packages/legacy/src/compat/builders/find-all.ts:42](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/compat/builders/find-all.ts#L42)
 
 This function builds a request config to perform a `findAll` request for the given type.
 When passed to `store.request`, this config will result in the same behavior as a `store.findAll` request.

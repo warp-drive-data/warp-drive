@@ -12,6 +12,7 @@ This module provides utilities for working with [{json:api}](https://jsonapi.org
 
 Request builders are functions that produce [Fetch Options](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API).
 They take a few contextual inputs about the request you want to make, abstracting away the gnarlier details.
+See the [Builders](/guides/the-manual/requests/builders) guide for what request builders do and when to use one.
 
 For instance, to fetch a resource from your API
 
@@ -66,3 +67,8 @@ const data = await store.request(options);
 * [serializeResources](functions/serializeResources.md)
 * [setBuildURLConfig](functions/setBuildURLConfig.md)
 * [updateRecord](functions/updateRecord.md)
+
+## Types
+
+* [JSONAPIConfig](types/JSONAPIConfig.md)
+* [JsonApiResourcePatch](types/JsonApiResourcePatch.md)

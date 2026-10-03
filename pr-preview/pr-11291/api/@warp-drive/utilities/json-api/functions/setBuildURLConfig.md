@@ -12,12 +12,15 @@ description: >-
 function setBuildURLConfig(config: JSONAPIConfig): void;
 ```
 
-Defined in: [-private/json-api/-utils.ts:63](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L63)
+Defined in: [-private/json-api/-utils.ts:73](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/json-api/-utils.ts#L73)
 
 Allows setting extensions and profiles to be used in the `Accept` header.
 
 Extensions and profiles are keyed by their namespace with the value being
 their URI.
+
+The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+guide uses it to configure a host, a namespace and a pagination profile.
 
 Example:
 
@@ -52,7 +55,7 @@ type BuildURLConfig = {
 
 ### config
 
-`JSONAPIConfig`
+[`JSONAPIConfig`](../types/JSONAPIConfig.md)
 
 ## Returns
 

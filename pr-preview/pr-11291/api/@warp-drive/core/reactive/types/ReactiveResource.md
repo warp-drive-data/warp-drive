@@ -12,13 +12,16 @@ description: >-
 interface ReactiveResource {}
 ```
 
-Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:64](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/reactive/-private/record.ts#L64)
+Defined in: [warp-drive-packages/core/src/reactive/-private/record.ts:64](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/reactive/-private/record.ts#L64)
 
 **`Hideconstructor`**
 
 A class that uses a the ResourceSchema for a ResourceType
 and a ResourceKey to transform data from the cache into a rich, reactive
 object.
+
+The [ResourceSchemas](/guides/the-manual/schemas/resources/) guide shows how to
+define the schema it reads.
 
 This class is not directly instantiable. To use it, you should
 configure the store's `instantiateRecord` and `teardownRecord` hooks

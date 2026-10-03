@@ -12,7 +12,7 @@ description: >-
 function Request<RT, E>($props: RequestProps<RT, E>): Element;
 ```
 
-Defined in: [-private/request.tsx:182](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/react/src/-private/request.tsx#L182)
+Defined in: [-private/request.tsx:316](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/react/src/-private/request.tsx#L316)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your React application. It provides a declarative approach to reactive
@@ -20,6 +20,21 @@ control-flow for managing requests and state in your application.
 
 The `<Request />` component is ideal for handling "boundaries", outside which some
 state is still allowed to be unresolved and within which it MUST be resolved.
+
+See [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) for how it
+works together with the JS API.
+
+## Props
+
+Pass a `states` object with a component for each state (see below). Then
+pass either `request`, a request already made with `store.request`, or
+`query`, a request for the component to make. The store comes from the
+`store` prop, else from the nearest [StoreProvider](StoreProvider.md). The component
+also accepts `subscription`, `autorefresh`, `autorefreshThreshold`,
+`autorefreshBehavior`, and `chrome`.
+
+See [RequestProps](../types/RequestProps.md) for the full list of props, and
+[RequestStates](../types/RequestStates.md) for the components you can pass in `states`.
 
 ## Request States
 
@@ -39,6 +54,7 @@ the `content` state.
 
 ```tsx
 import { Request } from "@warp-drive/react";
+import { findRecord } from "@warp-drive/utilities/json-api";
 
 export function UserPreview($props: { id: string | null }) {
   return (
@@ -87,7 +103,7 @@ export function UserPreview($props: { id: string | null }) {
 
 ### $props
 
-`RequestProps`<`RT`, `E`>
+[`RequestProps`](../types/RequestProps.md)<`RT`, `E`>
 
 ## Returns
 

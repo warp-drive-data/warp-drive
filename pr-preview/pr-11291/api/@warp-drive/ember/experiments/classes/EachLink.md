@@ -8,11 +8,14 @@ description: >-
 
 # &#x20;\<EachLink />&#x20;
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:324](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/experiments.d.ts#L324)
+Defined in: [warp-drive-packages/ember/src/-private/each-link.gts:100](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/each-link.gts#L100)
 
 The `<EachLink />` component yields the navigation links for a paginated
 collection, derived from the [PagedPaginationState](../../../experiments/pagination/types/PagedPaginationState.md) a `<Paginate />`
 component yields to its `content` block.
+
+See the [Pagination guide](/guides/the-manual/experiments/pagination) for how
+paged and infinite pagination work.
 
 It renders no markup of its own: it yields a single [PaginationLinks](../../../experiments/pagination/types/PaginationLinks.md)
 object, and the consumer decides which links to render, with what markup,
@@ -127,7 +130,7 @@ Component<EachLinkSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/experiments.d.ts:327](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/experiments.d.ts#L327)
+Defined in: [warp-drive-packages/ember/src/-private/each-link.gts:113](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/each-link.gts#L113)
 
 Called before the component has been removed from the DOM.
 

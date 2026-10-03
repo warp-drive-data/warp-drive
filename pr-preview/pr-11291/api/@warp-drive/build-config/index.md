@@ -11,6 +11,8 @@ description: >-
 
 :::warning Legacy package
 `@warp-drive/build-config` is a legacy package. New code should use [`@warp-drive/core/build-config`](/api/@warp-drive/core/build-config/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 This package is the implementation home of the `setConfig` build plugin that configures

@@ -23,9 +23,13 @@ function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndReques
 function useLegacyStore<T extends Cache>(options: LegacyModelStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:299](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/index.ts#L299)
+Defined in: [warp-drive-packages/legacy/src/index.ts:303](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/index.ts#L303)
 
 Use the legacy store with the given options.
+
+See [Configure The Store](/guides/configuration/#configure-the-store) for where it fits in an
+app's setup, and [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode) for the schemas
+it supports.
 
 See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 
@@ -164,9 +168,13 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:303](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/index.ts#L303)
+Defined in: [warp-drive-packages/legacy/src/index.ts:307](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/index.ts#L307)
 
 Use the legacy store with the given options.
+
+See [Configure The Store](/guides/configuration/#configure-the-store) for where it fits in an
+app's setup, and [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode) for the schemas
+it supports.
 
 See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 
@@ -305,9 +313,13 @@ explicitly, so a handler relying on it should treat it as optional (as
 function useLegacyStore<T extends Cache>(options: LegacyModelAndNetworkAndRequestStoreSetupOptions<T>, StoreKlass?: typeof Store$1): typeof ConfiguredStore;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/index.ts:307](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/index.ts#L307)
+Defined in: [warp-drive-packages/legacy/src/index.ts:311](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/index.ts#L311)
 
 Use the legacy store with the given options.
+
+See [Configure The Store](/guides/configuration/#configure-the-store) for where it fits in an
+app's setup, and [LegacyMode](/guides/the-manual/schemas/resources/legacy-mode) for the schemas
+it supports.
 
 See [LegacyStoreSetupOptions](../types/LegacyStoreSetupOptions.md) for details on the available options.
 

@@ -46,7 +46,7 @@ interface FetchError extends DOMException {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:120](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L120)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:120](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L120)
 
 Additional properties exposed on errors thrown by the
 [Fetch Handler](../../../variables/Fetch.md).
@@ -98,7 +98,7 @@ DOMException.cause
 code: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:126](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L126)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:126](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L126)
 
 Alias for [status](#status).
 
@@ -258,7 +258,7 @@ DOMException.INVALID_STATE_ERR
 isRequestError: true;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:156](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L156)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:156](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L156)
 
 A property signifying that an Error uses the FetchError
 interface.
@@ -289,7 +289,7 @@ DOMException.message
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:134](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L134)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:134](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L134)
 
 The name associated to the [status code](#status).
 
@@ -437,7 +437,7 @@ DOMException.stack
 status: number;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:143](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L143)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:143](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L143)
 
 The http status code associated to the returned error.
 
@@ -454,7 +454,7 @@ Aborted requests will have an error code of `20`.
 statusText: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:151](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/utils.ts#L151)
+Defined in: [warp-drive-packages/core/src/request/-private/utils.ts:151](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/utils.ts#L151)
 
 The Status Text associated to the [status code](#status)
 for the error.

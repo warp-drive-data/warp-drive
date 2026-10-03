@@ -184,7 +184,7 @@ WarpDrive 6.0. Configure WarpDrive through the build plugin instead:
   import { warpDrive } from '@warp-drive/core/build-plugin';
   plugins: [...ember(), warpDrive.vite({ compatWith: '5.7' })]
 
-Migration guide: https://docs.warp-drive.io/guides/build-plugin-migration
+Migration guide: https://warp-drive.io/guides/build-plugin-migration
 ```
 
 `babelPlugin()`, the `macros()` helper, and the documented `babel-plugin-debug-macros` entry

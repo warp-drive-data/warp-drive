@@ -68,12 +68,15 @@ interface ReactiveResourceArray<T = unknown> extends Omit<T[], "[]"> {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts:124](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#L124)
+Defined in: [warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts:127](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/store/-private/record-arrays/resource-array.ts#L127)
 
 A reactive Array of records, backed by a [ResourceKey](../../types/identifier/types/ResourceKey.md) array in the
 cache. Returned by [Store.request](../../classes/Store.md#request) for collection responses and used
 as the base for relationship and legacy record-array types such as
 [LegacyLiveArray](LegacyLiveArray.md), [LegacyQueryArray](LegacyQueryArray.md) and [LegacyManyArray](LegacyManyArray.md).
+
+The [Key Terminology](/guides/the-manual/caching/key-terms#resources) guide explains
+how it relates to resources.
 
 Behaves like a native Array: `Array.isArray(arr)` and `arr instanceof Array`
 both report `true`. The array stays in sync with the cache, updating

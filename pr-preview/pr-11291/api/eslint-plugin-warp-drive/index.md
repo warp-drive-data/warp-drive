@@ -35,6 +35,10 @@ For security and backwards compatibility, this Package is also available as `esl
 | [no-invalid-resource-types](rules/no-invalid-resource-types/index.md) | Ensures resource types follow a conventional pattern when used in common APIs | 🏆 | ✅🛠️ |
 | [no-invalid-resource-ids](rules/no-invalid-resource-ids/index.md) | Ensures resource ids are strings when used in common APIs | 🏆 | ✅🛠️ |
 | [no-legacy-imports](rules/no-legacy-imports/index.md) | Ensures imports use paths specified by the Package Unification RFC | 🏆 | ✅🛠️ |
+| [no-test-module-hooks](rules/no-test-module-hooks/index.md) | Disallow `hooks.beforeEach`/`hooks.afterEach` in favor of setup functions each test calls explicitly | ⚡️ | |
+| [template-always-use-request-content](rules/template-always-use-request-content/index.md) | Ensures the result of a `<Request>` is actually consumed | 🐞 | |
+| [template-require-request-error-block](rules/template-require-request-error-block/index.md) | Ensures `<Request>`/`<Await>` always provide an `:error` block | 🐞 | |
+| [require-request-error-block](rules/require-request-error-block/index.md) | Ensures `<Request>` is always given a `states.error` handler | 🐞 | |
 
 ## Usage
 
@@ -48,6 +52,55 @@ module.exports = [
   ...WarpDriveRecommended,
 ];
 ```
+
+The template rules, `template-always-use-request-content` and
+`template-require-request-error-block`, are available as a separate flat config, since it also
+sets `ember-eslint-parser` as the parser for `.gjs`/`.gts` files:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveTemplateRecommended = require('eslint-plugin-warp-drive/recommended-templates');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveTemplateRecommended,
+];
+```
+
+The React rule, `require-request-error-block`, is available as a separate flat config, since it
+also enables JSX parsing for `.jsx`/`.tsx` files:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveReactRecommended = require('eslint-plugin-warp-drive/recommended-react');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveReactRecommended,
+];
+```
+
+The internal rule, `no-test-module-hooks`, encodes conventions for a large test suite like
+***Warp*Drive**'s own rather than for app code, so it is kept out of `recommended` and is
+available as its own flat config:
+
+```ts
+// eslint.config.js (flat config)
+const WarpDriveRecommended = require('eslint-plugin-warp-drive/recommended');
+const WarpDriveInternalRecommended = require('eslint-plugin-warp-drive/recommended-internal');
+
+module.exports = [
+  ...WarpDriveRecommended,
+  ...WarpDriveInternalRecommended,
+];
+```
+
+## Guides
+
+* [Linting](/guides/linting/): install the plugin and enable its recommended, template and React
+  configs.
 
 ## Variables
 

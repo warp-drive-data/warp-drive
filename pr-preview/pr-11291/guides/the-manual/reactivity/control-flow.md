@@ -12,14 +12,15 @@ description: >-
 ***Warp*Drive** offers both a JavaScript API and a Component API for working with
 requests. Both APIs offer a clean way of working with asynchronous data via reactive
 values and states instead of needing to switch into imperative code or async/await. This
-approach enables enables automatic cleanup when components dismount, unlocking [Intelligent Lifecycle Management]()
+approach enables automatic cleanup when components dismount, unlocking [Intelligent Lifecycle Management]()
 
-:::tabs
+::::tabs
 
 \== Component API
 
 With the component API, any builder function can be used to produce the query
-the `<Request />` component should make.
+the `<Request />` component should make (API docs:
+[Ember](/api/@warp-drive/ember/classes/Request), [React](/api/@warp-drive/react/functions/Request)).
 
 ::: code-group
 
@@ -47,7 +48,7 @@ export default <template>
 ```
 
 ```tsx:line-numbers [React]
-import { Request } from '@warp-drive/ember';
+import { Request } from '@warp-drive/react';
 import { findRecord } from '@warp-drive/utilities/json-api';
 import { Spinner } from './spinner';
 
@@ -81,11 +82,14 @@ Coming Soon!
 \== JS API
 
 With the JS API, getters and methods can declaratively compute off of
-the state of the request.
+the state of the request, which
+[`getRequestState`](/api/@warp-drive/core/reactive/functions/getRequestState) returns.
 
-::: code-group
+::: tabs key:framework
 
-```glimmer-ts:line-numbers [Ember]
+\=== Ember
+
+```glimmer-ts:line-numbers
 import Component from '@glimmer/component';
 import { cached } from '@glimmer/tracking';
 import { service } from '@ember/service';
@@ -117,7 +121,14 @@ export default class Example extends Component { // [!code focus]
 } // [!code focus]
 ```
 
-```tsx:line-numbers [React]
+\=== React
+
+[`useStore`](/api/@warp-drive/react/functions/useStore) returns the store your app provides (see
+[Provide the Store in React](/guides/configuration/react#provide-the-store)), and a
+[`<ReactiveContext />`](/api/@warp-drive/react/functions/ReactiveContext) re-renders the
+component inside it when the request state it reads changes.
+
+```tsx:line-numbers
 import { useMemo } from 'react';
 import { useStore, ReactiveContext } from '@warp-drive/react';
 import { findRecord } from '@warp-drive/utilities/json-api';
@@ -147,13 +158,19 @@ export function Example($props) {
 }
 ```
 
-```.svelte [Svelte]
+\=== Svelte
+
+```.svelte
 Coming Soon!
 ```
 
-```.vue [Vue]
+\=== Vue
+
+```.vue
 Coming Soon!
 ```
+
+:::
 
 \== Combined
 
@@ -201,4 +218,4 @@ Coming Soon!
 Coming Soon!
 ```
 
-:::
+::::

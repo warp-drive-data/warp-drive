@@ -12,9 +12,29 @@ description: >-
 function getRequestState<RT, E>(future: Future<RT>): Readonly<RequestState<RT, StructuredErrorDocument<E>>>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/request-state.ts:831](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/signals/request-state.ts#L831)
+Defined in: [warp-drive-packages/core/src/signals/request-state.ts:855](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/signals/request-state.ts#L855)
 
 `getRequestState` can be used in both JavaScript and Template contexts.
+
+It returns a [RequestState](../types/RequestState.md): a reactive object that updates as the
+request advances. Calling it again with the same [Future](../../request/types/Future.md) returns the
+same object. Check `status` to narrow it to one of four states:
+
+* [PendingRequest](../types/PendingRequest.md) (`'pending'`) is the initial state, before the
+  request settles.
+* [ResolvedRequest](../types/ResolvedRequest.md) (`'fulfilled'`) holds the response content on `value`.
+* [RejectedRequest](../types/RejectedRequest.md) (`'rejected'`) holds the error on `reason`.
+* [CancelledRequest](../types/CancelledRequest.md) (`'cancelled'`) is a request that was aborted.
+  `isError` is also `true` for a cancelled request, so check `status` or
+  `isCancelled` rather than `isError` if you handle it differently.
+
+Every state also exposes a [RequestLoadingState](../types/RequestLoadingState.md) on `loadingState`
+for tracking the progress of the response stream.
+
+The [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) guide shows
+how to render request states with it, and
+[Using The Response](/guides/the-manual/requests/using-the-response) covers the
+`Future` it reads.
 
 ```ts
 import { getRequestState } from '@warp-drive/ember';
@@ -78,6 +98,10 @@ which offers a number of additional capabilities for requests *beyond* what
 
 [`Future`](../../request/types/Future.md)<`RT`>
 
+the request [Future](../../request/types/Future.md) to track, as returned by `store.request` or `requestManager.request`
+
 ## Returns
 
 [`Readonly`](https://www.typescriptlang.org/docs/handbook/utility-types.html#readonlytype)<[`RequestState`](../types/RequestState.md)<`RT`, [`StructuredErrorDocument`](../../types/request/types/StructuredErrorDocument.md)<`E`>>>
+
+the cached [RequestState](../types/RequestState.md) for `future`

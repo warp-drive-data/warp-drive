@@ -12,7 +12,7 @@ description: >-
 function objectSchema<T extends ObjectSchema>(schema: T): T;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2606](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L2606)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:2653](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L2653)
 
 A no-op type utility that enables type-checking object schema
 definitions.

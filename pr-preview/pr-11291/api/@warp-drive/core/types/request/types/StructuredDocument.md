@@ -14,10 +14,13 @@ type StructuredDocument<T> =
 | StructuredErrorDocument<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:566](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/request.ts#L566)
+Defined in: [warp-drive-packages/core/src/types/request.ts:569](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/request.ts#L569)
 
 A union of the resolve/reject data types for the [Future](../../../request/types/Future.md)
 returned by [request](../../../classes/Store.md#request)
+
+The [Using The Response](/guides/the-manual/requests/using-the-response) guide shows
+how to read one.
 
 See also the docs for:
 

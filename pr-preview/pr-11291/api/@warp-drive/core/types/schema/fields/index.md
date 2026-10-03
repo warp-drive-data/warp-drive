@@ -7,6 +7,9 @@ description: >-
   and type guards.
 ---
 
+The [Schemas](/guides/the-manual/schemas/) guide teaches how these schemas and
+fields fit together.
+
 ## Functions
 
 * [isLegacyResourceSchema](functions/isLegacyResourceSchema.md)

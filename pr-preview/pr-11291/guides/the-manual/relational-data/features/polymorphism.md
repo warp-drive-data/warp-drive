@@ -92,7 +92,7 @@ To make any relationship an open polymorphic relationship, its options should in
 `polymorphic: true`. The related type can be any meaningful string, and does not need to be a resource type
 ever encountered.
 
-So for instance, to implement our pets relationship using open polymorphism using `Model`:
+So for instance, to implement our pets relationship using open polymorphism using [`Model`](/api/@warp-drive/legacy/model/classes/Model):
 
 ```ts
 import Model, { hasMany } from '@warp-drive/legacy/model';

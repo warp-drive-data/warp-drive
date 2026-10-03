@@ -14,18 +14,25 @@ function withResponseType<T>(obj: RequestInfo): RequestInfo<T> & {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request.ts:43](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request.ts#L43)
+Defined in: [warp-drive-packages/core/src/request.ts:53](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request.ts#L53)
 
 Brands the supplied object with the supplied response type.
+
+Call it inside a [builder](/guides/the-manual/requests/builders), so the type is part of
+the builder's contract and every caller gets it through inference. Calling it inline
+where the request is made is a cast. The [Typing Requests](/guides/the-manual/requests/typing-requests)
+guide shows how to use it.
 
 ```ts
 import type { ReactiveDataDocument } from '@warp-drive/core/reactive';
 import { withResponseType } from '@warp-drive/core/request';
 import type { User } from '#/data/user.ts'
 
-const result = await store.request(
- withResponseType<ReactiveDataDocument<User>>({ url: '/users/1' })
-);
+export function getUser(id: string) {
+  return withResponseType<ReactiveDataDocument<User>>({ url: `/users/${id}` });
+}
+
+const result = await store.request(getUser('1'));
 
 result.content.data; // will have type User
 ```

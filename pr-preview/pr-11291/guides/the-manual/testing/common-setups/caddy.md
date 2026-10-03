@@ -53,7 +53,7 @@ browser already trusts the proxy. Caddy trusts the same authority, so it reaches
 being told to skip certificate checks.
 
 The `@holodeck` matcher names the two paths that go straight to holodeck. `/api` is the
-`namespace` from `setBuildURLConfig`, so if yours differs, change it here. `/__record` is where
+`namespace` from [`setBuildURLConfig`](/api/@warp-drive/utilities/functions/setBuildURLConfig), so if yours differs, change it here. `/__record` is where
 each mock helper posts the fixture it records. The last `handle` sends everything else to Vite,
 including the requests Vite's own forwarder would otherwise take, which is why the Vite setup
 can stay in place underneath.

@@ -11,6 +11,8 @@ description: >-
 
 :::warning Legacy package
 `@ember-data/active-record` is a legacy package. New code should use [`@warp-drive/utilities/active-record`](/api/@warp-drive/utilities/active-record/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 This package used to provide the RequestManager and its related

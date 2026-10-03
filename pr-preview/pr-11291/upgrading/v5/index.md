@@ -302,7 +302,7 @@ This will install the following at the latest release
 
 ::: tabs key:paradigm
 
-\== Classic Config
+\== Ember CLI + Embroider
 
 ```ts [ember-cli-build.js]
 'use strict';
@@ -325,6 +325,32 @@ module.exports = async function (defaults) {
   });
 
   return compatBuild(app, buildOnce);
+};
+```
+
+\== Classic Broccoli Build
+
+```ts [ember-cli-build.js]
+'use strict';
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+
+module.exports = async function (defaults) {
+  const { setConfig } = await import('@warp-drive-mirror/core/build-config'); // [!code focus]
+  const app = new EmberApp(defaults, {});
+
+  setConfig(app, __dirname, { // [!code focus:9]
+    // this should be the most recent <major>.<minor> version for
+    // which all deprecations have been fully resolved
+    // and should be updated when that changes
+    compatWith: '4.12',
+    deprecations: {
+      // ... list individual deprecations that have been resolved here
+    }
+  });
+
+  // setConfig needs no Embroider. It registers the build-time
+  // flags through @embroider/macros, which classic builds run too.
+  return app.toTree();
 };
 ```
 
@@ -647,7 +673,7 @@ export const TimestampedExtensionSchema = {
 
 Step by step, this is how the Model decomposes into those files.
 
-1. The file-path based convention for defining the ResourceType is replaced with specifying a ResourceType on a ResourceSchema. File paths are now purely organizational and discretionary.
+1. The file-path based convention for defining the ResourceType is replaced with specifying a ResourceType on a [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema). File paths are now purely organizational and discretionary.
 
 ```ts [app/data/user/schema.ts]
 // The ResourceSchema in this example is intentionally
@@ -659,7 +685,7 @@ const UserSchema = {
 ```
 
 2. We differentiate between schemas for embedded objects (which have no identity of their own) and
-   schemas for resources (which do have their own identity) by specifying a primaryKey. On `Model` this
+   schemas for resources (which do have their own identity) by specifying a primaryKey. On [`Model`](/api/@warp-drive/legacy/model/classes/Model) this
    was `id` (this is also added by `withDefaults` which we'll see next).
 
 ```ts [app/data/user/schema.ts]
@@ -751,7 +777,7 @@ const UserSchema = withDefaults({
 })
 ```
 
-8. The Model's TypeScript shape becomes a plain interface, wrapped in `WithLegacy` to pick up the fields `withDefaults` added and intersected with any extension interfaces so `user.fullName` still type-checks.
+8. The Model's TypeScript shape becomes a plain interface, wrapped in [`WithLegacy`](/api/@warp-drive/legacy/model/migration-support/types/WithLegacy) to pick up the fields `withDefaults` added and intersected with any extension interfaces so `user.fullName` still type-checks.
 
 ## Post Migration
 

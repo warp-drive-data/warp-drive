@@ -37,7 +37,7 @@ renaming every type on the frontend. Whichever you choose, stick with it. **Be C
 * The API responds with `"type": "user-setting"`, or a [handler](../requests/handlers.md)
   normalizes the type to that.
 
-* The ResourceSchema's `type` and every relationship field's `type` that points to it use the
+* The [ResourceSchema](/api/@warp-drive/core/types/schema/fields/types/ResourceSchema)'s `type` and every relationship field's `type` that points to it use the
   same string:
 
   ```ts [schemas/user.ts]
@@ -103,13 +103,13 @@ The same places use `user_settings` instead:
 
 The example schemas use [LegacyMode](../schemas/resources/legacy-mode.md), which despite its name
 is the recommended mode today. The resource type rules are the same in [PolarisMode](../schemas/resources/polaris-mode.md)
-and for apps still defining `Model` classes.
+and for apps still defining [`Model`](/api/@warp-drive/legacy/model/classes/Model) classes.
 
 :::tip 💡 The type and the URL are separate
-The `findRecord` builder from `@warp-drive/utilities/json-api` builds the URL path by pluralizing
-the type you pass. If your endpoint uses a different path, keep the type as it is and pass the
-`resourcePath` option to [findRecord](/api/@warp-drive/utilities/json-api/functions/findRecord)
-instead.
+The [`findRecord`](/api/@warp-drive/utilities/json-api/functions/findRecord) builder from
+`@warp-drive/utilities/json-api` builds the URL path by pluralizing the type you pass. If your
+endpoint uses a different path, keep the type as it is and pass the `resourcePath` option to
+`findRecord` instead.
 :::
 
 ## But what about the JSON:API spec?

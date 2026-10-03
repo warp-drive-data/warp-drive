@@ -15,6 +15,8 @@ url: https://canary.warp-drive.io/pr-preview/pr-11291/api.md
 
 * [@warp-drive/ember](/api/@warp-drive/ember/)
 * [@warp-drive/react](/api/@warp-drive/react/)
+* [@warp-drive/tc39-proposal-signals](/api/@warp-drive/tc39-proposal-signals/)
+* [@warp-drive/alien-signals](/api/@warp-drive/alien-signals/)
 
 ## Tooling Packages
 

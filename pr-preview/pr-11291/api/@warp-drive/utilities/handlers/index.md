@@ -26,3 +26,8 @@ request scenarios.
 
 * [addTraceHeader](functions/addTraceHeader.md)
 * [assertInvalidUrlLength](functions/assertInvalidUrlLength.md)
+
+## Types
+
+* [CompressionOptions](types/CompressionOptions.md)
+* [Constraints](types/Constraints.md)

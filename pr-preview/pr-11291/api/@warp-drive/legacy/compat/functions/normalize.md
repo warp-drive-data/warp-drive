@@ -18,7 +18,7 @@ function normalize(
 ): SingleResourceDocument;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/compat.ts:244](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/legacy/src/compat.ts#L244)
+Defined in: [warp-drive-packages/legacy/src/compat.ts:278](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/legacy/src/compat.ts#L278)
 
 **`Legacy`**
 

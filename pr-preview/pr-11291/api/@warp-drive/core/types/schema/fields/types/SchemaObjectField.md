@@ -18,11 +18,14 @@ interface SchemaObjectField {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:587](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L587)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:599](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L599)
 
 Represents a field whose value is an object
 with a well-defined structure described by
 a schema-object (a non-resource schema).
+
+The [Complex Fields](/guides/the-manual/schemas/complex-fields#schema-objects) guide
+shows how to use it.
 
 If the object's structure is not well-defined,
 use 'object' instead.
@@ -37,7 +40,7 @@ By default, a SchemaObject within
 kind: "schema-object";
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:593](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L593)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:605](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L605)
 
 The kind of field this is.
 
@@ -49,7 +52,7 @@ The kind of field this is.
 name: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:600](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L600)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:612](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L612)
 
 The name of the field.
 
@@ -66,7 +69,7 @@ optional options?: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:650](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L650)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:662](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L662)
 
 Options for configuring the behavior of the
 SchemaObject.
@@ -142,7 +145,7 @@ Valid options are:
 optional sourceKey?: string;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:624](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L624)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:636](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L636)
 
 The name of the field as returned by the API
 and inserted into the [Cache](../../../cache/types/Cache.md) if it differs
@@ -173,7 +176,7 @@ This option is only needed when the value differs from name.
 type: string | null;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:639](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/types/schema/fields.ts#L639)
+Defined in: [warp-drive-packages/core/src/types/schema/fields.ts:651](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/types/schema/fields.ts#L651)
 
 If the field is not polymorphic:
 

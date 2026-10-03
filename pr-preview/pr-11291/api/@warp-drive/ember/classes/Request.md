@@ -9,7 +9,7 @@ description: >-
 
 # &#x20;Request\<RT, E>
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:275](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/index.d.ts#L275)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:434](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L434)
 
 The `<Request />` component is a powerful tool for managing data fetching and
 state in your Ember application. It provides a declarative approach to reactive
@@ -17,6 +17,20 @@ control-flow for managing requests and state in your application.
 
 The `<Request />` component is ideal for handling "boundaries", outside which some
 state is still allowed to be unresolved and within which it MUST be resolved.
+
+See [Reactive Control Flow](/guides/the-manual/reactivity/control-flow) for how it
+works together with the JS API.
+
+## Arguments
+
+Pass either `@request`, a request already made with `store.request`, or
+`@query`, a request for the component to make. The store comes from
+`@store`, else from context, else from the store service. The component
+also accepts `@subscription`, `@autorefresh`, `@autorefreshThreshold`,
+`@autorefreshBehavior`, and `@chrome`.
+
+See [EmberRequestArgs](../types/EmberRequestArgs.md) for the full list of args, and
+[RequestSignature](../types/RequestSignature.md) for the args and blocks together.
 
 ## Request States
 
@@ -228,7 +242,7 @@ same, only one actual request will be made.
 
 ## Extends
 
-* `default`<`RequestSignature`<`RT`, `E`>>
+* `default`<[`RequestSignature`](../types/RequestSignature.md)<`RT`, `E`>>
 
 ## Type Parameters
 
@@ -256,7 +270,7 @@ new Request<RT, E>(owner: Owner, args: EmberRequestArgs<RT>): Request<RT, E>;
 
 ##### args
 
-`EmberRequestArgs`<`RT`>
+[`EmberRequestArgs`](../types/EmberRequestArgs.md)<`RT`>
 
 #### Returns
 
@@ -276,7 +290,7 @@ Component<RequestSignature<RT, E>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:306](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/index.d.ts#L306)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:499](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L499)
 
 Called before the component has been removed from the DOM.
 
@@ -300,7 +314,7 @@ Component.willDestroy
 get state(): RequestSubscription<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:292](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/index.d.ts#L292)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:466](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L466)
 
 The active RequestSubscription for this component's request,
 created lazily and recreated if the store changes or a `@subscription` is provided.
@@ -319,7 +333,7 @@ created lazily and recreated if the store changes or a `@subscription` is provid
 get store(): Store$1 | RequestManager;
 ```
 
-Defined in: [warp-drive-packages/ember/dist/index.d.ts:285](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/ember/dist/index.d.ts#L285)
+Defined in: [warp-drive-packages/ember/src/-private/request.gts:447](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/ember/src/-private/request.gts#L447)
 
 The store or request manager used to make the request, resolved from
 either the `@store` arg or the consumed context/service.

@@ -13,7 +13,7 @@ description: >-
 clear interface-driven boundaries between each other and brought together by
 configuration.
 
-The `Store` is the central piece of the ***Warp*Drive** experience, linking
+The [`Store`](/api/@warp-drive/core/classes/Store) is the central piece of the ***Warp*Drive** experience, linking
 together how we handle requests, the schemas for what our data looks like,
 how to cache it, and what sort of reactive objects to create for that data.
 
@@ -98,8 +98,8 @@ import { CachePolicy } from '@ember-data/request-utils';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 
 import type Model from '@ember-data/model';
 import {
@@ -159,12 +159,12 @@ import type { CacheCapabilitiesManager, ModelSchema } from '@ember-data/store/ty
 
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
-import { DefaultCachePolicy } from '@ember-data/request-utils';
+import { CachePolicy } from '@ember-data/request-utils';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types';
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types';
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import type Model from '@ember-data/model';
@@ -178,7 +178,7 @@ import {
   registerDerivations,
   SchemaService,
   teardownRecord
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
 
@@ -186,7 +186,7 @@ export default class AppStore extends Store {
     .use([Fetch])
     .useCache(CacheHandler);
 
-  lifetimes = new DefaultCachePolicy({
+  lifetimes = new CachePolicy({
     apiCacheHardExpires: 15 * 60 * 1000, // 15 minutes
     apiCacheSoftExpires: 1 * 30 * 1000, // 30 seconds
     constraints: {
@@ -249,7 +249,7 @@ export default class AppStore extends Store {}
 
 ## Add Basic Request Management
 
-`RequestManager` provides a chain-of-responsibility style pipeline for helping
+[`RequestManager`](/api/@warp-drive/core/classes/RequestManager) provides a chain-of-responsibility style pipeline for helping
 you handle centralized concerns around requesting and updating data from your
 backend.
 
@@ -310,12 +310,12 @@ import type { ModelSchema, SchemaService } from '@ember-data/store/types'; // [!
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
-import type { TypeFromInstance } from '@warp-drive/core-types/record'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record'; // [!code focus]
 
 import {  // [!code focus:4]
   buildSchema,
   modelFor,
-} from '@warp-drive/schema-record';
+} from '@ember-data/model';
 
 export default class AppStore extends Store {
   requestManager = new RequestManager()
@@ -342,16 +342,16 @@ import type { ModelSchema } from '@ember-data/store/types'; // [!code focus]
 import RequestManager from '@ember-data/request';
 import Fetch from '@ember-data/request/fetch';
 
-import type { TypeFromInstance } from '@warp-drive/core-types/record'; // [!code focus:2]
+import type { TypeFromInstance } from '@warp-drive/core/types/record'; // [!code focus:2]
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import {  // [!code focus:3]
   modelFor,
-} from '@warp-drive/schema-record';
+} from '@ember-data/model';
 import { // [!code focus:4]
   registerDerivations,
   SchemaService,
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
   requestManager = new RequestManager()
@@ -476,8 +476,8 @@ import Fetch from '@ember-data/request/fetch';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types'; // [!code focus]
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 
 import type Model from '@ember-data/model'; // [!code focus]
 import {
@@ -528,8 +528,8 @@ import Fetch from '@ember-data/request/fetch';
 
 import JSONAPICache from '@ember-data/json-api';
 
-import type { ResourceKey } from '@warp-drive/core-types'; // [!code focus]
-import type { TypeFromInstance } from '@warp-drive/core-types/record';
+import type { ResourceKey } from '@warp-drive/core/types'; // [!code focus]
+import type { TypeFromInstance } from '@warp-drive/core/types/record';
 import { DelegatingSchemaService } from '@ember-data/model/migration-support';
 
 import type Model from '@ember-data/model'; // [!code focus]
@@ -543,7 +543,7 @@ import {
   registerDerivations,
   SchemaService,
   teardownRecord // [!code focus]
-} from '@warp-drive/schema-record';
+} from '@warp-drive/core/reactive';
 
 export default class AppStore extends Store {
 
@@ -599,7 +599,7 @@ notifications. The `<Request />` component subscribes to these notifications and
 trigger a reload if necessary if an invalidated request is in active use, letting you
 craft advanced policies that meet your product's needs.
 
-***Warp*Drive** provides a basic CachePolicy with a number of great defaults that
+***Warp*Drive** provides a basic [CachePolicy](/api/@warp-drive/core/types/CachePolicy), [`DefaultCachePolicy`](/api/@warp-drive/core/store/classes/DefaultCachePolicy), with a number of great defaults that
 is a great starting point for most applications. We configure this basic policy
 below.
 

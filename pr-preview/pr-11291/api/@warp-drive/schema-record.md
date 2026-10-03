@@ -11,6 +11,8 @@ description: >-
 
 :::warning Legacy package
 `@warp-drive/schema-record` is a legacy package. New code should use [`@warp-drive/core/reactive`](/api/@warp-drive/core/reactive/) instead.
+
+For an app still on these packages, see [Legacy Package Setup](/guides/configuration/legacy-package-setup/).
 :::
 
 This package declares nothing of its own. Its single entry point re-exports the

@@ -11,6 +11,7 @@ that WarpDrive should use.
 
 ## Functions
 
+* [registerSignals](functions/registerSignals.md)
 * [setupSignals](functions/setupSignals.md)
 
 ## Types

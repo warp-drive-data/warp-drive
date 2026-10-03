@@ -55,7 +55,7 @@ Storage Resources build over these APIs, making it trivial to ensure that a user
 
 ### Resource Types
 
-Storage Resources are either a `LocalResource` (backed by localStorage) or a Session Resource (backed by sessionStorage). The type is determined by the decorator used to setup the resource.
+Storage Resources are either a [`LocalResource`](/api/@warp-drive/experiments/storage/functions/LocalResource) (backed by localStorage) or a Session Resource (backed by sessionStorage). The type is determined by the decorator used to setup the resource.
 
 ::: code-group
 
@@ -82,7 +82,7 @@ export class HomePage {
 #### Field Level Resource Type Overrides
 
 Whether a field is persisted to local or session storage can be overridden on a per-field basis. Below we show the same
-field configuration achieved using both a LocalResource and a SessionResource.
+field configuration achieved using both a LocalResource and a [SessionResource](/api/@warp-drive/experiments/storage/functions/SessionResource).
 
 ::: code-group
 
@@ -201,19 +201,19 @@ function updateSiteTheme(mode: 'light' | 'dark') {
 
 But this involves manually wiring up the effect in a different file, which may not be ideal.
 
-Instead, we can change our field into an `effect`.
+Instead, we can change our field into an [`effect`](/api/@warp-drive/experiments/storage/functions/effect).
 
 ```ts
-import { LocalResource, field } from '@warp-drive/experiments/storage';
+import { LocalResource, effect, type ValueTransition } from '@warp-drive/experiments/storage';
 
 @LocalResource('settings')
-export class HomePage {
+export class SiteTheme {
   @effect(syncThemeToDOM)
   mode: 'light' | 'dark' = 'light';
 }
 
-function syncThemeToDOM(this: SiteTheme): void {
-  const { mode } = this;
+function syncThemeToDOM(update: ValueTransition<'light' | 'dark' | null>): void {
+  const mode = update.to ?? 'light';
   document.body.classList.add(mode);
   document.body.classList.remove(mode === 'light' ? 'dark' : 'light');
 }
@@ -269,7 +269,8 @@ export class HistoryService extends Service {
 ### Using `@param` to turn Storage Resources into URL param sources
 
 Any Storage Resource's fields can be used as the backing source of state for
-URL query params by decorating the field with additional meta information using `@param`.
+URL query params by decorating the field with additional meta information using
+[`@param`](/api/@warp-drive/experiments/storage/functions/param).
 
 ::: code-group
 
@@ -344,8 +345,8 @@ The result is a cleaner value for sharing in the URL while our local value remai
 
 There are pre-built param config generators for boolean and numerical values.
 
-* `BooleanParam`
-* `NumberParam`
+* [`BooleanParam`](/api/@warp-drive/experiments/storage/functions/BooleanParam)
+* [`NumberParam`](/api/@warp-drive/experiments/storage/functions/NumberParam)
 
 ::: code-group
 
@@ -371,7 +372,10 @@ class MapState {
 
 ## Configuration
 
-Configure storage behavior before first use:
+Configure storage behavior with
+[`configureLocalStorage`](/api/@warp-drive/experiments/storage/functions/configureLocalStorage) and
+[`configureSessionStorage`](/api/@warp-drive/experiments/storage/functions/configureSessionStorage)
+before first use:
 
 ```ts
 import {

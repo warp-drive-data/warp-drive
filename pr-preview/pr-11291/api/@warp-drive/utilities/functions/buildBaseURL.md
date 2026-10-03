@@ -12,11 +12,14 @@ description: >-
 function buildBaseURL(urlOptions: UrlOptions): string;
 ```
 
-Defined in: [index.ts:521](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/index.ts#L521)
+Defined in: [index.ts:528](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/index.ts#L528)
 
 Builds a URL for a request based on the provided options.
 Does not include support for building query params (see `buildQueryParams`)
 so that it may be composed cleanly with other query-params strategies.
+
+See the [Builders](/guides/the-manual/requests/builders) guide for writing your own request
+builders.
 
 Usage:
 

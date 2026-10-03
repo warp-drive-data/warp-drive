@@ -15,9 +15,12 @@ function babelPlugin(options: WarpDriveConfig): {
 };
 ```
 
-Defined in: [warp-drive-packages/build-config/src/index.ts:31](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/build-config/src/index.ts#L31)
+Defined in: [warp-drive-packages/build-config/src/index.ts:34](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/build-config/src/index.ts#L34)
 
 Create the Babel plugin for WarpDrive
+
+The [Setup](/guides/configuration/#configure-the-build-plugin) guide shows how to
+configure it.
 
 Note: If your project already uses [@embroider/macros](https://www.npmjs.com/package/@embroider/macros)
 then you should use [setConfig](setConfig.md) instead of this function.

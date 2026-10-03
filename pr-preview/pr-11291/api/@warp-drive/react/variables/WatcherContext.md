@@ -11,9 +11,9 @@ description: >-
 ```ts
 const WatcherContext: Context<
   | {
-  watcher: Signal.subtle.Watcher;
+  watcher: Watcher;
 }
 | null>;
 ```
 
-Defined in: [-private/reactive-context.tsx:156](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/react/src/-private/reactive-context.tsx#L156)
+Defined in: [-private/reactive-context.tsx:154](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/react/src/-private/reactive-context.tsx#L154)

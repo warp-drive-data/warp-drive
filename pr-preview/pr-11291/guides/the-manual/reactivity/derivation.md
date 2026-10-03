@@ -11,7 +11,7 @@ description: >-
 
 The instinct when working with promises is to await them and store the result. In reactive systems this usually means a cluster of tracked properties: one for the value, one for loading state, one for errors.
 
-WarpDrive offers a simpler model: **store the promise, derive its state**. `getPromiseState` reactively tracks where any promise is in its lifecycle — pending, fulfilled, or rejected — and makes that state available to the render layer.
+WarpDrive offers a simpler model: **store the promise, derive its state**. [`getPromiseState`](/api/@warp-drive/core/reactive/functions/getPromiseState) reactively tracks where any promise is in its lifecycle — pending, fulfilled, or rejected — and makes that state available to the render layer.
 
 ## Reading Data
 
@@ -249,6 +249,6 @@ const UserProfile: TOC<{ Args: { user: Promise<User> } }> = <template>
 export default UserProfile;
 ```
 
-The parent owns the fetch and controls when it re-fires. The child has no JavaScript at all — it declares what to render for each state and lets `<Await>` handle the rest. The same component works whether the data loads instantly from cache or takes seconds over a slow connection.
+The parent owns the fetch and controls when it re-fires. The child has no JavaScript at all — it declares what to render for each state and lets [`<Await>`](/api/@warp-drive/ember/classes/Await) handle the rest. The same component works whether the data loads instantly from cache or takes seconds over a slow connection.
 
 This is the pattern to reach for across WarpDrive: **pass promises, resolve state where you render**. We call this [**`Reactive Control Flow`**](./control-flow.md).

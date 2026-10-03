@@ -7,6 +7,9 @@ description: >-
   request resolves with.
 ---
 
+The [Making Requests](/guides/the-manual/requests/) guide teaches the request layer
+these types and helpers belong to.
+
 ## Variables
 
 * [~~withBrand~~](variables/withBrand.md)

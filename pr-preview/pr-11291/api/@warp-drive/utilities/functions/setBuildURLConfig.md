@@ -12,13 +12,17 @@ description: >-
 function setBuildURLConfig(config: BuildURLConfig): void;
 ```
 
-Defined in: [index.ts:74](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/index.ts#L74)
+Defined in: [index.ts:78](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/index.ts#L78)
 
 Sets the global configuration for `buildBaseURL`
 for host and namespace values for the application.
 
 These values may still be overridden by passing
 them to buildBaseURL directly.
+
+The [Basic Usage](/guides/the-manual/cookbook/basic-usage#step-2-configure-some-request-defaults)
+guide sets these defaults through the `@warp-drive/utilities/json-api` version of this function,
+which also sets this global configuration.
 
 This method may be called as many times as needed.
 host values of `''` or `'/'` are equivalent.

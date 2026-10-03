@@ -59,7 +59,8 @@ of any `emberjs/rfcs` number:
 4. Open a PR labeled `:label: rfc` (see
    [Pull Request Labeling](/guides/contributing/submitting-prs.md#pull-request-labeling) for the
    PR mechanics). That label also triggers a docs-site PR preview so reviewers can read the
-   rendered RFC, not just the raw markdown diff.
+   rendered RFC, not just the raw markdown diff. Once it's open, add its RFC summary per
+   [Write a PR Blog Summary](./write-a-pr-blog-summary.md), so the next release post lists it.
 5. Iterate on the PR like any other design discussion. Once there is team consensus to move
    forward, merging the PR is what publishes the RFC — see the next section for what that
    triggers.
@@ -104,4 +105,5 @@ lets it open a fresh PR — ask in `#dev-ember-data` if you hit this.
   Follow [Write Documentation](./write-documentation.md) for those.
 * Once landed, `stage` in the RFC's frontmatter (both here and, via the sync bot, upstream)
   advances the same way `emberjs/rfcs` advancement PRs do today — this repo does not add a
-  separate advancement mechanism.
+  separate advancement mechanism. A PR that changes `stage` adds or updates an RFC summary too,
+  per [Write a PR Blog Summary](./write-a-pr-blog-summary.md).

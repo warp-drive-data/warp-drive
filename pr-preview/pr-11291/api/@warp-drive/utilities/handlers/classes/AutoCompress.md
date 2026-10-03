@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;AutoCompress&#x20;
 
-Defined in: [-private/handlers/auto-compress.ts:190](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L190)
+Defined in: [-private/handlers/auto-compress.ts:199](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L199)
 
 A request handler that automatically compresses the request body
 if the request body is a string, array buffer, blob, or form data.
@@ -45,13 +45,13 @@ class AppStore extends Store {
 new AutoCompress(options?: CompressionOptions): AutoCompress;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:202](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L202)
+Defined in: [-private/handlers/auto-compress.ts:211](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L211)
 
 #### Parameters
 
 ##### options?
 
-`CompressionOptions` = `{}`
+[`CompressionOptions`](../types/CompressionOptions.md) = `{}`
 
 #### Returns
 
@@ -67,7 +67,7 @@ request<T>(__namedParameters: RequestContext, next: NextFn<T>):
 | Future<T>;
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:212](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L212)
+Defined in: [-private/handlers/auto-compress.ts:221](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L221)
 
 Method to implement to handle requests. Receives the request
 context and a nextFn to call to pass-along the request to
@@ -110,7 +110,7 @@ options: Required<CompressionOptions> & {
 };
 ```
 
-Defined in: [-private/handlers/auto-compress.ts:195](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L195)
+Defined in: [-private/handlers/auto-compress.ts:204](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/handlers/auto-compress.ts#L204)
 
 The resolved options this handler was configured with, with all
 defaults (including `constraints` defaults) applied.

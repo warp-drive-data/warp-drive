@@ -23,6 +23,9 @@ last two bullets: the checks and the label.
    to decide whether X needs TSDoc, a guide, a permanent-URL page, a README, or several of those,
    and confirm that split with the user before drafting anything. If the answer is an RFC, this
    isn't the skill for it: switch to [Writing and Implementing RFCs](./writing-and-implementing-rfcs.md).
+   If it's a `blog/` post announcing a release, follow
+   [Draft a Release Blog Post](./draft-a-release-blog-post.md), which works through this skill's
+   steps for you.
 2. Read the guide for that type of doc before you write a word, and treat it as binding:
 
    | Type of doc | Read |
@@ -30,7 +33,7 @@ last two bullets: the checks and the label.
    | TSDoc comments | [Writing API Docs](/guides/contributing/writing-documentation/writing-api-docs.md) |
    | A package `README.md` or its `src/index.md` landing page | [READMEs and `src/index.md`](/guides/contributing/writing-documentation/writing-api-docs.md#readmes-and-src-index-md) |
    | Pages under `guides/`, including tutorials in `guides/tutorials/` | [Writing Guides](/guides/contributing/writing-documentation/writing-guides.md) |
-   | Pages under `upgrading/` or `blog/` | [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages) |
+   | Pages under `upgrading/` or `blog/` | [Upgrading and Blog Pages](/guides/contributing/writing-documentation/writing-guides.md#upgrading-and-blog-pages); for a blog post, also follow [Publish a Blog Post](./publish-a-blog-post.md) |
    | Files under `warp-drive-packages/memory-alpha/skills/` | [Writing Agent Skills](/guides/contributing/writing-documentation/writing-agent-skills.md) |
 
    Those pages own the rules on tags, links and examples, audiences, nav metadata, and permanent

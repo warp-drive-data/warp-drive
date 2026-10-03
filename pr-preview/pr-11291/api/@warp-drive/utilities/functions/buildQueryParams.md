@@ -12,9 +12,12 @@ description: >-
 function buildQueryParams(params: QueryParamsSource, options?: QueryParamsSerializationOptions): string;
 ```
 
-Defined in: [index.ts:769](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/index.ts#L769)
+Defined in: [index.ts:785](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/index.ts#L785)
 
 Sorts query params by both key and value, returning a query params string
+
+See [Cache Keys for Requests](/guides/the-manual/requests/builders#cache-keys-for-requests) for
+why builders need stable query params.
 
 Treats `included` specially, splicing it into an array if it is a string and sorting the array.
 

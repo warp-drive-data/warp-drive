@@ -14,7 +14,7 @@ const Fetch: {
 };
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:136](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/core/src/request/-private/fetch.ts#L136)
+Defined in: [warp-drive-packages/core/src/request/-private/fetch.ts:139](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/core/src/request/-private/fetch.ts#L139)
 
 ```ts
 import { Fetch } from '@warp-drive/core';
@@ -22,6 +22,9 @@ import { Fetch } from '@warp-drive/core';
 
 A basic Fetch Handler which converts a request into a
 `fetch` call presuming the response to be `json`.
+
+The [Making Requests](/guides/the-manual/requests/#requests-do-not-need-to-use-fetch)
+guide shows where it sits in the handler chain.
 
 ```ts
 import { RequestManager, Fetch } from '@warp-drive/core';

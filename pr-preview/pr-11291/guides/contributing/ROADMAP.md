@@ -32,7 +32,7 @@ section.
 * [Editions](#editions)
   * [Polaris](#polaris)
 * [Releases](#releases)
-  * [5.x Series](#5x-series)
+  * [5.x Series](#_5x-series)
 
 ***
 
@@ -201,7 +201,7 @@ const MyRoute = <template>
 
 ## 💜 Releases {#releases}
 
-### 🔸 5.x Series {#5x-series}
+### 🔸 5.x Series {#\_5x-series}
 
 Features (non-exhaustive):
 

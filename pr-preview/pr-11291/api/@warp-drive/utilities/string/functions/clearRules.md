@@ -12,7 +12,7 @@ description: >-
 function clearRules(): void;
 ```
 
-Defined in: [-private/string/inflect.ts:125](https://github.com/warp-drive-data/warp-drive/blob/762af94d8b1de3c337eaafeff6996caa3ec03766/warp-drive-packages/utilities/src/-private/string/inflect.ts#L125)
+Defined in: [-private/string/inflect.ts:125](https://github.com/warp-drive-data/warp-drive/blob/29ab359ab5e9593db23fe661b989f7544558d789/warp-drive-packages/utilities/src/-private/string/inflect.ts#L125)
 
 Clears all inflection rules
 and resets the caches for singularize and pluralize.
