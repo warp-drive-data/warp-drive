@@ -12,7 +12,7 @@ description: >-
 type ScaffoldGenerator = () => Scaffold;
 ```
 
-Defined in: [mock.ts:28](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/packages/holodeck/src/mock.ts#L28)
+Defined in: [mock.ts:28](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/packages/holodeck/src/mock.ts#L28)
 
 ## Returns
 

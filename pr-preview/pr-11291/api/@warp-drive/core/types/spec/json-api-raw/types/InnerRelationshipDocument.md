@@ -14,7 +14,7 @@ type InnerRelationshipDocument<T = ExistingResourceIdentifierObject | NewResourc
 | CollectionResourceRelationship<T>;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:285](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L285)
+Defined in: [warp-drive-packages/core/src/types/spec/json-api-raw.ts:285](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/types/spec/json-api-raw.ts#L285)
 
 Represents a single {json:api} relationship, whether `to-one` or `to-many`.
 

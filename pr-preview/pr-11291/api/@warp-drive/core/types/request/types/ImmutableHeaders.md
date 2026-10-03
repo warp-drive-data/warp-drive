@@ -26,7 +26,7 @@ interface ImmutableHeaders extends Headers {
 }
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:650](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/request.ts#L650)
+Defined in: [warp-drive-packages/core/src/types/request.ts:650](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/types/request.ts#L650)
 
 A read-only [Headers](https://developer.mozilla.org/docs/Web/API/Headers) instance, as passed to [Handlers](../../../request/types/Handler.md)
 via [ImmutableRequestInfo.headers](FindRecordRequestOptions.md#headers).
@@ -93,7 +93,7 @@ Headers.append
 optional clone(): Headers;
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:654](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/request.ts#L654)
+Defined in: [warp-drive-packages/core/src/types/request.ts:654](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/types/request.ts#L654)
 
 Returns a mutable clone of these headers, if supported by the implementation.
 
@@ -315,7 +315,7 @@ Headers.set
 toJSON(): [string, string][];
 ```
 
-Defined in: [warp-drive-packages/core/src/types/request.ts:658](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/types/request.ts#L658)
+Defined in: [warp-drive-packages/core/src/types/request.ts:658](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/types/request.ts#L658)
 
 Returns the headers as an array of `[key, value]` pairs.
 

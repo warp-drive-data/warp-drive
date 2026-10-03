@@ -15,7 +15,7 @@ interface RequestProps<RT, E> extends RequestArgs<RT, E> {
 }
 ```
 
-Defined in: [-private/request.tsx:123](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L123)
+Defined in: [-private/request.tsx:123](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L123)
 
 The props accepted by the [\`\<Request />\`](../functions/Request.md) component.
 
@@ -82,7 +82,7 @@ export function UserName({ id }: { id: string }) {
 optional chrome?: FC<ChromeComponentProps<RT>>;
 ```
 
-Defined in: [-private/request.tsx:138](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L138)
+Defined in: [-private/request.tsx:138](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L138)
 
 A component that wraps whichever state component is rendered, so shared
 UI such as a layout or a refresh indicator stays mounted as the request
@@ -105,7 +105,7 @@ function Chrome({ children, features }: ChromeComponentProps<User>) {
 states: RequestStates<RT, E>;
 ```
 
-Defined in: [-private/request.tsx:144](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L144)
+Defined in: [-private/request.tsx:144](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L144)
 
 The components to render for each state of the request, see
 [RequestStates](RequestStates.md).

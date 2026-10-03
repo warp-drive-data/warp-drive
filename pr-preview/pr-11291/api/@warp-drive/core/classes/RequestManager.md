@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;RequestManager
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:149](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/request/-private/manager.ts#L149)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:149](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/request/-private/manager.ts#L149)
 
 ## Import
 
@@ -135,7 +135,7 @@ type StructuredDocument<T> = StructuredDataDocument<T> | StructuredErrorDocument
 new RequestManager(options?: GenericCreateArgs): RequestManager;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:166](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/request/-private/manager.ts#L166)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:166](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/request/-private/manager.ts#L166)
 
 #### Parameters
 
@@ -155,7 +155,7 @@ Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:166](https
 request<RT>(request: RequestInfo<RT>): Future<RT>;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:258](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/request/-private/manager.ts#L258)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:258](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/request/-private/manager.ts#L258)
 
 Issue a Request.
 
@@ -202,7 +202,7 @@ const { content } = await requestManager.request({ url: '/users' });
 use(newHandlers: Handler[]): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:208](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/request/-private/manager.ts#L208)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:208](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/request/-private/manager.ts#L208)
 
 Register handler(s) to use when a request is issued.
 
@@ -230,7 +230,7 @@ useCache(cacheHandler: CacheHandler & {
 }): this;
 ```
 
-Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:182](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/request/-private/manager.ts#L182)
+Defined in: [warp-drive-packages/core/src/request/-private/manager.ts:182](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/request/-private/manager.ts#L182)
 
 Register a handler to use for primary cache intercept.
 

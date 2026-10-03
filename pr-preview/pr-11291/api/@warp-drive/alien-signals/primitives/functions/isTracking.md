@@ -10,7 +10,7 @@ description: Whether a memo is computing, so that signals read now become its de
 function isTracking(): boolean;
 ```
 
-Defined in: [primitives.ts:360](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L360)
+Defined in: [primitives.ts:360](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L360)
 
 Whether a memo's function is running, which means any signal or memo read now becomes one of
 its dependencies.

@@ -14,7 +14,7 @@ description: >-
 function registerFragmentExtensions(schema: SchemaService): void;
 ```
 
-Defined in: [warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts:17](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts#L17)
+Defined in: [warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts:17](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/legacy/src/model-fragments/instance-initializers/fragment-extensions.ts#L17)
 
 Registers the [FragmentExtension](../variables/FragmentExtension.md)/[FragmentArrayExtension](../variables/FragmentArrayExtension.md) schema
 extensions on the given `SchemaService`, enabling ModelFragments migration support.

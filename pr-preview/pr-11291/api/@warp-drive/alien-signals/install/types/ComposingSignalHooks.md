@@ -14,7 +14,7 @@ interface ComposingSignalHooks extends Omit<SignalHooks<SignalNode>, "register">
 }
 ```
 
-Defined in: [install.ts:125](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/install.ts#L125)
+Defined in: [install.ts:125](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/install.ts#L125)
 
 The [SignalHooks](../../../core/configure/types/SignalHooks.md) that [buildSignalConfig](../functions/buildSignalConfig.md) returns, whose `register` hook accepts a
 [SignalIntegration](SignalIntegration.md).
@@ -31,7 +31,7 @@ The [SignalHooks](../../../core/configure/types/SignalHooks.md) that [buildSigna
 register: <K>(buildConfig: (options: HooksOptions) => SignalIntegration<K>) => void;
 ```
 
-Defined in: [install.ts:129](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/install.ts#L129)
+Defined in: [install.ts:129](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/install.ts#L129)
 
 Adds the [SignalIntegration](SignalIntegration.md) that `buildConfig` returns to the graph.
 

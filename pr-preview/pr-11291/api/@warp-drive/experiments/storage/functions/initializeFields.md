@@ -11,7 +11,7 @@ url: >-
 function _initializeFields(instance: object, source: object): void;
 ```
 
-Defined in: [warp-drive-packages/experiments/src/storage/-private/storage-infra.ts:161](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L161)
+Defined in: [warp-drive-packages/experiments/src/storage/-private/storage-infra.ts:161](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/experiments/src/storage/-private/storage-infra.ts#L161)
 
 ## Parameters
 

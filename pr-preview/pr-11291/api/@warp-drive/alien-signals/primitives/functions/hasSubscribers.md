@@ -12,7 +12,7 @@ function hasSubscribers(node:
   | MemoNode<unknown>): boolean;
 ```
 
-Defined in: [primitives.ts:380](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L380)
+Defined in: [primitives.ts:380](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L380)
 
 Whether any memo or [Watcher](../classes/Watcher.md) depends on `node`. Useful for debug logging.
 

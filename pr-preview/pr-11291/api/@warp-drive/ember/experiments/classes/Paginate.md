@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;\<Paginate />&#x20;
 
-Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:254](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/ember/src/-private/paginate.gts#L254)
+Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:254](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/ember/src/-private/paginate.gts#L254)
 
 The `<Paginate />` component provides declarative, reactive control-flow for
 rendering a paginated collection: it monitors the request that loads the
@@ -195,7 +195,7 @@ Component<PaginateSignature<RT, E, M>>.constructor
 willDestroy(): void;
 ```
 
-Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:334](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/ember/src/-private/paginate.gts#L334)
+Defined in: [warp-drive-packages/ember/src/-private/paginate.gts:334](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/ember/src/-private/paginate.gts#L334)
 
 Called before the component has been removed from the DOM.
 

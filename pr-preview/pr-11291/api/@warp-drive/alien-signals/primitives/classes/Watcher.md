@@ -8,7 +8,7 @@ description: >-
 
 # &#x20;Watcher&#x20;
 
-Defined in: [primitives.ts:418](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L418)
+Defined in: [primitives.ts:418](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L418)
 
 Observes signals and memos from outside the graph. The `notify` callback passed to the
 constructor runs, at most once, as soon as anything watched may have changed: after a
@@ -52,7 +52,7 @@ watcher.unwatchAll();
 new Watcher(notify: () => void): Watcher;
 ```
 
-Defined in: [primitives.ts:443](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L443)
+Defined in: [primitives.ts:443](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L443)
 
 #### Parameters
 
@@ -76,7 +76,7 @@ getPending(): (
   | MemoNode<unknown>)[];
 ```
 
-Defined in: [primitives.ts:492](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L492)
+Defined in: [primitives.ts:492](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L492)
 
 Lists what this watcher is watching that may have changed since it was created or last
 re-armed: memos that are due to recompute, and, in development builds only, signals that
@@ -98,7 +98,7 @@ the watched signals and memos that may have changed
 rearm(): void;
 ```
 
-Defined in: [primitives.ts:478](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L478)
+Defined in: [primitives.ts:478](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L478)
 
 Re-enables `notify` after a notification has been handled, so that the next change to
 anything watched calls it again.
@@ -115,7 +115,7 @@ anything watched calls it again.
 unwatchAll(): void;
 ```
 
-Defined in: [primitives.ts:507](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L507)
+Defined in: [primitives.ts:507](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L507)
 
 Stops watching everything and re-arms the watcher. A memo that nothing else depends on
 releases its own dependencies and recomputes on its next read.
@@ -134,7 +134,7 @@ watch(node:
   | MemoNode<unknown>): void;
 ```
 
-Defined in: [primitives.ts:466](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L466)
+Defined in: [primitives.ts:466](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L466)
 
 Starts watching a signal or memo. Watching something already watched does nothing.
 
@@ -161,7 +161,7 @@ the signal or memo to watch
 get isNotified(): boolean;
 ```
 
-Defined in: [primitives.ts:457](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L457)
+Defined in: [primitives.ts:457](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L457)
 
 Whether `notify` has been called since the watcher was created or last re-armed.
 
@@ -181,7 +181,7 @@ get watched(): ReadonlySet<
 | MemoNode<unknown>>;
 ```
 
-Defined in: [primitives.ts:450](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L450)
+Defined in: [primitives.ts:450](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L450)
 
 Everything this watcher is watching. Useful for debug logging.
 

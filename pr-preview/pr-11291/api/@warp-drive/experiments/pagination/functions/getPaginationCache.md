@@ -14,7 +14,7 @@ description: >-
 function getPaginationCache<RT, E>(key: string): PaginationCache<RT, E>;
 ```
 
-Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:259](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/core/src/signals/pagination-cache.ts#L259)
+Defined in: [warp-drive-packages/core/src/signals/pagination-cache.ts:259](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/core/src/signals/pagination-cache.ts#L259)
 
 Get the shared [PaginationCache](../types/PaginationCache.md) for a given cache key (the collection's
 `first` or `self` link). Returns the same instance for the same key for the

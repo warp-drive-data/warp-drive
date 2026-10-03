@@ -10,7 +10,7 @@ description: Makes the running memo depend on a signal; a no-op outside of a mem
 function consumeSignal(signal: SignalNode): void;
 ```
 
-Defined in: [primitives.ts:196](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/alien-signals/src/primitives.ts#L196)
+Defined in: [primitives.ts:196](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/alien-signals/src/primitives.ts#L196)
 
 Records that the memo whose function is running read `signal`, so that a later
 [notifySignal](notifySignal.md) makes that memo recompute. Outside of a memo it does nothing; use

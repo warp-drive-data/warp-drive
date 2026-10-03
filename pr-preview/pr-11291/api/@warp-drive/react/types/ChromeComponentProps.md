@@ -16,7 +16,7 @@ interface ChromeComponentProps<RT> {
 }
 ```
 
-Defined in: [-private/request.tsx:57](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L57)
+Defined in: [-private/request.tsx:57](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L57)
 
 The props passed to the component given as the `chrome` prop of
 [\`\<Request />\`](../functions/Request.md).
@@ -45,7 +45,7 @@ function Chrome({ children, features }: ChromeComponentProps<unknown>) {
 children: ReactNode;
 ```
 
-Defined in: [-private/request.tsx:61](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L61)
+Defined in: [-private/request.tsx:61](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L61)
 
 Whichever state component `<Request />` is rendering.
 
@@ -57,7 +57,7 @@ Whichever state component `<Request />` is rendering.
 features: ContentFeatures<RT>;
 ```
 
-Defined in: [-private/request.tsx:69](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L69)
+Defined in: [-private/request.tsx:69](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L69)
 
 The ContentFeatures used to refresh, reload, or abort the request.
 
@@ -69,6 +69,6 @@ The ContentFeatures used to refresh, reload, or abort the request.
 state: RequestState | null;
 ```
 
-Defined in: [-private/request.tsx:65](https://github.com/warp-drive-data/warp-drive/blob/cd257a192e0aa00670375a9be6faac263c773237/warp-drive-packages/react/src/-private/request.tsx#L65)
+Defined in: [-private/request.tsx:65](https://github.com/warp-drive-data/warp-drive/blob/2608593c22d42ae32c48edf0ca862b93a8dbc9e1/warp-drive-packages/react/src/-private/request.tsx#L65)
 
 The RequestState of the request, or `null` while idle.
