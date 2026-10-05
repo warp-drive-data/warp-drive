@@ -507,7 +507,7 @@ overrides:
   prettier: ^3.9.9
   "@types/node": "catalog:"
   "@vue/compiler-sfc": 3.5.43
-  "@shikijs/langs": 4.4.3
+  "@shikijs/langs": 4.5.0
   string.prototype.matchall: npm:@nolyfill/string.prototype.matchall@^1.0.44
 
 peerDependencyRules:
