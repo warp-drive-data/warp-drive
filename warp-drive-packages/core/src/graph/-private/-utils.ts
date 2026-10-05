@@ -51,16 +51,19 @@ export function assertValidRelationshipPayload(
   const { definition, identifier, state } = relationship;
   const { type } = identifier;
   const { field } = op;
-  const { isAsync, kind } = definition;
+  const { isAsync, isLinksMode, kind } = definition;
 
   if (payload.links) {
+    // in linksMode a related link is a valid substitute for primary data, so
+    // a link-only payload for a sync relationship is expected rather than an error.
+    //
     // once JSON_API_CACHE_VALIDATION_ERRORS is active, this warning is instead
     // the responsibility of the new document validator (see validateResourceRelationships
     // in warp-drive-packages/json-api/src/-private/validator/1.1/7.2_resource-objects.ts)
     if (!JSON_API_CACHE_VALIDATION_ERRORS) {
       warn(
         `You pushed a record of type '${type}' with a relationship '${field}' configured as 'async: false'. You've included a link but no primary data, this may be an error in your payload. WarpDrive will treat this relationship as known-to-be-empty.`,
-        isAsync || payload.data === null || !!payload.data || state.hasReceivedData,
+        isAsync || isLinksMode || payload.data === null || !!payload.data || state.hasReceivedData,
         {
           id: 'ds.store.push-link-for-sync-relationship',
         }
