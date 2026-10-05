@@ -301,7 +301,7 @@ catalog:
   "@babel/preset-typescript": ^7.29.7
   "@babel/runtime": ^7.29.7
   "@babel/traverse": ^7.29.8
-  "@ember/app-tsconfig": ^2.0.0
+  "@ember/app-tsconfig": ^2.1.0
   "@ember/edition-utils": ^1.2.0
   "@ember/optional-features": ^3.0.0
   "@ember/string": ^4.0.1
