@@ -381,7 +381,7 @@ catalog:
   fs-extra: ^11.4.1
   git-repo-version: ^1.0.2
   globals: ^17.13.0
-  hono: ^4.13.11
+  hono: ^4.13.12
   ignore: ^7.0.12
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
