@@ -301,7 +301,7 @@ catalog:
   "@babel/preset-typescript": ^7.29.7
   "@babel/runtime": ^7.29.7
   "@babel/traverse": ^7.29.8
-  "@ember/app-tsconfig": ^2.0.0
+  "@ember/app-tsconfig": ^2.1.0
   "@ember/edition-utils": ^1.2.0
   "@ember/optional-features": ^3.0.0
   "@ember/string": ^4.0.1
@@ -317,7 +317,7 @@ catalog:
   "@glimmer/component": ^2.1.1
   "@glint/ember-tsc": ^1.11.6
   "@glint/template": ^1.9.0
-  "@hono/node-server": ^2.1.1
+  "@hono/node-server": ^2.1.3
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
   "@jridgewell/trace-mapping": ^0.3.31
@@ -329,8 +329,8 @@ catalog:
   "@rolldown/plugin-babel": ^0.2.4
   "@rollup/plugin-babel": ^7.1.0
   "@sqlite.org/sqlite-wasm": 3.46.0-build2
-  "@sveltejs/kit": ^2.70.3
-  "@sveltejs/package": ^2.5.8
+  "@sveltejs/kit": ^3.0.0
+  "@sveltejs/package": ^3.0.0
   "@sveltejs/vite-plugin-svelte": ^7.3.1
   "@types/babel__core": ^7.20.5
   "@types/debug": ^4.1.13
@@ -338,7 +338,7 @@ catalog:
   "@types/jscodeshift": ^17.3.0
   "@types/json-to-ast": ^2.1.4
   "@types/morgan": ^1.9.10
-  "@types/node": ^26.6.3
+  "@types/node": ^26.6.4
   "@types/qunit": 2.19.14
   "@types/react": ^19.3.0
   "@types/react-dom": ^19.3.0
@@ -363,12 +363,12 @@ catalog:
   ember-modifier: ~4.3.0
   ember-page-title: ^9.0.3
   ember-provide-consume-context: ^0.10.0
-  ember-qunit: 9.1.0
+  ember-qunit: 9.2.0
   ember-route-template: ^1.0.3
   ember-source: ~7.3.0
   ember-source-channel-url: ^3.0.0
   ember-strict-application-resolver: ^0.1.1
-  eslint: ^10.11.0
+  eslint: ^10.12.0
   eslint-config-prettier: ^10.1.8
   eslint-plugin-import-x: ^4.17.1
   eslint-plugin-mocha: ^12.0.2
@@ -380,14 +380,14 @@ catalog:
   front-matter: ^4.0.2
   fs-extra: ^11.4.1
   git-repo-version: ^1.0.2
-  globals: ^17.12.0
-  hono: ^4.13.10
-  ignore: ^7.0.10
+  globals: ^17.13.0
+  hono: ^4.13.12
+  ignore: ^7.0.12
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
   markdown-title: ^1.0.2
-  mermaid: ^12.0.0
-  mocha: ^12.0.2
+  mermaid: ^12.1.0
+  mocha: ^12.0.3
   morgan: ^1.12.1
   oxfmt: ^0.71.0
   oxlint: ^1.86.0
@@ -406,22 +406,22 @@ catalog:
   svelte: ^5.57.1
   svgo: ^4.1.0
   terser: ^5.51.2
-  testem: ^3.21.0
+  testem: ^3.21.3
   todomvc-app-css: ^2.4.3
   todomvc-common: ^1.0.5
   tsdown: ^0.23.0
-  turbo: ^2.11.5
+  turbo: ^2.11.7
   typedoc: ^0.28.20
   typedoc-plugin-markdown: ^4.13.1
   typedoc-plugin-mdn-links: ^5.1.1
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
   typescript: ^6.0.3
-  typescript-7: "npm:typescript@7.1.0-dev.20260928.1"
+  typescript-7: "npm:typescript@7.1.0-dev.20261003.1"
   typescript-eslint: ^8.71.0
   typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0
-  vite: ^8.3.1
+  vite: ^8.3.2
   vite-bundle-analyzer: ^1.3.9
   vite-plugin-compression2: ^2.5.3
   vite-plugin-image-optimizer: ^2.0.3
@@ -431,9 +431,9 @@ catalog:
   vitepress-plugin-mermaid: ^2.0.17
   vitepress-plugin-llms: ^1.14.0
   vitepress-plugin-tabs: ^0.9.1
-  vitest: ^5.0.2
+  vitest: ^5.0.3
   vue: ^3.5.43
-  vue-tsc: ^3.3.11
+  vue-tsc: ^3.3.12
   winston: ^3.19.0
 
 ## The following settings previously lived under the root package.json's
@@ -496,18 +496,18 @@ overrides:
   ember-cli-htmlbars: ^7.0.1
   qunit: 3.0.0
   ember-compatibility-helpers: ^1.2.7
-  testem: ~3.21.0
+  testem: ~3.21.3
   typescript: 6.0.3
   lodash: ^4.18.1
-  caniuse-lite: ^1.0.30001813
-  rollup: ^4.63.5
+  caniuse-lite: ^1.0.30001814
+  rollup: ^4.64.0
   "@babel/types": ^7.29.8
   "@babel/parser": ^7.29.9
   "@babel/traverse": ^7.29.8
   prettier: ^3.9.9
   "@types/node": "catalog:"
   "@vue/compiler-sfc": 3.5.43
-  "@shikijs/langs": 4.4.3
+  "@shikijs/langs": 4.5.0
   string.prototype.matchall: npm:@nolyfill/string.prototype.matchall@^1.0.44
 
 peerDependencyRules:
