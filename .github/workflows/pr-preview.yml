@@ -90,7 +90,7 @@ jobs:
         with:
           action: deploy
           source-dir: docs-viewer/docs.warp-drive.io/.vitepress/dist
-          # matches the custom domain deploy.yml binds via its `cname` input, so the
+          # matches the custom domain deploy.yml binds via the CNAME file it publishes, so the
           # sticky PR comment/QR code link to the URL that actually works, not the
           # default <owner>.github.io/<repo>/ path (which BASE above doesn't target).
           # No scheme here -- the action's own preview_url output is literally
