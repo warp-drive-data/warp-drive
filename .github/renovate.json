@@ -59,6 +59,11 @@
       "groupName": "build-tools"
     },
     {
+      "description": "Keep svelte and @sveltejs/* (kit, package, vite-plugin-svelte) in one group; listed after build-tools so @sveltejs/vite-plugin-svelte lands here rather than matching /vite/",
+      "matchPackageNames": ["svelte", "/^svelte-/", "/^@sveltejs\\//"],
+      "groupName": "svelte"
+    },
+    {
       "matchPackageNames": [
         "/typedoc/",
         "/vitepress/",

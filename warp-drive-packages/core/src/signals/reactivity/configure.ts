@@ -47,10 +47,12 @@ export type SignalRef = unknown;
  * The hooks which MUST be configured in order to use reactive arrays,
  * resources and documents with framework specfic signals or TC39 signals.
  *
- * Support for multiple frameworks simultaneously can be done via
- * this abstraction by returning multiple signals from the `createSignal`
- * method, and consuming the correct one via the correct framework via
- * the `consumeSignal` and `notifySignal` methods.
+ * To support multiple frameworks on the same page, import
+ * `@warp-drive/alien-signals/install` before each framework's `install` entry
+ * point. Its hooks implement {@link SignalHooks.register}, so each framework's
+ * hooks, passed to {@link registerSignals}, are added to its signals graph
+ * instead of replacing it, and its memos stay up to date for every framework.
+ * See [Using Ember and React on the Same Page](/guides/the-manual/cookbook/multiple-frameworks-on-one-page.md).
  *
  * Unlike many signals implementations, WarpDrive does not wrap values as
  * signals directly, but instead uses signals to alert the reactive layer
@@ -115,6 +117,25 @@ export interface SignalHooks<T = SignalRef> {
    * for things like test-waiters.
    */
   waitFor?: <K>(promise: Promise<K>) => Promise<K>;
+
+  /**
+   * An optional method that returns whether a signal consumed right now would be tracked by the
+   * framework, for instance because a component is rendering.
+   *
+   * ***Warp*Drive** itself does not call it. Hooks that compose other implementations, such as
+   * the ones `@warp-drive/alien-signals/install` configures, use it to skip work for reads that no
+   * framework would track.
+   */
+  isTracking?: () => boolean;
+
+  /**
+   * An optional method, present only on hooks that compose other signals implementations into
+   * their own, such as the ones `@warp-drive/alien-signals/install` configures.
+   *
+   * {@link registerSignals} calls it instead of replacing the configured hooks, so that a
+   * framework's hooks are added alongside the ones already configured rather than replacing them.
+   */
+  register?: <K>(buildConfig: (options: HooksOptions) => SignalHooks<K>) => void;
 }
 
 /**
@@ -153,8 +174,9 @@ export interface HooksOptions {
 }
 
 /**
- * Configures the signals implementation to use. Supports multiple
- * implementations simultaneously.
+ * Configures the signals implementation to use, replacing any configured
+ * before. To add a framework's hooks alongside those of other frameworks, use
+ * {@link registerSignals} instead.
  *
  * See {@link HooksOptions} for the options passed to the provided function
  * when called.
@@ -178,6 +200,37 @@ export function setupSignals<T>(buildConfig: (options: HooksOptions) => SignalHo
     },
   });
   setTransient('signalHooks', hooks);
+}
+
+/**
+ * Adds the hooks built by `buildConfig` to the configured signals implementation if it composes
+ * other implementations, such as `@warp-drive/alien-signals`, and otherwise configures them with
+ * {@link setupSignals}.
+ *
+ * A framework's `install` entry point calls this rather than `setupSignals`, so that importing
+ * `@warp-drive/alien-signals/install` first lets every framework on the page share its signals
+ * and memos.
+ *
+ * @example
+ * ```ts
+ * import { registerSignals } from '@warp-drive/core/configure';
+ *
+ * registerSignals(buildSignalConfig);
+ * ```
+ *
+ * @summary Registers signal hooks with the configured composing implementation, or configures
+ * them with `setupSignals` when there is none.
+ * @since 5.10.0
+ * @public
+ * @param buildConfig - a function that takes options and returns a configuration object
+ */
+export function registerSignals<T>(buildConfig: (options: HooksOptions) => SignalHooks<T>): void {
+  const signalHooks: SignalHooks | null = peekTransient('signalHooks');
+  if (signalHooks?.register) {
+    signalHooks.register(buildConfig);
+  } else {
+    setupSignals(buildConfig);
+  }
 }
 
 /**

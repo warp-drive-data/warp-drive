@@ -152,9 +152,9 @@ This lets a reader who lands on an old search result or bookmark know immediatel
 page still applies to the version they're using.
 
 A blog post also sets the date it was published as a frontmatter `date`, written `YYYY-MM-DD`.
-The blog's RSS feed (`/blog/feed.xml`) lists every published post that isn't a draft or a section
-`index.md`, newest first, and uses `date` to order and date them, so the docs build fails on a post
-without one:
+The blog's RSS feed (`/blog/feed.xml`), the [Blog](/blog/) page, and each major version's page
+list every published post that isn't a draft or a section `index.md`, newest first, and use `date`
+to order and date them, so the docs build fails on a post without one:
 
 ```md
 ---

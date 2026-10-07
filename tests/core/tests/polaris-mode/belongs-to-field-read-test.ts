@@ -290,6 +290,52 @@ module('Reads | belongsTo in linksMode', function (hooks) {
     );
   });
 
+  test('(sync) we still validate linksMode relationships that follow a relationship with no field in the schema', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: {
+              name: 'Chris',
+            },
+            relationships: {
+              // not a field in the schema
+              favoriteCoffeeShop: {
+                links: { related: '/user/1/favoriteCoffeeShop' },
+              },
+              bestFriend: {
+                // oops we forgot links and data
+              },
+            },
+          },
+        }),
+      'Cannot fetch user.bestFriend because the field is in linksMode but the relationship data is undefined and no link is present'
+    );
+  });
+
   test('(sync) we do not error in linksMode if the related resource is not included when we have a link', function (assert) {
     const store = new Store();
     const { schema } = store;
@@ -331,6 +377,46 @@ module('Reads | belongsTo in linksMode', function (hooks) {
 
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.name, 'Chris', 'name is accessible');
+  });
+
+  test('(sync) we do not warn in linksMode when the relationship has a link but no data', async function (assert) {
+    const store = new Store();
+    const { schema } = store;
+
+    schema.registerResource(
+      withDefaults({
+        type: 'user',
+        fields: [
+          {
+            name: 'name',
+            kind: 'field',
+          },
+          {
+            name: 'bestFriend',
+            type: 'user',
+            kind: 'belongsTo',
+            options: { inverse: 'bestFriend', async: false, linksMode: true },
+          },
+        ],
+      })
+    );
+
+    await assert.expectNoWarning(() => {
+      store.push<User>({
+        data: {
+          type: 'user',
+          id: '1',
+          attributes: {
+            name: 'Chris',
+          },
+          relationships: {
+            bestFriend: {
+              links: { related: '/user/1/bestFriend' },
+            },
+          },
+        },
+      });
+    });
   });
 
   test('(sync) we error in linksMode if the related resource is not included (no link)', async function (assert) {

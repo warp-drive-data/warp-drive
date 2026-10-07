@@ -61,7 +61,7 @@ function validateResourceFields(
   for (const [type, relationshipDoc] of Object.entries(resource.relationships)) {
     const field = fields.get(type);
     if (!field) {
-      return;
+      continue;
     }
     switch (field.kind) {
       case 'belongsTo': {
@@ -94,66 +94,55 @@ function validateBelongsToLinksMode(
     );
   }
 
-  if (!field.options.async) {
-    const relationshipData = relationshipDoc.data;
-    if (Array.isArray(relationshipData)) {
-      throw new Error(
-        `Cannot fetch ${resourceType}.${field.name} because the relationship data for a belongsTo relationship is unexpectedly an array`
-      );
-    }
-
-    /**
-     * If we are sync, we must have a related link when we have no related data field
-     *
-     * We explicitly allow `null`! Missing key or `undefined` are always invalid.
-     */
-    if (relationshipData === undefined && !relationshipDoc.links?.related) {
-      throw new Error(
-        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the relationship data is undefined and no link is present`
-      );
-    }
-
-    /**
-     * Nothing more to verify since we are empty
-     */
-    if (!relationshipData) {
-      return;
-    }
-
-    /**
-     * We are explicitly asked to not verify full-linkage
-     */
-    if (!options.verifyIncluded) {
-      return;
-    }
-
-    /**
-     * If we have a link, full-linkage verification is not required.
-     */
-    if (relationshipDoc.links?.related) {
-      return;
-    }
-
-    /**
-     * If we are sync and have relationship data, we must have full linkage to an included resource
-     */
-    const includedDoc = options.included?.find(
-      (doc) => doc.type === relationshipData.type && doc.id === relationshipData.id
+  const relationshipData = relationshipDoc.data;
+  if (Array.isArray(relationshipData)) {
+    throw new Error(
+      `Cannot fetch ${resourceType}.${field.name} because the relationship data for a belongsTo relationship is unexpectedly an array`
     );
-    if (!includedDoc) {
-      throw new Error(
-        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related data is not included`
-      );
-    }
-  } else {
-    /**
-     * If we are async, we must have a related link.
-     */
-    if (!relationshipDoc.links?.related) {
-      throw new Error(
-        `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related link is missing`
-      );
-    }
+  }
+
+  /**
+   * If we are sync, we must have a related link when we have no related data field
+   *
+   * We explicitly allow `null`! Missing key or `undefined` are always invalid.
+   */
+  if (relationshipData === undefined && !relationshipDoc.links?.related) {
+    throw new Error(
+      `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the relationship data is undefined and no link is present`
+    );
+  }
+
+  /**
+   * Nothing more to verify since we are empty
+   */
+  if (!relationshipData) {
+    return;
+  }
+
+  /**
+   * We are explicitly asked to not verify full-linkage
+   */
+  if (!options.verifyIncluded) {
+    return;
+  }
+
+  /**
+   * If we have a link, full-linkage verification is not required.
+   */
+  if (relationshipDoc.links?.related) {
+    return;
+  }
+
+  /**
+   * If we are sync and have relationship data, we must have full linkage to an included resource
+   */
+  const includedDoc = options.included?.find(
+    (doc) => doc.type === relationshipData.type && doc.id === relationshipData.id
+  );
+  if (!includedDoc) {
+    throw new Error(
+      `Cannot fetch ${resourceType}.${field.name} because the field is in linksMode but the related data is not included`
+    );
   }
 }
 
