@@ -9,6 +9,9 @@ import type {
 } from '@warp-drive/core/types/spec/json-api-raw';
 
 import { singularize } from '../string/inflect.ts';
+import { applyFieldArguments, isFieldKey } from './field-arguments';
+import type { GraphqlRequestDetails } from './utilities';
+import { getGraphqlRequestDetails } from './utilities';
 
 /**
  * Configuration options for GraphQL to JSON:API transformation
@@ -44,6 +47,10 @@ interface GqlOptions {
    * The `op` of the request, set for requests built with `createRecord`, `updateRecord` or `deleteRecord`
    */
   operation?: string;
+  /**
+   * What the request was built from, when it was built with `get` or a mutation builder
+   */
+  details?: GraphqlRequestDetails;
 }
 
 const MUTATION_OPS = new Set(['createRecord', 'updateRecord', 'deleteRecord']);
@@ -87,6 +94,7 @@ export class GraphQLToJSONAPIHandler implements Handler {
       const options: GqlOptions = {
         ...(context.request.options as GqlOptions | undefined),
         operation: op,
+        details: getGraphqlRequestDetails(context.request),
       };
       options.errorPolicy ??= isMutation ? 'all' : undefined;
 
@@ -155,7 +163,16 @@ export class GraphQLToJSONAPIHandler implements Handler {
       return Object.keys(meta).length > 0 ? { data: null, meta } : { data: null };
     }
 
-    const { data } = graphqlResponse;
+    // Fields asked for with arguments get a key that holds their arguments, so the values for
+    // different arguments do not overwrite each other
+    const data = options?.details
+      ? applyFieldArguments(
+          graphqlResponse.data,
+          options.details.document,
+          options.details.operationName,
+          options.details.variables
+        )
+      : graphqlResponse.data;
 
     const keys = Object.keys(data);
     const key = keys[0];
@@ -358,7 +375,9 @@ export class GraphQLToJSONAPIHandler implements Handler {
           continue;
         }
 
-        if (this.parseAsRelationship(value)) {
+        if (isFieldKey(key)) {
+          attributes[key] = this.transformFieldWithArguments(value, key, included, processedIds, meta);
+        } else if (this.parseAsRelationship(value)) {
           const relatedResource = this.transformObjectToResource(value, key, included, processedIds, meta);
 
           if (relatedResource) {
@@ -393,6 +412,52 @@ export class GraphQLToJSONAPIHandler implements Handler {
     }
 
     return null;
+  }
+
+  /**
+   * A field that was asked for with arguments is not a relationship, because the schema cannot declare
+   * a relationship for every combination of arguments. Its value is kept as an attribute, under the key
+   * of the field and its arguments:
+   *
+   * - a list of resources is `{ $refs: [{ type, id }] }`
+   * - a single resource is `{ $ref: { type, id } }`
+   * - anything else is kept as the response had it
+   *
+   * The resources themselves are added to `included`. Use `readField` to read the value back.
+   */
+  private transformFieldWithArguments(
+    value: Value,
+    key: string,
+    included: ExistingResourceObject[],
+    processedIds: Set<string>,
+    meta: ObjectValue
+  ): Value {
+    const isResource =
+      value !== null &&
+      typeof value === 'object' &&
+      !Array.isArray(value) &&
+      typeof (value as ObjectValue).__typename === 'string' &&
+      typeof (value as ObjectValue).id === 'string';
+
+    // an empty list is kept as an empty list of refs, so resources can be added to it later
+    if (Array.isArray(value) && value.length === 0) {
+      return { $refs: [] };
+    }
+
+    if (!this.isHasMany(value) && !isResource) {
+      return value;
+    }
+
+    const related = this.transformObjectToResource(value, key, included, processedIds, meta);
+    const resources = Array.isArray(related) ? related : related ? [related] : [];
+    for (const resource of resources) {
+      if ('attributes' in resource) {
+        included.push(resource);
+      }
+    }
+    const refs = resources.map(({ type, id }) => ({ type, id }));
+
+    return (Array.isArray(related) ? { $refs: refs } : { $ref: refs[0] ?? null }) as unknown as Value;
   }
 
   formatErrorResponse(errors: GqlErrors[]): JsonApiDocument {

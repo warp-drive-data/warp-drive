@@ -91,6 +91,27 @@ GraphqlRequestHandlerSpec.use(useEmber(), function (b) {
           }}{{/let}}</template>;
     })
 
+    .test('it keeps each value of a field with arguments under its own key', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
+    .test('it keeps the arguments of a field below a connection', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
+    .test('it leaves a field without arguments as a relationship', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
     .test("it collects graphql errors into response meta when errorPolicy is 'ignore'", function (props) {
       const { request, _getRequestState, countFor } = props;
       return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor

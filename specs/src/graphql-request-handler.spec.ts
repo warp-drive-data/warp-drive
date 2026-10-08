@@ -28,6 +28,48 @@ const GET_USER_QUERY = parse(`
   }
 `);
 
+const GET_PROJECT_QUERY = parse(`
+  query GetProject($from: String, $to: String) {
+    project(id: "1") {
+      id
+      name
+      members {
+        id
+        name
+      }
+      january: memberList(from: "2026-01-01", to: "2026-01-31") {
+        id
+        name
+      }
+      february: memberList(from: "2026-02-01", to: "2026-02-28") {
+        id
+        name
+      }
+      range: memberList(from: $from, to: $to) {
+        id
+        name
+      }
+    }
+  }
+`);
+
+const GET_PROJECTS_QUERY = parse(`
+  query GetProjects {
+    projects {
+      edges {
+        node {
+          id
+          name
+          memberList(from: "2026-01-01", to: "2026-01-31") {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`);
+
 const GET_POSTS_QUERY = parse(`
   query GetPosts {
     posts {
@@ -158,6 +200,30 @@ export interface GraphqlRequestHandlerSpecSignature extends Record<string, SpecT
     }
   >;
   'it keeps the result of a delete in meta instead of turning it into a resource': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it keeps each value of a field with arguments under its own key': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it keeps the arguments of a field below a connection': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it leaves a field without arguments as a relationship': SpecTest<
     LocalTestContext,
     {
       request: Future<unknown>;
@@ -767,6 +833,208 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       assert.equal(result.data, null, 'data is null, a delete payload is not a resource');
       assert.deepEqual(result.included, [], 'nothing is included');
       assert.deepEqual(result.meta?.user, { __typename: 'DeleteUserPayload', id: '1' }, 'the payload is kept in meta');
+    })
+
+    .for('it keeps each value of a field with arguments under its own key')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_PROJECT_QUERY, 'project', { from: '2026-03-01', to: '2026-03-31' }, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetProject',
+        () => ({
+          data: {
+            project: {
+              __typename: 'Project',
+              id: '1',
+              name: 'Apollo',
+              members: [{ __typename: 'Member', id: 'z', name: 'Zed' }],
+              january: [{ __typename: 'Member', id: 'a', name: 'Ana' }],
+              february: [{ __typename: 'Member', id: 'b', name: 'Bo' }],
+              range: [{ __typename: 'Member', id: 'c', name: 'Cy' }],
+            },
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as {
+        data: { attributes: Record<string, unknown>; relationships: Record<string, unknown> };
+        included: Array<{ type: string; id: string }>;
+      };
+      const jan = 'memberList({"from":"2026-01-01","to":"2026-01-31"})';
+      const feb = 'memberList({"from":"2026-02-01","to":"2026-02-28"})';
+      const range = 'memberList({"from":"2026-03-01","to":"2026-03-31"})';
+
+      assert.deepEqual(result.data.attributes[jan], { $refs: [{ type: 'member', id: 'a' }] }, 'january is kept');
+      assert.deepEqual(result.data.attributes[feb], { $refs: [{ type: 'member', id: 'b' }] }, 'february is kept');
+      assert.deepEqual(
+        result.data.attributes[range],
+        { $refs: [{ type: 'member', id: 'c' }] },
+        'the arguments that come from variables are resolved'
+      );
+      assert.equal(result.data.attributes.january, undefined, 'the alias is not the key');
+      assert.equal(result.data.relationships.january, undefined, 'it is not a relationship');
+      assert.deepEqual(
+        result.included.map((r) => r.id).sort(),
+        ['a', 'b', 'c', 'z'],
+        'the members of every value are included'
+      );
+    })
+
+    .for('it keeps the arguments of a field below a connection')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_PROJECTS_QUERY, 'project', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetProjects',
+        () => ({
+          data: {
+            projects: {
+              __typename: 'ProjectConnection',
+              edges: [
+                {
+                  __typename: 'ProjectEdge',
+                  node: {
+                    __typename: 'Project',
+                    id: '1',
+                    name: 'Apollo',
+                    memberList: [{ __typename: 'Member', id: 'a', name: 'Ana' }],
+                  },
+                },
+              ],
+              pageInfo: { hasNextPage: false },
+            },
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as {
+        data: Array<{ attributes: Record<string, unknown> }>;
+        included: Array<{ type: string; id: string }>;
+      };
+      const jan = 'memberList({"from":"2026-01-01","to":"2026-01-31"})';
+
+      assert.equal(result.data.length, 1, 'the project is a resource');
+      assert.deepEqual(result.data[0].attributes[jan], { $refs: [{ type: 'member', id: 'a' }] }, 'the value is kept');
+      assert.equal(result.data[0].attributes.memberList, undefined, 'the field name alone is not used');
+      assert.deepEqual(
+        result.included.map((r) => r.id),
+        ['a'],
+        'the member is included'
+      );
+    })
+
+    .for('it leaves a field without arguments as a relationship')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_PROJECT_QUERY, 'project', { from: '2026-03-01', to: '2026-03-31' }, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetProject',
+        () => ({
+          data: {
+            project: {
+              __typename: 'Project',
+              id: '1',
+              name: 'Apollo',
+              members: [{ __typename: 'Member', id: 'z', name: 'Zed' }],
+              january: [{ __typename: 'Member', id: 'a', name: 'Ana' }],
+              february: [{ __typename: 'Member', id: 'b', name: 'Bo' }],
+              range: [{ __typename: 'Member', id: 'c', name: 'Cy' }],
+            },
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as {
+        data: { attributes: Record<string, unknown>; relationships: Record<string, { data: unknown }> };
+      };
+
+      assert.deepEqual(
+        result.data.relationships.members.data,
+        [{ type: 'member', id: 'z' }],
+        'a field without arguments is a relationship'
+      );
+      assert.equal(result.data.attributes.members, undefined, 'and not an attribute');
     })
 
     .for("it collects graphql errors into response meta when errorPolicy is 'ignore'")
