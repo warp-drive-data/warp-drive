@@ -3596,6 +3596,9 @@ importers:
       '@warp-drive/internal-config':
         specifier: workspace:*
         version: file:tools/internal-config(8c803ff5425679244041d5f5f328f75f)
+      '@warp-drive/utilities':
+        specifier: workspace:*
+        version: file:warp-drive-packages/utilities(d59150c2e950b805009fbcd4ceb07e4d)
       babel-plugin-ember-template-compilation:
         specifier: 'catalog:'
         version: 4.0.0
@@ -7591,7 +7594,6 @@ packages:
     peerDependencies:
       '@warp-drive/core': workspace:*
       graphql: ^16.12.0
-      graphql-tag: ^2.12.6
     peerDependenciesMeta:
       graphql:
         optional: true
@@ -13380,7 +13382,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter':
@@ -13393,7 +13394,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter(@babel/core@7.29.7)':
@@ -13406,7 +13406,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/adapter@file:packages/adapter(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13419,7 +13418,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/codemods@file:packages/codemods':
@@ -13436,7 +13434,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/debug@file:packages/debug(@babel/core@7.29.7)':
@@ -13449,7 +13446,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/debug@file:packages/debug(@babel/core@7.29.7)(graphql@16.14.2)':
@@ -13462,7 +13458,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/debug@file:packages/debug(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13475,7 +13470,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/graph@file:packages/graph':
@@ -13515,7 +13509,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/json-api@file:packages/json-api(@babel/core@7.29.7)':
@@ -13528,7 +13521,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/json-api@file:packages/json-api(@babel/core@7.29.7)(graphql@16.14.2)':
@@ -13541,7 +13533,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/json-api@file:packages/json-api(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13554,7 +13545,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat':
@@ -13567,7 +13557,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(@babel/core@7.29.7)':
@@ -13580,7 +13569,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(@babel/core@7.29.7)(graphql@16.14.2)':
@@ -13593,7 +13581,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/legacy-compat@file:packages/legacy-compat(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13606,7 +13593,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model':
@@ -13619,7 +13605,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model(@babel/core@7.29.7)':
@@ -13632,7 +13617,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model(@babel/core@7.29.7)(graphql@16.14.2)':
@@ -13645,7 +13629,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/model@file:packages/model(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13658,7 +13641,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils':
@@ -13670,7 +13652,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(2864cd941914c09f17827147b914fd09)':
@@ -13684,7 +13665,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(778d45e2ea35549b5602b3c60d05f11a)':
@@ -13698,7 +13678,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(@babel/core@7.29.7)':
@@ -13710,7 +13689,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request-utils@file:packages/request-utils(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13722,7 +13700,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/request@file:packages/request':
@@ -13761,7 +13738,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/serializer@file:packages/serializer':
@@ -13774,7 +13750,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/serializer@file:packages/serializer(@babel/core@7.29.7)':
@@ -13787,7 +13762,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/serializer@file:packages/serializer(e0ff4349d3585fabae29421d7a4b80a6)':
@@ -13800,7 +13774,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/store@file:packages/store(1db19aeacb23dc35e135a30c3e2e982e)':
@@ -13902,7 +13875,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(9d693d589ee9a1573930cfc3a33b727b)':
@@ -13919,7 +13891,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(d8b0db1309f3ab3ecbc3afa901884476)':
@@ -13935,7 +13906,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-data/unpublished-test-infra@file:packages/unpublished-test-infra(e9b871fbf4994ed220692dd2ddc39dda)':
@@ -13951,7 +13921,6 @@ snapshots:
       - '@babel/core'
       - '@glint/template'
       - graphql
-      - graphql-tag
       - supports-color
 
   '@ember-tooling/blueprint-model@0.7.1':
@@ -19029,7 +18998,6 @@ snapshots:
       - ember-inflector
       - ember-provide-consume-context
       - graphql
-      - graphql-tag
       - supports-color
 
   ember-data@file:packages/-ember-data(b1f1005f5e7b5455651af3cdd9933b15):
@@ -19063,7 +19031,6 @@ snapshots:
       - ember-inflector
       - ember-provide-consume-context
       - graphql
-      - graphql-tag
       - supports-color
 
   ember-eslint-parser@0.14.6(04df9ef2d64f5e0361d29e659f4e3840):
@@ -19411,7 +19378,6 @@ snapshots:
       - '@glint/template'
       - '@typescript-eslint/parser'
       - graphql
-      - graphql-tag
       - supports-color
       - typescript
 

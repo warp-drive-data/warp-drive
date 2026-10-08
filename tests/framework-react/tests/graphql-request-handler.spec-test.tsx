@@ -201,6 +201,63 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
+    .test("it rejects a mutation that has graphql errors without an errorPolicy", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
+    .test("it lets a mutation choose its errorPolicy", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
+    .test("it keeps the result of a delete in meta instead of turning it into a resource", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
     .test("it collects graphql errors into response meta when errorPolicy is 'ignore'", function (props) {
       const { request, _getRequestState, countFor } = props;
 

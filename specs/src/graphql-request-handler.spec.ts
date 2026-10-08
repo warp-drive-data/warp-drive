@@ -141,6 +141,30 @@ export interface GraphqlRequestHandlerSpecSignature extends Record<string, SpecT
       countFor: (result: unknown, error: unknown) => number;
     }
   >;
+  'it rejects a mutation that has graphql errors without an errorPolicy': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it lets a mutation choose its errorPolicy': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it keeps the result of a delete in meta instead of turning it into a resource': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
   "it collects graphql errors into response meta when errorPolicy is 'ignore'": SpecTest<
     LocalTestContext,
     {
@@ -611,6 +635,138 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       const result = state1!.result as { data: unknown; meta?: Record<string, unknown> };
       assert.equal(result.data, null, 'data is null, the object cannot be typed');
       assert.deepEqual(result.meta?.user, { id: '1', firstName: 'Chris' }, 'the object is kept in meta under the field name');
+    })
+
+    .for('it rejects a mutation that has graphql errors without an errorPolicy')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>({ ...requestInfo, op: 'updateRecord' });
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      try {
+        await request;
+      } catch {
+        // ignore, we assert against the reactive state below
+      }
+      await this.h.rerender();
+
+      assert.equal(state1!.result, null, 'result is null');
+      assert.true(state1!.error instanceof Error, 'the request rejects');
+      const error = state1!.error as Error & { content?: unknown };
+      assert.deepEqual(
+        error.content,
+        [{ title: 'GraphQL Error', detail: 'Not allowed', source: { pointer: '/user' } }],
+        'the error carries the graphql errors'
+      );
+    })
+
+    .for('it lets a mutation choose its errorPolicy')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>({ ...requestInfo, op: 'updateRecord', options: { errorPolicy: 'ignore' } });
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'the request does not reject when the app chose errorPolicy ignore');
+      const result = state1!.result as { meta?: { errors: Array<{ detail: string }> } };
+      assert.equal(result.meta?.errors.length, 1, 'the errors are collected into meta');
+      assert.equal(result.meta?.errors[0].detail, 'Not allowed', 'with their detail');
+    })
+
+    .for('it keeps the result of a delete in meta instead of turning it into a resource')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({ data: { user: { __typename: 'DeleteUserPayload', id: '1' } } }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>({ ...requestInfo, op: 'deleteRecord' });
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as { data: unknown; included: unknown[]; meta?: Record<string, unknown> };
+      assert.equal(result.data, null, 'data is null, a delete payload is not a resource');
+      assert.deepEqual(result.included, [], 'nothing is included');
+      assert.deepEqual(result.meta?.user, { __typename: 'DeleteUserPayload', id: '1' }, 'the payload is kept in meta');
     })
 
     .for("it collects graphql errors into response meta when errorPolicy is 'ignore'")

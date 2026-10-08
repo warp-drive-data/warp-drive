@@ -40,7 +40,13 @@ interface GqlErrors {
 
 interface GqlOptions {
   errorPolicy?: 'ignore' | 'all';
+  /**
+   * The `op` of the request, set for requests built with `createRecord`, `updateRecord` or `deleteRecord`
+   */
+  operation?: string;
 }
+
+const MUTATION_OPS = new Set(['createRecord', 'updateRecord', 'deleteRecord']);
 
 /**
  * A request handler that transforms GraphQL responses into JSON:API format.
@@ -74,7 +80,15 @@ export class GraphQLToJSONAPIHandler implements Handler {
   request<T>(context: RequestContext, next: NextFn<T>): Promise<T | StructuredDataDocument<T>> {
     return next(context.request).then((result) => {
       const { content, response, request } = result;
-      const { options } = context.request;
+      const { op } = context.request;
+      const isMutation = typeof op === 'string' && MUTATION_OPS.has(op);
+      // A mutation that has errors must reject, so the cache does not commit a save the server refused.
+      // The app can still choose another policy with `options.errorPolicy`.
+      const options: GqlOptions = {
+        ...(context.request.options as GqlOptions | undefined),
+        operation: op,
+      };
+      options.errorPolicy ??= isMutation ? 'all' : undefined;
 
       // If the response is not from a GraphQL API, skip transformation
       const responseFormat = response?.headers.get('x-response-format');
@@ -82,7 +96,7 @@ export class GraphQLToJSONAPIHandler implements Handler {
         return result;
       }
 
-      const jsonApiDocument = this.transformGraphQLToJSONAPI(content as GraphQLResponse, options as GqlOptions);
+      const jsonApiDocument = this.transformGraphQLToJSONAPI(content as GraphQLResponse, options);
 
       if (jsonApiDocument.errors && options?.errorPolicy === 'all') {
         const msg = `[${response?.status}] ${context.request.method ?? 'GET'} (${response?.type}) - ${response?.url}`;
@@ -137,7 +151,8 @@ export class GraphQLToJSONAPIHandler implements Handler {
     }
 
     if (!graphqlResponse.data) {
-      return { data: null };
+      // with `errorPolicy: 'ignore'` the errors were collected into `meta`, and must not be lost
+      return Object.keys(meta).length > 0 ? { data: null, meta } : { data: null };
     }
 
     const { data } = graphqlResponse;
@@ -170,6 +185,22 @@ export class GraphQLToJSONAPIHandler implements Handler {
       }
 
       return formattedUnionError;
+    }
+
+    // A delete does not return the record, so what the mutation returns (a Boolean, an `{ id }`, a payload)
+    // is kept in `meta` instead of becoming a resource of an unknown type
+    if (options?.operation === 'deleteRecord') {
+      if (value !== null && value !== undefined) {
+        meta[key] = value;
+      }
+
+      const deleted: JsonApiDocument = { data: null, included: [] };
+
+      if (Object.keys(meta).length > 0) {
+        deleted.meta = meta;
+      }
+
+      return deleted;
     }
 
     // If the response is a success object (e.g., QuerySuccessSuccess),
