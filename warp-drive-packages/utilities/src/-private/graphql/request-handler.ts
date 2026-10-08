@@ -11,6 +11,7 @@ import type {
 import { singularize } from '../string/inflect.ts';
 import { applyFieldArguments, isFieldKey } from './field-arguments';
 import type { GraphqlRequestDetails } from './utilities';
+import { recordQuery } from './queries';
 import { getGraphqlRequestDetails } from './utilities';
 
 /**
@@ -121,6 +122,13 @@ export class GraphQLToJSONAPIHandler implements Handler {
         error.content = jsonApiDocument.errors;
 
         throw error;
+      }
+
+      // Remember the query, so the list it fetched can be updated later with `addToQueries` and `removeFromQueries`
+      const store = (context.request as { store?: object }).store;
+      const key = context.request.cacheOptions?.key;
+      if (store && key && options.details && op === 'query') {
+        recordQuery(store, options.details.operationName, key, options.details.variables);
       }
 
       return {

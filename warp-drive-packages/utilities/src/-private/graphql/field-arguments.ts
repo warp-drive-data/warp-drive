@@ -62,6 +62,23 @@ export function fieldKey(name: string, args: Record<string, unknown> = {}): stri
 }
 
 /**
+ * Reads a key built by {@link fieldKey} back into the name of the field and its arguments.
+ * Returns `null` for a key that was not built by it.
+ */
+export function parseFieldKey(key: string): { name: string; args: Record<string, unknown> } | null {
+  if (!isFieldKey(key)) {
+    return null;
+  }
+
+  const open = key.indexOf('(');
+  try {
+    return { name: key.slice(0, open), args: JSON.parse(key.slice(open + 1, -1)) as Record<string, unknown> };
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Whether a key was built by {@link fieldKey}. A GraphQL field name cannot hold a `(`, so it is enough.
  */
 export function isFieldKey(key: string): boolean {
