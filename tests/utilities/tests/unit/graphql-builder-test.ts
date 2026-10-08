@@ -3,7 +3,9 @@ import type { TestContext } from '@ember/test-helpers';
 import { parse, print } from 'graphql';
 
 import { setBuildURLConfig } from '@ember-data/request-utils';
-import { get, getGraphqlRequestDetails } from '@ember-data/request-utils/graphql';
+import { createRecord, deleteRecord, get, getGraphqlRequestDetails, updateRecord } from '@ember-data/request-utils/graphql';
+import type Store from '@ember-data/store';
+import { recordIdentifierFor } from '@ember-data/store';
 import { RequestManager } from '@warp-drive/core';
 import type { Handler } from '@warp-drive/core/request';
 import type { RequestContext } from '@warp-drive/core/types/request';
@@ -189,5 +191,63 @@ module('GraphQL | Request Builders', function (hooks) {
 
     assert.true(seen?.document === GET_USER_QUERY, 'a handler can still read the query');
     assert.deepEqual(seen?.variables, { id: '1' }, 'and the variables');
+  });
+
+  const SAVE_USER_SETTING = parse(`
+    mutation SaveUserSetting($id: ID!, $name: String) {
+      saveUserSetting(id: $id, name: $name) {
+        __typename
+        id
+        name
+      }
+    }
+  `);
+
+  test('deleteRecord tells the cache which record is being deleted', function (this: TestContext, assert) {
+    const store = this.owner.lookup('service:store') as Store;
+    store.push({ data: { id: '12', type: 'user-setting', attributes: { name: 'test' } } });
+    const userSetting = store.peekRecord('user-setting', '12');
+    const identifier = recordIdentifierFor(userSetting);
+
+    const result = deleteRecord(userSetting, SAVE_USER_SETTING, { id: '12' });
+
+    assert.equal(result.url, 'https://api.example.com/api/v1/SaveUserSetting', 'the url is built from the operation');
+    assert.equal(result.method, 'POST', 'a graphql mutation is a POST');
+    assert.equal(result.op, 'deleteRecord', 'the op is deleteRecord');
+    assert.deepEqual(result.records, [identifier], 'the records are the record being deleted');
+    assert.deepEqual(result.data, { record: identifier }, 'the data carries the record');
+    assert.deepEqual(headersToObject(result.headers), GRAPHQL_HEADERS);
+    assert.deepEqual(
+      JSON.parse(result.body),
+      { query: print(SAVE_USER_SETTING), operationName: 'SaveUserSetting', variables: { id: '12' } },
+      'the body is the mutation and its variables'
+    );
+    assert.false('cacheOptions' in result, 'a mutation is never cached');
+    assert.true(getGraphqlRequestDetails(result)?.document === SAVE_USER_SETTING, 'the details are attached');
+  });
+
+  test('updateRecord tells the cache which record is being updated', function (this: TestContext, assert) {
+    const store = this.owner.lookup('service:store') as Store;
+    store.push({ data: { id: '12', type: 'user-setting', attributes: { name: 'test' } } });
+    const userSetting = store.peekRecord('user-setting', '12');
+    const identifier = recordIdentifierFor(userSetting);
+
+    const result = updateRecord(userSetting, SAVE_USER_SETTING, { id: '12', name: 'new' }, { namespace: 'graphql' });
+
+    assert.equal(result.url, 'https://api.example.com/graphql/SaveUserSetting', 'the namespace option is used');
+    assert.equal(result.op, 'updateRecord', 'the op is updateRecord');
+    assert.deepEqual(result.records, [identifier], 'the records are the record being updated');
+  });
+
+  test('createRecord tells the cache which new record is being saved', function (this: TestContext, assert) {
+    const store = this.owner.lookup('service:store') as Store;
+    const userSetting = store.createRecord('user-setting', { name: 'test' });
+    const identifier = recordIdentifierFor(userSetting);
+
+    const result = createRecord(userSetting, SAVE_USER_SETTING, { id: 'new', name: 'test' });
+
+    assert.equal(result.op, 'createRecord', 'the op is createRecord');
+    assert.deepEqual(result.records, [identifier], 'the records are the new record');
+    assert.equal(identifier.id, null, 'the record has no id yet');
   });
 });
