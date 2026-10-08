@@ -144,6 +144,63 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
+    .test("it resolves a null root field to null data", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
+    .test("it keeps a scalar root result in meta", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
+    .test("it keeps a root object without __typename in meta", function (props) {
+      const { request, _getRequestState, countFor } = props;
+
+      function Component() {
+        const state = _getRequestState(request);
+        return (
+          <>
+            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          </>
+        );
+      }
+
+      return (
+        <ReactiveContext>
+          <Component />
+        </ReactiveContext>
+      );
+    })
+
     .test("it collects graphql errors into response meta when errorPolicy is 'ignore'", function (props) {
       const { request, _getRequestState, countFor } = props;
 

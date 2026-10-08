@@ -117,6 +117,30 @@ export interface GraphqlRequestHandlerSpecSignature extends Record<string, SpecT
       countFor: (result: unknown, error: unknown) => number;
     }
   >;
+  'it resolves a null root field to null data': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it keeps a scalar root result in meta': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it keeps a root object without __typename in meta': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
   "it collects graphql errors into response meta when errorPolicy is 'ignore'": SpecTest<
     LocalTestContext,
     {
@@ -453,6 +477,140 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       assert.equal(result.data.type, 'user', 'type comes from the nested resource');
       assert.equal(result.data.id, '1', 'id comes from the nested resource');
       assert.equal(result.data.attributes.firstName, 'Chris', 'attributes come from the nested resource');
+    })
+
+    .for('it resolves a null root field to null data')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({
+          data: {
+            user: null,
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as { data: unknown; meta?: Record<string, unknown> };
+      assert.equal(result.data, null, 'data is null');
+    })
+
+    .for('it keeps a scalar root result in meta')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({
+          data: {
+            user: true,
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as { data: unknown; meta?: Record<string, unknown> };
+      assert.equal(result.data, null, 'data is null');
+      assert.equal(result.meta?.user, true, 'the scalar result is kept in meta under the field name');
+    })
+
+    .for('it keeps a root object without __typename in meta')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({
+          data: {
+            user: { id: '1', firstName: 'Chris' },
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      assert.equal(state1!.error, null, 'it is not an error');
+      const result = state1!.result as { data: unknown; meta?: Record<string, unknown> };
+      assert.equal(result.data, null, 'data is null, the object cannot be typed');
+      assert.deepEqual(result.meta?.user, { id: '1', firstName: 'Chris' }, 'the object is kept in meta under the field name');
     })
 
     .for("it collects graphql errors into response meta when errorPolicy is 'ignore'")

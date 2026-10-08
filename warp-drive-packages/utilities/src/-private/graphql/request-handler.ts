@@ -147,9 +147,9 @@ export class GraphQLToJSONAPIHandler implements Handler {
     const keys = Object.keys(data);
     const key = keys[0];
     let value = data[key] as Value;
-    const documentErrors = (value as ObjectValue).errors as unknown as GqlErrors[];
+    const documentErrors = (value as ObjectValue | null)?.errors as unknown as GqlErrors[] | undefined;
 
-    if (documentErrors?.length > 0) {
+    if (documentErrors && documentErrors.length > 0) {
       const formattedDocumentErrors = this.formatErrorResponse(documentErrors);
       if (options.errorPolicy === 'all') {
         return formattedDocumentErrors;
@@ -178,6 +178,12 @@ export class GraphQLToJSONAPIHandler implements Handler {
     // extract the actual schema from within it
     value = this.extractSchemaFromSuccessObject(value);
     const resource = this.transformObjectToResource(value, key, included, processedIds, meta);
+
+    // A root value that is not a resource (for example a mutation that returns a Boolean, or an
+    // object without `__typename`) is kept in `meta` under its field name, instead of being dropped
+    if (resource === null && value !== null && value !== undefined) {
+      meta[key] = value;
+    }
 
     const payload: JsonApiDocument = { data: resource, included };
 
@@ -299,7 +305,12 @@ export class GraphQLToJSONAPIHandler implements Handler {
         return null;
       }
 
-      const type = singularize(this.options.typeMapper(data.__typename as string) ?? this.options.typeMapper(typeName));
+      // Without a `__typename` we cannot tell what the object is, so it is not turned into a resource
+      if (typeof data.__typename !== 'string') {
+        return null;
+      }
+
+      const type = singularize(this.options.typeMapper(data.__typename) ?? this.options.typeMapper(typeName));
 
       const resourceId = `${type}:${id}`;
 

@@ -49,6 +49,27 @@ GraphqlRequestHandlerSpec.use(useEmber(), function (b) {
           }}{{/let}}</template>;
     })
 
+    .test('it resolves a null root field to null data', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
+    .test('it keeps a scalar root result in meta', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
+    .test('it keeps a root object without __typename in meta', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
     .test("it collects graphql errors into response meta when errorPolicy is 'ignore'", function (props) {
       const { request, _getRequestState, countFor } = props;
       return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
