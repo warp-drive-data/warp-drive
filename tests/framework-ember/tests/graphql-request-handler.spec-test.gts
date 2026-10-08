@@ -32,6 +32,23 @@ GraphqlRequestHandlerSpec.use(useEmber(), function (b) {
       }
     )
 
+    .test(
+      "it rejects with an aggregate error when errorPolicy is 'all' and the root field is an Error union member",
+      function (props) {
+        const { request, _getRequestState, countFor } = props;
+        return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+              state.result state.error
+            }}{{/let}}</template>;
+      }
+    )
+
+    .test('it unwraps a Success union member into its nested resource', function (props) {
+      const { request, _getRequestState, countFor } = props;
+      return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
+            state.result state.error
+          }}{{/let}}</template>;
+    })
+
     .test("it collects graphql errors into response meta when errorPolicy is 'ignore'", function (props) {
       const { request, _getRequestState, countFor } = props;
       return <template>{{#let (_getRequestState request) as |state|}}Count:{{countFor
