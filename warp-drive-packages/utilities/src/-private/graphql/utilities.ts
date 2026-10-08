@@ -135,3 +135,41 @@ export function stableStringify(value: unknown): string {
 export function buildCacheKey(url: string, variables: GraphqlVariables): string {
   return `${url}#${stableStringify(variables)}`;
 }
+
+/**
+ * What a GraphQL request was built from. It is attached to the request, next to
+ * the serialized `body`, so a handler can read the query and its variables when
+ * the response comes back, without parsing the `body` again.
+ */
+export interface GraphqlRequestDetails {
+  /**
+   * The parsed query document.
+   */
+  document: DocumentNode;
+  /**
+   * The name of the operation.
+   */
+  operationName: string;
+  /**
+   * The variables the operation was called with.
+   */
+  variables: GraphqlVariables;
+}
+
+/**
+ * The key the {@link GraphqlRequestDetails} are stored under on a request.
+ *
+ * It is a symbol rather than an entry of `options`, because a caller that sets its
+ * own `options` on a request, such as `{ ...request, options: { errorPolicy: 'all' } }`,
+ * replaces them, while a symbol key is copied along when the request is spread.
+ * It is registered globally so every copy of the package shares the same key.
+ */
+export const GRAPHQL_DETAILS: unique symbol = Symbol.for('@warp-drive/graphql:request-details');
+
+/**
+ * Reads the {@link GraphqlRequestDetails} of a request built with `get`.
+ * Returns `undefined` for a request that was not built with it.
+ */
+export function getGraphqlRequestDetails(request: object): GraphqlRequestDetails | undefined {
+  return (request as { [GRAPHQL_DETAILS]?: GraphqlRequestDetails })[GRAPHQL_DETAILS];
+}

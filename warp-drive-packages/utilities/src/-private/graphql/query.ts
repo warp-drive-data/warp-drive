@@ -7,8 +7,16 @@ import type { TypedRecordInstance, TypeFromInstance } from '@warp-drive/core/typ
 import type { ConstrainedRequestOptions } from '@warp-drive/core/types/request';
 
 import { extractCacheOptions } from '../builder-utils';
-import type { GraphqlUrlOptions } from './utilities';
-import { buildBaseURL, buildCacheKey, buildGraphqlBody } from './utilities';
+import type { GraphqlRequestDetails, GraphqlUrlOptions } from './utilities';
+import { buildBaseURL, buildCacheKey, buildGraphqlBody, GRAPHQL_DETAILS } from './utilities';
+
+/**
+ * A GraphQL query request, as returned by `get`. Besides what the request is made of, it carries the
+ * {@link GraphqlRequestDetails} it was built from, which can be read with `getGraphqlRequestDetails`.
+ */
+export type GraphqlQueryRequest<RT = unknown> = GraphqlQueryRequestOptions<RT> & {
+  [GRAPHQL_DETAILS]?: GraphqlRequestDetails;
+};
 
 export interface UseQueryResult<T> {
   value: Future<ReactiveDocument<T>>;
@@ -20,19 +28,19 @@ export function get<T extends TypedRecordInstance>(
   type: TypeFromInstance<T>,
   variables?: GraphqlVariables,
   options?: ConstrainedRequestOptions
-): GraphqlQueryRequestOptions<ReactiveDataDocument<T[]>>;
+): GraphqlQueryRequest<ReactiveDataDocument<T[]>>;
 export function get(
   query: DocumentNode,
   type: string,
   variables: GraphqlVariables,
   options?: ConstrainedRequestOptions
-): GraphqlQueryRequestOptions;
+): GraphqlQueryRequest;
 export function get(
   query: DocumentNode,
   type: string,
   variables?: GraphqlVariables,
   options: ConstrainedRequestOptions = {}
-): GraphqlQueryRequestOptions {
+): GraphqlQueryRequest {
   const cacheOptions = extractCacheOptions(options);
   const operationDefinition = query.definitions.find(
     (definition): definition is OperationDefinitionNode => definition.kind === 'OperationDefinition'
@@ -65,5 +73,10 @@ export function get(
     body: JSON.stringify(buildGraphqlBody(urlOptions.operationName, query, resolvedVariables)),
     cacheOptions,
     op: 'query',
+    [GRAPHQL_DETAILS]: {
+      document: query,
+      operationName: urlOptions.operationName,
+      variables: resolvedVariables,
+    },
   };
 }

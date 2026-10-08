@@ -3,7 +3,10 @@ import type { TestContext } from '@ember/test-helpers';
 import { parse, print } from 'graphql';
 
 import { setBuildURLConfig } from '@ember-data/request-utils';
-import { get } from '@ember-data/request-utils/graphql';
+import { get, getGraphqlRequestDetails } from '@ember-data/request-utils/graphql';
+import { RequestManager } from '@warp-drive/core';
+import type { Handler } from '@warp-drive/core/request';
+import type { RequestContext } from '@warp-drive/core/types/request';
 import { module, test } from '@warp-drive/diagnostic';
 import { setupTest } from '@warp-drive/diagnostic/ember';
 
@@ -51,6 +54,17 @@ module('GraphQL | Request Builders', function (hooks) {
     );
     assert.deepEqual(headersToObject(result.headers), GRAPHQL_HEADERS);
     assert.true(true);
+  });
+
+  test('the operation is found when the document starts with a fragment', function (this: TestContext, assert) {
+    const QUERY = parse(`
+      fragment UserName on User { firstName }
+      query GetUsers { users { ...UserName } }
+    `);
+
+    const result = get(QUERY, 'user');
+    assert.equal(result.url, 'https://api.example.com/api/v1/GetUsers', 'the url has the operation name');
+    assert.equal(getGraphqlRequestDetails(result)?.operationName, 'GetUsers', 'so do the details');
   });
 
   test('query with variables', function (this: TestContext, assert) {
@@ -130,5 +144,50 @@ module('GraphQL | Request Builders', function (hooks) {
       backgroundReload: false,
       key: 'https://api.example.com/api/v1/GetUser#{"id":"1"}',
     });
+  });
+
+  test('the request carries the query, the operation name and the variables it was built from', function (this: TestContext, assert) {
+    const GET_USER_QUERY = parse(`
+      query GetUser($id: ID!) {
+        user(id: $id) {
+          firstName
+        }
+      }
+    `);
+
+    const result = get(GET_USER_QUERY, 'user', { id: '1' });
+    const details = getGraphqlRequestDetails(result);
+
+    assert.true(details?.document === GET_USER_QUERY, 'the parsed document is attached');
+    assert.equal(details?.operationName, 'GetUser', 'the operation name is attached');
+    assert.deepEqual(details?.variables, { id: '1' }, 'the variables are attached');
+  });
+
+  test('a request that was not built with get has no graphql details', function (this: TestContext, assert) {
+    assert.equal(getGraphqlRequestDetails({ url: '/users', method: 'GET' }), undefined);
+  });
+
+  test('the graphql details survive spreading the request and setting its options', async function (this: TestContext, assert) {
+    const GET_USER_QUERY = parse(`
+      query GetUser($id: ID!) {
+        user(id: $id) {
+          firstName
+        }
+      }
+    `);
+
+    let seen: ReturnType<typeof getGraphqlRequestDetails>;
+    const recorder: Handler = {
+      request<T>(context: RequestContext): Promise<T> {
+        seen = getGraphqlRequestDetails(context.request);
+        return Promise.resolve({ data: null } as T);
+      },
+    };
+    const manager = new RequestManager().use([recorder]);
+
+    await manager.request({ ...get(GET_USER_QUERY, 'user', { id: '1' }), options: { errorPolicy: 'all' } });
+
+    assert.true(seen?.document === GET_USER_QUERY, 'a handler can still read the query');
+    assert.deepEqual(seen?.variables, { id: '1' }, 'and the variables');
   });
 });
