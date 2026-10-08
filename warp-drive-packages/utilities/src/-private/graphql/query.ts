@@ -8,7 +8,7 @@ import type { ConstrainedRequestOptions } from '@warp-drive/core/types/request';
 
 import { extractCacheOptions } from '../builder-utils';
 import type { GraphqlUrlOptions } from './utilities';
-import { buildBaseURL, buildGraphqlBody } from './utilities';
+import { buildBaseURL, buildCacheKey, buildGraphqlBody } from './utilities';
 
 export interface UseQueryResult<T> {
   value: Future<ReactiveDocument<T>>;
@@ -52,6 +52,9 @@ export function get(
   }
 
   const url = buildBaseURL(urlOptions);
+  const resolvedVariables = variables ?? {};
+  // POST requests have no default cache key, so derive one from the operation and its variables
+  cacheOptions.key = buildCacheKey(url, resolvedVariables);
   const headers = new Headers();
   headers.append('Accept', 'application/vnd.api+json');
 
@@ -59,7 +62,7 @@ export function get(
     url,
     method: 'POST',
     headers,
-    body: JSON.stringify(buildGraphqlBody(urlOptions.operationName, query, variables ?? {})),
+    body: JSON.stringify(buildGraphqlBody(urlOptions.operationName, query, resolvedVariables)),
     cacheOptions,
     op: 'query',
   };

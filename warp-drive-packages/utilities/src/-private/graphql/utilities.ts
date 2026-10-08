@@ -105,3 +105,33 @@ export function buildGraphqlBody(
     variables,
   };
 }
+
+/**
+ * Serializes a value as JSON with the keys of every object sorted, so equal
+ * values always produce the same string regardless of the order their keys
+ * were written in.
+ */
+export function stableStringify(value: unknown): string {
+  return JSON.stringify(value, (_key, val: unknown) => {
+    if (val !== null && typeof val === 'object' && !Array.isArray(val)) {
+      const sorted: Record<string, unknown> = {};
+      for (const key of Object.keys(val).sort()) {
+        sorted[key] = (val as Record<string, unknown>)[key];
+      }
+      return sorted;
+    }
+    return val;
+  });
+}
+
+/**
+ * Builds the key a GraphQL query is cached under.
+ *
+ * GraphQL requests are POSTs, and the cache only derives a key by default for
+ * GET requests, so without one the response would not be cached. The url holds
+ * the operation, but not the variables, so the key adds them: the same
+ * operation with different variables is a different document.
+ */
+export function buildCacheKey(url: string, variables: GraphqlVariables): string {
+  return `${url}#${stableStringify(variables)}`;
+}

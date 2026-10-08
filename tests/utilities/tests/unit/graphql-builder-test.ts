@@ -44,7 +44,7 @@ module('GraphQL | Request Builders', function (hooks) {
           operationName: 'GetUsers',
           variables: {},
         }),
-        cacheOptions: {},
+        cacheOptions: { key: 'https://api.example.com/api/v1/GetUsers#{}' },
         op: 'query',
       },
       `query works with type and options`
@@ -75,12 +75,60 @@ module('GraphQL | Request Builders', function (hooks) {
           operationName: 'GetUser',
           variables: { id: '1' },
         }),
-        cacheOptions: {},
+        cacheOptions: { key: 'https://api.example.com/api/v1/GetUser#{"id":"1"}' },
         op: 'query',
       },
       `query works with type and options`
     );
     assert.deepEqual(headersToObject(result.headers), GRAPHQL_HEADERS);
     assert.true(true);
+  });
+
+  test('the cache key does not depend on the order of the variables', function (this: TestContext, assert) {
+    const GET_MEMBERS_QUERY = parse(`
+      query GetMembers($from: String, $to: String) {
+        members(from: $from, to: $to) {
+          name
+        }
+      }
+    `);
+
+    const a = get(GET_MEMBERS_QUERY, 'member', { from: '2026-01-01', to: '2026-01-31' });
+    const b = get(GET_MEMBERS_QUERY, 'member', { to: '2026-01-31', from: '2026-01-01' });
+
+    assert.equal(a.cacheOptions?.key, b.cacheOptions?.key, 'the same variables in another order give the same key');
+  });
+
+  test('the cache key differs when the variables differ', function (this: TestContext, assert) {
+    const GET_MEMBERS_QUERY = parse(`
+      query GetMembers($from: String, $to: String) {
+        members(from: $from, to: $to) {
+          name
+        }
+      }
+    `);
+
+    const january = get(GET_MEMBERS_QUERY, 'member', { from: '2026-01-01', to: '2026-01-31' });
+    const february = get(GET_MEMBERS_QUERY, 'member', { from: '2026-02-01', to: '2026-02-28' });
+
+    assert.notEqual(january.cacheOptions?.key, february.cacheOptions?.key, 'different variables give different keys');
+  });
+
+  test('the cache key is kept with the reload options', function (this: TestContext, assert) {
+    const GET_USER_QUERY = parse(`
+      query GetUser($id: ID!) {
+        user(id: $id) {
+          firstName
+        }
+      }
+    `);
+
+    const result = get(GET_USER_QUERY, 'user', { id: '1' }, { reload: true, backgroundReload: false });
+
+    assert.deepEqual(result.cacheOptions, {
+      reload: true,
+      backgroundReload: false,
+      key: 'https://api.example.com/api/v1/GetUser#{"id":"1"}',
+    });
   });
 });
