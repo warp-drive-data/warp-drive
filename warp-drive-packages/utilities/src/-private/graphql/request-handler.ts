@@ -1,7 +1,6 @@
 import type { Handler, NextFn } from '@warp-drive/core/request';
-import type { FetchError } from '@warp-drive/core/request/-private/utils';
 import type { ArrayValue, ObjectValue, Value } from '@warp-drive/core/types/json/raw';
-import type { RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
+import type { FetchError, RequestContext, StructuredDataDocument } from '@warp-drive/core/types/request';
 import type {
   ExistingResourceIdentifierObject,
   ExistingResourceObject,
@@ -88,8 +87,7 @@ export class GraphQLToJSONAPIHandler implements Handler {
       if (jsonApiDocument.errors && options?.errorPolicy === 'all') {
         const msg = `[${response?.status}] ${context.request.method ?? 'GET'} (${response?.type}) - ${response?.url}`;
 
-        // @ts-expect-error - AggregateError is somehting we don't have in our TS version. This comment will be removed when this lands into WarpDrive package
-        const error = new AggregateError(jsonApiDocument.errors, msg) as Error & {
+        const error = new AggregateError(jsonApiDocument.errors, msg) as unknown as Error & {
           content: object | undefined;
         } & FetchError;
 
