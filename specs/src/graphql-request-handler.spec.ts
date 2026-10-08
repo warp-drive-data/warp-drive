@@ -101,6 +101,22 @@ export interface GraphqlRequestHandlerSpecSignature extends Record<string, SpecT
       countFor: (result: unknown, error: unknown) => number;
     }
   >;
+  "it rejects with an aggregate error when errorPolicy is 'all' and the root field is an Error union member": SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
+  'it unwraps a Success union member into its nested resource': SpecTest<
+    LocalTestContext,
+    {
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }
+  >;
   "it collects graphql errors into response meta when errorPolicy is 'ignore'": SpecTest<
     LocalTestContext,
     {
@@ -333,6 +349,110 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
         'error content contains the formatted graphql errors'
       );
       assert.equal(counter, 2, 'counter is 2');
+    })
+
+    .for("it rejects with an aggregate error when errorPolicy is 'all' and the root field is an Error union member")
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({
+          data: {
+            user: {
+              __typename: 'ValidationError',
+              message: 'Name is required',
+            },
+          },
+        }),
+        { status: 200, body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>({ ...requestInfo, options: { errorPolicy: 'all' } });
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      try {
+        await request;
+      } catch {
+        // ignore, we assert against the reactive state below
+      }
+      await this.h.rerender();
+
+      assert.equal(state1!.result, null, 'result is null');
+      assert.true(state1!.error instanceof Error, 'error is an instance of Error');
+      const error = state1!.error as Error & { content?: unknown };
+      assert.deepEqual(
+        error.content,
+        [{ title: 'GraphQL Error', detail: 'Name is required', source: {} }],
+        'error content contains the union error message'
+      );
+    })
+
+    .for('it unwraps a Success union member into its nested resource')
+    .use<{
+      request: Future<unknown>;
+      _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
+      countFor: (result: unknown, error: unknown) => number;
+    }>(async function (assert) {
+      const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
+      await POST(
+        this,
+        'graphql/GetUser',
+        () => ({
+          data: {
+            user: {
+              __typename: 'createUserSuccess',
+              user: { __typename: 'User', id: '1', firstName: 'Chris' },
+            },
+          },
+        }),
+        { body: requestInfo.body }
+      );
+
+      const request = this.manager.request<unknown>(requestInfo);
+
+      let state1: RequestState<unknown, unknown> | undefined;
+      function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
+        state1 = getRequestState(p);
+        return state1;
+      }
+      let counter = 0;
+      function countFor(_result: unknown, _error: unknown) {
+        return ++counter;
+      }
+
+      await this.render({
+        request,
+        _getRequestState,
+        countFor,
+      });
+
+      await request;
+      await this.h.rerender();
+
+      const result = state1!.result as { data: { type: string; id: string; attributes: Record<string, unknown> } };
+      assert.equal(result.data.type, 'user', 'type comes from the nested resource');
+      assert.equal(result.data.id, '1', 'id comes from the nested resource');
+      assert.equal(result.data.attributes.firstName, 'Chris', 'attributes come from the nested resource');
     })
 
     .for("it collects graphql errors into response meta when errorPolicy is 'ignore'")

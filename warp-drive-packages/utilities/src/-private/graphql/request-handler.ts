@@ -158,6 +158,22 @@ export class GraphQLToJSONAPIHandler implements Handler {
       }
     }
 
+    // If the root field is an error member of a result union
+    // (e.g. `... on Error { message }`), surface it as a GraphQL error
+    // instead of silently resolving to `data: null`
+    const unionError = this.extractUnionError(value);
+
+    if (unionError) {
+      const formattedUnionError = this.formatErrorResponse([unionError]);
+
+      if (options?.errorPolicy === 'ignore') {
+        meta.errors = formattedUnionError.errors as unknown as ObjectValue;
+        return { data: null, meta };
+      }
+
+      return formattedUnionError;
+    }
+
     // If the response is a success object (e.g., QuerySuccessSuccess),
     // extract the actual schema from within it
     value = this.extractSchemaFromSuccessObject(value);
@@ -170,6 +186,35 @@ export class GraphQLToJSONAPIHandler implements Handler {
     }
 
     return payload;
+  }
+
+  /**
+   * Detects the error member of a result union, e.g. a mutation declared as
+   * `createBundle(...) { ... on createBundleSuccess { bundle { id } } ... on Error { message } }`.
+   *
+   * A root value is treated as a union error when it has a `__typename` that ends in 'Error', a
+   * string `message`, and no `id`. A payload that only has a `message`, such as
+   * `DeleteBundlePayload { message }`, is not an error. Resources always have an `id`, so they are
+   * never mistaken for errors.
+   *
+   * @returns the error as a GraphQL error, or null if the value is not a union error
+   */
+  private extractUnionError(value: Value): GqlErrors | null {
+    if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+      return null;
+    }
+
+    const { __typename: typename, message, id } = value as Record<string, unknown>;
+
+    if (typeof typename !== 'string' || !typename.endsWith('Error')) {
+      return null;
+    }
+
+    if (typeof message !== 'string' || (id !== undefined && id !== null)) {
+      return null;
+    }
+
+    return { message };
   }
 
   /**
