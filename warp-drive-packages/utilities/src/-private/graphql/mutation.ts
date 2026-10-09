@@ -42,7 +42,10 @@ function buildMutation<Op extends GraphqlMutationOp>(
   assert(`Expected to be given a record instance`, identifier);
   assert(`Cannot save a record that does not have an associated type`, Boolean(identifier.type));
   if (op !== 'createRecord') {
-    assert(`Cannot ${op === 'deleteRecord' ? 'delete' : 'update'} a record that does not have an id.`, isExisting(identifier));
+    assert(
+      `Cannot ${op === 'deleteRecord' ? 'delete' : 'update'} a record that does not have an id.`,
+      isExisting(identifier)
+    );
   }
 
   const operationDefinition = mutation.definitions.find(

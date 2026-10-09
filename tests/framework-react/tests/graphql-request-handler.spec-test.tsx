@@ -1,8 +1,8 @@
-import { useMemo, useRef } from "react";
-import { useReact } from "@warp-drive/diagnostic/react";
-import { GraphqlRequestHandlerSpec } from "@warp-drive-internal/specs/graphql-request-handler.spec";
-import { DEBUG } from "@warp-drive/core/build-config/env";
-import { ReactiveContext } from "@warp-drive/react";
+import { useMemo, useRef } from 'react';
+import { useReact } from '@warp-drive/diagnostic/react';
+import { GraphqlRequestHandlerSpec } from '@warp-drive-internal/specs/graphql-request-handler.spec';
+import { DEBUG } from '@warp-drive/core/build-config/env';
+import { ReactiveContext } from '@warp-drive/react';
 
 // React's StrictMode (enabled in development) double-invokes render, so a
 // naive `countFor(...)` call inside a component body would count each
@@ -40,14 +40,15 @@ function CountFor({
 }
 
 GraphqlRequestHandlerSpec.use(useReact(), function (b) {
-  b.test("it transforms a successful graphql response into a json:api document", function (props) {
+  b.test('it transforms a successful graphql response into a json:api document', function (props) {
     const { request, _getRequestState, countFor } = props;
 
     function Component() {
       const state = _getRequestState(request);
       return (
         <>
-          Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+          Count:
+          <CountFor countFor={countFor} data={state.result} error={state.error} />
         </>
       );
     }
@@ -60,7 +61,7 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
   })
 
     .test(
-      "it transforms a paginated graphql connection into an array of resources with pageInfo meta",
+      'it transforms a paginated graphql connection into an array of resources with pageInfo meta',
       function (props) {
         const { request, _getRequestState, countFor } = props;
 
@@ -68,7 +69,8 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
           const state = _getRequestState(request);
           return (
             <>
-              Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+              Count:
+              <CountFor countFor={countFor} data={state.result} error={state.error} />
             </>
           );
         }
@@ -90,7 +92,8 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
           const state = _getRequestState(request);
           return (
             <>
-              Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+              Count:
+              <CountFor countFor={countFor} data={state.result} error={state.error} />
             </>
           );
         }
@@ -112,7 +115,8 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
           const state = _getRequestState(request);
           return (
             <>
-              Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+              Count:
+              <CountFor countFor={countFor} data={state.result} error={state.error} />
             </>
           );
         }
@@ -125,14 +129,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       }
     )
 
-    .test("it unwraps a Success union member into its nested resource", function (props) {
+    .test('it unwraps a Success union member into its nested resource', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -144,14 +149,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it resolves a null root field to null data", function (props) {
+    .test('it resolves a null root field to null data', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -163,14 +169,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it keeps a scalar root result in meta", function (props) {
+    .test('it keeps a scalar root result in meta', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -182,14 +189,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it keeps a root object without __typename in meta", function (props) {
+    .test('it keeps a root object without __typename in meta', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -201,14 +209,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it rejects a mutation that has graphql errors without an errorPolicy", function (props) {
+    .test('it rejects a mutation that has graphql errors without an errorPolicy', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -220,14 +229,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it lets a mutation choose its errorPolicy", function (props) {
+    .test('it lets a mutation choose its errorPolicy', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -239,14 +249,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it keeps the result of a delete in meta instead of turning it into a resource", function (props) {
+    .test('it keeps the result of a delete in meta instead of turning it into a resource', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -258,14 +269,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it keeps each value of a field with arguments under its own key", function (props) {
+    .test('it keeps each value of a field with arguments under its own key', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -277,14 +289,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it keeps the arguments of a field below a connection", function (props) {
+    .test('it keeps the arguments of a field below a connection', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -296,14 +309,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it leaves a field without arguments as a relationship", function (props) {
+    .test('it leaves a field without arguments as a relationship', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -322,7 +336,8 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }
@@ -334,14 +349,15 @@ GraphqlRequestHandlerSpec.use(useReact(), function (b) {
       );
     })
 
-    .test("it does not transform responses from non-graphql endpoints", function (props) {
+    .test('it does not transform responses from non-graphql endpoints', function (props) {
       const { request, _getRequestState, countFor } = props;
 
       function Component() {
         const state = _getRequestState(request);
         return (
           <>
-            Count:<CountFor countFor={countFor} data={state.result} error={state.error} />
+            Count:
+            <CountFor countFor={countFor} data={state.result} error={state.error} />
           </>
         );
       }

@@ -700,7 +700,11 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       assert.equal(state1!.error, null, 'it is not an error');
       const result = state1!.result as { data: unknown; meta?: Record<string, unknown> };
       assert.equal(result.data, null, 'data is null, the object cannot be typed');
-      assert.deepEqual(result.meta?.user, { id: '1', firstName: 'Chris' }, 'the object is kept in meta under the field name');
+      assert.deepEqual(
+        result.meta?.user,
+        { id: '1', firstName: 'Chris' },
+        'the object is kept in meta under the field name'
+      );
     })
 
     .for('it rejects a mutation that has graphql errors without an errorPolicy')
@@ -710,12 +714,9 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       countFor: (result: unknown, error: unknown) => number;
     }>(async function (assert) {
       const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
-      await POST(
-        this,
-        'graphql/GetUser',
-        () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }),
-        { body: requestInfo.body }
-      );
+      await POST(this, 'graphql/GetUser', () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }), {
+        body: requestInfo.body,
+      });
 
       const request = this.manager.request<unknown>({ ...requestInfo, op: 'updateRecord' });
 
@@ -759,14 +760,15 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       countFor: (result: unknown, error: unknown) => number;
     }>(async function (assert) {
       const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
-      await POST(
-        this,
-        'graphql/GetUser',
-        () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }),
-        { body: requestInfo.body }
-      );
+      await POST(this, 'graphql/GetUser', () => ({ errors: [{ message: 'Not allowed', path: ['user'] }] }), {
+        body: requestInfo.body,
+      });
 
-      const request = this.manager.request<unknown>({ ...requestInfo, op: 'updateRecord', options: { errorPolicy: 'ignore' } });
+      const request = this.manager.request<unknown>({
+        ...requestInfo,
+        op: 'updateRecord',
+        options: { errorPolicy: 'ignore' },
+      });
 
       let state1: RequestState<unknown, unknown> | undefined;
       function _getRequestState(p: Future<unknown>): RequestState<unknown, unknown> {
@@ -800,12 +802,9 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       countFor: (result: unknown, error: unknown) => number;
     }>(async function (assert) {
       const requestInfo = get(GET_USER_QUERY, 'user', {}, { namespace: 'graphql' });
-      await POST(
-        this,
-        'graphql/GetUser',
-        () => ({ data: { user: { __typename: 'DeleteUserPayload', id: '1' } } }),
-        { body: requestInfo.body }
-      );
+      await POST(this, 'graphql/GetUser', () => ({ data: { user: { __typename: 'DeleteUserPayload', id: '1' } } }), {
+        body: requestInfo.body,
+      });
 
       const request = this.manager.request<unknown>({ ...requestInfo, op: 'deleteRecord' });
 
@@ -841,7 +840,12 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
       countFor: (result: unknown, error: unknown) => number;
     }>(async function (assert) {
-      const requestInfo = get(GET_PROJECT_QUERY, 'project', { from: '2026-03-01', to: '2026-03-31' }, { namespace: 'graphql' });
+      const requestInfo = get(
+        GET_PROJECT_QUERY,
+        'project',
+        { from: '2026-03-01', to: '2026-03-31' },
+        { namespace: 'graphql' }
+      );
       await POST(
         this,
         'graphql/GetProject',
@@ -983,7 +987,12 @@ export const GraphqlRequestHandlerSpec: SuiteBuilder<LocalTestContext, GraphqlRe
       _getRequestState: (p: Future<unknown>) => RequestState<unknown, unknown>;
       countFor: (result: unknown, error: unknown) => number;
     }>(async function (assert) {
-      const requestInfo = get(GET_PROJECT_QUERY, 'project', { from: '2026-03-01', to: '2026-03-31' }, { namespace: 'graphql' });
+      const requestInfo = get(
+        GET_PROJECT_QUERY,
+        'project',
+        { from: '2026-03-01', to: '2026-03-31' },
+        { namespace: 'graphql' }
+      );
       await POST(
         this,
         'graphql/GetProject',

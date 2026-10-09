@@ -109,7 +109,12 @@ function update(
  * A record that is already in a list is not added again, and a query whose document has a single
  * resource is left as it is.
  */
-export function addToQueries(store: Store, operationName: string, record: object, options: QueryListOptions = {}): void {
+export function addToQueries(
+  store: Store,
+  operationName: string,
+  record: object,
+  options: QueryListOptions = {}
+): void {
   update(store, operationName, record, options, 'add');
 }
 

@@ -3,7 +3,13 @@ import type { TestContext } from '@ember/test-helpers';
 import { parse, print } from 'graphql';
 
 import { setBuildURLConfig } from '@ember-data/request-utils';
-import { createRecord, deleteRecord, get, getGraphqlRequestDetails, updateRecord } from '@ember-data/request-utils/graphql';
+import {
+  createRecord,
+  deleteRecord,
+  get,
+  getGraphqlRequestDetails,
+  updateRecord,
+} from '@ember-data/request-utils/graphql';
 import type Store from '@ember-data/store';
 import { recordIdentifierFor } from '@ember-data/store';
 import { RequestManager } from '@warp-drive/core';

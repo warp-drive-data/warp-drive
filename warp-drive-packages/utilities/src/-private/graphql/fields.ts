@@ -30,12 +30,7 @@ function isObject(value: unknown): value is Record<string, unknown> {
  * The value is read when it is called: it does not update the template by itself when another
  * request changes it, so read it where the request that fetched it is rendered.
  */
-export function readField(
-  store: Store,
-  record: object,
-  name: string,
-  args: GraphqlVariables = {}
-): unknown {
+export function readField(store: Store, record: object, name: string, args: GraphqlVariables = {}): unknown {
   const value = store.cache.getAttr(recordIdentifierFor(record), fieldKey(name, args));
 
   if (isObject(value) && Array.isArray(value.$refs)) {
