@@ -269,8 +269,8 @@ catalogs:
       specifier: 3.46.0-build2
       version: 3.46.0-build2
     '@sveltejs/kit':
-      specifier: ^3.0.0
-      version: 3.0.0
+      specifier: ^3.0.1
+      version: 3.0.1
     '@sveltejs/package':
       specifier: ^3.0.0
       version: 3.0.0
@@ -4137,7 +4137,7 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: 'catalog:'
-        version: 3.0.0(536ebdb8efef8ed67177a0fb76cfd82a)
+        version: 3.0.1(536ebdb8efef8ed67177a0fb76cfd82a)
       '@sveltejs/package':
         specifier: 'catalog:'
         version: 3.0.0(svelte@5.57.1)(typescript@6.0.3)
@@ -6759,8 +6759,8 @@ packages:
     peerDependencies:
       acorn: ^8.9.0
 
-  '@sveltejs/kit@3.0.0':
-    resolution: {integrity: sha512-dmP6gjz41DAT7erONGW8FdTWjmsmOJ/SaWVEsuEc1MXDcpH6YV+Pt98biZFPuinH4LldJPmScxDqiHwCDLRCrg==}
+  '@sveltejs/kit@3.0.1':
+    resolution: {integrity: sha512-8JMCCq7ZUJELi3hbhb0+c9Rs8qnbHW90vhOfM+t1FSF4fhIpG9/FOsH4IYgcITMhbdkSrrn+Kvd9G+q8A+UO6Q==}
     engines: {node: '>=22.17'}
     hasBin: true
     peerDependencies:
@@ -15660,7 +15660,7 @@ snapshots:
     dependencies:
       acorn: 8.18.0
 
-  '@sveltejs/kit@3.0.0(536ebdb8efef8ed67177a0fb76cfd82a)':
+  '@sveltejs/kit@3.0.1(536ebdb8efef8ed67177a0fb76cfd82a)':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
       '@standard-schema/spec': 1.1.0
