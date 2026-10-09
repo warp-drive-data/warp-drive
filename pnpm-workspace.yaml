@@ -374,7 +374,7 @@ catalog:
   eslint-plugin-mocha: ^12.0.2
   eslint-plugin-n: ^18.4.1
   eslint-plugin-qunit: ^8.2.6
-  execa: ^10.0.1
+  execa: ^10.1.0
   expect-type: ^1.4.0
   express: ^5.2.1
   front-matter: ^4.0.2
