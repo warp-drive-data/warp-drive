@@ -169,6 +169,12 @@ export const GRAPHQL_DETAILS: unique symbol = Symbol.for('@warp-drive/graphql:re
 /**
  * Reads the {@link GraphqlRequestDetails} of a request built with `get`.
  * Returns `undefined` for a request that was not built with it.
+ *
+ * @summary Reads the query and variables a request was built from.
+ * @public
+ * @since 5.10.0
+ * @param request - a request built with `get`
+ * @return the details, or `undefined` for a request not built with `get`
  */
 export function getGraphqlRequestDetails(request: object): GraphqlRequestDetails | undefined {
   return (request as { [GRAPHQL_DETAILS]?: GraphqlRequestDetails })[GRAPHQL_DETAILS];

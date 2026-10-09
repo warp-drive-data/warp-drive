@@ -29,6 +29,15 @@ function isObject(value: unknown): value is Record<string, unknown> {
  *
  * The value is read when it is called: it does not update the template by itself when another
  * request changes it, so read it where the request that fetched it is rendered.
+ *
+ * @summary Reads the value of a GraphQL field that was fetched with arguments from the cache.
+ * @public
+ * @since 5.10.0
+ * @param store - the store the record belongs to
+ * @param record - the record the field belongs to
+ * @param name - the name of the field
+ * @param args - the arguments the field was fetched with
+ * @return the record or records for a resource field, the raw value otherwise, or `undefined` when it was not fetched
  */
 export function readField(store: Store, record: object, name: string, args: GraphqlVariables = {}): unknown {
   const value = store.cache.getAttr(recordIdentifierFor(record), fieldKey(name, args));
@@ -117,11 +126,20 @@ function updateField(
  * ```ts
  * import { addToField } from '@warp-drive/utilities/graphql';
  *
- * // the new member joined today, so it belongs to the lists of ranges that include today
- * addToField(store, project, 'memberList', member, { where: ({ from, to }) => from <= today && today <= to });
+ * // the new member joined in January, so it belongs to the list of that range
+ * addToField(store, project, 'memberList', member, { where: ({ from }) => from === '2026-01-01' });
  * ```
  *
  * A record that is already in a list is not added again.
+ *
+ * @summary Adds a record to the lists of a GraphQL field with arguments, after a mutation.
+ * @public
+ * @since 5.10.0
+ * @param store - the store the record belongs to
+ * @param record - the record the field belongs to
+ * @param name - the name of the field
+ * @param item - the record to add
+ * @param options - `where` picks the values to update by their arguments, `index` the position
  */
 export function addToField(
   store: Store,
@@ -136,6 +154,15 @@ export function addToField(
 /**
  * Removes a record from the lists a field has. It is the opposite of {@link addToField}, and takes the
  * same `where` option.
+ *
+ * @summary Removes a record from the lists of a GraphQL field with arguments, after a mutation.
+ * @public
+ * @since 5.10.0
+ * @param store - the store the record belongs to
+ * @param record - the record the field belongs to
+ * @param name - the name of the field
+ * @param item - the record to remove
+ * @param options - `where` picks the values to update by their arguments
  */
 export function removeFromField(
   store: Store,

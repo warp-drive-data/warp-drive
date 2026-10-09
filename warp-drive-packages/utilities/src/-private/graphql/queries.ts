@@ -108,6 +108,14 @@ function update(
  *
  * A record that is already in a list is not added again, and a query whose document has a single
  * resource is left as it is.
+ *
+ * @summary Adds a record to the lists fetched by the queries of a GraphQL operation, after a mutation.
+ * @public
+ * @since 5.10.0
+ * @param store - the store the record belongs to
+ * @param operationName - the name of the query operation
+ * @param record - the record to add
+ * @param options - `where` picks the queries to update by their variables, `index` the position
  */
 export function addToQueries(
   store: Store,
@@ -121,6 +129,14 @@ export function addToQueries(
 /**
  * Removes a record from the lists that the queries of an operation fetched. It is the opposite of
  * {@link addToQueries}, and takes the same `where` option.
+ *
+ * @summary Removes a record from the lists fetched by the queries of a GraphQL operation, after a mutation.
+ * @public
+ * @since 5.10.0
+ * @param store - the store the record belongs to
+ * @param operationName - the name of the query operation
+ * @param record - the record to remove
+ * @param options - `where` picks the queries to update by their variables
  */
 export function removeFromQueries(
   store: Store,

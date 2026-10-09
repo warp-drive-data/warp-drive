@@ -75,6 +75,10 @@ const MUTATION_OPS = new Set(['createRecord', 'updateRecord', 'deleteRecord']);
  *     Fetch
  *   ]);
  * ```
+ *
+ * @summary A request handler that transforms GraphQL responses into JSON:API documents the cache can consume.
+ * @public
+ * @since 5.10.0
  */
 export class GraphQLToJSONAPIHandler implements Handler {
   declare options: Required<GraphQLToJSONAPIOptions>;

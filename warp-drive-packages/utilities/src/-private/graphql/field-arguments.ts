@@ -56,6 +56,13 @@ const INDEXES = new WeakMap<DocumentNode, DocumentIndex>();
  * fieldKey('memberList', { to: '2026-01-31', from: '2026-01-01' });
  * // => 'memberList({"from":"2026-01-01","to":"2026-01-31"})'
  * ```
+ *
+ * @summary Builds the key a GraphQL field with arguments is stored under: its name plus its sorted arguments.
+ * @public
+ * @since 5.10.0
+ * @param name - the name of the field
+ * @param args - the arguments the field was asked for with
+ * @return the key, for example `memberList({"from":"2026-01-01"})`
  */
 export function fieldKey(name: string, args: Record<string, unknown> = {}): string {
   return `${name}(${stableStringify(args)})`;

@@ -96,6 +96,15 @@ function buildMutation<Op extends GraphqlMutationOp>(
  * const bundle = store.createRecord('bundle', { name: 'Upgrade' });
  * await store.request(createRecord(bundle, CREATE_BUNDLE, { input: { name: bundle.name } }));
  * ```
+ *
+ * @summary Builds a GraphQL mutation request that saves a new record.
+ * @public
+ * @since 5.10.0
+ * @param record - the record being saved
+ * @param mutation - the parsed GraphQL mutation
+ * @param variables - the variables of the mutation
+ * @param options - request options: `host` and `namespace`. The handler rejects a mutation with GraphQL errors by default; to change that, set `errorPolicy` on the `options` of the request
+ * @return the request, to pass to `store.request`
  */
 export function createRecord(
   record: unknown,
@@ -109,6 +118,15 @@ export function createRecord(
 /**
  * Builds the request that saves the changes of an existing record with a GraphQL mutation.
  * It behaves like {@link createRecord}.
+ *
+ * @summary Builds a GraphQL mutation request that saves the changes of a record.
+ * @public
+ * @since 5.10.0
+ * @param record - the record being saved
+ * @param mutation - the parsed GraphQL mutation
+ * @param variables - the variables of the mutation
+ * @param options - request options: `host` and `namespace`. The handler rejects a mutation with GraphQL errors by default; to change that, set `errorPolicy` on the `options` of the request
+ * @return the request, to pass to `store.request`
  */
 export function updateRecord(
   record: unknown,
@@ -131,6 +149,15 @@ export function updateRecord(
  *
  * await store.request(deleteRecord(bundle, DELETE_BUNDLE, { id: bundle.id }));
  * ```
+ *
+ * @summary Builds a GraphQL mutation request that deletes a record.
+ * @public
+ * @since 5.10.0
+ * @param record - the record being deleted
+ * @param mutation - the parsed GraphQL mutation
+ * @param variables - the variables of the mutation
+ * @param options - request options: `host` and `namespace`. The handler rejects a mutation with GraphQL errors by default; to change that, set `errorPolicy` on the `options` of the request
+ * @return the request, to pass to `store.request`
  */
 export function deleteRecord(
   record: unknown,

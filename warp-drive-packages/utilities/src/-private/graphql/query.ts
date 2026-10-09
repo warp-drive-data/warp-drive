@@ -23,6 +23,28 @@ export interface UseQueryResult<T> {
   refetch: () => void;
 }
 
+/**
+ * Builds a GraphQL query request.
+ *
+ * The request gets a `cacheOptions.key` made from the url and the variables, so it can be cached
+ * and reloaded like a `GET` request, and it carries the query and variables for the
+ * `GraphQLToJSONAPIHandler`, readable with `getGraphqlRequestDetails`.
+ *
+ * ```ts
+ * import { get } from '@warp-drive/utilities/graphql';
+ *
+ * const { content } = await store.request(get(GET_BUNDLES, 'bundle', { first: 10 }));
+ * ```
+ *
+ * @summary Builds a GraphQL query request, keyed by its url and variables.
+ * @public
+ * @since 5.10.0
+ * @param query - the parsed GraphQL query
+ * @param type - the type of the resources the query returns
+ * @param variables - the variables of the query
+ * @param options - request options such as cache settings
+ * @return the request, to pass to `store.request`
+ */
 export function get<T extends TypedRecordInstance>(
   query: DocumentNode,
   type: TypeFromInstance<T>,
