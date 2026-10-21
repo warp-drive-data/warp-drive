@@ -1726,28 +1726,28 @@ importers:
         version: 7.29.10
       '@ember/test-helpers':
         specifier: 'catalog:'
-        version: 5.5.1(patch_hash=7680615b77300d92d3140102222390ad35a3f33ffd5cccafa1b9dd02f25f05db)(@babel/core@7.29.7)
+        version: 5.7.0(patch_hash=3639d6e115849879aff25f95590bbf4931d45a65f5553817c8bc89b2a64a6fc0)(@babel/core@7.29.7)
       '@ember/test-waiters':
         specifier: 'catalog:'
         version: 4.1.2
       '@embroider/core':
         specifier: 'catalog:'
-        version: 4.6.9(@glint/template@1.9.0)
+        version: 4.6.9(@glint/template@1.11.0)
       '@embroider/macros':
         specifier: ^1.21.3
-        version: 1.21.3(@glint/template@1.9.0)
+        version: 1.21.3(@glint/template@1.11.0)
       '@embroider/vite':
         specifier: 'catalog:'
-        version: 1.7.15(2571b9d66f6dcb46bacb769b3264bff9)
+        version: 1.7.15(eab9a16b173499eeca96915efc67fcd2)
       '@glimmer/component':
         specifier: 'catalog:'
-        version: 2.1.1
+        version: 2.2.0
       '@glint/ember-tsc':
-        specifier: 1.11.6
-        version: 1.11.6(10844881d947d72d54613cdf252ab2e7)
+        specifier: 1.13.1
+        version: 1.13.1(648fe86a803f1ed9b9ff0f38a4b7ff72)
       '@glint/template':
-        specifier: 1.9.0
-        version: 1.9.0
+        specifier: 1.11.0
+        version: 1.11.0
       '@rollup/plugin-babel':
         specifier: 'catalog:'
         version: 7.1.0(@babel/core@7.29.7)
@@ -1756,16 +1756,16 @@ importers:
         version: 2.19.14
       '@warp-drive/core':
         specifier: workspace:*
-        version: file:warp-drive-packages/core(e0ff4349d3585fabae29421d7a4b80a6)
+        version: file:warp-drive-packages/core(3d2b49cfa1437874d9e75c610f322dc6)
       '@warp-drive/ember':
         specifier: workspace:*
-        version: file:warp-drive-packages/ember(c3b811ac8aadeb1fb26c7cc7a16e4531)
+        version: file:warp-drive-packages/ember(4fff9b305be611ff33882af0d5febee3)
       '@warp-drive/json-api':
         specifier: workspace:*
-        version: file:warp-drive-packages/json-api(edee9e53a6af44fd6387ab28cd9cc109)
+        version: file:warp-drive-packages/json-api(6e65450e233cb579f44f0230b47b96ab)
       '@warp-drive/utilities':
         specifier: workspace:*
-        version: file:warp-drive-packages/utilities(edee9e53a6af44fd6387ab28cd9cc109)
+        version: file:warp-drive-packages/utilities(6e65450e233cb579f44f0230b47b96ab)
       babel-plugin-ember-template-compilation:
         specifier: 'catalog:'
         version: 4.0.1
@@ -1774,19 +1774,19 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.3.1(10844881d947d72d54613cdf252ab2e7)
+        version: 0.3.2(c8ac21a2c2d5b565413ed8935813b6b4)
       ember-modifier:
         specifier: 'catalog:'
         version: 4.3.0(@babel/core@7.29.7)
       ember-page-title:
         specifier: 'catalog:'
-        version: 9.0.3(d288926beed7c17909b8497cf18e0738)
+        version: 9.0.3(22ae489d55d2ed919f4d3ed92913ee68)
       ember-qunit:
         specifier: 'catalog:'
-        version: 9.2.0(35ac5e09cb2450f21fa60f75ff0fbeb5)
+        version: 9.2.0(487ed23b203e8587bcf91af8a41c6a25)
       ember-source:
         specifier: 'catalog:'
-        version: 7.3.0(@glimmer/component@2.1.1)
+        version: 7.3.1(@glimmer/component@2.2.0)
       ember-strict-application-resolver:
         specifier: 'catalog:'
         version: 0.1.1(@babel/core@7.29.7)
@@ -1807,7 +1807,7 @@ importers:
         version: 1.0.5
       typescript-7:
         specifier: 'catalog:'
-        version: typescript@7.1.0-dev.20261011.1
+        version: typescript@7.1.0-dev.20261020.3
       typescript-toastify:
         specifier: 'catalog:'
         version: 1.0.4
