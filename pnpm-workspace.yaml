@@ -315,7 +315,7 @@ catalog:
   "@embroider/vite": ^1.7.15
   "@eslint/js": ^10.0.1
   "@glimmer/component": ^2.2.0
-  "@glint/ember-tsc": ^1.13.1
+  "@glint/ember-tsc": ^1.14.0
   "@glint/template": ^1.11.0
   "@hono/node-server": ^2.1.5
   "@hono/node-ws": ^1.2.0
@@ -355,7 +355,7 @@ catalog:
   debug: ^4.4.3
   decorator-transforms: ^2.4.0
   dom-element-descriptors: ^0.5.1
-  ember-content-mapper: ^0.3.2
+  ember-content-mapper: ^0.4.0
   ember-eslint-parser: ^0.14.9
   ember-inflector: ^7.0.0
   # 4.3.0 was published without npm provenance (4.2.x had it), which trustPolicy rejects.
@@ -416,7 +416,7 @@ catalog:
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
   typescript: ^6.0.3
-  typescript-7: "npm:typescript@7.1.0-dev.20261020.3"
+  typescript-7: "npm:typescript@7.1.0-dev.20261021.1"
   typescript-eslint: ^8.72.0
   typescript-toastify: ^1.0.4
   unplugin-vue: ^8.0.0
@@ -478,7 +478,7 @@ overrides:
   qunit-console-grouper>broccoli-funnel: "-"
   broccoli-merge-trees: ^4.2.0
   "@glimmer/validator": ^0.95.0
-  "@glint/ember-tsc": 1.13.1
+  "@glint/ember-tsc": 1.14.0
   "@glint/template": 1.11.0
   ember-cli-babel: ^8.3.2
   "@embroider/macros>ember-cli-babel": "-"
