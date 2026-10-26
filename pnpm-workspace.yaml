@@ -390,7 +390,7 @@ catalog:
   morgan: ^1.12.1
   oxfmt: ^0.74.0
   oxlint: ^1.89.0
-  oxlint-tsgolint: ^7.0.2004
+  oxlint-tsgolint: ^7.0.2005
   pretender: ^3.4.7
   prettier: ^3.9.10
   prettier-plugin-ember-template-tag: ^2.1.8
