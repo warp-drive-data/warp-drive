@@ -17,7 +17,7 @@
     "ember-addon"
   ],
   "dependencies": {
-    "@embroider/macros": "^1.21.3",
+    "@embroider/macros": "^1.21.4",
     "@warp-drive/core": "workspace:*"
   },
   "peerDependencies": {
