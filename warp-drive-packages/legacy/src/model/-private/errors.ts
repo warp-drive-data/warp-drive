@@ -1,7 +1,6 @@
 import { A, type NativeArray } from '@ember/array';
 import ArrayProxy from '@ember/array/proxy';
 import { computed, get } from '@ember/object';
-import { mapBy, not } from '@ember/object/computed';
 
 import type RecordState from './record-state.ts';
 
@@ -163,8 +162,10 @@ export class Errors extends ArrayProxyWithCustomOverrides<ValidationError> {
     @public
     @type {Array}
   */
-  @mapBy('content', 'message')
-  declare messages: string[];
+  @computed('content.@each.message')
+  get messages(): NativeArray<string> {
+    return A(this.content.map((error) => error.message));
+  }
 
   /**
     @property content
@@ -204,8 +205,10 @@ export class Errors extends ArrayProxyWithCustomOverrides<ValidationError> {
     @public
     @readonly
   */
-  @not('length')
-  declare isEmpty: boolean;
+  @computed('length')
+  get isEmpty(): boolean {
+    return !this.length;
+  }
 
   /**
    Manually adds errors to the record. This will trigger the `becameInvalid` event/ lifecycle method on
