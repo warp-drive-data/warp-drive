@@ -31,7 +31,7 @@
       "groupName": "dev-engines"
     },
     {
-      "matchPackageNames": ["typescript", "globals", "/^@glint\\//", "ember-content-mapper"],
+      "matchPackageNames": ["globals", "/^@glint\\//", "ember-content-mapper"],
       "groupName": "typescript"
     },
     {
@@ -46,6 +46,7 @@
       "matchPackageNames": [
         "oxlint",
         "oxfmt",
+        "typescript",
         "/^oxlint-/",
         "/^oxc-/",
         "/^@oxlint\\//",
@@ -55,7 +56,15 @@
       "groupName": "oxc"
     },
     {
-      "matchPackageNames": ["/vite/", "/rollup/", "/rolldown/", "/tsdown/", "/unplugin/"],
+      "matchPackageNames": [
+        "/vite/",
+        "/rollup/",
+        "/rolldown/",
+        "/tsdown/",
+        "/unplugin/",
+        "execa",
+        "caniuse-lite"
+      ],
       "groupName": "build-tools"
     },
     {
