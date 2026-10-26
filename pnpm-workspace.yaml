@@ -314,7 +314,7 @@ catalog:
   "@embroider/macros": ^1.21.4
   "@embroider/vite": ^1.8.0
   "@eslint/js": ^10.0.1
-  "@glimmer/component": ^2.2.0
+  "@glimmer/component": ^2.2.1
   "@glint/ember-tsc": ^1.13.1
   "@glint/template": ^1.11.0
   "@hono/node-server": ^2.1.5
