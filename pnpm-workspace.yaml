@@ -415,7 +415,7 @@ catalog:
   typedoc-plugin-mdn-links: ^5.1.1
   typedoc-plugin-no-inherit: ^1.6.1
   typedoc-vitepress-theme: ^1.1.4
-  typescript: ^6.0.3
+  typescript: ^7.0.2
   typescript-7: "npm:typescript@7.1.0-dev.20261020.3"
   typescript-eslint: ^8.72.0
   typescript-toastify: ^1.0.4
@@ -496,7 +496,7 @@ overrides:
   qunit: 3.0.0
   ember-compatibility-helpers: ^1.2.7
   testem: ~3.21.3
-  typescript: 6.0.3
+  typescript: 7.0.2
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001817
   rollup: ^4.65.0
