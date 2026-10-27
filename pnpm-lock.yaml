@@ -596,8 +596,8 @@ overrides:
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001817
   rollup: ^4.65.0
-  '@babel/types': ^7.29.8
-  '@babel/parser': ^7.29.9
+  '@babel/types': ^7.29.11
+  '@babel/parser': ^7.29.11
   '@babel/traverse': ^7.29.10
   prettier: ^3.9.10
   '@types/node': ^26.6.5
@@ -1546,14 +1546,14 @@ importers:
   packages/schema:
     dependencies:
       '@babel/parser':
-        specifier: ^7.29.9
+        specifier: ^7.29.11
         version: 7.29.11
       '@babel/traverse':
         specifier: ^7.29.10
         version: 7.29.10
     devDependencies:
       '@babel/types':
-        specifier: ^7.29.8
+        specifier: ^7.29.11
         version: 7.29.11
       '@types/babel__traverse':
         specifier: 7.28.0
@@ -3786,7 +3786,7 @@ importers:
   tools/internal-tooling:
     dependencies:
       '@babel/parser':
-        specifier: ^7.29.9
+        specifier: ^7.29.11
         version: 7.29.11
       '@babel/traverse':
         specifier: ^7.29.10
@@ -4198,7 +4198,7 @@ importers:
   warp-drive-packages/schema-dsl:
     dependencies:
       '@babel/parser':
-        specifier: ^7.29.9
+        specifier: ^7.29.11
         version: 7.29.11
       '@babel/traverse':
         specifier: ^7.29.10
