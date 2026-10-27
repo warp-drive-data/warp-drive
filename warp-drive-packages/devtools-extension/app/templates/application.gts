@@ -1,5 +1,3 @@
 import PanelShell from '../components/panel-shell.gts';
 
-<template>
-  <PanelShell />
-</template>
+<template><PanelShell /></template>
