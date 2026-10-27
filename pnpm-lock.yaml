@@ -419,7 +419,7 @@ catalogs:
       specifier: ^4.13.13
       version: 4.13.13
     ignore:
-      specifier: ^7.0.13
+      specifier: ^7.0.14
       version: 7.0.14
     jscodeshift:
       specifier: ^17.4.0
@@ -594,7 +594,7 @@ overrides:
   testem: ~3.21.3
   typescript: 6.0.3
   lodash: ^4.18.1
-  caniuse-lite: ^1.0.30001817
+  caniuse-lite: ^1.0.30001819
   rollup: ^4.65.0
   '@babel/types': ^7.29.11
   '@babel/parser': ^7.29.11
