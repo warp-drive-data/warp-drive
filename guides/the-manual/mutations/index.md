@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: Start here for how-to patterns on changing data in WarpDrive; routes to the Mutating State and Patching The Cache pages, both of which are still under construction.
+description: Start here for how-to patterns on changing data in WarpDrive; routes to Mutating State, still under construction, and Patching The Cache, which applies operations to the cache directly.
 ---
 
 # Mutations
