@@ -292,7 +292,7 @@ packages:
 catalog:
   "@babel/core": ^7.29.7
   "@babel/eslint-parser": ^8.0.7
-  "@babel/parser": ^7.29.9
+  "@babel/parser": ^7.29.11
   "@babel/plugin-proposal-decorators": 7.29.7
   "@babel/plugin-transform-runtime": ^7.29.7
   "@babel/plugin-transform-typescript": ^7.29.9
@@ -500,8 +500,8 @@ overrides:
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001817
   rollup: ^4.65.0
-  "@babel/types": ^7.29.8
-  "@babel/parser": ^7.29.9
+  "@babel/types": ^7.29.11
+  "@babel/parser": ^7.29.11
   "@babel/traverse": ^7.29.10
   prettier: ^3.9.10
   "@types/node": "catalog:"
