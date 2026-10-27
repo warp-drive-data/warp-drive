@@ -63,7 +63,8 @@
         "/tsdown/",
         "/unplugin/",
         "execa",
-        "caniuse-lite"
+        "caniuse-lite",
+        "ignore"
       ],
       "groupName": "build-tools"
     },
