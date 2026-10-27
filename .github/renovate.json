@@ -35,6 +35,11 @@
       "groupName": "typescript"
     },
     {
+      "description": "typescript-7 is an alias of the typescript package. Semver sorts 7.1.0-dev.* above 7.1.0-beta, so without this Renovate would move us from the beta onto nightlies.",
+      "matchPackageNames": ["typescript-7"],
+      "followTag": "beta"
+    },
+    {
       "matchPackageNames": ["/qunit/"],
       "groupName": "qunit"
     },
