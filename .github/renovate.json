@@ -35,8 +35,9 @@
       "groupName": "typescript"
     },
     {
-      "description": "typescript-7 is an alias of the typescript package. Semver sorts 7.1.0-dev.* above 7.1.0-beta, and followTag is not honored for npm: aliases, so exclude nightlies explicitly.",
-      "matchPackageNames": ["typescript-7"],
+      "description": "typescript-7 is an alias of the typescript package. Semver sorts 7.1.0-dev.* above 7.1.0-beta, and neither followTag nor a typescript-7 only match applied to the npm: alias, so match the underlying typescript package too (scoped to the beta pin) and exclude nightlies.",
+      "matchPackageNames": ["typescript-7", "typescript"],
+      "matchCurrentValue": "/-beta/",
       "allowedVersions": "!/-dev\\./"
     },
     {
