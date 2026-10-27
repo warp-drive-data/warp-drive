@@ -1,10 +1,10 @@
 import { DEBUG, TESTING } from '@warp-drive/core/build-config/env';
 
+import { installDevtoolsHook } from '../../devtools-hook.ts';
 // oxlint-disable-next-line no-unused-vars
 import type { Store } from '../../index';
 // oxlint-disable-next-line no-unused-vars
 import type { ReactiveDocument } from '../../reactive/-private/document';
-import { installDevtoolsHook } from '../../devtools-hook.ts';
 // oxlint-disable-next-line no-unused-vars
 import { withReactiveResponse, withResponseType } from '../../request';
 import { waitFor } from '../../signals/-private';
