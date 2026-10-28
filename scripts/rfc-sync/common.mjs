@@ -125,8 +125,12 @@ export function slugify(title) {
 }
 
 // This is the actual host both .github/workflows/deploy.yml ("production") and
-// .github/workflows/pr-preview.yml (per-PR previews) build and deploy the docs site to.
+// .github/workflows/docs-preview-*.yml (per-PR previews) build and deploy the docs site to.
 const DOCS_SITE_HOST = 'https://canary.warp-drive.io';
+
+// Per-PR previews are Cloudflare Pages branch aliases of the `warp-drive-docs` project, served at
+// the site root: https://pr-<number>.warp-drive-docs.pages.dev/.
+const DOCS_PREVIEW_HOST = 'warp-drive-docs.pages.dev';
 
 /** Canonical URL for an RFC once its content lives on `main` -- see
  * docs-viewer/src/prepare-website.ts (rfcs/ is synced verbatim into docs.warp-drive.io/rfcs/) and
@@ -136,7 +140,7 @@ export function docsSiteRfcUrl(rfcFileName) {
 }
 
 /** Per-PR docs preview URL for a warp-drive PR labeled `:label: rfc` -- see
- * .github/workflows/pr-preview.yml. Used for an RFC whose content hasn't merged into `main` yet. */
+ * .github/workflows/docs-preview-deploy.yml. Used for an RFC whose content hasn't merged into `main` yet. */
 export function docsPreviewRfcUrl(prNumber, rfcFileName) {
-  return `${DOCS_SITE_HOST}/pr-preview/pr-${prNumber}/rfcs/${rfcFileName.replace(/\.md$/, '')}`;
+  return `https://pr-${prNumber}.${DOCS_PREVIEW_HOST}/rfcs/${rfcFileName.replace(/\.md$/, '')}`;
 }

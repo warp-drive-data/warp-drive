@@ -1,0 +1,108 @@
+# Publishes the build produced by docs-preview-build.yml to Cloudflare Pages and links it from
+# a sticky comment on the PR. This is the TRUSTED half of the docs preview: it holds the
+# Cloudflare credentials, and `workflow_run` always runs the version of this file on the
+# default branch, never the PR's.
+#
+# The build artifact comes from a PR that may be from a fork, so it is treated as untrusted data:
+#   - nothing from it is ever executed, sourced, or checked out; it is only uploaded as static files
+#   - the PR number is validated as an integer, and the PR is looked up through the API to confirm
+#     its head commit is the one that was built and that it still carries a preview label
+#   - scripts/docs-deploy/check-dist.sh (read from the default branch, not the artifact) strips
+#     Cloudflare Pages' Worker/config files and enforces the deployment limits
+#
+# Because workflow_run only fires for workflow files on the default branch, a change to this file
+# or to docs-preview-build.yml has no effect on its own PR; it takes effect once merged.
+name: docs preview deploy
+
+on:
+  workflow_run:
+    workflows: ['docs preview build']
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read # download the build artifact
+      contents: read
+      pull-requests: write # the sticky preview comment
+    steps:
+      - name: Checkout trusted scripts
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Download build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run download "${{ github.event.workflow_run.id }}" --repo "$GITHUB_REPOSITORY" --name docs-preview --dir artifact
+      - name: Validate the PR
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILT_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          set -euo pipefail
+          number="$(tr -d '[:space:]' < artifact/pr-number)"
+          if ! [[ "$number" =~ ^[0-9]{1,9}$ ]]; then
+            echo "::error::artifact pr-number is not an integer" >&2
+            exit 1
+          fi
+          pr="$(gh api "repos/$GITHUB_REPOSITORY/pulls/$number")"
+          state="$(jq -r .state <<<"$pr")"
+          head="$(jq -r .head.sha <<<"$pr")"
+          labelled="$(jq -r '[.labels[].name] | any(. == ":label: feat" or . == ":label: doc" or . == ":label: rfc")' <<<"$pr")"
+          if [ "$state" != "open" ] || [ "$labelled" != "true" ]; then
+            echo "PR $number is closed or no longer labeled for previews; skipping"
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ "$head" != "$BUILT_SHA" ]; then
+            echo "PR $number has moved past the built commit ($BUILT_SHA vs $head); a newer build will deploy"
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "deploy=true" >> "$GITHUB_OUTPUT"
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+      - name: Check build output
+        if: steps.pr.outputs.deploy == 'true'
+        run: scripts/docs-deploy/check-dist.sh artifact/site --untrusted
+      - name: Deploy to Cloudflare Pages
+        if: steps.pr.outputs.deploy == 'true'
+        run: >
+          npx --yes wrangler@4 pages deploy artifact/site
+          --project-name warp-drive-docs
+          --branch "pr-${{ steps.pr.outputs.number }}"
+          --commit-hash "${{ github.event.workflow_run.head_sha }}"
+          --commit-dirty=true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Comment the preview URL
+        if: steps.pr.outputs.deploy == 'true'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          BUILT_SHA: ${{ github.event.workflow_run.head_sha }}
+        with:
+          script: |
+            const issue_number = Number(process.env.PR_NUMBER);
+            const sha = process.env.BUILT_SHA;
+            const marker = '<!-- docs-preview -->';
+            const body = [
+              marker,
+              `📖 Docs preview: https://pr-${issue_number}.warp-drive-docs.pages.dev/`,
+              '',
+              `Built from ${sha.slice(0, 7)}.`,
+            ].join('\n');
+            const { owner, repo } = context.repo;
+            const comments = await github.paginate(github.rest.issues.listComments, { owner, repo, issue_number });
+            const existing = comments.find((c) => c.user.type === 'Bot' && c.body.startsWith(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({ owner, repo, comment_id: existing.id, body });
+            } else {
+              await github.rest.issues.createComment({ owner, repo, issue_number, body });
+            }

@@ -1,0 +1,86 @@
+# Builds the docs for a pull request and uploads the result as a workflow artifact. This is
+# the UNTRUSTED half of the docs preview: it runs the PR's code (the docs build executes
+# scripts and plugins from the checkout), so it runs on `pull_request` with a read-only token
+# and no secrets -- which is also why it is safe to run for PRs from forks. It cannot deploy
+# anything. docs-preview-deploy.yml, which holds the Cloudflare credentials, picks the artifact
+# up afterwards and treats it purely as static data.
+#
+# Gated to PRs labeled ":label: feat", ":label: doc", or ":label: rfc" (this repo's actual
+# label names -- see enforce-changelog-label.yml, which applies one from the PR title
+# automatically, so external contributors don't need a maintainer to label them): most PRs
+# don't touch the docs, and building the whole site isn't free. `labeled` is included so a
+# preview appears as soon as one of those labels is added, not just on the next push.
+#
+# Previews are served at https://pr-<number>.warp-drive-docs.pages.dev/ -- the site root, so
+# BASE is '' exactly as in production.
+#
+# First-time contributors' workflow runs need a maintainer's approval before they start (repo
+# Settings > Actions > General > "Approval for running fork pull request workflows"); keep that
+# setting on, since it is the gate in front of running a stranger's build.
+name: docs preview build
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-preview-build-${{ github.event.number }}
+  cancel-in-progress: true
+
+env:
+  TURBO_API: http://127.0.0.1:9080
+  TURBO_TOKEN: this-is-not-a-secret
+  TURBO_TEAM: myself
+
+jobs:
+  build:
+    if: |
+      github.event.pull_request.state == 'open'
+      && (
+        (
+          github.event.action != 'labeled'
+          && (contains(github.event.pull_request.labels.*.name, ':label: feat') || contains(github.event.pull_request.labels.*.name, ':label: doc') || contains(github.event.pull_request.labels.*.name, ':label: rfc'))
+        )
+        || (
+          github.event.action == 'labeled'
+          && contains(fromJSON('[":label: feat", ":label: doc", ":label: rfc"]'), github.event.label.name)
+        )
+      )
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: ./.github/actions/setup
+        with:
+          install: true
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          ACTIONS_RUNNER_DEBUG: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+          DISABLE_TURBO_CACHE: ${{ secrets.ACTIONS_RUNNER_DEBUG == 'true' }}
+      - name: Build docs
+        run: pnpm run build
+        working-directory: docs-viewer
+        env:
+          BASE: ''
+          HOSTNAME: https://pr-${{ github.event.number }}.warp-drive-docs.pages.dev
+          # see the matching comment on `pwa` in config.mts
+          DISABLE_PWA: 'true'
+          # see the matching comment in deploy.yml
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Stage artifact
+        run: |
+          mkdir -p staged
+          mv docs-viewer/docs.warp-drive.io/.vitepress/dist staged/site
+          echo '${{ github.event.number }}' > staged/pr-number
+      - name: Upload build
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: docs-preview
+          path: staged
+          retention-days: 1
+          if-no-files-found: error

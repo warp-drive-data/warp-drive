@@ -101,10 +101,13 @@ Three things to know when testing this locally:
 ### PR Preview
 
 Pull requests labeled `:label: doc`, `:label: feat`, or `:label: rfc` (the label names literally
-contain `:label:`) get a full build of the site deployed to `https://canary.warp-drive.io/pr-preview/pr-<number>/`, linked from a sticky
-comment on the PR. The preview deploys as soon as one of those labels is added, redeploys on each
-push, and is removed when the label is removed or the PR closes. See
-[`.github/workflows/pr-preview.yml`](../.github/workflows/pr-preview.yml).
+contain `:label:`) get a full build of the site deployed to Cloudflare Pages at `https://pr-<number>.warp-drive-docs.pages.dev/`, linked from a
+sticky comment on the PR. The preview deploys as soon as one of those labels is added and redeploys on each
+push. Previews work for PRs from forks too: the PR's code is built by
+[`docs-preview-build.yml`](../.github/workflows/docs-preview-build.yml), which has no secrets, and the result is
+published as static files by [`docs-preview-deploy.yml`](../.github/workflows/docs-preview-deploy.yml), which does,
+and never runs anything from the PR. The same Pages project serves `canary.warp-drive.io` as its production
+deployment ([`deploy.yml`](../.github/workflows/deploy.yml)).
 
 ### Deploying
 

@@ -3,7 +3,7 @@
  * Black-box spec for `pnpm build` and `pnpm start` (src/sync-guides.ts).
  *
  * Running TypeDoc and VitePress for real means building the whole site, which is what the
- * pr-preview workflow does on every docs PR. This spec instead copies the package's `src/` and
+ * docs-preview-build workflow does on every docs PR. This spec instead copies the package's `src/` and
  * `package.json` into a minimal fixture repo, puts stub `typedoc` and `vitepress` executables in
  * the fixture's `node_modules/.bin` (where the real ones would resolve from), and asserts on what
  * the script does around them: which stubs it calls, with what arguments and cwd, and what it

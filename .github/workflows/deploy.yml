@@ -1,27 +1,27 @@
-# Sample workflow for building and deploying a VitePress site to GitHub Pages
+# Builds the docs from `main` and publishes them to https://canary.warp-drive.io as the
+# production deployment of the `warp-drive-docs` Cloudflare Pages project.
 #
+# Per-PR previews are the other half of this setup: see docs-preview-build.yml and
+# docs-preview-deploy.yml, which publish to the same project as preview deployments.
+#
+# Cloudflare Pages keeps every deployment as its own immutable snapshot, so unlike the
+# gh-pages branch this replaced, nothing accumulates in a single artifact and there is no
+# whole-site size limit to hit; the limits that remain are per deployment (see
+# scripts/docs-deploy/check-dist.sh).
 name: canary.warp-drive.io deployment
 
 on:
-  # Runs on pushes targeting the `main` branch. Change this to `master` if you're
-  # using the `master` branch as the default branch.
   push:
     branches: [main]
 
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to the gh-pages branch
-# (see .github/workflows/pr-preview.yml, which pushes to the same branch for PR
-# previews -- the "GitHub Actions" build type's single-artifact-per-run model can't
-# host those alongside this deploy, so both workflows target the branch instead)
 permissions:
-  contents: write
+  contents: read
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do ~~NOT~~ cancel in-progress runs as we want to allow these production deployments to complete.
+# Only the latest commit on main matters; a newer push supersedes an in-flight deploy.
 concurrency:
-  group: pages-production
+  group: docs-production
   cancel-in-progress: true
 
 env:
@@ -36,7 +36,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          fetch-depth: 1 # 0 is needed if lastUpdated is enabled
+          fetch-depth: 1
       - uses: ./.github/actions/setup
         with:
           install: true
@@ -54,59 +54,15 @@ jobs:
           # 60/hour per-IP anonymous limit, which is shared with unrelated jobs across
           # the whole GitHub Actions runner pool and fails intermittently under load
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Publishes the fresh build as the whole site root of gh-pages, carrying over only the
-      # pr-preview/ folder that pr-preview.yml owns on the same branch. Anything else from the
-      # previous deploy (content-hashed assets/ chunks, pages that no longer exist) is dropped,
-      # so the root never holds more than one build. Layering each build over the last one
-      # instead (peaceiris/actions-gh-pages' `keep_files`) kept every old chunk forever and
-      # pushed the Pages artifact past its size limit.
-      #
-      # The new commit is assembled from trees rather than a checkout, so none of pr-preview/'s
-      # blobs are downloaded (`--filter=blob:none`). That only holds for the exact commands
-      # used here: `mktree` reuses pr-preview/'s tree by id, where `read-tree` would lazily
-      # fetch every blob under it, and `push --no-thin` stops pack-objects from fetching the
-      # previous build's blobs to use as delta bases.
-      #
-      # pr-preview.yml can push to gh-pages between this script's fetch and its push, which
-      # rejects ours as a non-fast-forward. Each retry re-fetches gh-pages and rebuilds the
-      # commit on top of it, so a preview deployed or removed in between is never undone.
-      - name: Deploy to GitHub Pages
+      - name: Check build output
+        run: scripts/docs-deploy/check-dist.sh docs-viewer/docs.warp-drive.io/.vitepress/dist
+      - name: Deploy to Cloudflare Pages
+        run: >
+          npx --yes wrangler@4 pages deploy docs-viewer/docs.warp-drive.io/.vitepress/dist
+          --project-name warp-drive-docs
+          --branch main
+          --commit-hash "$GITHUB_SHA"
+          --commit-dirty=true
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-
-          dist="$GITHUB_WORKSPACE/docs-viewer/docs.warp-drive.io/.vitepress/dist"
-          echo 'canary.warp-drive.io' > "$dist/CNAME"
-
-          site="$RUNNER_TEMP/gh-pages"
-          git init -q "$site"
-          cd "$site"
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git remote add origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
-
-          for attempt in 1 2 3; do
-            if [ "$attempt" -gt 1 ]; then
-              echo "deploy attempt $((attempt - 1)) failed (most likely gh-pages moved); retrying" >&2
-              sleep $((attempt * 5))
-            fi
-            git fetch -q --depth=1 --filter=blob:none origin gh-pages || continue
-            base_sha="$(git rev-parse FETCH_HEAD)"
-
-            rm -f .git/index
-            # --force: publish everything in the build, even if it ships a .gitignore
-            git --work-tree="$dist" add -A --force
-            tree="$(git write-tree)"
-            preview="$(git ls-tree "$base_sha" pr-preview)"
-            if [ -n "$preview" ]; then
-              tree="$({ git ls-tree "$tree"; printf '%s\n' "$preview"; } | git mktree)"
-            fi
-            commit="$(git commit-tree "$tree" -p "$base_sha" -m "deploy: $GITHUB_SHA")"
-
-            if git push --no-thin -q origin "$commit:refs/heads/gh-pages"; then
-              exit 0
-            fi
-          done
-          echo "push to gh-pages failed after 3 attempts" >&2
-          exit 1
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

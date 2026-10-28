@@ -154,4 +154,4 @@ Run `pnpm start` from `docs-viewer/` for a dev server with hot reload, or `pnpm 
 Once the change is in a pull request, add the existing `:label: doc` label (its name literally
 contains `:label:`), or ask a maintainer to if you cannot edit labels on the repo, and a preview of
 the whole site, API docs included, is deployed to
-`https://canary.warp-drive.io/pr-preview/pr-<number>/` and linked from a comment on the PR.
+`https://pr-<number>.warp-drive-docs.pages.dev/` and linked from a comment on the PR.
