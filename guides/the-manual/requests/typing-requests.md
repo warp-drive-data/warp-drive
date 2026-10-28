@@ -53,6 +53,13 @@ export default <template>
 </template>;
 ```
 
+## Typing Arguments and Partial Responses
+
+A builder's arguments and a partial response, such as a preview that loads a few fields, should
+each be derived from the resource's one source type with `Pick`, `Mask`, `Partial` and
+`WithPartial`, so they can't drift from it. See
+[Narrowing Types From One Source](../schemas/narrowing-types.md).
+
 ## Typing Reactive Responses
 
 Requests that return reactive responses wrap the primary resource data in a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument). In the case of an error, this will be a [ReactiveErrorDocument](/api/@warp-drive/core/reactive/types/ReactiveErrorDocument) and in the case of success it will be a [ReactiveDataDocument](/api/@warp-drive/core/reactive/types/ReactiveDataDocument)

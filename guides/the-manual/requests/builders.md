@@ -82,6 +82,11 @@ A set of builders is only useful as an SDK if readers can find a builder and tru
   SDK can be browsed, reused across the app, and shared with other apps.
 - **Keep builders pure.** The same arguments should always produce the same request.
 - **Set the [response type](./typing-requests.md)** on the request object a builder returns.
+- **Derive the types a builder uses from the resource's source type.** A preview of the response, a
+  create body, or a patch should be `Pick`, `Mask`, `Partial` or `WithPartial` of the one
+  type that describes the resource, never a second hand-written interface. When the source changes,
+  the builders that depend on the change stop compiling. See
+  [Narrowing Types From One Source](../schemas/narrowing-types.md).
 - **Rarely rely on [Handlers](./handlers.md)** to add information the request can't work without.
   Handlers are for concerns that apply to many requests, such as authentication.
 
@@ -152,6 +157,10 @@ export function getCompanyPreviewList(search: string) {
 ```
 
 == Supporting Types
+
+Every type here is derived from the `User`, `Address` and `Company` source types, so the preview can't drift
+from them. [Narrowing Types From One Source](../schemas/narrowing-types.md) covers the pattern, including
+create and patch types for mutation builders.
 
 ```ts [types/companyPreview.ts]
 import { Type } from '@warp-drive/core/types/symbols';
