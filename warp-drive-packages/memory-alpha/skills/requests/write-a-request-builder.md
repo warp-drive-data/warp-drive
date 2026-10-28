@@ -32,17 +32,25 @@ reusable entry point, not a one-off object.
    anything else, with `T` as the full response type. Never add the type at the call site,
    by calling `withResponseType` there or casting the result with `as`: that is a cast, and a
    builder is the only way to type a request without one.
-7. Keep it pure, and make it produce the same RequestKey for the same arguments. Build query
+7. Derive every type the builder uses from the one source type that describes the resource, instead
+   of writing a parallel interface. A partial or preview response is a `Pick` of the source type,
+   with `Mask` from `@warp-drive/core/types/record` to narrow a relationship's type too. A create
+   body is `WithPartial` and a patch is `Partial` of the writable fields, with `Mutable` from
+   `@warp-drive/core/types/utils` to drop `readonly`. Keep `typeof Type` in a `Pick` that should
+   stay a record. A derived type stops compiling when the source type changes, and a hand-written
+   one silently drifts. If the app has no source type for the resource yet, write one first. See
+   [Narrowing Types From One Source](/guides/the-manual/schemas/narrowing-types.md).
+8. Keep it pure, and make it produce the same RequestKey for the same arguments. Build query
    strings with `buildQueryParams` from `@warp-drive/utilities`, not by hand. For a `POST` or
    other non-`GET` query, set `cacheOptions.key` from a stable serialization of the arguments.
    Without a stable key, identical requests are neither deduplicated nor cached.
-8. For a paginated collection, have the builder request the first page only. Don't add a `page`,
+9. For a paginated collection, have the builder request the first page only. Don't add a `page`,
    `offset` or `cursor` argument: load later pages by following the response's `links`, with
    `next()` on the reactive document or the experimental pagination primitives. For a `POST` or
    `QUERY` whose server returns no links, the server should persist the query or encode it into a
    cursor link; if it can't, add a handler that generates the links, as described in
    [Paginating With Links](/guides/the-manual/requests/builders.md#paginating-with-links).
-9. At the call site, pass the builder's result straight to `store.request(...)` or to the `query`
+10. At the call site, pass the builder's result straight to `store.request(...)` or to the `query`
    argument of the `<Request />` component (`@query` in Ember).
    [Fetch and Cache Data](./fetch-and-cache-data.md) shows how to render the result. When
    several components need the same data, have each call the builder itself instead of loading it
@@ -54,7 +62,7 @@ reusable entry point, not a one-off object.
 // builders/search-users.ts
 import { withReactiveResponse } from '@warp-drive/core/request';
 import { buildQueryParams } from '@warp-drive/utilities';
-import type { UserPreview } from '#/data/types';
+import type { UserPreview } from '#/data/types'; // a Pick of the User source type
 
 /**
  * Searches users by name or email.
@@ -74,4 +82,5 @@ export function searchUsers(term: string) {
 
 - Full guide: [Builders](/guides/the-manual/requests/builders.md)
 - Typing: [Typing Requests](/guides/the-manual/requests/typing-requests.md)
+- Deriving preview, create, and patch types from one source type: [Narrowing Types From One Source](/guides/the-manual/schemas/narrowing-types.md)
 - Making the request once the builder exists: [Fetch and Cache Data](./fetch-and-cache-data.md)
