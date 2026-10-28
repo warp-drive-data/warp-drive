@@ -126,5 +126,5 @@ writing them.
 - [Relationships](/guides/the-manual/relational-data/): configure each kind of relationship.
 - [Debugging](/guides/the-manual/debugging/): turn on debug logging at runtime or in the build
   config.
-- [TypeScript](/guides/the-manual/typescript/): opt in to the alpha types, then follow the setup
-  pages in order.
+- [Narrowing Types From One Source](/guides/the-manual/schemas/narrowing-types.md): write one type
+  per resource and derive the narrower types each context needs.

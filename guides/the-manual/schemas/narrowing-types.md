@@ -1,5 +1,5 @@
 ---
-description: Write one source type per resource, then derive the narrower types each context needs, such as query previews, create and patch bodies, and editable copies, with native and WarpDrive type utilities so they can never drift from the source.
+description: Write one source type per resource, then derive the narrower types each context needs, such as query previews, create and patch bodies, and editable copies, with native and WarpDrive type utilities so they can never drift from the source, and why WarpDrive brands types with `[Type]` to make that work.
 ---
 
 # Narrowing Types From One Source
@@ -14,8 +14,10 @@ Hand-written parallel interfaces compile whether or not they still match the res
 list renders `undefined`, the type checker is happy, and nothing tells you. A derived
 `UserPreview` stops compiling the moment the field it picks no longer exists.
 
-This page works through the pattern for query projections, mutations and editable copies, then
-shows how it fits into [builders](../requests/builders.md).
+This page explains the `[Type]` brand that makes the pattern work, then works through it for query
+projections, mutations and editable copies, and shows how it fits into
+[builders](../requests/builders.md). If your resources are still `Model` classes, see
+[Typing Models](./narrowing-types-legacy.md).
 
 ## The Source Type
 
@@ -50,6 +52,28 @@ export interface User {
 
 This is the only place the shape of a `User` is written down. Everything else on this page is
 derived from it.
+
+## Why Types Are Branded
+
+`[Type]` is not a field on the data. It is a *brand*: a symbol-keyed property that exists only in the
+type system, which WarpDrive reads to learn which resource type a TypeScript type describes. That is
+how `store.findRecord<User>('user', '1')` can check that `'user'` is the right string and return a
+`User`, with nothing registered anywhere.
+
+Brands are used instead of registries or classes because of this page's pattern. A registry maps a
+resource type string such as `'user'` to exactly one type, but a resource has many valid shapes:
+the full record, a preview, a create body, a patch, an editable copy. A brand travels with each
+type instead, so `User`, `UserPreview` and `EditableUser` all say `'user'` while differing in
+everything else.
+
+Registries also top out at a few hundred entries before TypeScript gives up and resolves them to
+`any`, break when types come from more than one library, can't describe more than one store or
+source of schema, and hide where a type is used from bundlers. Using a class as the token, as in
+`store.findRecord(User, '1')`, would force every resource to be a class, but schemas are JSON, so
+there is no class to import. The brand needs none of this.
+
+In practice, keep the brand when you derive a type that should still be recognized as a record, as
+the next sections do with `typeof Type` in each `Pick`.
 
 ## The Toolbox
 
