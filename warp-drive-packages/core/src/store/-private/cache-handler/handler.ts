@@ -38,11 +38,21 @@ export type LooseStoreRequestInfo<RT = unknown> = Omit<
 > & {
   records?: ResourceIdentifierObject[];
   headers?: Headers;
+  /**
+   * If provided, used instead of the AbortController auto-configured for each request by the RequestManager.
+   *
+   * Handlers never receive this: the RequestManager removes it before the first handler runs and
+   * exposes its signal as `request.signal` instead, which is why {@link ImmutableRequestInfo} omits it.
+   */
+  controller?: AbortController;
 };
 
 /**
  * The request shape accepted by {@link Store.request}, either a fully-formed
  * {@link ImmutableRequestInfo} or the looser {@link LooseStoreRequestInfo}.
+ *
+ * Only the looser form accepts `controller`, so a request carrying one, including a builder's
+ * output spread together with a `controller`, resolves to {@link LooseStoreRequestInfo}.
  *
  * @summary The request object `store.request` accepts, either a full immutable request info or a looser
  * form with plain `records` and `headers`.
