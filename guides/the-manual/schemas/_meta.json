@@ -1,5 +1,8 @@
 {
   "title": "Schemas",
+  "files": {
+    "narrowing-types-legacy": { "title": "Typing Models (Legacy)" }
+  },
   "items": [
     "resources",
     "object-schemas",
@@ -10,6 +13,7 @@
     "derivations",
     "transformations",
     "extensions",
-    "narrowing-types"
+    "narrowing-types",
+    "narrowing-types-legacy"
   ]
 }

@@ -1,10 +1,15 @@
 ---
 legacy: true
 legacyAdvice: "New code should define its data with [ResourceSchemas](/guides/the-manual/schemas/resources/index.md) instead of Models."
-description: Brand legacy Model classes and Transforms with the `Type` symbol and add generics to `attr`, `belongsTo`, and `hasMany` so relationships and store calls infer types.
+description: Type resources defined as Model classes, branding them and their Transforms with the `Type` symbol, typing relationships, and deriving narrower types from a Model with Pick, as in the schema-based guide.
 ---
 
 # Typing Models & Transforms
+
+This is the `Model` class version of [Narrowing Types From One Source](./narrowing-types.md), which
+explains the pattern and the `[Type]` brand. Read it first: everything there about deriving narrower
+types applies to a Model's instance type too. This page covers what is specific to Models, the brand
+and the relationship field types, then shows the derived types.
 
 ## Type
 
@@ -196,3 +201,39 @@ export default class User extends Model {
   [Type] = 'user' as const;
 }
 ```
+
+## Deriving Narrower Types From a Model
+
+Treat the `Model` as the same read-only source type that
+[Narrowing Types From One Source](./narrowing-types.md) describes, even though its instances are
+mutable. Derive every preview, create, patch and editable type from it with `Pick` instead of using
+the Model class in those places directly. Then when the resource moves to a
+[ResourceSchema](./resources/index.md) and a plain source interface, only the source type changes:
+every derived type, and every builder that uses one, keeps compiling as written. A builder that took
+a `User` Model class as its argument has to be rewritten at migration time.
+
+A `Model` instance type carries every field you declared, plus the base class's own properties, so
+derive narrower types from it with `Pick` of the fields you want, never `Omit` of the ones you don't.
+`Omit` would keep all of the base class's properties in the result.
+
+```ts
+import type { Type } from '@warp-drive/core/types/symbols';
+import type User from '#/models/user';
+
+/** The fields a list of users renders. */
+export type UserPreview = Pick<User, typeof Type | 'name'>;
+
+/** The fields a client may write when creating a user. */
+export type CreateUser = Pick<User, 'name'>;
+
+/** The fields a client may change on an existing user. */
+export type PatchUser = Partial<CreateUser>;
+```
+
+Keep `typeof Type` in a `Pick` that should still be recognized as a record, as in `UserPreview`. Use
+the same `Mask`, `Validate`, `WithPartial` and `Mutable` utilities described in
+[Narrowing Types From One Source](./narrowing-types.md#the-toolbox) for relationships and optional
+fields. Derive an editable type for the form code that changes a record too, as in
+`Mutable<Pick<User, typeof Type | 'name'>>`, even though assigning to a Model directly would compile.
+Code written against the derived type is already shaped for a schema-based record, where the source
+is read-only and changes go through an editable copy.

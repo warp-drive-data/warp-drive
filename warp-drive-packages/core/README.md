@@ -92,7 +92,7 @@ API docs for this package → [@warp-drive/core](https://warp-drive.io/api/@warp
 - [Async as Reactive State](https://warp-drive.io/guides/the-manual/reactivity/derivation): derive a promise's state with `getPromiseState`.
 - [Relationships](https://warp-drive.io/guides/the-manual/relational-data/): configure each kind of relationship.
 - [Debugging](https://warp-drive.io/guides/the-manual/debugging/): turn on debug logging at runtime or in the build config.
-- [TypeScript](https://warp-drive.io/guides/the-manual/typescript/): opt in to the alpha types, then follow the setup pages in order.
+- [Narrowing Types From One Source](https://warp-drive.io/guides/the-manual/schemas/narrowing-types): write one type per resource and derive the narrower types each context needs.
 
 <br>
 

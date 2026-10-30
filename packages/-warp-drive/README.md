@@ -116,7 +116,7 @@ npx warp-drive generate model taco filling:belongs-to:protein toppings:has-many:
 
 ## Documentation
 
-- [Native Types Retrofit](https://warp-drive.io/guides/the-manual/typescript/installation): what `npx warp-drive retrofit types` uninstalls, installs and configures.
+- [Pre-Migration (update to Native Types)](https://warp-drive.io/upgrading/v5/#pre-migration-update-to-native-types): what `npx warp-drive retrofit types` uninstalls, installs and configures, step by step.
 
 ### ♥️ Credits
 

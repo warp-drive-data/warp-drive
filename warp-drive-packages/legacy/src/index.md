@@ -33,7 +33,7 @@ Our policy is to always attempt to provide restoration of a deprecated feature v
   using `withDefaults` and `registerDerivations` from this package.
 - [Relationships](/guides/the-manual/relational-data/): the relationship configuration pages show
   each relationship defined with `@warp-drive/legacy/model` as well as with schemas.
-- [Typing Models & Transforms](/guides/the-manual/typescript/typing-models.md): type `Model`
+- [Typing Models & Transforms](/guides/the-manual/schemas/narrowing-types-legacy.md): type `Model`
   classes, their fields and their transforms.
 - [Migrating 4.x to 5.x](/upgrading/v5/index.md): move an EmberData 4.x app to 5.x with
   `useLegacyStore`.

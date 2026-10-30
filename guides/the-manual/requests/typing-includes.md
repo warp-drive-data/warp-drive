@@ -4,6 +4,19 @@ description: Type relationship-path include strings with the `Includes` and `Str
 
 # Typing Includes
 
+:::warning **Typing includes can be expensive**
+Typing relationship paths is one of the most costly type features in ***Warp*Drive***. Every
+relationship path reachable from a type becomes a member of a union, so the cost grows with the
+number of resources, the number of relationships on them, and the depth of the paths you allow.
+Codebases with many models and relationships, especially ones that relate to each other heavily,
+can see noticeably slower type checking and editor responsiveness.
+
+Before adopting it widely, try it on your largest resource and watch your editor and
+`tsc --extendedDiagnostics`, or `tsc --generateTrace` for a detailed breakdown. Keep it at the
+edges, such as the arguments of builders, rather than on every type in the app. If it is too
+slow, plain strings that your tests and the server enforce are a reasonable trade.
+:::
+
 Many APIs offer the concept of "sideloading" or "including related resources". For instance,
 when loading a `user` you might also want to load the information for the company where they
 work, the company's CEO, and a list of the user's friends. Historically this was managed
@@ -40,9 +53,15 @@ paths: [`Includes`](/api/@warp-drive/core/types/record/types/Includes) and [`Str
 The `Includes` type util will return a union of all valid relationship paths discoverable from the input type, within a few constraints.
 
 - Cyclical paths are eliminated, so if a user has friends that are users you should never see `user.friends.friends` or `user.friends.company` as options.
-- There is a configurable MAX_DEPTH which defaults to `3` to help encourage reduced complexity and better typescript performance
+- There is a configurable MAX_DEPTH which defaults to `3` to help encourage reduced complexity and better typescript performance. Lowering it is the first lever to pull if `Includes` is slow in your codebase.
 - There is an absolute MAX-DEPTH for paths of `5`. If you wish to support longer paths than `5` please reach out to discuss. This limit is in place for performance reasons due to the size of union that gets generated.
 - If your type/model has non-relationship properties that compute to typed record instances (or arrays of typed record instances) you may encounter false positives for paths.
+
+> [!WARNING]
+> `Includes<T>` has the highest cost of the utilities on this page: it builds the whole union of
+> paths up front, and it is evaluated everywhere the type is used. Prefer
+> [`StringSatisfiesIncludes`](#the-stringsatisfiesincludes-type-util) or `createIncludeValidator`
+> when only a handful of call sites need checking.
 
 > [!TIP]
 > In general, we discourage the usage of `getters` (aka `computed` or `derived` fields) that compute their value from related records.
@@ -78,7 +97,8 @@ include arguments (e.g. `'company,company.ceo,friends'`) aren't typed by-default
 
 However, if you wish to support validating these strings with types, we offer a
 stand-alone utility with reasonably good performance characteristics and minimal
-runtime overhead.
+runtime overhead. It still has to evaluate the paths of the type it checks, so the performance
+warning above applies to it as well, to a lesser degree.
 
 We mention runtime overhead as it requires creating a function to have it work
 with reasonable DX.
@@ -92,7 +112,7 @@ the validator at the callsite, its not automatic.
 ```ts
 import { createIncludeValidator } from '@warp-drive/core/types/record';
 
-const userIncludesValidator = createIncludeValidator<User>;
+const userIncludesValidator = createIncludeValidator<User>();
 
 function builderThatAcceptsIncludes<T extends TypedRecordInstance>(req: {
   includes: string
@@ -118,7 +138,7 @@ function builderThatAcceptsIncludes<T extends TypedRecordInstance>(req: {
   // ... other props
 });
 
-const includes: StringSatisfiedIncludes<
+const includes: StringSatisfiesIncludes<
   'company,company.ceo,friends',
   Includes<User>
 > = 'company,company.ceo,friends';
