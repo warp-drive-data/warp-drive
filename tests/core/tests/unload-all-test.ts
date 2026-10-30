@@ -18,6 +18,7 @@ module('Store | unloadAll', function (hooks) {
 
     store.unloadAll();
 
+    // eslint-disable-next-line warp-drive/no-legacy-request-patterns
     const users = store.peekAll<User>('user');
     assert.equal(users.length, 0, 'unloaded records are not in peekAll');
 
