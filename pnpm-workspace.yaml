@@ -344,7 +344,7 @@ catalog:
   "@types/semver": ^7.8.0
   "@typescript-eslint/eslint-plugin": ^8.72.1
   "@typescript-eslint/parser": ^8.72.1
-  "@vite-pwa/vitepress": ^1.1.0
+  "@vite-pwa/vitepress": ^2.0.1
   "@vitejs/plugin-vue": ^6.0.10
   "@vue/babel-plugin-jsx": ^3.0.0
   babel-plugin-debug-macros: ^2.0.0
