@@ -311,8 +311,8 @@ catalogs:
       specifier: ^8.72.1
       version: 8.72.1
     '@vite-pwa/vitepress':
-      specifier: ^1.1.0
-      version: 1.1.0
+      specifier: ^2.0.1
+      version: 2.0.1
     '@vitejs/plugin-vue':
       specifier: ^6.0.10
       version: 6.0.10
@@ -716,7 +716,7 @@ importers:
         version: 26.6.5
       '@vite-pwa/vitepress':
         specifier: 'catalog:'
-        version: 1.1.0(9d513d36b940430e8ee5c194e343ff14)
+        version: 2.0.1(58610437d5f0c9e5faed7b03da856672)
       debug:
         specifier: 'catalog:'
         version: 4.4.3
@@ -7339,6 +7339,43 @@ packages:
   '@ungap/structured-clone@1.4.0':
     resolution: {integrity: sha512-1mEZtMKPM09vDmQt5y7YvmN2+DFTP7Tg0EWXdic8/C6VRnpb33e4ghisCIE3WZjsE2N8mf+QV1Zqh7ZFYLWInQ==}
 
+  '@unplugin-pwa/core@0.0.2':
+    resolution: {integrity: sha512-Uuq2R0k9dAs48MepqIklmfmeewagpy4c7OnEjN5IJQKCYIei6QGPFDKJrmwBf5wM2vyZN6Ljsffenq2iKlQNqg==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+
+  '@unplugin-pwa/inspector@0.0.2':
+    resolution: {integrity: sha512-vdBlr8JVvkiz3KhRK3rAJWYAqF3vP8PzF6wntgoC4279J7mOZah08S/AVg3IiFTAoR1GASO3JKb8SmoJdxNigQ==}
+    engines: {node: '>=22.14.0'}
+
+  '@unplugin-pwa/vite@0.0.2':
+    resolution: {integrity: sha512-mZmI5dpbfLDusuqqA/KcPsqntACB7j/mrcbm4Z4MVhcMKTGXJ7/DGw40BB3LwvAFPLoYqGgQA6Reb0Dzn/hSiQ==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+    peerDependenciesMeta:
+      '@vite-pwa/assets-generator':
+        optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+
   '@unrs/resolver-binding-android-arm-eabi@1.12.2':
     resolution: {integrity: sha512-g5T90pqg1bo/7mytQx6F4iBNC0Wsh9cu+z9veDbFjc7HjpesJFWD7QMS0NGStXM075+7dJPPVvBbpZlnrdpi/w==}
     cpu: [arm]
@@ -7462,14 +7499,48 @@ packages:
   '@upsetjs/venn.js@2.0.0':
     resolution: {integrity: sha512-WbBhLrooyePuQ1VZxrJjtLvTc4NVfpOyKx0sKqioq9bX1C1m7Jgykkn8gLrtwumBioXIqam8DLxp88Adbue6Hw==}
 
-  '@vite-pwa/vitepress@1.1.0':
-    resolution: {integrity: sha512-enif5C2JmepS69Ak7PSr6K3Eimsg7VyryZo1Z6NiIPNDnjXFlOqxwBYaq8R/d0M7akArJsjos7KmQnEfNFf5nA==}
+  '@vite-pwa/vitepress@2.0.1':
+    resolution: {integrity: sha512-S/tpIFx3WR7FUTZs9CkjWsoRnp/tvc/rWxYEFt12j+Kg/a4iWyWSpKTGUi2EGOXVc+nO0qJFPYkR7KHrnpTbjQ==}
+    engines: {node: '>=22.14.0'}
     peerDependencies:
-      '@vite-pwa/assets-generator': ^1.0.0
-      vite-plugin-pwa: ^1.2.0
+      '@vite-pwa/assets-generator': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+      vitepress: ^1.0.0 || ^2.0.0-0
     peerDependenciesMeta:
       '@vite-pwa/assets-generator':
         optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+
+  '@vite-pwa/workbox-build@8.0.13':
+    resolution: {integrity: sha512-4MF4p1hc+nVfcETXFo0HGVosmRaLZgIdhxhfPbLY51gG5YZFt/sEfznwSZdnjztDSLuTWJJryuMhBXh77RsGcw==}
+    engines: {node: '>=22.14.0'}
+    peerDependencies:
+      '@rspack/core': ^1.0.0 || ^2.0.0
+      magicast: ^0.5.0
+      rolldown: ^1.0.0-0
+      vite: ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0
+      webpack: ^5.91.0
+    peerDependenciesMeta:
+      '@rspack/core':
+        optional: true
+      magicast:
+        optional: true
+      rolldown:
+        optional: true
+      vite:
+        optional: true
+      webpack:
+        optional: true
+
+  '@vite-pwa/workbox-swkit@8.0.13':
+    resolution: {integrity: sha512-MH9KKR/XNIbjCRvgy8yCGv3AHc+dHAmG+GdA6jGo+jKZsK62cdoa/MhXhwxp893Tn6NuNzUH1QJZmNIt1cmjNQ==}
+
+  '@vite-pwa/workbox-window@8.0.13':
+    resolution: {integrity: sha512-jb74txMXdS/laitdtIpsj/p+ersyTkHKg2dRpOv2HCB5fFoy96QKZnKQcI64Oh33Sr/kjyQNOgQ1pY/XZvD3NQ==}
 
   '@vitejs/plugin-vue@6.0.10':
     resolution: {integrity: sha512-b80aUQh3n+qEzzZm5oQp3rT2QImeCx58K6eFl/RkJ3d65KW0kTuv5lNsLRVAjbW9YRUpo/wzmvzMgV34bTAItA==}
@@ -9733,6 +9804,9 @@ packages:
   idb@7.1.1:
     resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
 
+  idb@8.0.4:
+    resolution: {integrity: sha512-jd0ITCrN+Zah4J7R/Z2jnR3W7A4BXDAjmo62MwWuSjxCiueUAf7X5rbodEdidWzeknwXHmLpdZkoiiCppNi30Q==}
+
   ignore@5.3.2:
     resolution: {integrity: sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==}
     engines: {node: '>= 4'}
@@ -10911,6 +10985,10 @@ packages:
     resolution: {integrity: sha512-KYcnXctWUWyVD3W3Ye0ZDuA1N8Szrh85cVCxpG6xYrOk/0CttRtYCmU30nWsUch0NuExQQ63QXvzRE6FLimZmg==}
     engines: {node: 10.* || >= 12.*}
 
+  proper-tags@2.0.2:
+    resolution: {integrity: sha512-rpgQb3JC9uWAogm9J3G6heeg7n/Gq82GZKaFt080JPVbydKvGW6ECj9Ui1a6taTFv9Oa+dq9GMhHeOJyxxaURA==}
+    engines: {node: '>=12.0.0'}
+
   property-information@7.2.0:
     resolution: {integrity: sha512-IAtzIB6sUiWaJYrX9smp3V46pBGbBeLFRGdh25kg1334VcBlD8HzhPeNIWQH9zhGmo2itIe25EHt9dQP7G5hmg==}
 
@@ -11959,6 +12037,14 @@ packages:
   uuid@14.0.3:
     resolution: {integrity: sha512-Sc5u1VVln93y1Xnz4R+CunOZc7R9LUcTmhj7Rc7Eg3HVcf7rVn2FOoa812fe0W8p3jD7xeoGSYbfqCGGH2B6xw==}
     hasBin: true
+
+  valibot@1.5.0:
+    resolution: {integrity: sha512-nil6AkP2TChWL43Z5uJ6GTxX01CUA+g8LWUM+N/rB9NBbkUMaUsi9PUNzlUPgoKASgmx9f7eGOYpJ04/fSa6FQ==}
+    peerDependencies:
+      typescript: 6.0.3
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
@@ -16110,6 +16196,35 @@ snapshots:
 
   '@ungap/structured-clone@1.4.0': {}
 
+  '@unplugin-pwa/core@0.0.2(35656a001c16c730372a128f85be50d4)':
+    dependencies:
+      '@vite-pwa/workbox-build': 8.0.13(35656a001c16c730372a128f85be50d4)
+      hookable: 6.1.2
+    optionalDependencies:
+      vite: 8.3.5(@types/node@26.6.5)
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - magicast
+      - typescript
+      - webpack
+
+  '@unplugin-pwa/inspector@0.0.2': {}
+
+  '@unplugin-pwa/vite@0.0.2(35656a001c16c730372a128f85be50d4)':
+    dependencies:
+      '@rolldown/pluginutils': 1.0.1
+      '@unplugin-pwa/core': 0.0.2(35656a001c16c730372a128f85be50d4)
+      '@unplugin-pwa/inspector': 0.0.2
+      '@vite-pwa/workbox-build': 8.0.13(35656a001c16c730372a128f85be50d4)
+      '@vite-pwa/workbox-swkit': 8.0.13
+      '@vite-pwa/workbox-window': 8.0.13
+    optionalDependencies:
+      vite: 8.3.5(@types/node@26.6.5)
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - typescript
+      - webpack
+
   '@unrs/resolver-binding-android-arm-eabi@1.12.2':
     optional: true
 
@@ -16185,9 +16300,44 @@ snapshots:
       d3-selection: 3.0.0
       d3-transition: 3.0.1(d3-selection@3.0.0)
 
-  '@vite-pwa/vitepress@1.1.0(9d513d36b940430e8ee5c194e343ff14)':
+  '@vite-pwa/vitepress@2.0.1(58610437d5f0c9e5faed7b03da856672)':
     dependencies:
-      vite-plugin-pwa: 2.0.0(vite@8.3.5(@types/node@26.6.5))
+      '@unplugin-pwa/core': 0.0.2(35656a001c16c730372a128f85be50d4)
+      '@unplugin-pwa/inspector': 0.0.2
+      '@unplugin-pwa/vite': 0.0.2(35656a001c16c730372a128f85be50d4)
+      '@vite-pwa/workbox-build': 8.0.13(35656a001c16c730372a128f85be50d4)
+      '@vite-pwa/workbox-swkit': 8.0.13
+      '@vite-pwa/workbox-window': 8.0.13
+      vitepress: 2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3)
+    transitivePeerDependencies:
+      - '@rspack/core'
+      - typescript
+      - vite
+      - webpack
+
+  '@vite-pwa/workbox-build@8.0.13(35656a001c16c730372a128f85be50d4)':
+    dependencies:
+      '@jridgewell/remapping': 2.3.5
+      '@vite-pwa/workbox-swkit': 8.0.13
+      '@vite-pwa/workbox-window': 8.0.13
+      magic-string: 1.4.3
+      proper-tags: 2.0.2
+      serialize-javascript: 7.1.4
+      tinyglobby: 0.2.17
+      valibot: 1.5.0(typescript@6.0.3)
+      verkit: 0.5.0
+    optionalDependencies:
+      vite: 8.3.5(@types/node@26.6.5)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vite-pwa/workbox-swkit@8.0.13':
+    dependencies:
+      idb: 8.0.4
+
+  '@vite-pwa/workbox-window@8.0.13':
+    dependencies:
+      '@types/trusted-types': 2.0.7
 
   '@vitejs/plugin-vue@6.0.10(5e256503fead04e3f08f3bec786bdfd5)':
     dependencies:
@@ -17492,7 +17642,7 @@ snapshots:
       '@pnpm/logger': 1100.0.0
       '@types/debug': 4.1.13
       '@types/node': 26.6.5
-      '@vite-pwa/vitepress': 1.1.0(9d513d36b940430e8ee5c194e343ff14)
+      '@vite-pwa/vitepress': 2.0.1(58610437d5f0c9e5faed7b03da856672)
       debug: 4.4.3
       execa: 10.2.1
       front-matter: 4.0.2
@@ -17516,6 +17666,7 @@ snapshots:
       vitepress-plugin-tabs: 0.9.1(e797d5cd5e7eac2d8d1de0a209c45513)
       vue: 3.5.44(typescript@6.0.3)
     transitivePeerDependencies:
+      - '@rspack/core'
       - '@types/babel__core'
       - '@vite-pwa/assets-generator'
       - '@vitejs/devtools'
@@ -17529,11 +17680,13 @@ snapshots:
       - jiti
       - jwt-decode
       - less
+      - magicast
       - markdown-it
       - markdown-it-mathjax3
       - nprogress
       - postcss
       - qrcode
+      - rolldown
       - sass
       - sass-embedded
       - sortablejs
@@ -17543,6 +17696,7 @@ snapshots:
       - terser
       - tsx
       - universal-cookie
+      - webpack
       - yaml
 
   '@warp-drive/internal-exam@file:packages/internal-exam(664e589d0289eb9bed4d206d6c5ab497)':
@@ -19880,6 +20034,8 @@ snapshots:
 
   idb@7.1.1: {}
 
+  idb@8.0.4: {}
+
   ignore@5.3.2: {}
 
   ignore@7.0.14: {}
@@ -21108,6 +21264,8 @@ snapshots:
       retry: 0.12.0
 
   promise.hash.helper@1.0.8: {}
+
+  proper-tags@2.0.2: {}
 
   property-information@7.2.0: {}
 
@@ -22531,6 +22689,10 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   uuid@14.0.3: {}
+
+  valibot@1.5.0(typescript@6.0.3):
+    optionalDependencies:
+      typescript: 6.0.3
 
   vary@1.1.2: {}
 
