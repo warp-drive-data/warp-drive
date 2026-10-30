@@ -539,8 +539,8 @@ catalogs:
       specifier: ^2.0.0
       version: 2.0.0
     vitepress:
-      specifier: ^2.0.0-alpha.20
-      version: 2.0.0-alpha.20
+      specifier: ^2.0.0-alpha.21
+      version: 2.0.0-alpha.21
     vitepress-plugin-group-icons:
       specifier: ^1.8.1
       version: 1.8.1
@@ -767,7 +767,7 @@ importers:
         version: 2.0.0(vite@8.3.5(@types/node@26.6.5))
       vitepress:
         specifier: 'catalog:'
-        version: 2.0.0-alpha.20(@types/node@26.6.5)(typescript@6.0.3)
+        version: 2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3)
       vitepress-plugin-group-icons:
         specifier: 'catalog:'
         version: 1.8.1(vite@8.3.5(@types/node@26.6.5))
@@ -776,10 +776,10 @@ importers:
         version: 1.14.0
       vitepress-plugin-mermaid:
         specifier: 'catalog:'
-        version: 2.0.17(e4c3d8d819e458ebdcec4517b08ff054)
+        version: 2.0.17(1a5746c62c496d0e13bfe3cc348a2ddf)
       vitepress-plugin-tabs:
         specifier: 'catalog:'
-        version: 0.9.1(f621112e76e3fd5223700f97468113a1)
+        version: 0.9.1(e797d5cd5e7eac2d8d1de0a209c45513)
       vue:
         specifier: 'catalog:'
         version: 3.5.44(typescript@6.0.3)
@@ -5169,7 +5169,7 @@ packages:
 
   '@ember-data/codemods@file:packages/codemods':
     resolution: {directory: packages/codemods, type: directory}
-    engines: {node: '>=24.22.1'}
+    engines: {node: '>=24.22.2'}
     hasBin: true
 
   '@ember-data/debug@file:packages/debug':
@@ -7604,18 +7604,20 @@ packages:
   '@vue/shared@3.5.44':
     resolution: {integrity: sha512-H82XLH0DjmSOdbEwO15x3QTo1f5PWEtv237eLpYKc0mqLu+B8hnq16lFWmuBmNurkeiG3wr+oM1FhOll/YVFRg==}
 
-  '@vueuse/core@14.4.0':
-    resolution: {integrity: sha512-X4WHz1HlCzCBoYXesUkifzzWBAcZgXG8Fi5iNPQg/epdzOB3gu8Fawj3hvuwYR1nGcXGnvxwYYcUC/71++svtQ==}
+  '@vueuse/core@15.0.0':
+    resolution: {integrity: sha512-Zv67h5mrk7YHDJsRObx+DXaCBz6RKBUpxqLesJ+3xZNPG6yuQs7ja7kg3veFrrouYLWAqydQ7CwGEbLVxB43Ng==}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: ^3.5.0
 
-  '@vueuse/integrations@14.4.0':
-    resolution: {integrity: sha512-oJz9qTgczvA7L1nXQFRU7h8tQbOCoiceqvMMhT9XYMyOGTqLJ2rEa09PON+nD2t48sZUfeOmg4eaWJXV4sZb/w==}
+  '@vueuse/integrations@15.0.0':
+    resolution: {integrity: sha512-uWC1608pEocJPeRk1IqrEA3uYHhAGTJNibcMAdxgdK2Sy2Hypc6b+VdNO9KekCxyPc4VXK8SKDp8vsXefR/ZFg==}
+    engines: {node: '>=22'}
     peerDependencies:
       async-validator: ^4
       axios: ^1
       change-case: ^5
-      drauu: ^0.4
+      drauu: ^1 || ^0.4
       focus-trap: ^7 || ^8
       fuse.js: ^7
       idb-keyval: ^6
@@ -7651,11 +7653,13 @@ packages:
       universal-cookie:
         optional: true
 
-  '@vueuse/metadata@14.4.0':
-    resolution: {integrity: sha512-swx/255R6JyHZFJhx845iz5CRWDZdCfvkZOpACWc5+c5WHcG24mv8gUT1WIdFQaHt6dq79rvILd9QnCWiyVm9g==}
+  '@vueuse/metadata@15.0.0':
+    resolution: {integrity: sha512-sfWE5LADAKJ0KnjtGliMdSN8Ij/L7uP6rXIZlgPloAI4zvvefbw6H5Lt7KJA6RqQOYgVqWF5Guj50HHMIzygBg==}
+    engines: {node: '>=22'}
 
-  '@vueuse/shared@14.4.0':
-    resolution: {integrity: sha512-JRgY90Sz8DDtPMsaDflvPMp9xYk69JZAmbuDvAquUVXKr2gEjqtzGNTTthLfckH0BzBqvnu31gb4a8TGLRe79g==}
+  '@vueuse/shared@15.0.0':
+    resolution: {integrity: sha512-vbNXhGrbV53xPOMSyOzMHQRvhMgZf7oNDw2RChUetVxwTIEkInQ1joZ9JbT0G3z2n2AJNjvmCWeM9ySYrnvogA==}
+    engines: {node: '>=22'}
     peerDependencies:
       vue: ^3.5.0
 
@@ -7715,7 +7719,7 @@ packages:
 
   '@warp-drive/holodeck@file:packages/holodeck':
     resolution: {directory: packages/holodeck, type: directory}
-    engines: {node: '>= 24.22.1'}
+    engines: {node: '>= 24.22.2'}
     hasBin: true
     peerDependencies:
       '@warp-drive/core': workspace:*
@@ -12078,8 +12082,8 @@ packages:
       vitepress: ^1.0.0 || ^2.0.0-alpha.17
       vue: ^3.5.0
 
-  vitepress@2.0.0-alpha.20:
-    resolution: {integrity: sha512-uQWKmP9PaBkf9zxHn0iOml/ZPPDaGKqQXVMBHz3yjwyyd9Eg+BKLGxbqmOGlfOMCt6Fj8TLiAnE59qlKZ0A3xw==}
+  vitepress@2.0.0-alpha.21:
+    resolution: {integrity: sha512-b2PFPIw2mVfxDi490FhSq4AlkFi17b9lofLCqWfH4uPKz/dF4oy2C9vBpP2r7l7hl2hc5BG7OTRPvRFfRzF7MA==}
     hasBin: true
     peerDependencies:
       markdown-it-mathjax3: ^4
@@ -16435,24 +16439,24 @@ snapshots:
 
   '@vue/shared@3.5.44': {}
 
-  '@vueuse/core@14.4.0(vue@3.5.44(typescript@6.0.3))':
+  '@vueuse/core@15.0.0(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       '@types/web-bluetooth': 0.0.21
-      '@vueuse/metadata': 14.4.0
-      '@vueuse/shared': 14.4.0(vue@3.5.44(typescript@6.0.3))
+      '@vueuse/metadata': 15.0.0
+      '@vueuse/shared': 15.0.0(vue@3.5.44(typescript@6.0.3))
       vue: 3.5.44(typescript@6.0.3)
 
-  '@vueuse/integrations@14.4.0(c5f3672ac3eef88b63ae72e8e860354f)':
+  '@vueuse/integrations@15.0.0(c5f3672ac3eef88b63ae72e8e860354f)':
     dependencies:
-      '@vueuse/core': 14.4.0(vue@3.5.44(typescript@6.0.3))
-      '@vueuse/shared': 14.4.0(vue@3.5.44(typescript@6.0.3))
+      '@vueuse/core': 15.0.0(vue@3.5.44(typescript@6.0.3))
+      '@vueuse/shared': 15.0.0(vue@3.5.44(typescript@6.0.3))
       vue: 3.5.44(typescript@6.0.3)
     optionalDependencies:
       focus-trap: 8.2.3
 
-  '@vueuse/metadata@14.4.0': {}
+  '@vueuse/metadata@15.0.0': {}
 
-  '@vueuse/shared@14.4.0(vue@3.5.44(typescript@6.0.3))':
+  '@vueuse/shared@15.0.0(vue@3.5.44(typescript@6.0.3))':
     dependencies:
       vue: 3.5.44(typescript@6.0.3)
 
@@ -17505,11 +17509,11 @@ snapshots:
       vite: 8.3.5(@types/node@26.6.5)
       vite-plugin-image-optimizer: 2.0.3(d01e3e3b51ab6ce86074be2d965fc69e)
       vite-plugin-pwa: 2.0.0(vite@8.3.5(@types/node@26.6.5))
-      vitepress: 2.0.0-alpha.20(@types/node@26.6.5)(typescript@6.0.3)
+      vitepress: 2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3)
       vitepress-plugin-group-icons: 1.8.1(vite@8.3.5(@types/node@26.6.5))
       vitepress-plugin-llms: 1.14.0
-      vitepress-plugin-mermaid: 2.0.17(e4c3d8d819e458ebdcec4517b08ff054)
-      vitepress-plugin-tabs: 0.9.1(f621112e76e3fd5223700f97468113a1)
+      vitepress-plugin-mermaid: 2.0.17(1a5746c62c496d0e13bfe3cc348a2ddf)
+      vitepress-plugin-tabs: 0.9.1(e797d5cd5e7eac2d8d1de0a209c45513)
       vue: 3.5.44(typescript@6.0.3)
     transitivePeerDependencies:
       - '@types/babel__core'
@@ -22647,20 +22651,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  vitepress-plugin-mermaid@2.0.17(e4c3d8d819e458ebdcec4517b08ff054):
+  vitepress-plugin-mermaid@2.0.17(1a5746c62c496d0e13bfe3cc348a2ddf):
     dependencies:
       mermaid: 12.2.0
-      vitepress: 2.0.0-alpha.20(@types/node@26.6.5)(typescript@6.0.3)
+      vitepress: 2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3)
       vue: 3.5.44(typescript@6.0.3)
     optionalDependencies:
       '@mermaid-js/mermaid-mindmap': 9.3.0
 
-  vitepress-plugin-tabs@0.9.1(f621112e76e3fd5223700f97468113a1):
+  vitepress-plugin-tabs@0.9.1(e797d5cd5e7eac2d8d1de0a209c45513):
     dependencies:
-      vitepress: 2.0.0-alpha.20(@types/node@26.6.5)(typescript@6.0.3)
+      vitepress: 2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3)
       vue: 3.5.44(typescript@6.0.3)
 
-  vitepress@2.0.0-alpha.20(@types/node@26.6.5)(typescript@6.0.3):
+  vitepress@2.0.0-alpha.21(@types/node@26.6.5)(typescript@6.0.3):
     dependencies:
       '@docsearch/css': 4.7.1
       '@docsearch/js': 4.7.1
@@ -22671,8 +22675,8 @@ snapshots:
       '@vitejs/plugin-vue': 6.0.10(5e256503fead04e3f08f3bec786bdfd5)
       '@vue/devtools-api': 8.2.1
       '@vue/shared': 3.5.44
-      '@vueuse/core': 14.4.0(vue@3.5.44(typescript@6.0.3))
-      '@vueuse/integrations': 14.4.0(c5f3672ac3eef88b63ae72e8e860354f)
+      '@vueuse/core': 15.0.0(vue@3.5.44(typescript@6.0.3))
+      '@vueuse/integrations': 15.0.0(c5f3672ac3eef88b63ae72e8e860354f)
       focus-trap: 8.2.3
       mark.js: 8.11.1
       minisearch: 7.2.0
