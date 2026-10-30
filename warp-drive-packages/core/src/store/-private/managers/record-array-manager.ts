@@ -509,6 +509,7 @@ export class RecordArrayManager {
     this._managed.clear();
     this._identifiers.clear();
     this._pending.clear();
+    this._staged.clear();
     for (const set of this._set.values()) {
       set.clear();
     }
