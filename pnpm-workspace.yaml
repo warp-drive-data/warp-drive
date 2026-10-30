@@ -380,7 +380,7 @@ catalog:
   fs-extra: ^11.4.1
   git-repo-version: ^1.0.2
   globals: ^17.13.0
-  hono: ^4.13.13
+  hono: ^4.13.14
   ignore: ^7.0.14
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
