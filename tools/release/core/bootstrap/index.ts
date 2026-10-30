@@ -77,15 +77,26 @@ function computeBootstrapTargets(publicPackages: Package[], strategy: STRATEGY):
   return targets;
 }
 
+/**
+ * Whether a failed `pnpm view --json` means the name has never been published.
+ *
+ * With `--json`, the registry error is reported as JSON on stdout and stderr is
+ * left empty, so both streams have to be searched.
+ */
+export function isNotFoundError(error: { errText?: string; logText?: string; message?: string } | string): boolean {
+  const text =
+    typeof error === 'string' ? error : [error.errText, error.logText, error.message].filter(Boolean).join('\n');
+  return text.includes('ERR_PNPM_FETCH_404') || text.includes('Not Found - 404') || text.includes('E404');
+}
+
 async function checkRegistryStatus(name: string): Promise<RegistryStatus> {
   try {
     const out = await exec({ cmd: `pnpm view ${name} --json`, silent: true });
     const data = JSON.parse(out) as { 'dist-tags'?: Record<string, string> };
     return { kind: 'published', latest: data['dist-tags']?.latest ?? 'unknown' };
   } catch (e: unknown) {
-    const err = e as (Error & { errText?: string }) | string;
-    const text = typeof err === 'string' ? err : (err.errText ?? err.message ?? '');
-    if (text.includes('ERR_PNPM_FETCH_404') || text.includes('Not Found - 404')) {
+    const err = e as (Error & { errText?: string; logText?: string }) | string;
+    if (isNotFoundError(err)) {
       return { kind: 'never-published' };
     }
     return { kind: 'lookup-error', message: typeof err === 'string' ? err : err.message };
