@@ -1,7 +1,10 @@
 import { expectTypeOf } from 'expect-type';
 
 import type { LegacyQueryArray } from '../-private';
+import type { Future } from '../../request';
+import type { FindRecordRequestOptions, ImmutableRequestInfo } from '../../types/request';
 import { Type } from '../../types/symbols';
+import type { StoreRequestContext } from './cache-handler/handler';
 import type { LegacyLiveArray } from './record-arrays/legacy-live-array';
 import type { CreateRecordProperties } from './store-service';
 import { Store } from './store-service';
@@ -437,4 +440,40 @@ import { Store } from './store-service';
     asyncProp: string;
     syncProp: string;
   }>();
+}
+
+//////////////////////////////////
+//////////////////////////////////
+// store.request
+//////////////////////////////////
+//////////////////////////////////
+{
+  const store = new Store();
+  const controller = new AbortController();
+
+  type User = {
+    name: string;
+    [Type]: 'user';
+  };
+
+  // a caller-supplied controller is accepted on a loose request
+  expectTypeOf(store.request({ url: '/api/users/1', controller })).toEqualTypeOf<Future<unknown>>();
+  expectTypeOf(store.request<User>({ url: '/api/users/1', controller })).toEqualTypeOf<Future<User>>();
+
+  // and when spread onto the output of a request builder, without losing its response type
+  const builderOutput = {} as FindRecordRequestOptions<User, User>;
+  expectTypeOf(store.request({ ...builderOutput, controller })).toEqualTypeOf<Future<User>>();
+
+  const immutableRequest = {} as ImmutableRequestInfo<User>;
+  expectTypeOf(store.request({ ...immutableRequest, controller })).toEqualTypeOf<Future<User>>();
+
+  void store.request({
+    url: '/api/users/1',
+    // @ts-expect-error controller must be an AbortController
+    controller: controller.signal,
+  });
+
+  // handlers still never see a controller, only its signal
+  expectTypeOf<StoreRequestContext['request']>().not.toHaveProperty('controller');
+  expectTypeOf<ImmutableRequestInfo>().not.toHaveProperty('controller');
 }
