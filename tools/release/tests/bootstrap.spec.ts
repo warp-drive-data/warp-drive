@@ -5,7 +5,7 @@ import { isNotFoundError } from '../core/bootstrap/index.ts';
 
 describe('bootstrap isNotFoundError', () => {
   it('detects a 404 reported on stdout with empty stderr', () => {
-    const logText = JSON.stringify({ error: { code: 'E404', summary: 'Not Found - GET https://registry.npmjs.org/x' } });
+    const logText = JSON.stringify({ error: { code: 'E404', summary: 'Not Found - GET registry.npmjs.org/x' } });
     assert.ok(isNotFoundError({ message: 'exit code: 1', errText: '', logText }));
   });
 
