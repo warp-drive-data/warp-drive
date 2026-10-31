@@ -408,7 +408,7 @@ catalog:
   testem: ^3.21.5
   todomvc-app-css: ^2.4.3
   todomvc-common: ^1.0.5
-  tsdown: ^0.23.2
+  tsdown: ^0.23.3
   turbo: ^2.11.10
   typedoc: ^0.28.20
   typedoc-plugin-markdown: ^4.14.1
