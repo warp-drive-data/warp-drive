@@ -1,3 +1,8 @@
+---
+title: Adding & Removing
+description: How to add, remove, and replace related records on an editable record, including checkout for PolarisMode records and the legacy belongsTo and hasMany APIs.
+---
+
 # Adding & Removing
 
 Relationships are edited through the value of the field on an **editable** record. Which records
@@ -52,7 +57,9 @@ editable.bestFriend = otherUser; // ❌
 editable.friends = [a, b];       // ❌
 ```
 
-The field's value is the document; the document's `data` is the relationship.
+The field's value is the document; the document's `data` is the relationship. That also means
+sorting `data` in place reorders the relationship; to show a sorted list, see
+[Sorting And Filtering For Display](../features/collection-relationships.md#sorting-and-filtering-for-display).
 
 ## Legacy `belongsTo` And `hasMany`
 
