@@ -26,7 +26,11 @@ import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from 
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';
-import { notifyRelationshipDocument, type ReactiveRelationshipDocument } from './fields/relationship-document.ts';
+import {
+  destroyRelationshipDocument,
+  notifyRelationshipDocument,
+  type ReactiveRelationshipDocument,
+} from './fields/relationship-document.ts';
 import type { SchemaService } from './schema.ts';
 import { Checkout, Commit, Context, Destroy } from './symbols.ts';
 
@@ -234,9 +238,9 @@ export class ReactiveResource {
                   if (signal) {
                     notifyInternalSignal(signal);
                   }
-                } else if (field.kind === 'resource') {
+                } else if (field.kind === 'resource' || field.kind === 'collection') {
                   // the document instance is stable; only its reactive
-                  // properties go stale.
+                  // properties (and the array backing a collection) go stale.
                   const doc = signals.get(key)?.value as ReactiveRelationshipDocument<unknown> | undefined;
                   if (doc) {
                     notifyRelationshipDocument(doc, channel);
@@ -265,8 +269,6 @@ export class ReactiveResource {
                       }
                     }
                   }
-                } else if (field.kind === 'collection') {
-                  // FIXME
                 }
               }
             }
@@ -318,10 +320,11 @@ export class ReactiveResource {
         }
 
         switch (schemaForField.kind) {
-          // relationship documents are mutated via their `data`, never by
-          // assigning the field
+          // relationship documents (resource/collection) are mutated via
+          // their `data`, never by assigning the field
           case 'derived':
           case 'resource':
+          case 'collection':
             return {
               writable: false,
               enumerable: true,
@@ -351,7 +354,6 @@ export class ReactiveResource {
           case 'alias':
           case 'belongsTo':
           case 'hasMany':
-          case 'collection':
           case 'schema-array':
           case 'array':
           case 'schema-object':
@@ -749,6 +751,22 @@ function _DESTROY(record: ReactiveResource): void {
 
   record[Context].store.notifications.unsubscribe(record.___notifications);
   record.___notifications = null as unknown as object;
+
+  // tear down any materialized relationship documents (and the arrays backing collections)
+  const context = record[Context];
+  const schema = context.store.schema as unknown as SchemaService;
+  const fields = context.path === null ? schema.fields(context.resourceKey) : null;
+  if (fields) {
+    const signals = withSignalStore(record);
+    fields.forEach((field) => {
+      if (field.kind === 'collection' || field.kind === 'resource') {
+        const doc = signals.get(getFieldCacheKey(field)!)?.value as ReactiveRelationshipDocument<unknown> | undefined;
+        if (doc) {
+          destroyRelationshipDocument(doc);
+        }
+      }
+    });
+  }
 
   // FIXME we need a way to also unsubscribe all SchemaObjects when the primary
   // resource is destroyed.
