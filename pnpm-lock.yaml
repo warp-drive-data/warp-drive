@@ -260,8 +260,8 @@ catalogs:
       specifier: 1100.0.0
       version: 1100.0.0
     '@rolldown/plugin-babel':
-      specifier: ^0.2.4
-      version: 0.2.4
+      specifier: ^0.3.0
+      version: 0.3.0
     '@rollup/plugin-babel':
       specifier: ^7.1.0
       version: 7.1.0
@@ -491,8 +491,8 @@ catalogs:
       specifier: ^1.0.5
       version: 1.0.5
     tsdown:
-      specifier: ^0.23.2
-      version: 0.23.2
+      specifier: ^0.23.4
+      version: 0.23.4
     turbo:
       specifier: ^2.11.10
       version: 2.11.10
@@ -521,8 +521,8 @@ catalogs:
       specifier: ^1.0.4
       version: 1.0.4
     unplugin-vue:
-      specifier: ^8.0.0
-      version: 8.0.0
+      specifier: ^8.0.1
+      version: 8.0.1
     vite:
       specifier: ^8.3.5
       version: 8.3.5
@@ -594,8 +594,8 @@ overrides:
   testem: ~3.21.5
   typescript: 6.0.3
   lodash: ^4.18.1
-  caniuse-lite: ^1.0.30001819
-  rollup: ^4.65.1
+  caniuse-lite: ^1.0.30001820
+  rollup: ^4.66.0
   '@babel/types': ^7.29.11
   '@babel/parser': ^7.29.11
   '@babel/traverse': ^7.29.10
@@ -879,7 +879,7 @@ importers:
         version: 3.0.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@6.0.3)
+        version: 0.23.4(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -931,7 +931,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -962,7 +962,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -996,7 +996,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1030,7 +1030,7 @@ importers:
         version: 17.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1061,7 +1061,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1104,7 +1104,7 @@ importers:
         version: 7.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1183,7 +1183,7 @@ importers:
         version: 7.4.0(@glimmer/component@2.2.1)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@6.0.3)
+        version: 0.23.4(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -1248,7 +1248,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1294,7 +1294,7 @@ importers:
         version: file:warp-drive-packages/utilities(4ded94bf05a058c4d301833388abca58)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1356,7 +1356,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1393,7 +1393,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1433,7 +1433,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1464,7 +1464,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1504,7 +1504,7 @@ importers:
         version: 7.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1538,7 +1538,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1591,7 +1591,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1628,7 +1628,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1668,7 +1668,7 @@ importers:
         version: 7.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -1705,7 +1705,7 @@ importers:
         version: 7.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -2081,7 +2081,7 @@ importers:
         version: 3.21.5(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -2127,7 +2127,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@6.0.3)
+        version: 0.23.4(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -3727,10 +3727,10 @@ importers:
         version: 10.0.1(eslint@10.13.0)
       '@nullvoxpopuli/ember-rolldown':
         specifier: 'catalog:'
-        version: 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
+        version: 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
       '@rolldown/plugin-babel':
         specifier: 'catalog:'
-        version: 0.2.4(@babel/core@7.29.7)
+        version: 0.3.0(@babel/core@7.29.7)
       '@rollup/plugin-babel':
         specifier: 'catalog:'
         version: 7.1.0(@babel/core@7.29.7)
@@ -3775,7 +3775,7 @@ importers:
         version: 17.13.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@6.0.3)
+        version: 0.23.4(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -3866,7 +3866,7 @@ importers:
         version: file:tools/internal-config(@babel/runtime@7.29.10)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -3912,7 +3912,7 @@ importers:
         version: file:tools/internal-config(@types/babel__core@7.20.5)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -3949,7 +3949,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4016,7 +4016,7 @@ importers:
         version: 7.4.0(@glimmer/component@2.2.1)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@6.0.3)
+        version: 0.23.4(typescript@6.0.3)
       typescript:
         specifier: 6.0.3
         version: 6.0.3
@@ -4053,7 +4053,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4093,7 +4093,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4139,7 +4139,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4190,7 +4190,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4221,7 +4221,7 @@ importers:
         version: file:tools/internal-config
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4289,7 +4289,7 @@ importers:
         version: file:tools/internal-config(@babel/runtime@7.29.10)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4323,7 +4323,7 @@ importers:
         version: 1.4.0
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(typescript@7.1.0-beta)
+        version: 0.23.4(typescript@7.1.0-beta)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
@@ -4360,13 +4360,13 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       tsdown:
         specifier: 'catalog:'
-        version: 0.23.2(8e20a34047d812aa4b42b4fc0d48593a)
+        version: 0.23.4(8e20a34047d812aa4b42b4fc0d48593a)
       typescript-7:
         specifier: 'catalog:'
         version: typescript@7.1.0-beta
       unplugin-vue:
         specifier: 'catalog:'
-        version: 8.0.0(vue@3.5.44(typescript@7.1.0-beta))
+        version: 8.0.1(vue@3.5.44(typescript@7.1.0-beta))
       vue:
         specifier: 'catalog:'
         version: 3.5.44(typescript@7.1.0-beta)
@@ -5263,7 +5263,7 @@ packages:
     engines: {node: 12.* || 14.* || >= 16}
     hasBin: true
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -6567,8 +6567,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@rolldown/plugin-babel@0.2.4':
-    resolution: {integrity: sha512-ygmm2j/mN+aCvstHo0x3IOu4uc6LqXT9SJ3q4kpfG/+Yhfz0B+E47FITcC0FljZADwUFARP6E2kiE+Lc26D8wg==}
+  '@rolldown/plugin-babel@0.3.0':
+    resolution: {integrity: sha512-cB9Z6aqn7i8Zflv1D4tyIy/wvnWt+QVUPX2e3Jxq/4fvdX+Xk2gQyNN2sfYscfLIZN1LCQbCl4olpf9Ki+U1zw==}
     engines: {node: '>=22.12.0 || ^24.0.0'}
     peerDependencies:
       '@babel/core': ^7.29.0 || ^8.0.0-rc.1
@@ -6593,7 +6593,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
       '@types/babel__core': ^7.1.9
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       '@types/babel__core':
         optional: true
@@ -6606,7 +6606,7 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0
       '@types/babel__core': ^7.1.9
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       '@types/babel__core':
         optional: true
@@ -6617,7 +6617,7 @@ packages:
     resolution: {integrity: sha512-lUYM3UBGuM93CnMPG1YocWu7X802BrNF3jW2zny5gQyLQgRFJhV1Sq0Zi74+dh/6NBx1DxFC4b4GXg9wUCG5Qg==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -6626,7 +6626,7 @@ packages:
     resolution: {integrity: sha512-J4RZarRvQAm5IF0/LwUUg+obsm+xZhYnbMXmXROyoSE1ATJe3oXSb9L5MMppdxP2ylNSjv6zFBwKYjcKMucVfA==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -6635,7 +6635,7 @@ packages:
     resolution: {integrity: sha512-+UihHnuLnQDQ/9wog7ym+7oawCXkjTIo0WwkK7s//0mkktTN0VhYk6fGVxH+NtGzW064w5RCGgreMDxRVhHCzw==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       rollup:
         optional: true
@@ -6644,146 +6644,146 @@ packages:
     resolution: {integrity: sha512-P9ZvnfouRu4MSC+ilERaw6FmZs8zqKhpHxEs4aGDGWQAMzQGXnhvCSvoNwokfNvdt7t3Y5Y4p6gStQgezeIqug==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
     peerDependenciesMeta:
       rollup:
         optional: true
 
-  '@rollup/rollup-android-arm-eabi@4.65.1':
-    resolution: {integrity: sha512-5coxNSjqOI2J3NkVhlp3u+zGcyjnowQFsU9sg7MMz4UPXY4Dv63kFGLt7ConXz9CNq2i0yuOJZAF/2RMrgI2OA==}
+  '@rollup/rollup-android-arm-eabi@4.66.0':
+    resolution: {integrity: sha512-7y4XeoUHPecjfUDRmap8U0q6bjfLAPn7uOGT8BKyqy8uNDOjsGS8rlBhOx6sZLVwwjN6hapvGl2mW9/IS6UNww==}
     cpu: [arm]
     os: [android]
 
-  '@rollup/rollup-android-arm64@4.65.1':
-    resolution: {integrity: sha512-K0HFf6XMB3IYs+jDZ1/RRhZaVOwxNXrl0n4MDEyGDjuK7+B6K/nDJp8DCBitO3S1sK/fzNxAf9QZAny4AIUPtg==}
+  '@rollup/rollup-android-arm64@4.66.0':
+    resolution: {integrity: sha512-e8WugYZXpgqrlMXLCudYVRAxAcK7AIY36JxRDwFRD38L9q62G1VsEUW6ijXxzjxYjNB8i1zo3B/ycIQ/qjLC/Q==}
     cpu: [arm64]
     os: [android]
 
-  '@rollup/rollup-darwin-arm64@4.65.1':
-    resolution: {integrity: sha512-zkZrXYwNlIcSUmcwY2DpsaDHr0XjVUeQHCuSunG3eQD7/5Wn/DvI7OMUE8NRRweK87yG8ebJ1xGOzmwpMsbZQA==}
+  '@rollup/rollup-darwin-arm64@4.66.0':
+    resolution: {integrity: sha512-6vkDCfyDjNLokh+Rt1D2KtNgFFMEPdkWha/mbtP4cSjh9xiN8T/JBS/A7nDYKjmMAXHrvR9J3AzUk2LtFbIBLg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@rollup/rollup-darwin-x64@4.65.1':
-    resolution: {integrity: sha512-Zaed+R3cpkkA3aiNd7NO0GV5KFh/LVf8j6bGcoRdpoXkSm/mWH8M0oX2/3u/nyGcx/bHEovD9CzX+w9/gcpI4A==}
+  '@rollup/rollup-darwin-x64@4.66.0':
+    resolution: {integrity: sha512-/mzZAX0+Q6eXxvkR0HB0RZCCrsbmFD8DpsvCQoMYABDfq/DjqkbfytuJ7GvZ4AhR/Mgis2fXbZrGqfbcK2Z5fA==}
     cpu: [x64]
     os: [darwin]
 
-  '@rollup/rollup-freebsd-arm64@4.65.1':
-    resolution: {integrity: sha512-h12p3WJWhyJ9kir0zqAPr0rKNmBzOWIjoaOMT9OULs9KZQZCeOMKd+mGSvERjd9VxJYShd3zIxtrVxkYz6BEVA==}
+  '@rollup/rollup-freebsd-arm64@4.66.0':
+    resolution: {integrity: sha512-JQJx9E8tUjGqed1RevDmoHaS3V30ODdV8uyvGxlwd4K5se6bkPrMeltSybqAtpJ+ltDRfo7FORQaJG2Hd5nGog==}
     cpu: [arm64]
     os: [freebsd]
 
-  '@rollup/rollup-freebsd-x64@4.65.1':
-    resolution: {integrity: sha512-yRBwh/5imKY4DydDulVtrjy8Jf7h7NQJUqZbgmZ3zFsCD9QqlnWvZ7RtEF+ecO1b+IukKjXlu5Bb9fehV3tIbg==}
+  '@rollup/rollup-freebsd-x64@4.66.0':
+    resolution: {integrity: sha512-GEaUQQjMaG7X1304qMgqLjzCKv6CdDirzJSS+UqUs3xhJ9X2Kjzu0JDbLoUU42FWxwmZqz+SsgU1SlQv9GNRVA==}
     cpu: [x64]
     os: [freebsd]
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.65.1':
-    resolution: {integrity: sha512-1XuPiWYYaLE1UDOqhbKVOfsqxvfmFS/lYPSk92U1hEX1qRfSYH0hNeAlbxFIgjp4d6+YQmL95EPRgdvjbZEddA==}
+  '@rollup/rollup-linux-arm-gnueabihf@4.66.0':
+    resolution: {integrity: sha512-DgmAU9N0NhDQDzHgFUocDio7zRO8jR/nY/obDGvCR8zbJ6J77Fg6X49yPuExJUpYPbC82EOaRhG969pWzUSnHQ==}
     cpu: [arm]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-arm-musleabihf@4.65.1':
-    resolution: {integrity: sha512-Y3C5e55Yrf6p2r5rBcc4P9hFWVNi6oqWy/53I/AyCJJGlp3KRSpTP8eoUmVntchTbEnhgBgAgLO9flj9AvOdUw==}
+  '@rollup/rollup-linux-arm-musleabihf@4.66.0':
+    resolution: {integrity: sha512-zG09YZ+sk/HoHq+P9gYB0EseQ3M20RbDuKGWey6fbiMDV1LxfXvhgSW9jDaCcvFPMgfLXpimzXY+UYvA8R2mLQ==}
     cpu: [arm]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-linux-arm64-gnu@4.65.1':
-    resolution: {integrity: sha512-Itj6coSswkYPIcVLczObXmwdplHNQQxyfnK1ppBg4czDaX8RiEzLKqU7EMc64BiBuiDZEUS+M93ktM18rv5llw==}
+  '@rollup/rollup-linux-arm64-gnu@4.66.0':
+    resolution: {integrity: sha512-vlArhgyXbcVc1D4WZPoiYuqJIaMiSHBj6etRXua0KlfjlZeuiQyVAPYi0/N49O4mSp3u1iGUBLEjNa8ec81XZg==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-arm64-musl@4.65.1':
-    resolution: {integrity: sha512-KeO8jTEqdrnhvcahufbimyMoI44vedRUp1bVz2QUnRX2vDm/hxzCPt5F8fERVD5fsHyTW/vXmCElT054VOSVOA==}
+  '@rollup/rollup-linux-arm64-musl@4.66.0':
+    resolution: {integrity: sha512-RxJZtk0G87YPotDaRDvRqStV8cbqLSC5TroHvQHHKsqBg0ok64RxKgtXeFsa7FBcy7mb4crBrG3xK8USWIqWNA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-linux-loong64-gnu@4.65.1':
-    resolution: {integrity: sha512-dDOz5VZZ+ZGnglpmET6VJefamWXFsgaVtuhSClf2/URZBp048jprD6z1hddsIMN6n1w+oUzGZEBp9u6Mlszsfg==}
+  '@rollup/rollup-linux-loong64-gnu@4.66.0':
+    resolution: {integrity: sha512-qlGcw959PrLLkZhiBxF3OZ6SQvj+OKY85mCqGNgSRs4LZlDJ6ICqmz6UdxtINdhcXYwNIbZoapQVBAmZlD2hUQ==}
     cpu: [loong64]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-loong64-musl@4.65.1':
-    resolution: {integrity: sha512-JbfRKz8nJCuo8gn1Dqx8lQWEHw4qhZ3uRaHphw5vrSjnSptJTKTRC/bLKHh8QQMsEnhL4uq+bdg3tkiXbJ2q/A==}
+  '@rollup/rollup-linux-loong64-musl@4.66.0':
+    resolution: {integrity: sha512-TvTI/7Cy0WvRA1SXgwzu6bwXBnMpmeT/ln5q7WvSpqmXy1VbmEnY8HVIDQNBiaHJvoWqRr0M4FNo7qiqtyMaFw==}
     cpu: [loong64]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-linux-ppc64-gnu@4.65.1':
-    resolution: {integrity: sha512-3oQpe1q0emSeCAssVHMQdOz5fz3PBH5my/Fr0ZekV2UMNL4ZiRa1ciikYlGQXyDkeqseYYv1InwOY8YPqY7RIQ==}
+  '@rollup/rollup-linux-ppc64-gnu@4.66.0':
+    resolution: {integrity: sha512-UZEDkSoDRZ50NyLj70nO6mpIK3dvs2cPTTvQb1bA/PBDmr9fvn5KiESuGfh6srd7Zi6Lt9Sv2sVrFr1QoHLvPQ==}
     cpu: [ppc64]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-ppc64-musl@4.65.1':
-    resolution: {integrity: sha512-nNV3HHi23o1LtpGGwH+Bav4hqnc4+klQtC96tSvCfvql8bLlNFTnTFiGl/jai2nve3eEr/vT2ocuyf+h+eMnYQ==}
+  '@rollup/rollup-linux-ppc64-musl@4.66.0':
+    resolution: {integrity: sha512-VRbxTvagLh3HRcysx1CNq+HHcvJbSebNI6fCbk7jwmmWHkXjrSIV3igXBpRHUTFdg0pagWGu50xoSZXnrZHjVQ==}
     cpu: [ppc64]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-linux-riscv64-gnu@4.65.1':
-    resolution: {integrity: sha512-b5zab0FryBxuocuDeqOsYGAg2EzjKw4mKA6LjQXCyewXjGv/BXqACBsY2cO45xM4hV2weYtdjGThP2VB2ByAYg==}
+  '@rollup/rollup-linux-riscv64-gnu@4.66.0':
+    resolution: {integrity: sha512-uWdJpvYqh0LE/i+YBL3sMX0a2kUkICENjmrPmyBmMOFc3jMrs6MSQH/pMD+VIpGEoUcr3XkHGLLfymzIqPSRRg==}
     cpu: [riscv64]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-riscv64-musl@4.65.1':
-    resolution: {integrity: sha512-Rh08xZakiUxKNgI3hbgH9mivlx478lSqckS9s+Oc3/TX1VrAH3W8z/5wpJXR/v5VjqcJ/jJNVBg64PU1+iQsTQ==}
+  '@rollup/rollup-linux-riscv64-musl@4.66.0':
+    resolution: {integrity: sha512-3FUd88pxgWAjK60OgCrika1AcNG+u8zaCdWjg4TlcZTDkt5TGyci8ZU64l3OJ9ax0MEjw3P80B/3PoSQDCLwJQ==}
     cpu: [riscv64]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-linux-s390x-gnu@4.65.1':
-    resolution: {integrity: sha512-qDgtS6juN3/k97y4kcD6XLFpXEo4f6CnG8lTOGYwlhrUYTrMyhN0WHdZCPAW5rqS0MqQG7qI7dxnjugt6QB39Q==}
+  '@rollup/rollup-linux-s390x-gnu@4.66.0':
+    resolution: {integrity: sha512-qT2rMmgyej62g5AdwktK+Bt2lBu497pzWZe12TTQ5JmZjOYPnEwcPEAOSLTBxBV+6gIES75rXm219v/QkT397A==}
     cpu: [s390x]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-x64-gnu@4.65.1':
-    resolution: {integrity: sha512-44IKzBPqXXVm0kt1O+F5eW4juR5FyIxGNlFkpP8qwIDzucBsjM1HCbdYUQrQw8rU/g6HRl/tfBm0+Qq4H4Ro3w==}
+  '@rollup/rollup-linux-x64-gnu@4.66.0':
+    resolution: {integrity: sha512-E46rnZgp7J84Qwe8RMlF+rgimnDo/9fuiGbUArGB0ZkMWf97O7yeSCfKls5x/YJOF0RcuSe9RctuKe1hlxICiA==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@rollup/rollup-linux-x64-musl@4.65.1':
-    resolution: {integrity: sha512-tvYWZ/h2PCHs558Xu7B6LptuRCV8lXV2xI75ONMcldII1m2zlFwuI4BJZi9M6rSMkYqcPLLtPUPrjyqfbzLOdg==}
+  '@rollup/rollup-linux-x64-musl@4.66.0':
+    resolution: {integrity: sha512-Uz1HiZe+qBzqgdPsON+z0wRx3WdATuyzwvGT6cr2VZVrqqko0ZJVfkrQJtwDMuDcAfXYdo7XucaxJ7lTLjEcgg==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@rollup/rollup-openbsd-x64@4.65.1':
-    resolution: {integrity: sha512-gdyeucgZCnei3pXwadKVTEAOgRx0B+c847DUPR/PdOMmp3olhfkYo6r0J4PzRFZB5ZICZQTxntyvgmWH5xT7rg==}
+  '@rollup/rollup-openbsd-x64@4.66.0':
+    resolution: {integrity: sha512-Ph7TX3Ex5qdfcb7Tc6eEPugVkRfJ501eTovO4T5029YObfpZ7dzn3RiwpFvGp50nk2QUhvBMZ0PFGlEj6pOYTg==}
     cpu: [x64]
     os: [openbsd]
 
-  '@rollup/rollup-openharmony-arm64@4.65.1':
-    resolution: {integrity: sha512-Wf/NEKdn2SAL4Nvt8HyDtdkseWTwiLbZEOoNYnEaHkbso0B9eHO42vKnZh+OYsn+IMhAMcWcuIwPlBOgOXsUzg==}
+  '@rollup/rollup-openharmony-arm64@4.66.0':
+    resolution: {integrity: sha512-nZYPEya7ZkeNxUEiF7qmNZbyLTyRN3MK5cO22KqsaoneUzXJuzBIQRw+7BEQy9LGj2O5vrCE9V3EpK06FYo1tQ==}
     cpu: [arm64]
     os: [openharmony]
 
-  '@rollup/rollup-win32-arm64-msvc@4.65.1':
-    resolution: {integrity: sha512-x9VSsDmsMsEWy4cr/mFeaEsXnVJ6Kc4NCAU/lCnwml3s7LQbZoa9+/qwc9etWHbuuDT5mYxdyyKUwo76njtjZw==}
+  '@rollup/rollup-win32-arm64-msvc@4.66.0':
+    resolution: {integrity: sha512-u7aTfS3R6C4hRsqXSzaO6qLZYLVuMkHMvcWlux4IM8IJif1VCl2cgPBSo5gSNoFoStQypQP+qwq8W1IyFBf1QQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@rollup/rollup-win32-ia32-msvc@4.65.1':
-    resolution: {integrity: sha512-RIDbiVvvLkN45mOFpbo6eYMgnuiBEB62BGR/0s4QJgGg2AvVxucDDNn67kpAcUoYyfmY8iX8/RifMcmxmmnejA==}
+  '@rollup/rollup-win32-ia32-msvc@4.66.0':
+    resolution: {integrity: sha512-e+i9ueHrH1Bafb0cf0woAIVJbYcoC8vRaD+vz+Xi8w6jz9cYJSV3vyKO6ELGSZ6g4W4MJOm2WPLN4/nQf77h7w==}
     cpu: [ia32]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-gnu@4.65.1':
-    resolution: {integrity: sha512-+KN8HIr88vN59JNxlrM2fMimzY43Y0lQB7+0xdVsFbvFCAA74CLKCdfzIHzzvndJryBc94Pm+MvwtukKjaS2ug==}
+  '@rollup/rollup-win32-x64-gnu@4.66.0':
+    resolution: {integrity: sha512-KfTCbrtr2zXTqH2E1F+uYlFTrYibxHKqPAHobpd8Kfg49cEHmuHebOidCTDRgqG1suaPFX7oejFQeGE71zWKfA==}
     cpu: [x64]
     os: [win32]
 
-  '@rollup/rollup-win32-x64-msvc@4.65.1':
-    resolution: {integrity: sha512-+Y1Sd49cSDq60UOl8/U2HI0ebUvnSl/hDhMHQn+ouw17yb8fYwMWIazzJ4JFpSkjPE7sj5NTNSX9IoyEqcFfyQ==}
+  '@rollup/rollup-win32-x64-msvc@4.66.0':
+    resolution: {integrity: sha512-xA+neBh1bqkqaS3b48T2UHZnDsTIpb9B0h+TdBzynjF/ymCpYndhfY10RqW0qSKB1HqqQA83mINVhAdwA+mETg==}
     cpu: [x64]
     os: [win32]
 
@@ -7977,6 +7977,10 @@ packages:
   array-timsort@1.0.3:
     resolution: {integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==}
 
+  artichokie@0.4.5:
+    resolution: {integrity: sha512-ma9643oYgSgA6CeDvKIU0zxL1eKOkbgH8/v83xFpFYB2VOPFoEmmg1iC+ooHFjLIJ3qdtfwPbEKpIW3/YxPovg==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+
   as-table@1.0.55:
     resolution: {integrity: sha512-xvsWESUJn0JN421Xb9MQw6AsMHRCUknCe0Wjlxvjud80mU4E6hQf1A6NzQKcYNmYw62MfzEtXc+badstZP3JpQ==}
 
@@ -8216,8 +8220,8 @@ packages:
     resolution: {integrity: sha512-eOgiEWqjppB+3DN/5E82EQ8dTINus8d9GXMCbEsUnp2hcUIcXmBvzWmD3tXMk3CuBK0v+ddK9qw0EAF+JVRMjQ==}
     engines: {node: '>=10.13'}
 
-  caniuse-lite@1.0.30001819:
-    resolution: {integrity: sha512-LFUqIIAwpzsIuevnKnsR9qnStBcgzPShTX61lBwN9uFkkf8o8zLiebEjbW8AYtZiF+1YKDWfdt/pWDtMuG8Xwg==}
+  caniuse-lite@1.0.30001820:
+    resolution: {integrity: sha512-gfWD6MxqVCqAOwmODfZf7DchWvlrA+SRdNX7ceLfg3xRqe5ssjjpF7EgslC/0tiLiNTajdaNN/q8c/5u/7Gz8w==}
 
   cardinal@1.0.0:
     resolution: {integrity: sha512-INsuF4GyiFLk8C91FPokbKTc/rwHqV4JnfatVZ6GPhguP1qmkRWX2dp5tepYboYdPpGWisLVLI+KsXoXFPRSMg==}
@@ -11119,16 +11123,19 @@ packages:
   robust-predicates@3.0.3:
     resolution: {integrity: sha512-NS3levdsRIUOmiJ8FZWCP7LG3QpJyrs/TE0Zpf1yvZu8cAJJ6QMW92H1c7kWpdIHo8RvmLxN/o2JXTKHp74lUA==}
 
-  rolldown-plugin-dts@0.29.0-beta.2:
-    resolution: {integrity: sha512-0NT4q7HMRIpQv47+SfZB5IhEWJh0gp2rDEZPu2ry+LeJFb9tlMB08Sy+sl1+cqcCXnHpkd9dvBy3rZDCBF1JIg==}
+  rolldown-plugin-dts@0.28.8:
+    resolution: {integrity: sha512-FVhfqxorCWcc20BVT5eVRfRjzLLl6mgzjcMR4gSBf0K4oQMXT0qoHhhzfXy0L7y83fQy7Ug5ZDNk90xM3/LiCQ==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     peerDependencies:
+      '@typescript/native-preview': '*'
       '@volar/typescript': ~2.4.0
       '@vue/language-core': ~3.2.0 || ~3.3.0
       rolldown: ^1.2.0
       typescript: 6.0.3
       vue-tsc: ~3.2.0 || ~3.3.0
     peerDependenciesMeta:
+      '@typescript/native-preview':
+        optional: true
       '@volar/typescript':
         optional: true
       '@vue/language-core':
@@ -11146,10 +11153,10 @@ packages:
   rollup-plugin-copy-assets@2.0.3:
     resolution: {integrity: sha512-ETShhQGb9SoiwcNrvb3BhUNSGR89Jao0+XxxfzzLW1YsUzx8+rMO4z9oqWWmo6OHUmfNQRvqRj0cAyPkS9lN9w==}
     peerDependencies:
-      rollup: ^4.65.1
+      rollup: ^4.66.0
 
-  rollup@4.65.1:
-    resolution: {integrity: sha512-HzD4IdphaPMvuAacnL/vtoq5B8FwqewKvxTtqYibWvP6VDyZ+UsTtlw5F8HIOIIpLQAkN2NOP/0sM3puo9xN/A==}
+  rollup@4.66.0:
+    resolution: {integrity: sha512-Onq6/qO4ARhxIs+jYiHE0pYehadLyMECAiGEqQ+0/aWND3+2PmifJIIqBLYtuBODqHTlOUEQFtIVPyCy0Lck7A==}
     engines: {node: '>=18.0.0', npm: '>=8.0.0'}
     hasBin: true
 
@@ -11607,6 +11614,9 @@ packages:
     resolution: {integrity: sha512-jBrmx4lYmaC9k/mgPbylxs7kBUxHtD8256up+HjLaDFfXScKJQyil+SWXSvhAtT7XHo+yTVlpB81PGmHP8oLSQ==}
     engines: {node: ^20.0.0 || >=22.0.0}
 
+  tinyps@0.5.1:
+    resolution: {integrity: sha512-B6Ykif5HflC3AdDkS4Zst/2muYVfeXoVMy+KorqH80s/1x4vunIORpNySH681X7fjj+dFM9MDKD6/Hsccjb87Q==}
+
   tldts-core@6.1.86:
     resolution: {integrity: sha512-Je6p7pkk+KMzMv2XXKmAE3McmolOQFdxkKw0R8EYNr7sELW46JqnNeTX8ybPiQgvg1ymCoF8LXs5fzFaZvJPTA==}
 
@@ -11654,10 +11664,6 @@ packages:
     resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
-  tree-kill@1.2.2:
-    resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
-    hasBin: true
-
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
 
@@ -11681,14 +11687,14 @@ packages:
     resolution: {integrity: sha512-JfJeIHke7y2egdGGgRAvpCwYFUsHlM2gPcrVOxFkznt/4uzQ7HFmvE63iFHVLBJNDuyDOQgijDK/tXH/f6Msjg==}
     engines: {node: '>=6.10'}
 
-  tsdown@0.23.2:
-    resolution: {integrity: sha512-om1OoDykFlv07uM98WAX3ZNmu02FBmHqZYLW1hm+IMktb92r7VMNKgQ/G8dknECI1Q2huPrFJ+sggdYk8efsQg==}
+  tsdown@0.23.4:
+    resolution: {integrity: sha512-AQQ/2Y7KBnf15GL4Ynjdltc94PkbKRI+arStyrp7inSQkRmTWNiXgfv50ESsjhBEsoVtiSloCAO2VyrqojWIOQ==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     hasBin: true
     peerDependencies:
       '@arethetypeswrong/core': ^0.18.1
-      '@tsdown/css': 0.23.2
-      '@tsdown/exe': 0.23.2
+      '@tsdown/css': 0.23.4
+      '@tsdown/exe': 0.23.4
       '@vitejs/devtools': '*'
       publint: ^0.3.8
       tsx: '*'
@@ -11892,14 +11898,14 @@ packages:
     resolution: {integrity: sha512-pjy2bYhSsufwWlKwPc+l3cN7+wuJlK6uz0YdJEOlQDbl6jo/YlPi4mb8agUkVC8BF7V8NuzeyPNqRksA3hztKQ==}
     engines: {node: '>= 0.8'}
 
-  unplugin-vue@8.0.0:
-    resolution: {integrity: sha512-D6TI8IhakUduwNb31+yLfqRAkEYb3yhlwy6DODzO4BLAxvGeefQ070oy1RQ6zmuoZwH4CnqW1jLOXzu3Zjajig==}
+  unplugin-vue@8.0.1:
+    resolution: {integrity: sha512-STAbBUUxGJPX3+nWODheE4TCA5pEsOoZoxTpvxd6Kskk/a4tS60xoBD2i5qW+BQokdhbJiU2vTA+SYr1Kxrxug==}
     engines: {node: ^22.18.0 || ^24.11.0 || >=26.0.0}
     peerDependencies:
       vue: ^3.2.25
 
-  unplugin@3.4.0:
-    resolution: {integrity: sha512-9skdIFlCsPdFV7wUfZxNsFInlW+7nJmGu2gkTu0OUhF56aXGsHab9x52/QhdJ4lC7ZDPWTxbiC4ANqVlsuaW3w==}
+  unplugin@3.7.0:
+    resolution: {integrity: sha512-GrM2uq3DQo3hvLU2FjeYhooJ8BY9N6j1Fbzgx7Pta3VVJevsD3VP4dPjZkZOS0mLvN8w9zzr9OlP+31bSMyuLw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     peerDependencies:
       '@farmfe/core': '*'
@@ -11908,7 +11914,7 @@ packages:
       bun-types-no-globals: '*'
       esbuild: '*'
       rolldown: '*'
-      rollup: ^4.65.1
+      rollup: ^4.66.0
       unloader: '*'
       vite: '*'
       webpack: '*'
@@ -14764,31 +14770,7 @@ snapshots:
       - rollup
       - supports-color
 
-  '@nullvoxpopuli/ember-rolldown@2.12.0(0a6d9d2bc453121957337d19c36203dd)':
-    dependencies:
-      '@babel/core': 7.29.7
-      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
-      '@embroider/core': 4.6.10
-      '@jridgewell/remapping': 2.3.5
-      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0(@types/babel__core@7.20.5)
-      babel-plugin-ember-template-compilation: 4.0.1
-      content-tag: 4.2.1
-      decorator-transforms: 2.4.0(@babel/core@7.29.7)
-      get-tsconfig: 4.14.3
-      magic-string: 1.4.3
-    optionalDependencies:
-      tsdown: 0.23.2(typescript@6.0.3)
-      typescript: 6.0.3
-    transitivePeerDependencies:
-      - '@glint/template'
-      - '@types/babel__core'
-      - bufferutil
-      - canvas
-      - rollup
-      - supports-color
-      - utf-8-validate
-
-  '@nullvoxpopuli/ember-rolldown@2.12.0(4287233038f1e67008c4cecf9692e0c0)':
+  '@nullvoxpopuli/ember-rolldown@2.12.0(214e06c08fbb2936d5b7afa39f371fe1)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
@@ -14801,7 +14783,7 @@ snapshots:
       get-tsconfig: 4.14.3
       magic-string: 1.4.3
     optionalDependencies:
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@glint/template'
@@ -14812,7 +14794,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.12.0(d9076b19b6ab90d3b6dfef2502575ac4)':
+  '@nullvoxpopuli/ember-rolldown@2.12.0(b2395526ad504577b7ef67820f3ffbd8)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
@@ -14825,7 +14807,7 @@ snapshots:
       get-tsconfig: 4.14.3
       magic-string: 1.4.3
     optionalDependencies:
-      tsdown: 0.23.2(8f77be21d97b556d64ef0473985e1052)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@glint/template'
@@ -14836,7 +14818,31 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  '@nullvoxpopuli/ember-rolldown@2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)':
+  '@nullvoxpopuli/ember-rolldown@2.12.0(bb6636ad37a48be2fcd452a7f114f733)':
+    dependencies:
+      '@babel/core': 7.29.7
+      '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
+      '@embroider/core': 4.6.10
+      '@jridgewell/remapping': 2.3.5
+      '@nullvoxpopuli/ember-build-tooling-utils': 1.2.0(@types/babel__core@7.20.5)
+      babel-plugin-ember-template-compilation: 4.0.1
+      content-tag: 4.2.1
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+      get-tsconfig: 4.14.3
+      magic-string: 1.4.3
+    optionalDependencies:
+      tsdown: 0.23.4(typescript@6.0.3)
+      typescript: 6.0.3
+    transitivePeerDependencies:
+      - '@glint/template'
+      - '@types/babel__core'
+      - bufferutil
+      - canvas
+      - rollup
+      - supports-color
+      - utf-8-validate
+
+  '@nullvoxpopuli/ember-rolldown@2.12.0(e94c27f5e7e6e9ca439fcd788b1b198e)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-typescript': 7.29.9(@babel/core@7.29.7)
@@ -14849,7 +14855,7 @@ snapshots:
       get-tsconfig: 4.14.3
       magic-string: 1.4.3
     optionalDependencies:
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(8f77be21d97b556d64ef0473985e1052)
       typescript: 6.0.3
     transitivePeerDependencies:
       - '@glint/template'
@@ -15359,61 +15365,69 @@ snapshots:
   '@rolldown/binding-win32-x64-msvc@1.2.15':
     optional: true
 
-  '@rolldown/plugin-babel@0.2.4(52d577de2ecda63b3344b849a709de86)':
+  '@rolldown/plugin-babel@0.3.0(52d577de2ecda63b3344b849a709de86)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       vite: 8.3.5(@types/node@26.6.5)
 
-  '@rolldown/plugin-babel@0.2.4(5cda69b02263ee77174d308b7ecfb32b)':
+  '@rolldown/plugin-babel@0.3.0(5cda69b02263ee77174d308b7ecfb32b)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       '@babel/runtime': 7.29.10
 
-  '@rolldown/plugin-babel@0.2.4(5e5195da7898ba9390dda13c54610b8d)':
+  '@rolldown/plugin-babel@0.3.0(5e5195da7898ba9390dda13c54610b8d)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       '@babel/plugin-transform-runtime': 7.29.7(@babel/core@7.29.7)
       '@babel/runtime': 7.29.10
       vite: 8.3.5(@types/node@26.6.5)(terser@5.51.2)
 
-  '@rolldown/plugin-babel@0.2.4(8b4d84db389c6b09572d07a0f3bc4b96)':
+  '@rolldown/plugin-babel@0.3.0(8b4d84db389c6b09572d07a0f3bc4b96)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       '@babel/runtime': 7.29.10
       vite: 8.3.5(terser@5.51.2)
 
-  '@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7)':
+  '@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
 
-  '@rolldown/plugin-babel@0.2.4(@babel/core@7.29.7)(vite@8.3.5)':
+  '@rolldown/plugin-babel@0.3.0(@babel/core@7.29.7)(vite@8.3.5)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       vite: 8.3.5
 
-  '@rolldown/plugin-babel@0.2.4(b4e20fb33f2f8f34f83bf1c4c83c6ef5)':
+  '@rolldown/plugin-babel@0.3.0(b4e20fb33f2f8f34f83bf1c4c83c6ef5)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       '@babel/plugin-transform-runtime': 7.29.7(@babel/core@7.29.7)
       '@babel/runtime': 7.29.10
       vite: 8.3.5
 
-  '@rolldown/plugin-babel@0.2.4(e2e1752c7f8b6a9a10218522666356d1)':
+  '@rolldown/plugin-babel@0.3.0(e2e1752c7f8b6a9a10218522666356d1)':
     dependencies:
       '@babel/core': 7.29.7
+      artichokie: 0.4.5
       picomatch: 4.0.7
     optionalDependencies:
       '@babel/runtime': 7.29.10
@@ -15421,13 +15435,13 @@ snapshots:
 
   '@rolldown/pluginutils@1.0.1': {}
 
-  '@rollup/plugin-babel@6.1.0(@babel/core@7.29.7)(rollup@4.65.1)':
+  '@rollup/plugin-babel@6.1.0(@babel/core@7.29.7)(rollup@4.66.0)':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/helper-module-imports': 7.29.7
-      '@rollup/pluginutils': 5.5.1(rollup@4.65.1)
+      '@rollup/pluginutils': 5.5.1(rollup@4.66.0)
     optionalDependencies:
-      rollup: 4.65.1
+      rollup: 4.66.0
     transitivePeerDependencies:
       - supports-color
 
@@ -15451,30 +15465,30 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@rollup/plugin-node-resolve@16.0.3(rollup@4.65.1)':
+  '@rollup/plugin-node-resolve@16.0.3(rollup@4.66.0)':
     dependencies:
-      '@rollup/pluginutils': 5.5.1(rollup@4.65.1)
+      '@rollup/pluginutils': 5.5.1(rollup@4.66.0)
       '@types/resolve': 1.20.2
       deepmerge: 4.3.1
       is-module: 1.0.0
       resolve: 1.22.13
     optionalDependencies:
-      rollup: 4.65.1
+      rollup: 4.66.0
 
-  '@rollup/plugin-replace@6.0.3(rollup@4.65.1)':
+  '@rollup/plugin-replace@6.0.3(rollup@4.66.0)':
     dependencies:
-      '@rollup/pluginutils': 5.5.1(rollup@4.65.1)
+      '@rollup/pluginutils': 5.5.1(rollup@4.66.0)
       magic-string: 0.30.21
     optionalDependencies:
-      rollup: 4.65.1
+      rollup: 4.66.0
 
-  '@rollup/plugin-terser@1.0.2(rollup@4.65.1)':
+  '@rollup/plugin-terser@1.0.2(rollup@4.66.0)':
     dependencies:
       serialize-javascript: 7.1.4
       smob: 1.6.2
       terser: 5.51.2
     optionalDependencies:
-      rollup: 4.65.1
+      rollup: 4.66.0
 
   '@rollup/pluginutils@5.5.1':
     dependencies:
@@ -15482,87 +15496,87 @@ snapshots:
       estree-walker: 2.0.2
       picomatch: 4.0.7
 
-  '@rollup/pluginutils@5.5.1(rollup@4.65.1)':
+  '@rollup/pluginutils@5.5.1(rollup@4.66.0)':
     dependencies:
       '@types/estree': 1.0.9
       estree-walker: 2.0.2
       picomatch: 4.0.7
     optionalDependencies:
-      rollup: 4.65.1
+      rollup: 4.66.0
 
-  '@rollup/rollup-android-arm-eabi@4.65.1':
+  '@rollup/rollup-android-arm-eabi@4.66.0':
     optional: true
 
-  '@rollup/rollup-android-arm64@4.65.1':
+  '@rollup/rollup-android-arm64@4.66.0':
     optional: true
 
-  '@rollup/rollup-darwin-arm64@4.65.1':
+  '@rollup/rollup-darwin-arm64@4.66.0':
     optional: true
 
-  '@rollup/rollup-darwin-x64@4.65.1':
+  '@rollup/rollup-darwin-x64@4.66.0':
     optional: true
 
-  '@rollup/rollup-freebsd-arm64@4.65.1':
+  '@rollup/rollup-freebsd-arm64@4.66.0':
     optional: true
 
-  '@rollup/rollup-freebsd-x64@4.65.1':
+  '@rollup/rollup-freebsd-x64@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-gnueabihf@4.65.1':
+  '@rollup/rollup-linux-arm-gnueabihf@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-arm-musleabihf@4.65.1':
+  '@rollup/rollup-linux-arm-musleabihf@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-gnu@4.65.1':
+  '@rollup/rollup-linux-arm64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-arm64-musl@4.65.1':
+  '@rollup/rollup-linux-arm64-musl@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-loong64-gnu@4.65.1':
+  '@rollup/rollup-linux-loong64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-loong64-musl@4.65.1':
+  '@rollup/rollup-linux-loong64-musl@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-ppc64-gnu@4.65.1':
+  '@rollup/rollup-linux-ppc64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-ppc64-musl@4.65.1':
+  '@rollup/rollup-linux-ppc64-musl@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-gnu@4.65.1':
+  '@rollup/rollup-linux-riscv64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-riscv64-musl@4.65.1':
+  '@rollup/rollup-linux-riscv64-musl@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-s390x-gnu@4.65.1':
+  '@rollup/rollup-linux-s390x-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-gnu@4.65.1':
+  '@rollup/rollup-linux-x64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-linux-x64-musl@4.65.1':
+  '@rollup/rollup-linux-x64-musl@4.66.0':
     optional: true
 
-  '@rollup/rollup-openbsd-x64@4.65.1':
+  '@rollup/rollup-openbsd-x64@4.66.0':
     optional: true
 
-  '@rollup/rollup-openharmony-arm64@4.65.1':
+  '@rollup/rollup-openharmony-arm64@4.66.0':
     optional: true
 
-  '@rollup/rollup-win32-arm64-msvc@4.65.1':
+  '@rollup/rollup-win32-arm64-msvc@4.66.0':
     optional: true
 
-  '@rollup/rollup-win32-ia32-msvc@4.65.1':
+  '@rollup/rollup-win32-ia32-msvc@4.66.0':
     optional: true
 
-  '@rollup/rollup-win32-x64-gnu@4.65.1':
+  '@rollup/rollup-win32-x64-gnu@4.66.0':
     optional: true
 
-  '@rollup/rollup-win32-x64-msvc@4.65.1':
+  '@rollup/rollup-win32-x64-msvc@4.66.0':
     optional: true
 
   '@sec-ant/readable-stream@0.4.1': {}
@@ -16800,8 +16814,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -16816,7 +16830,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -16828,6 +16842,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -16853,8 +16868,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(d9076b19b6ab90d3b6dfef2502575ac4)
-      '@rolldown/plugin-babel': 0.2.4(e2e1752c7f8b6a9a10218522666356d1)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(e94c27f5e7e6e9ca439fcd788b1b198e)
+      '@rolldown/plugin-babel': 0.3.0(e2e1752c7f8b6a9a10218522666356d1)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -16869,7 +16884,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(8f77be21d97b556d64ef0473985e1052)
+      tsdown: 0.23.4(8f77be21d97b556d64ef0473985e1052)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -16881,6 +16896,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -16906,8 +16922,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(4287233038f1e67008c4cecf9692e0c0)
-      '@rolldown/plugin-babel': 0.2.4(5cda69b02263ee77174d308b7ecfb32b)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(214e06c08fbb2936d5b7afa39f371fe1)
+      '@rolldown/plugin-babel': 0.3.0(5cda69b02263ee77174d308b7ecfb32b)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -16922,7 +16938,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -16934,6 +16950,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -16959,8 +16976,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(5e5195da7898ba9390dda13c54610b8d)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(5e5195da7898ba9390dda13c54610b8d)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -16975,7 +16992,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -16987,6 +17004,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17012,8 +17030,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(4287233038f1e67008c4cecf9692e0c0)
-      '@rolldown/plugin-babel': 0.2.4(8b4d84db389c6b09572d07a0f3bc4b96)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(214e06c08fbb2936d5b7afa39f371fe1)
+      '@rolldown/plugin-babel': 0.3.0(8b4d84db389c6b09572d07a0f3bc4b96)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17028,7 +17046,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17040,6 +17058,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17065,8 +17084,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(4287233038f1e67008c4cecf9692e0c0)
-      '@rolldown/plugin-babel': 0.2.4(b4e20fb33f2f8f34f83bf1c4c83c6ef5)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(214e06c08fbb2936d5b7afa39f371fe1)
+      '@rolldown/plugin-babel': 0.3.0(b4e20fb33f2f8f34f83bf1c4c83c6ef5)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17081,7 +17100,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17093,6 +17112,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17118,8 +17138,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(8b4d84db389c6b09572d07a0f3bc4b96)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(8b4d84db389c6b09572d07a0f3bc4b96)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17134,7 +17154,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17146,6 +17166,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17171,8 +17192,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(d9076b19b6ab90d3b6dfef2502575ac4)
-      '@rolldown/plugin-babel': 0.2.4(5cda69b02263ee77174d308b7ecfb32b)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(e94c27f5e7e6e9ca439fcd788b1b198e)
+      '@rolldown/plugin-babel': 0.3.0(5cda69b02263ee77174d308b7ecfb32b)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17187,7 +17208,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(8f77be21d97b556d64ef0473985e1052)
+      tsdown: 0.23.4(8f77be21d97b556d64ef0473985e1052)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17199,6 +17220,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17224,8 +17246,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(5cda69b02263ee77174d308b7ecfb32b)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(5cda69b02263ee77174d308b7ecfb32b)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17240,7 +17262,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17252,6 +17274,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17277,8 +17300,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(e2e1752c7f8b6a9a10218522666356d1)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(e2e1752c7f8b6a9a10218522666356d1)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17293,7 +17316,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17305,6 +17328,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17330,8 +17354,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(0a6d9d2bc453121957337d19c36203dd)
-      '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(bb6636ad37a48be2fcd452a7f114f733)
+      '@rolldown/plugin-babel': 0.3.0(@babel/core@7.29.7)
       '@rollup/plugin-babel': 7.1.0(6ad958b0fac2ae7830d3cd04df3c1700)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17346,7 +17370,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17358,6 +17382,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17383,8 +17408,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(52d577de2ecda63b3344b849a709de86)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(52d577de2ecda63b3344b849a709de86)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17399,7 +17424,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17411,6 +17436,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17436,8 +17462,8 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/eslint-parser': 8.0.7(@babel/core@7.29.7)(eslint@10.13.0)
       '@eslint/js': 10.0.1(eslint@10.13.0)
-      '@nullvoxpopuli/ember-rolldown': 2.12.0(fa49cb3f7e8f11be8ad47d74671b320c)
-      '@rolldown/plugin-babel': 0.2.4(@babel/core@7.29.7)(vite@8.3.5)
+      '@nullvoxpopuli/ember-rolldown': 2.12.0(b2395526ad504577b7ef67820f3ffbd8)
+      '@rolldown/plugin-babel': 0.3.0(@babel/core@7.29.7)(vite@8.3.5)
       '@rollup/plugin-babel': 7.1.0(@babel/core@7.29.7)
       '@types/debug': 4.1.13
       '@typescript-eslint/eslint-plugin': 8.72.1(c52d59d5dd091ed5ffdc671785862b1a)
@@ -17452,7 +17478,7 @@ snapshots:
       eslint-plugin-n: 18.5.0(eslint@10.13.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.13.0)
       globals: 17.13.0
-      tsdown: 0.23.2(typescript@6.0.3)
+      tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.13.0)(typescript@6.0.3)
     transitivePeerDependencies:
@@ -17464,6 +17490,7 @@ snapshots:
       - '@tsdown/exe'
       - '@types/babel__core'
       - '@typescript-eslint/utils'
+      - '@typescript/native-preview'
       - '@vitejs/devtools'
       - '@volar/typescript'
       - '@vue/language-core'
@@ -17920,6 +17947,8 @@ snapshots:
 
   array-timsort@1.0.3: {}
 
+  artichokie@0.4.5: {}
+
   as-table@1.0.55:
     dependencies:
       printable-characters: 1.0.42
@@ -18169,7 +18198,7 @@ snapshots:
   browserslist@4.29.4:
     dependencies:
       baseline-browser-mapping: 2.11.32
-      caniuse-lite: 1.0.30001819
+      caniuse-lite: 1.0.30001820
       electron-to-chromium: 1.5.464
       node-releases: 2.0.60
       update-browserslist-db: 1.3.4(browserslist@4.29.4)
@@ -18235,7 +18264,7 @@ snapshots:
     dependencies:
       path-temp: 2.1.1
 
-  caniuse-lite@1.0.30001819: {}
+  caniuse-lite@1.0.30001820: {}
 
   cardinal@1.0.0:
     dependencies:
@@ -21332,7 +21361,7 @@ snapshots:
 
   robust-predicates@3.0.3: {}
 
-  rolldown-plugin-dts@0.29.0-beta.2(3167286142c7cc8e1c5cfb6fa672e8cb):
+  rolldown-plugin-dts@0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(3167286142c7cc8e1c5cfb6fa672e8cb):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21347,7 +21376,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.29.0-beta.2(8cf99bbe1b1132fc9f95df50f5a3ccb0):
+  rolldown-plugin-dts@0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(8cf99bbe1b1132fc9f95df50f5a3ccb0):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21362,7 +21391,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.29.0-beta.2(rolldown@1.2.15)(typescript@6.0.3):
+  rolldown-plugin-dts@0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(rolldown@1.2.15)(typescript@6.0.3):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21376,7 +21405,7 @@ snapshots:
     transitivePeerDependencies:
       - oxc-resolver
 
-  rolldown-plugin-dts@0.29.0-beta.2(rolldown@1.2.15)(typescript@7.1.0-beta):
+  rolldown-plugin-dts@0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(rolldown@1.2.15)(typescript@7.1.0-beta):
     dependencies:
       dts-resolver: 3.0.0
       get-tsconfig: 5.0.0-beta.6
@@ -21415,36 +21444,36 @@ snapshots:
     dependencies:
       fs-extra: 7.0.1
 
-  rollup@4.65.1:
+  rollup@4.66.0:
     dependencies:
       '@types/estree': 1.0.9
     optionalDependencies:
       '@napi-rs/lzma-linux-x64-gnu': 1.5.1
-      '@rollup/rollup-android-arm-eabi': 4.65.1
-      '@rollup/rollup-android-arm64': 4.65.1
-      '@rollup/rollup-darwin-arm64': 4.65.1
-      '@rollup/rollup-darwin-x64': 4.65.1
-      '@rollup/rollup-freebsd-arm64': 4.65.1
-      '@rollup/rollup-freebsd-x64': 4.65.1
-      '@rollup/rollup-linux-arm-gnueabihf': 4.65.1
-      '@rollup/rollup-linux-arm-musleabihf': 4.65.1
-      '@rollup/rollup-linux-arm64-gnu': 4.65.1
-      '@rollup/rollup-linux-arm64-musl': 4.65.1
-      '@rollup/rollup-linux-loong64-gnu': 4.65.1
-      '@rollup/rollup-linux-loong64-musl': 4.65.1
-      '@rollup/rollup-linux-ppc64-gnu': 4.65.1
-      '@rollup/rollup-linux-ppc64-musl': 4.65.1
-      '@rollup/rollup-linux-riscv64-gnu': 4.65.1
-      '@rollup/rollup-linux-riscv64-musl': 4.65.1
-      '@rollup/rollup-linux-s390x-gnu': 4.65.1
-      '@rollup/rollup-linux-x64-gnu': 4.65.1
-      '@rollup/rollup-linux-x64-musl': 4.65.1
-      '@rollup/rollup-openbsd-x64': 4.65.1
-      '@rollup/rollup-openharmony-arm64': 4.65.1
-      '@rollup/rollup-win32-arm64-msvc': 4.65.1
-      '@rollup/rollup-win32-ia32-msvc': 4.65.1
-      '@rollup/rollup-win32-x64-gnu': 4.65.1
-      '@rollup/rollup-win32-x64-msvc': 4.65.1
+      '@rollup/rollup-android-arm-eabi': 4.66.0
+      '@rollup/rollup-android-arm64': 4.66.0
+      '@rollup/rollup-darwin-arm64': 4.66.0
+      '@rollup/rollup-darwin-x64': 4.66.0
+      '@rollup/rollup-freebsd-arm64': 4.66.0
+      '@rollup/rollup-freebsd-x64': 4.66.0
+      '@rollup/rollup-linux-arm-gnueabihf': 4.66.0
+      '@rollup/rollup-linux-arm-musleabihf': 4.66.0
+      '@rollup/rollup-linux-arm64-gnu': 4.66.0
+      '@rollup/rollup-linux-arm64-musl': 4.66.0
+      '@rollup/rollup-linux-loong64-gnu': 4.66.0
+      '@rollup/rollup-linux-loong64-musl': 4.66.0
+      '@rollup/rollup-linux-ppc64-gnu': 4.66.0
+      '@rollup/rollup-linux-ppc64-musl': 4.66.0
+      '@rollup/rollup-linux-riscv64-gnu': 4.66.0
+      '@rollup/rollup-linux-riscv64-musl': 4.66.0
+      '@rollup/rollup-linux-s390x-gnu': 4.66.0
+      '@rollup/rollup-linux-x64-gnu': 4.66.0
+      '@rollup/rollup-linux-x64-musl': 4.66.0
+      '@rollup/rollup-openbsd-x64': 4.66.0
+      '@rollup/rollup-openharmony-arm64': 4.66.0
+      '@rollup/rollup-win32-arm64-msvc': 4.66.0
+      '@rollup/rollup-win32-ia32-msvc': 4.66.0
+      '@rollup/rollup-win32-x64-gnu': 4.66.0
+      '@rollup/rollup-win32-x64-msvc': 4.66.0
       fsevents: 2.3.3
 
   roughjs@4.6.6:
@@ -22102,6 +22131,8 @@ snapshots:
 
   tinypool@2.2.0: {}
 
+  tinyps@0.5.1: {}
+
   tldts-core@6.1.86: {}
 
   tldts@6.1.86:
@@ -22142,8 +22173,6 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  tree-kill@1.2.2: {}
-
   trim-lines@3.0.1: {}
 
   triple-beam@1.4.1: {}
@@ -22158,7 +22187,7 @@ snapshots:
 
   ts-dedent@2.3.0: {}
 
-  tsdown@0.23.2(8e20a34047d812aa4b42b4fc0d48593a):
+  tsdown@0.23.4(8e20a34047d812aa4b42b4fc0d48593a):
     dependencies:
       cac: 7.1.0
       defu: 6.1.7
@@ -22168,21 +22197,22 @@ snapshots:
       obug: 3.0.0
       picomatch: 4.0.7
       rolldown: 1.2.15
-      rolldown-plugin-dts: 0.29.0-beta.2(8cf99bbe1b1132fc9f95df50f5a3ccb0)
+      rolldown-plugin-dts: 0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(8cf99bbe1b1132fc9f95df50f5a3ccb0)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tree-kill: 1.2.2
+      tinyps: 0.5.1
       unconfig-core: 7.5.0
       verkit: 0.5.0
     optionalDependencies:
       typescript: 7.1.0-beta
     transitivePeerDependencies:
+      - '@typescript/native-preview'
       - '@volar/typescript'
       - '@vue/language-core'
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.23.2(8f77be21d97b556d64ef0473985e1052):
+  tsdown@0.23.4(8f77be21d97b556d64ef0473985e1052):
     dependencies:
       cac: 7.1.0
       defu: 6.1.7
@@ -22192,21 +22222,22 @@ snapshots:
       obug: 3.0.0
       picomatch: 4.0.7
       rolldown: 1.2.15
-      rolldown-plugin-dts: 0.29.0-beta.2(3167286142c7cc8e1c5cfb6fa672e8cb)
+      rolldown-plugin-dts: 0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(3167286142c7cc8e1c5cfb6fa672e8cb)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tree-kill: 1.2.2
+      tinyps: 0.5.1
       unconfig-core: 7.5.0
       verkit: 0.5.0
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
+      - '@typescript/native-preview'
       - '@volar/typescript'
       - '@vue/language-core'
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.23.2(typescript@6.0.3):
+  tsdown@0.23.4(typescript@6.0.3):
     dependencies:
       cac: 7.1.0
       defu: 6.1.7
@@ -22216,21 +22247,22 @@ snapshots:
       obug: 3.0.0
       picomatch: 4.0.7
       rolldown: 1.2.15
-      rolldown-plugin-dts: 0.29.0-beta.2(rolldown@1.2.15)(typescript@6.0.3)
+      rolldown-plugin-dts: 0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(rolldown@1.2.15)(typescript@6.0.3)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tree-kill: 1.2.2
+      tinyps: 0.5.1
       unconfig-core: 7.5.0
       verkit: 0.5.0
     optionalDependencies:
       typescript: 6.0.3
     transitivePeerDependencies:
+      - '@typescript/native-preview'
       - '@volar/typescript'
       - '@vue/language-core'
       - oxc-resolver
       - vue-tsc
 
-  tsdown@0.23.2(typescript@7.1.0-beta):
+  tsdown@0.23.4(typescript@7.1.0-beta):
     dependencies:
       cac: 7.1.0
       defu: 6.1.7
@@ -22240,15 +22272,16 @@ snapshots:
       obug: 3.0.0
       picomatch: 4.0.7
       rolldown: 1.2.15
-      rolldown-plugin-dts: 0.29.0-beta.2(rolldown@1.2.15)(typescript@7.1.0-beta)
+      rolldown-plugin-dts: 0.28.8(patch_hash=c8a4ef906ad60d770ea77cdbc7317ef8f8f554c276b676b0566db1d1b831593f)(rolldown@1.2.15)(typescript@7.1.0-beta)
       tinyexec: 1.3.1
       tinyglobby: 0.2.17
-      tree-kill: 1.2.2
+      tinyps: 0.5.1
       unconfig-core: 7.5.0
       verkit: 0.5.0
     optionalDependencies:
       typescript: 7.1.0-beta
     transitivePeerDependencies:
+      - '@typescript/native-preview'
       - '@volar/typescript'
       - '@vue/language-core'
       - oxc-resolver
@@ -22449,13 +22482,13 @@ snapshots:
 
   unpipe@1.0.0: {}
 
-  unplugin-vue@8.0.0(vue@3.5.44(typescript@7.1.0-beta)):
+  unplugin-vue@8.0.1(vue@3.5.44(typescript@7.1.0-beta)):
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
       '@vue/reactivity': 3.5.44
       obug: 3.0.0
-      unplugin: 3.4.0(vite@8.3.5)
+      unplugin: 3.7.0(vite@8.3.5)
       vite: 8.3.5
       vue: 3.5.44(typescript@7.1.0-beta)
     transitivePeerDependencies:
@@ -22480,9 +22513,10 @@ snapshots:
       - webpack
       - yaml
 
-  unplugin@3.4.0(vite@8.3.5):
+  unplugin@3.7.0(vite@8.3.5):
     dependencies:
       '@jridgewell/remapping': 2.3.5
+      '@rolldown/pluginutils': 1.0.1
       picomatch: 4.0.7
     optionalDependencies:
       vite: 8.3.5
@@ -22978,10 +23012,10 @@ snapshots:
       '@babel/core': 7.29.7
       '@babel/preset-env': 7.29.7(@babel/core@7.29.7)
       '@babel/runtime': 7.29.10
-      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.65.1)
-      '@rollup/plugin-node-resolve': 16.0.3(rollup@4.65.1)
-      '@rollup/plugin-replace': 6.0.3(rollup@4.65.1)
-      '@rollup/plugin-terser': 1.0.2(rollup@4.65.1)
+      '@rollup/plugin-babel': 6.1.0(@babel/core@7.29.7)(rollup@4.66.0)
+      '@rollup/plugin-node-resolve': 16.0.3(rollup@4.66.0)
+      '@rollup/plugin-replace': 6.0.3(rollup@4.66.0)
+      '@rollup/plugin-terser': 1.0.2(rollup@4.66.0)
       '@trickfilm400/rollup-plugin-off-main-thread': 3.0.0-pre1
       ajv: 8.20.0
       common-tags: 1.8.2
@@ -22990,7 +23024,7 @@ snapshots:
       fs-extra: 9.1.0
       glob: 11.1.0
       pretty-bytes: 5.6.0
-      rollup: 4.65.1
+      rollup: 4.66.0
       source-map: 0.8.0
       stringify-object: 3.3.0
       strip-comments: 2.0.1
