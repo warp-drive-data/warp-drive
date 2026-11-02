@@ -3141,5 +3141,5 @@ function withGraphManagedData(
   if (data === undefined) {
     return content;
   }
-  return Object.assign({}, content, { data }) as ResourceDocument;
+  return Object.assign({}, content, { data });
 }
