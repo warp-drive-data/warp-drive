@@ -5,7 +5,6 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { Store } from '../../store/-private.ts';
 import type { NotificationChannel } from '../../store/-private/managers/notification-manager.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from '../../types.ts';
-import type { RequestKey } from '../../types/identifier.ts';
 import { getOrSetGlobal, peekTransient, setTransient } from '../../types/-private.ts';
 import type { RelationshipDiff } from '../../types/cache.ts';
 import type { MergeOperation } from '../../types/cache/operations.ts';
@@ -16,6 +15,7 @@ import type {
   RemoteRelationshipOperation,
   UnknownOperation,
 } from '../../types/graph.ts';
+import type { RequestKey } from '../../types/identifier.ts';
 import { rollbackRelationship } from './-diff.ts';
 import type { EdgeCache, UpgradedMeta } from './-edge-definition.ts';
 import { isLHS, upgradeDefinition } from './-edge-definition.ts';

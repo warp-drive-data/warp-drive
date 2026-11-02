@@ -19,9 +19,9 @@ import type { FieldSchema, GenericField, IdentityField } from '../../types/schem
 import { RecordStore } from '../../types/symbols.ts';
 import type { ObjectContext, ResourceContext } from './default-mode.ts';
 import { DefaultMode } from './default-mode.ts';
+import { notifyRelationshipDocument, type ReactiveDocument } from './document.ts';
 import type { ProxiedMethod } from './fields/extension.ts';
 import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from './fields/extension.ts';
-import { notifyRelationshipDocument, type ReactiveDocument } from './document.ts';
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';

@@ -3128,7 +3128,11 @@ function willCommit(cache: JSONAPICache, identifier: ResourceKey): void {
  * relationship (payloads for the parent resource, inverse updates, commits), so it is the one
  * place the document's current membership is known.
  */
-function withGraphManagedData(cache: JSONAPICache, identifier: RequestKey, content: ResourceDocument): ResourceDocument {
+function withGraphManagedData(
+  cache: JSONAPICache,
+  identifier: RequestKey,
+  content: ResourceDocument
+): ResourceDocument {
   const edge = 'data' in content ? cache.__graph.edgeForRequestKey(identifier) : null;
   if (!edge) {
     return content;

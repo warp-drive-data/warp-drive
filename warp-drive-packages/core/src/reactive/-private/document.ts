@@ -2,12 +2,12 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import { withBrand } from '../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../signals/-private.ts';
+import { recordIdentifierFor } from '../../store/-private/caches/instance-cache.ts';
 import type {
   DocumentCacheOperation,
   NotificationChannel,
   UnsubscribeToken,
 } from '../../store/-private/managers/notification-manager.ts';
-import { recordIdentifierFor } from '../../store/-private/caches/instance-cache.ts';
 import type { Store } from '../../store/-private/store-service.ts';
 import type { ResourceKey } from '../../types.ts';
 import type { CollectionRelationship, ResourceRelationship } from '../../types/cache/relationship.ts';
