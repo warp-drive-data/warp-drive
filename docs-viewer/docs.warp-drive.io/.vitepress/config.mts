@@ -154,15 +154,14 @@ export default withPwa(
         },
       },
 
-      // @ts-expect-error
       pwa: {
         // PR previews are torn down when the PR closes, so a service worker that
         // cached them would keep serving a dead preview's assets from a visitor's
         // browser indefinitely -- skip registering one for those builds entirely.
         disable: process.env.DISABLE_PWA === 'true',
+        // default is 2MB but the search index is much larger
+        maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
         workbox: {
-          // default is 2MB but the search index is much larger
-          maximumFileSizeToCacheInBytes: 6 * 1024 * 1024,
           // This service worker is only ever built for production (see `disable`
           // above), but it registers with scope '/' -- the whole origin -- so a
           // browser that already has it installed from a prior visit to the production
