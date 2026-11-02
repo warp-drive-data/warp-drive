@@ -499,7 +499,7 @@ overrides:
   typescript: 6.0.3
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001820
-  rollup: ^4.66.0
+  rollup: ^4.67.2
   "@babel/types": ^7.29.11
   "@babel/parser": ^7.29.12
   "@babel/traverse": ^7.29.12
