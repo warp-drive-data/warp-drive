@@ -1,7 +1,7 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { NotificationType } from '../../index.ts';
+import type { NotificationChannel, NotificationType } from '../../index.ts';
 import {
   ARRAY_SIGNAL,
   entangleSignal,
@@ -21,6 +21,7 @@ import type { ObjectContext, ResourceContext } from './default-mode.ts';
 import { DefaultMode } from './default-mode.ts';
 import type { ProxiedMethod } from './fields/extension.ts';
 import { isExtensionProp, performExtensionSet, performObjectExtensionGet } from './fields/extension.ts';
+import { notifyRelationshipDocument, type ReactiveDocument } from './document.ts';
 import { getFieldCacheKey } from './fields/get-field-key.ts';
 import type { ManagedArray } from './fields/managed-array.ts';
 import { peekManagedObject } from './fields/managed-object.ts';
@@ -153,7 +154,7 @@ export class ReactiveResource {
     const signals = withSignalStore(this);
     this.___notifications = context.store.notifications.subscribe(
       resourceKey,
-      (_: ResourceKey, type: NotificationType, key?: string | string[]) => {
+      (_: ResourceKey, type: NotificationType, key?: string | string[], channel?: NotificationChannel) => {
         switch (type) {
           case 'identity': {
             if (isEmbedded || !identityField) return; // base paths never apply to embedded records
@@ -233,7 +234,10 @@ export class ReactiveResource {
                   }
                   // FIXME
                 } else if (field.kind === 'resource') {
-                  // FIXME
+                  const doc = signals.get(key)?.value as ReactiveDocument<unknown> | null | undefined;
+                  if (doc) {
+                    notifyRelationshipDocument(doc, channel);
+                  }
                 } else if (field.kind === 'hasMany') {
                   if (field.options.linksMode) {
                     const signal = signals.get(key);

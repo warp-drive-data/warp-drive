@@ -30,7 +30,7 @@ import type {
   UpdateResourceRelationshipOperation,
 } from '@warp-drive/core/types/cache/operations';
 import type { CollectionRelationship, ResourceRelationship } from '@warp-drive/core/types/cache/relationship';
-import type { LocalRelationshipOperation } from '@warp-drive/core/types/graph';
+import type { LocalRelationshipOperation, UpdateRelationshipOperation } from '@warp-drive/core/types/graph';
 import type { PersistedResourceKey, RequestKey, ResourceKey } from '@warp-drive/core/types/identifier';
 import type { ObjectValue, Value } from '@warp-drive/core/types/json/raw';
 import type {
@@ -555,6 +555,22 @@ export class JSONAPICache implements Cache {
       this.__documents.set(identifier.lid, doc);
 
       this._capabilities.notifyChange(identifier, hasExisting ? 'updated' : 'added', null);
+
+      // the document's membership is owned by the relationship whose related link names it, so a
+      // response to it, however it was requested, is that relationship's new remote state
+      const edge = data !== undefined ? this.__graph.edgeForRequestKey(identifier) : null;
+      if (edge) {
+        assert(
+          `The response for '${identifier.lid}' is the membership of '${edge.identifier.type}:${String(edge.identifier.id)}.${edge.definition.key}', a ${edge.definition.fieldKind} relationship, so its data must be ${edge.definition.isCollection ? 'an array' : 'a single resource or null'}.`,
+          edge.definition.isCollection === Array.isArray(data)
+        );
+        this.__graph.push({
+          op: 'updateRelationship',
+          record: edge.identifier,
+          field: edge.definition.key,
+          value: { data } as UpdateRelationshipOperation['value'],
+        });
+      }
     }
 
     const op = doc.request?.op;
@@ -752,7 +768,7 @@ export class JSONAPICache implements Cache {
     const document = this.peekRequest(identifier);
 
     if (document) {
-      if ('content' in document) return document.content!;
+      if ('content' in document) return withGraphManagedData(this, identifier, document.content!);
     }
     return null;
   }
@@ -821,7 +837,7 @@ export class JSONAPICache implements Cache {
     const document = this.peekRequest(identifier);
 
     if (document) {
-      if ('content' in document) return document.content!;
+      if ('content' in document) return withGraphManagedData(this, identifier, document.content!);
     }
     return null;
   }
@@ -3102,4 +3118,24 @@ function willCommit(cache: JSONAPICache, identifier: ResourceKey): void {
       });
     }
   }
+}
+
+/**
+ * The content of a request document, with its primary data read from the graph when the
+ * document's membership is owned by a relationship (see `Graph.edgeForRequestKey`).
+ *
+ * The graph receives every response to the document as well as every other update to the
+ * relationship (payloads for the parent resource, inverse updates, commits), so it is the one
+ * place the document's current membership is known.
+ */
+function withGraphManagedData(cache: JSONAPICache, identifier: RequestKey, content: ResourceDocument): ResourceDocument {
+  const edge = 'data' in content ? cache.__graph.edgeForRequestKey(identifier) : null;
+  if (!edge) {
+    return content;
+  }
+  const { data } = cache.__graph.getRemoteData(edge.identifier, edge.definition.key);
+  if (data === undefined) {
+    return content;
+  }
+  return Object.assign({}, content, { data }) as ResourceDocument;
 }

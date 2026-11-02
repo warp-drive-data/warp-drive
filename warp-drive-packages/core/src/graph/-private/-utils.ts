@@ -231,10 +231,6 @@ export function notifyChange(
   relationship: CollectionEdge | ResourceEdge,
   channel?: NotificationChannel
 ): void {
-  if (!relationship.accessed) {
-    return;
-  }
-
   const resourceKey = relationship.identifier;
   const key = relationship.definition.key;
 
@@ -243,6 +239,17 @@ export function notifyChange(
       // oxlint-disable-next-line no-console
       console.log(`Graph: ignoring relationship change for removed identifier ${String(resourceKey)} ${key}`);
     }
+    return;
+  }
+
+  // the request document for the relationship's related link reads its data from this edge,
+  // so any change it can see (anything but a purely local one) changes that document too. This
+  // is independent of whether the edge itself has been accessed.
+  if (relationship.requestKey && channel !== 'local') {
+    graph.store.notifyChange(relationship.requestKey, 'updated', null);
+  }
+
+  if (!relationship.accessed) {
     return;
   }
   if (LOG_GRAPH) {

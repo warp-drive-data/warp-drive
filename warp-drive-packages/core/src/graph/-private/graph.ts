@@ -5,6 +5,7 @@ import { assert } from '@warp-drive/core/build-config/macros';
 import type { Store } from '../../store/-private.ts';
 import type { NotificationChannel } from '../../store/-private/managers/notification-manager.ts';
 import type { CacheCapabilitiesManager, ResourceKey } from '../../types.ts';
+import type { RequestKey } from '../../types/identifier.ts';
 import { getOrSetGlobal, peekTransient, setTransient } from '../../types/-private.ts';
 import type { RelationshipDiff } from '../../types/cache.ts';
 import type { MergeOperation } from '../../types/cache/operations.ts';
@@ -161,6 +162,11 @@ export class Graph {
    * guard against re-entrant removal of the same resource.
    */
   declare _removing: ResourceKey | null;
+  /**
+   * The edges whose `related` link names a request document the graph manages the membership
+   * of, keyed by that document's {@link RequestKey} `lid`. See {@link Graph.edgeForRequestKey}.
+   */
+  declare _edgesByRequestKey: Map<string, ResourceEdge | CollectionEdge>;
 
   constructor(store: CacheCapabilitiesManager) {
     this._definitionCache = Object.create(null) as EdgeCache;
@@ -180,7 +186,42 @@ export class Graph {
     this._updatedRelationships = new Map();
     this._transaction = null;
     this._removing = null;
+    this._edgesByRequestKey = new Map();
     this.silenceNotifications = false;
+  }
+
+  /**
+   * Returns the edge whose membership backs the request document for `requestKey`, if any.
+   *
+   * A `resource` or `collection` relationship's `related` link names a request document whose
+   * primary data is that relationship's membership. The graph is the single owner of that
+   * membership: a response to the document is applied to the edge as its remote state, and the
+   * document reads its `data` back from the edge, so the two cannot drift apart.
+   */
+  edgeForRequestKey(requestKey: RequestKey): ResourceEdge | CollectionEdge | null {
+    return this._edgesByRequestKey.get(requestKey.lid) ?? null;
+  }
+
+  /**
+   * Associates `edge` with the request document for `requestKey`, replacing any request document
+   * it was previously associated with (e.g. when its `related` link changes).
+   */
+  _setRequestKey(edge: ResourceEdge | CollectionEdge, requestKey: RequestKey | null): void {
+    if (edge.requestKey === requestKey) {
+      return;
+    }
+    if (edge.requestKey && this._edgesByRequestKey.get(edge.requestKey.lid) === edge) {
+      this._edgesByRequestKey.delete(edge.requestKey.lid);
+    }
+    edge.requestKey = requestKey;
+    if (requestKey) {
+      const existing = this._edgesByRequestKey.get(requestKey.lid);
+      assert(
+        `The related link '${requestKey.lid}' of '${edge.identifier.type}:${String(edge.identifier.id)}.${edge.definition.key}' is already the related link of '${existing?.identifier.type}:${String(existing?.identifier.id)}.${existing?.definition.key}'. A related link must identify the membership of a single relationship.`,
+        !existing || existing === edge
+      );
+      this._edgesByRequestKey.set(requestKey.lid, edge);
+    }
   }
 
   /**
@@ -502,6 +543,15 @@ export class Graph {
     assert(`Cannot remove ${String(resourceKey)} while still removing ${String(this._removing)}`, !this._removing);
     this._removing = resourceKey;
     this.unload(resourceKey);
+    const relationships = this.identifiers.get(resourceKey);
+    if (relationships) {
+      Object.keys(relationships).forEach((key) => {
+        const rel = relationships[key];
+        if (rel && !isImplicit(rel) && rel.requestKey) {
+          this._setRequestKey(rel, null);
+        }
+      });
+    }
     this.identifiers.delete(resourceKey);
     this._removing = null;
   }
@@ -742,6 +792,7 @@ export class Graph {
     }
 
     this.identifiers.clear();
+    this._edgesByRequestKey.clear();
     this.store = null as unknown as CacheCapabilitiesManager;
     this.isDestroyed = true;
   }
