@@ -486,6 +486,13 @@ export function upgradeDefinition(
         metaFromInverse
       );
       assert(`Expected ${inverseKey} to be a relationship`, isRelationshipField(metaFromInverse));
+      // resource and collection fields only pair with each other, and belongsTo and hasMany
+      // fields only pair with each other. Checking here covers both sides of the edge, since
+      // resolving one side also caches the definition for its inverse.
+      assert(
+        `'${type}.${propertyName}' is a '${meta.kind}' field, but its inverse '${inverseType}.${inverseKey}' is a '${metaFromInverse.kind}' field. A 'resource' or 'collection' field can only have a 'resource' or 'collection' field as its inverse, and a 'belongsTo' or 'hasMany' field can only have a 'belongsTo' or 'hasMany' field as its inverse.`,
+        isLegacyField(meta) === isLegacyField(metaFromInverse)
+      );
 
       inverseDefinition = upgradeMeta(metaFromInverse);
     }
