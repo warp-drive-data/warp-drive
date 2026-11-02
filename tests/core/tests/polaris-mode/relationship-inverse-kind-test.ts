@@ -87,15 +87,17 @@ function relationshipPayload(
   kind: RelationshipKind,
   related: ExistingResourceIdentifierObject,
   url: string
-): SingleResourceRelationship | CollectionResourceRelationship {
+):
+  | SingleResourceRelationship<ExistingResourceIdentifierObject>
+  | CollectionResourceRelationship<ExistingResourceIdentifierObject> {
   if (isMany(kind)) {
-    const relationship: CollectionResourceRelationship = { data: [related] };
+    const relationship: CollectionResourceRelationship<ExistingResourceIdentifierObject> = { data: [related] };
     if (isLegacy(kind)) {
       relationship.links = { related: url };
     }
     return relationship;
   }
-  const relationship: SingleResourceRelationship = { data: related };
+  const relationship: SingleResourceRelationship<ExistingResourceIdentifierObject> = { data: related };
   if (isLegacy(kind)) {
     relationship.links = { related: url };
   }
