@@ -344,8 +344,8 @@ catalogs:
       specifier: ^0.5.1
       version: 0.5.1
     ember-content-mapper:
-      specifier: ^0.4.0
-      version: 0.4.0
+      specifier: ^0.4.1
+      version: 0.4.1
     ember-eslint-parser:
       specifier: ^0.16.1
       version: 0.16.1
@@ -1774,7 +1774,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(15444b8042bcb400c61383e9d11232d7)
+        version: 0.4.1(15444b8042bcb400c61383e9d11232d7)
       ember-modifier:
         specifier: 'catalog:'
         version: 4.3.0(@babel/core@7.29.7)
@@ -1879,7 +1879,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(15444b8042bcb400c61383e9d11232d7)
+        version: 0.4.1(15444b8042bcb400c61383e9d11232d7)
       ember-modifier:
         specifier: 'catalog:'
         version: 4.3.0(@babel/core@7.29.7)
@@ -1984,7 +1984,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(15444b8042bcb400c61383e9d11232d7)
+        version: 0.4.1(15444b8042bcb400c61383e9d11232d7)
       ember-modifier:
         specifier: 'catalog:'
         version: 4.3.0(@babel/core@7.29.7)
@@ -2272,7 +2272,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(7521e904ea258a21c75ee8a00ea554dc)
+        version: 0.4.1(7521e904ea258a21c75ee8a00ea554dc)
       ember-source:
         specifier: 'catalog:'
         version: 7.4.0(@glimmer/component@2.2.1)
@@ -2425,7 +2425,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(7521e904ea258a21c75ee8a00ea554dc)
+        version: 0.4.1(7521e904ea258a21c75ee8a00ea554dc)
       ember-data:
         specifier: workspace:*
         version: file:packages/-ember-data(89b967ff0994715e0d96c79f71a9d064)
@@ -2909,7 +2909,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(99e2693231f53ced9ecf8e6eecd7870d)
+        version: 0.4.1(99e2693231f53ced9ecf8e6eecd7870d)
       ember-page-title:
         specifier: 'catalog:'
         version: 9.0.3(59d30470392735f432738b11663fdf08)
@@ -3137,7 +3137,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(7521e904ea258a21c75ee8a00ea554dc)
+        version: 0.4.1(7521e904ea258a21c75ee8a00ea554dc)
       ember-source:
         specifier: 'catalog:'
         version: 7.4.0(@glimmer/component@2.2.1)
@@ -3500,7 +3500,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(7521e904ea258a21c75ee8a00ea554dc)
+        version: 0.4.1(7521e904ea258a21c75ee8a00ea554dc)
       ember-source:
         specifier: 'catalog:'
         version: 7.4.0(@glimmer/component@2.2.1)
@@ -4007,7 +4007,7 @@ importers:
         version: 2.4.0(@babel/core@7.29.7)
       ember-content-mapper:
         specifier: 'catalog:'
-        version: 0.4.0(7521e904ea258a21c75ee8a00ea554dc)
+        version: 0.4.1(7521e904ea258a21c75ee8a00ea554dc)
       ember-provide-consume-context:
         specifier: 'catalog:'
         version: 0.10.0(ef357e0ca0cfc0d32109817993abbba3)
@@ -8935,8 +8935,8 @@ packages:
   ember-cli-string-utils@1.1.0:
     resolution: {integrity: sha512-PlJt4fUDyBrC/0X+4cOpaGCiMawaaB//qD85AXmDRikxhxVzfVdpuoec02HSiTGTTB85qCIzWBIh8lDOiMyyFg==}
 
-  ember-content-mapper@0.4.0:
-    resolution: {integrity: sha512-Ye70YUcmyMrAr2bvkDojk0eMU8EiLSiW0grOxU4vvgNR7exr3k25DiGKIzAoyF0lGINsUpyhuM77JLvrCzu2sw==}
+  ember-content-mapper@0.4.1:
+    resolution: {integrity: sha512-8pHKFxHDep/cj2W4VaylXa/HKLrTi2Jj99z39qKAMGGaON53jwD9QR7zzpMoY3FGsrvWF773sRcHShiPi3BjDA==}
     engines: {node: ^22.21.1 || >=24.10.0}
     peerDependencies:
       '@glint/ember-tsc': 1.14.3
@@ -18786,19 +18786,19 @@ snapshots:
 
   ember-cli-string-utils@1.1.0: {}
 
-  ember-content-mapper@0.4.0(15444b8042bcb400c61383e9d11232d7):
+  ember-content-mapper@0.4.1(15444b8042bcb400c61383e9d11232d7):
     dependencies:
       '@glint/ember-tsc': 1.14.3(97e97d4482fe3da84cfb4f943f997b78)
       tinypool: 2.1.2
       vscode-jsonrpc: 9.0.3
 
-  ember-content-mapper@0.4.0(7521e904ea258a21c75ee8a00ea554dc):
+  ember-content-mapper@0.4.1(7521e904ea258a21c75ee8a00ea554dc):
     dependencies:
       '@glint/ember-tsc': 1.14.3(1074e0c05d9f1a019f28ceea7a3d81c9)
       tinypool: 2.1.2
       vscode-jsonrpc: 9.0.3
 
-  ember-content-mapper@0.4.0(99e2693231f53ced9ecf8e6eecd7870d):
+  ember-content-mapper@0.4.1(99e2693231f53ced9ecf8e6eecd7870d):
     dependencies:
       '@glint/ember-tsc': 1.14.3(48e6e9ac0f35ee1cce06155643f0c80e)
       tinypool: 2.1.2
