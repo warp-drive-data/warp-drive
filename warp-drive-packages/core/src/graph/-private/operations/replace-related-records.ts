@@ -408,7 +408,9 @@ export function addToInverse(
         removeFromInverse(graph, relationship.remoteState, relationship.definition.inverseKey, resourceKey, isRemote);
       }
       relationship.remoteState = value;
-      // the inverse now knows its remote state, even though no payload for it has been seen
+      // a belongsTo holds one member, so the inverse just told us its complete remote state even
+      // though no payload for this side has been seen. A hasMany learns only one member this way,
+      // so its remote state stays incomplete and the hasMany branch below leaves this flag alone.
       relationship.state.hasReceivedRemoteData = true;
       // remote state definitely changed here (we just assigned it), independent of
       // whether local also needs reconciling below -- notify unconditionally so a
