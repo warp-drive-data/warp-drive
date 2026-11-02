@@ -337,7 +337,7 @@ catalog:
   "@types/jquery": ^4.0.1
   "@types/jscodeshift": ^17.3.0
   "@types/morgan": ^1.9.10
-  "@types/node": ^26.6.5
+  "@types/node": ^26.6.6
   "@types/qunit": 2.19.14
   "@types/react": ^19.3.0
   "@types/react-dom": ^19.3.0
