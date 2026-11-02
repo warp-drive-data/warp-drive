@@ -65,9 +65,6 @@ user.friends.push(a);
 user.friends = [a, b];
 ```
 
-Mixed schemas work as expected: a `collection` whose inverse is a legacy `belongsTo` (or vice
-versa) stays in sync in both directions.
-
 ## Local vs Remote
 
 Edits are **local** until saved. On an editable PolarisMode record the change is visible on the

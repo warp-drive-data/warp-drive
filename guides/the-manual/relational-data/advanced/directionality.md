@@ -47,8 +47,9 @@ With inverses declared on both sides, a change to either side updates the other.
 clears `comment.post.data`. See [Inverses](../features/inverses.md) and the
 [configuration guides](../index.md#configuration) for each cardinality.
 
-Inverses may pair any relationship kinds: `collection` ↔ `resource`, `collection` ↔ `collection`,
-`resource` ↔ `resource`, and each of these with the legacy `hasMany`/`belongsTo` kinds.
+Inverses may pair `collection` ↔ `resource`, `collection` ↔ `collection` and `resource` ↔
+`resource`. They cannot pair either of these with the legacy `hasMany`/`belongsTo` kinds: the legacy
+kinds only pair with each other.
 
 ## Direction And Mutability
 
