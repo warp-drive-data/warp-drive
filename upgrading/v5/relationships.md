@@ -1,6 +1,6 @@
 ---
 title: Migrating Relationships to resource and collection
-description: How to migrate belongsTo and hasMany fields to the resource and collection relationship kinds, which work the same in LegacyMode and PolarisMode, one field at a time.
+description: How to migrate belongsTo and hasMany fields to the resource and collection relationship kinds, which work the same in LegacyMode and PolarisMode, one relationship and its inverse at a time.
 outline:
   level: 2,3
 ---
