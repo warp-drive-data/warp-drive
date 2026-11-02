@@ -19,9 +19,10 @@ If your app still uses `Model`, migrate to `ReactiveResource` in LegacyMode firs
 [Migration](/guides/the-manual/schemas/resources/legacy-mode.md#migration)); `resource` and
 `collection` are schema field kinds and have no decorator form.
 
-`belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate field by
-field, in whatever order suits the app; a `resource` field may declare a `belongsTo` or `hasMany`
-as its inverse and vice versa (see [Directionality](/guides/the-manual/relational-data/advanced/directionality.md)).
+`belongsTo` and `hasMany` are not deprecated by this guide and continue to work. Migrate one
+relationship at a time, in whatever order suits the app. A field and its inverse migrate together:
+a `resource` or `collection` field cannot declare a `belongsTo` or `hasMany` as its inverse, or the
+reverse (see [Directionality](/guides/the-manual/relational-data/advanced/directionality.md)).
 
 ## What Changed
 
@@ -78,8 +79,8 @@ there is currently no equivalent:
    triggering a fetch.
 
 Once such a field is migrated, its payloads are validator errors and reading its `data` throws.
-Do not migrate these fields yet. Leave them on `belongsTo`/`hasMany`, which keep
-working alongside migrated fields, or change the API to include the referenced resources or to
+Do not migrate these fields yet. Leave them, and their inverses, on `belongsTo`/`hasMany`, which
+keep working alongside migrated fields, or change the API to include the referenced resources or to
 send a `related` link instead of the references.
 
 Corollaries for both use cases are planned as two new field kinds, `reference` and `pointer`,
@@ -114,6 +115,10 @@ and set `async` per the table above:
 { kind: 'resource', name: 'author', type: 'user', options: { async: false, inverse: 'posts' } }
 { kind: 'collection', name: 'comments', type: 'comment', options: { async: true, inverse: 'post' } }
 ```
+
+If the field has an inverse, convert the inverse field in the same change. A `resource` or
+`collection` field and a `belongsTo` or `hasMany` field cannot be each other's inverse, and the
+graph asserts when they are.
 
 Drop `linksMode` and `resetOnRemoteUpdate`. The new kinds always load through requests, and a
 remote update never discards unsaved local changes (the behavior `resetOnRemoteUpdate: false`
