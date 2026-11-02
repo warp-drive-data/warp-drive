@@ -1,7 +1,6 @@
 import { DEBUG } from '@warp-drive/core/build-config/env';
 import { assert } from '@warp-drive/core/build-config/macros';
 
-import type { Store } from '../../index.ts';
 import type { ResourceKey } from '../../types.ts';
 import type {
   CollectionField,
@@ -11,7 +10,7 @@ import type {
   ResourceField,
 } from '../../types/schema/fields.ts';
 import { isRelationshipKind } from '../../types/schema/fields.ts';
-import { expandingGet, expandingSet, getStore } from './-utils.ts';
+import { expandingGet, expandingSet } from './-utils.ts';
 import { assertInheritedSchema } from './debug/assert-polymorphic-type.ts';
 import type { Graph } from './graph.ts';
 
@@ -34,12 +33,17 @@ export function isRelationshipField(field: FieldSchema): field is RelationshipFi
 export function temporaryConvertToLegacy(
   field: ResourceField | CollectionField
 ): LegacyBelongsToField | LegacyHasManyField {
-  return {
+  const legacy: LegacyBelongsToField | LegacyHasManyField = {
     kind: field.kind === 'resource' ? 'belongsTo' : 'hasMany',
     name: field.name,
     type: field.type,
     options: Object.assign({}, { async: false, inverse: null, resetOnRemoteUpdate: false as const }, field.options),
   };
+  // the graph keys edges by the field's cache key, so the sourceKey must survive the conversion
+  if (field.sourceKey) {
+    legacy.sourceKey = field.sourceKey;
+  }
+  return legacy;
 }
 
 /**
@@ -106,6 +110,13 @@ export function temporaryConvertToLegacy(
  */
 export interface UpgradedMeta {
   kind: 'implicit' | RelationshipFieldKind;
+  /**
+   * The kind of the schema field this edge was derived from. `resource`
+   * and `collection` fields are handled by the graph as `belongsTo` and
+   * `hasMany` respectively (see `kind`), but some behaviors (e.g. the
+   * collection size guard) apply only to the newer kinds.
+   */
+  fieldKind: 'implicit' | RelationshipFieldKind;
   /**
    * The field sourceKey on `this` record,
    * name if sourceKey is not set.
@@ -208,12 +219,14 @@ function syncMeta(definition: UpgradedMeta, inverseDefinition: UpgradedMeta) {
 }
 
 function upgradeMeta(meta: RelationshipField): UpgradedMeta {
+  const fieldKind = meta.kind;
   if (!isLegacyField(meta)) {
     meta = temporaryConvertToLegacy(meta);
   }
   const niceMeta: UpgradedMeta = {} as UpgradedMeta;
   const options = meta.options;
   niceMeta.kind = meta.kind;
+  niceMeta.fieldKind = fieldKind;
   niceMeta.key = meta.sourceKey ?? meta.name;
   niceMeta.name = meta.name;
   niceMeta.type = meta.type;
@@ -441,8 +454,7 @@ export function upgradeDefinition(
     assert(`Expected the inverse model to exist`, storeWrapper.schema.hasResource({ type: inverseType }));
     inverseDefinition = null;
   } else {
-    // `propertyName` may be the field's `sourceKey`, but `fields()` is keyed by `name`
-    inverseKey = /*#__NOINLINE__*/ inverseForRelationship(getStore(storeWrapper), key, meta.name);
+    inverseKey = /*#__NOINLINE__*/ inverseNameFor(meta);
 
     // CASE: If we are polymorphic, and we declared an inverse that is non-null
     // we must assume that the lack of inverseKey means that there is no
@@ -474,11 +486,22 @@ export function upgradeDefinition(
         metaFromInverse
       );
       assert(`Expected ${inverseKey} to be a relationship`, isRelationshipField(metaFromInverse));
+      // resource and collection fields only pair with each other, and belongsTo and hasMany
+      // fields only pair with each other. Checking here covers both sides of the edge, since
+      // resolving one side also caches the definition for its inverse.
+      assert(
+        `'${type}.${propertyName}' is a '${meta.kind}' field, but its inverse '${inverseType}.${inverseKey}' is a '${metaFromInverse.kind}' field. A 'resource' or 'collection' field can only have a 'resource' or 'collection' field as its inverse, and a 'belongsTo' or 'hasMany' field can only have a 'belongsTo' or 'hasMany' field as its inverse.`,
+        isLegacyField(meta) === isLegacyField(metaFromInverse)
+      );
 
       inverseDefinition = upgradeMeta(metaFromInverse);
-      // the graph keys relationships by `sourceKey ?? name`, so the inverse side must be too
-      inverseKey = inverseDefinition.key;
     }
+  }
+
+  // from here on the inverse is addressed by its cache key (`sourceKey` when set), which is
+  // what `graph.get` and the definition cache are keyed by, not by its `name`
+  if (inverseDefinition) {
+    inverseKey = inverseDefinition.key;
   }
 
   // CASE: We have no inverse
@@ -615,18 +638,19 @@ export function upgradeDefinition(
   return info;
 }
 
-function inverseForRelationship(store: Store, resourceKey: ResourceKey | { type: string }, key: string) {
-  const fields = store.schema.fields(resourceKey);
-  const definition = fields.get(key);
-  if (!definition) {
-    return null;
-  }
-
-  assert(`Expected ${key} to be a relationship`, isRelationshipField(definition));
+/**
+ * The `name` of the field on the related type that `field` declares as its inverse,
+ * or `null` when it declares no inverse.
+ *
+ * `options.inverse` always names the inverse by its `name`, never by its `sourceKey`.
+ * `resource` and `collection` fields may omit it, in which case they are unidirectional;
+ * the legacy kinds must state it explicitly.
+ */
+function inverseNameFor(field: RelationshipField): string | null {
+  const { options } = isLegacyField(field) ? field : temporaryConvertToLegacy(field);
   assert(
     `Expected the relationship defintion to specify the inverse type or null.`,
-    definition.options?.inverse === null ||
-      (typeof definition.options?.inverse === 'string' && definition.options.inverse.length > 0)
+    options?.inverse === null || (typeof options?.inverse === 'string' && options.inverse.length > 0)
   );
-  return definition.options.inverse;
+  return options.inverse;
 }
