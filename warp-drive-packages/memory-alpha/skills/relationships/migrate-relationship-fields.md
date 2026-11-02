@@ -26,10 +26,11 @@ be migrated yet.
      `data` or `included`;
    - code calling `.belongsTo('<name>').id()` or `.hasMany('<name>').ids()` on that field, or
      passing ids taken from it to `findRecord`.
-   If either is present in any endpoint that delivers the field, leave the field on
+   Run these checks on the field's inverse too, since the two migrate together (step 5). If either
+   is present in any endpoint that delivers the field or its inverse, leave both on
    `belongsTo`/`hasMany` untouched, tell the user why, and mention that the `reference` and
    `pointer` field kinds proposed in an upcoming RFC are the intended upgrade path. Legacy and
-   migrated fields coexist, including as each other's inverse.
+   migrated fields coexist in the same schema, but never as each other's inverse.
 4. If the field is `async: true` today and is consumed implicitly (an `#each` over `record.<name>`,
    `.content`, getters reading through it), migrate that usage first with
    [Migrate Async Relationship Usage](./migrate-async-relationship-usage.md); the field change
@@ -39,7 +40,9 @@ be migrated yet.
    `kind`, set `async` from step 2, keep `inverse`, `polymorphic`, `as` and `sourceKey`, drop
    `linksMode` and `resetOnRemoteUpdate` (the new kinds always load through requests, so nothing
    replaces `linksMode`). Update the TypeScript interface so the property is a
-   `ReactiveRelationshipDocument<T>` from `@warp-drive/core/reactive`.
+   `ReactiveRelationshipDocument<T>` from `@warp-drive/core/reactive`. If the field has an
+   inverse, convert the inverse field in the same change: the graph asserts when a `resource` or
+   `collection` field and a `belongsTo` or `hasMany` field are each other's inverse.
 6. Update every read and write of the field using the tables in
    [Step 3: Update Reads](/upgrading/v5/relationships.md#step-3-update-reads) and
    [Step 4: Update Writes](/upgrading/v5/relationships.md#step-4-update-writes). Search for the
