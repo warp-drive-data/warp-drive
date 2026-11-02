@@ -1,5 +1,5 @@
-import type { TestContext } from '@ember/test-helpers';
 import { setOwner } from '@ember/owner';
+import type { TestContext } from '@ember/test-helpers';
 
 import { recordIdentifierFor } from '@warp-drive/core';
 import type { ResourceKey } from '@warp-drive/core/types/identifier';
