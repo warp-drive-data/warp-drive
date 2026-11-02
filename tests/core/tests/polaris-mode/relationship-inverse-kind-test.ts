@@ -1,5 +1,16 @@
 import { recordIdentifierFor, useRecommendedStore } from '@warp-drive/core';
 import { withDefaults } from '@warp-drive/core/reactive';
+import type {
+  CollectionField,
+  LinksModeBelongsToField,
+  LinksModeHasManyField,
+  ResourceField,
+} from '@warp-drive/core/types/schema/fields';
+import type {
+  CollectionResourceRelationship,
+  ExistingResourceIdentifierObject,
+  SingleResourceRelationship,
+} from '@warp-drive/core/types/spec/json-api-raw';
 import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
@@ -35,10 +46,22 @@ function isMany(kind: RelationshipKind): boolean {
   return kind === 'collection' || kind === 'hasMany';
 }
 
-function relationshipField(name: string, kind: RelationshipKind, type: string, inverse: string) {
-  return isLegacy(kind)
-    ? { name, kind, type, options: { async: false, inverse, linksMode: true as const } }
-    : { name, kind, type, options: { async: false, inverse } };
+function relationshipField(
+  name: string,
+  kind: RelationshipKind,
+  type: string,
+  inverse: string
+): ResourceField | CollectionField | LinksModeBelongsToField | LinksModeHasManyField {
+  switch (kind) {
+    case 'resource':
+      return { name, kind, type, options: { async: false, inverse } };
+    case 'collection':
+      return { name, kind, type, options: { async: false, inverse } };
+    case 'belongsTo':
+      return { name, kind, type, options: { async: false, inverse, linksMode: true } };
+    case 'hasMany':
+      return { name, kind, type, options: { async: false, inverse, linksMode: true } };
+  }
 }
 
 /**
@@ -60,9 +83,23 @@ function setupStore(postKind: RelationshipKind, userKind: RelationshipKind) {
   return store;
 }
 
-function relationshipPayload(kind: RelationshipKind, related: { type: string; id: string }, url: string) {
-  const data = isMany(kind) ? [related] : related;
-  return isLegacy(kind) ? { data, links: { related: url } } : { data };
+function relationshipPayload(
+  kind: RelationshipKind,
+  related: ExistingResourceIdentifierObject,
+  url: string
+): SingleResourceRelationship | CollectionResourceRelationship {
+  if (isMany(kind)) {
+    const relationship: CollectionResourceRelationship = { data: [related] };
+    if (isLegacy(kind)) {
+      relationship.links = { related: url };
+    }
+    return relationship;
+  }
+  const relationship: SingleResourceRelationship = { data: related };
+  if (isLegacy(kind)) {
+    relationship.links = { related: url };
+  }
+  return relationship;
 }
 
 function mismatchMessage(type: string, name: string, kind: RelationshipKind, inverse: string, inverseKind: string) {
