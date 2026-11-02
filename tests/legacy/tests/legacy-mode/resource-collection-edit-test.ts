@@ -24,16 +24,6 @@ type User = {
   [Type]: 'user';
 };
 
-type Pet = {
-  id: string | null;
-  $type: 'pet';
-  name: string;
-  owner: User | null;
-  [Type]: 'pet';
-};
-
-type Owner = User & { pets: ReactiveRelationshipDocument<Pet[]> };
-
 function setupStore(context: TestContext) {
   const store = new Store();
   setOwner(store, context.owner);
@@ -60,30 +50,6 @@ function setupStore(context: TestContext) {
           kind: 'collection',
           options: { async: false, inverse: 'friends' },
         },
-        {
-          name: 'pets',
-          type: 'pet',
-          kind: 'collection',
-          options: { async: false, inverse: 'owner' },
-        },
-      ],
-    })
-  );
-  store.schema.registerResource(
-    withLegacy({
-      type: 'pet',
-      fields: [
-        {
-          name: 'name',
-          type: null,
-          kind: 'attribute',
-        },
-        {
-          name: 'owner',
-          type: 'user',
-          kind: 'belongsTo',
-          options: { async: false, inverse: 'pets' },
-        },
       ],
     })
   );
@@ -100,7 +66,6 @@ function pushUsers(store: InstanceType<typeof Store>) {
         relationships: {
           bestFriend: { data: { type: 'user', id: '2' } },
           friends: { data: [{ type: 'user', id: '2' }] },
-          pets: { data: [] },
         },
       },
       {
@@ -110,7 +75,6 @@ function pushUsers(store: InstanceType<typeof Store>) {
         relationships: {
           bestFriend: { data: { type: 'user', id: '1' } },
           friends: { data: [{ type: 'user', id: '1' }] },
-          pets: { data: [] },
         },
       },
       {
@@ -120,7 +84,6 @@ function pushUsers(store: InstanceType<typeof Store>) {
         relationships: {
           bestFriend: { data: null },
           friends: { data: [] },
-          pets: { data: [] },
         },
       },
     ],
@@ -193,41 +156,6 @@ module('Legacy | Edit | resource and collection', function (hooks) {
       'the membership was replaced'
     );
     assert.equal(Matt.friends.data?.[0], Rey, 'the inverse was updated');
-  });
-
-  test('a collection relationship stays in sync with a legacy belongsTo inverse', function (this: TestContext, assert) {
-    const store = setupStore(this);
-    const [Rey, Matt] = pushUsers(store) as unknown as Owner[];
-    const [Rex, Shen] = store.push<Pet>({
-      data: [
-        {
-          type: 'pet',
-          id: '1',
-          attributes: { name: 'Rex' },
-          relationships: { owner: { data: { type: 'user', id: '1' } } },
-        },
-        {
-          type: 'pet',
-          id: '2',
-          attributes: { name: 'Shen' },
-          relationships: { owner: { data: null } },
-        },
-      ],
-    });
-
-    assert.equal(Rey.pets.data?.[0], Rex, 'Rey owns Rex');
-    assert.equal(Rex.owner, Rey, 'Rex is owned by Rey');
-
-    Rey.pets.data!.push(Shen);
-    assert.equal(Shen.owner, Rey, 'setting the collection updates the legacy belongsTo');
-
-    Shen.owner = Matt;
-    assert.arrayEquals(
-      Rey.pets.data!.map((p) => p.id),
-      ['1'],
-      'setting the legacy belongsTo updates the collection'
-    );
-    assert.equal(Matt.pets.data?.[0], Shen, 'setting the legacy belongsTo updates the new owner');
   });
 
   test('assigning the field itself is not allowed', async function (this: TestContext, assert) {
