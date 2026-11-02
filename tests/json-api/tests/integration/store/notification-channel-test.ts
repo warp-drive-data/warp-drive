@@ -1,5 +1,7 @@
+import type { NotificationChannel, NotificationType } from '@warp-drive/core';
 import { Store } from '@warp-drive/core';
 import type { CacheCapabilitiesManager } from '@warp-drive/core/types';
+import type { ResourceKey } from '@warp-drive/core/types/identifier';
 import { module, test } from '@warp-drive/diagnostic';
 import { JSONAPICache as Cache } from '@warp-drive/json-api';
 
@@ -21,6 +23,28 @@ class TestStore extends Store {
     this._capabilities = wrapper;
     return new Cache(wrapper);
   }
+}
+
+/**
+ * Subscribes to `identifier` and returns the list of channels passed to the
+ * callback for each `'attributes'` delivery, in dispatch order.
+ */
+function recordChannels(
+  store: TestStore,
+  identifier: ResourceKey,
+  channel?: NotificationChannel
+): Array<NotificationChannel | undefined> {
+  const channels: Array<NotificationChannel | undefined> = [];
+  store.notifications.subscribe(
+    identifier,
+    (_key: ResourceKey, type: NotificationType, _field?: string, received?: NotificationChannel) => {
+      if (type === 'attributes') {
+        channels.push(received);
+      }
+    },
+    channel
+  );
+  return channels;
 }
 
 module('Integration | NotificationManager channels', function () {
@@ -192,5 +216,61 @@ module('Integration | NotificationManager channels', function () {
 
     assert.equal(localCalls.length, 1, 'the default (local) subscriber was notified exactly once');
     assert.equal(remoteCalls.length, 0, 'the "remote"-scoped subscriber was not notified at all');
+  });
+  test('a callback receives the channel its notification was tagged with', function (assert) {
+    const store = new TestStore();
+    void store.cache; // trigger lazy createCache so _capabilities is populated
+    const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+    const localChannels = recordChannels(store, identifier);
+    const remoteChannels = recordChannels(store, identifier, 'remote');
+
+    store._capabilities.notifyChange(identifier, 'attributes', 'name', 'local');
+    store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
+    store._capabilities.notifyChange(identifier, 'attributes', 'name');
+
+    assert.deepEqual(localChannels, ['local', undefined], 'the local subscriber saw the local and unscoped notifies');
+    assert.deepEqual(
+      remoteChannels,
+      ['remote', undefined],
+      'the remote subscriber saw the remote and unscoped notifies'
+    );
+  });
+
+  test('a callback receives the shared channel when every coalesced touch agrees', function (assert) {
+    const store = new TestStore();
+    void store.cache; // trigger lazy createCache so _capabilities is populated
+    const identifier = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+    const remoteChannels = recordChannels(store, identifier, 'remote');
+
+    const restore = deferFlushes(store);
+    store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
+    store._capabilities.notifyChange(identifier, 'attributes', 'name', 'remote');
+    restore();
+    flush(store);
+
+    assert.deepEqual(remoteChannels, ['remote'], 'the coalesced delivery carries the shared channel');
+  });
+
+  test('a callback receives no channel when coalesced touches disagree or one is unscoped', function (assert) {
+    const store = new TestStore();
+    void store.cache; // trigger lazy createCache so _capabilities is populated
+    const user1 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '1' });
+    const user2 = store.cacheKeyManager.getOrCreateRecordIdentifier({ type: 'user', id: '2' });
+    const mixedLocal = recordChannels(store, user1);
+    const mixedRemote = recordChannels(store, user1, 'remote');
+    const partlyUnscoped = recordChannels(store, user2);
+
+    const restore = deferFlushes(store);
+    // user 1 is touched on both channels, user 2 on 'local' and unscoped
+    store._capabilities.notifyChange(user1, 'attributes', 'name', 'local');
+    store._capabilities.notifyChange(user1, 'attributes', 'name', 'remote');
+    store._capabilities.notifyChange(user2, 'attributes', 'name', 'local');
+    store._capabilities.notifyChange(user2, 'attributes', 'name');
+    restore();
+    flush(store);
+
+    assert.deepEqual(mixedLocal, [undefined], 'the local subscriber is told both views may have changed');
+    assert.deepEqual(mixedRemote, [undefined], 'the remote subscriber is told both views may have changed');
+    assert.deepEqual(partlyUnscoped, [undefined], 'an unscoped touch leaves the channel unset');
   });
 });
