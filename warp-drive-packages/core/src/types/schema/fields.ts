@@ -1579,7 +1579,9 @@ export interface LegacyBelongsToField {
      * }
      * ```
      *
-     * Async relationships will be loaded via their link if needed.
+     * LinksMode does not yet support `async: true`. In development builds,
+     * the cache throws when it receives a payload that includes a
+     * relationship with both `async: true` and `linksMode: true`.
      *
      * @public
      */
@@ -1751,7 +1753,8 @@ export interface LinksModeBelongsToField {
      * }
      * ```
      *
-     * Async relationships will be loaded via their link if needed.
+     * Because `async` must be `false`, reading this field never fetches it;
+     * its value comes only from data already in the cache.
      *
      * Activating LinksMode will *also* deactivate the deprecated
      * `resetOnRemoteUpdate` behavior for this field.
@@ -1948,7 +1951,9 @@ export interface LegacyHasManyField {
      * }
      * ```
      *
-     * Async relationships will be loaded via their link if needed.
+     * LinksMode does not yet support `async: true`. In development builds,
+     * the cache throws when it receives a payload that includes a
+     * relationship with both `async: true` and `linksMode: true`.
      *
      * @public
      */
@@ -2148,7 +2153,8 @@ export interface LinksModeHasManyField {
      * }
      * ```
      *
-     * Async relationships will be loaded via their link if needed.
+     * Because `async` must be `false`, reading this field never fetches it;
+     * its value comes only from data already in the cache.
      *
      * Activating LinksMode will *also* deactivate the deprecated
      * `resetOnRemoteUpdate` behavior for this field.
