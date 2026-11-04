@@ -20,8 +20,8 @@
   },
   "files": [
     "bin",
-    "*/starter",
-    "*/solution",
+    "*/starter/**",
+    "*/solution/**",
     "!*/*/package.json",
     "!*/*/node_modules",
     "!*/*/dist",
