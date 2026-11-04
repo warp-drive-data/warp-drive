@@ -413,8 +413,8 @@ catalogs:
       specifier: ^1.0.2
       version: 1.0.2
     globals:
-      specifier: ^17.13.0
-      version: 17.13.0
+      specifier: ^17.14.0
+      version: 17.14.0
     hono:
       specifier: ^4.13.16
       version: 4.13.16
@@ -3772,7 +3772,7 @@ importers:
         version: 8.2.6(eslint@10.14.0)
       globals:
         specifier: 'catalog:'
-        version: 17.13.0
+        version: 17.14.0
       tsdown:
         specifier: 'catalog:'
         version: 0.23.4(typescript@6.0.3)
@@ -9621,8 +9621,8 @@ packages:
     resolution: {integrity: sha512-7ACyT3wmyp3I61S4fG682L0VA2RGD9otkqGJIwNUMF1SWUombIIk+af1unuDYgMm082aHYwD+mzJvv9Iu8dsgg==}
     engines: {node: '>=18'}
 
-  globals@17.13.0:
-    resolution: {integrity: sha512-RwMTC61u7hrG3ZJMkZQOK4JLJrKS8QtoTii63EmWvFXHqycY9FObBJQCbsLxSO8kjKhWE5kV1GC+Vb1g3RI0Zg==}
+  globals@17.14.0:
+    resolution: {integrity: sha512-UtdkTVyAJePQv0J2M9Xe4L0ruNSDV314XiIJsADI2Zf40bcdAonE/D/OhAU8AT99oij9mhLByb+NvA3QWZYgCg==}
     engines: {node: '>=18'}
 
   globals@17.8.0:
@@ -16905,7 +16905,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -16959,7 +16959,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17013,7 +17013,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17067,7 +17067,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17121,7 +17121,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17175,7 +17175,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17229,7 +17229,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17283,7 +17283,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17337,7 +17337,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17391,7 +17391,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(651d9c0e05b9fed341bb609ce02c3022)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17445,7 +17445,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(651d9c0e05b9fed341bb609ce02c3022)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17499,7 +17499,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -17553,7 +17553,7 @@ snapshots:
       eslint-plugin-mocha: 12.0.2(eslint@10.14.0)
       eslint-plugin-n: 18.5.0(eslint@10.14.0)(typescript@6.0.3)
       eslint-plugin-qunit: 8.2.6(eslint@10.14.0)
-      globals: 17.13.0
+      globals: 17.14.0
       tsdown: 0.23.4(typescript@6.0.3)
       typescript: 6.0.3
       typescript-eslint: 8.72.1(eslint@10.14.0)(typescript@6.0.3)
@@ -19820,7 +19820,7 @@ snapshots:
 
   globals@15.15.0: {}
 
-  globals@17.13.0: {}
+  globals@17.14.0: {}
 
   globals@17.8.0: {}
 
