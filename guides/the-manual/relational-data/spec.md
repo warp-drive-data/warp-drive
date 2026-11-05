@@ -1,3 +1,8 @@
+---
+title: Specification
+description: The normative rules for relationship payloads, what each relationship field kind requires of the API, how values and mutation behave, and how the rules are enforced.
+---
+
 # Relationship Specification
 
 This page is the normative reference for how WarpDrive relationships behave: what a relationship
@@ -83,7 +88,7 @@ behavior:
 | Rule | Statement |
 | --- | --- |
 | 4.1 | `options.async` and `options.inverse` MUST be declared explicitly. |
-| 4.2 | `async: true` relationships are wrapped in promise proxies and fetch on access through the configured adapter, or through the `related` link in [LinksMode](../misc/links-mode.md). |
+| 4.2 | `async: true` relationships are wrapped in promise proxies and fetch on access through the configured adapter, or through the `related` link in [LinksMode](./features/links-mode.md). |
 | 4.3 | `async: false` relationships MAY reference resources that are not included; WarpDrive materializes an empty record for them. In LinksMode the stricter LinksMode rules apply instead. |
 | 4.4 | Payloads MAY carry `links` regardless of `async`. |
 | 4.5 | A remote update resets local changes unless `options.resetOnRemoteUpdate` is `false` or the field is in LinksMode. |

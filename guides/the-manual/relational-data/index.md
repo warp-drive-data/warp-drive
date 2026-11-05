@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: Start here to configure relationships in WarpDrive; links each cardinality page from one-to-none through many-to-many plus the inverses, LinksMode, and polymorphism guides.
+description: Overview of relationships in WarpDrive, the resource and collection field kinds that work the same in LegacyMode and PolarisMode, and how they compare to the legacy belongsTo and hasMany kinds.
 ---
 
 # Relationships Guide
@@ -10,7 +10,8 @@ Relationships connect resources to each other: a `user` has a `bestFriend`, a `p
 resource schema, stores its state in a relational graph, and exposes it on records as a reactive
 value that updates as the cache changes.
 
-There are two kinds of relationship field, each with a legacy counterpart:
+There are two kinds of relationship field, each with a legacy counterpart. "Legacy" here describes
+the field kind and is separate from LegacyMode, the schema mode:
 
 | Cardinality | Field kind | Value on the record | Legacy field kind | Legacy value |
 | --- | --- | --- | --- | --- |
@@ -30,9 +31,9 @@ The exact rules every relationship kind follows are collected in the
 - [Collection Relationships](./features/collection-relationships.md)
 - [Links vs Identifiers](./features/links-vs-identifiers.md)
 - [Sync vs Async](./features/sync-vs-async.md)
-- [Inverses](./features/inverses.md)
+- [Inverses and Directionality](./features/inverses.md)
 - [Polymorphism](./features/polymorphism.md)
-- [LinksMode](../misc/links-mode.md) (for `belongsTo` and `hasMany`)
+- [LinksMode](./features/links-mode.md) (for `belongsTo` and `hasMany`)
 - [Pagination](../experiments/pagination.md) (experimental): load a large collection page by page as its own
   request instead of through a relationship
 
@@ -45,9 +46,8 @@ The exact rules every relationship kind follows are collected in the
 - [Many To Many](./configuration/many-to-many.md) (N:N)
 
 ## Mutating Relationships
-- [Adding & Removing](./mutating/adding-removing.md)
+- [Adding & Removing](./mutating/adding-and-removing.md)
 - [Saving](./mutating/saving.md)
-- [Sorting & Filtering](./mutating/sorting-filtering.md)
 
 ## Reference
 - [Relationship Specification](./spec.md)
@@ -56,7 +56,6 @@ The exact rules every relationship kind follows are collected in the
 - [Understanding "the Graph"](./advanced/the-graph.md)
 - [Pagination](./advanced/pagination.md)
 - [Large Collections](./advanced/large-collections.md)
-- [Directionality](./advanced/directionality.md)
 
 # Misc
 
