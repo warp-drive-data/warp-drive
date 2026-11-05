@@ -399,7 +399,7 @@ catalog:
   qunit-dom: ^3.6.0
   react: ^19.3.1
   react-dom: ^19.3.1
-  semver: ^7.8.5
+  semver: ^7.8.6
   sharp: ^0.35.5
   silent-error: ^1.1.1
   svelte: ^5.57.3

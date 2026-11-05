@@ -56,7 +56,7 @@
     "comment-json": "^5.0.0",
     "debug": "^4.4.3",
     "inflection": "~3.0.2",
-    "semver": "^7.8.5"
+    "semver": "^7.8.6"
   },
   "devDependencies": {
     "@babel/core": "catalog:",
