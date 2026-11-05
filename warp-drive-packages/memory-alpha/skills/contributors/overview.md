@@ -14,6 +14,7 @@ as a dependency in an app.
 | Add a post under `blog/`, start a new major-version section of it, or retire a post (a release announcement also has its own row below) | [Publish a Blog Post](/skills/contributors/publish-a-blog-post.md) |
 | Test a change — decide whether to run checks locally or push and let CI verify it | [Use CI as the Source of Truth](/skills/contributors/use-ci-as-the-source-of-truth.md) |
 | Share setup/teardown across more than one test in a module | [Extract Test Setup Into Functions](/skills/contributors/extract-test-setup-into-functions.md) |
+| Add a symbol, key an object by one, or fix a `TS9038` isolated-declarations build error | [Create Symbols With getOrSetGlobal](/skills/contributors/create-symbols.md) |
 | Turn a finished change into a pull request — title, labels CI enforces, and backports | [Submit a PR](/skills/contributors/submit-a-pr.md) |
 | Open a pull request, change what an open one does or its `:dart:` labels, or respond to a review about its release summary — decide whether to propose a summary file in `.next-release-post/` and write it | [Write a PR Blog Summary](/skills/contributors/write-a-pr-blog-summary.md) |
 | Draft a blog post announcing a release, before the release ships — summarize a version's major changes and notable fixes | [Draft a Release Blog Post](/skills/contributors/draft-a-release-blog-post.md) |

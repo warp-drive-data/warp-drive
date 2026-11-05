@@ -1,7 +1,8 @@
 import { useRecommendedStore } from '@warp-drive/core';
-import type { ReactiveDocument, ReactiveResource } from '@warp-drive/core/reactive';
+import type { ReactiveRelationshipDocument } from '@warp-drive/core/reactive';
 import { withDefaults } from '@warp-drive/core/reactive';
-import { Type } from '@warp-drive/core/types/symbols';
+import type { RequestContext } from '@warp-drive/core/types/request';
+import type { Type } from '@warp-drive/core/types/symbols';
 import { module, setupTest, test } from '@warp-drive/diagnostic/ember';
 import { JSONAPICache } from '@warp-drive/json-api';
 
@@ -13,47 +14,36 @@ interface User {
   id: string | null;
   $type: 'user';
   name: string;
-  bestFriend: ReactiveDocument<User | null>;
+  bestFriend: ReactiveRelationshipDocument<User | null>;
   [Type]: 'user';
+}
+
+function registerUser(store: InstanceType<typeof Store>, async = false) {
+  store.schema.registerResource(
+    withDefaults({
+      type: 'user',
+      fields: [
+        {
+          name: 'name',
+          kind: 'field',
+        },
+        {
+          name: 'bestFriend',
+          type: 'user',
+          kind: 'resource',
+          options: { inverse: 'bestFriend', async },
+        },
+      ],
+    })
+  );
 }
 
 module('Reads | resource', function (hooks) {
   setupTest(hooks);
 
-  test('we can use simple fields with no `type`', function (assert) {
+  test('the value of a resource field is a document with data, links and meta', function (assert) {
     const store = new Store();
-    const { schema } = store;
-
-    function concat(
-      record: ReactiveResource & { [key: string]: unknown },
-      options: Record<string, unknown> | null,
-      _prop: string
-    ): string {
-      if (!options) throw new Error(`options is required`);
-      const opts = options as { fields: string[]; separator?: string };
-      return opts.fields.map((field) => record[field]).join(opts.separator ?? '');
-    }
-    concat[Type] = 'concat';
-
-    schema.registerDerivation(concat);
-
-    schema.registerResource(
-      withDefaults({
-        type: 'user',
-        fields: [
-          {
-            name: 'name',
-            kind: 'field',
-          },
-          {
-            name: 'bestFriend',
-            type: 'user',
-            kind: 'resource',
-            options: { inverse: 'bestFriend', async: true },
-          },
-        ],
-      })
-    );
+    registerUser(store);
 
     const record = store.push<User>({
       data: {
@@ -64,6 +54,8 @@ module('Reads | resource', function (hooks) {
         },
         relationships: {
           bestFriend: {
+            links: { related: '/user/1/bestFriend' },
+            meta: { since: '2020' },
             data: { type: 'user', id: '2' },
           },
         },
@@ -87,8 +79,228 @@ module('Reads | resource', function (hooks) {
     assert.equal(record.id, '1', 'id is accessible');
     assert.equal(record.$type, 'user', '$type is accessible');
     assert.equal(record.name, 'Chris', 'name is accessible');
-    assert.equal(record.bestFriend.data?.id, '2', 'bestFriend.id is accessible');
-    assert.equal(record.bestFriend.data?.$type, 'user', 'bestFriend.user is accessible');
-    assert.equal(record.bestFriend.data?.name, 'Rey', 'bestFriend.name is accessible');
+
+    const doc = record.bestFriend;
+    const identifier = store.cacheKeyManager.getOrCreateDocumentIdentifier({
+      url: '/user/1/bestFriend',
+      method: 'GET',
+    });
+    assert.equal(doc.identifier, identifier, 'the identifier is the request key for the related link');
+    assert.equal(doc.data?.bestFriend.identifier, null, 'the identifier is null when the relationship has no link');
+    assert.equal(doc.data?.id, '2', 'bestFriend.data.id is accessible');
+    assert.equal(doc.data?.$type, 'user', 'bestFriend.data.$type is accessible');
+    assert.equal(doc.data?.name, 'Rey', 'bestFriend.data.name is accessible');
+    assert.deepEqual(doc.links, { related: '/user/1/bestFriend' }, 'bestFriend.links is accessible');
+    assert.deepEqual(doc.meta, { since: '2020' }, 'bestFriend.meta is accessible');
+
+    assert.equal(record.bestFriend, doc, 'the document instance is stable across reads');
+    assert.equal(doc.data, store.peekRecord('user', '2'), 'data is the related record instance');
+    assert.equal(doc.data?.bestFriend.data, record, 'the relationship is reciprocal');
+    assert.equal(doc.data?.bestFriend.links, undefined, 'links is undefined when not present');
+    assert.equal(doc.data?.bestFriend.meta, undefined, 'meta is undefined when not present');
+
+    assert.deepEqual(
+      doc.toJSON(),
+      {
+        identifier,
+        data: store.peekRecord('user', '2'),
+        links: { related: '/user/1/bestFriend' },
+        meta: { since: '2020' },
+      },
+      'toJSON serializes the document shape'
+    );
+  });
+
+  test('data is null when the relationship is known to be empty and undefined when unknown', function (assert) {
+    const store = new Store();
+    registerUser(store, true);
+
+    const [empty, unknown] = store.push<User>({
+      data: [
+        {
+          type: 'user',
+          id: '1',
+          attributes: { name: 'Chris' },
+          relationships: {
+            bestFriend: { links: { related: '/user/1/bestFriend' }, data: null },
+          },
+        },
+        {
+          type: 'user',
+          id: '2',
+          attributes: { name: 'Rey' },
+          relationships: {
+            bestFriend: { links: { related: '/user/2/bestFriend' } },
+          },
+        },
+      ],
+    });
+
+    assert.equal(empty.bestFriend.data, null, 'data is null for an empty relationship');
+    assert.equal(unknown.bestFriend.data, undefined, 'data is undefined for a links-only relationship');
+    assert.deepEqual(unknown.bestFriend.links, { related: '/user/2/bestFriend' }, 'links are still available');
+  });
+
+  test('the field and the document are immutable on a PolarisMode record', async function (assert) {
+    const store = new Store();
+    registerUser(store);
+
+    const [record, other] = store.push<User>({
+      data: [
+        {
+          type: 'user',
+          id: '1',
+          attributes: { name: 'Chris' },
+          relationships: { bestFriend: { data: null } },
+        },
+        {
+          type: 'user',
+          id: '2',
+          attributes: { name: 'Rey' },
+          relationships: { bestFriend: { data: null } },
+        },
+      ],
+    });
+
+    await assert.expectAssertion(() => {
+      // @ts-expect-error we are testing the runtime guard
+      record.bestFriend = other;
+    }, /Cannot set bestFriend on user because the ReactiveResource is not editable/);
+
+    await assert.expectAssertion(() => {
+      record.bestFriend.data = other;
+    }, /Cannot set data on the relationship document for user.bestFriend because the resource is not editable/);
+
+    assert.equal(record.bestFriend.data, null, 'the relationship is unchanged');
+  });
+
+  test('fetch() loads the related link into the relationship and resolves with the same document', async function (assert) {
+    const requests: string[] = [];
+    const handler = {
+      request<T>(context: RequestContext): Promise<T> {
+        requests.push(context.request.url!);
+        return Promise.resolve({
+          data: {
+            type: 'user',
+            id: '2',
+            attributes: { name: 'Rey' },
+            relationships: {
+              bestFriend: { links: { related: '/user/2/bestFriend' }, data: { type: 'user', id: '1' } },
+            },
+          },
+        } as T);
+      },
+    };
+    const TestStore = useRecommendedStore({
+      cache: JSONAPICache,
+      handlers: [handler],
+    });
+    const store = new TestStore();
+    registerUser(store, true);
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { name: 'Chris' },
+        relationships: {
+          bestFriend: { links: { related: '/user/1/bestFriend' }, meta: { since: '2020' } },
+        },
+      },
+    });
+    const doc = record.bestFriend;
+
+    assert.equal(doc.data, undefined, 'data is undefined before fetching');
+
+    const result = await doc.fetch();
+
+    assert.deepEqual(requests, ['/user/1/bestFriend'], 'the related link was requested');
+    assert.equal(result, doc, 'fetch resolves with the same relationship document');
+    assert.equal(doc.data, store.peekRecord('user', '2'), 'data is the fetched related record');
+    assert.equal(doc.data?.name, 'Rey', 'the related record has its attributes');
+    assert.deepEqual(doc.links, { related: '/user/1/bestFriend' }, 'the relationship keeps its own links');
+    assert.deepEqual(doc.meta, { since: '2020' }, 'the relationship keeps its own meta');
+    assert.ok(store.cache.peek(doc.identifier!), 'the response is cached as a request document under identifier');
+  });
+
+  test('the identifier follows the relationship links', function (assert) {
+    const store = new Store();
+    registerUser(store, true);
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { name: 'Chris' },
+        relationships: { bestFriend: { links: { related: '/user/1/bestFriend' } } },
+      },
+    });
+    assert.equal(record.bestFriend.identifier?.lid, '/user/1/bestFriend', 'the identifier uses the related link');
+
+    store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        relationships: { bestFriend: { links: { related: { href: '/users/1/best-friend' } } } },
+      },
+    });
+    assert.equal(
+      record.bestFriend.identifier?.lid,
+      '/users/1/best-friend',
+      'the identifier follows a new related link'
+    );
+  });
+
+  test('materializing a related resource that was not included errors', async function (assert) {
+    const store = new Store();
+    registerUser(store);
+
+    const record = store.push<User>({
+      data: {
+        type: 'user',
+        id: '1',
+        attributes: { name: 'Chris' },
+        relationships: {
+          bestFriend: { data: { type: 'user', id: '2' } },
+        },
+      },
+    });
+
+    assert.throws(
+      () => record.bestFriend.data,
+      /Cannot materialize the resource relationship user\.bestFriend on 'user:1': the related resource 'user:2' has no data in the cache/,
+      'accessing data for a non-included related resource throws'
+    );
+
+    // once the related resource arrives the relationship materializes
+    store.push<User>({
+      data: {
+        type: 'user',
+        id: '2',
+        attributes: { name: 'Rey' },
+        relationships: { bestFriend: { data: { type: 'user', id: '1' } } },
+      },
+    });
+    assert.equal(record.bestFriend.data?.name, 'Rey', 'data is available once the related resource is loaded');
+  });
+
+  test('an async resource relationship payload must carry a related link', async function (assert) {
+    const store = new Store();
+    registerUser(store, true);
+
+    await assert.expectAssertion(
+      () =>
+        store.push<User>({
+          data: {
+            type: 'user',
+            id: '1',
+            attributes: { name: 'Chris' },
+            relationships: {
+              bestFriend: { data: null },
+            },
+          },
+        }),
+      /The resource relationship 'user\.bestFriend' is async \(async: true\) and must have a 'links\.related' link/
+    );
   });
 });
