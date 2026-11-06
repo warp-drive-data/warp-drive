@@ -321,7 +321,7 @@ catalog:
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
   "@jridgewell/trace-mapping": ^0.3.31
-  "@mdit/plugin-footnote": ^1.1.3
+  "@mdit/plugin-footnote": ^1.1.4
   "@nullvoxpopuli/ember-rolldown": ^2.12.0
   "@pnpm/find-workspace-dir": 1000.1.5
   "@pnpm/find-workspace-packages": 6.0.9
@@ -385,7 +385,7 @@ catalog:
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
   markdown-title: ^1.0.2
-  mermaid: ^12.2.0
+  mermaid: ^12.3.0
   mocha: ^12.0.3
   morgan: ^1.12.1
   oxfmt: ^0.76.0
@@ -506,7 +506,7 @@ overrides:
   prettier: ^3.9.10
   "@types/node": "catalog:"
   "@vue/compiler-sfc": 3.5.44
-  "@shikijs/langs": 4.5.0
+  "@shikijs/langs": 4.6.0
   string.prototype.matchall: npm:@nolyfill/string.prototype.matchall@^1.0.44
 
 peerDependencyRules:
