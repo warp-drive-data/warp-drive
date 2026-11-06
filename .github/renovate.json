@@ -69,6 +69,7 @@
         "/rolldown/",
         "/tsdown/",
         "/unplugin/",
+        "/^@embroider\\//",
         "execa",
         "caniuse-lite",
         "ignore",
