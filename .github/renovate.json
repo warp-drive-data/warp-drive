@@ -41,8 +41,9 @@
       "allowedVersions": "!/-dev\\./"
     },
     {
-      "matchPackageNames": ["/qunit/"],
-      "groupName": "qunit"
+      "description": "Everything that runs or serves our tests: qunit and its plugins, the testem runner, @ember/test-helpers, and the hono server stack behind holodeck and diagnostic",
+      "matchPackageNames": ["/qunit/", "testem", "@ember/test-helpers", "hono", "/^@hono\\//"],
+      "groupName": "test-tooling"
     },
     {
       "matchPackageNames": ["/eslint/"],
@@ -70,7 +71,11 @@
         "/unplugin/",
         "execa",
         "caniuse-lite",
-        "ignore"
+        "ignore",
+        "semver",
+        "@types/semver",
+        "pnpm",
+        "@ast-grep/napi"
       ],
       "groupName": "build-tools"
     },
@@ -84,7 +89,9 @@
         "/typedoc/",
         "/vitepress/",
         "vite-plugin-pwa",
-        "@mdit/plugin-footnote",
+        "mermaid",
+        "/^@mdit\\//",
+        "/^@shikijs\\//",
         "vite-plugin-image-optimizer",
         "svgo",
         "sharp",
