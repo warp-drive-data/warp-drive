@@ -42,13 +42,7 @@
     },
     {
       "description": "Everything that runs or serves our tests: qunit and its plugins, the testem runner, @ember/test-helpers, and the hono server stack behind holodeck and diagnostic",
-      "matchPackageNames": [
-        "/qunit/",
-        "testem",
-        "@ember/test-helpers",
-        "hono",
-        "/^@hono\\//"
-      ],
+      "matchPackageNames": ["/qunit/", "testem", "@ember/test-helpers", "hono", "/^@hono\\//"],
       "groupName": "test-tooling"
     },
     {
