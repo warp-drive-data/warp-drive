@@ -305,7 +305,7 @@ catalog:
   "@ember/edition-utils": ^1.2.0
   "@ember/optional-features": ^3.0.0
   "@ember/string": ^4.0.1
-  "@ember/test-helpers": 5.7.0
+  "@ember/test-helpers": 5.8.0
   "@ember/test-waiters": ^4.1.2
   "@embroider/addon-dev": ^8.4.2
   "@embroider/addon-shim": ^1.11.0
@@ -317,7 +317,7 @@ catalog:
   "@glimmer/component": ^2.2.1
   "@glint/ember-tsc": ^1.14.3
   "@glint/template": ^1.11.1
-  "@hono/node-server": ^2.1.5
+  "@hono/node-server": ^2.1.6
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^5.0.5
   "@jridgewell/trace-mapping": ^0.3.31
