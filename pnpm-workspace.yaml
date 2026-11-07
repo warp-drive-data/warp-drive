@@ -307,7 +307,7 @@ catalog:
   "@ember/string": ^4.0.1
   "@ember/test-helpers": 5.7.0
   "@ember/test-waiters": ^4.1.2
-  "@embroider/addon-dev": ^8.4.2
+  "@embroider/addon-dev": ^8.5.0
   "@embroider/addon-shim": ^1.11.0
   "@embroider/config-meta-loader": 1.0.1
   "@embroider/core": ^4.6.10
@@ -399,7 +399,7 @@ catalog:
   qunit-dom: ^3.6.0
   react: ^19.3.1
   react-dom: ^19.3.1
-  semver: ^7.8.5
+  semver: ^7.8.6
   sharp: ^0.35.5
   silent-error: ^1.1.1
   svelte: ^5.57.3
@@ -408,7 +408,7 @@ catalog:
   testem: ^3.21.5
   todomvc-app-css: ^2.4.3
   todomvc-common: ^1.0.5
-  tsdown: ^0.23.4
+  tsdown: ^0.23.5
   turbo: ^2.11.10
   typedoc: ^0.28.20
   typedoc-plugin-markdown: ^4.14.1
@@ -430,7 +430,7 @@ catalog:
   vitepress-plugin-mermaid: ^2.0.17
   vitepress-plugin-llms: ^1.14.0
   vitepress-plugin-tabs: ^0.9.1
-  vitest: ^5.0.5
+  vitest: ^5.1.0
   vue: ^3.5.44
   vue-tsc: ^3.3.14
   winston: ^3.19.0
@@ -499,7 +499,7 @@ overrides:
   typescript: 6.0.3
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001820
-  rollup: ^4.67.4
+  rollup: ^4.67.5
   "@babel/types": ^7.29.11
   "@babel/parser": ^7.29.12
   "@babel/traverse": ^7.29.12
