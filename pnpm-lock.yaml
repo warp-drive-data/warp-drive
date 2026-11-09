@@ -239,8 +239,8 @@ catalogs:
       specifier: ^1.2.0
       version: 1.3.1
     '@html-next/vertical-collection':
-      specifier: ^5.0.5
-      version: 5.0.5
+      specifier: ^6.0.0
+      version: 6.0.0
     '@jridgewell/trace-mapping':
       specifier: ^0.3.31
       version: 0.3.31
@@ -2879,7 +2879,7 @@ importers:
         version: 1.11.1
       '@html-next/vertical-collection':
         specifier: 'catalog:'
-        version: 5.0.5
+        version: 6.0.0(0b01ad44dddc1162089de9f5425771e3)
       '@types/morgan':
         specifier: 'catalog:'
         version: 1.9.10
@@ -5416,9 +5416,11 @@ packages:
       '@hono/node-server': ^1.19.11
       hono: ^4.6.0
 
-  '@html-next/vertical-collection@5.0.5':
-    resolution: {integrity: sha512-LEed/9M50OsyZKS0y/gg03KumAq5QX/KHRI8dQKS7MfVejEXlO2tPTjhzjVPRjBfepQ8K7+b8YK6cUBwgQJbaw==}
+  '@html-next/vertical-collection@6.0.0':
+    resolution: {integrity: sha512-X4TKtFnmCFdwTt3R6F+5If4gKqfYFTriN250RwuIhZvriEwTqETNfFpNEHo8fEQRGBxdzwggtjLgywcFqxBgAw==}
     engines: {node: '>= 18'}
+    peerDependencies:
+      '@glimmer/component': ^1.1.2 || ^2.0.0
 
   '@humanfs/core@0.19.2':
     resolution: {integrity: sha512-UhXNm+CFMWcbChXywFwkmhqjs3PRCmcSa/hfBgLIb7oQ5HNb1wS0icWsGtSAUNgefHeI+eBrA8I1fxmbHsGdvA==}
@@ -11787,6 +11789,9 @@ packages:
     resolution: {integrity: sha512-hdF5ZgjTqgAntKkklYw0R03MG2x/bSzTtkxmIRw/sTNV8YXsCJ1tfLAX23lhxhHJlEf3CRCOCGGWw3vI3GaSPw==}
     engines: {node: '>=18'}
 
+  tracked-built-ins@4.1.2:
+    resolution: {integrity: sha512-KiiV/Pzi7VNKTn9Fip6Ic54AjKgFfqows1Jq3L0WLVqZcvfswdhVxQ9yqqhTXsmgLhVzIgtdzNBH4ExqWf34BQ==}
+
   trim-lines@3.0.1:
     resolution: {integrity: sha512-kRj8B+YHZCc9kQYdWfJB2/oUl9rA99qbowYYBtr4ui4mZyAQ2JpvVBd/6U2YloATfqBhBTSMhTpgBHtU0Mf3Rg==}
 
@@ -14492,10 +14497,15 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@html-next/vertical-collection@5.0.5':
+  '@html-next/vertical-collection@6.0.0(0b01ad44dddc1162089de9f5425771e3)':
     dependencies:
       '@embroider/addon-shim': 1.11.0
+      '@glimmer/component': 2.2.1
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
       ember-raf-scheduler: 0.5.2
+      tracked-built-ins: 4.1.2(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@babel/core'
 
   '@humanfs/core@0.19.2':
     dependencies:
@@ -22408,6 +22418,13 @@ snapshots:
   tr46@5.1.1:
     dependencies:
       punycode: 2.3.1
+
+  tracked-built-ins@4.1.2(@babel/core@7.29.7):
+    dependencies:
+      '@embroider/addon-shim': 1.11.0
+      decorator-transforms: 2.4.0(@babel/core@7.29.7)
+    transitivePeerDependencies:
+      - '@babel/core'
 
   trim-lines@3.0.1: {}
 

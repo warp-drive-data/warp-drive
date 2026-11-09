@@ -319,7 +319,7 @@ catalog:
   "@glint/template": ^1.11.1
   "@hono/node-server": ^2.1.5
   "@hono/node-ws": ^1.2.0
-  "@html-next/vertical-collection": ^5.0.5
+  "@html-next/vertical-collection": ^6.0.0
   "@jridgewell/trace-mapping": ^0.3.31
   "@mdit/plugin-footnote": ^1.1.4
   "@nullvoxpopuli/ember-rolldown": ^2.13.0
