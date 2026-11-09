@@ -24,10 +24,10 @@ index 933ae90..3134347 100644
      element: Element | Document;
      [hasCalledSetupRenderingContext]?: true;
 diff --git a/dist/index.js b/dist/index.js
-index c100398..59e6d96 100644
+index 93b05fc..eda48e8 100644
 --- a/dist/index.js
 +++ b/dist/index.js
-@@ -131,7 +131,7 @@ const EMPTY_TEMPLATE = precompileTemplate("", {
+@@ -122,7 +122,7 @@ const EMPTY_TEMPLATE = precompileTemplate("", {
  const INVOKE_PROVIDED_COMPONENT = precompileTemplate("<this.ProvidedComponent />", {
    strictMode: false
  });
@@ -36,19 +36,19 @@ index c100398..59e6d96 100644
  //  Isolates the notion of transforming a TextContext into a RenderingTestContext.
  // eslint-disable-next-line require-jsdoc
  function prepare(context) {
-@@ -2243,5 +2243,5 @@ function waitForFocus(target, options = {}) {
+@@ -2224,5 +2224,5 @@ function waitForFocus(target, options = {}) {
    });
  }
  
 -export { blur, clearRender, click, doubleClick, fillIn, find, findAll, focus, getContext, getRootElement, getTestMetadata, registerHook, render, rerender, runHooks, scrollTo, select, settled, setupRenderingContext, triggerTab as tab, tap, teardownContext, triggerEvent, triggerKeyEvent, typeIn, unsetContext, validateErrorHandler, waitFor, waitForFocus, waitUntil };
 +export { blur, clearRender, click, doubleClick, fillIn, find, findAll, focus, getContext, getRootElement, getTestMetadata, hasCalledSetupRenderingContext, registerHook, render, rerender, runHooks, scrollTo, select, settled, setupRenderingContext, triggerTab as tab, tap, teardownContext, triggerEvent, triggerKeyEvent, typeIn, unsetContext, validateErrorHandler, waitFor, waitForFocus, waitUntil };
  //# sourceMappingURL=index.js.map
-diff --git a/dist/setup-context-BwSdAogx.js b/dist/setup-context-BwSdAogx.js
-index 0b7c05a..3bb7921 100644
---- a/dist/setup-context-BwSdAogx.js
-+++ b/dist/setup-context-BwSdAogx.js
-@@ -221,13 +221,17 @@ function buildRegistry(resolver) {
-   @param {Ember.Resolver} [resolver] the resolver to use to back a "mock owner"
+diff --git a/dist/setup-context-bsjQwCD9.js b/dist/setup-context-bsjQwCD9.js
+index 62bcf8b..3fac898 100644
+--- a/dist/setup-context-bsjQwCD9.js
++++ b/dist/setup-context-bsjQwCD9.js
+@@ -97,13 +97,17 @@ function getApplication() {
+   @param {Ember.Resolver} [resolver] the resolver to build an application from
    @returns {Promise<Ember.ApplicationInstance>} a promise resolving to the generated "owner"
  */
 -function buildOwner(application, resolver) {
@@ -67,7 +67,7 @@ index 0b7c05a..3bb7921 100644
    }
    if (!resolver) {
      throw new Error('You must set up the ember-test-helpers environment with either `setResolver` or `setApplication` before running any tests.');
-@@ -1226,7 +1230,8 @@ function setupContext(base, options = {}) {
+@@ -1117,7 +1121,8 @@ function setupContext(base, options = {}) {
      return;
    }).then(() => {
      const {
@@ -77,7 +77,7 @@ index 0b7c05a..3bb7921 100644
      } = options;
  
      // This handles precedence, specifying a specific option of
-@@ -1236,9 +1241,9 @@ function setupContext(base, options = {}) {
+@@ -1127,9 +1132,9 @@ function setupContext(base, options = {}) {
      // At some later time this can be extended to support specifying a custom
      // engine or application...
      if (resolver) {
