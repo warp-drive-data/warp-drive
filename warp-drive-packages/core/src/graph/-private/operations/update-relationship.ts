@@ -90,6 +90,17 @@ export default function updateRelationshipOperation(
         hasUpdatedLink = true;
       }
     }
+
+    // A `resource` or `collection` relationship's membership is the primary data of the request
+    // document its `related` link names. Recording that document here is what lets the cache
+    // route a response for it into this edge, and read the document's data back from it.
+    if (definition.fieldKind === 'resource' || definition.fieldKind === 'collection') {
+      const href = payload.links.related ? _normalizeLink(payload.links.related)?.href : null;
+      graph._setRequestKey(
+        relationship,
+        href ? graph.store.cacheKeyManager.getOrCreateDocumentIdentifier({ url: href, method: 'GET' }) : null
+      );
+    }
   }
 
   /*

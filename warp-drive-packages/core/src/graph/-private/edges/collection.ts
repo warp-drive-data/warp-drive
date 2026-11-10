@@ -3,7 +3,7 @@ import type { UpgradedMeta } from '../-edge-definition.ts';
 import type { RelationshipState } from '../-state.ts';
 import { createState } from '../-state.ts';
 import type { CollectionRelationship } from '../../../types/cache/relationship.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
+import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 
 /**
@@ -53,6 +53,12 @@ export interface CollectionEdge {
   accessed: boolean;
 
   /**
+   * The cache key of the request document for this relationship's `related` link, when the
+   * graph manages that document's membership (see `Graph.edgeForRequestKey`). `null` otherwise.
+   */
+  requestKey: RequestKey | null;
+
+  /**
    * The most recently computed diff between the prior and new remote state, retained so that
    * consumers (e.g. a `ManyArray`) may patch themselves incrementally instead of recomputing
    * from scratch.
@@ -83,6 +89,7 @@ export function createCollectionEdge(definition: UpgradedMeta, identifier: Resou
     isDirty: false,
     transactionRef: 0,
     accessed: false,
+    requestKey: null,
     _diff: undefined,
   };
 }
