@@ -383,7 +383,7 @@ catalogs:
       specifier: ^10.1.8
       version: 10.1.8
     eslint-plugin-import-x:
-      specifier: ^4.17.1
+      specifier: ^4.18.0
       version: 4.18.0
     eslint-plugin-mocha:
       specifier: ^12.0.2
