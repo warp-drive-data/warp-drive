@@ -356,8 +356,8 @@ catalogs:
       specifier: ~4.3.0
       version: 4.3.0
     ember-page-title:
-      specifier: ^9.0.3
-      version: 9.0.3
+      specifier: ^9.1.0
+      version: 9.1.0
     ember-provide-consume-context:
       specifier: ^0.10.0
       version: 0.10.0
@@ -1780,7 +1780,7 @@ importers:
         version: 4.3.0(@babel/core@7.29.13)
       ember-page-title:
         specifier: 'catalog:'
-        version: 9.0.3(59d30470392735f432738b11663fdf08)
+        version: 9.1.0(59d30470392735f432738b11663fdf08)
       ember-qunit:
         specifier: 'catalog:'
         version: 9.2.0(139c74a7e5b25c1c62adc45be9400618)
@@ -1885,7 +1885,7 @@ importers:
         version: 4.3.0(@babel/core@7.29.13)
       ember-page-title:
         specifier: 'catalog:'
-        version: 9.0.3(59d30470392735f432738b11663fdf08)
+        version: 9.1.0(59d30470392735f432738b11663fdf08)
       ember-qunit:
         specifier: 'catalog:'
         version: 9.2.0(139c74a7e5b25c1c62adc45be9400618)
@@ -1990,7 +1990,7 @@ importers:
         version: 4.3.0(@babel/core@7.29.13)
       ember-page-title:
         specifier: 'catalog:'
-        version: 9.0.3(59d30470392735f432738b11663fdf08)
+        version: 9.1.0(59d30470392735f432738b11663fdf08)
       ember-qunit:
         specifier: 'catalog:'
         version: 9.2.0(139c74a7e5b25c1c62adc45be9400618)
@@ -2912,7 +2912,7 @@ importers:
         version: 0.4.1(99e2693231f53ced9ecf8e6eecd7870d)
       ember-page-title:
         specifier: 'catalog:'
-        version: 9.0.3(59d30470392735f432738b11663fdf08)
+        version: 9.1.0(59d30470392735f432738b11663fdf08)
       ember-qunit:
         specifier: 'catalog:'
         version: 9.2.0(139c74a7e5b25c1c62adc45be9400618)
@@ -9122,9 +9122,8 @@ packages:
   ember-modifier@4.3.0:
     resolution: {integrity: sha512-O0rirSLQbGg0VJ/NqoQ4uN1bh2iAekZC/Ykma+FkjCM2ofrO38u+d8n3+AK6uVWeMJmogGX2KL+Is5fofoInJg==}
 
-  ember-page-title@9.0.3:
-    resolution: {integrity: sha512-fedRHUsvq8tIZgOii8jTrfAyeq+la/9H5eAzhNNwEyzo7nDMmqK2SxsyBUGXprd8fOacsPabLlzlucMi/4mUpA==}
-    engines: {node: 16.* || >= 18}
+  ember-page-title@9.1.0:
+    resolution: {integrity: sha512-+zBVORfzjnF8eNZ2kesVAV9+LaqIOvFDRK102c7jhpgM1oi3kbKRVh33+fRmF3tOFnWXwxbSiRfOgHS4rpMw+Q==}
     peerDependencies:
       '@glimmer/component': '*'
       ember-source: '*'
@@ -19243,7 +19242,7 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
 
-  ember-page-title@9.0.3(59d30470392735f432738b11663fdf08):
+  ember-page-title@9.1.0(59d30470392735f432738b11663fdf08):
     dependencies:
       '@embroider/addon-shim': 1.11.0
       '@glimmer/component': 2.2.1
