@@ -329,8 +329,8 @@ catalogs:
       specifier: 6.0.0
       version: 6.0.0
     commander:
-      specifier: ^15.0.0
-      version: 15.0.0
+      specifier: ^15.1.0
+      version: 15.1.0
     comment-json:
       specifier: ^5.0.0
       version: 5.0.0
@@ -1018,7 +1018,7 @@ importers:
         version: file:tools/internal-config
       commander:
         specifier: 'catalog:'
-        version: 15.0.0
+        version: 15.1.0
       eslint:
         specifier: 'catalog:'
         version: 10.14.0
@@ -8500,8 +8500,8 @@ packages:
     resolution: {integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==}
     engines: {node: '>=20'}
 
-  commander@15.0.0:
-    resolution: {integrity: sha512-z67u4ZhzCL/Tydu1lJARtEZYWbWaN7oYLHbsuzocr6y4N6WZAagG3RQ4FW61V1/0+jImpj293XfrcYnd1qxtPg==}
+  commander@15.1.0:
+    resolution: {integrity: sha512-cgnQ88TRrWcC7pVq46RzJVRMktu3W2RcbnoidnfBsl1bmDCBwJS/udcIZpKoCrbAYYaCqsz1yZCVIgbIaU3ddQ==}
     engines: {node: '>=22.12.0'}
 
   commander@2.20.3:
@@ -18652,7 +18652,7 @@ snapshots:
 
   commander@14.0.3: {}
 
-  commander@15.0.0: {}
+  commander@15.1.0: {}
 
   commander@2.20.3: {}
 
@@ -20404,7 +20404,7 @@ snapshots:
 
   katex@0.18.10:
     dependencies:
-      commander: 15.0.0
+      commander: 15.1.0
 
   keyv@5.6.0:
     dependencies:
