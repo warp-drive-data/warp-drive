@@ -274,7 +274,7 @@ Where this really matters is for deep objects. Generally, we support partial res
 
 The Cache delegates relationship caching to the Graph Storage primitive provided by `@ember-data/graph`. The Graph is a powerful and highly optimized relational map that maintains the connections between ResourceKeys.
 
-By default, The Graph uses **upsert semantics** for a relationship payload with **replace semantics** for each of `links` `meta` and `data` fields within it. This means that relationship payloads are expected to have complete representations for each of these if present (aside: this will somewhat change to support paginated collections in the near future).
+By default, The Graph uses **upsert semantics** for a relationship payload with **replace semantics** for each of `links` `meta` and `data` fields within it. This means that relationship payloads are expected to have complete representations for each of these if present. Relationships are never paginated: a `data` array is always the complete membership, and lists that need paging belong in [top-level requests](../relational-data/advanced/pagination.md).
 
 This means that a field being absent from a relationship payload is semantically different from that field being present but with a value of `null` or an empty array. Being not-present means we do not replace the existing value.
 
