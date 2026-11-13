@@ -269,8 +269,8 @@ catalogs:
       specifier: 3.46.0-build2
       version: 3.46.0-build2
     '@sveltejs/kit':
-      specifier: ^3.1.1
-      version: 3.1.1
+      specifier: ^3.2.0
+      version: 3.2.0
     '@sveltejs/package':
       specifier: ^3.0.2
       version: 3.0.2
@@ -4234,7 +4234,7 @@ importers:
     devDependencies:
       '@sveltejs/kit':
         specifier: 'catalog:'
-        version: 3.1.1(ec8ec895da02dea5576f34a5cb55c62b)
+        version: 3.2.0(ec8ec895da02dea5576f34a5cb55c62b)
       '@sveltejs/package':
         specifier: 'catalog:'
         version: 3.0.2(svelte@5.57.3)(typescript@6.0.3)
@@ -6969,8 +6969,8 @@ packages:
     peerDependencies:
       acorn: ^8.9.0
 
-  '@sveltejs/kit@3.1.1':
-    resolution: {integrity: sha512-BiEMvekYXE9Gu/YhWJ/yJ0WDLH1PX/dmjuAeFp5rrtdmgdzkjt7DvimlSP+/U4tgposl7pkE20luHpcnc6BgRw==}
+  '@sveltejs/kit@3.2.0':
+    resolution: {integrity: sha512-zhb8GTeFd/6BwfqaY4wKIF7eFACYOgn/KNppV6UHFBHk174B4d7xTtN7x0PxaPPlwnCTgbnpaYF6r9lirz0Biw==}
     engines: {node: '>=22.17'}
     hasBin: true
     peerDependencies:
@@ -15864,8 +15864,9 @@ snapshots:
     dependencies:
       acorn: 8.19.0
 
-  '@sveltejs/kit@3.1.1(ec8ec895da02dea5576f34a5cb55c62b)':
+  '@sveltejs/kit@3.2.0(ec8ec895da02dea5576f34a5cb55c62b)':
     dependencies:
+      '@jridgewell/trace-mapping': 0.3.31
       '@rolldown/pluginutils': 1.0.1
       '@standard-schema/spec': 1.1.0
       '@sveltejs/vite-plugin-svelte': 7.3.1(svelte@5.57.3)(vite@8.3.6)
