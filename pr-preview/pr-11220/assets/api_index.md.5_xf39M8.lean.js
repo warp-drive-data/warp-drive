@@ -1,0 +1,1 @@
+import{at as e,bt as t,ot as n,t as r}from"./chunks/framework.CsvOgUKj.js";var i=JSON.parse(`{"title":"API Docs","description":"","frontmatter":{},"headers":[],"relativePath":"api/index.md","filePath":"api/index.md"}`),a={name:`api/index.md`};function o(r,i,a,o,s,c){return t(),e(`div`,null,[...i[0]||=[n("",9)]])}var s=r(a,[[`render`,o]]);export{i as __pageData,s as default};
