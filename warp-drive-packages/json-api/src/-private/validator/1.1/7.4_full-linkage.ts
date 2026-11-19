@@ -1,6 +1,22 @@
 import type { ResourceDocument } from '@warp-drive/core/types/spec/document';
 
 import { checkResourcePresent, type Reporter, type ResourceInfo, type ResourcePresence } from '../utils';
+import { isStrictRelationshipField } from './7.2_resource-objects';
+
+/**
+ * `resource`/`collection` relationships have their linkage validated (with a
+ * more specific message) by the per-field rules in 7.2, so the generic check
+ * here skips them to avoid reporting the same missing resource twice.
+ */
+function isLinkageReportedElsewhere(reporter: Reporter, resourceType: string, relName: string): boolean {
+  if (!reporter.schema.hasResource({ type: resourceType })) {
+    return false;
+  }
+  const fields =
+    reporter.schema.cacheFields?.({ type: resourceType }) ?? reporter.schema.fields({ type: resourceType });
+  const field = fields.get(relName);
+  return !!field && isStrictRelationshipField(field);
+}
 
 /**
  * Validates that all `data` members of relationships have a matching
@@ -37,6 +53,9 @@ export function validateFullLinkage(reporter: Reporter, doc: ResourceDocument): 
           for (const relName of Object.keys(relationships)) {
             const rel = relationships[relName];
             if (rel && 'data' in rel && rel.data !== null) {
+              if (isLinkageReportedElsewhere(reporter, resourceInfo.data.type, relName)) {
+                continue;
+              }
               // for each linkage in the relationship
               if (Array.isArray(rel.data)) {
                 for (const linkage of rel.data) {
