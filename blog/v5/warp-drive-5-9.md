@@ -166,7 +166,7 @@ export default useRecommendedStore({
   A relationship with no `data` key still needs a related link. In PolarisMode, a sync `linksMode`
   `belongsTo` can now be set on an editable (checked-out) record, and resources built with
   `withDefaults` get a `$key` field that returns the record's `ResourceKey`. See
-  [LinksMode](/guides/the-manual/misc/links-mode.md)
+  [LinksMode](/guides/the-manual/relational-data/features/links-mode.md)
   ([#10524](https://github.com/warp-drive-data/warp-drive/pull/10524)).
 - **Abstract polymorphic types need no schema.** For resources defined with schemas, when a
   concrete type's relationship declares `as: 'abstract-pet'`, registering that type's schema also

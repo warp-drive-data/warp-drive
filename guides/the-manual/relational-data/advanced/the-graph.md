@@ -1,3 +1,7 @@
+---
+description: How the cache stores relationship state in the Graph, why edits are operations rather than assignments, and how remote and local state are kept apart.
+---
+
 # Understanding "the Graph"
 
 Relationship state is not stored on records. It lives in **the Graph**, a relational map owned by
