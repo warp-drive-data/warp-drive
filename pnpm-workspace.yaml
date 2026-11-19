@@ -350,7 +350,7 @@ catalog:
   babel-plugin-debug-macros: ^2.0.0
   babel-plugin-ember-template-compilation: ^4.0.1
   badge-maker: 6.0.0
-  commander: ^15.0.0
+  commander: ^15.1.0
   comment-json: ^5.0.0
   debug: ^4.4.3
   decorator-transforms: ^2.4.0
