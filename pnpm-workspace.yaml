@@ -312,7 +312,7 @@ catalog:
   "@embroider/config-meta-loader": 1.0.1
   "@embroider/core": ^4.6.10
   "@embroider/macros": ^1.21.4
-  "@embroider/vite": ^1.8.0
+  "@embroider/vite": ^1.8.1
   "@eslint/js": ^10.0.1
   "@glimmer/component": ^2.2.1
   "@glint/ember-tsc": ^1.14.3
@@ -381,7 +381,7 @@ catalog:
   git-repo-version: ^1.0.2
   globals: ^17.14.0
   hono: ^4.13.19
-  ignore: ^7.0.14
+  ignore: ^7.0.16
   jscodeshift: ^17.4.0
   lerna-changelog: ^2.2.0
   markdown-title: ^1.0.2
@@ -430,7 +430,7 @@ catalog:
   vitepress-plugin-mermaid: ^2.0.17
   vitepress-plugin-llms: ^1.15.0
   vitepress-plugin-tabs: ^0.9.1
-  vitest: ^5.1.0
+  vitest: ^5.1.1
   vue: ^3.5.45
   vue-tsc: ^3.3.14
   winston: ^3.19.0
@@ -499,7 +499,7 @@ overrides:
   typescript: 6.0.3
   lodash: ^4.18.1
   caniuse-lite: ^1.0.30001826
-  rollup: ^4.68.3
+  rollup: ^4.68.5
   "@babel/types": ^7.29.14
   "@babel/parser": ^7.29.14
   "@babel/traverse": ^7.29.14
