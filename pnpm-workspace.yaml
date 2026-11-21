@@ -317,7 +317,7 @@ catalog:
   "@glimmer/component": ^2.2.1
   "@glint/ember-tsc": ^1.14.3
   "@glint/template": ^1.11.1
-  "@hono/node-server": ^2.1.8
+  "@hono/node-server": ^2.1.9
   "@hono/node-ws": ^1.2.0
   "@html-next/vertical-collection": ^6.0.0
   "@jridgewell/trace-mapping": ^0.3.31
@@ -362,7 +362,7 @@ catalog:
   ember-modifier: ~4.3.0
   ember-page-title: ^9.1.0
   ember-provide-consume-context: ^0.10.0
-  ember-qunit: 9.2.0
+  ember-qunit: 9.2.1
   ember-route-template: ^1.0.3
   ember-source: ~7.4.0
   ember-source-channel-url: ^3.0.0
