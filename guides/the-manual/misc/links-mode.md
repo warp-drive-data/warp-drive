@@ -215,46 +215,26 @@ For `belongsTo` this is a particularly large drawback. `belongsTo` has no mechan
 
 For `hasMany`, this restriction is not too difficult as it can be loaded via its link by calling `reload`, e.g. `user.friends.reload()`. As with hasMany in LegacyMode, its links are also available via `user.friends.links`.
 
-This makes PolarisMode relationships intentionally limited. This limitation is not permanent – there is a replacement
-in the works for `belongsTo` and `hasMany` that aligns relationships with the intended Polaris experience.
-
-In the meantime, we've enabled synchronous linksMode relationships in order to allow folks to experiment with the polaris experience while still staying generally aligned with the direction relationships will evolve.
-
-If this limitation is too great we would recommend continuing to use `LegacyMode` until the full story for 
-relationships in PolarisMode is shipped.
+This makes the legacy kinds intentionally limited in PolarisMode. They are kept this way so that
+apps can experiment with the polaris experience on existing schemas; new relationships, and
+relationships that need links or async loading in PolarisMode, should use the replacement kinds
+described below.
 
 <br>
 
 ---
 
-#### What To Expect from PolarisMode Relationships in the Future
+#### The Replacement: `resource` And `collection`
 
-We intend to replace `belongsTo` and `hasMany` fields with the (as yet not implemented)
-`resource` and `collection` fields.
+`belongsTo` and `hasMany` are superseded by the `resource` and `collection` field kinds, which
+behave identically in LegacyMode and PolarisMode. They have no `autofetch` behavior and no async
+proxy: the value of the field is a
+[relationship document](/api/@warp-drive/core/reactive/types/ReactiveRelationshipDocument) whose
+`data`, `links` and `meta` mirror the relationship payload, and `async` describes what the API
+sends rather than whether access triggers a request. `linksMode` has no meaning for them, because
+they always behave the way LinksMode makes the legacy kinds behave.
 
-These fields will have no `autofetch` behavior, and no async proxy. There will still be `sync` and `async`
-variations of the field but this flag will take on a better meaning.
-
-An `async` relationship represents a POTENTIALLY asynchronous boundary in your API, meaning that even if
-sometimes the data for that relationship is included as a sideload, it may not always be and may require
-its own request. Async collection relationships can be paginated; the experimental
-[Pagination](../experiments/pagination.md) primitives provide the reactive state for doing so.
-
-A `sync` relationship represents an ALWAYS synchronous boundary, meaning that the full state of the relationship
-is ALWAYS included as a sideload and cannot ever be loaded as its own request. Sync relationships can never be
-paginated, and generally require use of a request which fetches their parent record to get updated state.
-
-In LegacyMode, sync relationships gave direct access to the record or array while async relationships gave access
-to a promisified proxy to the record/array.
-
-In PolarisMode using `resource` and `collection`, sync relationships will also give direct access while async
-relationships will instead provide access to a [ReactiveDocument](/api/@warp-drive/core/reactive/types/ReactiveDocument).
-
-So for instance, if `user.homeAddress` were `async: false`, then its value would be an instance of an `Address` record.
-But if `user.homeAddress` were `async: true`, it would instead be a reactive class with `links`, `meta` and (only-if-loaded) `data`.
-
-- `user.homeAddress.links` would provide access to its associated links
-- `user.homeAddress.meta` would provide access to any associated meta
-- `user.homeAddress.data` would provide access to the address record instance IF (and only if) the relationship data had been included as part of the response for a parent record previously OR fetched explicitly via its link.
-
-
+See [Relational Fields](/guides/the-manual/schemas/relational-fields.md) for the fields,
+[Sync vs Async](/guides/the-manual/relational-data/features/sync-vs-async.md) for what `async`
+now means, and [Migrating Relationships to `resource` and `collection`](/upgrading/v5/relationships.md)
+for moving existing fields over.
