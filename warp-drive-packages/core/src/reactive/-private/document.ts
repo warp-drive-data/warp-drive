@@ -2,9 +2,15 @@ import { assert } from '@warp-drive/core/build-config/macros';
 
 import { withBrand } from '../../request.ts';
 import { defineGate, notifyInternalSignal, peekInternalSignal, withSignalStore } from '../../signals/-private.ts';
-import type { DocumentCacheOperation, UnsubscribeToken } from '../../store/-private/managers/notification-manager.ts';
+import { recordIdentifierFor } from '../../store/-private/caches/instance-cache.ts';
+import type {
+  DocumentCacheOperation,
+  NotificationChannel,
+  UnsubscribeToken,
+} from '../../store/-private/managers/notification-manager.ts';
 import type { Store } from '../../store/-private/store-service.ts';
 import type { ResourceKey } from '../../types.ts';
+import type { CollectionRelationship, ResourceRelationship } from '../../types/cache/relationship.ts';
 import type { RequestKey } from '../../types/identifier.ts';
 import type { ImmutableRequestInfo, RequestInfo } from '../../types/request.ts';
 import type { ResourceDocument } from '../../types/spec/document.ts';
@@ -225,9 +231,34 @@ export type ReactiveDataDocument<
     readonly errors?: undefined;
   };
 
+/**
+ * Where a relationship document reads its state from: a relationship field on a resource.
+ *
+ * @internal
+ */
+export interface RelationshipSource {
+  /** The resource that owns the relationship. */
+  resourceKey: ResourceKey;
+  /** The relationship's cache key (its `sourceKey` when set, otherwise its `name`). */
+  key: string;
+  /**
+   * Whether the owning resource is editable. An editable resource renders the relationship's
+   * local state and may change it through `data`; an immutable one renders its remote state.
+   */
+  editable: boolean;
+}
+
 interface PrivateReactiveDocument {
   /** @internal */
   _store: Store;
+
+  /**
+   * Set when this document presents a relationship rather than a request: its `data`, `links`
+   * and `meta` are the relationship's.
+   *
+   * @internal
+   */
+  _relationship: RelationshipSource | null;
 
   /** @internal */
   _localCache: { document: ResourceDocument; request: ImmutableRequestInfo } | null;
@@ -247,6 +278,12 @@ interface PrivateReactiveDocument {
   ): Promise<ReactiveDataDocument<T, M, E, EM> | null>;
 }
 function upgradeThis(doc: unknown): asserts doc is PrivateReactiveDocument {}
+
+function peekRelationship(doc: PrivateReactiveDocument): ResourceRelationship | CollectionRelationship {
+  const { resourceKey, key, editable } = doc._relationship!;
+  const { cache } = doc._store;
+  return editable ? cache.getRelationship(resourceKey, key) : cache.getRemoteRelationship(resourceKey, key);
+}
 
 /**
  * A Document is a class that wraps the response content from a request to the API
@@ -309,10 +346,18 @@ const ReactiveDocumentProto = {
     assert(`No self or related link`, this.links?.related || this.links?.self);
     options.cacheOptions = options.cacheOptions || {};
     options.cacheOptions.key = this.identifier?.lid;
-    return this._request<T, M, E, EM>(
+    const request = this._request<T, M, E, EM>(
       this.links.related ? 'related' : 'self',
       options as RequestInfo<ReactiveDataDocument<T, M, E, EM>>
     ) as Promise<ReactiveDataDocument<T, M, E, EM>>;
+
+    // A relationship's related link names the request document whose membership the graph
+    // manages for it, so the response has already been applied to the relationship by the time
+    // the request resolves, and this document is the result.
+    if (this._relationship) {
+      return request.then(() => this as ReactiveDataDocument<T, M, E, EM>);
+    }
+    return request;
   },
 
   next<T, M extends Meta | undefined = Meta | undefined, E extends object = object, EM extends Meta | undefined = M>(
@@ -398,6 +443,9 @@ const ReactiveDocumentProto = {
 defineGate(ReactiveDocumentProto, 'errors', {
   get<T>(this: ReactiveDocument<T>): object[] | undefined {
     upgradeThis(this);
+    if (this._relationship) {
+      return undefined;
+    }
     const { identifier } = this;
 
     if (!identifier) {
@@ -416,7 +464,15 @@ defineGate(ReactiveDocumentProto, 'errors', {
 defineGate(ReactiveDocumentProto, 'data', {
   get<T>(this: ReactiveDocument<T>) {
     upgradeThis(this);
-    const { identifier, _localCache } = this;
+    const { identifier, _localCache, _relationship } = this;
+
+    if (_relationship) {
+      const data = peekRelationship(this).data;
+      if (Array.isArray(data)) {
+        return this._store.recordArrayManager.getCollection({ source: data.slice() }) as T;
+      }
+      return (data ? this._store.peekRecord(data) : data) as T;
+    }
 
     const doc = identifier ? this._store.cache.peek(identifier) : _localCache!.document;
     assert(`No cache data was found for the document '${identifier?.lid ?? '<uncached document>'}'`, doc);
@@ -437,10 +493,36 @@ defineGate(ReactiveDocumentProto, 'data', {
       return data;
     }
   },
+  set(this: ReactiveDocument<unknown>, value: unknown) {
+    upgradeThis(this);
+    const source = this._relationship;
+    assert(`Cannot set the data of a document; only a relationship document's data can be set.`, source);
+    assert(
+      `Cannot set the data of the relationship ${source.resourceKey.type}.${source.key} because the resource is not editable. Checkout the resource for editing first.`,
+      source.editable
+    );
+    assert(
+      `Setting the data of a collection relationship is not yet supported`,
+      !Array.isArray(peekRelationship(this).data)
+    );
+    assert(
+      `Expected a resource or null to be set as the data of ${source.resourceKey.type}.${source.key}`,
+      value === null || typeof value === 'object'
+    );
+    this._store.cache.mutate({
+      op: 'replaceRelatedRecord',
+      record: source.resourceKey,
+      field: source.key,
+      value: value === null ? null : recordIdentifierFor(value),
+    });
+  },
 });
 defineGate(ReactiveDocumentProto, 'links', {
   get<T>(this: ReactiveDocument<T>) {
     upgradeThis(this);
+    if (this._relationship) {
+      return peekRelationship(this).links;
+    }
     const { identifier } = this;
 
     if (!identifier) {
@@ -454,6 +536,9 @@ defineGate(ReactiveDocumentProto, 'links', {
 defineGate(ReactiveDocumentProto, 'meta', {
   get<T>(this: ReactiveDocument<T>): Meta | undefined {
     upgradeThis(this);
+    if (this._relationship) {
+      return peekRelationship(this).meta;
+    }
     const { identifier } = this;
 
     if (!identifier) {
@@ -478,6 +563,7 @@ export function createReactiveDocument<
   const doc = Object.create(ReactiveDocumentProto) as ReactiveDocument<T, M, E, EM> & PrivateReactiveDocument;
   doc._store = store;
   doc._localCache = localCache;
+  doc._relationship = null;
   // @ts-expect-error we are initializing it here
   doc.identifier = cacheKey;
   const signals = withSignalStore(doc);
@@ -505,4 +591,54 @@ export function createReactiveDocument<
   }
 
   return doc;
+}
+
+/**
+ * Creates the document a relationship field presents: a {@link ReactiveDocument} whose `data`,
+ * `links` and `meta` are those of the relationship.
+ *
+ * Its `identifier` is the cache key of the request document named by the relationship's
+ * `related` link. The graph manages that document's membership, so a response to it (through
+ * {@link ReactiveDocument.fetch | fetch} or any other request for the link) updates the
+ * relationship, and the relationship's remote state is what that request document shows.
+ *
+ * @internal
+ */
+export function createRelationshipDocument<T>(store: Store, source: RelationshipSource): ReactiveDocument<T> {
+  const doc = Object.create(ReactiveDocumentProto) as ReactiveDocument<T> & PrivateReactiveDocument;
+  doc._store = store;
+  doc._localCache = null;
+  doc._relationship = Object.assign({}, source);
+  Object.defineProperty(doc, 'identifier', {
+    enumerable: true,
+    configurable: true,
+    get(this: ReactiveDocument<T>): RequestKey | null {
+      const related = this.links?.related;
+      if (!related) {
+        return null;
+      }
+      return store.cacheKeyManager.getOrCreateDocumentIdentifier({ url: urlFromLink(related), method: 'GET' });
+    },
+  });
+  withSignalStore(doc);
+  return doc;
+}
+
+/**
+ * Marks a relationship document's reactive properties as stale so they recompute from the cache
+ * on their next access.
+ *
+ * `channel` is the channel the relationship notification was tagged with. A purely `'local'`
+ * change (a mutation) can only affect `data`: `links` and `meta` are server-owned.
+ *
+ * @internal
+ */
+export function notifyRelationshipDocument(doc: ReactiveDocument<unknown>, channel?: NotificationChannel): void {
+  const signals = withSignalStore(doc);
+  notifyInternalSignal(peekInternalSignal(signals, 'data'));
+  if (channel === 'local') {
+    return;
+  }
+  notifyInternalSignal(peekInternalSignal(signals, 'links'));
+  notifyInternalSignal(peekInternalSignal(signals, 'meta'));
 }

@@ -2,7 +2,7 @@ import type { UpgradedMeta } from '../-edge-definition.ts';
 import type { RelationshipState } from '../-state.ts';
 import { createState } from '../-state.ts';
 import type { ResourceRelationship } from '../../../types/cache/relationship.ts';
-import type { ResourceKey } from '../../../types/identifier.ts';
+import type { RequestKey, ResourceKey } from '../../../types/identifier.ts';
 import type { Links, Meta, PaginationLinks } from '../../../types/spec/json-api-raw.ts';
 
 /**
@@ -20,6 +20,11 @@ export interface ResourceEdge {
   links: Links | PaginationLinks | null;
   transactionRef: number;
   accessed: boolean;
+  /**
+   * The cache key of the request document for this relationship's `related` link, when the
+   * graph manages that document's membership (see `Graph.edgeForRequestKey`). `null` otherwise.
+   */
+  requestKey: RequestKey | null;
 }
 
 export function createResourceEdge(definition: UpgradedMeta, identifier: ResourceKey): ResourceEdge {
@@ -33,6 +38,7 @@ export function createResourceEdge(definition: UpgradedMeta, identifier: Resourc
     meta: null,
     links: null,
     accessed: false,
+    requestKey: null,
   };
 }
 

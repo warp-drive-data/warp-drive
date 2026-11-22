@@ -544,7 +544,9 @@ export function removeFromInverse(
 }
 
 function flushCanonical(graph: Graph, rel: CollectionEdge, channel?: NotificationChannel) {
-  if (rel.accessed) {
+  // a request document backed by this edge must hear about remote changes even if the edge
+  // itself has never been read
+  if (rel.accessed || rel.requestKey) {
     graph._scheduleLocalSync(rel, channel);
   }
 }
