@@ -1,7 +1,9 @@
 import { assert } from '@warp-drive/core/build-config/macros';
 
+import type { UpgradedMeta } from '../-edge-definition.ts';
 import { isBelongsTo, isHasMany, notifyChange } from '../-utils.ts';
 import type { Store } from '../../../index.ts';
+import { asyncThrow } from '../../../store/-private/utils/async-throw.ts';
 import type { ResourceKey } from '../../../types.ts';
 import type { UpdateResourceRelationshipOperation } from '../../../types/cache/operations.ts';
 import type { UpdateRelationshipOperation } from '../../../types/graph.ts';
@@ -45,6 +47,7 @@ export default function updateRelationshipOperation(
         payload.data = [];
       }
       assert(`Expected an array`, Array.isArray(payload.data));
+      assertCollectionSize(graph, identifier, definition, payload.data.length);
       const cache = graph.store.cacheKeyManager;
       graph.update(
         {
@@ -138,6 +141,24 @@ export default function updateRelationshipOperation(
       relationship.state.isStale = false;
     }
   }
+}
+
+/**
+ * When the store has configured `maxCollectionRelationshipSize`, flags (via an
+ * asynchronously thrown error) a `collection` relationship payload whose
+ * membership exceeds it. The payload is still applied: the guard exists to
+ * steer large lists towards top-level, paginated requests, not to reject data.
+ */
+function assertCollectionSize(graph: Graph, identifier: ResourceKey, definition: UpgradedMeta, size: number): void {
+  const max = graph._realStore.maxCollectionRelationshipSize;
+  if (typeof max !== 'number' || definition.fieldKind !== 'collection' || size <= max) {
+    return;
+  }
+  asyncThrow(
+    new Error(
+      `The collection relationship ${identifier.type}.${definition.name} received ${size} related resources, exceeding the configured maxCollectionRelationshipSize of ${max}. Large collections should be loaded with a top-level (paginated) request instead of through the relationship. See https://docs.warp-drive.io/guides/the-manual/relational-data/advanced/large-collections`
+    )
+  );
 }
 
 function isStaleTransaction(relationshipTransactionId: number, graphTransactionId: number | null) {
