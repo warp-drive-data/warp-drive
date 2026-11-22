@@ -180,6 +180,13 @@ export class Reporter {
     unknownAttribute: true,
     unknownRelationship: true,
     enforceReachable: true,
+    /**
+     * Whether a `links` member on a sync (`async: false`) `resource` or
+     * `collection` relationship is reported as an error (`true`) or a
+     * warning (`false`, the default). Sync relationships are expected to
+     * be fully included in the payload and so should not need links.
+     */
+    syncRelationshipLinks: false,
   };
 
   _presence: ResourcePresence | null = null;
