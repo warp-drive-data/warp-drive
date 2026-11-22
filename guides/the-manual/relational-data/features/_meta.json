@@ -1,0 +1,11 @@
+{
+  "items": [
+    "resource-relationships",
+    "collection-relationships",
+    "links-vs-identifiers",
+    "sync-vs-async",
+    "inverses",
+    "polymorphism",
+    "links-mode"
+  ]
+}

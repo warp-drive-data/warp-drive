@@ -36,7 +36,7 @@ related resource removes it from the relationship, but `unloadRecord` does not.
 
 PolarisMode relationships are strict about what their shape promises: a sync relationship must
 carry its related resources in the same document, and an async one must carry a link that can
-fetch them (see [LinksMode](/guides/the-manual/misc/links-mode.md)). That rule cannot express a
+fetch them (see [LinksMode](/guides/the-manual/relational-data/features/links-mode.md)). That rule cannot express a
 relationship the developer knows will not be satisfied by the delivering document and does not
 want WarpDrive to fetch either.
 
