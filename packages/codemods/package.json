@@ -39,7 +39,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@ast-grep/napi": "^0.51.2"
+    "@ast-grep/napi": "^0.51.3"
   },
   "devDependencies": {
     "@types/jscodeshift": "catalog:",
